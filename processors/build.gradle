@@ -1,0 +1,96 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+	// https://mvnrepository.com/artifact/com.sun.jndi.ldap/ldapbp
+	// implementation group: 'com.sun.jndi.ldap', name: 'ldapbp', version: '1.0'
+	// implementation group: 'com.sun.jndi', name: 'ldap', version: '1.2.4'
+
+    // https://mvnrepository.com/artifact/javaee/javaee-api
+	api 'javaee:javaee-api:5'
+    // https://mvnrepository.com/artifact/org.apache.activemq/activemq-core
+    api 'org.apache.activemq:activemq-core:5.7.0'
+    // https://mvnrepository.com/artifact/it.sauronsoftware.cron4j/cron4j
+    api 'it.sauronsoftware.cron4j:cron4j:2.2.5'
+
+	// Local
+	api project(path: ':project')
+}
+
+compileJava {
+	options.compilerArgs.add('--add-exports=java.base/jdk.internal.vm.annotation=ALL-UNNAMED')
+	options.compilerArgs.add('--add-opens=java.base/jdk.internal.loader=ALL-UNNAMED')
+	options.compilerArgs.add('--add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/server']
+		}
+	}
+}
+
+def entityType = 'D'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "Adempiere Server Root",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId publishGroupId
+			artifactId 'server-root'
+            version = publishVersion
+           	from components.java
+           	pom {
+				name = 'Server Root'
+				description = 'Server Root, and Deploy Server Files.'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}

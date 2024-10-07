@@ -1,0 +1,80 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+	// Local
+	api project(path: ':base')
+	api project(path: ':finance_management')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java/base']
+		}
+	}
+}
+
+def entityType = 'D'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "Adempiere Loan Management",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId publishGroupId
+            artifactId 'loan'
+            version = publishVersion
+           	from components.java
+           	pom {
+                name = 'Loan Management'
+                description = 'Loan Management dedicated to manage loan amortization.'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}

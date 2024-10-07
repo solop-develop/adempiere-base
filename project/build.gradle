@@ -1,0 +1,79 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+	// Local
+	api project(path: ':base')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java']
+		}
+	}
+}
+
+def entityType = 'EE09'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "Adempiere Project Management",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId 'io.github.adempiere'
+            artifactId 'project'
+            version = publishVersion
+           	from components.java
+           	pom {
+                name = 'Project'
+                description = 'Project Management dedicated to manage project, and members.'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}

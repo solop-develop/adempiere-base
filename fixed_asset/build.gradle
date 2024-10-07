@@ -1,0 +1,87 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
+    implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+    // https://mvnrepository.com/artifact/com.sun.mail/javax.mail
+	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.4.7'
+
+	// Local
+	api project(path: ':base')
+	api project(path: ':project')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java/base']
+		}
+	}
+}
+
+def entityType = 'FA'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "Adempiere Fixed Asset Management",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId publishGroupId
+            artifactId 'asset'
+            version = publishVersion
+           	from components.java
+           	pom {
+                name = 'Asset'
+                description = 'Fixed Asset Management of ADempiere.'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}

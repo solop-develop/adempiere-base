@@ -1,0 +1,97 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+	implementation fileTree(
+		dir: '../zkwebui/WEB-INF/lib',
+		include: [
+			'zhtml.jar',
+			'keylistener.jar',
+		]
+	)
+	implementation fileTree(
+		dir: '../tools/lib/testing',
+		include: [
+			'SuperCSV-with_src-1.52.jar'
+		]
+	)
+
+    // https://mvnrepository.com/artifact/com.github.lbordowitz.openforecast/openforecast
+    api 'com.github.lbordowitz.openforecast:openforecast:0.5.0'
+
+	// Local
+    api project(path: ':base')
+    api project(path: ':distribution')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java/base']
+		}
+	}
+}
+
+def entityType = 'EE01'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "Adempiere Manufacturing Management",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId publishGroupId
+            artifactId 'manufacturing'
+            version = publishVersion
+           	from components.java
+           	pom {
+                name = 'Manufacturing Management'
+				description = 'Manufacturing Management dedicated to manage all related with production BOM, costing, and manufacturing.'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}

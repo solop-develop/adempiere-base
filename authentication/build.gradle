@@ -1,0 +1,94 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.nimbusds/oauth2-oidc-sdk
+	api 'com.nimbusds:oauth2-oidc-sdk:9.35'
+
+	// https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt
+	api 'com.nimbusds:nimbus-jose-jwt:9.22'
+	
+	// https://mvnrepository.com/artifact/com.nimbusds/content-type
+	api 'com.nimbusds:content-type:2.2'
+	
+	// https://mvnrepository.com/artifact/net.minidev/json-smart
+	api 'net.minidev:json-smart:2.4.8'
+	
+	// https://mvnrepository.com/artifact/net.minidev/accessors-smart
+	api 'net.minidev:accessors-smart:2.4.8'
+
+	// Local
+	api project(path: ':base')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java/base']
+		}
+	}
+}
+
+def entityType = 'ECA02'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "Adempiere Authentication Module",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId publishGroupId
+            artifactId 'openid-authentication'
+            version = publishVersion
+           	from components.java
+           	pom {
+                name = 'Open ID Connect Authentication'
+                description = 'A library for Authenticated with OpenID Connect from ADempiere.'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}

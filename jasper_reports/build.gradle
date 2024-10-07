@@ -1,0 +1,85 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
+    api 'net.sf.jasperreports:jasperreports:6.17.0'
+    // https://mvnrepository.com/artifact/com.lowagie/itext
+    api 'com.lowagie:itext:2.1.7'
+    api 'net.sourceforge.barbecue:barbecue:1.5-beta1'
+
+	// Local
+	api project(path: ':base')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src']
+		}
+	}
+}
+
+def entityType = 'D'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "Adempiere Base Module",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+			groupId publishGroupId
+            artifactId 'jasperreports'
+			version = publishVersion
+           	from components.java
+           	pom {
+                name = 'JasperReports'
+                description = 'JasperReports, a implementation of JasperReports for ADempiere.'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}
