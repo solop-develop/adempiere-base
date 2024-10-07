@@ -18,21 +18,14 @@ package org.compiere.model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.core.domains.models.X_CM_Chat;
-import org.adempiere.legacy.apache.ecs.xhtml.b;
-import org.adempiere.legacy.apache.ecs.xhtml.hr;
-import org.adempiere.legacy.apache.ecs.xhtml.p;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
-import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
-import org.compiere.util.Util;
 
 /**
  * 	Chat Model
@@ -146,9 +139,6 @@ public class MChat extends X_CM_Chat
 	
 	/**	The Lines						*/
 	private MChatEntry[] 		m_entries = null;
-	/**	Date Format						*/
-	private SimpleDateFormat	m_format = null;
-	
 	
 	/**
 	 *	Get Entries
@@ -202,47 +192,5 @@ public class MChat extends X_CM_Chat
 		else
 			super.setDescription (getAD_Table_ID() + "#" + getRecord_ID());
 	}	//	setDescription
-	
-	/**
-	 * 	Get History as htlp paragraph
-	 * 	@param ConfidentialType confidentiality
-	 *	@return html paragraph
-	 */
-	public p getHistory (String ConfidentialType)
-	{
-		p history = new p();
-		getEntries(false);
-		boolean first = true;
-		for (int i = 0; i < m_entries.length; i++)
-		{
-			MChatEntry entry = m_entries[i];
-			if (!entry.isActive() || !entry.isConfidentialType(ConfidentialType))
-				continue;
-			if (first)
-				first = false;
-			else
-				history.addElement(new hr());
-			//	User & Date
-			b b = new b();
-			MUser user = MUser.get(getCtx(), entry.getCreatedBy());
-			b.addElement(user.getName());
-			b.addElement(" \t");
-			Timestamp created = entry.getCreated();
-			if (m_format == null)
-				m_format = DisplayType.getDateFormat(DisplayType.DateTime);
-			b.addElement(m_format.format(created));
-			history.addElement(b);
-		//	history.addElement(new br());
-			//
-			p p = new p();
-			String data = entry.getCharacterData();
-			data = Util.maskHTML(data, true);
-			p.addElement(data);
-			history.addElement(p);
-		}	//	entry
-		//
-		return history;
-	}	//	getHistory
-	
 	
 }	//	MChat

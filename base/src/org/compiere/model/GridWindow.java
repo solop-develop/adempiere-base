@@ -28,24 +28,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 
-import javax.swing.Icon;
-
-import org.adempiere.legacy.apache.ecs.xhtml.a;
-import org.adempiere.legacy.apache.ecs.xhtml.h2;
-import org.adempiere.legacy.apache.ecs.xhtml.h3;
-import org.adempiere.legacy.apache.ecs.xhtml.h4;
-import org.adempiere.legacy.apache.ecs.xhtml.i;
-import org.adempiere.legacy.apache.ecs.xhtml.p;
-import org.adempiere.legacy.apache.ecs.xhtml.strong;
-import org.adempiere.legacy.apache.ecs.xhtml.table;
-import org.adempiere.legacy.apache.ecs.xhtml.td;
-import org.adempiere.legacy.apache.ecs.xhtml.th;
-import org.adempiere.legacy.apache.ecs.xhtml.tr;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.WebDoc;
 
 /**
  *	Window Model
@@ -252,19 +237,6 @@ public class GridWindow implements Serializable
 	}   //  getImage
 
 	/**
-	 *  Get Window Icon
-	 *  @return Icon for Window
-	 */
-	public Icon getIcon()
-	{
-		if (m_vo.AD_Image_ID == 0)
-			return null;
-		//
-		MImage mImage = MImage.get(Env.getCtx(), m_vo.AD_Image_ID);
-		return mImage.getIcon();
-	}   //  getIcon
-
-	/**
 	 *  Get Color
 	 *  @return AdempiereColor or null
 	 */
@@ -411,140 +383,6 @@ public class GridWindow implements Serializable
 	{
 		return "MWindow[" + m_vo.WindowNo + "," + m_vo.Name + " (" + m_vo.AD_Window_ID + ")]";
 	}   //  toString
-
-	/**
-	 * 	Get Help HTML Document
-	 * 	@param javaClient true if java client false for browser
-	 *	@return help 
-	 */
-	public WebDoc getHelpDoc (boolean javaClient)
-	{
-		String title = Msg.getMsg(Env.getCtx(), "Window") + ": " + getName();
-		WebDoc doc = null;
-		if (javaClient)
-		{
-			doc = WebDoc.create (false, title, javaClient);
-		}
-		else	//	HTML
-		{
-			doc = WebDoc.createPopup (title);
-			doc.addPopupClose(Env.getCtx());
-		}
-		
-	//	body.addElement("&copy;&nbsp;Adempiere &nbsp; ");
-	//	body.addElement(new a("http://www.adempiere.org/help/", "Online Help"));
-		td center  = doc.addPopupCenter(false);
-		//	Window
-		if (getDescription().length() != 0)
-			center.addElement(new p().addElement(new i(getDescription())));
-		if (getHelp().length() != 0)
-			center.addElement(new p().addElement(getHelp()));
-
-		center.addElement(new a().setName("Tabs")).addElement(new h3("Tabs").addAttribute("ALIGN", "left"));
-		//	List of all Tabs in current window
-		int size = getTabCount();
-		p p = new p();
-		for (int i = 0; i < size; i++)
-		{
-			GridTab tab = getTab(i);
-			if (i > 0)
-				p.addElement(" | ");
-			p.addElement(new a("#Tab"+i).addElement(tab.getName()));
-		}
-		center.addElement(p)
-			.addElement(new p().addElement(WebDoc.NBSP));
-
-		//	For all Tabs
-		for (int i = 0; i < size; i++)
-		{
-			table table = new table("1", "5", "5", "100%", null);
-			table.setBorder("1px").setCellSpacing(0);
-			GridTab tab = getTab(i);
-			table tabHeader = new table();
-			tabHeader.setBorder("0").setCellPadding(0).setCellSpacing(0);
-			tabHeader.addElement(new tr()
-				.addElement(new td().addElement(new a().setName("Tab" + i))
-						.addElement(new h2(Msg.getMsg(Env.getCtx(), "Tab") + ": " + tab.getName())))
-				.addElement(new td().addElement(WebDoc.NBSP).addElement(WebDoc.NBSP)
-						.addElement(new a("#Tabs").addElement("..").addAttribute("title", "Up one level"))));
-			tr tr = new tr()
-				.addElement(new th()
-				.addElement(tabHeader));
-					
-			if (tab.getDescription().length() != 0)
-				tr.addElement(new th()
-					.addElement(new i(tab.getDescription())));
-			else
-				tr.addElement(new th()
-					.addElement(WebDoc.NBSP));
-			table.addElement(tr);
-			//	Description
-			td td = new td().setColSpan(2);
-			if (tab.getHelp().length() != 0)
-				td.addElement(new p().addElement(tab.getHelp()));
-			//	Links to Fields
-			td.addElement(new a().setName("Fields"+i));
-			td.addElement(new h4("Fields").addAttribute("ALIGN", "left"));
-			p = new p();
-			if (!tab.isLoadComplete())
-				this.initTab(i);
-			for (int j = 0; j < tab.getFieldCount(); j++)
-			{
-				GridField field = tab.getField(j);
-				// hidden fields should not be displayed - teo_sarca, [ 1667073 ] 
-				if (!field.isDisplayed(false)) {
-					continue;
-				}
-				String hdr = field.getHeader();
-				if (hdr != null && hdr.length() > 0)
-				{
-					if (j > 0)
-						p.addElement(" | ");
-					p.addElement(new a("#Field" + i + "-" + j, hdr));
-				}
-			}
-			td.addElement(p);
-			table.addElement(new tr().addElement(td));
-
-			//	For all Fields
-			for (int j = 0; j < tab.getFieldCount(); j++)
-			{
-				GridField field = tab.getField(j);
-				// hidden fields should not be displayed - teo_sarca, [ 1667073 ] 
-				if (!field.isDisplayed(false)) {
-					continue;
-				}
-				String hdr = field.getHeader();
-				if (hdr != null && hdr.length() > 0)
-				{
-					table fieldHeader = new table();
-					fieldHeader.setBorder("0").setCellPadding(0).setCellSpacing(0);
-					fieldHeader.addElement(new tr()
-					.addElement(new td().addElement(new a().setName("Field" + i + "-" + j))
-						.addElement(new h3(Msg.getMsg(Env.getCtx(), "Field") + ": " + hdr)))
-					.addElement(new td().addElement(WebDoc.NBSP).addElement(WebDoc.NBSP)
-						.addElement(new strong().addElement(new a("#Fields"+i).addElement("..").addAttribute("title", "Up one level")))));
-					
-					td = new td().setColSpan(2).addElement(fieldHeader);
-						
-					if (field.getDescription().length() != 0)
-						td.addElement(new i(field.getDescription()));
-					//
-					if (field.getHelp().length() != 0)
-						td.addElement(new p().addElement(field.getHelp()));
-					table.addElement(new tr().addElement(td));
-				}
-			}	//	for all Fields
-			
-			center.addElement(table);
-			center.addElement(new p().addElement(WebDoc.NBSP));
-		}	//	for all Tabs
-		
-		if (!javaClient)
-			doc.addPopupClose(Env.getCtx());
-	   	//System.out.println(doc.toString());
-		return doc;
-	}	//	getHelpDoc
 
 	/**
 	 * 	Get Model last Updated

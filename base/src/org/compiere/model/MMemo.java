@@ -25,9 +25,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.core.domains.models.X_AD_Memo;
-import org.adempiere.legacy.apache.ecs.xhtml.b;
-import org.adempiere.legacy.apache.ecs.xhtml.hr;
-import org.adempiere.legacy.apache.ecs.xhtml.p;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
@@ -161,7 +158,7 @@ public class MMemo extends X_AD_Memo
 		if ( list.size() == 0 )
 			return null;		
 		
-		p history = new p();
+		StringBuffer history = new StringBuffer();
 		boolean first = true;
 		for (MMemo memo : list)
 		{
@@ -169,24 +166,16 @@ public class MMemo extends X_AD_Memo
 			if (first)
 				first = false;
 			else
-				history.addElement(new hr());
-			//	User & Date
-			b b = new b();
+				history.append("");
 			MUser user = MUser.get(ctx, memo.getCreatedBy());
-			b.addElement(user.getName());
-			b.addElement(" \t");
+			history.append(user.getName());
+			history.append(" \t");
 			Timestamp created = memo.getCreated();
 			if (m_format == null)
 				m_format = DisplayType.getDateFormat(DisplayType.DateTime);
-			b.addElement(m_format.format(created));
-			history.addElement(b);
-		//	history.addElement(new br());
-			//
-			p p = new p();
+				history.append(m_format.format(created));
 			String data = memo.getComments();
 			data = Util.maskHTML(data, true);
-			p.addElement(data);
-			history.addElement(p);
 		}	//	memo
 		
 		return history.toString();

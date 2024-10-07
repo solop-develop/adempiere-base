@@ -27,7 +27,6 @@ import org.compiere.model.MSystem;
 import org.compiere.model.M_Registration;
 import org.compiere.util.AdempiereUserError;
 import org.compiere.util.DB;
-import org.compiere.util.WebEnv;
 
 /**
  *	System Registration
@@ -84,7 +83,7 @@ public class RegisterSystem extends SvrProcess
 			throw new AdempiereUserError("Please enter Address with City");
 
 		//	Create Query String
-		String enc = WebEnv.ENCODING;
+		String enc = "UTF-8";
 		//	Send GET Request
 		StringBuffer urlString = new StringBuffer ("http://www.adempiere.net")
 			.append("/wstore/registrationServlet?");

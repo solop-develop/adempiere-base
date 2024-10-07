@@ -13,9 +13,6 @@
  *****************************************************************************/
 package org.compiere.print;
 
-import org.adempiere.legacy.apache.ecs.ConcreteElement;
-import org.adempiere.legacy.apache.ecs.xhtml.a;
-
 /**
  * 
  * @author hengsin
@@ -29,9 +26,5 @@ public interface IHTMLExtension {
 	
 	public String getScriptURL();
 	
-	public void extendRowElement(ConcreteElement row, PrintData printData);
-	
-	public void extendIDColumn(int row, ConcreteElement columnElement, a href, PrintDataElement dataElement, MPrintFormatItem pfi, int AD_PInstace_ID);
-
 	public String getComponentId();
 }

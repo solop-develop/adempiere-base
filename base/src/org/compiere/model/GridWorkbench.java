@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import javax.swing.Icon;
-
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -410,21 +408,6 @@ public class GridWorkbench implements Serializable
 			return win.mWindow.getHelp();
 		return null;
 	}   //  getHelp
-
-	/**
-	 *  Get Icon of Window
-	 *  @param index index in workbench
-	 *  @return Window Icon or null if not set
-	 */
-	public Icon getIcon (int index)
-	{
-		if (index < 0 || index > m_windows.size())
-			throw new IllegalArgumentException ("Index invalid: " + index);
-		WBWindow win = (WBWindow)m_windows.get(index);
-		if (win.mWindow != null && win.Type == TYPE_WINDOW)
-			return win.mWindow.getIcon();
-		return null;
-	}   //  getIcon
 
 	/**
 	 *  Get Image Icon of Window
