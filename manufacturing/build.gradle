@@ -72,7 +72,7 @@ publishing {
         mavenJava(MavenPublication) {
         	groupId publishGroupId
             artifactId 'manufacturing'
-            version = publishVersion
+            version publishVersion
            	from components.java
            	pom {
                 name = 'Manufacturing Management'

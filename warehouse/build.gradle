@@ -56,7 +56,7 @@ publishing {
         mavenJava(MavenPublication) {
         	groupId publishGroupId
             artifactId 'wms'
-            version = publishVersion
+            version publishVersion
            	from components.java
            	pom {
                 name = 'Warehouse Management System'

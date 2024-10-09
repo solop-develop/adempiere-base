@@ -60,7 +60,7 @@ publishing {
         maven(MavenPublication) {
 			groupId publishGroupId
             artifactId 'jasper-reports'
-			version = publishVersion
+			version publishVersion
            	from components.java
            	pom {
                 name = 'JasperReports'

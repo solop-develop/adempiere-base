@@ -111,7 +111,7 @@ publishing {
         maven(MavenPublication) {
 			groupId publishGroupId
             artifactId 'base'
-			version = publishVersion
+			version publishVersion
            	from components.java
            	pom {
                 name = 'Base'

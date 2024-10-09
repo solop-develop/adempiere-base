@@ -55,7 +55,7 @@ publishing {
         mavenJava(MavenPublication) {
         	groupId publishGroupId
             artifactId 'human-resource-and-payroll'
-            version = publishVersion
+            version publishVersion
            	from components.java
            	pom {
                 name = 'Human Resource and Payroll'

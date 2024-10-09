@@ -54,7 +54,7 @@ publishing {
         mavenJava(MavenPublication) {
         	groupId 'io.github.adempiere'
             artifactId 'project'
-            version = publishVersion
+            version publishVersion
            	from components.java
            	pom {
                 name = 'Project'

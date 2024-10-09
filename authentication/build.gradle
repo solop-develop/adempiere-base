@@ -69,7 +69,7 @@ publishing {
         mavenJava(MavenPublication) {
         	groupId publishGroupId
             artifactId 'openid-authentication'
-            version = publishVersion
+            version publishVersion
            	from components.java
            	pom {
                 name = 'Open ID Connect Authentication'

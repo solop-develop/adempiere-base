@@ -54,7 +54,7 @@ publishing {
         mavenJava(MavenPublication) {
         	groupId publishGroupId
             artifactId 'investment-and-loan'
-            version = publishVersion
+            version publishVersion
            	from components.java
            	pom {
                 name = 'Investment and Loan Management'

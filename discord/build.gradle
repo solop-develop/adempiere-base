@@ -57,7 +57,7 @@ publishing {
         mavenJava(MavenPublication) {
         	groupId publishGroupId
             artifactId 'discord-notifier'
-            version = publishVersion
+            version publishVersion
            	from components.java
            	pom {
                 name = 'Discord Notifier'
