@@ -61,7 +61,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
         	groupId publishGroupId
-            artifactId 'asset'
+            artifactId 'fixed-asset'
             version = publishVersion
            	from components.java
            	pom {
