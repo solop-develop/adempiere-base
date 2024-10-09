@@ -30,11 +30,11 @@ dependencies {
 	api project(path: ':project')
 }
 
-compileJava {
-	options.compilerArgs.add('--add-exports=java.base/jdk.internal.vm.annotation=ALL-UNNAMED')
-	options.compilerArgs.add('--add-opens=java.base/jdk.internal.loader=ALL-UNNAMED')
-	options.compilerArgs.add('--add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED')
-}
+// compileJava {
+// 	options.compilerArgs.add('--add-exports=java.base/jdk.internal.vm.annotation=ALL-UNNAMED')
+// 	options.compilerArgs.add('--add-opens=java.base/jdk.internal.loader=ALL-UNNAMED')
+// 	options.compilerArgs.add('--add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED')
+// }
 
 sourceSets {
 	main {
