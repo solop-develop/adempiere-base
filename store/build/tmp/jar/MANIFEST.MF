@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: Adempiere Web Store Management
-Implementation-Version: local
-EntityType: ECA12
-
