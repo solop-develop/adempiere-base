@@ -52,7 +52,7 @@ publishing {
     }
     publications {
         mavenJava(MavenPublication) {
-        	groupId 'io.github.adempiere'
+            groupId publishGroupId
             artifactId 'project'
             version publishVersion
            	from components.java
