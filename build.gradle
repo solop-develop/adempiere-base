@@ -42,6 +42,7 @@ dependencies {
     api project(':discord')
     api project(':telegram')
     api project(':jasper_reports')
+    api project(':store')
 }
 
 def entityType = 'D'
