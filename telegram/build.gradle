@@ -55,7 +55,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
         	groupId publishGroupId
-            artifactId 'telegram-notifier'
+            artifactId 'telegram'
             version publishVersion
            	from components.java
            	pom {
