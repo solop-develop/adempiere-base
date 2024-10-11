@@ -280,10 +280,6 @@ public class MContainer extends X_CM_Container
 	protected void updateElements (MWebProject project, MCStage stage,
 		String trxName)
 	{
-		org.compiere.cm.CacheHandler thisHandler = new org.compiere.cm.CacheHandler (
-			org.compiere.cm.CacheHandler.convertJNPURLToCacheURL (getCtx ()
-				.getProperty ("java.naming.provider.url")), log, getCtx (),
-			get_TrxName ());
 		// First update the new ones...
 		int[] tableKeys = X_CM_CStage_Element.getAllIDs ("CM_CStage_Element",
 			"CM_CStage_ID=" + stage.get_ID (), trxName);
@@ -324,8 +320,6 @@ public class MContainer extends X_CM_Container
 				// thisContainerElement);
 				thisContainerElement.save (trxName);
 				// Remove Container from cache
-				thisHandler.cleanContainerElement (thisContainerElement
-					.get_ID ());
 			}
 		}
 		// Now we are checking the existing ones to delete the unneeded ones...
@@ -345,9 +339,6 @@ public class MContainer extends X_CM_Container
 				if (thisCStageElementKeys == null
 					|| thisCStageElementKeys.length < 1)
 				{
-					// First delete it from cache, then delete the record itself
-					thisHandler.cleanContainerElement (thisContainerElement
-						.get_ID ());
 					thisContainerElement.delete (true);
 				}
 			}

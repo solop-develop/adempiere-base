@@ -236,23 +236,6 @@ public class MTemplate extends X_CM_Template
 				log.warning ("#" + no + " - TreeType=CMT");
 			return no > 0;
 		}
-		if (!newRecord)
-		{
-			org.compiere.cm.CacheHandler thisHandler = new org.compiere.cm.CacheHandler (
-				org.compiere.cm.CacheHandler.convertJNPURLToCacheURL (getCtx ()
-					.getProperty ("java.naming.provider.url")), log, getCtx (),
-				get_TrxName ());
-			if (!isInclude ())
-			{
-				// Clean Main Templates on a single level.
-				thisHandler.cleanTemplate (this.get_ID ());
-			}
-			else
-			{
-				// Since we not know which main templates we will clean up all!
-				thisHandler.emptyTemplate ();
-			}
-		}
 		return success;
 	}	// afterSave
 
