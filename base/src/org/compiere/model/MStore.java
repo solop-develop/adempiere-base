@@ -359,24 +359,6 @@ public class MStore extends X_W_Store
 		//
 		EMail email = null;
 		MClient client = MClient.get(getCtx(), getAD_Client_ID());
-		if (client.isServerEMail() && Ini.isClient())
-		{
-			try
-			{
-				Server server = CConnection.get().getServer();
-				if (server != null)
-				{	//	See ServerBean
-					email = server.createEMail(Env.getRemoteCallCtx(getCtx()), getAD_Client_ID(), 
-						to, subject, message);
-				}
-				else
-					log.log(Level.WARNING, "No AppsServer"); 
-			}
-			catch (Exception ex)
-			{
-				log.log(Level.SEVERE, getName() + " - AppsServer error", ex);
-			}
-		}
 		String from = getWStoreEMail();
 		if (from == null || from.length() == 0)
 			from = client.getRequestEMail();

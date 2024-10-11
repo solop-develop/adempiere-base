@@ -127,9 +127,6 @@ public final class Env
 			session.logout();
 		//
 		reset(true);	// final cache reset
-		//
-		
-		CConnection.get().setAppServerCredential(null, null);
 	}
 	
 	/**

@@ -34,8 +34,6 @@ import org.adempiere.core.domains.models.I_HR_Process;
 import org.adempiere.core.domains.models.I_PP_Cost_Collector;
 import org.adempiere.core.domains.models.I_PP_Order;
 import org.compiere.acct.Doc;
-import org.compiere.db.CConnection;
-import org.compiere.interfaces.Server;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MAllocationHdr;
 import org.compiere.model.MBankStatement;
@@ -1474,58 +1472,8 @@ public class DocumentEngine implements DocAction
 			}
             return error;
         }
-        
-        //  try to get from Server when enabled
-        CConnection serverConnection = getServerConnection();
-        if (serverConnection.isAppsServerOK(true))
-        {
-            getLogger().config("trying server");
-            try
-            {
-                Server server = getServer();
-                if (server != null)
-                {
-                    Properties p = Env.getRemoteCallCtx(Env.getCtx());
-                    error = server.postImmediate(p, clientId,
-                        tableId, recordId, force, null); // don't pass transaction to server
-                    getLogger().config("from Server: " + (error== null ? "OK" : error));
-                }
-                else
-                {
-                    error = "NoAppsServer";
-                }
-            }
-            catch (Exception e)
-            {
-                getLogger().log(Level.WARNING, "(RE)", e);
-                error = e.getMessage();
-            }
-        }
-        
         return error;
     }   //  postImmediate
-
-    /**
-     * Get the server connection.  Used for testing only.
-     * @return
-     */
-    // Public access required for testing
-    public CConnection getServerConnection() {
-
-        return CConnection.get();
-
-    }
-
-	/**
-     * Get the server.  Used for testing only.
-     * @return
-     */
-    // Public access required for testing
-    public Server getServer() {
-    
-        return getServerConnection().getServer();
-    
-    }
 
     /**
      *  Create Posting document

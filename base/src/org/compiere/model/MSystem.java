@@ -34,7 +34,6 @@ import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.DBException;
 import org.compiere.db.CConnection;
 import org.compiere.db.Database;
-import org.compiere.db.LDAP;
 import org.compiere.util.CLogMgt;
 import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
@@ -142,7 +141,7 @@ public class MSystem extends X_AD_System
 	 */
 	public boolean isLDAP (String userName, String password)
 	{
-		return LDAP.validate(getLDAPHost(), getLDAPDomain(), userName, password);
+		return false;
 	}	//	isLDAP
 
 	/**

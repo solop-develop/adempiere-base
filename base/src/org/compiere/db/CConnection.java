@@ -17,27 +17,15 @@
 package org.compiere.db;
 
 import java.io.Serializable;
-import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.logging.Level;
-
-import javax.naming.CommunicationException;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.swing.JOptionPane;
-
-import org.adempiere.as.ASFactory;
-import org.adempiere.util.EmbeddedServerProxy;
 import org.compiere.interfaces.Server;
-import org.compiere.interfaces.Status;
-import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
-import org.compiere.util.Env;
 import org.compiere.util.Ini;
 import org.compiere.util.SecureEngine;
 import org.compiere.util.ValueNamePair;
@@ -82,11 +70,6 @@ public class CConnection implements Serializable, Cloneable
 	/** Connection Profile WAN			*/
 	@Deprecated
 	public static final String	PROFILE_WAN = "W";
-
-	private final static String COMPONENT_NS = "java:comp/env";
-
-	/** Prefer component namespace when running at server **/
-	private boolean useComponentNamespace = !Ini.isClient();
 
 	/** System property flag to embed server bean in process **/
 	public final static String SERVER_EMBEDDED = "org.adempiere.server.embedded";
@@ -227,7 +210,7 @@ public class CConnection implements Serializable, Cloneable
 	/** Application Host    */
 	private String 		m_apps_host = "MyAppsServer";
 	/** Application Port    */
-	private int 		m_apps_port = ASFactory.getApplicationServer().getDefaultNamingServicePort();
+	private int 		m_apps_port = 0;
 
 	/** Database Type       */
 	private String 		m_type = "";
@@ -378,50 +361,7 @@ public class CConnection implements Serializable, Cloneable
 	 */
 	public boolean isAppsServerOK (boolean tryContactAgain)
 	{
-		if (isServerEmbedded())
-			return true;
-
-		if (Ini.isClient() && !tryContactAgain && m_queryAppsServer)
-			return m_okApps;
-
-		// Carlos Ruiz - globalqss - speed up when jnp://MyAppsServer:1099 is set
-		if (getAppsHost().equalsIgnoreCase("MyAppsServer")) {
-			log.warning (getAppsHost() + " ignored");
-			return false;
-		}
-
-		m_queryAppsServer = true;
-
-		//	Contact it
-		try
-		{
-			Status status = (Status)lookup (Status.JNDI_NAME);
-			m_version = status.getDateVersion ();
-			m_okApps = true;
-		}
-		catch (Exception ce)
-		{
-			m_okApps = false;
-			String connect = (String)m_env.get(Context.PROVIDER_URL);
-			if (connect == null || connect.trim().length() == 0)
-				connect = getAppsHost() + ":" + getAppsPort();
-			log.warning (connect
-				+ "\n - " + ce.toString ()
-				+ "\n - " + m_env);
-			ce.printStackTrace();
-		}
-		catch (Throwable t)
-		{
-			m_okApps = false;
-			String connect = (String)m_env.get(Context.PROVIDER_URL);
-			if (connect == null || connect.trim().length() == 0)
-				connect = getAppsHost() + ":" + getAppsPort();
-			log.warning (connect
-				+ "\n - " + t.toString ()
-				+ "\n - " + m_env);
-			t.printStackTrace();
-		}
-		return m_okApps;
+		return false;
 	} 	//  isAppsOK
 
 	/**
@@ -430,45 +370,8 @@ public class CConnection implements Serializable, Cloneable
 	 */
 	public synchronized Exception testAppsServer ()
 	{
-		queryAppsServerInfo();
 		return getAppsServerException ();
 	} 	//  testAppsServer
-
-	/**
-	 * 	Get Server
-	 * 	@return Server
-	 */
-	public Server getServer()
-	{
-		//only cache ServerHome for client
-		if (m_server == null || !Ini.isClient())
-		{
-			if (isServerEmbedded())
-			{
-				m_server = (Server)Proxy.newProxyInstance(Server.class.getClassLoader(),
-						new Class[]{Server.class}, new EmbeddedServerProxy());
-				return m_server;
-			}
-
-			try
-			{
-				Server server = (Server)lookup (Server.JNDI_NAME);
-				if (server != null)
-					if (Ini.isClient())
-						m_server = server;
-					else
-						return server;
-			}
-			catch (Exception ex)
-			{
-				log.log(Level.SEVERE, "", ex);
-				m_iContext = null;
-				throw new RuntimeException(ex);
-			}
-		}
-		return m_server;
-	}	//	getServer
-
 
 	/**
 	 *  Get Apps Server Version
@@ -891,11 +794,6 @@ public class CConnection implements Serializable, Cloneable
 		{
 			if (getDbPort () != DB_PostgreSQL.DEFAULT_PORT)
 				setDbPort (DB_PostgreSQL.DEFAULT_PORT);
-		}
-		if (isMySQL())
-		{
-			if (getDbPort () != DB_MySQL.DEFAULT_PORT)
-				setDbPort (DB_MySQL.DEFAULT_PORT);
 		}//  added by dete
 		//end vpj-cd e-evolution 09 ene 2006
 	} // setDatabaseDefaluts
@@ -1517,121 +1415,8 @@ public class CConnection implements Serializable, Cloneable
 	} 	//  getConnectionException
 
 	/*************************************************************************/
-
-	private InitialContext m_iContext = null;
+	@SuppressWarnings("rawtypes")
 	private Hashtable m_env = null;
-
-	/**
-	 *  Get Application Server Initial Context
-	 *  @param useCache if true, use existing cache
-	 *  @return Initial Context or null
-	 */
-	public InitialContext getInitialContext (boolean useCache)
-	{
-		if (useCache && m_iContext != null)
-			return m_iContext;
-
-		//	Set Environment
-		if (m_env == null || !useCache)
-		{
-			SecurityPrincipal sp = (SecurityPrincipal) Env.getCtx().get(SECURITY_PRINCIPAL);
-			String principal = sp != null ? sp.principal : null;
-			String credential = sp != null ? sp.credential : null;
-			m_env = getInitialEnvironment(getAppsHost(), getAppsPort(), false,
-					principal, credential);
-		}
-		String connect = (String)m_env.get(Context.PROVIDER_URL);
-		Env.setContext(Env.getCtx(), Context.PROVIDER_URL, connect);
-
-		//	Get Context
-		m_iContext = null;
-		try
-		{
-			m_iContext = new InitialContext (m_env);
-		}
-		catch (Exception ex)
-		{
-			m_okApps = false;
-			m_appsException = ex;
-			if (connect == null)
-				connect = (String)m_env.get(Context.PROVIDER_URL);
-			log.severe(connect
-				+ "\n - " + ex.toString ()
-				+ "\n - " + m_env);
-			if (CLogMgt.isLevelFinest())
-				ex.printStackTrace();
-		}
-		return m_iContext;
-	}	//	getInitialContext
-
-	/**
-	 * 	Get Initial Environment
-	 * 	@param AppsHost host
-	 * 	@param AppsPort port
-	 * 	@param RMIoverHTTP ignore, retained for backward compatibility
-	 *  @param principal
-	 *  @param credential
-	 *	@return environment
-	 */
-	private Hashtable getInitialEnvironment (String AppsHost, int AppsPort,
-		boolean RMIoverHTTP, String principal, String credential)
-	{
-		return ASFactory.getApplicationServer()
-			.getInitialContextEnvironment(AppsHost, AppsPort, principal, credential);
-	}	//	getInitialEnvironment
-
-	/**
-	 *  Query Application Server Status.
-	 *  update okApps
-	 *  @return true ik OK
-	 */
-	private boolean queryAppsServerInfo ()
-	{
-		log.finer(getAppsHost());
-		long start = System.currentTimeMillis();
-		m_okApps = false;
-		m_queryAppsServer = true;
-		m_appsException = null;
-
-		// Carlos Ruiz - globalqss - speed up when jnp://MyAppsServer:1099 is set
-		if (getAppsHost().equalsIgnoreCase("MyAppsServer")) {
-			log.warning (getAppsHost() + " ignored");
-			return m_okApps; // false
-		}
-
-		try
-		{
-			Status status = (Status)lookup (Status.JNDI_NAME);
-			//
-			updateInfoFromServer(status);
-			//
-			m_okApps = true;
-		}
-		catch (CommunicationException ce)	//	not a "real" error
-		{
-			m_appsException = ce;
-			String connect = (String)m_env.get(Context.PROVIDER_URL);
-			if (connect == null || connect.trim().length() == 0)
-				connect = getAppsHost() + ":" + getAppsPort();
-			log.warning (connect
-				+ "\n - " + ce.toString ()
-				+ "\n - " + m_env);
-			ce.printStackTrace();
-		}
-		catch (Exception e)
-		{
-			m_appsException = e;
-			String connect = (String)m_env.get(Context.PROVIDER_URL);
-			if (connect == null || connect.trim().length() == 0)
-				connect = getAppsHost() + ":" + getAppsPort();
-			log.warning (connect
-				+ "\n - " + e.toString ()
-				+ "\n - " + m_env);
-			e.printStackTrace();
-		}
-		log.fine("Success=" + m_okApps + " - " + (System.currentTimeMillis()-start) + "ms");
-		return m_okApps;
-	}	//  setAppsServerInfo
 
 	/**
 	 *  Get Last Exception of Apps Server Connectin attempt
@@ -1641,32 +1426,6 @@ public class CConnection implements Serializable, Cloneable
 	{
 		return m_appsException;
 	} 	//  getAppsServerException
-
-	/**
-	 *  Update Connection Info from Apps Server
-	 *  @param svr Apps Server Status
-	 *  @throws Exception
-	 */
-	private void updateInfoFromServer (Status svr) throws Exception
-	{
-		if (svr == null)
-			throw new IllegalArgumentException ("AppsServer was NULL");
-
-		setType (svr.getDbType());
-		setDbHost (svr.getDbHost());
-		setDbPort (svr.getDbPort ());
-		setDbName (svr.getDbName ());
-		setDbUid (svr.getDbUid ());
-		setDbPwd (svr.getDbPwd ());
-		setBequeath (false);
-		//
-		setFwHost (svr.getFwHost ());
-		setFwPort (svr.getFwPort ());
-		if (getFwHost ().length () == 0)
-			setViaFirewall (false);
-		m_version = svr.getDateVersion ();
-		log.config("Server=" + getDbHost() + ", DB=" + getDbName());
-	} 	//  update Info
 
 	/**
 	 *  Convert Statement
@@ -1745,17 +1504,6 @@ public class CConnection implements Serializable, Cloneable
 		this.isSupportedUUIDFromDB = isSupportedUUIDFromDB;
 	}
 
-	public void setAppServerCredential(String principal, String credential)
-	{
-		SecurityPrincipal sp = new SecurityPrincipal();
-		sp.principal = principal;
-		sp.credential = credential;
-		Env.getCtx().put(SECURITY_PRINCIPAL, sp);
-		m_iContext = null;
-		m_env = null;
-		m_server = null;
-	}
-
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		CConnection c = (CConnection)super.clone();
@@ -1764,26 +1512,5 @@ public class CConnection implements Serializable, Cloneable
 		info[1] = m_info[1];
 		c.m_info = info;
 		return c;
-	}
-
-	private Object lookup(String jndiName) throws NamingException {
-		InitialContext ctx = getInitialContext(Ini.isClient());
-
-		if (useComponentNamespace)
-		{
-			try
-			{
-				return ctx.lookup(COMPONENT_NS + "/" + jndiName);
-			}
-			catch (Exception e)
-			{
-				log.warning("Component name space not available - " + e.getLocalizedMessage());
-				//not available
-				useComponentNamespace = false;
-			}
-		}
-
-		//global jndi lookup
-		return ctx.lookup(jndiName);
 	}
 }	//  CConnection

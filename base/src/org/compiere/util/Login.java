@@ -267,9 +267,6 @@ public class Login
 		}
 		//	Authentication
 		boolean authenticated = false;
-		if (Ini.isClient()) {
-			CConnection.get().setAppServerCredential(app_user, app_pwd);
-		}
 		MSystem system = MSystem.get(m_ctx);
 		if (system == null) {
 			throw new IllegalStateException("No System Info");

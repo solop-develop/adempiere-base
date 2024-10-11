@@ -762,26 +762,26 @@ public class MClient extends X_AD_Client
 		}
 		//
 		EMail email = null;
-		if (isServerEMail() && Ini.isClient())
-		{
-			try
-			{
-				Server server = CConnection.get().getServer();
-				if (server != null)
-				{	//	See ServerBean
-					if (html && message != null)
-						message = EMail.HTML_MAIL_MARKER + message;
-					email = server.createEMail(Env.getRemoteCallCtx(getCtx()), getAD_Client_ID(), 
-						to, subject, message);
-				}
-				else
-					log.log(Level.WARNING, "No AppsServer"); 
-			}
-			catch (Exception ex)
-			{
-				log.log(Level.SEVERE, getName() + " - AppsServer error", ex);
-			}
-		}
+		// if (isServerEMail() && Ini.isClient())
+		// {
+		// 	try
+		// 	{
+		// 		Server server = CConnection.get().getServer();
+		// 		if (server != null)
+		// 		{	//	See ServerBean
+		// 			if (html && message != null)
+		// 				message = EMail.HTML_MAIL_MARKER + message;
+		// 			email = server.createEMail(Env.getRemoteCallCtx(getCtx()), getAD_Client_ID(), 
+		// 				to, subject, message);
+		// 		}
+		// 		else
+		// 			log.log(Level.WARNING, "No AppsServer"); 
+		// 	}
+		// 	catch (Exception ex)
+		// 	{
+		// 		log.log(Level.SEVERE, getName() + " - AppsServer error", ex);
+		// 	}
+		// }
 		//	FR [ 402 ]
 		//	Constructor is changed
 		if (email == null)
@@ -882,27 +882,27 @@ public class MClient extends X_AD_Client
 		}
 		//
 		EMail email = null;
-		if (isServerEMail() && Ini.isClient())
-		{
-			try
-			{
-				Server server = CConnection.get().getServer();
-				if (server != null)
-				{	//	See ServerBean
-					if (html && message != null)
-						message = EMail.HTML_MAIL_MARKER + message;
-					email = server.createEMail(Env.getRemoteCallCtx(getCtx()), getAD_Client_ID(),
-						from.getAD_User_ID(),
-						to, subject, message);
-				}
-				else
-					log.log(Level.WARNING, "No AppsServer"); 
-			}
-			catch (Exception ex)
-			{
-				log.log(Level.SEVERE, getName() + " - AppsServer error", ex);
-			}
-		}
+		// if (isServerEMail() && Ini.isClient())
+		// {
+		// 	try
+		// 	{
+		// 		Server server = CConnection.get().getServer();
+		// 		if (server != null)
+		// 		{	//	See ServerBean
+		// 			if (html && message != null)
+		// 				message = EMail.HTML_MAIL_MARKER + message;
+		// 			email = server.createEMail(Env.getRemoteCallCtx(getCtx()), getAD_Client_ID(),
+		// 				from.getAD_User_ID(),
+		// 				to, subject, message);
+		// 		}
+		// 		else
+		// 			log.log(Level.WARNING, "No AppsServer"); 
+		// 	}
+		// 	catch (Exception ex)
+		// 	{
+		// 		log.log(Level.SEVERE, getName() + " - AppsServer error", ex);
+		// 	}
+		// }
 		//	FR [ 402 ]
 		//	Add support to custom user mail
 		if (email == null)

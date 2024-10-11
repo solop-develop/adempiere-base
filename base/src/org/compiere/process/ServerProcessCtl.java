@@ -255,24 +255,6 @@ public class ServerProcessCtl implements Runnable {
 	{
 		log.fine(AD_Workflow_ID + " - " + processInstance);
 		boolean started = false;
-		if (isServerProcess)
-		{
-			try
-			{
-				Server server = CConnection.get().getServer();
-				if (server != null)
-				{	//	See ServerBean
-					processInstance = server.workflow (Env.getRemoteCallCtx(Env.getCtx()), processInstance, AD_Workflow_ID);
-					log.finest("server => " + processInstance);
-					started = true;
-				}
-			}
-			catch (Exception ex)
-			{
-				log.log(Level.SEVERE, "AppsServer error", ex);
-				started = false;
-			}
-		}
 		//	Run locally
 		if (!started && !isServerProcess)
 		{
@@ -307,46 +289,6 @@ public class ServerProcessCtl implements Runnable {
 					clientOnly = true;
 			} catch (Exception e) {}
 		}
-		
-		if (isServerProcess && !clientOnly)
-		{
-			try
-			{
-				Server server = CConnection.get().getServer();
-				if (server != null)
-				{	
-					//	See ServerBean
-					processInstance = server.process (Env.getRemoteCallCtx(Env.getCtx()), processInstance);
-					log.finest("server => " + processInstance);
-					started = true;		
-				}
-			}
-			catch (UndeclaredThrowableException ex)
-			{
-				Throwable cause = ex.getCause();
-				if (cause != null)
-				{
-					if (cause instanceof InvalidClassException)
-						log.log(Level.SEVERE, "Version Server <> Client: " 
-							+  cause.toString() + " - " + processInstance, ex);
-					else
-						log.log(Level.SEVERE, "AppsServer error(1b): " 
-							+ cause.toString() + " - " + processInstance, ex);
-				}
-				else
-					log.log(Level.SEVERE, " AppsServer error(1) - " 
-						+ processInstance, ex);
-				started = false;
-			}
-			catch (Exception ex)
-			{
-				Throwable cause = ex.getCause();
-				if (cause == null)
-					cause = ex;
-				log.log(Level.SEVERE, "AppsServer error - " + processInstance, cause);
-				started = false;
-			}
-		}
 		//	Run locally
 		if (!started && (!isServerProcess || clientOnly ))
 		{
@@ -373,42 +315,6 @@ public class ServerProcessCtl implements Runnable {
 		//  execute on this thread/connection
 		log.fine(ProcedureName + "(" + processInstance.getAD_PInstance_ID() + ")");
 		boolean started = false;
-		if (isServerProcess) {
-			try {
-				Server server = CConnection.get().getServer();
-				if (server != null) {	//	See ServerBean
-					processInstance = server.dbProcess(processInstance, ProcedureName);
-					log.finest("server => " + processInstance);
-					started = true;		
-				}
-			} catch (UndeclaredThrowableException ex) {
-				Throwable cause = ex.getCause();
-				if (cause != null) {
-					if (cause instanceof InvalidClassException)
-						log.log(Level.SEVERE, "Version Server <> Client: " 
-							+  cause.toString() + " - " + processInstance, ex);
-					else
-						log.log(Level.SEVERE, "AppsServer error(1b): " 
-							+ cause.toString() + " - " + processInstance, ex);
-				} else {
-					log.log(Level.SEVERE, " AppsServer error(1) - " 
-						+ processInstance, ex);
-					cause = ex;
-				}
-				processInstance.setSummary (Msg.getMsg(Env.getCtx(), "ProcessRunError") + " " + cause.getLocalizedMessage());
-				processInstance.setError (true);
-				return false;
-			} catch (Exception ex) {
-				Throwable cause = ex.getCause();
-				if (cause == null)
-					cause = ex;
-				log.log(Level.SEVERE, "AppsServer error - " + processInstance, cause);
-				processInstance.setSummary (Msg.getMsg(Env.getCtx(), "ProcessRunError") + " " + cause.getLocalizedMessage());
-				processInstance.setError (true);
-				return false;
-			}
-		}
-		
 		//try locally
 		if (!started) {
 			if (processInstance.isManagedTransaction())

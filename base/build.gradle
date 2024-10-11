@@ -67,11 +67,11 @@ dependencies {
     // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
     api 'com.zaxxer:HikariCP:5.0.1'
     // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
-    api 'org.mariadb.jdbc:mariadb-java-client:3.0.4'
+    // api 'org.mariadb.jdbc:mariadb-java-client:3.0.4'
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     api 'org.postgresql:postgresql:42.3.3'
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-	api 'mysql:mysql-connector-java:5.1.3'
+	// api 'mysql:mysql-connector-java:5.1.3'
     // https://mvnrepository.com/artifact/org.beanshell/bsh
     api 'org.beanshell:bsh:2.0b5'
 }

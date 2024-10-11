@@ -141,11 +141,11 @@ public class ReplicationLocal extends SvrProcess
 		log.info (AppsHost + ":" + AppsPort);
 		try
 		{
-			Server server = connection.getServer();
-		//	log.fine("- ServerHome: " + serverHome);
-			if (server == null)
-				throw new Exception ("NoServer");
-			m_serverRemote = server;
+		// 	Server server = connection.getServer();
+		// //	log.fine("- ServerHome: " + serverHome);
+		// 	if (server == null)
+		// 		throw new Exception ("NoServer");
+		// 	m_serverRemote = server;
 		//	log.fine("- Server: " + m_serverRemote);
 		//	log.fine("- Remote Status = " + m_serverRemote.getStatus());
 		}
