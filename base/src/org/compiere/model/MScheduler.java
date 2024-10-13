@@ -16,8 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import it.sauronsoftware.cron4j.SchedulingPattern;
-
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
@@ -260,11 +258,11 @@ public class MScheduler extends X_AD_Scheduler
 			String pattern = getCronPattern();
 			if (pattern != null && pattern.trim().length() > 0)
 			{
-				if (!SchedulingPattern.validate(pattern))
-				{
-					log.saveError("Error", "InvalidCronPattern");
-					return false;
-				}
+				// if (!SchedulingPattern.validate(pattern))
+				// {
+				// 	log.saveError("Error", "InvalidCronPattern");
+				// 	return false;
+				// }
 			}
 		}
 		

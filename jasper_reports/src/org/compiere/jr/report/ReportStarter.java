@@ -23,12 +23,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,23 +34,17 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.PropertyResourceBundle;
 import java.util.logging.Level;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import java.awt.print.PrinterJob;
 
 import org.adempiere.core.domains.models.X_AD_PInstance_Para;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.DBException;
-import org.compiere.db.CConnection;
-import org.compiere.interfaces.MD5;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MProcess;
@@ -137,90 +129,6 @@ public class ReportStarter implements ProcessCall, ClientProcess
 	private ProcessInfo processInfo;
 	private MAttachment attachment;
 
-
-    /**
-     * @param requestURL
-     * @return true if the report is on the same ip address than Application Server
-     */
-    private boolean isRequestedonAS(URL requestURL)
-    {
-    	boolean tBool = false;
-    	try{
-    		InetAddress[] request_iaddrs = InetAddress.getAllByName(requestURL.getHost());
-    		InetAddress as_iaddr = InetAddress.getByName(CConnection.get().getAppsHost());
-    		for(int i=0;i<request_iaddrs.length;i++)
-    		{
-    			log.info("Got "+request_iaddrs[i].toString()+" for "+requestURL+" as address #"+i);
-    			if(request_iaddrs[i].equals(as_iaddr))
-    			{
-    				log.info("Requested report is on application server host");
-    				tBool = true;
-    				break;
-    			}
-    		}
-    	}
-    	catch (UnknownHostException e) {
-    		log.severe("Unknown dns lookup error");
-    		return false;
-    	}
-    	return tBool;
-
-    }
-
-    /**
-     * @return true if the class org.compiere.interfaces.MD5Home is present
-     */
-    private boolean isMD5HomeInterfaceAvailable()
-    {
-    	try
-		{
-    		Class.forName("org.compiere.interfaces.MD5");
-    		log.info("EJB client for MD5 remote hashing is present");
-    		return true;
-		}
-    	catch (ClassNotFoundException e)
-		{
-    		log.warning("EJB Client for MD5 remote hashing absent\nyou need the class org.compiere.interfaces.MD5 - from webEJB-client.jar - in classpath");
-    		return false;
-		}
-    }
-
-    /**
-     * @param requestedURLString
-     * @return md5 hash of remote file computed directly on application server
-     * 			null if problem or if report doesn't seem to be on AS (different IP or 404)
-     */
-    private String ejbGetRemoteMD5(String requestedURLString)
-    {
-		InitialContext context = null;
-		String md5Hash = null;
-    	try {
-    		URL requestURL = new URL(requestedURLString);
-    		//String requestURLHost = requestURL.getHost();
-    		Hashtable<String, String> env = new Hashtable<String, String>();
-    		env.put(InitialContext.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
-    		env.put(InitialContext.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
-    		env.put(InitialContext.PROVIDER_URL, requestURL.getHost() + ":" + CConnection.get().getAppsPort());
-    		context = new InitialContext(env);
-    		if (isRequestedonAS(requestURL) && isMD5HomeInterfaceAvailable())
-    		{
-    			MD5 md5 = (MD5) context.lookup(MD5.JNDI_NAME);
-    			md5Hash = md5.getFileMD5(requestedURLString);
-    			log.info("MD5 for " + requestedURLString + " is " + md5Hash);
-    		}
-
-    	}
-    	catch (MalformedURLException e) {
-    		log.severe("URL is invalid: "+ e.getMessage());
-    		return null;
-    	}
-    	catch (NamingException e){
-    		log.warning("Unable to create jndi context did you deployed webApp.ear package?\nRemote hashing is impossible");
-    		return null;
-    	}
-    	return md5Hash;
-    }
-
     /**
      * @author rlemeill
      * @param reportLocation http://applicationserver/webApp/standalone.jrxml for example
@@ -302,60 +210,30 @@ public class ReportStarter implements ProcessCall, ClientProcess
     	File downloadedFile = null;
     	log.info(" report deployed to " + reportLocation);
     	try {
-
-
     		String[] tmps = reportLocation.split("/");
     		String cleanFile = tmps[tmps.length-1];
     		String localFile = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + cleanFile;
     		String downloadedLocalFile = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator")+"TMP" + cleanFile;
-
     		reportFile = new File(localFile);
-
-
-    		if (reportFile.exists())
-    		{
+    		if (reportFile.exists()) {
     			String localMD5hash = DigestOfFile.GetLocalMD5Hash(reportFile);
-    			String remoteMD5Hash = ejbGetRemoteMD5(reportLocation);
     			log.info("MD5 for local file is "+localMD5hash );
-    			if ( remoteMD5Hash != null)
-    			{
-    				if (localMD5hash.equals(remoteMD5Hash))
-    				{
-    					log.info(" no need to download: local report is up-to-date");
-    				}
-    				else
-    				{
-    					log.info(" report on server is different that local one, download and replace");
-    					downloadedFile = getRemoteFile(reportLocation, downloadedLocalFile);
-    					reportFile.delete();
-    					downloadedFile.renameTo(reportFile);
-    				}
+    			log.warning("Remote hashing is not available did you deployed webApp.ear?");
+    			downloadedFile = getRemoteFile(reportLocation, downloadedLocalFile);
+    			//    				compare hash of existing and downloaded
+    			if ( DigestOfFile.md5localHashCompare(reportFile,downloadedFile) ) {
+    				//nothing file are identical
+    				log.info(" no need to replace your existing report");
+    			} else {
+    				log.info(" report on server is different that local one, replacing");
+    				reportFile.delete();
+    				downloadedFile.renameTo(reportFile);
     			}
-    			else
-    			{
-    				log.warning("Remote hashing is not available did you deployed webApp.ear?");
-    				downloadedFile = getRemoteFile(reportLocation, downloadedLocalFile);
-    				//    				compare hash of existing and downloaded
-    				if ( DigestOfFile.md5localHashCompare(reportFile,downloadedFile) )
-    				{
-    					//nothing file are identical
-    					log.info(" no need to replace your existing report");
-    				}
-    				else
-    				{
-    					log.info(" report on server is different that local one, replacing");
-    					reportFile.delete();
-    					downloadedFile.renameTo(reportFile);
-    				}
-    			}
-    		}
-    		else
-    		{
+    		} else {
     			reportFile = getRemoteFile(reportLocation,localFile);
     		}
 
-    	}
-    	catch (Exception e) {
+    	} catch (Exception e) {
     		log.severe("Unknown exception: "+ e.getMessage());
     		return null;
     	}

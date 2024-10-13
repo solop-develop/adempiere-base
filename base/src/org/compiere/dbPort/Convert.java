@@ -470,22 +470,6 @@ public abstract class Convert
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			try {
-				if (mySQLStatement == null) {
-					// if oracle call convert for MySQL before logging
-					Convert_MySQL convert = new Convert_MySQL();
-					String[] r = convert.convert(oraStatement);
-					mySQLStatement = r[0];
-				}
-				if (tempFileMySQL == null) {
-		            File fileNameMySQL = File.createTempFile("migration_script_", "_mysql.sql");
-		            tempFileMySQL = new FileOutputStream(fileNameMySQL, true);
-		            writerMySQL = new BufferedWriter(new OutputStreamWriter(tempFileMySQL, "UTF8"));
-				}
-				writeLogMigrationScript(writerMySQL, mySQLStatement);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 

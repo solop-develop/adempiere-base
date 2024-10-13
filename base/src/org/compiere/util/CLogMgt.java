@@ -165,7 +165,7 @@ public class CLogMgt
 	//	setLevel(s_currentLevel);
 	//	setLoggerLevel(Level.ALL, null);
 		//
-		CLogMgtLog4J.initialize(isClient);
+		// CLogMgtLog4J.initialize(isClient);
 	//	System.out.println("Handlers=" + s_handlers.size() + ", Level=" + s_currentLevel);
 	}	//	initialize
 

@@ -17,9 +17,6 @@
 package org.compiere.model;
 
 import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.adempiere.core.domains.models.X_CM_Ad;
 
 /**
@@ -87,16 +84,5 @@ public class MAd extends X_CM_Ad
 		if (thisAd!=null)
 			thisAd.addImpression();
 		return thisAd;
-	}
-	
-	/**
-	 * Add Click Record to Log
-	 * @param request ServletReqeust
-	 */
-	public void addClick(HttpServletRequest request) {
-		setActualClick(getActualClick()+1);
-		if (getActualClick()>getMaxClick()) 
-			setIsActive(true);
-		save();
 	}
 } // MAd
