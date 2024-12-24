@@ -1,0 +1,1181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="ECA14 Add some fields of control" ReleaseNo="3.9.4" SeqNo="9900">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="100261" Table="AD_Column">
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">ce2c7fd9-a761-4fee-8830-0cd1da7a656f</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="551" Column="Updated">2022-10-27 23:45:14.835</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Confidential Info</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">true</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help">When entering/updating Requests over the web, the user can mark his info as confidential</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="112" Column="Description">Can enter confidential information</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">N</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="549" Column="Created">2022-10-27 23:45:14.834</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">IsConfidentialInfo</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">748</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">2794</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">100261</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="100261" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID">a37494e3-2721-45a6-b4e5-15303201b6b9</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2022-10-27 23:45:16.447</Data>
+        <Data AD_Column_ID="12957" Column="Name">Confidential Info</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12960" Column="Created">2022-10-27 23:45:16.447</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">100261</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102477" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">f92ac30a-87ff-4d8d-90be-1f2bf2472b6d</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="581" Column="Updated">2022-10-27 23:45:29.559</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">650</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">650</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="168" Column="Name">Confidential Info</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help">When entering/updating Requests over the web, the user can mark his info as confidential</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="169" Column="Description">Can enter confidential information</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-10-27 23:45:29.558</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">676</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102477</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">100261</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102477" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">6a9f064b-38c0-4c33-b809-afc727dff988</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-10-27 23:45:30.561</Data>
+        <Data AD_Column_ID="286" Column="Name">Confidential Info</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="288" Column="Help">When entering/updating Requests over the web, the user can mark his info as confidential</Data>
+        <Data AD_Column_ID="287" Column="Description">Can enter confidential information</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-10-27 23:45:30.561</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102477</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="62094" Table="AD_Element">
+        <Data AD_Column_ID="84316" Column="UUID">9cc32d14-9795-4d27-bc7a-fdfaf85b77f9</Data>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2600" Column="Updated">2022-10-27 23:47:47.22</Data>
+        <Data AD_Column_ID="4299" Column="PrintName">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2603" Column="Name">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58589" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="2604" Column="Description">Currency amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2598" Column="Created">2022-10-27 23:47:47.22</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">WriteOffAmtCurrency_ID</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID">112</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">18</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">62094</Data>
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="62094" Table="AD_Element_Trl">
+        <Data AD_Column_ID="84317" Column="UUID">645f411a-91d8-4096-9ea4-b1ea38a468d6</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2022-10-27 23:47:48.215</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2647" Column="Description">Currency amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2642" Column="Created">2022-10-27 23:47:48.215</Data>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">62094</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="62094" Table="AD_Element_Trl">
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Currency for write-off per Document">Moneda para Monto de Ajuste</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Currency for write-off per Document">Moneda para Monto de Ajuste</Data>
+        <Data AD_Column_ID="2647" Column="Description" oldValue="Currency amount to be written off in invoice currency">Moneda para Monto de Ajuste de documentos</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="62094">62094</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="100262" Table="AD_Column">
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">4667a015-80ff-490f-a9f3-a1212c38500e</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="551" Column="Updated">2022-10-27 23:48:49.733</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="112" Column="Description">Currency amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">-1</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="549" Column="Created">2022-10-27 23:48:49.732</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">WriteOffAmtCurrency_ID</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">748</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">112</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">18</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">62094</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">100262</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="100262" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID">a49d28ab-2d89-4d0a-a0d9-dd0d36ea1866</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2022-10-27 23:48:50.686</Data>
+        <Data AD_Column_ID="12957" Column="Name">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12960" Column="Created">2022-10-27 23:48:50.686</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">100262</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102478" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">accc3741-a82a-40f6-8389-1774f1d30479</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="581" Column="Updated">2022-10-27 23:49:01.759</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">660</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">660</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="168" Column="Name">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="169" Column="Description">Currency amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-10-27 23:49:01.758</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">676</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102478</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">100262</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102478" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">0db50be6-cab5-42fb-a63a-a7215675289e</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-10-27 23:49:02.931</Data>
+        <Data AD_Column_ID="286" Column="Name">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="287" Column="Description">Currency amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-10-27 23:49:02.931</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102478</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="100263" Table="AD_Column">
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">61cb34aa-c6a4-4301-9c1d-25457e948672</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="551" Column="Updated">2022-10-27 23:49:29.442</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">true</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="112" Column="Description">Currency amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">-1</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="549" Column="Created">2022-10-27 23:49:29.442</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">WriteOffAmtCurrency_ID</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">54872</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">112</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">18</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">62094</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">100263</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="100263" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID">e38c9fa0-5595-4ced-bd6b-f349280321e0</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2022-10-27 23:49:30.422</Data>
+        <Data AD_Column_ID="12957" Column="Name">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12960" Column="Created">2022-10-27 23:49:30.422</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">100263</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102479" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">3758c551-fe3f-481b-9cbd-93ce72a778d6</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="581" Column="Updated">2022-10-27 23:49:40.688</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">280</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">280</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="168" Column="Name">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="169" Column="Description">Currency amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-10-27 23:49:40.688</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55130</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102479</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">100263</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102479" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">2600fe1d-5d5f-4bfa-9702-e48cbe894f91</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-10-27 23:49:41.543</Data>
+        <Data AD_Column_ID="286" Column="Name">Currency for write-off per Document</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="287" Column="Description">Currency amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-10-27 23:49:41.543</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102479</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="62095" Table="AD_Element">
+        <Data AD_Column_ID="84316" Column="UUID">40c1d214-b825-412e-b62c-ecbf4bf01365</Data>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2600" Column="Updated">2022-10-27 23:51:36.886</Data>
+        <Data AD_Column_ID="4299" Column="PrintName">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2603" Column="Name">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58589" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="2604" Column="Description">Tolerance amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2598" Column="Created">2022-10-27 23:51:36.886</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">WriteOffPercentageTolerance</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">12</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">62095</Data>
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="62095" Table="AD_Element_Trl">
+        <Data AD_Column_ID="84317" Column="UUID">94e8fe1d-8c4b-4414-be49-263b16b7c5c2</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2022-10-27 23:51:37.833</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2647" Column="Description">Tolerance amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2642" Column="Created">2022-10-27 23:51:37.833</Data>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">62095</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="62095" Table="AD_Element_Trl">
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Tolerance for write-off %">% de Tolerancia para Ajuste</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Tolerance for write-off %">% de Tolerancia para Ajuste</Data>
+        <Data AD_Column_ID="2647" Column="Description" oldValue="Tolerance amount to be written off in invoice currency">% de Tolerancia para Ajuste de Documentos</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="62095">62095</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="100264" Table="AD_Column">
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">e97ea467-c228-4e8a-a4d8-9aa0a2de0e79</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="551" Column="Updated">2022-10-27 23:52:33.815</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="112" Column="Description">Tolerance amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">0</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="549" Column="Created">2022-10-27 23:52:33.815</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">WriteOffPercentageTolerance</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">54872</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">12</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">62095</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">100264</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="100264" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID">9c0319c0-7df5-4928-8c80-7506cae705f2</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2022-10-27 23:52:34.813</Data>
+        <Data AD_Column_ID="12957" Column="Name">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12960" Column="Created">2022-10-27 23:52:34.813</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">100264</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102480" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">36d594f7-b210-4eaa-92a2-81a9d9eaf218</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="581" Column="Updated">2022-10-27 23:52:40.487</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">290</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">290</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="168" Column="Name">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="169" Column="Description">Tolerance amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-10-27 23:52:40.487</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55130</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102480</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">100264</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102480" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">432a7548-92af-4a4e-a365-dc85c5da1381</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-10-27 23:52:41.599</Data>
+        <Data AD_Column_ID="286" Column="Name">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="287" Column="Description">Tolerance amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-10-27 23:52:41.599</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102480</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="100265" Table="AD_Column">
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">cdd0d25b-a8f3-4488-a6d2-2d2ae68bfe1e</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="551" Column="Updated">2022-10-27 23:52:52.22</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="112" Column="Description">Tolerance amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">0</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="549" Column="Created">2022-10-27 23:52:52.219</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">WriteOffPercentageTolerance</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">748</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">12</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">62095</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">100265</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="100265" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID">283add33-42d2-4450-870b-8ff039805d43</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2022-10-27 23:52:53.016</Data>
+        <Data AD_Column_ID="12957" Column="Name">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12960" Column="Created">2022-10-27 23:52:53.016</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">100265</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="250" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102481" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">2beabf07-bbe2-41b6-b55e-b05b78540f8c</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="581" Column="Updated">2022-10-27 23:53:00.88</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">670</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">670</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="168" Column="Name">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="169" Column="Description">Tolerance amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-10-27 23:53:00.88</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">676</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102481</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">100265</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="260" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102481" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">391286a8-ad91-485b-b0d2-6ab829f0f060</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-10-27 23:53:01.617</Data>
+        <Data AD_Column_ID="286" Column="Name">Tolerance for write-off %</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="287" Column="Description">Tolerance amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-10-27 23:53:01.617</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102481</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="270" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="62096" Table="AD_Element">
+        <Data AD_Column_ID="84316" Column="UUID">28ad2301-318b-4a46-baab-90361d3f9837</Data>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2600" Column="Updated">2022-10-27 23:54:20.009</Data>
+        <Data AD_Column_ID="4299" Column="PrintName">Allows Modify Customer</Data>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2603" Column="Name">Allows Modify Customer</Data>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2605" Column="Help">Allows modify a customer based on POS definition</Data>
+        <Data AD_Column_ID="58589" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="2604" Column="Description">Allows Modify Customer from POS</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2598" Column="Created">2022-10-27 23:54:20.009</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">IsAllowsModifyCustomer</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">62096</Data>
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="280" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="62096" Table="AD_Element_Trl">
+        <Data AD_Column_ID="84317" Column="UUID">f0be81c8-9807-4a25-8d1e-db2ea3e4563b</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2022-10-27 23:54:20.868</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Allows Modify Customer</Data>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">Allows Modify Customer</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2648" Column="Help">Allows modify a customer based on POS definition</Data>
+        <Data AD_Column_ID="2647" Column="Description">Allows Modify Customer from POS</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2642" Column="Created">2022-10-27 23:54:20.868</Data>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">62096</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="290" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="62096" Table="AD_Element_Trl">
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Allows Modify Customer">Permitir Modificar Cliente</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Allows Modify Customer">Permitir Modificar Cliente</Data>
+        <Data AD_Column_ID="2648" Column="Help" oldValue="Allows modify a customer based on POS definition">Permite modificar los datos del cliente en el Terminal PDV</Data>
+        <Data AD_Column_ID="2647" Column="Description" oldValue="Allows Modify Customer from POS">Permitir Modificar Cliente desde el Terminal PDV</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="62096">62096</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="300" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="100266" Table="AD_Column">
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">7fea8967-184e-4299-a31e-46563987bf5c</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="551" Column="Updated">2022-10-27 23:55:20.555</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Allows Modify Customer</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help">Allows modify a customer based on POS definition</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="112" Column="Description">Allows Modify Customer from POS</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">Y</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="549" Column="Created">2022-10-27 23:55:20.555</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">IsAllowsModifyCustomer</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">748</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">62096</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">100266</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="310" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="100266" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID">ffa59346-1631-4926-8918-8fd02b7b462f</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2022-10-27 23:55:21.827</Data>
+        <Data AD_Column_ID="12957" Column="Name">Allows Modify Customer</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12960" Column="Created">2022-10-27 23:55:21.827</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">100266</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="320" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102482" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">8972acca-09c4-4d85-ac39-61209383190a</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="581" Column="Updated">2022-10-27 23:55:28.61</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">680</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">680</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="168" Column="Name">Allows Modify Customer</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help">Allows modify a customer based on POS definition</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="169" Column="Description">Allows Modify Customer from POS</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-10-27 23:55:28.61</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">676</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102482</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">100266</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="330" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102482" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">157ee4ff-b2dc-45ce-846d-646fb6aef708</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-10-27 23:55:29.615</Data>
+        <Data AD_Column_ID="286" Column="Name">Allows Modify Customer</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="288" Column="Help">Allows modify a customer based on POS definition</Data>
+        <Data AD_Column_ID="287" Column="Description">Allows Modify Customer from POS</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-10-27 23:55:29.615</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102482</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="340" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="100267" Table="AD_Column">
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">5a487526-99f2-49b9-a3f8-7413a1516f2c</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="551" Column="Updated">2022-10-27 23:55:44.14</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Allows Modify Customer</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help">Allows modify a customer based on POS definition</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="112" Column="Description">Allows Modify Customer from POS</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">Y</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="549" Column="Created">2022-10-27 23:55:44.14</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">IsAllowsModifyCustomer</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">54872</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">62096</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">100267</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="350" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="100267" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID">09979c4b-47d2-43ff-832f-e48ef28e6bde</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2022-10-27 23:55:45.162</Data>
+        <Data AD_Column_ID="12957" Column="Name">Allows Modify Customer</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12960" Column="Created">2022-10-27 23:55:45.161</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">100267</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="360" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102483" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">059eb7b1-f3b3-4fc3-bb23-694d6344f74b</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="581" Column="Updated">2022-10-27 23:55:52.728</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">300</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">300</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="168" Column="Name">Allows Modify Customer</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help">Allows modify a customer based on POS definition</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="169" Column="Description">Allows Modify Customer from POS</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-10-27 23:55:52.728</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55130</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102483</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">100267</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="370" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102483" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">e7c45e1c-50cc-4178-a1b9-88a699ec1bf7</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-10-27 23:55:53.903</Data>
+        <Data AD_Column_ID="286" Column="Name">Allows Modify Customer</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="288" Column="Help">Allows modify a customer based on POS definition</Data>
+        <Data AD_Column_ID="287" Column="Description">Allows Modify Customer from POS</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-10-27 23:55:53.903</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102483</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="380" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53752" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.ModifyCustomerNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">71b3a717-19cd-4ddf-9a0f-71408c17a3b1</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-10-28 00:20:43.952</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Modify Customer not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-10-28 00:20:43.952</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53752</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="390" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">443f1c95-6805-4382-8908-c1e140f1c195</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-10-28 00:20:45.022</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Modify Customer not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-10-28 00:20:45.022</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53752</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="400" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Modify Customer not allowed for user">No está permitido "Modificar Cliente" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53752">53752</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

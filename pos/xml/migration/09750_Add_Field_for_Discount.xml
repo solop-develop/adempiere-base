@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Add Field for Discount" ReleaseNo="1.0" SeqNo="9750">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53722" Table="AD_Message">
+        <Data AD_Column_ID="84346" Column="UUID">e0e7c538-e796-46c0-8d20-d0e7c8bf0556</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53722</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="6766" Column="Value">POS.MaximumDiscountAllowedExceeded</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-03-14 19:22:27.931</Data>
+        <Data AD_Column_ID="198" Column="MsgText">Maximum Discount Allowed Exceeded</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-03-14 19:22:27.931</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">c886e142-72f8-4b9d-b324-63a39e34dc84</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53722</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Maximum Discount Allowed Exceeded</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-03-14 19:22:29.299</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-03-14 19:22:29.299</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53722">53722</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Maximum Discount Allowed Exceeded">Descuento Máximo Permitido Excedido</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102075" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">aed30268-9289-4197-a7d4-7cc0e44afae4</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">676</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">570</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">99850</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="181" Column="SeqNo">570</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102075</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help">Allows apply discount for this POS</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="169" Column="Description">Allows Apply Discount for this POS Terminal</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2022-03-14 19:26:14.956</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-03-14 19:26:14.956</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Allows Apply Discount</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102075" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">0b9851b9-4fc4-47ff-8902-bbc500dfeedc</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102075</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="288" Column="Help">Allows apply discount for this POS</Data>
+        <Data AD_Column_ID="286" Column="Name">Allows Apply Discount</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="287" Column="Description">Allows Apply Discount for this POS Terminal</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-03-14 19:26:15.945</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-03-14 19:26:15.945</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102076" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">c09d80a7-c004-4b4c-9f97-9b1b6f4c40b0</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102076</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="288" Column="Help">The Discount indicates the discount applied or taken as a percentage.</Data>
+        <Data AD_Column_ID="286" Column="Name">Maximum Discount %</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="287" Column="Description">Discount in percent</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-03-14 19:26:25.883</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-03-14 19:26:25.883</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102077" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">95b30681-05e8-4996-8fc7-a12e5c3a9b34</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55130</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">1</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">99851</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="181" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102077</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help">Allows apply discount for this POS</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="169" Column="Description">Allows Apply Discount for this POS Terminal</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2022-03-14 19:26:55.029</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-03-14 19:26:55.029</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Allows Apply Discount</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102077" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">66b9c01b-3a54-4de8-8095-be8b6a8256e8</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102077</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="288" Column="Help">Allows apply discount for this POS</Data>
+        <Data AD_Column_ID="286" Column="Name">Allows Apply Discount</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="287" Column="Description">Allows Apply Discount for this POS Terminal</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-03-14 19:26:55.842</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-03-14 19:26:55.842</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102078" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">bb0d00fc-0ba8-457d-8306-8a8716bd1728</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55130</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">99852</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="181" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102078</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help">If this field is zero then not have a maxumumdaily refund</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="169" Column="Description">Set the maximum daily refund allowed for this tender type using the POS currency</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2022-03-14 19:26:55.948</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-03-14 19:26:55.948</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Maximum Daily Refund Allowed</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102078" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">dee7a3d1-7f87-40ab-b078-595f61d815a9</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102078</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="288" Column="Help">If this field is zero then not have a maxumumdaily refund</Data>
+        <Data AD_Column_ID="286" Column="Name">Maximum Daily Refund Allowed</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="287" Column="Description">Set the maximum daily refund allowed for this tender type using the POS currency</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-03-14 19:26:57.152</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-03-14 19:26:57.152</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102079" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">91e4718a-2b95-476c-8f0c-b9bb7528becd</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55130</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">99853</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="181" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102079</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help">The Discount indicates the discount applied or taken as a percentage.</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="169" Column="Description">Discount in percent</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2022-03-14 19:26:57.355</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-03-14 19:26:57.355</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Maximum Discount %</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102079" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">5324bb02-277f-49f0-a4cb-2e891f5ff20d</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102079</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="288" Column="Help">The Discount indicates the discount applied or taken as a percentage.</Data>
+        <Data AD_Column_ID="286" Column="Name">Maximum Discount %</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="287" Column="Description">Discount in percent</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-03-14 19:26:58.084</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-03-14 19:26:58.084</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102080" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">ddd54bf7-8853-4a15-8f3c-115ead2dd026</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55130</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">99854</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="181" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102080</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help">If this field is zero then not have a maxumum refund</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="169" Column="Description">Set the maximum refund allowed for this tender type using the POS currency</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2022-03-14 19:26:58.184</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-03-14 19:26:58.184</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Maximum Refund Allowed</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102080" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">4e40e993-ce44-4c51-9067-12266c799037</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102080</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="288" Column="Help">If this field is zero then not have a maxumum refund</Data>
+        <Data AD_Column_ID="286" Column="Name">Maximum Refund Allowed</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="287" Column="Description">Set the maximum refund allowed for this tender type using the POS currency</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-03-14 19:26:58.834</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-03-14 19:26:58.834</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102081" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">709688b5-ff75-424e-b4ff-f2fcebfe74dc</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55130</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">99855</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="181" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102081</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="169" Column="Description">Tolerance amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2022-03-14 19:26:58.934</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-03-14 19:26:58.934</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Tolerance for write-off per Document</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102081" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">bd7a3574-62c7-446f-ab0d-4d8ce073b478</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102081</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="286" Column="Name">Tolerance for write-off per Document</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="287" Column="Description">Tolerance amount to be written off in invoice currency</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-03-14 19:27:00.281</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-03-14 19:27:00.281</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

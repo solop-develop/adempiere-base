@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Add report View for Qr Code" ReleaseNo="1.0" SeqNo="7070">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="361" Action="I" Record_ID="53336" Table="AD_ReportView">
+        <Data AD_Column_ID="4388" Column="Created">2020-11-25 13:01:58.843</Data>
+        <Data AD_Column_ID="85531" Column="Classname" isNewNull="true"/>
+        <Data AD_Column_ID="4387" Column="IsActive">true</Data>
+        <Data AD_Column_ID="4390" Column="Updated">2020-11-25 13:01:58.843</Data>
+        <Data AD_Column_ID="4384" Column="AD_ReportView_ID">53336</Data>
+        <Data AD_Column_ID="4395" Column="WhereClause">M_Product.DescriptionURL IS NOT NULL AND LENGTH(M_Product.DescriptionURL) &gt; 5</Data>
+        <Data AD_Column_ID="4396" Column="OrderByClause" isNewNull="true"/>
+        <Data AD_Column_ID="4393" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="4392" Column="Name">M_Product (Qr Code)</Data>
+        <Data AD_Column_ID="78517" Column="PrintName">Qr Code</Data>
+        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="4385" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="10032" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="4386" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="4389" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4391" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="4394" Column="AD_Table_ID">208</Data>
+        <Data AD_Column_ID="84405" Column="UUID">f8fd48a3-c15d-4ef3-9e19-baf64bc07402</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="54060" Action="I" Record_ID="0" Table="AD_ReportView_Trl">
+        <Data AD_Column_ID="78520" Column="IsActive">true</Data>
+        <Data AD_Column_ID="78524" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="78526" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="78525" Column="AD_ReportView_ID">53336</Data>
+        <Data AD_Column_ID="84407" Column="UUID">b5365ac3-62c1-4b88-bac6-94901964d8db</Data>
+        <Data AD_Column_ID="78521" Column="Created">2020-11-25 13:01:59.674</Data>
+        <Data AD_Column_ID="78522" Column="Updated">2020-11-25 13:01:59.674</Data>
+        <Data AD_Column_ID="78527" Column="PrintName">Qr Code</Data>
+        <Data AD_Column_ID="78528" Column="Name">M_Product (Qr Code)</Data>
+        <Data AD_Column_ID="78529" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="78534" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="78518" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="78519" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="78523" Column="CreatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="361" Action="U" Record_ID="53336" Table="AD_ReportView">
+        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="54060" Action="U" Record_ID="0" Table="AD_ReportView_Trl">
+        <Data AD_Column_ID="78527" Column="PrintName" oldValue="Qr Code">Código Qr</Data>
+        <Data AD_Column_ID="78526" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="78525" Column="AD_ReportView_ID" oldValue="53336">53336</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Change display order for verify payment browser" ReleaseNo="1.0" SeqNo="9360">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="72862" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="70">0</Data>
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="72828" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="110">0</Data>
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="72805" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="80">70</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="72866" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="0">80</Data>
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="53232" Action="I" Record_ID="72689" Table="AD_View_Column">
+        <Data AD_Column_ID="84462" Column="UUID">ae33d578-2315-4c6b-95b0-6beadb6f7a77</Data>
+        <Data AD_Column_ID="58099" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="58097" Column="Updated">2021-11-10 18:33:04.857</Data>
+        <Data AD_Column_ID="58105" Column="Name">Store Payment Method</Data>
+        <Data AD_Column_ID="58095" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58104" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58103" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="58102" Column="Description">Payment Methods allowed for Store</Data>
+        <Data AD_Column_ID="58098" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58096" Column="Created">2021-11-10 18:33:04.857</Data>
+        <Data AD_Column_ID="58106" Column="ColumnSQL">p.C_PaymentMethod_ID</Data>
+        <Data AD_Column_ID="58107" Column="ColumnName">P_C_PaymentMethod_ID</Data>
+        <Data AD_Column_ID="58108" Column="AD_View_ID">50215</Data>
+        <Data AD_Column_ID="58101" Column="AD_View_Definition_ID">50569</Data>
+        <Data AD_Column_ID="58100" Column="AD_View_Column_ID">72689</Data>
+        <Data AD_Column_ID="58094" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58109" Column="AD_Column_ID">99059</Data>
+        <Data AD_Column_ID="58093" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="53228" Action="I" Record_ID="0" Table="AD_View_Column_Trl">
+        <Data AD_Column_ID="84463" Column="UUID">f072027c-52fa-407b-933f-ea6b2697cbdd</Data>
+        <Data AD_Column_ID="58046" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="58044" Column="Updated">2021-11-10 18:33:06.028</Data>
+        <Data AD_Column_ID="58052" Column="Name">Store Payment Method</Data>
+        <Data AD_Column_ID="58051" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58042" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58050" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58049" Column="Description">Payment Methods allowed for Store</Data>
+        <Data AD_Column_ID="58045" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58043" Column="Created">2021-11-10 18:33:06.028</Data>
+        <Data AD_Column_ID="58047" Column="AD_View_Column_ID">72689</Data>
+        <Data AD_Column_ID="58041" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58048" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58040" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="53223" Action="I" Record_ID="72905" Table="AD_Browse_Field">
+        <Data AD_Column_ID="64359" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="64361" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="64360" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84296" Column="UUID">727a95eb-3a85-4a3e-aab4-72cd274e877b</Data>
+        <Data AD_Column_ID="57967" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="57965" Column="Updated">2021-11-10 18:33:35.578</Data>
+        <Data AD_Column_ID="64221" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="78559" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo">10</Data>
+        <Data AD_Column_ID="64358" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="57981" Column="Name">Store Payment Method</Data>
+        <Data AD_Column_ID="63579" Column="IsReadOnly">true</Data>
+        <Data AD_Column_ID="57980" Column="IsRange">false</Data>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria">false</Data>
+        <Data AD_Column_ID="64222" Column="IsOrderBy">false</Data>
+        <Data AD_Column_ID="57985" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="57978" Column="IsKey">false</Data>
+        <Data AD_Column_ID="81229" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="57977" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="57976" Column="IsDisplayed">false</Data>
+        <Data AD_Column_ID="57975" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="57963" Column="IsActive">true</Data>
+        <Data AD_Column_ID="64853" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57974" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="64357" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="57973" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="64356" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="57972" Column="Description">Payment Methods allowed for Store</Data>
+        <Data AD_Column_ID="64355" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="64354" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="57966" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="57964" Column="Created">2021-11-10 18:33:35.578</Data>
+        <Data AD_Column_ID="67114" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="63219" Column="Axis_Parent_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="63218" Column="Axis_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="57971" Column="AD_View_Column_ID">72689</Data>
+        <Data AD_Column_ID="64353" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="57984" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="57970" Column="AD_Reference_ID">19</Data>
+        <Data AD_Column_ID="57962" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="57969" Column="AD_Element_ID">61500</Data>
+        <Data AD_Column_ID="57961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="57983" Column="AD_Browse_ID">50263</Data>
+        <Data AD_Column_ID="57968" Column="AD_Browse_Field_ID">72905</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="53227" Action="I" Record_ID="72905" Table="AD_Browse_Field_Trl">
+        <Data AD_Column_ID="84297" Column="UUID">09592275-cad2-4ae2-a717-55b7f9ff0378</Data>
+        <Data AD_Column_ID="58033" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="58031" Column="Updated">2021-11-10 18:33:36.881</Data>
+        <Data AD_Column_ID="58039" Column="Name">Store Payment Method</Data>
+        <Data AD_Column_ID="58038" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58029" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58037" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58036" Column="Description">Payment Methods allowed for Store</Data>
+        <Data AD_Column_ID="58032" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58030" Column="Created">2021-11-10 18:33:36.881</Data>
+        <Data AD_Column_ID="58028" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58035" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58027" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58034" Column="AD_Browse_Field_ID">72905</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="72905" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="10">80</Data>
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="72866" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="80">90</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="72777" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="90">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="72778" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="100">110</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="ECA14 Delete Wrong IDs" ReleaseNo="3.9.4" SeqNo="9745">
+    <Step DBType="ALL" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>DELETE FROM AD_Field WHERE AD_Column_ID IN(99850, 99851, 99852, 99853, 99854, 99855)</SQLStatement>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,79 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+	// Local
+	api project(path: ':base')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java/base']
+		}
+	}
+}
+
+def entityType = 'WHH'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "Withholding",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId publishGroupId
+            artifactId 'withholding-engine'
+            version publishVersion
+           	from components.java
+           	pom {
+                name = 'Withholding Engine'
+                description = 'Withholding Engine for ADempiere manage'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}

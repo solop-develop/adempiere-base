@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="ECA14 Update Reports Reference" ReleaseNo="3.9.4" SeqNo="9780">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54543" Table="AD_Process">
+        <Data AD_Column_ID="50182" Column="JasperReport" oldValue="attachment:inf_POS_Sales_Detail_And_Collection.jasper">http://viewer.report/ECA14/inf_POS_Sales_Detail_And_Collection.jasper</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54551" Table="AD_Process">
+        <Data AD_Column_ID="50182" Column="JasperReport" oldValue="attachment:inf_POS_Sales_Detail_And_Refund_Op.jasper">http://viewer.report/ECA14/inf_POS_Sales_Detail_And_Refund_Op.jasper</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54467" Table="AD_Process">
+        <Data AD_Column_ID="50182" Column="JasperReport" oldValue="attachment:inf_ProductLabel.jasper">http://viewer.report/ECA14/inf_ProductLabel.jasper</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54472" Table="AD_Process">
+        <Data AD_Column_ID="50182" Column="JasperReport" oldValue="attachment:inf_ProductLabel_Barcode.jasper">http://viewer.report/ECA14/inf_ProductLabel_Barcode.jasper</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54471" Table="AD_Process">
+        <Data AD_Column_ID="50182" Column="JasperReport" oldValue="attachment:inf_ProductLabel_Little.jasper">http://viewer.report/ECA14/inf_ProductLabel_Little.jasper</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54550" Table="AD_Process">
+        <Data AD_Column_ID="50182" Column="JasperReport" oldValue="attachment:inf_Product_Catalog.jasper">http://viewer.report/ECA14/inf_Product_Catalog.jasper</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54553" Table="AD_Process">
+        <Data AD_Column_ID="50182" Column="JasperReport" oldValue="attachment:inf_Product_Catalog_Order.jasper">http://viewer.report/ECA14/inf_Product_Catalog_Order.jasper</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54554" Table="AD_Process">
+        <Data AD_Column_ID="50182" Column="JasperReport" oldValue="attachment:inf_Product_Catalog_Order.jasper">http://viewer.report/ECA14/inf_Product_Catalog_Order.jasper</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54572" Table="AD_Process">
+        <Data AD_Column_ID="50182" Column="JasperReport" oldValue="attachment:inf_WithdrawalReceipt.jasper">http://viewer.report/ECA14/inf_WithdrawalReceipt.jasper</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54451" Table="AD_Process">
+        <Data AD_Column_ID="50182" Column="JasperReport" oldValue="attachment:rpt_VendorProductPriceList.jasper">http://viewer.report/ECA14/rpt_VendorProductPriceList.jasper</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

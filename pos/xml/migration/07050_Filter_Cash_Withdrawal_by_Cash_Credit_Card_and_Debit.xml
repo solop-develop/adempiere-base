@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Filter Cash Withdrawal by Cash Credit Card and Debit" ReleaseNo="1.0" SeqNo="7050">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50056" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="tt.AD_Reference_ID = 214">tt.AD_Reference_ID = 214
+AND tt.Value IN('D', 'C', 'X')</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

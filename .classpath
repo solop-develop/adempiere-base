@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="authentication/src/main/java/base"/>
+	<classpathentry kind="src" path="withholding_engine/src/main/java/base"/>
+	<classpathentry kind="src" path="jwt/src/main/java/base"/>
+	<classpathentry kind="src" path="kafka/src/main/java/base"/>
+	<classpathentry kind="src" path="pos/src/main/java/base"/>
+	<classpathentry kind="src" path="dashboard/src/main/java/base"/>
+	<classpathentry kind="src" path="processors/src/main/java/base"/>
+	<classpathentry kind="src" path="base/src"/>
+	<classpathentry kind="src" path="cashflow/src/main/java"/>
+	<classpathentry kind="src" path="crm/src/main/java"/>
+	<classpathentry kind="src" path="discord/src/main/java/base"/>
+	<classpathentry kind="src" path="distribution/src/main/java/base"/>
+	<classpathentry kind="src" path="finance_management/src/main/java/base"/>
+	<classpathentry kind="src" path="fixed_asset/src/main/java/base"/>
+	<classpathentry kind="src" path="freight/src/main/java/base"/>
+	<classpathentry kind="src" path="hr_and_payroll/src/main/java/base"/>
+	<classpathentry kind="src" path="hr_time_and_attendance/src/main/java/base"/>
+	<classpathentry kind="src" path="jasper_reports/src"/>
+	<classpathentry kind="src" path="manufacturing/src/main/java/base"/>
+	<classpathentry kind="src" path="production/src/main/java/base"/>
+	<classpathentry kind="src" path="project/src/main/java"/>
+	<classpathentry kind="src" path="request/src/main/java"/>
+	<classpathentry kind="src" path="store/src/main/java"/>
+	<classpathentry kind="src" path="telegram/src/main/java/base"/>
+	<classpathentry kind="src" path="warehouse/src/main/java/base"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

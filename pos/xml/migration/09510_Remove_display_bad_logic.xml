@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Remove display bad logic" ReleaseNo="1.0" SeqNo="9510">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="106" Action="U" Record_ID="55130" Table="AD_Tab">
+        <Data AD_Column_ID="13450" Column="DisplayLogic" isNewNull="true" oldValue="@IsAllowsAllocateSeller@='Y'"/>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

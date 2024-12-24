@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Add PriceList by Vendor Process" ReleaseNo="1.0" SeqNo="6500">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="284" Action="I" Record_ID="54451" Table="AD_Process">
+        <Data AD_Column_ID="4023" Column="Value">rpt_VendorProductPriceList</Data>
+        <Data AD_Column_ID="4374" Column="AD_ReportView_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84383" Column="UUID">688692df-6068-46dd-81b4-58f26225846a</Data>
+        <Data AD_Column_ID="4656" Column="Classname" isNewNull="true"/>
+        <Data AD_Column_ID="2811" Column="Help">You can see all product and prices</Data>
+        <Data AD_Column_ID="12458" Column="IsBetaFunctionality">false</Data>
+        <Data AD_Column_ID="3371" Column="IsReport">true</Data>
+        <Data AD_Column_ID="6653" Column="Statistic_Seconds">0</Data>
+        <Data AD_Column_ID="6652" Column="Statistic_Count">0</Data>
+        <Data AD_Column_ID="50181" Column="ShowHelp">Y</Data>
+        <Data AD_Column_ID="2808" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2806" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2801" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="2802" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2803" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="11834" Column="AD_Workflow_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2813" Column="ProcedureName" isNewNull="true"/>
+        <Data AD_Column_ID="63488" Column="AD_Browse_ID" isNewNull="true"/>
+        <Data AD_Column_ID="6485" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="50182" Column="JasperReport">attachment:rpt_VendorProductPriceList.jasper</Data>
+        <Data AD_Column_ID="2805" Column="Created">2020-10-20 14:12:14.016</Data>
+        <Data AD_Column_ID="2807" Column="Updated">2020-10-20 14:12:14.016</Data>
+        <Data AD_Column_ID="2809" Column="Name">Product Price List by Vendor</Data>
+        <Data AD_Column_ID="2810" Column="Description">Product Price List Report by Vendor</Data>
+        <Data AD_Column_ID="4214" Column="IsDirectPrint">false</Data>
+        <Data AD_Column_ID="57920" Column="CopyFromProcess">N</Data>
+        <Data AD_Column_ID="2804" Column="IsActive">true</Data>
+        <Data AD_Column_ID="11563" Column="WorkflowValue" isNewNull="true"/>
+        <Data AD_Column_ID="56515" Column="AD_Form_ID" isNewNull="true"/>
+        <Data AD_Column_ID="5790" Column="AccessLevel">3</Data>
+        <Data AD_Column_ID="14084" Column="IsServerProcess">false</Data>
+        <Data AD_Column_ID="78843" Column="GenerateClass">N</Data>
+        <Data AD_Column_ID="7752" Column="AD_PrintFormat_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="287" Action="I" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="2847" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2850" Column="Updated">2020-10-20 14:12:21.695</Data>
+        <Data AD_Column_ID="2848" Column="Created">2020-10-20 14:12:21.695</Data>
+        <Data AD_Column_ID="2853" Column="Description">Reporte de Lista de Precios por Proveedor</Data>
+        <Data AD_Column_ID="2854" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2855" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2852" Column="Name">Lista de Precios por Proveedor</Data>
+        <Data AD_Column_ID="2846" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2845" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2851" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="2849" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="84387" Column="UUID">c51aed44-7a62-4229-b1c6-6ba4325a60ae</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="57843" Table="AD_Process_Para">
+        <Data AD_Column_ID="2820" Column="Updated">2020-10-20 14:12:28.699</Data>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">19</Data>
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2826" Column="SeqNo">10</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">449</Data>
+        <Data AD_Column_ID="84385" Column="UUID">42eddd3e-52d8-490a-9f12-4ce493681f9b</Data>
+        <Data AD_Column_ID="2822" Column="Name">Price List</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2818" Column="Created">2020-10-20 14:12:28.699</Data>
+        <Data AD_Column_ID="3738" Column="IsMandatory">true</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="4017" Column="ColumnName">M_PriceList_ID</Data>
+        <Data AD_Column_ID="2823" Column="Description">Unique identifier of a Price List</Data>
+        <Data AD_Column_ID="2824" Column="Help">Price Lists are used to determine the pricing, margin and cost of items purchased or sold.</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue">-1</Data>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">57843</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">22</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="57843" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2836" Column="Created">2020-10-20 14:12:31.906</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2020-10-20 14:12:31.906</Data>
+        <Data AD_Column_ID="2840" Column="Name">Price List</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">Unique identifier of a Price List</Data>
+        <Data AD_Column_ID="3743" Column="Help">Price Lists are used to determine the pricing, margin and cost of items purchased or sold.</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">57843</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">f98d19b2-33bc-4f38-a157-28e72cdfd44f</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="57844" Table="AD_Process_Para">
+        <Data AD_Column_ID="2820" Column="Updated">2020-10-20 14:12:33.644</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2818" Column="Created">2020-10-20 14:12:33.644</Data>
+        <Data AD_Column_ID="3738" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="4017" Column="ColumnName">C_BPartner_ID</Data>
+        <Data AD_Column_ID="2823" Column="Description">Identifies a Business Partner</Data>
+        <Data AD_Column_ID="2824" Column="Help">A Business Partner is anyone with whom you transact.  This can include Vendor, Customer, Employee or Salesperson</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">57844</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">30</Data>
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2826" Column="SeqNo">20</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID">223</Data>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">187</Data>
+        <Data AD_Column_ID="84385" Column="UUID">a3c8a79c-6c77-4924-a607-78f79bdacf2c</Data>
+        <Data AD_Column_ID="2822" Column="Name">Business Partner </Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="57844" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2836" Column="Created">2020-10-20 14:12:38.348</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2020-10-20 14:12:38.348</Data>
+        <Data AD_Column_ID="2840" Column="Name">Business Partner </Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">Identifies a Business Partner</Data>
+        <Data AD_Column_ID="3743" Column="Help">A Business Partner is anyone with whom you transact.  This can include Vendor, Customer, Employee or Salesperson</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">57844</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">2eb165cb-cbee-49b0-b86e-ad81904bad83</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="132" Action="I" Record_ID="0" Table="AD_Window_Trl">
+        <Data AD_Column_ID="699" Column="Updated">2020-10-20 14:12:40.311</Data>
+        <Data AD_Column_ID="308" Column="Description">Mantener categorías de producto</Data>
+        <Data AD_Column_ID="697" Column="Created">2020-10-20 14:12:40.311</Data>
+        <Data AD_Column_ID="696" Column="IsActive">true</Data>
+        <Data AD_Column_ID="307" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="309" Column="Help">La categoría de producto permite definir diferentes grupos de productos. Estos grupos pueden ser usados para generar listas de precios, definir margenes, y asignar de manera fácil los diferentes parámetros contables a los productos.</Data>
+        <Data AD_Column_ID="310" Column="Name">Categoría de Producto</Data>
+        <Data AD_Column_ID="311" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="1211" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1212" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="698" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="700" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="306" Column="AD_Window_ID">144</Data>
+        <Data AD_Column_ID="84480" Column="UUID">42161d4c-6305-437d-b96c-92725ab523e5</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="57845" Table="AD_Process_Para">
+        <Data AD_Column_ID="2820" Column="Updated">2020-10-20 14:12:47.483</Data>
+        <Data AD_Column_ID="2822" Column="Name">Product Category</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2818" Column="Created">2020-10-20 14:12:47.483</Data>
+        <Data AD_Column_ID="3738" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="4017" Column="ColumnName">M_Product_Category_ID</Data>
+        <Data AD_Column_ID="2823" Column="Description">Category of a Product</Data>
+        <Data AD_Column_ID="2824" Column="Help">Identifies the category which this product belongs to.  Product categories are used for pricing and selection.</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue">-1</Data>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">57845</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">19</Data>
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2826" Column="SeqNo">30</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID">163</Data>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">453</Data>
+        <Data AD_Column_ID="84385" Column="UUID">011e94b8-1223-446e-826d-7e37a7133b42</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="57845" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2836" Column="Created">2020-10-20 14:12:51.191</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2020-10-20 14:12:51.191</Data>
+        <Data AD_Column_ID="2840" Column="Name">Product Category</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">Category of a Product</Data>
+        <Data AD_Column_ID="3743" Column="Help">Identifies the category which this product belongs to.  Product categories are used for pricing and selection.</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">57845</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">d5d9f153-599a-48d1-bb7d-3f4400c36d62</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="57846" Table="AD_Process_Para">
+        <Data AD_Column_ID="3738" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="2820" Column="Updated">2020-10-20 14:12:53.54</Data>
+        <Data AD_Column_ID="2822" Column="Name">Product</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2818" Column="Created">2020-10-20 14:12:53.54</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="4017" Column="ColumnName">M_Product_ID</Data>
+        <Data AD_Column_ID="2823" Column="Description">Product, Service, Item</Data>
+        <Data AD_Column_ID="2824" Column="Help">Identifies an item which is either purchased or sold in this organization.</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue">-1</Data>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">57846</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">30</Data>
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2826" Column="SeqNo">40</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">454</Data>
+        <Data AD_Column_ID="84385" Column="UUID">a308bf34-ab02-4f83-95a5-3ff3c848ff42</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="57846" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2840" Column="Name">Product</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">Product, Service, Item</Data>
+        <Data AD_Column_ID="3743" Column="Help">Identifies an item which is either purchased or sold in this organization.</Data>
+        <Data AD_Column_ID="2836" Column="Created">2020-10-20 14:12:56.781</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2020-10-20 14:12:56.781</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">57846</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">468bbd6d-7db4-4e04-8209-d736006aa329</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="57847" Table="AD_Process_Para">
+        <Data AD_Column_ID="2824" Column="Help">The Valid From date indicates the first day of a date range</Data>
+        <Data AD_Column_ID="2820" Column="Updated">2020-10-20 14:12:58.513</Data>
+        <Data AD_Column_ID="2822" Column="Name">Valid from</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2818" Column="Created">2020-10-20 14:12:58.513</Data>
+        <Data AD_Column_ID="3738" Column="IsMandatory">true</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="4017" Column="ColumnName">ValidFrom</Data>
+        <Data AD_Column_ID="2823" Column="Description">Valid from including this date (first day)</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue">@#Date@</Data>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">57847</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">7</Data>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">15</Data>
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2826" Column="SeqNo">50</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">617</Data>
+        <Data AD_Column_ID="84385" Column="UUID">c1fb8bdc-6689-43c7-861c-31dfbc37ce76</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="57847" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2836" Column="Created">2020-10-20 14:13:03.646</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2020-10-20 14:13:03.646</Data>
+        <Data AD_Column_ID="2840" Column="Name">Valid from</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">Valid from including this date (first day)</Data>
+        <Data AD_Column_ID="3743" Column="Help">The Valid From date indicates the first day of a date range</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">57847</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">032ac479-c7c2-43cd-a18f-2649a1b47de3</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="57848" Table="AD_Process_Para">
+        <Data AD_Column_ID="2820" Column="Updated">2020-10-20 14:13:05.212</Data>
+        <Data AD_Column_ID="2822" Column="Name">Product Classification</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2818" Column="Created">2020-10-20 14:13:05.212</Data>
+        <Data AD_Column_ID="3738" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="4017" Column="ColumnName">M_Product_Classification_ID</Data>
+        <Data AD_Column_ID="2823" Column="Description">Classification of a Product</Data>
+        <Data AD_Column_ID="2824" Column="Help">Identifies the classification which this product belongs to.</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue">-1</Data>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">57848</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">19</Data>
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2826" Column="SeqNo">60</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">55490</Data>
+        <Data AD_Column_ID="84385" Column="UUID">4701d470-f5f6-4ef1-b8a1-61125d4fb9a5</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="57848" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2836" Column="Created">2020-10-20 14:13:10.281</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">c8933599-ac06-462f-a524-fee96d97a8bc</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2020-10-20 14:13:10.281</Data>
+        <Data AD_Column_ID="2840" Column="Name">Product Classification</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">Classification of a Product</Data>
+        <Data AD_Column_ID="3743" Column="Help">Identifies the classification which this product belongs to.</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">57848</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="57849" Table="AD_Process_Para">
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">57849</Data>
+        <Data AD_Column_ID="2820" Column="Updated">2020-10-20 14:13:12.059</Data>
+        <Data AD_Column_ID="2822" Column="Name">Product Class</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2818" Column="Created">2020-10-20 14:13:12.059</Data>
+        <Data AD_Column_ID="3738" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="4017" Column="ColumnName">M_Product_Class_ID</Data>
+        <Data AD_Column_ID="2823" Column="Description">Class of a Product</Data>
+        <Data AD_Column_ID="2824" Column="Help">Identifies the Class which this product belongs to</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue">-1</Data>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">19</Data>
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2826" Column="SeqNo">70</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">55492</Data>
+        <Data AD_Column_ID="84385" Column="UUID">e8615b98-37c5-415e-886f-f3f80dab23b9</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="57849" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2836" Column="Created">2020-10-20 14:13:17.191</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2020-10-20 14:13:17.191</Data>
+        <Data AD_Column_ID="2840" Column="Name">Product Class</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">Class of a Product</Data>
+        <Data AD_Column_ID="3743" Column="Help">Identifies the Class which this product belongs to</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">57849</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">313d8c52-2d24-4515-9cd8-bfc4220a01a1</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="57850" Table="AD_Process_Para">
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">19</Data>
+        <Data AD_Column_ID="2826" Column="SeqNo">80</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">55494</Data>
+        <Data AD_Column_ID="84385" Column="UUID">efc76374-c4be-4842-9d23-1591401bd6ab</Data>
+        <Data AD_Column_ID="2820" Column="Updated">2020-10-20 14:13:18.572</Data>
+        <Data AD_Column_ID="2822" Column="Name">Product Group</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2818" Column="Created">2020-10-20 14:13:18.573</Data>
+        <Data AD_Column_ID="3738" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="4017" Column="ColumnName">M_Product_Group_ID</Data>
+        <Data AD_Column_ID="2823" Column="Description">Group of a Product</Data>
+        <Data AD_Column_ID="2824" Column="Help">Identifies the Group which this product belongs to.</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue">-1</Data>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">57850</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">22</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="57850" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2836" Column="Created">2020-10-20 14:13:23.743</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2020-10-20 14:13:23.743</Data>
+        <Data AD_Column_ID="2840" Column="Name">Product Group</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">Group of a Product</Data>
+        <Data AD_Column_ID="3743" Column="Help">Identifies the Group which this product belongs to.</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">57850</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">5ac0315a-6278-4abb-a86c-c9344c198c47</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="250" StepType="AD">
+      <PO AD_Table_ID="116" Action="I" Record_ID="54654" Table="AD_Menu">
+        <Data AD_Column_ID="598" Column="IsActive">true</Data>
+        <Data AD_Column_ID="59134" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="230" Column="Description">Product Price List Report by Vendor</Data>
+        <Data AD_Column_ID="232" Column="Action">R</Data>
+        <Data AD_Column_ID="399" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="228" Column="AD_Menu_ID">54654</Data>
+        <Data AD_Column_ID="400" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6297" Column="AD_Workbench_ID" isNewNull="true"/>
+        <Data AD_Column_ID="7721" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="234" Column="AD_Workflow_ID" isNewNull="true"/>
+        <Data AD_Column_ID="233" Column="AD_Window_ID" isNewNull="true"/>
+        <Data AD_Column_ID="600" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4621" Column="AD_Form_ID" isNewNull="true"/>
+        <Data AD_Column_ID="602" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="3375" Column="AD_Process_ID">54451</Data>
+        <Data AD_Column_ID="84344" Column="UUID">2918e309-170e-49c1-8a25-e1c40feca7fa</Data>
+        <Data AD_Column_ID="229" Column="Name">Product Price List by Vendor</Data>
+        <Data AD_Column_ID="57960" Column="AD_Browse_ID" isNewNull="true"/>
+        <Data AD_Column_ID="599" Column="Created">2020-10-20 14:13:25.486</Data>
+        <Data AD_Column_ID="601" Column="Updated">2020-10-20 14:13:25.486</Data>
+        <Data AD_Column_ID="235" Column="AD_Task_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1169" Column="IsSummary">false</Data>
+        <Data AD_Column_ID="4426" Column="IsSOTrx">false</Data>
+        <Data AD_Column_ID="6651" Column="IsReadOnly">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="260" StepType="AD">
+      <PO AD_Table_ID="120" Action="I" Record_ID="54654" Table="AD_Menu_Trl">
+        <Data AD_Column_ID="636" Column="IsActive">true</Data>
+        <Data AD_Column_ID="248" Column="Description">Reporte de Lista de Precios por Proveedor</Data>
+        <Data AD_Column_ID="249" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="1194" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1195" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="638" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="245" Column="AD_Menu_ID">54654</Data>
+        <Data AD_Column_ID="246" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84345" Column="UUID">87b5cb4d-3527-42da-966a-a6ff43453588</Data>
+        <Data AD_Column_ID="247" Column="Name">Lista de Precios por Proveedor</Data>
+        <Data AD_Column_ID="639" Column="Updated">2020-10-20 14:13:30.013</Data>
+        <Data AD_Column_ID="637" Column="Created">2020-10-20 14:13:30.013</Data>
+        <Data AD_Column_ID="640" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="270" StepType="AD">
+      <PO AD_Table_ID="452" Action="I" Record_ID="54654" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="84442" Column="UUID">09fd3361-9d76-4d69-bd44-8a6fe64a808f</Data>
+        <Data AD_Column_ID="6150" Column="IsActive">true</Data>
+        <Data AD_Column_ID="6153" Column="Updated">2020-10-20 14:13:31.759</Data>
+        <Data AD_Column_ID="6151" Column="Created">2020-10-20 14:13:31.759</Data>
+        <Data AD_Column_ID="6162" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6149" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6161" Column="Node_ID">54654</Data>
+        <Data AD_Column_ID="6155" Column="Parent_ID">183</Data>
+        <Data AD_Column_ID="6154" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="6152" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo">11</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID">10</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

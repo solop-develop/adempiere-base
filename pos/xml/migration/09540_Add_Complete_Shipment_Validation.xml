@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Add Complete Shipment Validation" ReleaseNo="1.0" SeqNo="9540">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="54786" Action="I" Record_ID="50043" Table="AD_SetupDefinition">
+        <Data AD_Column_ID="97377" Column="UUID">e31c3793-d0f1-439b-8418-b80e042c66c0</Data>
+        <Data AD_Column_ID="97376" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97375" Column="Updated">2021-11-19 18:30:17.073</Data>
+        <Data AD_Column_ID="97374" Column="Name">Deploy Validation for Shipment from POS</Data>
+        <Data AD_Column_ID="97373" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97372" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="97371" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="97370" Column="Description">Create a validation for complete shipment only if is complete</Data>
+        <Data AD_Column_ID="97369" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97368" Column="Created">2021-11-19 18:30:17.073</Data>
+        <Data AD_Column_ID="97367" Column="Classname">org.spin.pos.setup.ValidateShipmentFromPOS</Data>
+        <Data AD_Column_ID="97366" Column="AD_SetupDefinition_ID">50043</Data>
+        <Data AD_Column_ID="97365" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97364" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53712" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">MissingProductsOnShipment</Data>
+        <Data AD_Column_ID="84346" Column="UUID">f195f345-dff1-4b5f-a14e-ac33a35e6f51</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2021-11-19 18:31:16.602</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Missing Product for this Shipment</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2021-11-19 18:31:16.602</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53712</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">09aa14c3-42b0-4c9c-a320-80bd373f7911</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2021-11-19 18:31:17.6</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Missing Product for this Shipment</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2021-11-19 18:31:17.6</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53712</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Missing Product for this Shipment">Faltan Productos por agregar a la Entrega</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53712">53712</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53713" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">MissingProductsOnShipmentLine</Data>
+        <Data AD_Column_ID="84346" Column="UUID">8856bf5b-caef-4ed3-91f0-aae123d4e4e8</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2021-11-19 18:32:48.877</Data>
+        <Data AD_Column_ID="197" Column="MsgType">E</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Line: {0}
+Product: {1}
+Missing Quantity: {2,number,###,###,###,##0.00}</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2021-11-19 18:32:48.877</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53713</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">542872e3-1dad-4264-8680-82c431b44094</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2021-11-19 18:32:49.729</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Line: {0}
+Product: {1}
+Missing Quantity: {2,number,###,###,###,##0.00}</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2021-11-19 18:32:49.729</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53713</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Line: {0}&#10;Product: {1}&#10;Missing Quantity: {2,number,###,###,###,##0.00}">Linea: {0}
+Producto: {1}
+Cantidad Faltante: {2,number,###,###,###,##0.00}</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53713">53713</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

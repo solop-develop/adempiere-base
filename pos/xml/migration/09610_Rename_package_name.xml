@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Rename package name" ReleaseNo="1.0" SeqNo="9610">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54573" Table="AD_Process">
+        <Data AD_Column_ID="4656" Column="Classname" oldValue="org.spin.process.VerifyPayments">org.spin.pos.process.VerifyPayments</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

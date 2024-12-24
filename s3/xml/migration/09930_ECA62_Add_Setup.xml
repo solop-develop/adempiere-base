@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA62" Name="ECA62 Add Setup" ReleaseNo="1.0" SeqNo="9930">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="54786" Action="I" Record_ID="50101" Table="AD_SetupDefinition">
+        <Data AD_Column_ID="97377" Column="UUID">f2667f04-07b7-4807-aaec-bce7b86a7ca7</Data>
+        <Data AD_Column_ID="97376" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97375" Column="Updated">2024-07-05 15:19:56.043</Data>
+        <Data AD_Column_ID="97374" Column="Name">AWS3 Deploy</Data>
+        <Data AD_Column_ID="97373" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97372" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="97371" Column="EntityType">ECA62</Data>
+        <Data AD_Column_ID="97370" Column="Description">Connect ADempiere to Minio using AWS3</Data>
+        <Data AD_Column_ID="97369" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97368" Column="Created">2024-07-05 15:19:56.043</Data>
+        <Data AD_Column_ID="97367" Column="Classname">org.spin.eca62.setup.Deploy</Data>
+        <Data AD_Column_ID="97366" Column="AD_SetupDefinition_ID">50101</Data>
+        <Data AD_Column_ID="97365" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97364" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

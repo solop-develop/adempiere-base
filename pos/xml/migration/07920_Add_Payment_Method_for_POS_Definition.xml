@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Add Payment Method for POS Definition" ReleaseNo="1.0" SeqNo="7920">
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="99055" Table="AD_Column">
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">61500</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">19</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">54848</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">C_PaymentMethod_ID</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2021-08-21 18:56:55.103</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="112" Column="Description">Payment Methods allowed for Store</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">true</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Store Payment Method</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="551" Column="Updated">2021-08-21 18:56:55.104</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">0fbb0e25-c989-4a70-8d0d-fd4f19a35123</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">99055</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="99055" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">99055</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_VE</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2021-08-21 18:56:58.227</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Store Payment Method</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2021-08-21 18:56:58.227</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">7dfc7422-de88-41da-9d64-f6ee5035424e</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="54848" Table="AD_Table">
+        <Data AD_Column_ID="103" Column="Description" oldValue="Tender Types allocated for POS terminal">Payment Method allocated for POS terminal</Data>
+        <Data AD_Column_ID="102" Column="Name" oldValue="POS Tender Type Allocation">POS Payment Method Allocation</Data>
+        <Data AD_Column_ID="92543" Column="RequiresSync" oldValue="false">true</Data>
+        <Data AD_Column_ID="107" Column="TableName" oldValue="C_POSPaymentTypeAllocation">C_POSPaymentMethodAllocation</Data>
+        <Data AD_Column_ID="92544" Column="NameOldValue" isOldNull="true">C_POSPaymentTypeAllocation</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="115" Action="U" Record_ID="55375" Table="AD_Sequence">
+        <Data AD_Column_ID="216" Column="Name" oldValue="C_POSPaymentTypeAllocation">C_POSPaymentMethodAllocation</Data>
+        <Data AD_Column_ID="347" Column="Description" oldValue="Table C_POSPaymentTypeAllocation">Table C_POSPaymentMethodAllocation</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="54848" Table="AD_Table">
+        <Data AD_Column_ID="107" Column="TableName" oldValue="C_POSPaymentMethodAllocation">C_POSPaymentTypeAllocation</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="115" Action="U" Record_ID="55375" Table="AD_Sequence">
+        <Data AD_Column_ID="347" Column="Description" oldValue="Table C_POSPaymentMethodAllocation">Table C_POSPaymentTypeAllocation</Data>
+        <Data AD_Column_ID="216" Column="Name" oldValue="C_POSPaymentMethodAllocation">C_POSPaymentTypeAllocation</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="276" Action="U" Record_ID="61764" Table="AD_Element">
+        <Data AD_Column_ID="4299" Column="PrintName" oldValue="POS Tender Type Allocation">POS Payment Method Allocation</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName" oldValue="C_POSPaymentTypeAllocation_ID">C_POSPaymentTypeAllocation_ID</Data>
+        <Data AD_Column_ID="2603" Column="Name" oldValue="POS Tender Type Allocation">POS Payment Method Allocation</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="98978" Table="AD_Column">
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">C_POSPaymentTypeAllocation_ID</Data>
+        <Data AD_Column_ID="111" Column="Name" oldValue="POS Tender Type Allocation">POS Payment Method Allocation</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+        <Data AD_Column_ID="116" Column="ColumnName" oldValue="C_POSPaymentTypeAllocation_ID">C_POSPaymentTypeAllocation_ID</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="101264" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" oldValue="POS Tender Type Allocation">POS Payment Method Allocation</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="99055" Table="AD_Column">
+        <Data AD_Column_ID="124" Column="IsMandatory" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="106" Action="U" Record_ID="55110" Table="AD_Tab">
+        <Data AD_Column_ID="162" Column="Description" oldValue="Tender Type Allocation for POS">Payment Method Allocation for POS</Data>
+        <Data AD_Column_ID="163" Column="Help" oldValue="Allocated Tender Type for POS">Allocated Payment Method for POS</Data>
+        <Data AD_Column_ID="161" Column="Name" oldValue="Tender Type Allocation">Payment Method Allocation</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

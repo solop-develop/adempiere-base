@@ -1,0 +1,994 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="ECA14 Add Message and IsPOSManager flag" ReleaseNo="3.9.4" SeqNo="9840">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="62054" Table="AD_Element">
+        <Data AD_Column_ID="84316" Column="UUID">c1bccdee-03ce-460d-9ede-4adfd334cc31</Data>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2600" Column="Updated">2022-08-25 14:52:02.439</Data>
+        <Data AD_Column_ID="4299" Column="PrintName">POS Manager</Data>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2603" Column="Name">POS Manager</Data>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2605" Column="Help">Use this field to determinate if a seller is a POS Manager</Data>
+        <Data AD_Column_ID="58589" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="2604" Column="Description">Allows validate PIN based on POS Manager</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2598" Column="Created">2022-08-25 14:52:02.439</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">IsAllowsPOSManager</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">62054</Data>
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step><Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="62054" Table="AD_Element_Trl">
+        <Data AD_Column_ID="84317" Column="UUID">596b12c1-2eb0-448b-8145-9b245a84447c</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2022-08-25 14:52:03.868</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">POS Manager</Data>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">POS Manager</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2648" Column="Help">Use this field to determinate if a seller is a POS Manager</Data>
+        <Data AD_Column_ID="2647" Column="Description">Allows validate PIN based on POS Manager</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2642" Column="Created">2022-08-25 14:52:03.868</Data>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">62054</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="62054" Table="AD_Element_Trl">
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="POS Manager">Supervisor de POS</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="POS Manager">Supervisor de POS</Data>
+        <Data AD_Column_ID="2648" Column="Help" oldValue="Use this field to determinate if a seller is a POS Manager">Use este campo para permitir aprobar basado en el PIN</Data>
+        <Data AD_Column_ID="2647" Column="Description" oldValue="Allows validate PIN based on POS Manager">Supervisor de POS que permite aprobar con PIN</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="62054">62054</Data>
+      </PO>
+    </Step>
+    
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="100067" Table="AD_Column">
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">3a4db1c0-3a8e-434b-a2ad-df2b31f636a4</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="551" Column="Updated">2022-08-25 14:53:33.917</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">POS Manager</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">true</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help">Use this field to determinate if a seller is a POS Manager</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="112" Column="Description">Allows validate PIN based on POS Manager</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">N</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="549" Column="Created">2022-08-25 14:53:33.916</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">IsAllowsPOSManager</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">54872</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">62054</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">100067</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="100067" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID">cecb0230-f8d0-453a-bee4-27dd7e57706b</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2022-08-25 14:53:34.913</Data>
+        <Data AD_Column_ID="12957" Column="Name">POS Manager</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12960" Column="Created">2022-08-25 14:53:34.913</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">100067</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="102245" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID">633b4d35-bf4e-4f58-b000-d064e366dd9f</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="581" Column="Updated">2022-08-25 14:53:57.898</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">210</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">210</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="168" Column="Name">POS Manager</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help">Use this field to determinate if a seller is a POS Manager</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="169" Column="Description">Allows validate PIN based on POS Manager</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="579" Column="Created">2022-08-25 14:53:57.898</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55130</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">102245</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">100067</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="102245" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID">ddc7007a-876f-4b58-bca8-1b5aac042145</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="674" Column="Updated">2022-08-25 14:53:59.088</Data>
+        <Data AD_Column_ID="286" Column="Name">POS Manager</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="288" Column="Help">Use this field to determinate if a seller is a POS Manager</Data>
+        <Data AD_Column_ID="287" Column="Description">Allows validate PIN based on POS Manager</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="672" Column="Created">2022-08-25 14:53:59.088</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">102245</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53734" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.AllocateSellerNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">357b2e93-53ab-4ed1-8020-6bc4e435bc35</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 14:59:02.598</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Allocate seller not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 14:59:02.598</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53734</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">0264cdcf-1810-4027-96b9-2f127540dc08</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 14:59:03.41</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Allocate seller not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 14:59:03.41</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53734</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53735" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.ApplyDiscountNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">cb442a0a-ce9d-41b4-b30c-9e60e67fd7c1</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:00:12.052</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Apply discount not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:00:12.052</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53735</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">988cb5af-e9a0-4747-a935-c8364d111be6</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:00:13.265</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Apply discount not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:00:13.264</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53735</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53736" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.CashClosingNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">766480a1-bf14-4b2b-940e-c8d0bacad43f</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:00:43.473</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Cash closing not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:00:43.473</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53736</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">bec70597-a1d0-4023-a207-b4461877c055</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:00:44.39</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Cash closing not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:00:44.39</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53736</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53737" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.CashOpeningNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">1e7a0e6d-da65-4abe-a187-1095ec0c4daa</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:01:06.353</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Cash opening not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:01:06.353</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53737</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">825a495c-ffbd-4870-a737-e47a1b957622</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:01:07.202</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Cash opening not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:01:07.202</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53737</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53738" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.CashWithdrawalNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">525ed138-a1de-4318-bc52-2e9bace059c3</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:01:33.746</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Cash withdrawall not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:01:33.746</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53738</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">45a00a8c-94c7-49c7-82f7-82895ffcf705</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:01:34.733</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Cash withdrawall not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:01:34.733</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53738</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53739" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.CollectOrderNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">57a36fb9-7751-497c-b57e-4a46524e7e4b</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:02:07.044</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Collect Order not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:02:07.044</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53739</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">64680ba3-783b-49c6-b411-f7a1b0217d4b</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:02:07.91</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Collect Order not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:02:07.91</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53739</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53738" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="Cash withdrawall not allowed for user">Cash Withdrawall not allowed for user</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53737" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="Cash opening not allowed for user">Cash Opening not allowed for user</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53736" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="Cash closing not allowed for user">Cash Closing not allowed for user</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53735" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="Apply discount not allowed for user">Apply Discount not allowed for user</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53734" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="Allocate seller not allowed for user">Allocate Seller not allowed for user</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="250" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53740" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.ConfirmShipmentNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">9150ec72-c05b-4408-9e33-a1717cebeb6d</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:02:55.201</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Confirm Shipment not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:02:55.201</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53740</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="260" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">11dcfe41-b144-4e2c-a602-cffe472140e1</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:02:56.16</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Confirm Shipment not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:02:56.16</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53740</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="270" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53741" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.ConfirmShipmentByOrder</Data>
+        <Data AD_Column_ID="84346" Column="UUID">f125064d-b69f-44af-a758-68bc7b596d64</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:03:20.089</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Confirm Shipment by Order not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:03:20.088</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53741</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="280" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">4fbb2df9-9d22-40d2-801b-075b704cdb7c</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:03:21.199</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Confirm Shipment by Order not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:03:21.199</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53741</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="290" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53742" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.CreateCustomerNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">d5d83a4e-605c-4b41-9e23-fb5d11310e46</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:03:47.257</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Create Customer not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:03:47.257</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53742</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="300" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">eec22f65-bca2-4ed5-b293-368c5d88de59</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:03:48.162</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Create Customer not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:03:48.162</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53742</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="310" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53741" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value" oldValue="POS.ConfirmShipmentByOrder">POS.ConfirmShipmentByOrderNotAllowed</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="320" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53743" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.CreateOrderNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">b5716cd5-bf3d-42fc-b184-f8865880f85d</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:04:15.895</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Create Order not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:04:15.895</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53743</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="330" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">2e598884-d828-407d-a8b1-d8e4e0a6f0eb</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:04:16.857</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Create Order not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:04:16.857</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53743</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="340" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53744" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.ModifyDiscountAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">64989f39-a473-4963-a1d1-2c7676650730</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:04:38.851</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Modify Discount not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:04:38.851</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53744</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="350" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">eee327d3-790f-46fb-9735-89860829a1d9</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:04:39.806</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Modify Discount not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:04:39.806</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53744</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="360" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53745" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.ModifyQuantityNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">bfe690f8-cd35-4022-9165-5a768a2c815a</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:05:05.769</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Modify Quantity not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:05:05.769</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53745</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="370" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">165f3697-4c91-4bf1-b347-39a668bae24f</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:05:06.944</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Modify Quantity not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:05:06.944</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53745</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="380" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53746" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.PreviewDocumentNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">741da6ba-cf48-4579-a688-c92b70714454</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:05:30.081</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Preview Document not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:05:30.081</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53746</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="390" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">93f1eedb-568b-4efa-8443-7fd2dd7cfece</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:05:31.015</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Preview Document not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:05:31.015</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53746</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="400" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53747" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.PrintDocumentNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">9882736e-d760-444c-a0be-1c9dc884b5c7</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:06:14.26</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Print Document not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:06:14.26</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53747</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="410" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">ed5b60c6-5422-496e-9da3-f436f0a7036b</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:06:15.302</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Print Document not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:06:15.302</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53747</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="420" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53748" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.ReturnOrderNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">463193b8-347b-4b5b-a29e-77cef2c967f8</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:06:45.868</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Return Order not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:06:45.868</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53748</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="430" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">3a13bad8-133a-4d1b-97ea-dfc1a7f70816</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:06:46.911</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Return Order not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:06:46.911</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53748</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="440" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53749" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.ModifyPriceNotAllowed</Data>
+        <Data AD_Column_ID="84346" Column="UUID">0361e91d-09c0-4de9-850d-81b457c3163d</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:07:12.025</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Modify Price not allowed for user</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:07:12.025</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53749</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="450" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">55c70387-6082-44da-af06-29446bf2c1cd</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:07:12.988</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Modify Price not allowed for user</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:07:12.988</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53749</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="460" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53750" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.RefundAmtToleranceExceeded</Data>
+        <Data AD_Column_ID="84346" Column="UUID">50df9231-b991-453f-b01a-e57684e433df</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:08:37.027</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Refund Amount Exceeded</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:08:37.027</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53750</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="470" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">c65e4a54-f62c-4327-8162-46a2d4d413be</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:08:38.205</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Refund Amount Exceeded</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:08:38.205</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53750</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="480" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53751" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">POS.DiscountAmtToleranceExceeded</Data>
+        <Data AD_Column_ID="84346" Column="UUID">cd67951e-f7ce-4058-82b4-a23d08fc75c6</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-08-25 15:08:57.629</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Discount Amount Exceeded</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-08-25 15:08:57.629</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53751</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="490" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">0645396d-2167-4a50-8afd-ff26aefba2b1</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-08-25 15:08:58.783</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Discount Amount Exceeded</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-08-25 15:08:58.783</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53751</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="500" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Refund Amount Exceeded">Monto de Reembolso Excedido, por favor ajuste el documento con un monto menor</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53750">53750</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="510" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Discount Amount Exceeded">Monto de Descuento Excedido, por favor ajuste el documento con un monto menor</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53751">53751</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="520" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Allocate seller not allowed for user">No está permitido Asignar Vendedor para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53734">53734</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="530" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Apply discount not allowed for user">No está permitido "Aplicar Descuento" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53735">53735</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="540" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="No está permitido Asignar Vendedor para su usuario">No está permitido "Asignar Vendedor" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53734">53734</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="550" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Cash closing not allowed for user">No está permitido "Cerrar Caja" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53736">53736</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="560" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Cash opening not allowed for user">No está permitido "Apertura de Caja" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53737">53737</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="570" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Cash withdrawall not allowed for user">No está permitido "Retiro de Caja" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53738">53738</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="580" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Collect Order not allowed for user">No está permitido "Cobrar Orden de Venta" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53739">53739</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="590" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Confirm Shipment not allowed for user">No está permitido "Confirmar Entrega" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53740">53740</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="600" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Confirm Shipment by Order not allowed for user">No está permitido "Confirmar Entrega Completa" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53741">53741</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="610" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Create Customer not allowed for user">No está permitido "Crear Cliente" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53742">53742</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="620" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Create Order not allowed for user">No está permitido "Crear Orden de Venta" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53743">53743</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="630" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Modify Discount not allowed for user">No está permitido "Modificar Descuento" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53744">53744</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="640" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Modify Quantity not allowed for user">No está permitido "Modificar Cantidades" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53745">53745</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="650" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Preview Document not allowed for user">No está permitido "Vista Previa de Documento" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53746">53746</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="660" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Print Document not allowed for user">No está permitido "Imprimir Documento" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53747">53747</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="670" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Return Order not allowed for user">No está permitido "Devolución de Orden" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53748">53748</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="680" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Modify Price not allowed for user">No está permitido "Modificar Precio" para su usuario</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53749">53749</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Change column names for POS" ReleaseNo="1.0" SeqNo="9380">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="276" Action="U" Record_ID="61891" Table="AD_Element">
+        <Data AD_Column_ID="2602" Column="ColumnName" oldValue="Default_Campaign_ID">DefaultCampaign_ID</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="99439" Table="AD_Column">
+        <Data AD_Column_ID="116" Column="ColumnName" oldValue="Default_Campaign_ID">DefaultCampaign_ID</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="276" Action="U" Record_ID="61894" Table="AD_Element">
+        <Data AD_Column_ID="2602" Column="ColumnName" oldValue="MaximumDiscount">MaximumDiscountAllowed</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="99458" Table="AD_Column">
+        <Data AD_Column_ID="116" Column="ColumnName" oldValue="MaximumDiscount">MaximumDiscountAllowed</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="276" Action="U" Record_ID="61893" Table="AD_Element">
+        <Data AD_Column_ID="4299" Column="PrintName" oldValue="Tolerance write-off per Document">Tolerance for write-off per Document</Data>
+        <Data AD_Column_ID="2603" Column="Name" oldValue="Tolerance write-off per Document">Tolerance for write-off per Document</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName" oldValue="ToleranceWriteOffAmt">WriteOffAmtTolerance</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="99457" Table="AD_Column">
+        <Data AD_Column_ID="111" Column="Name" oldValue="Tolerance write-off per Document">Tolerance for write-off per Document</Data>
+        <Data AD_Column_ID="116" Column="ColumnName" oldValue="ToleranceWriteOffAmt">WriteOffAmtTolerance</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="101836" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" oldValue="Tolerance write-off per Document">Tolerance for write-off per Document</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

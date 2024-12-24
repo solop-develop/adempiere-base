@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Rename column for browser" ReleaseNo="1.0" SeqNo="9670">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53232" Action="U" Record_ID="72701" Table="AD_View_Column">
+        <Data AD_Column_ID="58106" Column="ColumnSQL" oldValue="opb.C_POSPaymentReference_ID">opb.C_POSPaymentReference_ID</Data>
+        <Data AD_Column_ID="58107" Column="ColumnName" oldValue="OPB_C_POSPaymentReference_ID">OPB_C_POSPaymentReference_ID</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

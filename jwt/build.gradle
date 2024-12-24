@@ -1,0 +1,82 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+	api "io.jsonwebtoken:jjwt-api:0.12.6"
+	api "io.jsonwebtoken:jjwt-impl:0.12.6"
+	api "io.jsonwebtoken:jjwt-jackson:0.12.6"
+	// Local
+	api project(path: ':base')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java/base']
+		}
+	}
+}
+
+def entityType = 'ECA52'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "JWT Tool",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId publishGroupId
+            artifactId 'jwt'
+            version publishVersion
+           	from components.java
+           	pom {
+                name = 'JWT'
+                description = 'Generate JWT for Login from third party access'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}

@@ -1,0 +1,79 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+	// Local
+	api project(path: ':base')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java/base']
+		}
+	}
+}
+
+def entityType = 'ECA50'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "Dashboard",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId publishGroupId
+            artifactId 'dashboard'
+            version publishVersion
+           	from components.java
+           	pom {
+                name = 'Dashboard'
+                description = 'This project allows improve the dashboard use for ADempiere for new UI'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Add Verification for payment setup" ReleaseNo="1.0" SeqNo="9340">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="54786" Action="I" Record_ID="50039" Table="AD_SetupDefinition">
+        <Data AD_Column_ID="97377" Column="UUID">2015baf7-6a87-417c-8451-3fea4069cdc8</Data>
+        <Data AD_Column_ID="97376" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97375" Column="Updated">2021-11-10 09:49:34.064</Data>
+        <Data AD_Column_ID="97374" Column="Name">Add Payment Request Approval</Data>
+        <Data AD_Column_ID="97373" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97372" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="97371" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="97370" Column="Description">Add payment approval setup</Data>
+        <Data AD_Column_ID="97369" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97368" Column="Created">2021-11-10 09:49:34.064</Data>
+        <Data AD_Column_ID="97367" Column="Classname">org.spin.pos.setup.AddPaymentApproval</Data>
+        <Data AD_Column_ID="97366" Column="AD_SetupDefinition_ID">50039</Data>
+        <Data AD_Column_ID="97365" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97364" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

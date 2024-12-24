@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Update where clause for Withdrawal" ReleaseNo="1.0" SeqNo="7250">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50238" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="cp.IsReceipt = 'Y' &#10;AND cp.IsReconciled = 'N'&#10;AND cp.DocStatus IN('CO', 'CL')&#10;AND (cp.Ref_Payment_ID IS NULL OR NOT EXISTS(SELECT 1 FROM C_Payment p WHERE p.C_Payment_ID = cp.Ref_Payment_ID AND p.DocStatus IN('CO', 'CL')))">cp.IsReceipt = 'Y' 
+AND cp.IsReconciled = 'N'
+AND cp.DocStatus IN('CO', 'CL')
+AND (cp.Ref_Payment_ID IS NULL AND cp.RelatedPayment_ID IS NULL OR (NOT EXISTS(SELECT 1 FROM C_Payment p WHERE C_Payment_ID = cp.Ref_Payment_ID AND p.DocStatus IN('CO', 'CL'))))</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Add Message for verification" ReleaseNo="1.0" SeqNo="9600">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53716" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">PaymentAlreadyVerified</Data>
+        <Data AD_Column_ID="84346" Column="UUID">f261b90b-9112-4d50-bade-bb6668d9efeb</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2022-01-20 07:57:12.367</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Payment Already Verified</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">ECA23</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2022-01-20 07:57:12.367</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53716</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">4990463e-941d-4fb2-9b03-45bc24460b88</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2022-01-20 07:57:13.349</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Payment Already Verified</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2022-01-20 07:57:13.349</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53716</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Payment Already Verified">El pago ya se encuentra verificado</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53716">53716</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="Add POS Validation for Cash Opening" ReleaseNo="1.0" SeqNo="9300">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="108" Action="I" Record_ID="52882" Table="AD_Val_Rule">
+        <Data AD_Column_ID="387" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="193" Column="Code">(C_POS.SalesRep_ID = @#AD_User_ID@ OR C_POS.IsSharedPOS = 'Y' OR C_POS.Supervisor_ID = @#AD_User_ID@ OR EXISTS(SELECT 1 FROM AD_User u WHERE u.AD_User_ID = @#AD_User_ID@ AND u.IsPOSManager = 'Y'))</Data>
+        <Data AD_Column_ID="584" Column="Created">2021-09-29 13:07:57.886</Data>
+        <Data AD_Column_ID="585" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="189" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="7715" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="583" Column="IsActive">true</Data>
+        <Data AD_Column_ID="188" Column="Name">C_POS Only User / Shared and Supervisor  POS</Data>
+        <Data AD_Column_ID="192" Column="Type">S</Data>
+        <Data AD_Column_ID="586" Column="Updated">2021-09-29 13:07:57.887</Data>
+        <Data AD_Column_ID="587" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84460" Column="UUID">1d76e0e8-288c-48c4-b3b1-b78b77d13d5a</Data>
+        <Data AD_Column_ID="388" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="187" Column="AD_Val_Rule_ID">52882</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

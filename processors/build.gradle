@@ -1,0 +1,93 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+	// Jakarta RESTful Web Services
+	// https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api
+	api 'javax.ws.rs:javax.ws.rs-api:2.1.1'
+
+	// Jersey core client implementation
+	// https://mvnrepository.com/artifact/  org.glassfish.jersey.core/jersey-client
+	api 'org.glassfish.jersey.core:jersey-client:2.34'
+	// https://mvnrepository.com/artifact/org.glassfish.jersey.inject/jersey-hk2
+	api 'org.glassfish.jersey.inject:jersey-hk2:2.34'
+
+	// JSON in Java
+	// https://mvnrepository.com/artifact/org.json/json
+	api 'org.json:json:20211205'
+	// Local
+	api project(path: ':base')
+	api project(path: ':project')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java/base']
+		}
+	}
+}
+
+def entityType = 'ECA46'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "ADempiere Business Processors",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId publishGroupId
+            artifactId 'processors'
+            version publishVersion
+           	from components.java
+           	pom {
+                name = 'Processors'
+                description = 'A project to convert all processors to process and call it from extern services'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}
