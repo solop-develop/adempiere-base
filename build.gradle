@@ -5,8 +5,8 @@ plugins {
 }
 
 ext {
-    publishLibraryRepo  = "https://maven.pkg.github.com/openls/adempiere-lib"
-    publishGroupId = "org.openls.adempiere"
+    publishLibraryRepo  = "https://maven.pkg.github.com/solop-develop/adempiere-base"
+    publishGroupId = "org.solop.adempiere"
     publishUsername = findProperty("deployUsername") ?: System.properties['deploy.user']
     publishPassword = findProperty("deployPassword") ?: System.properties['deploy.token']
     publishVersion = findProperty("deployVersion") ?: "local-1.0.0"
