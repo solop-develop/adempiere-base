@@ -49,6 +49,7 @@ dependencies {
     api project(':kafka')
     api project(':pos')
     api project(':withholding_engine')
+    api project(':grpc_utils')
 }
 
 def entityType = 'D'

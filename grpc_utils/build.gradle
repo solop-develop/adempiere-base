@@ -1,0 +1,89 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+def grpcVersion = '1.65.1'
+def protobufVersion = '3.25.4'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+	api "io.grpc:grpc-netty-shaded:${grpcVersion}"
+	api "com.google.protobuf:protobuf-java:${protobufVersion}"
+	api "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+	api "io.jsonwebtoken:jjwt-api:0.12.6"
+	api "io.jsonwebtoken:jjwt-impl:0.12.6"
+	api "io.jsonwebtoken:jjwt-jackson:0.12.6"
+	// Local
+	api project(path: ':base')
+	api project(path: ':jwt')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java/base']
+		}
+	}
+}
+
+def entityType = 'U'
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "gRPC Utils",
+			"Implementation-Version": publishVersion,
+			"EntityType": entityType
+		)
+	}
+}
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = publishLibraryRepo
+            credentials {
+                username = publishUsername
+                password = publishPassword
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+        	groupId publishGroupId
+            artifactId 'grpc-utils'
+            version publishVersion
+           	from components.java
+           	pom {
+                name = 'gRPC Utils'
+                description = 'Utils classes for start a gRPC easy using ADempiere'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yamelsenih'
+                        name = 'Yamel Senih'
+                        email = 'ysenih@erpya.com'
+                    }
+                }
+            }
+		}
+	}
+}

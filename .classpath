@@ -6,6 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="authentication/src/main/java/base"/>
+	<classpathentry kind="src" path="grpc_utils/src/main/java/base"/>
 	<classpathentry kind="src" path="withholding_engine/src/main/java/base"/>
 	<classpathentry kind="src" path="jwt/src/main/java/base"/>
 	<classpathentry kind="src" path="kafka/src/main/java/base"/>
