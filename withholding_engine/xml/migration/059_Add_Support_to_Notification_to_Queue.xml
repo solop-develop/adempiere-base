@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="Add Support to Notification to Queue" ReleaseNo="1.0" SeqNo="500440">
+  <Migration EntityType="WHH" Name="Add Support to Notification to Queue" ReleaseNo="1.0" SeqNo="500440">
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="276" Action="I" Record_ID="62460" Table="AD_Element">
         <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
