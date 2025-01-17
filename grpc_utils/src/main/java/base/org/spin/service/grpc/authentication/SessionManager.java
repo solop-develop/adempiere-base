@@ -800,18 +800,19 @@ public class SessionManager {
 				+ "WHERE c.IsKey='Y' AND t.IsActive='Y'"
 				+ " AND EXISTS (SELECT * FROM AD_Column cc "
 				+ " WHERE ColumnName = 'IsDefault' AND t.AD_Table_ID=cc.AD_Table_ID AND cc.IsActive='Y')";
-			pstmt = DB.prepareStatement(sql, null);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				loadDefault (context, rs.getString(1), rs.getString(2));
-			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
+			// pstmt = DB.prepareStatement(sql, null);
+			// rs = pstmt.executeQuery();
+			// while (rs.next()) {
+			// 	loadDefault (context, rs.getString(1), rs.getString(2));
+			// }
+			// rs.close();
+			// pstmt.close();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, "loadPreferences", e);
 			e.printStackTrace();
 		} finally {
+			pstmt = null;
+			rs = null;
 			DB.close(rs, pstmt);
 		}
 		//	Country
