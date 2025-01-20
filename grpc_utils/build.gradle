@@ -32,7 +32,7 @@ dependencies {
 sourceSets {
 	main {
 		java {
-			srcDirs = ['src/main/java/base']
+			srcDirs = ['src/main/java']
 		}
 	}
 }

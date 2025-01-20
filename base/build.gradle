@@ -55,6 +55,7 @@ dependencies {
     api 'org.postgresql:postgresql:42.3.3'
     // https://mvnrepository.com/artifact/org.beanshell/bsh
     api 'org.beanshell:bsh:2.0b5'
+    api 'javax.xml:jaxb-api:2.1'
 }
 
 sourceSets {
