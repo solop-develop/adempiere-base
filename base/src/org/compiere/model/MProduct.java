@@ -167,6 +167,10 @@ public class MProduct extends X_M_Product
 			}
 		}
 		// Load from DB
+		MResource resource = MResource.get(ctx, S_Resource_ID);
+		if(resource.get_ValueAsInt("S_DefaultProduct_ID") > 0) {
+			return MProduct.get(ctx, resource.get_ValueAsInt("S_DefaultProduct_ID"));
+		}
 		MProduct p = new Query(ctx, Table_Name, COLUMNNAME_S_Resource_ID+"=?", trxName)
 						.setParameters(new Object[]{S_Resource_ID})
 						.firstOnly();

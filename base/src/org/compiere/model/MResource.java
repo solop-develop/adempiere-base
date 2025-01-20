@@ -153,10 +153,15 @@ public class MResource extends X_S_Resource
 	{
 		if (newRecord)
 		{
-			if (getValue() == null || getValue().length() == 0)
-				setValue(getName());
-			m_product = new MProduct(this, getResourceType());
-			m_product.saveEx(get_TrxName());
+			MResourceType resourceType = MResourceType.get(getCtx(), getS_ResourceType_ID());
+			if(resourceType.get_ValueAsInt("S_DefaultProduct_ID") > 0) {
+				set_ValueOfColumn("S_DefaultProduct_ID", resourceType.get_ValueAsInt("S_DefaultProduct_ID"));
+			} else {
+				if (getValue() == null || getValue().length() == 0)
+					setValue(getName());
+				m_product = new MProduct(this, getResourceType());
+				m_product.saveEx(get_TrxName());
+			}
 		}
 		//
 		// Validate Manufacturing Resource
@@ -174,11 +179,12 @@ public class MResource extends X_S_Resource
 	{
 		if (!success)
 			return success;
-			
-		MProduct prod = getProduct();
-		if (prod.setResource(this))
-			prod.saveEx(get_TrxName());
-		
+		if(get_ValueAsInt("S_DefaultProduct_ID") <= 0) {
+			MProduct prod = getProduct();
+			if (prod.setResource(this)) {
+				prod.saveEx(get_TrxName());
+			}
+		}
 		return success;
 	}	//	afterSave
 	
