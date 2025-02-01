@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="Requests as Tickets add RequestInfoType" ReleaseNo="0.0.7" SeqNo="10340">
+  <Migration EntityType="D" Name="Requests as Tickets add RequestInfoType" ReleaseNo="0.0.7" SeqNo="10350">
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="102" Action="I" Record_ID="54356" Table="AD_Reference">
         <Data AD_Column_ID="363" Column="AD_Client_ID">0</Data>
