@@ -60,7 +60,6 @@ public class ViewElementHandler extends GenericPOHandler {
 								+ ","
 								+ X_AD_View_Definition.COLUMNNAME_AD_View_Definition_ID)
 				.list();
-
 		for (MViewDefinition viewDefinition : viewDefinitions) {
 			if(viewDefinition.getAD_Table_ID() > 0) {
 				packOut.createTable(viewDefinition.getAD_Table_ID(), document);

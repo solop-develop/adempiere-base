@@ -142,7 +142,11 @@ public class GenericPOHandler extends AbstractElementHandler {
 	public void setIgnoreWhenMissingMandatoryReference(boolean ignore) {
 		addBooleanValue(IGNORE_WHEN_MISSING_MANDATORY_REFERENCE, ignore);
 	}
-	
+
+	public boolean contains(String key) {
+		return list.contains(key);
+	}
+
 	@Override
 	public void startElement(Properties ctx, Element element) throws SAXException {
 		final String elementValue = element.getElementValue();
