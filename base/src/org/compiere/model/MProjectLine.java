@@ -228,7 +228,14 @@ public class MProjectLine extends X_C_ProjectLine
 			setLine();
 		if(newRecord || is_ValueChanged("C_ProjectLineType_ID")) {
 			X_C_ProjectLineType type = new X_C_ProjectLineType(getCtx(), getC_ProjectLineType_ID(), get_TrxName());
-			set_ValueOfColumn("ProjectLineType", type.get_Value("ProjectLineType"));
+			String lineType = type.get_ValueAsString("ProjectLineType");
+			set_ValueOfColumn("ProjectLineType", lineType);
+			if(lineType != null) {
+				setIsSummary(lineType.equals("P") || lineType.equals("M"));
+			}
+			if(isSummary()) {
+				set_ValueOfColumn("Parent_ID", null);
+			}
 		}
 		//	Planned Amount
 		setPlannedAmt(getPlannedQty().multiply(getPlannedPrice()));
