@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/authentication" />
+            <option value="$PROJECT_DIR$/base" />
+            <option value="$PROJECT_DIR$/cashflow" />
+            <option value="$PROJECT_DIR$/crm" />
+            <option value="$PROJECT_DIR$/dashboard" />
+            <option value="$PROJECT_DIR$/discord" />
+            <option value="$PROJECT_DIR$/distribution" />
+            <option value="$PROJECT_DIR$/finance_management" />
+            <option value="$PROJECT_DIR$/fixed_asset" />
+            <option value="$PROJECT_DIR$/freight" />
+            <option value="$PROJECT_DIR$/grpc_utils" />
+            <option value="$PROJECT_DIR$/hr_and_payroll" />
+            <option value="$PROJECT_DIR$/hr_time_and_attendance" />
+            <option value="$PROJECT_DIR$/jasper_reports" />
+            <option value="$PROJECT_DIR$/jwt" />
+            <option value="$PROJECT_DIR$/kafka" />
+            <option value="$PROJECT_DIR$/loan_management" />
+            <option value="$PROJECT_DIR$/manufacturing" />
+            <option value="$PROJECT_DIR$/pos" />
+            <option value="$PROJECT_DIR$/processors" />
+            <option value="$PROJECT_DIR$/production" />
+            <option value="$PROJECT_DIR$/project" />
+            <option value="$PROJECT_DIR$/request" />
+            <option value="$PROJECT_DIR$/service" />
+            <option value="$PROJECT_DIR$/store" />
+            <option value="$PROJECT_DIR$/telegram" />
+            <option value="$PROJECT_DIR$/warehouse" />
+            <option value="$PROJECT_DIR$/withholding_engine" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

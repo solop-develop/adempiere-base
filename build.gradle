@@ -50,6 +50,7 @@ dependencies {
     api project(':pos')
     api project(':withholding_engine')
     api project(':grpc_utils')
+    api project(':service')
 }
 
 def entityType = 'D'
