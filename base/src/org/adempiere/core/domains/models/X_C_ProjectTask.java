@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.                                     *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net                                                  *
- * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
@@ -22,23 +21,21 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
-import org.compiere.model.I_Persistent;
-import org.compiere.model.MTable;
-import org.compiere.model.PO;
-import org.compiere.model.POInfo;
+
+import org.compiere.model.*;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Model for C_ProjectTask
  *  @author Adempiere (generated) 
- *  @version Release 3.9.4 - $Id$ */
-public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent 
+ *  @version Release 3.9.3 - $Id$ */
+public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20210707L;
 
     /** Standard Constructor */
     public X_C_ProjectTask (Properties ctx, int C_ProjectTask_ID, String trxName)
@@ -46,9 +43,9 @@ public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
       super (ctx, C_ProjectTask_ID, trxName);
       /** if (C_ProjectTask_ID == 0)
         {
+			setCommittedAmt (Env.ZERO);
 			setC_ProjectPhase_ID (0);
 			setC_ProjectTask_ID (0);
-			setCommittedAmt (Env.ZERO);
 			setName (null);
 			setPlannedAmt (Env.ZERO);
 			setProjInvoiceRule (null);
@@ -88,7 +85,7 @@ public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
 
 	public org.adempiere.core.domains.models.I_AD_Org getAD_OrgTrx() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Org)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Org.Table_Name)
+		return (org.adempiere.core.domains.models.I_AD_Org) MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Org.Table_Name)
 			.getPO(getAD_OrgTrx_ID(), get_TrxName());	}
 
 	/** Set Trx Organization.
@@ -210,6 +207,26 @@ public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Committed Amount.
+		@param CommittedAmt 
+		The (legal) commitment amount
+	  */
+	public void setCommittedAmt (BigDecimal CommittedAmt)
+	{
+		set_Value (COLUMNNAME_CommittedAmt, CommittedAmt);
+	}
+
+	/** Get Committed Amount.
+		@return The (legal) commitment amount
+	  */
+	public BigDecimal getCommittedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CommittedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	public org.adempiere.core.domains.models.I_C_Order getC_Order() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_Order)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Order.Table_Name)
@@ -266,9 +283,9 @@ public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException
+	public I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ProjectPhase)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ProjectPhase.Table_Name)
+		return (I_C_ProjectPhase)MTable.get(getCtx(), I_C_ProjectPhase.Table_Name)
 			.getPO(getC_ProjectPhase_ID(), get_TrxName());	}
 
 	/** Set Project Phase.
@@ -294,9 +311,9 @@ public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ProjectStatus getC_ProjectStatus() throws RuntimeException
+	public I_C_ProjectStatus getC_ProjectStatus() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ProjectStatus)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ProjectStatus.Table_Name)
+		return (I_C_ProjectStatus)MTable.get(getCtx(), I_C_ProjectStatus.Table_Name)
 			.getPO(getC_ProjectStatus_ID(), get_TrxName());	}
 
 	/** Set Project Status.
@@ -322,32 +339,9 @@ public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set Project Task.
-		@param C_ProjectTask_ID 
-		Actual Project Task in a Phase
-	  */
-	public void setC_ProjectTask_ID (int C_ProjectTask_ID)
-	{
-		if (C_ProjectTask_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_C_ProjectTask_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_C_ProjectTask_ID, Integer.valueOf(C_ProjectTask_ID));
-	}
-
-	/** Get Project Task.
-		@return Actual Project Task in a Phase
-	  */
-	public int getC_ProjectTask_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_ProjectTask_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_ProjectTaskCategory getC_ProjectTaskCategory() throws RuntimeException
+	public I_C_ProjectTaskCategory getC_ProjectTaskCategory() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ProjectTaskCategory)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ProjectTaskCategory.Table_Name)
+		return (I_C_ProjectTaskCategory)MTable.get(getCtx(), I_C_ProjectTaskCategory.Table_Name)
 			.getPO(getC_ProjectTaskCategory_ID(), get_TrxName());	}
 
 	/** Set Project Task Category.
@@ -368,6 +362,29 @@ public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
 	public int getC_ProjectTaskCategory_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_ProjectTaskCategory_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Project Task.
+		@param C_ProjectTask_ID 
+		Actual Project Task in a Phase
+	  */
+	public void setC_ProjectTask_ID (int C_ProjectTask_ID)
+	{
+		if (C_ProjectTask_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_C_ProjectTask_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_C_ProjectTask_ID, Integer.valueOf(C_ProjectTask_ID));
+	}
+
+	/** Get Project Task.
+		@return Actual Project Task in a Phase
+	  */
+	public int getC_ProjectTask_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_ProjectTask_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -427,26 +444,6 @@ public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Committed Amount.
-		@param CommittedAmt 
-		The (legal) commitment amount
-	  */
-	public void setCommittedAmt (BigDecimal CommittedAmt)
-	{
-		set_Value (COLUMNNAME_CommittedAmt, CommittedAmt);
-	}
-
-	/** Get Committed Amount.
-		@return The (legal) commitment amount
-	  */
-	public BigDecimal getCommittedAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CommittedAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	/** Set Deadline.
@@ -1020,9 +1017,9 @@ public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_PP_Order getPP_Order() throws RuntimeException
+	public I_PP_Order getPP_Order() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_PP_Order)MTable.get(getCtx(), org.adempiere.core.domains.models.I_PP_Order.Table_Name)
+		return (I_PP_Order)MTable.get(getCtx(), I_PP_Order.Table_Name)
 			.getPO(getPP_Order_ID(), get_TrxName());	}
 
 	/** Set Manufacturing Order.
@@ -1048,9 +1045,9 @@ public class X_C_ProjectTask extends PO implements I_C_ProjectTask, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException
+	public I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_PP_Product_BOM)MTable.get(getCtx(), org.adempiere.core.domains.models.I_PP_Product_BOM.Table_Name)
+		return (I_PP_Product_BOM)MTable.get(getCtx(), I_PP_Product_BOM.Table_Name)
 			.getPO(getPP_Product_BOM_ID(), get_TrxName());	}
 
 	/** Set BOM & Formula.

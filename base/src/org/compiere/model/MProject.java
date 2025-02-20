@@ -16,19 +16,18 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import org.adempiere.core.domains.models.I_C_ProjectIssue;
-import org.adempiere.core.domains.models.I_C_ProjectLine;
-import org.adempiere.core.domains.models.I_C_ProjectPhase;
-import org.adempiere.core.domains.models.X_C_Project;
-import org.adempiere.core.domains.models.X_I_Project;
+import org.adempiere.core.domains.models.*;
 import org.compiere.util.CCache;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -42,6 +41,9 @@ import org.eevolution.model.MProjectMember;
  *  <a href="https://github.com/adempiere/adempiere/issues/1478">
  *  <li>Add support to create request based on Standard Request Type setting on Project Type #1478
  *	@version $Id: MProject.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
+ *	@author Carlos Parada, cparada@erpya.com, ERPCyA http://www.erpya.com
+ *  	<a href="https://github.com/adempiere/adempiere/issues/2117">
+ *		@see FR [ 2117 ] Add Support to Price List on Project</a>
  */
 public class MProject extends X_C_Project
 {
@@ -337,8 +339,14 @@ public class MProject extends X_C_Project
 	 */
 	public int getM_PriceList_ID()
 	{
-		if (getM_PriceList_Version_ID() == 0)
+		//FR [ 2117 ]
+		if (super.get_ValueAsInt("M_PriceList_ID") == 0 
+				&& getM_PriceList_Version_ID() == 0)
 			return 0;
+		
+		if (super.get_ValueAsInt("M_PriceList_ID") != 0)
+			m_M_PriceList_ID = super.get_ValueAsInt("M_PriceList_ID");
+		
 		if (m_M_PriceList_ID > 0)
 			return m_M_PriceList_ID;
 		//
@@ -364,8 +372,22 @@ public class MProject extends X_C_Project
 	 */
 	public List<MProjectLine> getLines()
 	{
+		return getLines("");
+	}	//	getLines
+	
+	/**************************************************************************
+	 * 	Get Project Lines
+	 *	@return Array of lines
+	 */
+	public List<MProjectLine> getLines(String whereClause)
+	{
 		//FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
-		final String whereClause = "C_Project_ID=?";
+		//final String whereClause = "C_Project_ID=?";
+		if (whereClause==null)
+			whereClause = "C_Project_ID=?";
+		else
+			whereClause += " AND C_Project_ID=?";
+		
 		return new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause, get_TrxName())
 			.setParameters(getC_Project_ID())
 			.setOrderBy("Line")
@@ -491,7 +513,7 @@ public class MProject extends X_C_Project
 
 	/**
 	 *	Set Project Type and Category.
-	 * 	If Service Project copy Projet Type Phase/Tasks
+	 * 	If Service Project copy Project Type Phase/Tasks
 	 *	@param type project type
 	 */
 	public void setProjectType (MProjectType type)
@@ -500,10 +522,48 @@ public class MProject extends X_C_Project
 			return;
 		setC_ProjectType_ID(Integer.toString(type.getC_ProjectType_ID()));
 		setProjectCategory(type.getProjectCategory());
-		createRequest(type);
-		copyPhasesFrom(type);
+		if (type.get_ValueAsString("ProjectBased").equals("L")) {
+			createLinesFromType(type,0);
+		}else {
+			createRequest(type);
+			copyPhasesFrom(type);
+		}
 	}	//	setProjectType
 
+
+	/**
+	 * Create Lines from Project Type 
+	 * @param type
+	 * @param Parent_ID
+	 */
+	private void createLinesFromType(MProjectType type, int Parent_ID) {
+		if (type == null)
+			return;
+		List<MStandardProjectLine> standardLines = MStandardProjectLine.getNodes(type, Parent_ID);
+		List<MProjectLine> pLines = new ArrayList<MProjectLine>();
+		
+		standardLines.stream()
+				.forEach(stdPLine ->{
+					MProjectLine pLine = new MProjectLine(this,stdPLine);
+					pLine.save();
+					pLines.add(pLine);
+				});
+		
+		
+		pLines.stream()
+				.forEach(pLine ->{
+					MStandardProjectLine stdPLine = (MStandardProjectLine) pLine.getC_StandardProjectLine().getParent();
+					if (stdPLine.get_ID()!=0) {
+						MProjectLine parentPLine =pLines.stream()
+												.filter(parent ->  
+													parent.getC_StandardProjectLine_ID() ==stdPLine.getC_StandardProjectLine_ID())
+												.findFirst()
+												.get(); 
+						pLine.setParent_ID(parentPLine.get_ID());
+						pLine.save();
+					}
+				});
+	}
 
 	/**
 	 *	Copy Phases from Type
@@ -569,6 +629,9 @@ public class MProject extends X_C_Project
 				setC_Currency_ID(pl.getC_Currency_ID());
 		}
 		
+		if (is_ValueChanged("C_ProjectCategory_ID"))
+			setProjectCategory(getC_ProjectCategory().getProjectCategory());
+		
 		return true;
 	}	//	beforeSave
 	
@@ -622,4 +685,533 @@ public class MProject extends X_C_Project
 		return (MInvoice[]) qry.list().toArray();
 	}
 
+	public String updateProjectPerformanceCalculation() {
+
+		MProjectPerformance pp;
+
+		String sql = "SELECT C_Project_Performance_ID FROM C_Project_Performance WHERE C_Project_ID = " + get_ID();
+		int pp_ID= DB.getSQLValueEx(get_TrxName(), sql);
+
+		if(pp_ID > 0){
+			pp = new MProjectPerformance(getCtx(), pp_ID, get_TrxName());
+		} else {
+			pp = new MProjectPerformance(getCtx(), 0, get_TrxName());
+			pp.setC_Project_ID(getC_Project_ID());
+			pp.saveEx();
+		}
+
+		BigDecimal result = Env.ZERO;
+		result = this.calcLineNetAmt();
+		pp.set_ValueOfColumn("ProjectPriceListRevenuePlanned", (Object)result.setScale(2, 4));
+		result = this.calcActualamt();
+		pp.set_ValueOfColumn("ProjectOfferedRevenuePlanned", (Object)result.setScale(2, 4));
+
+		//update planned costs
+		result = calcPlannedCostMaterial(getC_Project_ID());
+		pp.set_ValueOfColumn("PlannedCostMaterial", result.setScale(2, BigDecimal.ROUND_HALF_UP));
+		result = calcPlannedCostResource(getC_Project_ID());
+		pp.set_ValueOfColumn("PlannedCostResource", result.setScale(2, BigDecimal.ROUND_HALF_UP));
+		result = calcPlannedCostTools(getC_Project_ID());
+		pp.set_ValueOfColumn("PlannedCostTools", result.setScale(2, BigDecimal.ROUND_HALF_UP));
+
+		result = this.calcCostOrRevenuePlanned(this.getC_Project_ID(), false, false);
+		pp.set_ValueOfColumn("CostPlanned", (Object)result.setScale(2, 4));
+		result = this.calcCostOrRevenueActual(this.getC_Project_ID(), false, false);
+		pp.set_ValueOfColumn("CostAmt", (Object)result.setScale(2, 4));
+		result = this.calcNotInvoicedCostOrRevenue(this.getC_Project_ID(), false, false);
+		pp.set_ValueOfColumn("CostNotInvoiced", (Object)result.setScale(2, 4));
+		final BigDecimal costExtrapolated = this.calcCostOrRevenueExtrapolated(this.getC_Project_ID(), false, false);
+		pp.set_ValueOfColumn("CostExtrapolated", (Object)costExtrapolated.setScale(2, 4));
+		result = this.calcCostOrRevenuePlanned(this.getC_Project_ID(), true, false);
+		pp.set_ValueOfColumn("RevenuePlanned", (Object)result.setScale(2, 4));
+		result = this.calcCostOrRevenueActual(this.getC_Project_ID(), true, false);
+		pp.set_ValueOfColumn("RevenueAmt", (Object)result.setScale(2, 4));
+		result = this.calcNotInvoicedCostOrRevenue(this.getC_Project_ID(), true, false);
+		pp.set_ValueOfColumn("RevenueNotInvoiced", (Object)result.setScale(2, 4));
+		final BigDecimal revenueExtrapolated = this.calcCostOrRevenueExtrapolated(this.getC_Project_ID(), true, false);
+		pp.set_ValueOfColumn("RevenueExtrapolated", (Object)revenueExtrapolated.setScale(2, 4));
+		final BigDecimal costIssueProduct = this.calcCostIssueProduct(this.getC_Project_ID(), false);
+		pp.set_ValueOfColumn("CostIssueProduct", (Object)costIssueProduct.setScale(2, 4));
+		final BigDecimal costIssueResource = this.calcCostIssueResource(this.getC_Project_ID(), false);
+		pp.set_ValueOfColumn("CostIssueResource", (Object)costIssueResource.setScale(2, 4));
+		final BigDecimal costIssueInventory = this.calcCostIssueInventory(this.getC_Project_ID(), false);
+		pp.set_ValueOfColumn("CostIssueInventory", (Object)costIssueInventory.setScale(2, 4));
+		pp.set_ValueOfColumn("CostIssueSum", (Object)costIssueProduct.add(costIssueResource).add(costIssueInventory).setScale(2, 4));
+		pp.set_ValueOfColumn("CostDiffExcecution", (Object)((BigDecimal)pp.get_Value("CostPlanned")).subtract(costIssueProduct).subtract(costIssueInventory).setScale(2, 4));
+		final BigDecimal sumCosts = costExtrapolated.add(costIssueResource).add(costIssueInventory);
+		final BigDecimal grossMargin = revenueExtrapolated.subtract(sumCosts);
+		pp.set_ValueOfColumn("GrossMargin", (Object)grossMargin.setScale(2, 4));
+		if (sumCosts.compareTo(Env.ZERO) == 0 && revenueExtrapolated.compareTo(Env.ZERO) == 0) {
+			pp.set_ValueOfColumn("Margin", (Object)Env.ZERO);
+		}
+		else if (sumCosts.compareTo(Env.ZERO) != 0) {
+			if (revenueExtrapolated.compareTo(Env.ZERO) != 0) {
+				pp.set_ValueOfColumn("Margin", (Object)revenueExtrapolated.divide(sumCosts, 6, 4).subtract(Env.ONE).multiply(Env.ONEHUNDRED).setScale(2, 4));
+			}
+			else {
+				pp.set_ValueOfColumn("Margin", (Object)Env.ONEHUNDRED.negate());
+			}
+		}
+		else {
+			pp.set_ValueOfColumn("Margin", (Object)Env.ONEHUNDRED);
+		}
+		BigDecimal grossMarginLL = Env.ZERO;
+		if (this.isSummary()) {
+			BigDecimal costPlannedLL = this.calcCostOrRevenuePlannedSons(this.getC_Project_ID(), false, true);
+			pp.set_Value("CostPlannedLL", (Object)costPlannedLL.setScale(2, 4));
+			BigDecimal costAmtLL = this.calcCostOrRevenueActualSons(this.getC_Project_ID(), false, true);
+			pp.set_Value("CostAmtLL", (Object)costAmtLL.setScale(2, 4));
+			BigDecimal costNotInvoicedLL = this.calcNotInvoicedCostOrRevenueSons(this.getC_Project_ID(), false, true);
+			pp.set_Value("CostNotInvoicedLL", (Object)costNotInvoicedLL.setScale(2, 4));
+			BigDecimal costExtrapolatedLL = this.calcCostOrRevenueExtrapolatedSons(this.getC_Project_ID(), false, true);
+			pp.set_Value("CostExtrapolatedLL", (Object)costExtrapolatedLL.setScale(2, 4));
+			BigDecimal revenuePlannedLL = this.calcCostOrRevenuePlannedSons(this.getC_Project_ID(), true, true);
+			pp.set_ValueOfColumn("RevenuePlannedLL", (Object)revenuePlannedLL.setScale(2, 4));
+			BigDecimal revenueAmtLL = this.calcCostOrRevenueActualSons(this.getC_Project_ID(), true, true);
+			pp.set_ValueOfColumn("RevenueAmtLL", (Object)revenueAmtLL.setScale(2, 4));
+			BigDecimal revenueNotInvoicedLL = this.calcNotInvoicedCostOrRevenueSons(this.getC_Project_ID(), true, true);
+			pp.set_ValueOfColumn("RevenueNotInvoicedLL", (Object)revenueNotInvoicedLL.setScale(2, 4));
+			BigDecimal revenueExtrapolatedLL = this.calcCostOrRevenueExtrapolatedSons(this.getC_Project_ID(), true, true);
+			pp.set_ValueOfColumn("RevenueExtrapolatedLL", (Object)revenueExtrapolatedLL.setScale(2, 4));
+			BigDecimal costIssueProductLL = this.calcCostIssueProductSons(this.getC_Project_ID(), true);
+			pp.set_ValueOfColumn("CostIssueProductLL", (Object)costIssueProductLL.setScale(2, 4));
+			BigDecimal costIssueResourceLL = this.calcCostIssueResourceSons(this.getC_Project_ID(), true);
+			pp.set_ValueOfColumn("CostIssueResourceLL", (Object)costIssueResourceLL.setScale(2, 4));
+			BigDecimal costIssueInventoryLL = this.calcCostIssueInventorySons(this.getC_Project_ID(), true);
+			pp.set_ValueOfColumn("CostIssueInventoryLL", (Object)costIssueInventoryLL.setScale(2, 4));
+			BigDecimal costIssueSumLL = costIssueProductLL.add(costIssueResourceLL).add(costIssueInventoryLL).setScale(2, 4);
+			pp.set_ValueOfColumn("CostIssueSumLL", (Object)costIssueSumLL.setScale(2, 4));
+			BigDecimal costDiffExcecutionLL = costPlannedLL.subtract(costIssueProductLL).subtract(costIssueInventoryLL).setScale(2, 4);
+			pp.set_ValueOfColumn("CostDiffExcecutionLL", (Object)costDiffExcecutionLL.setScale(2, 4));
+			grossMarginLL = revenueExtrapolatedLL.subtract(costExtrapolatedLL).subtract(costIssueResourceLL).subtract(costIssueInventoryLL);
+			if (grossMarginLL == null) {
+				grossMarginLL = Env.ZERO;
+			}
+			pp.set_ValueOfColumn("GrossMarginLL", (Object)grossMarginLL.setScale(2, 4));
+			pp.saveEx();
+			final BigDecimal costActualFather = (BigDecimal)this.get_Value("CostAmt");
+			final BigDecimal costPlannedFather = (BigDecimal)this.get_Value("CostPlanned");
+			final BigDecimal costExtrapolatedFather = (BigDecimal)this.get_Value("CostExtrapolated");
+			final BigDecimal revenueExtrapolatedSons = (BigDecimal)this.get_Value("RevenueExtrapolatedLL");
+			final BigDecimal weightFather = (BigDecimal)this.get_Value("Weight");
+			final BigDecimal volumeFather = (BigDecimal)this.get_Value("Volume");
+			final List<MProject> projectsOfFather = new Query(this.getCtx(), "C_Project", "C_Project_Parent_ID=?", this.get_TrxName()).setParameters(new Object[] { this.getC_Project_ID() }).list();
+			for (final MProject sonProject : projectsOfFather) {
+				final BigDecimal revenueExtrapolatedSon = (BigDecimal)sonProject.get_Value("RevenueExtrapolated");
+				final BigDecimal weight = (BigDecimal)sonProject.get_Value("Weight");
+				final BigDecimal volume = (BigDecimal)sonProject.get_Value("volume");
+				BigDecimal shareRevenue = Env.ZERO;
+				BigDecimal shareWeight = Env.ZERO;
+				BigDecimal shareVolume = Env.ZERO;
+				if (revenueExtrapolatedSon != null && revenueExtrapolatedSons != null && revenueExtrapolatedSons.longValue() != 0L) {
+					shareRevenue = revenueExtrapolatedSon.divide(revenueExtrapolatedSons, 5, 5);
+				}
+				if (weight != null && weightFather != null && weightFather.longValue() != 0L) {
+					shareWeight = weight.divide(weightFather, 5, 5);
+				}
+				if (volume != null && volumeFather != null && volumeFather.longValue() != 0L) {
+					shareVolume = volume.divide(volumeFather, 5, 5);
+				}
+				this.calcCostPlannedInherited(sonProject, costPlannedFather, costActualFather, costExtrapolatedFather, shareVolume, shareWeight, shareRevenue);
+				costPlannedLL = costPlannedLL.add((sonProject.get_Value("CostPlannedLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("CostPlannedLL")));
+				costAmtLL = costAmtLL.add((sonProject.get_Value("CostAmtLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("CostAmtLL")));
+				costNotInvoicedLL = costNotInvoicedLL.add((sonProject.get_Value("CostNotInvoicedLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("CostNotInvoicedLL")));
+				costExtrapolatedLL = costExtrapolatedLL.add((sonProject.get_Value("CostExtrapolatedLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("CostExtrapolatedLL")));
+				revenuePlannedLL = revenuePlannedLL.add((sonProject.get_Value("RevenuePlannedLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("RevenuePlannedLL")));
+				revenueAmtLL = revenueAmtLL.add((sonProject.get_Value("RevenueAmtLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("RevenueAmtLL")));
+				revenueNotInvoicedLL = revenueNotInvoicedLL.add((sonProject.get_Value("RevenueNotInvoicedLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("RevenueNotInvoicedLL")));
+				revenueExtrapolatedLL = revenueExtrapolatedLL.add((sonProject.get_Value("RevenueExtrapolatedLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("RevenueExtrapolatedLL")));
+				costIssueProductLL = costIssueProductLL.add((sonProject.get_Value("CostIssueProductLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("CostIssueProductLL")));
+				costIssueResourceLL = costIssueResourceLL.add((sonProject.get_Value("CostIssueResourceLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("CostIssueResourceLL")));
+				costIssueInventoryLL = costIssueInventoryLL.add((sonProject.get_Value("CostIssueInventoryLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("CostIssueInventoryLL")));
+				costIssueSumLL = costIssueSumLL.add((sonProject.get_Value("CostIssueSumLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("CostIssueSumLL")));
+				costDiffExcecutionLL = costDiffExcecutionLL.add((sonProject.get_Value("CostDiffExcecutionLL") == null) ? Env.ZERO : ((BigDecimal)sonProject.get_Value("CostDiffExcecutionLL")));
+			}
+			pp.set_ValueOfColumn("CostPlannedLL", (Object)costPlannedLL.setScale(2, 4));
+			pp.set_ValueOfColumn("CostAmtLL", (Object)costAmtLL.setScale(2, 4));
+			pp.set_ValueOfColumn("CostNotInvoicedLL", (Object)costNotInvoicedLL.setScale(2, 4));
+			pp.set_ValueOfColumn("CostExtrapolatedLL", (Object)costExtrapolatedLL.setScale(2, 4));
+			pp.set_ValueOfColumn("RevenuePlannedLL", (Object)revenuePlannedLL.setScale(2, 4));
+			pp.set_ValueOfColumn("RevenueAmtLL", (Object)revenueAmtLL.setScale(2, 4));
+			pp.set_ValueOfColumn("RevenueNotInvoicedLL", (Object)revenueNotInvoicedLL.setScale(2, 4));
+			pp.set_ValueOfColumn("RevenueExtrapolatedLL", (Object)revenueExtrapolatedLL.setScale(2, 4));
+			pp.set_ValueOfColumn("CostIssueProductLL", (Object)costIssueProductLL.setScale(2, 4));
+			pp.set_ValueOfColumn("CostIssueResourceLL", (Object)costIssueResourceLL.setScale(2, 4));
+			pp.set_ValueOfColumn("CostIssueInventoryLL", (Object)costIssueInventoryLL.setScale(2, 4));
+			pp.set_ValueOfColumn("CostIssueSumLL", (Object)costIssueSumLL.setScale(2, 4));
+			pp.set_ValueOfColumn("CostDiffExcecutionLL", (Object)costDiffExcecutionLL.setScale(2, 4));
+			grossMarginLL = revenueExtrapolatedLL.subtract(costExtrapolatedLL).subtract(costIssueResourceLL).subtract(costIssueInventoryLL);
+			if (grossMarginLL == null) {
+				grossMarginLL = Env.ZERO;
+			}
+			pp.set_ValueOfColumn("GrossMarginLL", (Object)grossMarginLL.setScale(2, 4));
+			pp.saveEx();
+		}
+		final int C_Project_Parent_ID = pp.get_ValueAsInt("C_Project_Parent_ID");
+		if (C_Project_Parent_ID != 0) {
+			final MProject fatherProject = new MProject(this.getCtx(), C_Project_Parent_ID, this.get_TrxName());
+			result = this.calcCostOrRevenuePlannedSons(C_Project_Parent_ID, false, true);
+			fatherProject.set_Value("CostPlannedLL", (Object)result.setScale(2, 4));
+			result = this.calcCostOrRevenueActualSons(C_Project_Parent_ID, false, true);
+			fatherProject.set_Value("CostAmtLL", (Object)result.setScale(2, 4));
+			result = this.calcCostOrRevenueExtrapolatedSons(C_Project_Parent_ID, false, true);
+			fatherProject.set_Value("CostExtrapolatedLL", (Object)result.setScale(2, 4));
+			fatherProject.saveEx();
+			final BigDecimal costActualFather2 = (BigDecimal)fatherProject.get_Value("CostAmt");
+			final BigDecimal costPlannedFather2 = (BigDecimal)fatherProject.get_Value("CostPlanned");
+			final BigDecimal costExtrapolatedFather2 = (BigDecimal)fatherProject.get_Value("CostExtrapolated");
+			final BigDecimal revenueAmtSons = this.calcCostOrRevenueActualSons(C_Project_Parent_ID, true, true);
+			final BigDecimal revenuePlannedSons = this.calcCostOrRevenuePlannedSons(C_Project_Parent_ID, true, true);
+			final BigDecimal revenueAllExtrapolated = this.calcCostOrRevenueExtrapolatedSons(C_Project_Parent_ID, true, true);
+			final BigDecimal weightFather2 = (BigDecimal)fatherProject.get_Value("Weight");
+			final BigDecimal volumeFather2 = (BigDecimal)fatherProject.get_Value("Volume");
+			final List<MProject> projectsOfFather2 = new Query(this.getCtx(), "C_Project", "C_Project_Parent_ID=?", this.get_TrxName()).setParameters(new Object[] { C_Project_Parent_ID }).list();
+			for (final MProject sonProject2 : projectsOfFather2) {
+				final BigDecimal revenueExtrapolatedSon2 = (BigDecimal)sonProject2.get_Value("RevenueExtrapolated");
+				final BigDecimal weight2 = (BigDecimal)sonProject2.get_Value("Weight");
+				BigDecimal volume2 = (BigDecimal)sonProject2.get_Value("volume");
+				if (volume2 == null) {
+					volume2 = Env.ZERO;
+				}
+				BigDecimal shareRevenue2 = Env.ZERO;
+				BigDecimal shareWeight2 = Env.ZERO;
+				BigDecimal shareVolume2 = Env.ZERO;
+				if (revenueExtrapolatedSon2 != null && revenueAllExtrapolated.longValue() != 0L) {
+					shareRevenue2 = revenueExtrapolatedSon2.divide(revenueAllExtrapolated, 5, 5);
+				}
+				if (weight2 != null && weightFather2 != null && weightFather2.longValue() != 0L) {
+					shareWeight2 = weight2.divide(weightFather2, 5, 5);
+				}
+				if (volume2 != null && volumeFather2 != null && volumeFather2.longValue() != 0L) {
+					shareVolume2 = volume2.divide(volumeFather2, 5, 5);
+				}
+				this.calcCostPlannedInherited(sonProject2, costPlannedFather2, costActualFather2, costExtrapolatedFather2, shareVolume2, shareWeight2, shareRevenue2);
+			}
+			fatherProject.set_ValueOfColumn("RevenuePlannedLL", (Object)revenuePlannedSons.setScale(2, 4));
+			fatherProject.set_ValueOfColumn("RevenueAmtLL", (Object)revenueAmtSons.setScale(2, 4));
+			fatherProject.set_ValueOfColumn("RevenueExtrapolatedLL", (Object)revenueAllExtrapolated.setScale(2, 4));
+			fatherProject.saveEx();
+			this.saveEx();
+			pp.saveEx();
+		}
+		BigDecimal grossMarginTotal = ((BigDecimal)pp.get_Value("GrossMargin")).add(grossMarginLL);
+		if (grossMarginTotal == null) {
+			grossMarginTotal = Env.ZERO;
+		}
+		pp.set_ValueOfColumn("GrossMarginTotal", (Object)grossMarginTotal.setScale(2, 4));
+		final Date date = new Date();
+		final long time = date.getTime();
+		final Timestamp timestamp = new Timestamp(time);
+		pp.set_ValueOfColumn("DateLastRun", (Object)timestamp);
+		pp.saveEx();
+		return "";
+	}
+
+	private BigDecimal calcPlannedCostMaterial(int c_Project_ID) {
+
+		String sql = "SELECT COALESCE(SUM(CostAmt),0)" +
+				" FROM c_projectline" +
+				" WHERE CostElementType = 'M' AND c_project_id = ?";
+
+		BigDecimal result = DB.getSQLValueBDEx(null, sql.toString(), c_Project_ID);
+		return result;
+	}
+
+	private BigDecimal calcPlannedCostResource(int c_Project_ID) {
+
+		String sql = "SELECT COALESCE(SUM(CostAmt),0)" +
+				" FROM c_projectline" +
+				" WHERE CostElementType = 'R' AND c_project_id = ?";
+
+		BigDecimal result = DB.getSQLValueBDEx(null, sql.toString(), c_Project_ID);
+		return result;
+	}
+
+	private BigDecimal calcPlannedCostTools(int c_Project_ID) {
+
+		String sql = "SELECT COALESCE(SUM(CostAmt),0)" +
+				" FROM c_projectline" +
+				" WHERE CostElementType = 'T' AND c_project_id = ?";
+
+		BigDecimal result = DB.getSQLValueBDEx(null, sql.toString(), c_Project_ID);
+		return result;
+	}
+
+	private BigDecimal calcCostOrRevenueActual(final int c_Project_ID, final boolean isSOTrx, final boolean isParentProject) {
+		final String expresion = "LineNetAmtRealInvoiceLine(c_invoiceline_ID)";
+		final StringBuffer whereClause = new StringBuffer();
+		whereClause.append("c_invoice_ID IN (SELECT c_invoice_ID FROM c_invoice WHERE docstatus IN ('CO','CL') ");
+		whereClause.append(" AND issotrx = ");
+		whereClause.append(isSOTrx ? " 'Y') " : " 'N') ");
+		if (isParentProject) {
+			whereClause.append("AND c_project_ID IN (SELECT c_project_ID FROM c_project WHERE c_project_parent_ID =?) ");
+		}
+		else {
+			whereClause.append("AND c_project_ID = ? ");
+		}
+		BigDecimal result = Env.ZERO;
+		result = new Query(this.getCtx(), "C_InvoiceLine", whereClause.toString(), this.get_TrxName()).setParameters(new Object[] { c_Project_ID }).aggregate(expresion, "SUM");
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostOrRevenuePlanned(final int c_Project_ID, final boolean isSOTrx, final boolean isParentProject) {
+		final StringBuffer sql = new StringBuffer();
+		sql.append("SELECT COALESCE (SUM( ");
+		sql.append("CASE ");
+		sql.append("     WHEN pl.istaxincluded = 'Y' ");
+		sql.append("     THEN ");
+		sql.append("         CASE ");
+		sql.append("         WHEN o.docstatus in ('CL') ");
+		sql.append("         THEN ((ol.qtyinvoiced * ol.priceactual)- (ol.qtyinvoiced * ol.priceactual)/(1+(t.rate/100)))  ");
+		sql.append("         ELSE (ol.linenetamt- ol.linenetamt/(1+(t.rate/100))) ");
+		sql.append("         END ");
+		sql.append("     ELSE ");
+		sql.append("         CASE ");
+		sql.append("         WHEN o.docstatus IN ('CL') ");
+		sql.append("         THEN (ol.qtyinvoiced * ol.priceactual) ");
+		sql.append("         ELSE (ol.linenetamt) ");
+		sql.append("         END ");
+		sql.append("     END ");
+		sql.append("),0) ");
+		sql.append("FROM C_OrderLine ol ");
+		sql.append("INNER JOIN c_order o ON ol.c_order_ID = o.c_order_ID ");
+		sql.append("INNER JOIN m_pricelist pl ON o.m_pricelist_ID = pl.m_pricelist_ID ");
+		sql.append("INNER JOIN c_tax t ON ol.c_tax_ID = t.c_tax_ID ");
+		sql.append("WHERE ");
+		sql.append("o.c_order_ID IN  (select c_order_ID from c_order where docstatus in ('CO','CL','IP')   AND issotrx =  ? ) ");
+		if (isParentProject) {
+			sql.append("AND o.c_project_ID IN (SELECT c_project_ID FROM c_project WHERE c_project_parent_ID =?) ");
+		}
+		else {
+			sql.append("AND o.c_project_ID = ? ");
+		}
+		final ArrayList<Object> params = new ArrayList<Object>();
+		params.add(isSOTrx);
+		params.add(c_Project_ID);
+		final BigDecimal result = DB.getSQLValueBDEx((String)null, sql.toString(), (List)params);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcNotInvoicedCostOrRevenue(final int c_Project_ID, final boolean isSOTrx, final boolean isParentProject) {
+		final StringBuffer sql = new StringBuffer();
+		sql.append("SELECT COALESCE (SUM( ");
+		sql.append("CASE ");
+		sql.append("     WHEN pl.istaxincluded = 'Y' ");
+		sql.append("     THEN ");
+		sql.append("         CASE ");
+		sql.append("         WHEN o.docstatus in ('CL') ");
+		sql.append("         THEN 0  ");
+		sql.append("         ELSE ((ol.qtyordered-ol.qtyinvoiced)*ol.Priceactual) - (taxamt_Notinvoiced(ol.c_Orderline_ID)) ");
+		sql.append("         END ");
+		sql.append("     ELSE ");
+		sql.append("         CASE ");
+		sql.append("         WHEN o.docstatus IN ('CL') ");
+		sql.append("         THEN 0 ");
+		sql.append("         ELSE ((ol.qtyordered-ol.qtyinvoiced)*ol.Priceactual) ");
+		sql.append("         END ");
+		sql.append("     END ");
+		sql.append("),0) ");
+		sql.append("FROM C_OrderLine ol ");
+		sql.append("INNER JOIN c_order o ON ol.c_order_ID = o.c_order_ID ");
+		sql.append("INNER JOIN m_pricelist pl ON o.m_pricelist_ID = pl.m_pricelist_ID ");
+		sql.append("INNER JOIN c_tax t ON ol.c_tax_ID = t.c_tax_ID ");
+		sql.append("WHERE ");
+		sql.append("o.c_order_ID IN  (select c_order_ID from c_order where docstatus in ('CO','CL','IP')   AND issotrx =  ? ) ");
+		if (isParentProject) {
+			sql.append("AND o.c_project_ID IN (SELECT c_project_ID FROM c_project WHERE c_project_parent_ID =?) ");
+		}
+		else {
+			sql.append("AND o.c_project_ID = ? ");
+		}
+		final ArrayList<Object> params = new ArrayList<Object>();
+		params.add(isSOTrx);
+		params.add(c_Project_ID);
+		final BigDecimal result = DB.getSQLValueBDEx((String)null, sql.toString(), (List)params);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostOrRevenueExtrapolated(final int c_Project_ID, final boolean isSOTrx, final boolean isParentProject) {
+		final BigDecimal result = this.calcNotInvoicedCostOrRevenue(c_Project_ID, isSOTrx, isParentProject).add(this.calcCostOrRevenueActual(c_Project_ID, isSOTrx, isParentProject));
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostOrRevenueActualSons(final int c_Project_Parent_ID, final boolean isSOTrx, final boolean isParentProject) {
+		final BigDecimal result = this.calcCostOrRevenueActual(c_Project_Parent_ID, isSOTrx, isParentProject);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostOrRevenuePlannedSons(final int c_Project_Parent_ID, final boolean isSOTrx, final boolean isParentProject) {
+		final BigDecimal result = this.calcCostOrRevenuePlanned(c_Project_Parent_ID, isSOTrx, isParentProject);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcNotInvoicedCostOrRevenueSons(final int c_Project_Parent_ID, final boolean isSOTrx, final boolean isParentProject) {
+		final BigDecimal result = this.calcNotInvoicedCostOrRevenue(c_Project_Parent_ID, isSOTrx, isParentProject);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostOrRevenueExtrapolatedSons(final int c_Project_Parent_ID, final boolean isSOTrx, final boolean isParentProject) {
+		final BigDecimal result = this.calcNotInvoicedCostOrRevenueSons(c_Project_Parent_ID, isSOTrx, isParentProject).add(this.calcCostOrRevenueActualSons(c_Project_Parent_ID, isSOTrx, isParentProject));
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private Boolean calcCostPlannedInherited(final MProject son, BigDecimal costPlannedFather, BigDecimal costActualFather, BigDecimal costExtrapolatedFather, BigDecimal shareVolume, BigDecimal shareWeight, BigDecimal shareRevenue) {
+		if (son == null) {
+			return true;
+		}
+		if (costPlannedFather == null) {
+			costPlannedFather = Env.ZERO;
+		}
+		if (costActualFather == null) {
+			costActualFather = Env.ZERO;
+		}
+		if (costExtrapolatedFather == null) {
+			costExtrapolatedFather = Env.ZERO;
+		}
+		if (shareVolume == null) {
+			shareVolume = Env.ZERO;
+		}
+		if (shareWeight == null) {
+			shareWeight = Env.ZERO;
+		}
+		if (shareRevenue == null) {
+			shareRevenue = Env.ZERO;
+		}
+		BigDecimal result = Env.ZERO;
+		result = costPlannedFather.multiply(shareRevenue);
+		son.set_Value("CostPlannedInherited", (Object)result);
+		result = costPlannedFather.multiply(shareVolume);
+		son.set_Value("CostPlannedVolumeInherited", (Object)result);
+		result = costPlannedFather.multiply(shareWeight);
+		son.set_Value("CostPlannedWeightInherited", (Object)result);
+		result = costActualFather.multiply(shareRevenue);
+		son.set_Value("CostAmtInherited", (Object)result);
+		result = costActualFather.multiply(shareVolume);
+		son.set_Value("CostAmtVolumeInherited", (Object)result);
+		result = costActualFather.multiply(shareWeight);
+		son.set_Value("CostAmtWeightInherited", (Object)result);
+		result = costExtrapolatedFather.multiply(shareRevenue);
+		son.set_Value("CostExtrapolatedInherited", (Object)result);
+		result = costExtrapolatedFather.multiply(shareVolume);
+		son.set_Value("CostExtrapolatedVolInherited", (Object)result);
+		result = costExtrapolatedFather.multiply(shareWeight);
+		son.set_Value("CostExtrapolatedWghtInherited", (Object)result);
+		if (son.getC_Project_ID() != this.getC_Project_ID()) {
+			son.saveEx();
+		}
+		return true;
+	}
+
+	private BigDecimal calcActualamt() {
+		final StringBuffer sql = new StringBuffer();
+		sql.append("select sum (actualamt) ");
+		sql.append("from c_project_calculate_price ");
+		sql.append("where C_Project_ID=?");
+		final ArrayList<Object> params = new ArrayList<Object>();
+		params.add(this.getC_Project_ID());
+		final BigDecimal result = DB.getSQLValueBDEx((String)null, sql.toString(), (List)params);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcLineNetAmt() {
+		final StringBuffer sql = new StringBuffer();
+		sql.append("select sum (linenetamt) ");
+		sql.append("from c_project_calculate_price ");
+		sql.append("where C_Project_ID=?");
+		final ArrayList<Object> params = new ArrayList<Object>();
+		params.add(this.getC_Project_ID());
+		final BigDecimal result = DB.getSQLValueBDEx((String)null, sql.toString(), (List)params);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostIssueProduct(final int c_Project_ID, final boolean isParentProject) {
+		final StringBuffer sql = new StringBuffer();
+		sql.append("SELECT COALESCE(SUM(cd.CostAmt + cd.CostAmtLL + cd.CostAdjustment + cd.CostAdjustmentLL),0) ");
+		sql.append("FROM C_ProjectIssue pi ");
+		sql.append("INNER JOIN M_CostDetail cd ON pi.c_ProjectIssue_ID=cd.c_ProjectIssue_ID ");
+		if (isParentProject) {
+			sql.append("WHERE pi.C_Project_ID IN (SELECT c_project_ID FROM c_project WHERE c_project_parent_ID =?) ");
+		}
+		else {
+			sql.append("WHERE pi.C_Project_ID=? ");
+		}
+		sql.append("AND pi.M_InOutLine_ID IS NOT NULL ");
+		final ArrayList<Object> params = new ArrayList<Object>();
+		params.add(c_Project_ID);
+		final BigDecimal result = DB.getSQLValueBDEx((String)null, sql.toString(), (List)params);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostIssueResource(final int c_Project_ID, final boolean isParentProject) {
+		final StringBuffer sql = new StringBuffer();
+		sql.append("SELECT SUM (pl.committedamt) ");
+		sql.append("FROM c_projectline pl ");
+		sql.append("INNER JOIN c_project p ON (pl.c_project_id=p.c_project_id) ");
+		if (isParentProject) {
+			sql.append("WHERE pl.C_Project_ID IN (SELECT c_project_ID FROM c_project WHERE c_project_parent_ID =?) ");
+		}
+		else {
+			sql.append("WHERE pl.C_Project_ID=? ");
+		}
+		sql.append("AND pl.c_projectissue_ID IS NOT NULL ");
+		sql.append("AND pl.s_timeexpenseline_ID IS NOT NULL ");
+		final ArrayList<Object> params = new ArrayList<Object>();
+		params.add(c_Project_ID);
+		final BigDecimal result = DB.getSQLValueBDEx((String)null, sql.toString(), (List)params);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostIssueInventory(final int c_Project_ID, final boolean isParentProject) {
+		final StringBuffer sql = new StringBuffer();
+		sql.append("SELECT COALESCE(SUM(cd.CostAmt + cd.CostAmtLL + cd.CostAdjustment + cd.CostAdjustmentLL),0) ");
+		sql.append("FROM C_ProjectIssue pi ");
+		sql.append("INNER JOIN M_CostDetail cd ON pi.c_ProjectIssue_ID=cd.c_ProjectIssue_ID ");
+		if (isParentProject) {
+			sql.append("WHERE pi.C_Project_ID IN (SELECT c_project_ID FROM c_project WHERE c_project_parent_ID =?) ");
+		}
+		else {
+			sql.append("WHERE pi.C_Project_ID=? ");
+		}
+		sql.append("AND pi.M_InOutLine_ID IS  NULL ");
+		sql.append("AND pi.s_timeexpenseline_ID IS NULL ");
+		final ArrayList<Object> params = new ArrayList<Object>();
+		params.add(c_Project_ID);
+		final BigDecimal result = DB.getSQLValueBDEx((String)null, sql.toString(), (List)params);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostIssueProductSons(final int c_Project_Parent_ID, final boolean isParentProject) {
+		final BigDecimal result = this.calcCostIssueProduct(c_Project_Parent_ID, isParentProject);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostIssueResourceSons(final int c_Project_Parent_ID, final boolean isParentProject) {
+		final BigDecimal result = this.calcCostIssueResource(c_Project_Parent_ID, isParentProject);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private BigDecimal calcCostIssueInventorySons(final int c_Project_Parent_ID, final boolean isParentProject) {
+		final BigDecimal result = this.calcCostIssueInventory(c_Project_Parent_ID, isParentProject);
+		return (result == null) ? Env.ZERO : result;
+	}
+
+	private String updateProjectPerformanceCalculationSons(final int c_Project_ID, final int levelCount) {
+		if (levelCount == 5) {
+			return "";
+		}
+		final String whereClause = "C_Project_Parent_ID=?";
+		final ArrayList<Object> params = new ArrayList<Object>();
+		params.add(c_Project_ID);
+		final List<MProject> childrenProjects = new Query(this.getCtx(), "C_Project", whereClause, this.get_TrxName()).setParameters((List)params).list();
+		final MProject project = new MProject(this.getCtx(), c_Project_ID, this.get_TrxName());
+		if (childrenProjects == null) {
+			project.updateProjectPerformanceCalculation();
+			return "";
+		}
+		for (final MProject childProject : childrenProjects) {
+			this.updateProjectPerformanceCalculationSons(childProject.getC_Project_ID(), levelCount + 1);
+		}
+		project.updateProjectPerformanceCalculation();
+		return "";
+	}
 }	//	MProject

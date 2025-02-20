@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.                                     *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net                                                  *
- * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
@@ -22,6 +21,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
+
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
@@ -31,14 +31,14 @@ import org.compiere.util.KeyNamePair;
 
 /** Generated Model for C_Project
  *  @author Adempiere (generated) 
- *  @version Release 3.9.4 - $Id$ */
-public class X_C_Project extends PO implements I_C_Project, I_Persistent 
+ *  @version Release 3.9.3 - $Id$ */
+public class X_C_Project extends PO implements I_C_Project, I_Persistent
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20210707L;
 
     /** Standard Constructor */
     public X_C_Project (Properties ctx, int C_Project_ID, String trxName)
@@ -47,9 +47,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
       /** if (C_Project_ID == 0)
         {
 			setC_Currency_ID (0);
-			setC_Project_ID (0);
 			setCommittedAmt (Env.ZERO);
 			setCommittedQty (Env.ZERO);
+			setC_Project_ID (0);
 			setInvoicedAmt (Env.ZERO);
 			setInvoicedQty (Env.ZERO);
 			setIsCommitCeiling (false);
@@ -99,7 +99,7 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 
 	public org.adempiere.core.domains.models.I_AD_Color getAD_Color() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Color)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Color.Table_Name)
+		return (org.adempiere.core.domains.models.I_AD_Color) MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Color.Table_Name)
 			.getPO(getAD_Color_ID(), get_TrxName());	}
 
 	/** Set System Color.
@@ -383,6 +383,63 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Committed Amount.
+		@param CommittedAmt 
+		The (legal) commitment amount
+	  */
+	public void setCommittedAmt (BigDecimal CommittedAmt)
+	{
+		set_Value (COLUMNNAME_CommittedAmt, CommittedAmt);
+	}
+
+	/** Get Committed Amount.
+		@return The (legal) commitment amount
+	  */
+	public BigDecimal getCommittedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CommittedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Committed Quantity.
+		@param CommittedQty 
+		The (legal) commitment Quantity
+	  */
+	public void setCommittedQty (BigDecimal CommittedQty)
+	{
+		set_Value (COLUMNNAME_CommittedQty, CommittedQty);
+	}
+
+	/** Get Committed Quantity.
+		@return The (legal) commitment Quantity
+	  */
+	public BigDecimal getCommittedQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CommittedQty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Copy From.
+		@param CopyFrom 
+		Copy From Record
+	  */
+	public void setCopyFrom (String CopyFrom)
+	{
+		set_Value (COLUMNNAME_CopyFrom, CopyFrom);
+	}
+
+	/** Get Copy From.
+		@return Copy From Record
+	  */
+	public String getCopyFrom () 
+	{
+		return (String)get_Value(COLUMNNAME_CopyFrom);
+	}
+
 	public org.adempiere.core.domains.models.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_PaymentTerm)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_PaymentTerm.Table_Name)
@@ -434,29 +491,6 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 	public int getC_Phase_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_Phase_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Project.
-		@param C_Project_ID 
-		Financial Project
-	  */
-	public void setC_Project_ID (int C_Project_ID)
-	{
-		if (C_Project_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_C_Project_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
-	}
-
-	/** Get Project.
-		@return Financial Project
-	  */
-	public int getC_Project_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_Project_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -546,6 +580,29 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Project.
+		@param C_Project_ID 
+		Financial Project
+	  */
+	public void setC_Project_ID (int C_Project_ID)
+	{
+		if (C_Project_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_C_Project_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+	}
+
+	/** Get Project.
+		@return Financial Project
+	  */
+	public int getC_Project_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Project_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.adempiere.core.domains.models.I_C_ProjectStatus getC_ProjectStatus() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_ProjectStatus)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ProjectStatus.Table_Name)
@@ -591,6 +648,23 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return (String)get_Value(COLUMNNAME_C_ProjectType_ID);
 	}
 
+	/** Set Create lines from.
+		@param CreateFrom 
+		Process which will generate a new document lines based on an existing document
+	  */
+	public void setCreateFrom (String CreateFrom)
+	{
+		set_Value (COLUMNNAME_CreateFrom, CreateFrom);
+	}
+
+	/** Get Create lines from.
+		@return Process which will generate a new document lines based on an existing document
+	  */
+	public String getCreateFrom () 
+	{
+		return (String)get_Value(COLUMNNAME_CreateFrom);
+	}
+
 	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_SalesRegion)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SalesRegion.Table_Name)
@@ -617,80 +691,6 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Committed Amount.
-		@param CommittedAmt 
-		The (legal) commitment amount
-	  */
-	public void setCommittedAmt (BigDecimal CommittedAmt)
-	{
-		set_Value (COLUMNNAME_CommittedAmt, CommittedAmt);
-	}
-
-	/** Get Committed Amount.
-		@return The (legal) commitment amount
-	  */
-	public BigDecimal getCommittedAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CommittedAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Committed Quantity.
-		@param CommittedQty 
-		The (legal) commitment Quantity
-	  */
-	public void setCommittedQty (BigDecimal CommittedQty)
-	{
-		set_Value (COLUMNNAME_CommittedQty, CommittedQty);
-	}
-
-	/** Get Committed Quantity.
-		@return The (legal) commitment Quantity
-	  */
-	public BigDecimal getCommittedQty () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CommittedQty);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Copy From.
-		@param CopyFrom 
-		Copy From Record
-	  */
-	public void setCopyFrom (String CopyFrom)
-	{
-		set_Value (COLUMNNAME_CopyFrom, CopyFrom);
-	}
-
-	/** Get Copy From.
-		@return Copy From Record
-	  */
-	public String getCopyFrom () 
-	{
-		return (String)get_Value(COLUMNNAME_CopyFrom);
-	}
-
-	/** Set Create lines from.
-		@param CreateFrom 
-		Process which will generate a new document lines based on an existing document
-	  */
-	public void setCreateFrom (String CreateFrom)
-	{
-		set_Value (COLUMNNAME_CreateFrom, CreateFrom);
-	}
-
-	/** Get Create lines from.
-		@return Process which will generate a new document lines based on an existing document
-	  */
-	public String getCreateFrom () 
-	{
-		return (String)get_Value(COLUMNNAME_CreateFrom);
 	}
 
 	/** Set Contract Date.
@@ -1346,6 +1346,27 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 			 return Env.ZERO;
 		return bd;
 	}
+
+	/** ProjectBased AD_Reference_ID=54136 */
+	public static final int PROJECTBASED_AD_Reference_ID=54136;
+	/** Lines = L */
+	public static final String PROJECTBASED_Lines = "L";
+	/** Phases / Tasks = PT */
+	public static final String PROJECTBASED_PhasesTasks = "PT";
+//	/** Set Project Based.
+//		@param ProjectBased Project Based	  */
+//	public void setProjectBased (String ProjectBased)
+//	{
+//
+//		set_Value (COLUMNNAME_ProjectBased, ProjectBased);
+//	}
+//
+//	/** Get Project Based.
+//		@return Project Based	  */
+//	public String getProjectBased ()
+//	{
+//		return (String)get_Value(COLUMNNAME_ProjectBased);
+//	}
 
 	/** ProjectCategory AD_Reference_ID=288 */
 	public static final int PROJECTCATEGORY_AD_Reference_ID=288;

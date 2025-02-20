@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add Project Reference Mandatory" ReleaseNo="1.2.0" SeqNo="10430">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="5766" Table="AD_Column">
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true" oldValue="C_Project_ID"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" oldValue="19">30</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isOldNull="true">141</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="9860" Table="AD_Column">
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="15450" Table="AD_Column">
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="93242" Table="AD_Column">
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="93243" Table="AD_Column">
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="15451" Table="AD_Column">
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="93244" Table="AD_Column">
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="106" Action="U" Record_ID="361" Table="AD_Tab">
+        <Data AD_Column_ID="166" Column="IsSingleRow" oldValue="false">true</Data>
+        <Data AD_Column_ID="1183" Column="HasTree" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="106" Action="U" Record_ID="54376" Table="AD_Tab">
+        <Data AD_Column_ID="166" Column="IsSingleRow" oldValue="false">true</Data>
+        <Data AD_Column_ID="1183" Column="HasTree" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="288" Action="I" Record_ID="50008" Table="AD_Tree">
+        <Data AD_Column_ID="84434" Column="UUID">4e4e906f-00ef-4209-ab63-23646620026a</Data>
+        <Data AD_Column_ID="2862" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2861" Column="Updated">2025-02-19 19:37:53.94</Data>
+        <Data AD_Column_ID="2866" Column="TreeType">CU</Data>
+        <Data AD_Column_ID="10031" Column="Processing">false</Data>
+        <Data AD_Column_ID="93149" Column="Parent_Column_ID">93263</Data>
+        <Data AD_Column_ID="2864" Column="Name">Project Lines</Data>
+        <Data AD_Column_ID="14508" Column="IsDefault">true</Data>
+        <Data AD_Column_ID="6576" Column="IsAllNodes">true</Data>
+        <Data AD_Column_ID="2863" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2865" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="2860" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2859" Column="Created">2025-02-19 19:37:53.94</Data>
+        <Data AD_Column_ID="2856" Column="AD_Tree_ID">50008</Data>
+        <Data AD_Column_ID="65355" Column="AD_Table_ID">434</Data>
+        <Data AD_Column_ID="2858" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="93150" Column="AD_ColumnSortOrder_ID">93262</Data>
+        <Data AD_Column_ID="2857" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="104772" Table="AD_Field">
+        <Data AD_Column_ID="2007" Column="IsReadOnly" oldValue="true">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isOldNull="true">Y</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isOldNull="true">@C_Project_ID@</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

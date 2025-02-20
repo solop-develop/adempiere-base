@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add Project Line Type Mandatory Name" ReleaseNo="1.2.0" SeqNo="10420">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="93202" Table="AD_Column">
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">Name</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="108" Action="U" Record_ID="52976" Table="AD_Val_Rule">
+        <Data AD_Column_ID="193" Column="Code" oldValue="C_ProjectLineType.ProjectLineType = @ProjectLineType@">C_ProjectLineType.ProjectLineType = '@ProjectLineType@'</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
