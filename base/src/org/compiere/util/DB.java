@@ -53,15 +53,8 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
@@ -2603,6 +2596,6 @@ public final class DB
 	 * @return
 	 */
 	public static Try<Void> runResultSet(String trxName , String sql , java.util.List<Object> parameters , ResultSetRunnable<ResultSet> resultSet) {
-		return runResultSetFunction.apply(trxName , sql ,  io.vavr.collection.List.ofAll(parameters) , resultSet);
+		return runResultSetFunction.apply(trxName , sql ,  io.vavr.collection.List.ofAll(Optional.ofNullable(parameters).orElse(List.of())) , resultSet);
 	}
 }	//	DB
