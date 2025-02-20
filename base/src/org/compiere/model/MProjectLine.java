@@ -16,6 +16,10 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.*;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -25,13 +29,6 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_C_ProjectLine;
-import org.adempiere.core.domains.models.I_C_ProjectPhase;
-import org.adempiere.core.domains.models.I_C_ProjectTask;
-import org.adempiere.core.domains.models.X_C_ProjectLine;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 /**
  * 	Project Line Model
@@ -52,7 +49,7 @@ public class MProjectLine extends X_C_ProjectLine
 	 *	@param C_ProjectLine_ID id
 	 *	@param trxName transaction
 	 */
-	public MProjectLine (Properties ctx, int C_ProjectLine_ID, String trxName)
+	public MProjectLine(Properties ctx, int C_ProjectLine_ID, String trxName)
 	{
 		super (ctx, C_ProjectLine_ID, trxName);
 		if (C_ProjectLine_ID == 0)
@@ -78,7 +75,7 @@ public class MProjectLine extends X_C_ProjectLine
 	 * 	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MProjectLine (Properties ctx, ResultSet rs, String trxName)
+	public MProjectLine(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MProjectLine
@@ -87,7 +84,7 @@ public class MProjectLine extends X_C_ProjectLine
 	 * 	Parent Constructor
 	 *	@param project parent
 	 */
-	public MProjectLine (MProject project)
+	public MProjectLine(MProject project)
 	{
 		this (project.getCtx(), 0, project.get_TrxName());
 		setClientOrg(project);
@@ -229,7 +226,10 @@ public class MProjectLine extends X_C_ProjectLine
 	{
 		if (getLine() == 0)
 			setLine();
-		
+		if(newRecord || is_ValueChanged("C_ProjectLineType_ID")) {
+			X_C_ProjectLineType type = new X_C_ProjectLineType(getCtx(), getC_ProjectLineType_ID(), get_TrxName());
+			set_ValueOfColumn("ProjectLineType", type.get_Value("ProjectLineType"));
+		}
 		//	Planned Amount
 		setPlannedAmt(getPlannedQty().multiply(getPlannedPrice()));
 		
