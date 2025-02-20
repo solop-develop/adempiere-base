@@ -16,29 +16,17 @@
  *****************************************************************************/
 package org.compiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-
-import org.compiere.model.MColumn;
-import org.compiere.model.MTable;
-import org.compiere.model.MTree;
-import org.compiere.model.MTree_Node;
-import org.compiere.model.MTree_NodeBP;
-import org.compiere.model.MTree_NodeMM;
-import org.compiere.model.MTree_NodePR;
-import org.compiere.model.MTree_NodeU1;
-import org.compiere.model.MTree_NodeU2;
-import org.compiere.model.MTree_NodeU3;
-import org.compiere.model.MTree_NodeU4;
-import org.compiere.model.PO;
-import org.compiere.model.Query;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.*;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 
 /**
  *	Tree Maintenance	
@@ -85,7 +73,7 @@ public class TreeMaintenance extends SvrProcess
 		if (m_AD_Tree_ID == 0)
 			throw new IllegalArgumentException("Tree_ID = 0");
 		MTree tree = new MTree (getCtx(), m_AD_Tree_ID, get_TrxName());	
-		if (tree == null || tree.getAD_Tree_ID() == 0)
+		if (tree.getAD_Tree_ID() == 0)
 			throw new IllegalArgumentException("No Tree -" + tree);
 		//
 		if (MTree.TREETYPE_BoM.equals(tree.getTreeType()))
@@ -97,13 +85,11 @@ public class TreeMaintenance extends SvrProcess
 	 *  Verify Tree
 	 * 	@param tree tree
 	 */
-	private String verifyTree (MTree tree)
-	{
+	private String verifyTree (MTree tree) {
 		String nodeTableName = tree.getNodeTableName();
 		String sourceTableName = tree.getSourceTableName();
 		String sourceTableKey = sourceTableName + "_ID";
 		int AD_Client_ID = tree.getAD_Client_ID();
-		//int C_Element_ID = 0;
 		
 		List<Integer> treeElements = new ArrayList<Integer>();
 		
@@ -118,23 +104,25 @@ public class TreeMaintenance extends SvrProcess
 				+ "WHERE AD_Tree_ID= ?"  ;
 			
 			int[] elements = DB.getIDsEx(null, sql, tree.getAD_Tree_ID());
-			for (int i : elements) 
+			if (elements.length <= 0) {
+				throw new AdempiereException("@C_Element_ID@ @NotFound@");
+			}
+			for (int i : elements) {
 				treeElements.add(i);
-			
-			if (elements.length <= 0)
-				throw new IllegalStateException("No Account Element found");
-		}else
+			}
+		} else{
 			treeElements.add(0);
+		}
 		
 		AtomicReference<Boolean> ok = new AtomicReference<>();
 		ok.set(true);
 		
-		treeElements.forEach(treeElement ->{
-			MColumn parentColumn = null;
+		treeElements.forEach(treeElement -> {
+			AtomicReference<String> parentColumnName = new AtomicReference<>();
 			MTable sourceTable	 = null;
 			String[] keyColumns = null;
 			if (tree.getParent_Column_ID() > 0) {
-				parentColumn = MColumn.get(Env.getCtx(), tree.getParent_Column_ID());
+				parentColumnName.set(MColumn.getColumnName(Env.getCtx(), tree.getParent_Column_ID()));
 				sourceTable = MTable.get(Env.getCtx(),tree.getAD_Table_ID());
 				keyColumns = sourceTable.getKeyColumns();
 			}
@@ -157,7 +145,7 @@ public class TreeMaintenance extends SvrProcess
 			addLog(0,null, new BigDecimal(deletes), tree.getName()+ " Deleted");
 			if (tree.isAllNodes()) {
 				//	Insert new
-				int inserts = 0;
+				AtomicInteger inserts = new AtomicInteger();
 				sql = new StringBuffer();
 				sql.append("SELECT ").append(sourceTableKey)
 					.append(" FROM ").append(sourceTableName)
@@ -169,83 +157,34 @@ public class TreeMaintenance extends SvrProcess
 					.append(" WHERE AD_Tree_ID=").append(tree.getAD_Tree_ID()).append(")");
 				log.finer(sql.toString());
 				//
-				
-				PreparedStatement pstmt = null;
-				try
-				{
-					pstmt = DB.prepareStatement(sql.toString(), get_TrxName());
-					ResultSet rs = pstmt.executeQuery();
-					while (rs.next())
-					{
-						int Node_ID = rs.getInt(1);
-						PO node = null;
-						if (nodeTableName.equals("AD_TreeNode"))
-							node = new MTree_Node(tree, Node_ID);
-						else if (nodeTableName.equals("AD_TreeNodeBP"))
-							node = new MTree_NodeBP(tree, Node_ID);
-						else if (nodeTableName.equals("AD_TreeNodePR"))
-							node = new MTree_NodePR(tree, Node_ID);
-						else if (nodeTableName.equals("AD_TreeNodeMM"))
-							node = new MTree_NodeMM(tree, Node_ID);
-						else if (nodeTableName.equals("AD_TreeNodeU1"))
-							node = new MTree_NodeU1(tree, Node_ID);
-						else if (nodeTableName.equals("AD_TreeNodeU2"))
-							node = new MTree_NodeU2(tree, Node_ID);
-						else if (nodeTableName.equals("AD_TreeNodeU3"))
-							node = new MTree_NodeU3(tree, Node_ID);
-						else if (nodeTableName.equals("AD_TreeNodeU4"))
-							node = new MTree_NodeU4(tree, Node_ID);
-						//				
-						if (node == null)
+				DB.runResultSet(get_TrxName(), sql.toString(), null, resulset -> {
+					while (resulset.next()) {
+						int nodeId = resulset.getInt(1);
+						PO node = getPO(tree, nodeTableName, nodeId);
+						//
+						if (node == null) {
 							log.log(Level.SEVERE, "No Model for " + nodeTableName);
-						else
-						{
+						} else {
 							//FR [ 729 ]
-							if (keyColumns!=null 
-									&& keyColumns.length>0
-										&& parentColumn!=null) {
-								String whereClause = keyColumns[0] + "=" + node.get_ID();
-								PO table = MTable.get(Env.getCtx(), sourceTableName).getPO(whereClause, node.get_TrxName());
-								if (table.get_ID() > 0) {
-									if (node.get_ID()>0)
-										node.set_ValueOfColumn("Parent_ID", table.get_ValueAsInt(parentColumn.getColumnName()));
-									else 
-										node.set_ValueOfColumn("Parent_ID", null);
+							if (node.get_ID() > 0) {
+								if(parentColumnName.get() != null) {
+									node.set_ValueOfColumn("Parent_ID", node.get_ValueAsInt(parentColumnName.get()));
 								}
+							} else {
+								node.set_ValueOfColumn("Parent_ID", null);
 							}
-							
-							if (node.save())
-								inserts++;
-							else
-								log.log(Level.SEVERE, "Could not add to " + tree + " Node_ID=" + Node_ID);
+							if (node.save()) {
+								inserts.getAndIncrement();
+							} else {
+								log.log(Level.SEVERE, "Could not add to " + tree + " Node_ID=" + nodeId);
+							}
 						}
 					}
-					rs.close();
-					
-					
-					sql = new StringBuffer();
-					pstmt.close();
-					pstmt = null;
-				}
-				catch (Exception e)
-				{
-					log.log(Level.SEVERE, "verifyTree", e);
-					ok.set(false);
-				}
-				try
-				{
-					if (pstmt != null)
-						pstmt.close();
-					pstmt = null;
-				}
-				catch (Exception e)
-				{
-					pstmt = null;
-				}
+				});
 				//FR [ 729 ]
-				if (keyColumns!=null 
-						&& keyColumns.length>0
-						 	&& parentColumn!=null) {
+				if (keyColumns != null
+						&& keyColumns.length > 0
+						 	&& parentColumnName.get() != null) {
 					
 					String elementFilter = "";
 					if (C_Element_ID > 0)
@@ -253,7 +192,7 @@ public class TreeMaintenance extends SvrProcess
 					
 					String whereClause = "NOT EXISTS (SELECT 1 FROM " + sourceTableName + " st "
 														+ "WHERE " +nodeTableName + ".Node_ID = st." + keyColumns[0] + " "
-														+ "AND " + nodeTableName + ".Parent_ID = COALESCE(st." + parentColumn.getColumnName() + ",0) " 
+														+ "AND " + nodeTableName + ".Parent_ID = COALESCE(st." + parentColumnName.get() + ",0) "
 														+ elementFilter
 														+ ") " +
 										 "AND EXISTS (SELECT 1 FROM " + sourceTableName + " st "
@@ -267,9 +206,9 @@ public class TreeMaintenance extends SvrProcess
 						if (table.get_ID() > 0) {
 							if (node.get_ID()>0) {
 								if (node.get_ValueAsInt("Parent_ID")>0)
-									table.set_ValueOfColumn(parentColumn.getColumnName(), node.get_ValueAsInt("Parent_ID"));
+									table.set_ValueOfColumn(parentColumnName.get(), node.get_ValueAsInt("Parent_ID"));
 								else 
-									table.set_ValueOfColumn(parentColumn.getColumnName(), null);
+									table.set_ValueOfColumn(parentColumnName.get(), null);
 								
 								table.saveEx();
 							}
@@ -278,10 +217,32 @@ public class TreeMaintenance extends SvrProcess
 					}
 					addLog(0,null, new BigDecimal(updated), tree.getName()+ " Updated");
 				}
-				addLog(0,null, new BigDecimal(inserts), tree.getName()+ " Inserted");
+				addLog(0,null, new BigDecimal(inserts.get()), tree.getName()+ " Inserted");
 			}
 		});
 		return tree.getName() + (ok.get() ? " OK" : " Error");
 	}	//	verifyTree
+
+	private static PO getPO(MTree tree, String nodeTableName, int nodeId) {
+		PO node = null;
+		if (nodeTableName.equals("AD_TreeNode")) {
+			node = new MTree_Node(tree, nodeId);
+		} else if (nodeTableName.equals("AD_TreeNodeBP")) {
+			node = new MTree_NodeBP(tree, nodeId);
+		} else if (nodeTableName.equals("AD_TreeNodePR")) {
+			node = new MTree_NodePR(tree, nodeId);
+		} else if (nodeTableName.equals("AD_TreeNodeMM")) {
+			node = new MTree_NodeMM(tree, nodeId);
+		} else if (nodeTableName.equals("AD_TreeNodeU1")) {
+			node = new MTree_NodeU1(tree, nodeId);
+		} else if (nodeTableName.equals("AD_TreeNodeU2")) {
+			node = new MTree_NodeU2(tree, nodeId);
+		} else if (nodeTableName.equals("AD_TreeNodeU3")) {
+			node = new MTree_NodeU3(tree, nodeId);
+		} else if (nodeTableName.equals("AD_TreeNodeU4")) {
+			node = new MTree_NodeU4(tree, nodeId);
+		}
+		return node;
+	}
 
 }	//	TreeMaintenence
