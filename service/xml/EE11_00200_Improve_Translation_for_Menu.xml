@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Improve Translation for Menu" ReleaseNo="EE11-1.0.0" SeqNo="200">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="120" Action="U" Record_ID="0" Table="AD_Menu_Trl">
+        <Data AD_Column_ID="247" Column="Name" oldValue="Contract Lifecycle Management">Administración de Ciclo de Vida de Contrato</Data>
+        <Data AD_Column_ID="248" Column="Description" oldValue="Is the proactive, methodical management of a contract from initiation through award, compliance, and renewal">Es la gestión proactiva y metódica de un contrato desde su inicio hasta su adjudicación, cumplimiento y renovación</Data>
+        <Data AD_Column_ID="245" Column="AD_Menu_ID" oldValue="54562">54562</Data>
+        <Data AD_Column_ID="246" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="120" Action="U" Record_ID="0" Table="AD_Menu_Trl">
+        <Data AD_Column_ID="247" Column="Name" oldValue="Expense Management">Gestión de Gastos</Data>
+        <Data AD_Column_ID="248" Column="Description" oldValue="Functionality for managing expenses">Funcionalidad para Administración de Gastos</Data>
+        <Data AD_Column_ID="245" Column="AD_Menu_ID" oldValue="54322">54322</Data>
+        <Data AD_Column_ID="246" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="120" Action="U" Record_ID="0" Table="AD_Menu_Trl">
+        <Data AD_Column_ID="247" Column="Name" oldValue="Administración de Ciclo de Vida de Contrato">Gestión de Ciclo de Vida de Contrato</Data>
+        <Data AD_Column_ID="245" Column="AD_Menu_ID" oldValue="54562">54562</Data>
+        <Data AD_Column_ID="246" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add dynamic display rule contract completed and closed" ReleaseNo="EE11-1.0.0" SeqNo="0170">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="108" Action="I" Record_ID="52813" Table="AD_Val_Rule">
+        <Data AD_Column_ID="583" Column="IsActive">true</Data>
+        <Data AD_Column_ID="192" Column="Type">S</Data>
+        <Data AD_Column_ID="193" Column="Code">(IsSOTrx='@IsSOTrx@' AND DocStatus IN ('CO','CL'))</Data>
+        <Data AD_Column_ID="586" Column="Updated">2020-09-08 22:22:15.75</Data>
+        <Data AD_Column_ID="584" Column="Created">2020-09-08 22:22:15.75</Data>
+        <Data AD_Column_ID="188" Column="Name">S_Contract Completed or Closed</Data>
+        <Data AD_Column_ID="189" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="387" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="388" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="187" Column="AD_Val_Rule_ID">52813</Data>
+        <Data AD_Column_ID="7715" Column="EntityType">EE11</Data>
+        <Data AD_Column_ID="587" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="585" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="84460" Column="UUID">96fb640d-2538-4b35-8486-5362723420cf</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89857" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89842" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89848" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89845" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89868" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89866" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89858" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89851" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89864" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89861" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89859" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89872" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89862" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89854" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89870" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52813</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="108" Action="I" Record_ID="52814" Table="AD_Val_Rule">
+        <Data AD_Column_ID="583" Column="IsActive">true</Data>
+        <Data AD_Column_ID="192" Column="Type">S</Data>
+        <Data AD_Column_ID="193" Column="Code">S_ContractLine.S_Contract_ID=@S_Contract_ID@</Data>
+        <Data AD_Column_ID="586" Column="Updated">2020-09-08 22:34:04.107</Data>
+        <Data AD_Column_ID="584" Column="Created">2020-09-08 22:34:04.107</Data>
+        <Data AD_Column_ID="188" Column="Name">S_ContractLine of Contract</Data>
+        <Data AD_Column_ID="189" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="387" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="388" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="187" Column="AD_Val_Rule_ID">52814</Data>
+        <Data AD_Column_ID="7715" Column="EntityType">EE11</Data>
+        <Data AD_Column_ID="587" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="585" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="84460" Column="UUID">5d978d9c-ecd7-4825-95f8-4dc923ddcaed</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89844" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89847" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89869" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89867" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89850" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89856" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89853" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="250" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89865" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="260" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89860" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="270" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89873" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="280" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89863" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="290" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89871" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">52814</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

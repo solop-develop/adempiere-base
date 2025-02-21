@@ -1,0 +1,21 @@
+$schema: https://raw.githubusercontent.com/oyvindberg/bleep/master/schema.json
+$version: 0.0.2
+jvm:
+  name: graalvm-java17
+projects:
+  org.eevolution.service-management:
+    dependencies:
+      - dev.zio::zio:2.0.16
+      - io.github.adempiere:base:3.9.4
+      - io.github.adempiere:manufacturing:3.9.4
+    extends: template-common
+templates:
+  template-common:
+    platform:
+      name: jvm
+    java:
+      options:  --release 11
+    scala:
+      options: -encoding  utf-8 -feature -language:existentials -language:implicitConversions -language:higherKinds -indent -explain -print-lines -deprecation -explain-types -Wunused:all -Wvalue-discard
+      version: 3.3.1
+      strict: true
