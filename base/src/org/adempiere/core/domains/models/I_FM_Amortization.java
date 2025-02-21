@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.                                     *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,19 +12,19 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net                                                  *
- * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
 /** Generated Interface for FM_Amortization
  *  @author Adempiere (generated) 
- *  @version Release 3.9.4
+ *  @version Release 3.9.3
  */
 public interface I_FM_Amortization 
 {
@@ -89,6 +89,73 @@ public interface I_FM_Amortization
 	  */
 	public int getCreatedBy();
 
+    /** Column name CurrentCapitalAmt */
+    public static final String COLUMNNAME_CurrentCapitalAmt = "CurrentCapitalAmt";
+
+	/** Set Current Capital Amount	  */
+	public void setCurrentCapitalAmt (BigDecimal CurrentCapitalAmt);
+
+	/** Get Current Capital Amount	  */
+	public BigDecimal getCurrentCapitalAmt();
+
+    /** Column name CurrentDueDate */
+    public static final String COLUMNNAME_CurrentDueDate = "CurrentDueDate";
+
+	/** Set Current Due Date.
+	  * Date when the payment is due
+	  */
+	public void setCurrentDueDate (Timestamp CurrentDueDate);
+
+	/** Get Current Due Date.
+	  * Date when the payment is due
+	  */
+	public Timestamp getCurrentDueDate();
+
+    /** Column name CurrentDunningAmt */
+    public static final String COLUMNNAME_CurrentDunningAmt = "CurrentDunningAmt";
+
+	/** Set Current Dunning Amount	  */
+	public void setCurrentDunningAmt (BigDecimal CurrentDunningAmt);
+
+	/** Get Current Dunning Amount	  */
+	public BigDecimal getCurrentDunningAmt();
+
+    /** Column name CurrentDunningTaxAmt */
+    public static final String COLUMNNAME_CurrentDunningTaxAmt = "CurrentDunningTaxAmt";
+
+	/** Set Current Dunning Tax Amount	  */
+	public void setCurrentDunningTaxAmt (BigDecimal CurrentDunningTaxAmt);
+
+	/** Get Current Dunning Tax Amount	  */
+	public BigDecimal getCurrentDunningTaxAmt();
+
+    /** Column name CurrentFeeAmt */
+    public static final String COLUMNNAME_CurrentFeeAmt = "CurrentFeeAmt";
+
+	/** Set Current Fee Amount	  */
+	public void setCurrentFeeAmt (BigDecimal CurrentFeeAmt);
+
+	/** Get Current Fee Amount	  */
+	public BigDecimal getCurrentFeeAmt();
+
+    /** Column name CurrentInterestAmt */
+    public static final String COLUMNNAME_CurrentInterestAmt = "CurrentInterestAmt";
+
+	/** Set Current Interest Amount	  */
+	public void setCurrentInterestAmt (BigDecimal CurrentInterestAmt);
+
+	/** Get Current Interest Amount	  */
+	public BigDecimal getCurrentInterestAmt();
+
+    /** Column name CurrentTaxAmt */
+    public static final String COLUMNNAME_CurrentTaxAmt = "CurrentTaxAmt";
+
+	/** Set Current Tax Amount	  */
+	public void setCurrentTaxAmt (BigDecimal CurrentTaxAmt);
+
+	/** Get Current Tax Amount	  */
+	public BigDecimal getCurrentTaxAmt();
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -137,7 +204,7 @@ public interface I_FM_Amortization
 	/** Get Financial Account	  */
 	public int getFM_Account_ID();
 
-	public org.adempiere.core.domains.models.I_FM_Account getFM_Account() throws RuntimeException;
+	public I_FM_Account getFM_Account() throws RuntimeException;
 
     /** Column name FM_Amortization_ID */
     public static final String COLUMNNAME_FM_Amortization_ID = "FM_Amortization_ID";
