@@ -426,7 +426,7 @@ public class MProjectLine extends X_C_ProjectLine
 		final String whereClause = "C_Project_ID = ? AND Parent_ID=?";
 		return new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause, get_TrxName())
 				.setClient_ID()
-				.setParameters(getC_Project_ID(), getC_ProjectPhase_ID())
+				.setParameters(getC_Project_ID(), getC_ProjectLine_ID())
 				.setOrderBy("Line")
 				.list();
 	}
