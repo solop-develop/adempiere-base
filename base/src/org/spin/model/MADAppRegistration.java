@@ -16,15 +16,14 @@
  *****************************************************************************/
 package org.spin.model;
 
-import java.sql.ResultSet;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import org.adempiere.core.domains.models.I_AD_AppRegistration_Para;
 import org.adempiere.core.domains.models.X_AD_AppRegistration;
 import org.compiere.model.Query;
 import org.compiere.util.CCache;
 import org.compiere.util.Env;
+
+import java.sql.ResultSet;
+import java.util.*;
 
 /**
  * @author Yamel Senih, ySenih@erpya.com, ERPCyA http://www.erpya.com
@@ -92,16 +91,19 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 		if (definitionCacheValues.size() == 0) {
 			getAll(ctx, true, trxName);
 		}
-		String key = applicationType;
+
+		int clientId = Env.getAD_Client_ID(ctx);
+		String key = clientId + "#" + applicationType;
 		MADAppRegistration definition = definitionCacheValues.get(key);
 		if (definition != null && definition.get_ID() > 0 )
 			return definition;
 
-		definition =  new Query(ctx, Table_Name , COLUMNNAME_ApplicationType +  "=?", trxName)
-				.setParameters(applicationType)
-				.setOnlyActiveRecords(true)
-				.setOrderBy(COLUMNNAME_Value)
-				.first();
+		definition =  new Query(ctx, Table_Name , COLUMNNAME_ApplicationType + "=? AND AD_Client_ID IN(0, ?)", trxName)
+			.setParameters(applicationType, clientId)
+			.setOnlyActiveRecords(true)
+			.setOrderBy(COLUMNNAME_AD_Client_ID + " DESC")
+			.first()
+		;
 
 		if (definition != null && definition.get_ID() > 0) {
 			definition.set_TrxName(null);
