@@ -16,18 +16,14 @@
  *****************************************************************************/
 package org.spin.model;
 
-import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.stream.Collectors;
-
 import org.adempiere.core.domains.models.I_AD_AppRegistration_Para;
 import org.adempiere.core.domains.models.X_AD_AppRegistration;
 import org.compiere.model.Query;
 import org.compiere.util.CCache;
 import org.compiere.util.Env;
+
+import java.sql.ResultSet;
+import java.util.*;
 
 /**
  * @author Yamel Senih, ySenih@erpya.com, ERPCyA http://www.erpya.com
@@ -71,9 +67,11 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 
 		definition = new Query(ctx , Table_Name , COLUMNNAME_AD_AppRegistration_ID + "=?" , trxName)
 				.setParameters(registrationId)
+				.setOnlyActiveRecords(true)
 				.first();
 		if (definition != null && definition.get_ID() > 0) {
 			String key = definition.getValue();
+			definition.set_TrxName(null);
 			definitionCacheValues.put(key, definition);
 			definitionCacheIds.put(definition.get_ID(), definition);
 		}
@@ -93,17 +91,22 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 		if (definitionCacheValues.size() == 0) {
 			getAll(ctx, true, trxName);
 		}
-		String key = applicationType;
+
+		int clientId = Env.getAD_Client_ID(ctx);
+		String key = clientId + "#" + applicationType;
 		MADAppRegistration definition = definitionCacheValues.get(key);
 		if (definition != null && definition.get_ID() > 0 )
 			return definition;
 
-		definition =  new Query(ctx, Table_Name , COLUMNNAME_ApplicationType +  "=?", trxName)
-				.setParameters(applicationType)
-				.setOrderBy(COLUMNNAME_Value)
-				.first();
+		definition =  new Query(ctx, Table_Name , COLUMNNAME_ApplicationType + "=? AND AD_Client_ID IN(0, ?)", trxName)
+			.setParameters(applicationType, clientId)
+			.setOnlyActiveRecords(true)
+			.setOrderBy(COLUMNNAME_AD_Client_ID + " DESC")
+			.first()
+		;
 
 		if (definition != null && definition.get_ID() > 0) {
+			definition.set_TrxName(null);
 			definitionCacheValues.put(key, definition);
 			definitionCacheIds.put(definition.get_ID() , definition);
 		}
@@ -121,18 +124,18 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 		List<MADAppRegistration> definitionList;
 		if (resetCache || definitionCacheIds.size() == 0 ) {
 			definitionList = new Query(Env.getCtx(), Table_Name, null , trxName)
+					.setOnlyActiveRecords(true)
 					.setOrderBy(COLUMNNAME_Value)
 					.list();
 			definitionList.stream().forEach(definition -> {
 				String key = definition.getValue();
+				definition.set_TrxName(null);
 				definitionCacheIds.put(definition.getAD_AppRegistration_ID(), definition);
 				definitionCacheValues.put(key, definition);
 			});
 			return definitionList;
 		}
-		definitionList = definitionCacheIds.entrySet().stream()
-				.map(activity -> activity.getValue())
-				.collect(Collectors.toList());
+		definitionList = new ArrayList<>(definitionCacheIds.values());
 		return  definitionList;
 	}
 	
@@ -183,8 +186,10 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 		parameters = new HashMap<String, MADAppRegistrationPara>();
 		new Query(getCtx(), I_AD_AppRegistration_Para.Table_Name, COLUMNNAME_AD_AppRegistration_ID + " = ?", get_TrxName())
 			.setParameters(getAD_AppRegistration_ID())
+				.setOnlyActiveRecords(true)
 			.<MADAppRegistrationPara>list().forEach(parameter -> {
-			parameters.put(parameter.getParameterName(), parameter);
+				parameter.set_TrxName(null);
+				parameters.put(parameter.getParameterName(), parameter);
 		});
 	}
 	
@@ -203,6 +208,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 				});
 			}
 		}
+		parameters = null;
 		return super.afterSave(newRecord, success);
 	}
 	
@@ -211,7 +217,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 	 * @return
 	 */
 	public Map<String, MADAppRegistrationPara> getAllParameters(){
-		if (parameters== null)
+		if (parameters == null)
 			loadParameters();
 		
 		return parameters;
