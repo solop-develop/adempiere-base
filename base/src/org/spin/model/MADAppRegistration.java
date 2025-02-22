@@ -72,6 +72,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 				.first();
 		if (definition != null && definition.get_ID() > 0) {
 			String key = definition.getValue();
+			definition.set_TrxName(null);
 			definitionCacheValues.put(key, definition);
 			definitionCacheIds.put(definition.get_ID(), definition);
 		}
@@ -103,6 +104,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 				.first();
 
 		if (definition != null && definition.get_ID() > 0) {
+			definition.set_TrxName(null);
 			definitionCacheValues.put(key, definition);
 			definitionCacheIds.put(definition.get_ID() , definition);
 		}
@@ -125,6 +127,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 					.list();
 			definitionList.stream().forEach(definition -> {
 				String key = definition.getValue();
+				definition.set_TrxName(null);
 				definitionCacheIds.put(definition.getAD_AppRegistration_ID(), definition);
 				definitionCacheValues.put(key, definition);
 			});
@@ -183,7 +186,8 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 			.setParameters(getAD_AppRegistration_ID())
 				.setOnlyActiveRecords(true)
 			.<MADAppRegistrationPara>list().forEach(parameter -> {
-			parameters.put(parameter.getParameterName(), parameter);
+				parameter.set_TrxName(null);
+				parameters.put(parameter.getParameterName(), parameter);
 		});
 	}
 	
@@ -202,6 +206,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 				});
 			}
 		}
+		parameters = null;
 		return super.afterSave(newRecord, success);
 	}
 	
@@ -210,7 +215,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 	 * @return
 	 */
 	public Map<String, MADAppRegistrationPara> getAllParameters(){
-		if (parameters== null)
+		if (parameters == null)
 			loadParameters();
 		
 		return parameters;

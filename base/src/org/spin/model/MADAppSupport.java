@@ -77,6 +77,7 @@ public class MADAppSupport extends X_AD_AppSupport {
 				.first();
 		if (definition != null && definition.get_ID() > 0) {
 			String key = definition.getValue();
+			definition.set_TrxName(null);
 			definitionCacheValues.put(key, definition);
 			definitionCacheIds.put(definition.get_ID(), definition);
 		}
@@ -107,8 +108,8 @@ public class MADAppSupport extends X_AD_AppSupport {
 				.setOnlyActiveRecords(true)
 				.setOrderBy(COLUMNNAME_IsDefault + ", " + COLUMNNAME_Value)
 				.first();
-
 		if (definition != null && definition.get_ID() > 0) {
+			definition.set_TrxName(null);
 			definitionCacheValues.put(key, definition);
 			definitionCacheIds.put(definition.get_ID() , definition);
 		}
@@ -131,6 +132,7 @@ public class MADAppSupport extends X_AD_AppSupport {
 					.list();
 			definitionList.forEach(definition -> {
 				String key = definition.getValue();
+				definition.set_TrxName(null);
 				definitionCacheIds.put(definition.getAD_AppSupport_ID(), definition);
 				definitionCacheValues.put(key, definition);
 			});
