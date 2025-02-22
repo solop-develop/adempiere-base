@@ -17,10 +17,7 @@
 package org.spin.model;
 
 import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.adempiere.core.domains.models.I_AD_AppRegistration_Para;
@@ -71,6 +68,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 
 		definition = new Query(ctx , Table_Name , COLUMNNAME_AD_AppRegistration_ID + "=?" , trxName)
 				.setParameters(registrationId)
+				.setOnlyActiveRecords(true)
 				.first();
 		if (definition != null && definition.get_ID() > 0) {
 			String key = definition.getValue();
@@ -100,6 +98,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 
 		definition =  new Query(ctx, Table_Name , COLUMNNAME_ApplicationType +  "=?", trxName)
 				.setParameters(applicationType)
+				.setOnlyActiveRecords(true)
 				.setOrderBy(COLUMNNAME_Value)
 				.first();
 
@@ -130,9 +129,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 			});
 			return definitionList;
 		}
-		definitionList = definitionCacheIds.entrySet().stream()
-				.map(activity -> activity.getValue())
-				.collect(Collectors.toList());
+		definitionList = new ArrayList<>(definitionCacheIds.values());
 		return  definitionList;
 	}
 	
