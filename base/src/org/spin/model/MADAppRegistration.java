@@ -120,6 +120,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 		List<MADAppRegistration> definitionList;
 		if (resetCache || definitionCacheIds.size() == 0 ) {
 			definitionList = new Query(Env.getCtx(), Table_Name, null , trxName)
+					.setOnlyActiveRecords(true)
 					.setOrderBy(COLUMNNAME_Value)
 					.list();
 			definitionList.stream().forEach(definition -> {
@@ -180,6 +181,7 @@ public class MADAppRegistration extends X_AD_AppRegistration {
 		parameters = new HashMap<String, MADAppRegistrationPara>();
 		new Query(getCtx(), I_AD_AppRegistration_Para.Table_Name, COLUMNNAME_AD_AppRegistration_ID + " = ?", get_TrxName())
 			.setParameters(getAD_AppRegistration_ID())
+				.setOnlyActiveRecords(true)
 			.<MADAppRegistrationPara>list().forEach(parameter -> {
 			parameters.put(parameter.getParameterName(), parameter);
 		});

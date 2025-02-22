@@ -17,7 +17,9 @@
 package org.spin.model;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -71,6 +73,7 @@ public class MADAppSupport extends X_AD_AppSupport {
 
 		definition = new Query(ctx , Table_Name , COLUMNNAME_AD_AppSupport_ID + "=?" , trxName)
 				.setParameters(definitionId)
+				.setOnlyActiveRecords(true)
 				.first();
 		if (definition != null && definition.get_ID() > 0) {
 			String key = definition.getValue();
@@ -101,6 +104,7 @@ public class MADAppSupport extends X_AD_AppSupport {
 
 		definition =  new Query(ctx, Table_Name , COLUMNNAME_ApplicationType +  "=?", trxName)
 				.setParameters(applicationType)
+				.setOnlyActiveRecords(true)
 				.setOrderBy(COLUMNNAME_IsDefault + ", " + COLUMNNAME_Value)
 				.first();
 
@@ -122,18 +126,17 @@ public class MADAppSupport extends X_AD_AppSupport {
 		List<MADAppSupport> definitionList;
 		if (resetCache || definitionCacheIds.size() > 0 ) {
 			definitionList = new Query(Env.getCtx(), Table_Name, null , trxName)
+					.setOnlyActiveRecords(true)
 					.setOrderBy(COLUMNNAME_Value)
 					.list();
-			definitionList.stream().forEach(definition -> {
+			definitionList.forEach(definition -> {
 				String key = definition.getValue();
 				definitionCacheIds.put(definition.getAD_AppSupport_ID(), definition);
 				definitionCacheValues.put(key, definition);
 			});
 			return definitionList;
 		}
-		definitionList = definitionCacheIds.entrySet().stream()
-				.map(activity -> activity.getValue())
-				.collect(Collectors.toList());
+		definitionList = new ArrayList<>(definitionCacheIds.values());
 		return  definitionList;
 	}
 	
