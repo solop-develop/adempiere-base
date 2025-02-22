@@ -17,7 +17,9 @@
 package org.spin.model;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -69,8 +71,10 @@ public class MADTokenDefinition extends X_AD_TokenDefinition {
 
 		definition = new Query(ctx , Table_Name , COLUMNNAME_AD_TokenDefinition_ID + "=?" , trxName)
 				.setParameters(definitionId)
+				.setOnlyActiveRecords(true)
 				.first();
 		if (definition != null && definition.get_ID() > 0) {
+			definition.set_TrxName(null);
 			int clientId = Env.getAD_Client_ID(ctx);
 			String key = clientId + "#" + definition.getValue();
 			definitionCacheValues.put(key, definition);
@@ -101,10 +105,12 @@ public class MADTokenDefinition extends X_AD_TokenDefinition {
 
 		definition =  new Query(ctx, Table_Name , COLUMNNAME_TokenType +  "=? AND AD_Client_ID IN(0, ?)", trxName)
 				.setParameters(tokenType, clientId)
+				.setOnlyActiveRecords(true)
 				.setOrderBy(COLUMNNAME_AD_Client_ID + " DESC")
 				.first();
 
 		if (definition != null && definition.get_ID() > 0) {
+			definition.set_TrxName(null);
 			definitionCacheValues.put(key, definition);
 			definitionCacheIds.put(definition.get_ID() , definition);
 		}
@@ -123,19 +129,19 @@ public class MADTokenDefinition extends X_AD_TokenDefinition {
 		if (resetCache || definitionCacheIds.size() > 0 ) {
 			definitionList = new Query(Env.getCtx(), Table_Name, null , trxName)
 					.setClient_ID()
+					.setOnlyActiveRecords(true)
 					.setOrderBy(COLUMNNAME_Name)
 					.list();
 			definitionList.stream().forEach(definition -> {
 				int clientId = Env.getAD_Client_ID(ctx);
 				String key = clientId + "#" + definition.getValue();
+				definition.set_TrxName(null);
 				definitionCacheIds.put(definition.getAD_TokenDefinition_ID(), definition);
 				definitionCacheValues.put(key, definition);
 			});
 			return definitionList;
 		}
-		definitionList = definitionCacheIds.entrySet().stream()
-				.map(activity -> activity.getValue())
-				.collect(Collectors.toList());
+		definitionList = new ArrayList<>(definitionCacheIds.values());
 		return  definitionList;
 	}
 

@@ -62,7 +62,7 @@ public class MADToken extends X_AD_Token {
 		if(newRecord
 				|| is_ValueChanged(COLUMNNAME_AD_Role_ID)) {
 			if(getAD_Role_ID() > 0) {
-				Optional.ofNullable(MRole.get(getCtx(), getAD_Role_ID())).ifPresent(role -> setClientOrg(role));
+				Optional.of(MRole.get(getCtx(), getAD_Role_ID())).ifPresent(this::setClientOrg);
 			}
 		}
 		return super.beforeSave(newRecord);

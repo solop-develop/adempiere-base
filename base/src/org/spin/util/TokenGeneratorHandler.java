@@ -170,7 +170,6 @@ public class TokenGeneratorHandler {
         //	Not yet implemented
         if (clazz == null) {
             logger.log(Level.SEVERE, "Class not found, Using Standard Class");
-            generator = null;
             throw new Exception("Class for connection not found");
         }
         //
