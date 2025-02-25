@@ -43,9 +43,9 @@ import org.spin.queue.util.QueueManager;
 public class FlushSystemQueue extends FlushSystemQueueAbstract {
 	
 	/**	Counter	*/
-	private AtomicInteger counter = new AtomicInteger();
+	private final AtomicInteger counter = new AtomicInteger();
 	/**	Errors	*/
-	private AtomicInteger errors = new AtomicInteger();
+	private final AtomicInteger errors = new AtomicInteger();
 	
 	@Override
 	protected String doIt() throws Exception {
@@ -58,42 +58,61 @@ public class FlushSystemQueue extends FlushSystemQueueAbstract {
 				parameters.add(getQueueTypeId());
 			}
 			Timestamp now = new Timestamp(System.currentTimeMillis());
-			now = TimeUtil.getDayTime(now, now);
 			whereClause.append(" AND ").append(I_AD_Queue.COLUMNNAME_Updated).append(" < ?");
 			parameters.add(now);
-			AtomicReference<Timestamp> referenceTime = new AtomicReference<Timestamp>(now);
 			//	For batch
-			Trx.run(transactionName -> {
+			MADQueueType queueType = MADQueueType.getById(getCtx(), getQueueTypeId(), null);
+			if(queueType.get_ValueAsBoolean("IsParallelProcessing")) {
 				IntStream.range(0, getBatchsToProcess()).forEach(page -> {
-					new Query(getCtx(), I_AD_Queue.Table_Name, whereClause.toString(), transactionName)
-						.setParameters(parameters)
-						.setClient_ID()
-						.setLimit(getRecordsByBatch())
-						.setOrderBy(I_AD_Queue.COLUMNNAME_Created)
-						.getIDsAsList()
-						.forEach(queueId -> {
-							MADQueue queueToProcess = new MADQueue(getCtx(), queueId, transactionName);
-							if(isValidToProcess(queueToProcess, referenceTime.get())) {
-								QueueManager queueManager = QueueLoader.getInstance()
-										.getQueueManager(queueToProcess.getAD_QueueType_ID())
-										.withContext(getCtx())
-										.withTransactionName(transactionName);
-								try {
-									queueManager.process(queueToProcess, isDeleteAfterProcess());
-									counter.incrementAndGet();
-								} catch (Exception e) {
-									errors.incrementAndGet();
-									addLog("@AD_Queue_ID@: [" + queueToProcess + "]: " + e.getLocalizedMessage());
-									log.severe(queueToProcess + ": " + e.getLocalizedMessage());
-								}
-							}
-						});
+					getQueuesToProcess(whereClause.toString(), parameters, get_TrxName())
+							.parallelStream()
+							.forEach(queueId -> {
+								Trx.run(transactionName -> {
+									processQueue(queueId, now, transactionName);
+								});
+							});
 				});
-			});
+			} else {
+				Trx.run(transactionName -> {
+					IntStream.range(0, getBatchsToProcess()).forEach(page -> {
+						getQueuesToProcess(whereClause.toString(), parameters, transactionName)
+								.forEach(queueId -> {
+									processQueue(queueId, now, transactionName);
+								});
+					});
+				});
+			}
 		}
 		return "@Processed@: " + counter + " @Errors@: " + errors;
 	}
-	
+
+	private List<Integer> getQueuesToProcess(String whereClause, List<Object> parameters, String transactionName) {
+		return new Query(getCtx(), I_AD_Queue.Table_Name, whereClause, transactionName)
+				.setParameters(parameters)
+				.setClient_ID()
+				.setLimit(getRecordsByBatch())
+				.setOrderBy(I_AD_Queue.COLUMNNAME_Created)
+				.getIDsAsList();
+	}
+
+	private void processQueue(int queueId, Timestamp referenceTime, String transactionName) {
+		MADQueue queueToProcess = new MADQueue(getCtx(), queueId, transactionName);
+		if(isValidToProcess(queueToProcess, referenceTime)) {
+			QueueManager queueManager = QueueLoader.getInstance()
+					.getQueueManager(queueToProcess.getAD_QueueType_ID())
+					.withContext(getCtx())
+					.withTransactionName(transactionName);
+			try {
+				queueManager.process(queueToProcess, isDeleteAfterProcess());
+				counter.incrementAndGet();
+			} catch (Exception e) {
+				errors.incrementAndGet();
+				addLog("@AD_Queue_ID@: [" + queueToProcess + "]: " + e.getLocalizedMessage());
+				log.severe(queueToProcess + ": " + e.getLocalizedMessage());
+			}
+		}
+	}
+
 	/**
 	 * Is valid to process a queue
 	 * @param queueToProcess
