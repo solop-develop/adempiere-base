@@ -261,6 +261,14 @@ public class MProjectLine extends X_C_ProjectLine
 					setPlannedPrice(pp.getPriceStd());
 				}
 			}
+			if(Optional.ofNullable(getPlannedQty()).orElse(Env.ZERO).compareTo(Env.ZERO) == 0) {
+				BigDecimal quantity = (BigDecimal) get_Value("QtyEntered");
+				setPlannedQty(Optional.ofNullable(quantity).orElse(Env.ZERO));
+			}
+			if(get_ValueAsInt("C_UOM_ID") <= 0 && getM_Product_ID() > 0) {
+				MProduct product = MProduct.get(getCtx(), getM_Product_ID());
+				set_ValueOfColumn("C_UOM_ID", product.getC_UOM_ID());
+			}
 		}
 		//	Planned Amount
 		setPlannedAmt(getPlannedQty().multiply(getPlannedPrice()));
