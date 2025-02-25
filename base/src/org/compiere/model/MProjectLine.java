@@ -19,6 +19,7 @@ package org.compiere.model;
 import org.adempiere.core.domains.models.*;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.TimeUtil;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -235,6 +236,30 @@ public class MProjectLine extends X_C_ProjectLine
 			}
 			if(isSummary()) {
 				set_ValueOfColumn("Parent_ID", null);
+			}
+			if(type.get_ValueAsString("ProjInvoiceRule") != null) {
+				set_ValueOfColumn("ProjInvoiceRule", type.get_ValueAsString("ProjInvoiceRule"));
+			}
+		}
+		MProject project = MProject.getById(getCtx(), getC_Project_ID(), get_TrxName());
+		if(newRecord) {
+			if(project != null) {
+				if(getStartDate() == null) {
+					setStartDate(project.getDateStart());
+				}
+				if(getEndDate() == null) {
+					setEndDate(project.getDateFinish());
+				}
+			}
+		}
+		if(newRecord || is_ValueChanged("M_Product_ID")) {
+			if(project != null && project.getM_PriceList_ID() > 0) {
+				if(Optional.ofNullable(getPlannedPrice()).orElse(Env.ZERO).compareTo(Env.ZERO) == 0) {
+					MProductPricing pp = new MProductPricing (getM_Product_ID(), project.getC_BPartner_ID(), Env.ZERO, true, null);
+					pp.setM_PriceList_ID(project.getM_PriceList_ID());
+					pp.setPriceDate(TimeUtil.getDay(System.currentTimeMillis()));
+					setPlannedPrice(pp.getPriceStd());
+				}
 			}
 		}
 		//	Planned Amount

@@ -18,17 +18,16 @@ package org.compiere.project.controller;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
 import org.adempiere.core.domains.models.I_C_ProjectPhase;
 import org.adempiere.core.domains.models.I_C_ProjectTask;
+import org.adempiere.core.domains.models.X_C_Order;
 import org.adempiere.model.GridTabWrapper;
-import org.compiere.model.CalloutEngine;
-import org.compiere.model.GridField;
-import org.compiere.model.GridTab;
-import org.compiere.model.MProjectTypePhase;
-import org.compiere.model.MProjectTypeTask;
+import org.compiere.model.*;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 
@@ -205,5 +204,212 @@ public class CalloutProject extends CalloutEngine
 
 		});
 		return null;
+	}
+
+	/**
+	 *	Project Header - BPartner.
+	 *		- M_PriceList_ID (+ Context)
+	 *		- C_BPartner_Location_ID
+	 *		- AD_User_ID
+	 *		- POReference
+	 *		- SO_Description
+	 *		- PaymentRule
+	 *		- C_PaymentTerm_ID
+	 *  @param ctx      Context
+	 *  @param WindowNo current Window No
+	 *  @param mTab     Model Tab
+	 *  @param mField   Model Field
+	 *  @param value    The new value
+	 *  @return Error message or ""
+	 */
+	public String bPartner (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
+	{
+		Integer businessPartnerId = (Integer)value;
+		if (businessPartnerId == null || businessPartnerId.intValue() == 0)
+			return "";
+		String sql = "SELECT p.AD_Language,p.C_PaymentTerm_ID,"
+			+ " COALESCE(p.M_PriceList_ID,g.M_PriceList_ID) AS M_PriceList_ID, p.PaymentRule,p.POReference,"
+			+ " p.SO_Description,p.IsDiscountPrinted,"
+			+ " p.InvoiceRule,p.DeliveryRule,p.FreightCostRule,DeliveryViaRule,"
+			+ " p.SO_CreditLimit, p.SO_CreditLimit-p.SO_CreditUsed AS CreditAvailable,"
+			+ " lship.C_BPartner_Location_ID,c.AD_User_ID,"
+			+ " COALESCE(p.PO_PriceList_ID,g.PO_PriceList_ID) AS PO_PriceList_ID, p.PaymentRulePO,p.PO_PaymentTerm_ID,"
+			+ " lbill.C_BPartner_Location_ID AS Bill_Location_ID, p.SOCreditStatus, "
+			+ " p.SalesRep_ID "
+			+ "FROM C_BPartner p"
+			+ " INNER JOIN C_BP_Group g ON (p.C_BP_Group_ID=g.C_BP_Group_ID)"
+			+ " LEFT OUTER JOIN C_BPartner_Location lbill ON (p.C_BPartner_ID=lbill.C_BPartner_ID AND lbill.IsBillTo='Y' AND lbill.IsActive='Y')"
+			+ " LEFT OUTER JOIN C_BPartner_Location lship ON (p.C_BPartner_ID=lship.C_BPartner_ID AND lship.IsShipTo='Y' AND lship.IsActive='Y')"
+			+ " LEFT OUTER JOIN AD_User c ON (p.C_BPartner_ID=c.C_BPartner_ID) "
+			+ "WHERE p.C_BPartner_ID=? AND p.IsActive='Y'";		//	#1
+
+		boolean IsSOTrx = "Y".equals(Env.getContext(ctx, WindowNo, "IsSOTrx"));
+		DB.runResultSet(null, sql, List.of(businessPartnerId), resulset -> {
+			while (resulset.next()) {
+				// Sales Rep - If BP has a default SalesRep then default it
+				int salesRep = resulset.getInt("SalesRep_ID");
+				if (IsSOTrx && salesRep != 0 )
+				{
+					mTab.setValue("SalesRep_ID", salesRep);
+				}
+				int salesRepPO = resulset.getInt("SalesRep_ID");
+				if (!IsSOTrx && salesRepPO != 0 )
+				{
+					mTab.setValue("C_BPartnerSR_ID", salesRepPO);
+				}
+
+
+				//	PriceList (indirect: IsTaxIncluded & Currency)
+				int ii = resulset.getInt(IsSOTrx ? "M_PriceList_ID" : "PO_PriceList_ID");
+				if (!resulset.wasNull())
+					mTab.setValue("M_PriceList_ID", ii);
+				else
+				{	//	get default PriceList
+					int i = Env.getContextAsInt(ctx, "#M_PriceList_ID");
+					if (i != 0)
+						mTab.setValue("M_PriceList_ID", i);
+				}
+
+				// Ship-To Location
+				int shipTo_ID = resulset.getInt("C_BPartner_Location_ID");
+				//	overwritten by InfoBP selection - works only if InfoWindow
+				//	was used otherwise creates error (uses last value, may belong to different BP)
+				if (businessPartnerId.toString().equals(Env.getContext(ctx, WindowNo, Env.TAB_INFO, "C_BPartner_ID")))
+				{
+					String loc = Env.getContext(ctx, WindowNo, Env.TAB_INFO, "C_BPartner_Location_ID");
+					if (loc.length() > 0)
+						shipTo_ID = Integer.parseInt(loc);
+				}
+				if (shipTo_ID == 0)
+					mTab.setValue("C_BPartner_Location_ID", null);
+				else
+					mTab.setValue("C_BPartner_Location_ID", shipTo_ID);
+
+				//	Contact - overwritten by InfoBP selection
+				int contID = resulset.getInt("AD_User_ID");
+				if (businessPartnerId.toString().equals(Env.getContext(ctx, WindowNo, Env.TAB_INFO, "C_BPartner_ID")))
+				{
+					String cont = Env.getContext(ctx, WindowNo, Env.TAB_INFO, "AD_User_ID");
+					if (cont.length() > 0)
+						contID = Integer.parseInt(cont);
+				}
+				if (contID == 0)
+					mTab.setValue("AD_User_ID", null);
+				else
+					mTab.setValue("AD_User_ID", contID);
+
+
+				//	PO Reference
+				String s = resulset.getString("POReference");
+				if (s != null && s.length() != 0)
+					mTab.setValue("POReference", s);
+				// should not be reset to null if we entered already value! VHARCQ, accepted YS makes sense that way
+
+				//	SO Description
+				s = resulset.getString("SO_Description");
+				if (s != null && s.trim().length() != 0)
+					mTab.setValue("Description", s);
+
+				//	Defaults, if not Walkin Receipt or Walkin Invoice
+				mTab.setValue("PaymentRule", X_C_Order.PAYMENTRULE_OnCredit);
+			}
+		});
+		return "";
+	}	//	bPartner
+
+	/**
+	 * Convert Quantity
+	 * @param ctx
+	 * @param windowNo
+	 * @param tab
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public String quantity(Properties ctx, int windowNo, GridTab tab, GridField field, Object value) {
+
+		if (isCalloutActive() || value == null)
+			return "";
+
+		int productId = 0;
+
+		//	Validate columns
+		if(!field.getColumnName().equals("PlannedQty")
+				&& !field.getColumnName().equals("Qty")
+				&& !field.getColumnName().equals("QtyEntered")
+				&& !field.getColumnName().equals("C_UOM_ID")
+				&& !field.getColumnName().equals("M_Product_ID"))  {
+			return "";
+		}
+
+		int uOmToId = Env.getContextAsInt(ctx, windowNo, "C_UOM_ID");
+		//	get values
+		if(tab.getValue("M_Product_ID") != null){
+
+			productId = (int) tab.getValue("M_Product_ID");
+			if(productId <= 0) {
+				return "";
+			}
+
+		}
+		BigDecimal quantityEntered = (BigDecimal) tab.getValue("QtyEntered");
+		BigDecimal plannedQuantity = (BigDecimal) tab.getValue("PlannedQty");
+		if(plannedQuantity == null) {
+			plannedQuantity = (BigDecimal) tab.getValue("Qty");
+		}
+		if(quantityEntered == null) {
+			quantityEntered = Env.ZERO;
+		}
+		if(plannedQuantity == null) {
+			plannedQuantity = Env.ZERO;
+		}
+		log.fine("QtyEntered = " + quantityEntered + ", PlannedQty=" + plannedQuantity + ", UOM=" + uOmToId);
+		//	Calculate
+		if (field.getColumnName().equals("QtyEntered")
+				|| field.getColumnName().equals("C_UOM_ID")
+				|| field.getColumnName().equals("M_Product_ID")) {
+			BigDecimal quantityEnteredRounded = quantityEntered.setScale(MUOM.getPrecision(ctx, uOmToId), BigDecimal.ROUND_HALF_UP);
+			if (quantityEntered.compareTo(quantityEnteredRounded) != 0)
+			{
+				log.fine("Corrected QtyEntered Scale UOM=" + uOmToId
+					+ "; QtyEntered=" + quantityEntered + "->" + quantityEnteredRounded);
+				quantityEntered = quantityEnteredRounded;
+				tab.setValue("QtyEntered", quantityEntered);
+			}
+			plannedQuantity = MUOMConversion.convertProductFrom (ctx, productId, uOmToId, quantityEntered);
+			if (plannedQuantity == null) {
+				plannedQuantity = quantityEntered;
+			}
+			boolean conversion = quantityEntered.compareTo(plannedQuantity) != 0;
+			log.fine("UOM=" + uOmToId
+				+ ", QtyEntered=" + quantityEntered
+				+ " -> " + conversion
+				+ " PlannedQty=" + plannedQuantity);
+			tab.setValue("PlannedQty", plannedQuantity);
+			tab.setValue("Qty", plannedQuantity);
+		}
+		//	PlannedQty changed - calculate QtyEntered (should not happen)
+		else if (field.getColumnName().equals("PlannedQty")
+				|| field.getColumnName().equals("Qty")) {
+			int precision = MProduct.get(ctx, productId).getUOMPrecision();
+			BigDecimal quantityRounded = plannedQuantity.setScale(precision, RoundingMode.HALF_UP);
+			if (plannedQuantity.compareTo(quantityRounded) != 0) {
+				log.fine("Corrected PlannedQty Scale "
+					+ plannedQuantity + "->" + quantityRounded);
+				plannedQuantity = quantityRounded;
+				tab.setValue("PlannedQty", plannedQuantity);
+			}
+			quantityEntered = MUOMConversion.convertProductTo (ctx, productId, uOmToId, plannedQuantity);
+			if (quantityEntered == null) {
+				quantityEntered = plannedQuantity;
+			}
+			boolean conversion = plannedQuantity.compareTo(quantityEntered) != 0;
+			log.fine("UOM=" + uOmToId
+				+ ", PlannedQty=" + plannedQuantity
+				+ " -> " + conversion
+				+ " QtyEntered=" + quantityEntered);
+			tab.setValue("QtyEntered", quantityEntered);
+		}
+		return "";
 	}
 }	//	CalloutProject

@@ -19,6 +19,7 @@
 package org.solop.project.process;
 
 import org.adempiere.core.domains.models.I_C_Order;
+import org.adempiere.core.domains.models.I_C_ProjectLine;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.util.Env;
@@ -75,6 +76,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 			order.setC_DocTypeTarget_ID(getDocTypeTargetId());
 		}
 		order.setC_Project_ID(mainLine.getC_Project_ID());
+		order.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_C_ProjectLine_ID, mainLine.getC_ProjectLine_ID());
 		//	Phase
 		if(mainLine.get_ValueAsBoolean(I_C_Order.COLUMNNAME_IsDropShip)) {
 			int dropShipBPartnerId = mainLine.get_ValueAsInt(I_C_Order.COLUMNNAME_DropShip_BPartner_ID);
@@ -143,7 +145,6 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 						orderLine.setPrice(projectLine.getPlannedPrice());
 						orderLine.setPriceList(projectLine.getPlannedPrice());
 					}
-
 					orderLine.setDiscount();
 					orderLine.setTax();
 					orderLine.setC_Project_ID(fromProject.getC_Project_ID());
@@ -151,10 +152,9 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 					if(projectLine.getDatePromised() != null) {
 						orderLine.setDatePromised(projectLine.getDatePromised());
 					}
-					orderLine.set_ValueOfColumn("IsBonusProduct", projectLine.get_Value("IsBonusProduct"));
-					orderLine.set_ValueOfColumn("EndDate", projectLine.get_Value("EndDate"));
-					orderLine.set_ValueOfColumn("Reference", projectLine.get_Value("Reference"));
-					orderLine.set_ValueOfColumn("DescriptionURL", projectLine.get_Value("DescriptionURL"));
+					orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_StartDate, projectLine.getStartDate());
+					orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_EndDate, projectLine.getEndDate());
+					orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_C_ProjectLine_ID, projectLine.getC_ProjectLine_ID());
 					orderLine.saveEx();
 					count.getAndUpdate(no -> no + 1);
 				});    //	for all lines
