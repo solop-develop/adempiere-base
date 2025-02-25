@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP003" Name="SP003 Add Process to Multi Selection" ReleaseNo="1.0" SeqNo="9960">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="90001" Table="AD_Process">
+        <Data AD_Column_ID="101781" Column="SP003_IsMultiSelection" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54439" Table="AD_Process">
+        <Data AD_Column_ID="101781" Column="SP003_IsMultiSelection" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="53660" Action="I" Record_ID="54439" Table="AD_Table_Process">
+        <Data AD_Column_ID="84427" Column="UUID">b4599841-5841-4e68-840e-3d72e03536cc</Data>
+        <Data AD_Column_ID="69645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="69643" Column="Updated">2024-10-15 19:10:23.443</Data>
+        <Data AD_Column_ID="69641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="69649" Column="EntityType">SP003</Data>
+        <Data AD_Column_ID="69644" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="69642" Column="Created">2024-10-15 19:10:23.443</Data>
+        <Data AD_Column_ID="69648" Column="AD_Table_ID">259</Data>
+        <Data AD_Column_ID="69647" Column="AD_Process_ID">54439</Data>
+        <Data AD_Column_ID="69640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="69639" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="53660" Action="I" Record_ID="90001" Table="AD_Table_Process">
+        <Data AD_Column_ID="84427" Column="UUID">7342f179-87d5-4abe-afac-dcd3dbc0a22f</Data>
+        <Data AD_Column_ID="69645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="69643" Column="Updated">2024-10-15 19:11:01.521</Data>
+        <Data AD_Column_ID="69641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="69649" Column="EntityType">SP003</Data>
+        <Data AD_Column_ID="69644" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="69642" Column="Created">2024-10-15 19:11:01.521</Data>
+        <Data AD_Column_ID="69648" Column="AD_Table_ID">260</Data>
+        <Data AD_Column_ID="69647" Column="AD_Process_ID">90001</Data>
+        <Data AD_Column_ID="69640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="69639" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
