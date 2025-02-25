@@ -19,6 +19,7 @@ package org.compiere.model;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.adempiere.core.domains.models.I_AD_Window;
 import org.adempiere.core.domains.models.X_AD_Field;
 
 
@@ -140,7 +141,13 @@ public class MField extends X_AD_Field
 				setDescription (element.getDescription ());
 				setHelp (element.getHelp());
 			}
-		} 
+		}
+		if(newRecord) {
+			if(get_ValueAsInt(I_AD_Window.COLUMNNAME_AD_Window_ID) <= 0 && getAD_Tab_ID() > 0) {
+				MTab tab = MTab.get(getCtx(), getAD_Tab_ID());
+				set_ValueOfColumn(I_AD_Window.COLUMNNAME_AD_Window_ID, tab.getAD_Window_ID());
+			}
+		}
 		//	FR [ 9223372036854775807 ]
 		if(is_ValueChanged("AD_Column_ID")) {
 			MColumn column = MColumn.get(getCtx(), getAD_Column_ID());

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP003" Name="SP003 Update AD_Field" ReleaseNo="1.0" SeqNo="9970">
+    <Step DBType="ALL" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>UPDATE AD_Field
+SET AD_Window_ID=ft.AD_Window_ID
+FROM (SELECT t.AD_Window_ID, f.AD_Field_ID
+      FROM AD_Tab t
+      INNER JOIN AD_Field f ON(f.AD_Tab_ID = t.AD_Tab_ID)
+) AS ft
+WHERE AD_Field.AD_Field_ID = ft.AD_Field_ID</SQLStatement>
+      <RollbackStatement>UPDATE AD_Field SET AD_Window_ID = null;</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
