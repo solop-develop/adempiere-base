@@ -228,17 +228,19 @@ public class MProjectLine extends X_C_ProjectLine
 		if (getLine() == 0)
 			setLine();
 		if(newRecord || is_ValueChanged("C_ProjectLineType_ID")) {
-			X_C_ProjectLineType type = new X_C_ProjectLineType(getCtx(), getC_ProjectLineType_ID(), get_TrxName());
-			String lineType = type.get_ValueAsString("ProjectLineType");
-			set_ValueOfColumn("ProjectLineType", lineType);
-			if(lineType != null) {
-				setIsSummary(lineType.equals("P") || lineType.equals("M"));
-			}
-			if(isSummary()) {
-				set_ValueOfColumn("Parent_ID", null);
-			}
-			if(type.get_ValueAsString("ProjInvoiceRule") != null) {
-				set_ValueOfColumn("ProjInvoiceRule", type.get_ValueAsString("ProjInvoiceRule"));
+			if(getC_ProjectLineType_ID() > 0) {
+				X_C_ProjectLineType type = new X_C_ProjectLineType(getCtx(), getC_ProjectLineType_ID(), get_TrxName());
+				String lineType = type.get_ValueAsString("ProjectLineType");
+				set_ValueOfColumn("ProjectLineType", lineType);
+				if(lineType != null) {
+					setIsSummary(lineType.equals("P") || lineType.equals("M"));
+				}
+				if(isSummary()) {
+					set_ValueOfColumn("Parent_ID", null);
+				}
+				if(type.get_ValueAsString("ProjInvoiceRule") != null) {
+					set_ValueOfColumn("ProjInvoiceRule", type.get_ValueAsString("ProjInvoiceRule"));
+				}
 			}
 		}
 		MProject project = MProject.getById(getCtx(), getC_Project_ID(), get_TrxName());
