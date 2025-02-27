@@ -16,6 +16,13 @@
  *************************************************************************************/
 package org.spin.util.impexp;
 
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.impexp.BankStatementLoaderInterface;
+import org.compiere.model.MBankAccount;
+import org.compiere.model.MBankStatementLoader;
+import org.compiere.util.CLogger;
+import org.compiere.util.Env;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -23,12 +30,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.impexp.BankStatementLoaderInterface;
-import org.compiere.model.MBankAccount;
-import org.compiere.model.MBankStatementLoader;
-import org.compiere.util.CLogger;
-import org.compiere.util.Env;
 
 /**
  * Class used for Load and parse data from QIF file
@@ -241,7 +242,12 @@ public class BankStatementHandler implements BankStatementLoaderInterface {
 	public BigDecimal getChargeAmt() {
 		return Env.ZERO;
 	}
-	
+
+	@Override
+	public BankTransactionAbstract getCurrentTransaction() {
+		return bankTransaction;
+	}
+
 	@Override
 	public String getPayeeDescription() {
 		return bankTransaction.getPayeeDescription();

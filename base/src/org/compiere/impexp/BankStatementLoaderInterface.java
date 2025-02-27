@@ -16,10 +16,11 @@
  *****************************************************************************/
 package org.compiere.impexp;
 
+import org.compiere.model.MBankStatementLoader;
+import org.spin.util.impexp.BankTransactionAbstract;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-
-import org.compiere.model.MBankStatementLoader;
 
 
 /**
@@ -270,5 +271,6 @@ public interface BankStatementLoaderInterface
 	 */
 	public BigDecimal getChargeAmt();
 
+	BankTransactionAbstract getCurrentTransaction();
 }	
 
