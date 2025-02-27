@@ -16,6 +16,13 @@
  *****************************************************************************/
 package org.compiere.impexp;
 
+import org.adempiere.core.domains.models.I_AD_ImpFormat;
+import org.adempiere.core.domains.models.X_AD_ImpFormat;
+import org.adempiere.core.domains.models.X_I_GLJournal;
+import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.util.AbstractBatchImport;
+import org.compiere.util.*;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,17 +34,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_AD_ImpFormat;
-import org.adempiere.core.domains.models.X_AD_ImpFormat;
-import org.adempiere.core.domains.models.X_I_GLJournal;
-import org.adempiere.exceptions.AdempiereException;
-import org.adempiere.util.AbstractBatchImport;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Ini;
-import org.compiere.util.Util;
 
 /**
  *	Import Format a Row
@@ -60,7 +56,7 @@ public final class ImpFormat
 	 *  @param formatType format type
 	 *  @param optional connection class
 	 */
-	public ImpFormat (String name, int tableId, String formatType, String connectionClass)
+	public ImpFormat(String name, int tableId, String formatType, String connectionClass)
 	{
 		setName(name);
 		setTable(tableId);
@@ -694,10 +690,10 @@ public final class ImpFormat
 			ID = DB.getNextID(ctx, m_tableName, null);		//	get ID
 			sql = new StringBuffer("INSERT INTO ")
 				.append(m_tableName).append("(").append(m_tablePK).append(",")
-				.append("AD_Client_ID,AD_Org_ID,Created,CreatedBy,Updated,UpdatedBy,IsActive")	//	StdFields
+				.append("AD_Client_ID,AD_Org_ID,Created,CreatedBy,Updated,UpdatedBy,IsActive, UUID")	//	StdFields
 				.append(") VALUES (").append(ID).append(",")
 				.append(AD_Client_ID).append(",").append(AD_Org_ID)
-				.append(",SysDate,").append(UpdatedBy).append(",SysDate,").append(UpdatedBy).append(",'Y'")
+				.append(",SysDate,").append(UpdatedBy).append(",SysDate,").append(UpdatedBy).append(",'Y',getUUID()")
 				.append(")");
 			//
 			int no = DB.executeUpdate(sql.toString(), trxName);
