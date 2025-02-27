@@ -16,16 +16,23 @@
  *****************************************************************************/
 package org.spin.util;
 
-import java.io.File;
-import java.util.Properties;
-import java.util.logging.Level;
-
+import org.adempiere.core.domains.models.I_AD_PInstance;
 import org.adempiere.print.export.PrintDataExcelExporter;
+import org.compiere.model.MPInstance;
+import org.compiere.model.MPInstancePara;
+import org.compiere.model.Query;
 import org.compiere.print.ReportEngine;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Language;
 import org.compiere.util.Msg;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * 	@author Yamel Senih, ysenih@erpcya.com, ERPCyA http://www.erpcya.com
@@ -71,7 +78,16 @@ public class ExportFormatXLS extends AbstractExportFormat {
 		}
 		//	
 		try {
-			PrintDataExcelExporter exp = new PrintDataExcelExporter(getPrintData(), getPrintFormat());
+			List<MPInstancePara> instanceParameters = null;
+			try {
+				MPInstance mpInstance = new Query(getCtx(), I_AD_PInstance.Table_Name, I_AD_PInstance.COLUMNNAME_AD_PInstance_ID + "=?", null)
+						.setParameters(getReportEngine().getProcessInfo().getAD_PInstance_ID()).first();
+				instanceParameters = Arrays
+						.stream(mpInstance.getParameters())
+						.filter(mpInstancePara -> mpInstancePara.getInfo() != null || mpInstancePara.getInfo_To() != null)
+						.collect(Collectors.toList());
+			} catch (Exception ignore) { }
+			PrintDataExcelExporter exp = new PrintDataExcelExporter(getPrintData(), getPrintFormat(), instanceParameters);
 			if(language == null) {
 				language = getLanguage();
 			}

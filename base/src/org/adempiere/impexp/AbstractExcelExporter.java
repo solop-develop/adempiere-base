@@ -13,6 +13,14 @@
  *****************************************************************************/
 package org.adempiere.impexp;
 
+import io.vavr.Tuple2;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.compiere.Adempiere;
+import org.compiere.util.*;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -20,33 +28,11 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Footer;
-import org.apache.poi.ss.usermodel.Header;
-import org.apache.poi.ss.usermodel.PrintSetup;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xssf.streaming.SXSSFSheet;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.compiere.Adempiere;
-import org.compiere.util.CLogMgt;
-import org.compiere.util.CLogger;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
-import org.compiere.util.Ini;
-import org.compiere.util.Language;
-import org.compiere.util.Msg;
-import org.compiere.util.Util;
 
 /**
  * Abstract MS Excel Format (xls) Exporter
@@ -122,6 +108,12 @@ public abstract class AbstractExcelExporter
 	 * @return true if there is a page break
 	 */
 	public abstract boolean isPageBreak(int row, int col);
+
+	private List<Tuple2<String, String>> parameters = new ArrayList<>();
+
+	public void addParameter(String key, String value) {
+		this.parameters.add(new Tuple2<>(key, value));
+	}
 
 	/** Logger */
 	protected final CLogger log = CLogger.getCLogger(getClass());
@@ -458,14 +450,30 @@ public abstract class AbstractExcelExporter
 		}	//	for all rows
 		closeTableSheet(sheet, sheetName, colnumMax);
 		//
-		m_workbook.write(out);
-		out.close();
 		//
 		// Workbook Info
 		if (CLogMgt.isLevelFine()) {
 			log.fine("Sheets #"+m_sheetCount);
 			log.fine("Styles used #"+m_styles.size());
 		}
+
+		dataIncludeHeader = true;
+		SXSSFSheet parametersSheet = createTableSheet();
+		int xls_rownum = 1;
+		for (Tuple2<String, String> parameter : parameters) {
+			Row row = parametersSheet.createRow(xls_rownum++);
+
+			Cell keyCell = row.createCell(0);
+			keyCell.setCellValue(parameter._1());
+
+			Cell valueCell = row.createCell(1);
+			valueCell.setCellValue(parameter._2());
+		}
+		closeTableSheet(parametersSheet, "Parameters", 2);
+
+
+		m_workbook.write(out);
+		out.close();
 	}
 
 	/**
