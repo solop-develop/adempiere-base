@@ -13,18 +13,20 @@
  *****************************************************************************/
 package org.adempiere.print.export;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
+import javax.print.attribute.standard.MediaSizeName;
+
 import org.adempiere.impexp.AbstractExcelExporter;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.compiere.model.MPInstancePara;
-import org.compiere.print.*;
-import org.compiere.util.Msg;
-
-import javax.print.attribute.standard.MediaSizeName;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
+import org.compiere.print.MPrintFormat;
+import org.compiere.print.MPrintFormatItem;
+import org.compiere.print.MPrintPaper;
+import org.compiere.print.PrintData;
+import org.compiere.print.PrintDataElement;
 
 /**
  * Export PrintData to Excel (XLS) file
@@ -44,20 +46,13 @@ extends AbstractExcelExporter
 	private PrintData m_printData;
 	private MPrintFormat m_printFormat;
 
-
-	public PrintDataExcelExporter(PrintData printData, MPrintFormat printFormat, List<MPInstancePara> instanceParameters) {
+	public PrintDataExcelExporter(PrintData printData, MPrintFormat printFormat) {
 		super();
 		this.m_printData = printData;
 		this.m_printFormat = printFormat;
-		if (instanceParameters != null) {
-			for (MPInstancePara instanceParameter : instanceParameters) {
-				String transaltedKey = Msg.parseTranslation(getCtx(), "@" + instanceParameter.getParameterName() + "@");
-				addParameter(transaltedKey, instanceParameter.getInfo() + (instanceParameter.getInfo_To() != null ? " - " + instanceParameter.getInfo_To() : ""));
-			}
-		}
 	}
-	public PrintDataExcelExporter(PrintData printData, MPrintFormat printFormat, boolean isXLSX, List<MPInstancePara> instanceParameters) {
-		this(printData, printFormat, instanceParameters);
+	public PrintDataExcelExporter(PrintData printData, MPrintFormat printFormat, boolean isXLSX) {
+		this(printData, printFormat);
 		this.isXLSX = isXLSX;
 	}
 
