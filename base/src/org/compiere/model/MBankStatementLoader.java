@@ -16,15 +16,16 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.ResultSet;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.X_C_BankStatementLoader;
 import org.adempiere.core.domains.models.X_I_BankStatement;
 import org.compiere.impexp.BankStatementLoaderInterface;
 import org.compiere.util.Util;
- 
- 
+import org.spin.util.impexp.TrxBusinessPartnerDataInterface;
+
+import java.sql.ResultSet;
+import java.util.Properties;
+
+
 /**
  *	Bank Statement Loader Model
  *  This class is responsible for creating an instance of the
@@ -262,6 +263,18 @@ import org.compiere.util.Util;
 		if(Util.isEmpty(imp.getISO_Code())) {
 			MBankAccount account = MBankAccount.get(getCtx(), getC_BankAccount_ID());
 			imp.setC_Currency_ID(account.getC_Currency_ID());
+		}
+		//	Add Business Partner info
+		if(m_loader.getCurrentTransaction() != null) {
+			if(m_loader.getCurrentTransaction() instanceof TrxBusinessPartnerDataInterface) {
+				TrxBusinessPartnerDataInterface businessPartnerData = (TrxBusinessPartnerDataInterface) m_loader.getCurrentTransaction();
+				if(businessPartnerData.getBusinessPartnerId() > 0) {
+					imp.setC_BPartner_ID(businessPartnerData.getBusinessPartnerId());
+				}
+				if(!Util.isEmpty(businessPartnerData.getBusinessPartnerValue(), true)) {
+					imp.setBPartnerValue(businessPartnerData.getBusinessPartnerValue());
+				}
+			}
 		}
 		imp.setProcessed(false);
 		imp.setI_IsImported(false);

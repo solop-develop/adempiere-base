@@ -19,6 +19,7 @@ package org.compiere.impexp;
 import java.io.FileInputStream;
 
 import org.compiere.model.MBankStatementLoader;
+import org.spin.util.impexp.BankTransactionAbstract;
 import org.xml.sax.SAXException;
 
 /**
@@ -65,7 +66,12 @@ public final class OFXFileBankStatementLoader extends OFXBankStatementHandler im
 
 		return result;
 	}	//	init
-	
+
+	@Override
+	public BankTransactionAbstract getCurrentTransaction() {
+		return null;
+	}
+
 
 	/**
 	 * Method characters
