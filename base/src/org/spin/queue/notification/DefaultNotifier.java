@@ -16,11 +16,6 @@
  *****************************************************************************/
 package org.spin.queue.notification;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.adempiere.core.domains.models.I_AD_AppRegistration;
 import org.adempiere.core.domains.models.X_AD_UserSocialMedia;
 import org.adempiere.exceptions.AdempiereException;
@@ -28,11 +23,7 @@ import org.compiere.model.MAttachment;
 import org.compiere.model.MUser;
 import org.compiere.model.Query;
 import org.compiere.process.ProcessInfo;
-import org.compiere.util.CCache;
-import org.compiere.util.CLogger;
-import org.compiere.util.Env;
-import org.compiere.util.Trx;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 import org.eevolution.services.dsl.ProcessBuilder;
 import org.spin.model.MADAppRegistration;
 import org.spin.model.MADAppSupport;
@@ -48,6 +39,11 @@ import org.spin.queue.util.QueueLoader;
 import org.spin.queue.util.QueueManager;
 import org.spin.util.support.AppSupportHandler;
 import org.spin.util.support.IAppSupport;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
@@ -298,7 +294,7 @@ public class DefaultNotifier extends QueueManager {
 	 * @return
 	 */
 	public final DefaultNotifier addRecipient(int userId) {
-		return addRecipient(userId, null, MADNotificationRecipient.MESSAGETYPE_Standard);
+		return addRecipient(userId, MUser.get(getContext(), userId).getEMail(), MADNotificationRecipient.MESSAGETYPE_Standard);
 	}
 	
 	/**

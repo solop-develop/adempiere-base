@@ -16,12 +16,6 @@
  *****************************************************************************/
 package org.spin.queue.util;
 
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.stream.IntStream;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.CLogger;
@@ -32,14 +26,18 @@ import org.eevolution.services.dsl.ProcessBuilder;
 import org.spin.queue.model.MADQueueType;
 import org.spin.queue.process.FlushSystemQueue;
 
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.stream.IntStream;
+
 /**
  * @author Yamel Senih, ySenih@erpya.com, ERPCyA http://www.erpya.com
  * Queue handler
  */
 public class QueueLoader {
-	
-    private static QueueLoader queueLoader = null;
-    
+
     /**	Token Generator	*/
     private Map<Integer, QueueManager> queueMap = null;
     
@@ -50,10 +48,7 @@ public class QueueLoader {
 	 * @return
 	 */
     public static QueueLoader getInstance() {
-    	if(queueLoader == null) {
-    		queueLoader = new QueueLoader();
-    	}
-    	return queueLoader;
+    	return new QueueLoader();
     }
     
     /**
