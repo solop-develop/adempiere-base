@@ -16,6 +16,8 @@
  *****************************************************************************/
 package org.compiere.util;
 
+import org.compiere.model.PO;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -271,4 +273,66 @@ public class Evaluator
 			list.add(variable);
 		}
 	}   //  parseDepends
+
+
+	/**
+	 * Replace context parameters with values (@#parameter@)
+	 * and objects parameter like @parameter@ with the name of the parameter
+	 * in the sentenceSql recived
+	 * @param entity PO object
+	 * @param sentenceSql Sentence SQL to be replaced
+	 * @return String with the parameters replaced
+	 */
+	public static String parseContext(PO entity,String sentenceSql) {
+
+		StringBuilder outStr = new StringBuilder();
+
+		int i = sentenceSql.indexOf('@');
+		while (i != -1)
+		{
+			outStr.append(sentenceSql.substring(0, i));
+			sentenceSql = sentenceSql.substring(i+1, sentenceSql.length());
+
+			int j = sentenceSql.indexOf('@');
+			if (j < 0)
+			{
+				return "";
+			}
+			String token;
+			token = sentenceSql.substring(0, j);
+			String ctxInfo = "";
+			if ((token.startsWith("#") || token.startsWith("$")) ){
+				ctxInfo = Env.getContext(entity.getCtx(), token);
+			}
+			if (ctxInfo.length() == 0) {
+				outStr.append(entity.get_TableName()).append(".").append(token);
+			} else
+				outStr.append(ctxInfo);
+
+			sentenceSql = sentenceSql.substring(j+1, sentenceSql.length());
+			i = sentenceSql.indexOf('@');
+		}
+		outStr.append(sentenceSql);
+
+		return outStr.toString();
+	}
+
+	private static String getCorrectFormatToSQL(Object object){
+
+		Class clazz = object.getClass();
+
+		if (clazz.equals(Integer.class) || clazz.equals(BigDecimal.class)
+				|| clazz.equals(Double.class)	|| clazz.equals(Float.class)
+				|| clazz.equals(Long.class) || clazz.equals(Short.class)) {
+			return object.toString();
+		} else if (clazz.equals(String.class) || clazz.equals(java.util.Date.class)
+				|| clazz.equals(java.sql.Timestamp.class) || clazz.equals(java.sql.Time.class)) {
+			return "'" + object.toString() + "'";
+		} else if (clazz.equals(Boolean.class)){
+			if (object.equals(true))
+				return "'Y'";
+			else return "'N'";
+		}
+		return "";
+	}
 }	//	Evaluator

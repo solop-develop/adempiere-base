@@ -16,11 +16,12 @@
  *****************************************************************************/
 package org.compiere.util;
 
-import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.Window;
+import org.compiere.Adempiere;
+import org.compiere.db.CConnection;
+import org.compiere.model.*;
+
+import javax.swing.*;
+import java.awt.*;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -31,27 +32,8 @@ import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
-
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-
-import org.compiere.Adempiere;
-import org.compiere.db.CConnection;
-import org.compiere.model.MBPartner;
-import org.compiere.model.MClient;
-import org.compiere.model.MLookupCache;
-import org.compiere.model.MRole;
-import org.compiere.model.MSession;
-import org.compiere.model.MUser;
-import org.compiere.model.PO;
 
 
 /**
@@ -179,13 +161,13 @@ public final class Env
 
 		//	Cache
 		CacheMgt.get().reset();
-		if (Ini.isClient())
-			DB.closeTarget();
+//		if (Ini.isClient())
+//			DB.closeTarget();
 		//	Reset Role Access
 		if (!finalCall)
 		{
-			if (Ini.isClient())
-				DB.setDBTarget(CConnection.get());
+//			if (Ini.isClient())
+//				DB.setDBTarget(CConnection.get());
 			MRole defaultRole = MRole.getDefault(getCtx(), false);
 			if (defaultRole != null)
 				defaultRole.loadAccess(true);	//	Reload
