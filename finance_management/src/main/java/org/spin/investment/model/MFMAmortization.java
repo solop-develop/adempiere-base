@@ -16,20 +16,21 @@
  *****************************************************************************/
 package org.spin.investment.model;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.I_FM_Amortization;
 import org.adempiere.core.domains.models.X_FM_Amortization;
 import org.adempiere.core.domains.models.X_I_FM_Agreement;
+import org.compiere.model.MCurrency;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Util;
-import org.spin.investment.model.MFMAccount;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 
 /**
  * Loan Amortization
@@ -231,4 +232,32 @@ public class MFMAmortization extends X_FM_Amortization {
 		return getAmortizationList(financialAccountId, "IsPaid = 'N'", trxName);
 	}
 
+	@Override
+	protected boolean beforeSave(boolean newRecord) {
+		if(newRecord
+				|| is_ValueChanged(COLUMNNAME_CurrentCapitalAmt)
+				|| is_ValueChanged(COLUMNNAME_CurrentInterestAmt)
+				|| is_ValueChanged(COLUMNNAME_CurrentTaxAmt)
+				|| is_ValueChanged(COLUMNNAME_CurrentDunningAmt)
+				|| is_ValueChanged(COLUMNNAME_CurrentDunningTaxAmt)) {
+			MFMAccount account = MFMAccount.getById(getCtx(), getFM_Account_ID(), get_TrxName());
+			int currencyPrecision = MCurrency.getStdPrecision(getCtx(), account.getC_Currency_ID());
+			//	Set Rounded Values
+			Optional.ofNullable(getCurrentCapitalAmt()).ifPresent(amount -> setCurrentCapitalAmt(amount.setScale(currencyPrecision, BigDecimal.ROUND_HALF_UP)));
+			Optional.ofNullable(getCurrentInterestAmt()).ifPresent(amount -> setCurrentInterestAmt(amount.setScale(currencyPrecision, BigDecimal.ROUND_HALF_UP)));
+			Optional.ofNullable(getCurrentTaxAmt()).ifPresent(amount -> setCurrentTaxAmt(amount.setScale(currencyPrecision, BigDecimal.ROUND_HALF_UP)));
+			Optional.ofNullable(getCurrentDunningAmt()).ifPresent(amount -> setCurrentDunningAmt(amount.setScale(currencyPrecision, BigDecimal.ROUND_HALF_UP)));
+			Optional.ofNullable(getCurrentDunningTaxAmt()).ifPresent(amount -> setCurrentDunningTaxAmt(amount.setScale(currencyPrecision, BigDecimal.ROUND_HALF_UP)));
+		}
+		return super.beforeSave(newRecord);
+	}
+
+	@Override
+	public String toString() {
+		return "MFMAmortization [getCapitalAmt()=" + getCapitalAmt() + ", getDescription()=" + getDescription()
+				+ ", getDueDate()=" + getDueDate() + ", getEndDate()=" + getEndDate() + ", getFM_Account_ID()="
+				+ getFM_Account_ID() + ", getFM_Amortization_ID()=" + getFM_Amortization_ID() + ", isInvoiced()="
+				+ isInvoiced() + ", isPaid()=" + isPaid() + ", getPeriodNo()=" + getPeriodNo() + ", getTaxAmt()="
+				+ getTaxAmt() + "]";
+	}
 }
