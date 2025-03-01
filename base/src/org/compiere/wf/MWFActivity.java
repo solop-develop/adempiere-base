@@ -20,6 +20,18 @@
  *****************************************************************************/
 package org.compiere.wf;
 
+import org.adempiere.core.domains.models.I_AD_Process;
+import org.adempiere.core.domains.models.X_AD_WF_Activity;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.*;
+import org.compiere.print.ReportEngine;
+import org.compiere.process.DocAction;
+import org.compiere.process.ProcessInfo;
+import org.compiere.process.StateEngine;
+import org.compiere.util.*;
+import org.spin.queue.notification.DefaultNotifier;
+import org.spin.queue.util.QueueLoader;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -27,47 +39,8 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_AD_Process;
-import org.adempiere.core.domains.models.X_AD_WF_Activity;
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MAttachment;
-import org.compiere.model.MBPartner;
-import org.compiere.model.MColumn;
-import org.compiere.model.MConversionRate;
-import org.compiere.model.MMailText;
-import org.compiere.model.MNote;
-import org.compiere.model.MOrg;
-import org.compiere.model.MOrgInfo;
-import org.compiere.model.MPInstance;
-import org.compiere.model.MPInstancePara;
-import org.compiere.model.MProcess;
-import org.compiere.model.MRefList;
-import org.compiere.model.MRole;
-import org.compiere.model.MTable;
-import org.compiere.model.MUser;
-import org.compiere.model.MUserRoles;
-import org.compiere.model.PO;
-import org.compiere.model.Query;
-import org.compiere.print.ReportEngine;
-import org.compiere.process.DocAction;
-import org.compiere.process.ProcessInfo;
-import org.compiere.process.StateEngine;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.Trace;
-import org.compiere.util.Trx;
-import org.compiere.util.Util;
-import org.spin.queue.notification.DefaultNotifier;
-import org.spin.queue.util.QueueLoader;
 
 /**
  *	Workflow Activity Model.
@@ -150,7 +123,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 	 *	@param AD_WF_Activity_ID id
 	 *	@param trxName transaction
 	 */
-	public MWFActivity (Properties ctx, int AD_WF_Activity_ID, String trxName)
+	public MWFActivity(Properties ctx, int AD_WF_Activity_ID, String trxName)
 	{
 		super (ctx, AD_WF_Activity_ID, trxName);
 		if (AD_WF_Activity_ID == 0)
@@ -164,7 +137,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MWFActivity (Properties ctx, ResultSet rs, String trxName)
+	public MWFActivity(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 		m_state = new StateEngine (getWFState());
@@ -175,7 +148,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 	 *	@param process process
 	 *	@param AD_WF_Node_ID start node
 	 */
-	public MWFActivity (MWFProcess process, int AD_WF_Node_ID)
+	public MWFActivity(MWFProcess process, int AD_WF_Node_ID)
 	{
 		super (process.getCtx(), 0, process.get_TrxName());
 		setAD_WF_Process_ID (process.getAD_WF_Process_ID());
@@ -1026,10 +999,19 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 						MUserRoles[] urs = MUserRoles.getOfRole(getCtx(), resp.getAD_Role_ID());
 						for (int i = 0; i < urs.length; i++)
 						{
-							if(urs[i].getAD_User_ID() == Env.getAD_User_ID(getCtx()))
+							int contextUserId = Env.getAD_User_ID(getCtx());
+							if(urs[i].getAD_User_ID() == contextUserId)
 							{
-								autoApproval = true;
-								break;
+								int documentUserId = doc.getDoc_User_ID();
+								if (contextUserId == documentUserId) {
+									int nextAD_User_ID = getApprovalUser(documentUserId,
+											doc.getC_Currency_ID(), doc.getApprovalAmt(),
+											doc.getAD_Org_ID(),
+											contextUserId == doc.getDoc_User_ID());
+									autoApproval = documentUserId == nextAD_User_ID;
+								} else {
+									autoApproval = true;
+								}
 							}
 						}
 					}
