@@ -16,18 +16,17 @@
  *****************************************************************************/
 package org.spin.investment.loan.util;
 
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.util.Env;
+import org.spin.investment.model.*;
+import org.spin.investment.util.AbstractFunctionalSetting;
+import org.spin.investment.util.FinancialSetting;
+
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
-
-import org.adempiere.exceptions.AdempiereException;
-import org.spin.investment.model.MFMAgreement;
-import org.spin.investment.model.MFMBatch;
-import org.spin.investment.model.MFMFunctionalSetting;
-import org.spin.investment.model.MFMTransaction;
-import org.spin.investment.model.MFMTransactionType;
-import org.spin.investment.util.AbstractFunctionalSetting;
-import org.spin.investment.util.FinancialSetting;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Loan Daily Interest Calculation
@@ -63,7 +62,7 @@ public class LoanInterestProcess extends AbstractFunctionalSetting {
 			throw new AdempiereException("@FM_TransactionType_ID@ @NotFound@ " + MFMTransactionType.TYPE_LoanInterestCalculated);
 		}
 		//	
-		HashMap<String, Object> returnValues = LoanUtil.calculateLoanInterest(getCtx(), agreement.getFM_Agreement_ID(), 
+		HashMap<String, Object> returnValues = LoanUtil.calculateLoanInterest(getCtx(), agreement.getFM_Agreement_ID(),
 				new Timestamp(System.currentTimeMillis()), trxName);
 		//	Process it
 		if(returnValues == null
@@ -71,26 +70,53 @@ public class LoanInterestProcess extends AbstractFunctionalSetting {
 			return null;
 		}
 		//	Else
+		@SuppressWarnings("unchecked")
 		List<AmortizationValue> amortizationList = (List<AmortizationValue>) returnValues.get("AMORTIZATION_LIST");
 		if(amortizationList == null) {
 			return null;
 		}
+		AtomicReference<BigDecimal> capitalAmount = new AtomicReference<BigDecimal>(Env.ZERO);
+		AtomicReference<BigDecimal> interestAmount = new AtomicReference<BigDecimal>(Env.ZERO);
+		AtomicReference<BigDecimal> interestTaxAmount = new AtomicReference<BigDecimal>(Env.ZERO);
+		amortizationList.forEach(amortization -> {
+			capitalAmount.updateAndGet(amount -> amount.add(amortization.getCapitalAmtFee()));
+			interestAmount.updateAndGet(amount -> amount.add(amortization.getInterestAmtFee()));
+			interestTaxAmount.updateAndGet(amount -> amount.add(amortization.getTaxAmtFee()));
+		});
+		List<MFMAccount> accounts = MFMAccount.getAccountFromAgreement(agreement);
+		MFMAccount account = null;
+		if (accounts.isEmpty()){
+			account = new MFMAccount(agreement);
+			account.saveEx();
+		} else {
+			account = accounts.get(0);
+		}
 		//	Iterate
-		for (AmortizationValue row : amortizationList) {
-			MFMTransaction transaction = batch.addTransaction(interestType.getFM_TransactionType_ID(), row.getInterestAmtFee());
+		for (AmortizationValue amortizationReference : amortizationList) {
+			//
+			MFMTransaction transaction = batch.addTransaction(interestType.getFM_TransactionType_ID(), amortizationReference.getInterestAmtFee());
 			if(transaction != null) {
-				transaction.set_ValueOfColumn("FM_Amortization_ID", row.getAmortizationId());
+				transaction.set_ValueOfColumn("FM_Amortization_ID", amortizationReference.getAmortizationId());
 				transaction.saveEx();
 			}
 			if(interestTaxType != null
-					&& row.getTaxAmtFee() != null) {
-				transaction = batch.addTransaction(interestTaxType.getFM_TransactionType_ID(), row.getTaxAmtFee());
+					&& amortizationReference.getTaxAmtFee() != null) {
+				transaction = batch.addTransaction(interestTaxType.getFM_TransactionType_ID(), amortizationReference.getTaxAmtFee());
 				if(transaction != null) {
-					transaction.set_ValueOfColumn("FM_Amortization_ID", row.getAmortizationId());
+					transaction.set_ValueOfColumn("FM_Amortization_ID", amortizationReference.getAmortizationId());
 					transaction.saveEx();
 				}
 			}
+			//	Summary for Amortization
+			MFMAmortization amortization = new MFMAmortization(getCtx(), amortizationReference.getAmortizationId(), trxName);
+			amortization.setCurrentCapitalAmt(capitalAmount.get());
+			amortization.setCurrentInterestAmt(interestAmount.get());
+			amortization.setCurrentTaxAmt(interestTaxAmount.get());
+			amortization.saveEx();
+			//	Set Interest
+			MFMAmortizationSummary.setCurrentInterest(getCtx(), account.getFM_Account_ID(), amortizationReference.getAmortizationId(), batch.getDateDoc(), capitalAmount.get(), interestAmount.get(), interestTaxAmount.get(), trxName);
 		}
+
 		return null;
 	}
 }
