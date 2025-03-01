@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="Add Amortization Summary" ReleaseNo="0.3.7" SeqNo="10490">
+  <Migration EntityType="D" Name="Add Amortization Summary" ReleaseNo="0.3.8" SeqNo="10490">
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="100" Action="I" Record_ID="54757" Table="AD_Table">
         <Data AD_Column_ID="50183" Column="CopyColumnsFromTable">N</Data>
