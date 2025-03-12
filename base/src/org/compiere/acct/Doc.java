@@ -397,9 +397,9 @@ public abstract class Doc
     }
 
 	/**	Static Log						*/
-	protected static CLogger	s_log = CLogger.getCLogger(Doc.class);
+	public static CLogger	s_log = CLogger.getCLogger(Doc.class);
 	/**	Log	per Document				*/
-	protected CLogger			log = CLogger.getCLogger(getClass());
+	public CLogger			log = CLogger.getCLogger(getClass());
 
 	/* If the transaction must be managed locally (false if it's managed externally by the caller) */ 
 	private boolean m_manageLocalTrx;
@@ -464,7 +464,7 @@ public abstract class Doc
 	/** Transaction Name			*/
 	private String				m_trxName = null;
 	/** The Document				*/
-	protected PO				p_po = null;
+	public PO				p_po = null;
 	/** Document Type      			*/
 	private String				m_DocumentType = null;
 	/** Document Status      			*/
@@ -505,7 +505,7 @@ public abstract class Doc
 	private int					m_C_Currency_ID = -1;
 
 	/**	Contained Doc Lines			*/
-	protected DocLine[]			p_lines;
+	public DocLine[]			p_lines;
 
 	/** Facts                       */
 	private ArrayList<Fact>    	m_fact = null;
@@ -514,7 +514,7 @@ public abstract class Doc
 	public static final int  NO_CURRENCY = -2;
 	
 	/**	Actual Document Status  */
-	protected String			p_Status = null;
+	public String			p_Status = null;
 	public String getPostStatus() {
 		return p_Status;
 	}
@@ -2411,7 +2411,7 @@ public abstract class Doc
 	 *  Load Document Details
 	 *  @return error message or null
 	 */
-	protected abstract String loadDocumentDetails ();
+	public abstract String loadDocumentDetails ();
 
 	/**
 	 *  Get Source Currency Balance - subtracts line (and tax) amounts from total - no rounding

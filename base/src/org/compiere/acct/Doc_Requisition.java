@@ -57,7 +57,7 @@ public class Doc_Requisition extends Doc
 	 *	Load Specific Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails ()
+	public String loadDocumentDetails ()
 	{
 		setC_Currency_ID(NO_CURRENCY);
 		MRequisition req = (MRequisition)getPO();

@@ -81,7 +81,7 @@ public class Doc_AllocationHdr extends Doc
 	 *  Load Specific Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails ()
+	public String loadDocumentDetails ()
 	{
 		MAllocationHdr alloc = (MAllocationHdr)getPO();
 		setDateDoc(alloc.getDateTrx());

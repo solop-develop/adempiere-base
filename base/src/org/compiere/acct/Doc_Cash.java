@@ -53,7 +53,7 @@ public class Doc_Cash extends Doc
 	 *  Load Specific Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails ()
+	public String loadDocumentDetails ()
 	{
 		MCash cash = (MCash)getPO();
 		setDateDoc(cash.getStatementDate());

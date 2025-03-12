@@ -40,7 +40,7 @@ public class Doc_DepreciationEntry extends Doc
 	private int acctSchemaId = 0;
 	
 	
-	protected String loadDocumentDetails ()
+	public String loadDocumentDetails ()
 	{
 		MDepreciationEntry entry = (MDepreciationEntry)getPO();
 		postingType = entry.getPostingType();

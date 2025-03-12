@@ -57,7 +57,7 @@ public class Doc_GLJournal extends Doc
 	 *  Load Specific Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails ()
+	public String loadDocumentDetails ()
 	{
 		MJournal journal = (MJournal)getPO();
 		m_PostingType = journal.getPostingType();

@@ -54,7 +54,7 @@ public class Doc_ProductionBatch extends Doc
 	 *  only dates, amounts=zero
 	 *  @return null
 	 */
-	protected String loadDocumentDetails ()
+	public String loadDocumentDetails ()
 	{
 		setC_Currency_ID(NO_CURRENCY);
 		MProductionBatch pb = (MProductionBatch)getPO();

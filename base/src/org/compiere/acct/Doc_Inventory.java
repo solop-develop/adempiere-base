@@ -62,7 +62,7 @@ public class Doc_Inventory extends Doc
 	 *  Load Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails()
+	public String loadDocumentDetails()
 	{
 		setC_Currency_ID (NO_CURRENCY);
 		MInventory inventory = (MInventory)getPO();

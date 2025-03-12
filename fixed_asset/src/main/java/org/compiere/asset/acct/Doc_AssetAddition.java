@@ -34,7 +34,7 @@ public class Doc_AssetAddition extends Doc
 	}
 
 	
-	protected String loadDocumentDetails()
+	public String loadDocumentDetails()
 	{
 		return null;
 	}

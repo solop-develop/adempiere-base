@@ -67,7 +67,7 @@ public class Doc_Production extends Doc
 	 *  Load Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails()
+	public String loadDocumentDetails()
 	{
 		setC_Currency_ID (NO_CURRENCY);
 		X_M_Production prod = (X_M_Production)getPO();

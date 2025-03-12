@@ -75,7 +75,7 @@ public class Doc_Order extends Doc
 	 *  Load Specific Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails ()
+	public String loadDocumentDetails ()
 	{
 		MOrder order = (MOrder)getPO();
 		setDateDoc(order.getDateOrdered());
@@ -492,7 +492,7 @@ public class Doc_Order extends Doc
 	 * 	@param invoiceLineId invoice line
 	 *	@return commitments (order lines)
 	 */
-	protected static DocLine[] getCommitments(Doc document, BigDecimal maxQuantity, int invoiceLineId) {
+	public static DocLine[] getCommitments(Doc document, BigDecimal maxQuantity, int invoiceLineId) {
 		String whereClause = "EXISTS(SELECT 1 FROM C_InvoiceLine il "
 				+ "WHERE il.C_OrderLine_ID = C_OrderLine.C_OrderLine_ID"
 				+ " AND il.C_InvoiceLine_ID=?)"
@@ -515,7 +515,7 @@ public class Doc_Order extends Doc
 	 *	@param multiplier 1 for accrual
 	 *	@return Fact
 	 */
-	protected static Fact getCommitmentRelease(MAcctSchema as, Doc doc, 
+	public static Fact getCommitmentRelease(MAcctSchema as, Doc doc, 
 		BigDecimal Qty, int C_InvoiceLine_ID, BigDecimal multiplier)
 	{
 		Fact fact = new Fact(doc, as, Fact.POST_Commitment);
@@ -624,7 +624,7 @@ public class Doc_Order extends Doc
 	 * 	@param C_OrderLine_ID invoice line
 	 *	@return commitments (order lines)
 	 */
-	protected static DocLine[] getCommitmentsSales(Doc document, BigDecimal maxQuantity, int inOutLineId) {
+	public static DocLine[] getCommitmentsSales(Doc document, BigDecimal maxQuantity, int inOutLineId) {
 		//
 		String whereClause = "EXISTS (SELECT 1 FROM M_InOutLine il "
 					+ "	WHERE il.C_OrderLine_ID = C_OrderLine.C_OrderLine_ID"
@@ -645,7 +645,7 @@ public class Doc_Order extends Doc
 	 *	@param multiplier 1 for accrual
 	 *	@return Fact
 	 */
-	protected static Fact getCommitmentSalesRelease(MAcctSchema as, Doc doc, 
+	public static Fact getCommitmentSalesRelease(MAcctSchema as, Doc doc, 
 		BigDecimal Qty, int M_InOutLine_ID, BigDecimal multiplier)
 	{
 		Fact fact = new Fact(doc, as, Fact.POST_Commitment);

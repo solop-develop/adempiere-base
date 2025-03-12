@@ -64,7 +64,7 @@ public class Doc_ProjectIssue extends Doc
 	 *  Load Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails()
+	public String loadDocumentDetails()
 	{
 		setC_Currency_ID(NO_CURRENCY);
 		m_issue = (MProjectIssue)getPO();

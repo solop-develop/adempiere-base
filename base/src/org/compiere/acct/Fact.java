@@ -267,7 +267,7 @@ public final class Fact
 	 *	Return Source Balance
 	 *  @return source balance
 	 */
-	protected BigDecimal getSourceBalance()
+	public BigDecimal getSourceBalance()
 	{
 		BigDecimal result = Env.ZERO;
 		for (int i = 0; i < m_lines.size(); i++)
@@ -512,7 +512,7 @@ public final class Fact
 	 *	Return Accounting Balance
 	 *  @return true if accounting lines are balanced
 	 */
-	protected BigDecimal getAcctBalance()
+	public BigDecimal getAcctBalance()
 	{
 		BigDecimal result = Env.ZERO;
 		for (int i = 0; i < m_lines.size(); i++)

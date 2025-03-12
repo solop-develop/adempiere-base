@@ -65,7 +65,7 @@ public class Doc_BankStatement extends Doc
 	 *  Load Specific Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails ()
+	public String loadDocumentDetails ()
 	{
 		MBankStatement bs = (MBankStatement)getPO();
 		setDateDoc(bs.getStatementDate());
