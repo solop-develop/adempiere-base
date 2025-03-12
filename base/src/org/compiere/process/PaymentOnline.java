@@ -19,6 +19,7 @@ package org.compiere.process;
 //import org.compiere.process.*;
 import java.util.logging.Level;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MPayment;
 
 
@@ -61,7 +62,7 @@ public class PaymentOnline extends SvrProcess
 		boolean ok = pp.processOnline();
 		pp.saveEx();
 		if (!ok)
-			throw new Exception(pp.getErrorMessage());
+			throw new AdempiereException(pp.getErrorMessage());
 		return "OK";
 	}	//	doIt
 
