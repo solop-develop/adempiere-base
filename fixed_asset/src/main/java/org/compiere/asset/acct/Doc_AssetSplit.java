@@ -45,7 +45,7 @@ public class Doc_AssetSplit extends Doc {
     }
 
 
-    protected String loadDocumentDetails() {
+    public String loadDocumentDetails() {
         return null;
     }
 

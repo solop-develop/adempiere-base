@@ -67,7 +67,7 @@ public class   Doc_FMBatch extends Doc {
 	}	//	Doc_Payroll
 
 	@Override
-	protected String loadDocumentDetails () {
+	public String loadDocumentDetails () {
 		batch = (MFMBatch)getPO();
 		account = (MFMAccount) batch.getFM_Account();
 		agreement = (MFMAgreement) account.getFM_Agreement();

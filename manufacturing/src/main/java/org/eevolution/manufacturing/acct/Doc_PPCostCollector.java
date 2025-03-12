@@ -64,22 +64,22 @@ public class Doc_PPCostCollector extends Doc
 	
 
 	/**	Pseudo Line */
-	protected DocLine_CostCollector docLineCostCollector = null;
+	public DocLine_CostCollector docLineCostCollector = null;
 	
 	/** Collector Cost */
-	protected MPPCostCollector costCollector = null;
+	public MPPCostCollector costCollector = null;
 	/** Manufacturing Order **/
-	protected I_PP_Order manufacturingOrder = null;
+	public I_PP_Order manufacturingOrder = null;
 
 	/** Routing Service */
-	protected RoutingService routingService = null;
+	public RoutingService routingService = null;
 
 	
 	/**
 	 *  Load Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails()
+	public String loadDocumentDetails()
 	{
 		setC_Currency_ID (NO_CURRENCY);
 		costCollector = (MPPCostCollector)getPO();
@@ -143,7 +143,7 @@ public class Doc_PPCostCollector extends Doc
 		return facts;
 	}   //  createFact
 	
-	protected void createLines(MCostElement element, MAcctSchema acctSchema, Fact fact , MProduct product,
+	public void createLines(MCostElement element, MAcctSchema acctSchema, Fact fact , MProduct product,
 								MAccount debit, MAccount credit, BigDecimal cost, BigDecimal qty)
 	{
 		if(cost == null || debit == null || credit == null)
@@ -200,7 +200,7 @@ public class Doc_PPCostCollector extends Doc
 	 * 		Overhead 
 	 * 		Outsite Processing		
 	 */
-	protected Fact createMaterialReceipt(MAcctSchema acctSchema)
+	public Fact createMaterialReceipt(MAcctSchema acctSchema)
 	{
 		final Fact fact = new Fact(this, acctSchema, Fact.POST_Actual);
 		FactLine debitLine = null;
@@ -304,7 +304,7 @@ public class Doc_PPCostCollector extends Doc
 	 * 		Overhead 
 	 * 		Outsite Processing		
 	 */
-	protected Fact createComponentIssue(MAcctSchema acctSchema)
+	public Fact createComponentIssue(MAcctSchema acctSchema)
 	{
 		final Fact fact = new Fact(this, acctSchema, Fact.POST_Actual);
 		BigDecimal totalCost = Env.ZERO;
@@ -351,7 +351,7 @@ public class Doc_PPCostCollector extends Doc
 	 * 		Labor Absorbed
 	 * 		Burden Absorbed
 	 */
-	protected List<Fact> createActivityControl(MAcctSchema acctSchema)
+	public List<Fact> createActivityControl(MAcctSchema acctSchema)
 	{
 		final ArrayList<Fact> facts = new ArrayList<Fact>();
 		final Fact fact = new Fact(this, acctSchema, Fact.POST_Actual);
@@ -373,7 +373,7 @@ public class Doc_PPCostCollector extends Doc
 		return facts;
 	}
 	
-	protected Fact createVariance(MAcctSchema acctSchema, int varianceAcctType)
+	public Fact createVariance(MAcctSchema acctSchema, int varianceAcctType)
 	{
 		final Fact fact = new Fact(this, acctSchema, Fact.POST_Actual);
 		final MProduct product = costCollector.getM_Product();

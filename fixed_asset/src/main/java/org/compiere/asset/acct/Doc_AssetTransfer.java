@@ -27,7 +27,7 @@ public class Doc_AssetTransfer extends Doc
 	}
 
 	
-	protected String loadDocumentDetails()
+	public String loadDocumentDetails()
 	{
 		// Fix C_Period_ID
 //		MAssetTransfer assetTr = getAssetTransfer();

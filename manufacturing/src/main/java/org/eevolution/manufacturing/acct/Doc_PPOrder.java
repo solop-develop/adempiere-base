@@ -52,7 +52,7 @@ public class Doc_PPOrder extends Doc
 	 *  Load Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails()
+	public String loadDocumentDetails()
 	{	
 		MPPOrder order = (MPPOrder)getPO();
 		setDateDoc(order.getDateOrdered());

@@ -70,7 +70,7 @@ public class   Doc_HRProcess extends Doc
 	}	//	Doc_Payroll
 
 	@Override
-	protected String loadDocumentDetails () {
+	public String loadDocumentDetails () {
 		process = (MHRProcess)getPO();
 		setDateDoc(getDateAcct());
 		//	Contained Objects

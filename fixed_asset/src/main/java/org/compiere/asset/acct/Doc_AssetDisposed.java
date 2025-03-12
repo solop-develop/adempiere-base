@@ -32,7 +32,7 @@ public class Doc_AssetDisposed extends Doc
 	}
 
 	
-	protected String loadDocumentDetails()
+	public String loadDocumentDetails()
 	{
 		return null;
 	}

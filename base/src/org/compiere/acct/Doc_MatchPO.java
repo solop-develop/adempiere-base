@@ -79,7 +79,7 @@ public class Doc_MatchPO extends Doc
 	 *  Load Specific Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails ()
+	public String loadDocumentDetails ()
 	{
 		setC_Currency_ID (Doc.NO_CURRENCY);
 		MMatchPO matchPO = (MMatchPO)getPO();

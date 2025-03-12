@@ -63,7 +63,7 @@ public class Doc_InOut extends Doc
 	 *  Load Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails()
+	public String loadDocumentDetails()
 	{
 		setC_Currency_ID(NO_CURRENCY);
 		MInOut inout = (MInOut)getPO();

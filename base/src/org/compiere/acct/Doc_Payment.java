@@ -66,7 +66,7 @@ public class Doc_Payment extends Doc
 	 *  Load Specific Document Details
 	 *  @return error message or null
 	 */
-	protected String loadDocumentDetails ()
+	public String loadDocumentDetails ()
 	{
 		MPayment pay = (MPayment)getPO();
 		setDateDoc(pay.getDateTrx());

@@ -58,7 +58,7 @@ public class Doc_AssetReval extends Doc
 	}
 	
 	
-	protected String loadDocumentDetails() 
+	public String loadDocumentDetails() 
 	{
 		return null;
 	}
