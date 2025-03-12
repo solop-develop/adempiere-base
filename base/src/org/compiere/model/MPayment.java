@@ -16,35 +16,20 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.*;
+import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.exceptions.PeriodClosedException;
+import org.compiere.process.*;
+import org.compiere.util.*;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_C_BankStatementLine;
-import org.adempiere.core.domains.models.I_C_Payment;
-import org.adempiere.core.domains.models.X_C_BPartner;
-import org.adempiere.core.domains.models.X_C_DocType;
-import org.adempiere.core.domains.models.X_C_Order;
-import org.adempiere.core.domains.models.X_C_Payment;
-import org.adempiere.exceptions.AdempiereException;
-import org.adempiere.exceptions.PeriodClosedException;
-import org.compiere.process.*;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.Trx;
-import org.compiere.util.Util;
-import org.compiere.util.ValueNamePair;
 
 /**
  *  Payment Model.
@@ -109,7 +94,7 @@ public final class MPayment extends X_C_Payment
 	{
 		return getOfOrder(order.getCtx(), order.getC_Order_ID(), order.get_TrxName());
 	}
-	
+
 	/**
 	 * Get payment for order ID
 	 * @param order
@@ -122,7 +107,7 @@ public final class MPayment extends X_C_Payment
 				.setParameters(c_order_id)
 				.list();
 	}
-	
+
 
 	/**
 	 * 	Get Payments Of BPartner
@@ -152,7 +137,7 @@ public final class MPayment extends X_C_Payment
 	 *  @param  C_Payment_ID    payment to load, (0 create new payment)
 	 *  @param trxName trx name
 	 */
-	public MPayment (Properties ctx, int C_Payment_ID, String trxName)
+	public MPayment(Properties ctx, int C_Payment_ID, String trxName)
 	{
 		super (ctx, C_Payment_ID, trxName);
 		//  New
@@ -195,7 +180,7 @@ public final class MPayment extends X_C_Payment
 	 * @return
 	 */
 	public MBankStatementLine getBankStatementLine() {
-		return new Query(getCtx(), I_C_BankStatementLine.Table_Name, 
+		return new Query(getCtx(), I_C_BankStatementLine.Table_Name,
 				"C_Payment_ID = ? "
 				+ "AND EXISTS(SELECT 1 FROM C_BankStatement bs "
 				+ "		WHERE bs.C_BankStatement_ID = C_BankStatementLine.C_BankStatement_ID "
@@ -203,14 +188,14 @@ public final class MPayment extends X_C_Payment
 				.setParameters(getC_Payment_ID())
 				.first();
 	}
-	
+
 	/**
 	 *  Load Constructor
 	 *  @param ctx context
 	 *  @param rs result set record
 	 *	@param trxName transaction
 	 */
-	public MPayment (Properties ctx, ResultSet rs, String trxName)
+	public MPayment(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MPayment
@@ -512,20 +497,11 @@ public final class MPayment extends X_C_Payment
 		//
 		setIsOnline(true);
 		setErrorMessage(null);
-		//	prevent charging twice
-		if (isApproved())
-		{
-			log.info("Already processed - " + getR_Result() + " - " + getR_RespMsg());
-			setErrorMessage("Payment already Processed");
-			return true;
-		}
-
 		if (m_mPaymentProcessor == null)
 			setPaymentProcessor();
-		if (m_mPaymentProcessor == null)
-		{
+		if (m_mPaymentProcessor == null) {
 			log.log(Level.WARNING, "No Payment Processor Model");
-			setErrorMessage("No Payment Processor Model");
+			setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
 			return false;
 		}
 
@@ -535,12 +511,12 @@ public final class MPayment extends X_C_Payment
 		{
 			PaymentProcessor pp = PaymentProcessor.create(m_mPaymentProcessor, this);
 			if (pp == null)
-				setErrorMessage("No Payment Processor");
+				setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
 			else
 			{
 				// Validate before trying to process
 				String msg = pp.validate();
-				if (msg!=null && msg.trim().length()>0) {
+				if (msg != null && !msg.trim().isEmpty()) {
 					setErrorMessage(Msg.getMsg(getCtx(), msg));
 				} else {
 					// Process if validation succeeds
@@ -596,20 +572,12 @@ public final class MPayment extends X_C_Payment
 	protected boolean beforeSave (boolean newRecord)
 	{
 		// @Trifon - CashPayments
-//		if ( isCashTrx() && !MSysConfig.getBooleanValue("CASH_AS_PAYMENT", true, getAD_Client_ID())) {
-//			// Cash Book Is mandatory
-//			if ( getC_CashBook_ID() <= 0 ) {
-//				log.saveError("Error", Msg.parseTranslation(getCtx(), "@Mandatory@: @C_CashBook_ID@"));
-//				return false;
-//			}
-//		} else {
-			// Bank Account Is mandatory
-			if ( getC_BankAccount_ID() <= 0 ) {
-				m_errorMessage = Msg.parseTranslation(getCtx(), "@Mandatory@: @C_BankAccount_ID@");
-				log.saveError("Error", m_errorMessage);
-				return false;
-			}
-//		}
+		// Bank Account Is mandatory
+		if ( getC_BankAccount_ID() <= 0 ) {
+			m_errorMessage = Msg.parseTranslation(getCtx(), "@Mandatory@: @C_BankAccount_ID@");
+			log.saveError("Error", m_errorMessage);
+			return false;
+		}
 		// end @Trifon - CashPayments
 
 		//	We have a charge
@@ -719,7 +687,7 @@ public final class MPayment extends X_C_Payment
 	{
 		BigDecimal retValue = null;
 		if (getC_Charge_ID() != 0)
-			return getPayAmt();
+			return getPayAmt(false);
 		//
 		String sql = "SELECT SUM(currencyConvert(al.Amount,"
 				+ "ah.C_Currency_ID, p.C_Currency_ID,ah.DateTrx,p.C_ConversionType_ID, al.AD_Client_ID,al.AD_Org_ID)) "
@@ -1730,22 +1698,6 @@ public final class MPayment extends X_C_Payment
 		MPayment counter = createCounterDoc();
 		if (counter != null)
 			processMsg += " @CounterDoc@: @C_Payment_ID@=" + counter.getDocumentNo();
-
-		// @Trifon - CashPayments
-		if ( isCashTrx() && getC_POS_ID() == 0) {
-			// Create Cash Book entry - check that the bank is a cash bank
-			// The bank account is mandatory
-			MBankAccount bankAccount = (MBankAccount) getC_BankAccount();
-			if ( !bankAccount.getC_Bank().getBankType().equals(MBank.BANKTYPE_CashJournal) ) {
-				m_errorMessage = Msg.parseTranslation(getCtx(), "@Mandatory@: @C_CashBook_ID@");
-				log.saveError("Error", m_errorMessage);
-				processMsg = "@NoCashBook@";
-				return DocAction.STATUS_Invalid;
-			}
-			// Find or create a suitable bank statement which is or will become the Cash Journal of this day
-			MBankStatement.addPayment(this);
-		}
-		// End Trifon - CashPayments
 		
 		//	User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
@@ -2459,7 +2411,8 @@ public final class MPayment extends X_C_Payment
 	private int getC_BankStatementLine_ID() {
 		String sql = "SELECT bsl.C_BankStatementLine_ID FROM C_BankStatementLine bsl WHERE bsl.C_Payment_ID=? "
 				+ "AND EXISTS(SELECT 1 FROM C_BankStatement bs "
-				+ "					WHERE bs.C_BankStatement_ID = bsl.C_BankStatement_ID )";
+				+ "					WHERE bs.C_BankStatement_ID = bsl.C_BankStatement_ID "
+				+ "					AND bs.DocStatus IN('CO', 'CL'))";
 		return DB.getSQLValue(get_TrxName(), sql, getC_Payment_ID());
 	}	//	getC_BankStatementLine_ID
 
@@ -2658,6 +2611,4 @@ public final class MPayment extends X_C_Payment
 			.first();
 	}
 
-
-	
 }   //  MPayment
