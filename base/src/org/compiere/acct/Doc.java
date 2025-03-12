@@ -520,7 +520,7 @@ public abstract class Doc
 	}
 
 	/** Error Message			*/
-	protected String			p_Error = null;
+	public String			p_Error = null;
 
 	/**
 	 * 	Get Context
