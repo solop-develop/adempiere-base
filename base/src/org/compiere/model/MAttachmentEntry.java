@@ -16,16 +16,12 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Random;
-import java.util.logging.Level;
-
 import org.compiere.util.CLogger;
 import org.compiere.util.MimeType;
+
+import java.io.*;
+import java.util.Random;
+import java.util.logging.Level;
 
 
 /**
@@ -42,7 +38,7 @@ public class MAttachmentEntry
 	 * 	@param data binary data
 	 * 	@param index optional index
 	 */
-	public MAttachmentEntry (String name, byte[] data, int index)
+	public MAttachmentEntry(String name, byte[] data, int index)
 	{
 		super ();
 		setName (name);
@@ -66,7 +62,7 @@ public class MAttachmentEntry
 	 * 	@param name name
 	 * 	@param data binary data
 	 */
-	public MAttachmentEntry (String name, byte[] data)
+	public MAttachmentEntry(String name, byte[] data)
 	{
 		this (name, data, 0);
 	}	//	MAttachmentItem
@@ -271,7 +267,7 @@ public class MAttachmentEntry
 	public boolean isGraphic()
 	{
 		String m_lowname = m_name.toLowerCase();
-		return m_lowname.endsWith(".gif") || m_lowname.endsWith(".jpg") || m_lowname.endsWith(".png");
+		return m_lowname.endsWith(".gif") || m_lowname.endsWith(".jpg") || m_lowname.endsWith(".jpeg") || m_lowname.endsWith(".png");
 	}	//	isGraphic
 	
 	
