@@ -16,14 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_C_BPartner;
 import org.adempiere.core.domains.models.X_C_BPartner;
 import org.adempiere.core.domains.models.X_I_BPartner;
@@ -31,6 +23,14 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *	Business Partner Model
@@ -223,7 +223,7 @@ public class MBPartner extends X_C_BPartner
 	 * 	Constructor for new BPartner from Template
 	 * 	@param ctx context
 	 */
-	public MBPartner (Properties ctx)
+	public MBPartner(Properties ctx)
 	{
 		this (ctx, -1, null);
 	}	//	MBPartner
@@ -234,7 +234,7 @@ public class MBPartner extends X_C_BPartner
 	 * 	@param rs ResultSet to load from
 	 * 	@param trxName transaction
 	 */
-	public MBPartner (Properties ctx, ResultSet rs, String trxName)
+	public MBPartner(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MBPartner
@@ -245,7 +245,7 @@ public class MBPartner extends X_C_BPartner
 	 * 	@param C_BPartner_ID partner or 0 or -1 (load from template)
 	 * 	@param trxName transaction
 	 */
-	public MBPartner (Properties ctx, int C_BPartner_ID, String trxName)
+	public MBPartner(Properties ctx, int C_BPartner_ID, String trxName)
 	{
 		super (ctx, C_BPartner_ID, trxName);
 		//
@@ -293,7 +293,7 @@ public class MBPartner extends X_C_BPartner
 	 * 	Import Constructor
 	 *	@param impBP import
 	 */
-	public MBPartner (X_I_BPartner impBP)
+	public MBPartner(X_I_BPartner impBP)
 	{
 		this (impBP.getCtx(), 0, impBP.get_TrxName());
 		setClientOrg(impBP);
@@ -325,6 +325,9 @@ public class MBPartner extends X_C_BPartner
 		// setPlaceOfBirth(impBP.getPlaceOfBirth()); //todo : Need be impleented setPlaceOfBirth_ID(impBP.getPlaceOfBirth_ID());
 
 		setGender(impBP.getGender());
+		setC_TaxGroup_ID(impBP.get_ValueAsInt("C_TaxGroup_ID"));
+		setPaymentRule(impBP.get_ValueAsString("PaymentRule"));
+		setPaymentRulePO(impBP.get_ValueAsString("PaymentRulePO"));
 		//	Se
 	}	//	MBPartner
 	
