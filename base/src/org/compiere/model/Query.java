@@ -19,6 +19,10 @@
  ******************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.exceptions.DBException;
+import org.adempiere.model.POWrapper;
+import org.compiere.util.*;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,14 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.exceptions.DBException;
-import org.adempiere.model.POWrapper;
-import org.compiere.util.CLogMgt;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Util;
 
 /**
  * 
@@ -304,6 +300,9 @@ public class Query
 	@SuppressWarnings("unchecked")
 	public <T extends PO> T first() throws DBException
 	{
+		//Set limit to 1 Record
+		setLimit(1);
+		
 		T po = null;
 		String sql = buildSQL(null, true);
 		
@@ -339,6 +338,9 @@ public class Query
 	@SuppressWarnings("unchecked")
 	public <T extends PO> T firstOnly() throws DBException
 	{
+		//Set limit to 1 Record
+		setLimit(1);
+		
 		T po = null;
 		String sql = buildSQL(null, true);
 		
@@ -402,6 +404,8 @@ public class Query
 		StringBuffer selectClause = new StringBuffer("SELECT ");
 		selectClause.append(keys[0]);
 		selectClause.append(" FROM ").append(table.getTableName());
+		//Set limit to 1 Record
+		setLimit(1);
 		String sql = buildSQL(selectClause, true);
 
 		int id = -1;
