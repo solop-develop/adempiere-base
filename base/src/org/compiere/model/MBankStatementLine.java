@@ -16,14 +16,6 @@
  * Contributor(s): Teo Sarca                                                  *
  *****************************************************************************/
 package org.compiere.model;
- 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.adempiere.core.domains.models.X_C_BankStatementLine;
 import org.adempiere.core.domains.models.X_I_BankStatement;
@@ -32,7 +24,15 @@ import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
- 
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  *	Bank Statement Line Model
  *
@@ -66,7 +66,7 @@ import org.compiere.util.Msg;
 	 *	@param C_BankStatementLine_ID id
 	 *	@param trxName transaction
 	 */
-	public MBankStatementLine (Properties ctx, int C_BankStatementLine_ID, String trxName)
+	public MBankStatementLine(Properties ctx, int C_BankStatementLine_ID, String trxName)
 	{
 		super (ctx, C_BankStatementLine_ID, trxName);
 		if (C_BankStatementLine_ID == 0)
@@ -91,7 +91,7 @@ import org.compiere.util.Msg;
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MBankStatementLine (Properties ctx, ResultSet rs, String trxName)
+	public MBankStatementLine(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MBankStatementLine
@@ -144,6 +144,9 @@ import org.compiere.util.Msg;
 		setMemo(imp.getMemo());
 		if (imp.getC_Payment_ID() != 0) {
 			setC_Payment_ID(imp.getC_Payment_ID());
+		}
+		if(imp.getC_BPartner_ID() != 0){
+			setC_BPartner_ID(imp.getC_BPartner_ID());
 		}
 		//	Copy statement line reference data
 		setEftTrxID(imp.getEftTrxID());
@@ -258,6 +261,7 @@ import org.compiere.util.Msg;
 		// Un-link Payment if TrxAmt is zero - teo_sarca BF [ 1896880 ] 
 		if (getTrxAmt().signum() == 0 && getC_Payment_ID() > 0)
 		{
+			setC_Payment_ID(I_ZERO);
 			setC_Invoice_ID(I_ZERO);
 		}
 		//	Set Line No
