@@ -16,23 +16,21 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_AD_PInstance_Para;
+import org.adempiere.core.domains.models.X_AD_PInstance;
+import org.compiere.util.DB;
+import org.compiere.util.DisplayType;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_AD_PInstance_Para;
-import org.adempiere.core.domains.models.X_AD_PInstance;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
 
 /**
  *  Process Instance Model
@@ -61,7 +59,7 @@ public class MPInstance extends X_AD_PInstance
 	 *	@param AD_PInstance_ID instance or 0
 	 *	@param ignored no transaction support
 	 */
-	public MPInstance (Properties ctx, int AD_PInstance_ID, String ignored)
+	public MPInstance(Properties ctx, int AD_PInstance_ID, String ignored)
 	{
 		super (ctx, AD_PInstance_ID, null);
 		//	New Process
@@ -84,7 +82,7 @@ public class MPInstance extends X_AD_PInstance
 	 *	@param rs result set
 	 *	@param ignored no transaction support
 	 */
-	public MPInstance (Properties ctx, ResultSet rs, String ignored)
+	public MPInstance(Properties ctx, ResultSet rs, String ignored)
 	{
 		super(ctx, rs, null);
 	}	//	MPInstance
@@ -94,7 +92,7 @@ public class MPInstance extends X_AD_PInstance
 	 *	@param process process
 	 *	@param Record_ID Record
 	 */
-	public MPInstance (MProcess process, int Record_ID)
+	public MPInstance(MProcess process, int Record_ID)
 	{
 		this (process.getCtx(), 0, null);
 		setAD_Process_ID (process.getAD_Process_ID());
@@ -119,7 +117,7 @@ public class MPInstance extends X_AD_PInstance
 	 *	@param AD_Process_ID Process ID
 	 *	@param Record_ID record
 	 */
-	public MPInstance (Properties ctx, int AD_Process_ID, int Record_ID)
+	public MPInstance(Properties ctx, int AD_Process_ID, int Record_ID)
 	{
 		this(ctx, 0, null);
 		setAD_Process_ID (AD_Process_ID);
@@ -252,7 +250,7 @@ public class MPInstance extends X_AD_PInstance
 
 	/**
 	 * 	String Representation
-	 *	@see java.lang.Object#toString()
+	 *	@see Object#toString()
 	 *	@return info
 	 */
 	public String toString ()
@@ -339,6 +337,7 @@ public class MPInstance extends X_AD_PInstance
 		if(parameter == null
 				&& parameterName.endsWith("_To")) {
 			String originalParameterName = parameterName.replaceAll("_To", "");
+			parameter = process.getParameter(originalParameterName);
 			Optional<MPInstancePara> optionalSavedParameter = Arrays.asList(getParameters()).stream()
 					.filter(savedParameter -> savedParameter.getParameterName().equals(originalParameterName))
 					.findFirst();
@@ -360,6 +359,7 @@ public class MPInstance extends X_AD_PInstance
 			} else {
 				instanceParameter.setParameter(originalParameterName, value.toString(), true);
 			}
+			instanceParameter.setInfo_To(getDisplayParameterValue(parameter, value));
 		} else {
 			instanceParameter = new MPInstancePara(this, sequence);
 			if (value == null) {
@@ -375,12 +375,56 @@ public class MPInstance extends X_AD_PInstance
 			} else {
 				instanceParameter.setParameter(parameterName, value.toString());
 			}
+			instanceParameter.setInfo(getDisplayParameterValue(parameter, value));
 		}
 		//
 		instanceParameter.saveEx();
 		return instanceParameter;
 	}
 	
+	private String getDisplayParameterValue(MProcessPara parameter, Object value) {
+		if(value == null) {
+			return null;
+		}
+		String displayValue = null;
+		try {
+			if (DisplayType.isLookup(parameter.getAD_Reference_ID())) {
+				Lookup lookup = MLookupFactory.get(
+					parameter.getCtx(), 0,
+					0, parameter.getAD_Reference_ID(),
+					Env.getLanguage(parameter.getCtx()), parameter.getColumnName(),
+					parameter.getAD_Reference_Value_ID(),
+					false, null
+				);
+				displayValue = lookup.getDisplay(value);
+			} else if (DisplayType.YesNo == parameter.getAD_Reference_ID()) {
+				displayValue = Msg.translate(
+					parameter.getCtx(),
+					value.toString()
+				);
+			} else if (DisplayType.isDate(parameter.getAD_Reference_ID())) {
+				SimpleDateFormat dateTimeFormat = DisplayType.getDateFormat(
+					parameter.getAD_Reference_ID(),
+					Env.getLanguage(parameter.getCtx())
+				);
+				displayValue = dateTimeFormat.format(
+					(Timestamp) value
+				);
+			} else if (DisplayType.isNumeric(parameter.getAD_Reference_ID())) {
+				DecimalFormat numberFormat = DisplayType.getNumberFormat(
+					parameter.getAD_Reference_ID(),
+					Env.getLanguage(parameter.getCtx())
+				);
+				displayValue = numberFormat.format(
+					value
+				);
+			}
+		} catch (Exception e) {
+			log.warning(e.getLocalizedMessage());
+		}
+		return displayValue;
+	}
+
 	public static List<MPInstance> get(Properties ctx, int AD_Process_ID, int AD_User_ID) {
 		String where = "AD_Process_ID = ? AND AD_User_ID = ? AND Name IS NOT NULL ";
 		
