@@ -28,7 +28,9 @@ import org.compiere.util.Util;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -39,38 +41,41 @@ import java.util.logging.Level;
  *  @version Release 3.9.4
  */
 public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
+	private List<String> generated = new ArrayList<>();
 	@Override
 	protected void prepare() {
 		super.prepare();
-		if(!MProjectLine.Table_Name.equals(getTableName())) {
-			throw new AdempiereException("@C_ProjectLine_ID@ @NotFound@");
-		}
-		if (getRecord_ID() == 0) {
-			throw new AdempiereException("@C_ProjectLine_ID@ @NotFound@");
+		if(!isSelection()) {
+			if(getRecord_ID() == 0 || !I_C_ProjectLine.Table_Name.equals(getTableName())) {
+				throw new AdempiereException("@C_Project_ID@ @NotFound@");
+			}
 		}
 	}
 
 	@Override
 	protected String doIt() throws Exception {
-		String description = null;
-		BigDecimal quantityToOrder = null;
-		BigDecimal priceActual = null;
-		BigDecimal quantityEntered = null;
-		int projectUomId = 0;
-		MProjectLine mainLine = new MProjectLine(getCtx(), getRecord_ID(), get_TrxName());
-		log.info("doIt - C_ProjectPhase_ID=" + getRecord_ID());
-		description = mainLine.getDescription();
-		quantityToOrder = mainLine.getPlannedQty();
-		priceActual = mainLine.getPlannedAmt();
-		//	Add UOM
-		quantityEntered = mainLine.getPlannedQty();
-		projectUomId = mainLine.get_ValueAsInt("C_UOM_ID");
+		getProjectLineIds().forEach(this::generateOrderFromProjectLine);
+		return "@Created@ " + generated.toString();
+	}	//	doIt
 
-		MProject fromProject = getProject (getCtx(), mainLine.getC_Project_ID(), get_TrxName());
-		if (fromProject.getC_PaymentTerm_ID() <= 0) {
+	private List<Integer> getProjectLineIds() {
+		if(isSelection()) {
+			return Optional.ofNullable(getSelectionKeys()).orElse(List.of());
+		}
+		return List.of(getRecord_ID());
+	}
+
+	private void generateOrderFromProjectLine(int projectLineId) {
+		MProjectLine mainLine = new MProjectLine(getCtx(), projectLineId, get_TrxName());
+		log.info("doIt - C_ProjectPhase_ID=" + projectLineId);
+		MProject project = getProject (getCtx(), mainLine.getC_Project_ID(), get_TrxName());
+		if (project.getC_PaymentTerm_ID() <= 0) {
 			throw new AdempiereException("@C_PaymentTerm_ID@ @NotFound@");
 		}
-		MOrder order = new MOrder (fromProject, true, MDocType.COLUMNNAME_DocSubTypeSO);
+		if(!mainLine.isSummary()) {
+			return;
+		}
+		MOrder order = new MOrder (project, true, MDocType.COLUMNNAME_DocSubTypeSO);
 		//	Add Document Type Target
 		if(getDocTypeTargetId() > 0) {
 			order.setC_DocTypeTarget_ID(getDocTypeTargetId());
@@ -107,6 +112,11 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 
 		//	Create an order on Phase Level
 		if (mainLine.getM_Product_ID() != 0) {
+			String description = mainLine.getDescription();
+			BigDecimal quantityToOrder = mainLine.getPlannedQty();
+			//	Add UOM
+			BigDecimal quantityEntered = mainLine.getPlannedQty();
+			int projectUomId = mainLine.get_ValueAsInt("C_UOM_ID");
 			MProduct product = MProduct.get(getCtx(), mainLine.getM_Product_ID());
 			MOrderLine orderLine = new MOrderLine(order);
 			orderLine.setLine(mainLine.getLine());
@@ -119,13 +129,14 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 			orderLine.setProduct(product);
 			setQuantityToOrder(orderLine, product, projectUomId, quantityEntered, quantityToOrder);
 			orderLine.setPrice();
-			orderLine.setC_Project_ID(fromProject.getC_Project_ID());
+			orderLine.setC_Project_ID(project.getC_Project_ID());
 			if (mainLine.getPlannedAmt()!= null && mainLine.getPlannedAmt().compareTo(Env.ZERO) != 0) {
 				orderLine.setPrice(mainLine.getPlannedAmt());
 			}
 			orderLine.setTax();
 			orderLine.saveEx();
-			return "@C_Order_ID@ " + order.getDocumentNo() + " (1)";
+			generated.add("@C_Order_ID@ " + order.getDocumentNo() + " (1)");
+			return;
 		}
 
 		//	Project Phase Lines
@@ -147,7 +158,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 					}
 					orderLine.setDiscount();
 					orderLine.setTax();
-					orderLine.setC_Project_ID(fromProject.getC_Project_ID());
+					orderLine.setC_Project_ID(project.getC_Project_ID());
 					orderLine.setC_ProjectPhase_ID(projectLine.getC_ProjectPhase_ID());
 					if(projectLine.getDatePromised() != null) {
 						orderLine.setDatePromised(projectLine.getDatePromised());
@@ -160,8 +171,8 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 				});    //	for all lines
 		if (projectLines.size() != count.get())
 			log.log(Level.SEVERE, "Lines difference - ProjectLines=" + projectLines.size() + " <> Saved=" + count.get());
-		return "@C_Order_ID@ " + order.getDocumentNo() + " (" + count + ")";
-	}	//	doIt
+		generated.add(project.getValue() + " - " + project.getName() + " - " + mainLine.getName() + ": " + order.getDocumentNo() + " (" + count + ")");
+	}
 
 	/**
 	 * Set line Quantity
