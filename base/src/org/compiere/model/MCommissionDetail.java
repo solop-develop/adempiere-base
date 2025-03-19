@@ -16,6 +16,12 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_C_CommissionDetail;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -23,13 +29,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.X_C_CommissionDetail;
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
 
 /**
  *	Commission Run Amount Detail Model
@@ -120,11 +121,12 @@ public class MCommissionDetail extends X_C_CommissionDetail
 	 */
 	public void setConvertedAmt (Timestamp date)
 	{
-		BigDecimal amt = MConversionRate.convertBase(getCtx(), 
-			getActualAmt(), getC_Currency_ID(), date, 0, 	//	type
-			getAD_Client_ID(), getAD_Org_ID());
-		if (amt != null)
+		MCommissionAmt commissionAmount = getParent();
+		MCommissionRun commissionRun = (MCommissionRun) commissionAmount.getC_CommissionRun();
+		BigDecimal amt = MConversionRate.convert(getCtx(), getActualAmt(), getC_Currency_ID(), commissionRun.get_ValueAsInt("C_Currency_ID"), date, commissionRun.get_ValueAsInt("C_ConversionType_ID"), getAD_Client_ID(), getAD_Org_ID());
+		if (amt != null) {
 			setConvertedAmt(amt);
+		}
 	}	//	setConvertedAmt
 	
 	/**
@@ -158,10 +160,8 @@ public class MCommissionDetail extends X_C_CommissionDetail
 			commissionAmt = Env.ZERO;
 		}
 		//	Validate Max Percentage
-		if(parent.getMaxPercentage() != null
-				&& !parent.getMaxPercentage().equals(Env.ZERO)
-				&& parent.getPercentage() != null
-				&& parent.getPercentage().compareTo(parent.getMaxPercentage()) > 0) {
+		if(Optional.ofNullable(parent.getMaxPercentage()).orElse(Env.ZERO).compareTo(Env.ZERO) > 0
+				&& Optional.ofNullable(parent.getPercentage()).orElse(Env.ZERO).compareTo(Optional.ofNullable(parent.getMaxPercentage()).orElse(Env.ZERO)) > 0) {
 			//	Go to Forecast
 			commissionAmt = commissionAmt.multiply(Env.ONE.divide(parent.getPercentage(), MathContext.DECIMAL128)).multiply(Env.ONEHUNDRED);
 			commissionAmt = commissionAmt.multiply(parent.getMaxPercentage().divide(Env.ONEHUNDRED, MathContext.DECIMAL128));

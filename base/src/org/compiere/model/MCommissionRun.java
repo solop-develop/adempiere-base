@@ -15,32 +15,26 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_C_CommissionAmt;
+import org.adempiere.core.domains.models.I_C_Currency;
+import org.adempiere.core.domains.models.X_C_CommissionRun;
+import org.adempiere.core.domains.models.X_C_SalesRegion;
+import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.model.MView;
+import org.spin.util.CommissionClassLoader;
+import org.spin.util.ICommissionCalculation;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocOptions;
+import org.compiere.process.DocumentEngine;
+import org.compiere.util.*;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_C_CommissionAmt;
-import org.adempiere.core.domains.models.X_C_CommissionRun;
-import org.adempiere.core.domains.models.X_C_SalesRegion;
-import org.adempiere.exceptions.AdempiereException;
-import org.adempiere.model.MView;
-import org.compiere.process.DocAction;
-import org.compiere.process.DocOptions;
-import org.compiere.process.DocumentEngine;
-import org.compiere.util.DB;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
-import org.compiere.util.Language;
-import org.compiere.util.Msg;
-import org.compiere.util.Util;
 
 
 /** Generated Model for C_CommissionRun
@@ -51,9 +45,6 @@ import org.compiere.util.Util;
  * 		@see FR [ 766 ] Improve Commission Calculation</a>
  * 		<a href="https://github.com/adempiere/adempiere/issues/1080">
  * 		@see FR [ 1080 ] Commission: percentage definition not only as multiplier, but also as percentage</a>
- *  @author Edwin Betancourt, EdwinBetanc0urt@outlook.com, http://www.erpya.com
- * 		<a href="https://github.com/adempiere/adempiere/issues/3771">
- * 		@see FR [ 3489 ] Support for biweekly and six-monthly frequency types in Commissions.</a>
  **/
 public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocOptions {
 
@@ -107,13 +98,13 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 	public void updateFromAmt()
 	{
 		MCommissionAmt[] amts = getAmts();
-		BigDecimal GrandTotal = Env.ZERO;
+		BigDecimal grandTotal = Env.ZERO;
 		for (int i = 0; i < amts.length; i++)
 		{
 			MCommissionAmt amt = amts[i];
-			GrandTotal = GrandTotal.add(amt.getCommissionAmt());
+			grandTotal = grandTotal.add(amt.getConvertedAmt());
 		}
-		setGrandTotal(GrandTotal);
+		setGrandTotal(grandTotal);
 	}	//	updateFromAmt
 
 	/**
@@ -143,6 +134,17 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 		}
 		return null;
 	}	//	getPDF
+	
+	@Override
+	protected boolean beforeSave(boolean newRecord) {
+		if(newRecord) {
+			if(getC_Commission_ID() > 0) {
+				MCommission commission = (MCommission) getC_Commission();
+				set_ValueOfColumn("C_Currency_ID", commission.getC_Currency_ID());
+			}
+		}
+		return super.beforeSave(newRecord);
+	}
 
 	/**
 	 * 	Create PDF file
@@ -211,7 +213,7 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 		MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
 
 		//	Std Period open?
-		if (!MPeriod.isOpen(getCtx(), getDateDoc(), dt.getDocBaseType(), getAD_Org_ID()))
+		if (!MPeriod.isOpen(getCtx(), getDateDoc(), dt.getDocBaseType(), getAD_Org_ID(), get_TrxName()))
 		{
 			m_processMsg = "@PeriodClosed@";
 			return DocAction.STATUS_Invalid;
@@ -278,21 +280,39 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 		if (commissionList.size()==0) {
 			throw new AdempiereException("@NoCommissionDefined@");
 		}
-		
+		//	Set Start and End
+		setStartEndDate(frequencyType);
+		saveEx();
 		// Delete old movements only when we can start
 		deleteMovements();
 		
-		//	Set Start and End
-		setStartEndDate(frequencyType);
 		log.info("StartDate = " + getStartDate() + ", EndDate = " + getEndDate());
 		
 		//	Iterate for each commission definition and  Sales Representative
 		for(MCommission commission : commissionList) {
 			for(MBPartner salesRep : commission.getSalesRepsOfCommission()) {
-				processCommissionLine(salesRep, commission);
-				if (commission.isAllowRMA()) {					
-					// TODO: process devolutions which are not in the invoice lines
-				}	
+				//	Add support to Commission Calculation Class
+				if(commission.getC_CommissionType_ID() > 0) {
+					MCommissionType commissionType = MCommissionType.getById(getCtx(), commission.getC_CommissionType_ID(), get_TrxName());
+					if(commissionType.get_ValueAsBoolean("IsViewBased")) {
+						processCommissionLine(salesRep, commission);
+					} else {
+						//	Load Class or Rule
+						if(!Util.isEmpty(commissionType.get_ValueAsString("Classname"))) {
+							ICommissionCalculation commissionEngine = CommissionClassLoader.loadClass(commissionType.get_ValueAsString("Classname"));
+							if(commissionEngine == null) {
+								throw new AdempiereException("@Classname@ @NotFound@");
+							}
+							commissionEngine.processCommission(getCtx(), salesRep.getC_BPartner_ID(), commission.getC_Commission_ID(), getC_CommissionRun_ID(), get_TrxName());
+						} else if(commissionType.getAD_Rule_ID() > 0) {
+							
+						} else {
+							throw new AdempiereException("@Classname@ @NotFound@");
+						}
+					}
+				} else {
+					processCommissionLine(salesRep, commission);
+				}
 			}	
 		}
 		saveEx();
@@ -339,7 +359,7 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 			pstmt.setInt(1, getAD_Client_ID());
 			pstmt.setTimestamp(2, getStartDate());
 			pstmt.setTimestamp(3, getEndDate());
-            if (commission.getDocBasisType().equals(MCommission.DOCBASISTYPE_Receipt)
+            if ((commission.getDocBasisType().equals(MCommission.DOCBASISTYPE_Receipt) || isCustom(commission.getDocBasisType()))
 					&& commission.isTotallyPaid()){
             	// Last payment must be within commission period 
                 pstmt.setTimestamp(4, getEndDate());
@@ -350,7 +370,7 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 			while (rs.next()) {
 				String columnName = getColumnName("C_InvoiceLine_ID", commissionType);
 				if(!Util.isEmpty(columnName)) {
-					invoiceLineId = rs.getInt("C_InvoiceLine_ID");
+					invoiceLineId = rs.getInt(columnName);
 				}
 				//	For all
 				int currencyId = 0;
@@ -500,79 +520,49 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 		StringBuffer sql = new StringBuffer();
 		if(commission.getDocBasisType().equals(MCommission.DOCBASISTYPE_ForecastVsInvoice)) {
 			if(!isPercentageFromPrice) {
-				sql.append("SELECT ((SUM(l.QtyInvoiced) / MAX(fl.ForecastQty)) * 100) "
-						+ "FROM C_Invoice h "
-						+ "INNER JOIN C_InvoiceLine l ON (h.C_Invoice_ID = l.C_Invoice_ID) "
-						+ "INNER JOIN (SELECT fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, "
-						+ "				pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) ForecastQty "
-						+ "				FROM M_Forecast f "
-						+ "				INNER JOIN M_ForecastLine fl ON(fl.M_Forecast_ID = f.M_Forecast_ID)"
-						+ "				INNER JOIN PP_Period pd ON(pd.PP_Period_ID = fl.PP_Period_ID)"
-						+ "				GROUP BY fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, pd.Name, pd.StartDate, pd.EndDate"
-						+ ") fl ON(fl.M_Product_ID = l.M_Product_ID AND fl.SalesRep_ID = h.SalesRep_ID) "
-						+ "WHERE h.AD_Client_ID = ? "
-						+ "AND h.DocStatus IN('CO', 'CL') "
-						+ "AND h.DateInvoiced BETWEEN fl.StartDate AND fl.EndDate "
-						+ "AND h.DateInvoiced BETWEEN ? AND ?");
+				sql.append("SELECT CASE WHEN fl.Qty > 0 THEN ((SUM(l.QtyInvoiced) / fl.Qty) * 100) ELSE 0 END ");
 			} else {
-				sql.append("SELECT ((SUM(linenetamtrealinvoiceline(l.c_Invoiceline_ID)) / MAX(fl.ForecastAmt)) * 100) "
-						+ "FROM C_Invoice h "
-						+ "INNER JOIN C_InvoiceLine l ON (h.C_Invoice_ID = l.C_Invoice_ID) "
-						+ "INNER JOIN (SELECT f.M_Product_ID, f.SalesRep_ID, pd.PP_Period_ID, "
-						+ "				pd.Name, pd.StartDate, pd.EndDate, SUM(f.Qty * f.PriceList) ForecastAmt "
-						+ "				FROM RV_M_Forecast f "
-						+ "				INNER JOIN PP_Period pd ON(pd.PP_Period_ID = f.PP_Period_ID)"
-						+ "				GROUP BY f.M_Product_ID, f.SalesRep_ID, pd.PP_Period_ID, pd.Name, pd.StartDate, pd.EndDate"
-						+ ") fl ON(fl.M_Product_ID = l.M_Product_ID AND fl.SalesRep_ID = h.SalesRep_ID) "
-						+ "WHERE h.AD_Client_ID = ? "
-						+ "AND h.DocStatus IN('CO', 'CL') "
-						+ "AND h.DateInvoiced BETWEEN fl.StartDate AND fl.EndDate "
-						+ "AND h.DateInvoiced BETWEEN ? AND ?");
+				sql.append("SELECT CASE WHEN fl.ForecastAmt > 0 THEN ((SUM(linenetamtrealinvoiceline(l.c_Invoiceline_ID)) / fl.ForecastAmt) * 100) ELSE 0 END ");
 			}
+			sql.append("FROM C_Invoice h "
+					+ "INNER JOIN C_InvoiceLine l ON (h.C_Invoice_ID = l.C_Invoice_ID) "
+					+ "INNER JOIN (SELECT fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, "
+					+ "				pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) Qty, SUM(fl.Qty * fl.PriceList) ForecastAmt "
+					+ "				FROM RV_M_Forecast fl "
+					+ "				INNER JOIN PP_Period pd ON(pd.PP_Period_ID = fl.PP_Period_ID)"
+					+ "				GROUP BY fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, pd.Name, pd.StartDate, pd.EndDate"
+					+ ") fl ON(fl.M_Product_ID = l.M_Product_ID AND fl.SalesRep_ID = h.SalesRep_ID) "
+					+ "WHERE h.AD_Client_ID = ? "
+					+ "AND h.DocStatus IN('CO', 'CL') "
+					+ "AND h.DateInvoiced BETWEEN fl.StartDate AND fl.EndDate "
+					+ "AND h.DateInvoiced BETWEEN ? AND ?");
 		} else if(commission.getDocBasisType().equals(MCommission.DOCBASISTYPE_ForecastVsOrder)) {
 			if(!isPercentageFromPrice) {
-				sql.append("SELECT ((SUM(l.QtyOrdered) / MAX(fl.ForecastQty)) * 100) "
-						+ "FROM C_Order h "
-						+ "INNER JOIN C_OrderLine l ON (h.C_Order_ID = l.C_Order_ID) "
-						+ "INNER JOIN (SELECT fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, "
-						+ "				pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) ForecastQty "
-						+ "				FROM M_Forecast f "
-						+ "				INNER JOIN M_ForecastLine fl ON(fl.M_Forecast_ID = f.M_Forecast_ID)"
-						+ "				INNER JOIN PP_Period pd ON(pd.PP_Period_ID = fl.PP_Period_ID)"
-						+ "				GROUP BY fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, pd.Name, pd.StartDate, pd.EndDate"
-						+ ") fl ON(fl.M_Product_ID = l.M_Product_ID AND fl.SalesRep_ID = h.SalesRep_ID) "
-						+ "WHERE h.AD_Client_ID = ? "
-						+ "AND h.DocStatus IN('CO', 'CL') "
-						+ "AND h.DateOrdered BETWEEN fl.StartDate AND fl.EndDate "
-						+ "AND h.DateOrdered BETWEEN ? AND ?");
+				sql.append("SELECT CASE WHEN fl.Qty > 0 THEN ((SUM(l.QtyOrdered) / fl.Qty) * 100) ELSE 0 END ");
 			} else {
-				sql.append("SELECT ((SUM(linenetamtrealorderline(l.c_Invoiceline_ID)) / MAX(fl.ForecastAmt)) * 100) "
-						+ "FROM C_Order h "
-						+ "INNER JOIN C_OrderLine l ON (h.C_Order_ID = l.C_Order_ID) "
-						+ "INNER JOIN (SELECT f.M_Product_ID, f.SalesRep_ID, pd.PP_Period_ID, "
-						+ "				pd.Name, pd.StartDate, pd.EndDate, SUM(f.Qty * f.PriceList) ForecastAmt "
-						+ "				FROM RV_M_Forecast f "
-						+ "				INNER JOIN PP_Period pd ON(pd.PP_Period_ID = f.PP_Period_ID)"
-						+ "				GROUP BY f.M_Product_ID, f.SalesRep_ID, pd.PP_Period_ID, pd.Name, pd.StartDate, pd.EndDate"
-						+ ") fl ON(fl.M_Product_ID = l.M_Product_ID AND fl.SalesRep_ID = h.SalesRep_ID) "
-						+ "WHERE h.AD_Client_ID = ? "
-						+ "AND h.DocStatus IN('CO', 'CL') "
-						+ "AND h.DateOrdered BETWEEN fl.StartDate AND fl.EndDate "
-						+ "AND h.DateOrdered BETWEEN ? AND ?");
+				sql.append("SELECT CASE WHEN fl.ForecastAmt > 0 THEN ((SUM(linenetamtrealorderline(l.c_Invoiceline_ID)) / fl.ForecastAmt) * 100) ELSE 0 END ");
 			}
+			sql.append("FROM C_Order h "
+					+ "INNER JOIN C_OrderLine l ON (h.C_Order_ID = l.C_Order_ID) "
+					+ "INNER JOIN (SELECT fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, "
+					+ "				pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) Qty, SUM(fl.Qty * fl.PriceList) ForecastAmt "
+					+ "				FROM RV_M_Forecast fl "
+					+ "				INNER JOIN PP_Period pd ON(pd.PP_Period_ID = fl.PP_Period_ID)"
+					+ "				GROUP BY fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, pd.Name, pd.StartDate, pd.EndDate"
+					+ ") fl ON(fl.M_Product_ID = l.M_Product_ID AND fl.SalesRep_ID = h.SalesRep_ID) "
+					+ "WHERE h.AD_Client_ID = ? "
+					+ "AND h.DocStatus IN('CO', 'CL') "
+					+ "AND h.DateOrdered BETWEEN fl.StartDate AND fl.EndDate "
+					+ "AND h.DateOrdered BETWEEN ? AND ?");
 		}
 		sql.append(sqlWhere);
+		//	Add GROUP BY
+		sql.append(" GROUP BY fl.Qty, fl.ForecastAmt");
 		//	parameters
 		List<Object> params = new ArrayList<Object>();
 		params.add(getAD_Client_ID());
 		params.add(getStartDate());
 		params.add(getEndDate());
-        if (commission.isTotallyPaid()) {
-        	// Last payment must be within commission period 
-        	params.add(getEndDate());
-        	params.add(getEndDate());
-        	params.add(getEndDate());
-        }
 		//	Get
 		BigDecimal percentage = DB.getSQLValueBD(get_TrxName(), sql.toString(), params);
 		//	
@@ -735,7 +725,7 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 				if(!Util.isEmpty(commissionType.getWhereClause())) {
 					String whereClauseView = Env.parseContext(Env.getCtx(), 0, commissionType.getWhereClause(), false, false);
 					if(!Util.isEmpty(whereClauseView)) {
-						sqlWhere.append(whereClauseView);
+						sqlWhere.append(" WHERE ").append(whereClauseView);
 					}
 				}
 				//	Add Client
@@ -766,19 +756,46 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 				if(Util.isEmpty(columnName)) {
 					throw new AdempiereException("@C_CommissionType_ID@ @DateDoc@ @AD_Column_ID@ @NotFound@");
 				}
-				sqlWhere.append(" AND ").append(columnName).append(">=?");
-				sqlWhere.append(" AND ").append(columnName).append("<=?");
+				if(commission.isTotallyPaid()) {
+					sqlWhere.append(" AND (p.DateTrx <= ? OR p.DateTrx <= ?) AND InvoiceopenToDate(h.C_Invoice_ID, null, ?) = 0 AND maxPayDate(h.c_Invoice_ID) BETWEEN ? AND ? ");
+				} else {
+					sqlWhere.append(" AND ").append(columnName).append(">=?");
+					sqlWhere.append(" AND ").append(columnName).append("<=?");
+				}
+				//	Days Due: obtain days due either from payment term or from invoice date
+				if (commissionLine.getDaysFrom() != 0) {
+					String transactionDate = getSQLColumnName("p.DateTrx", commissionType);
+					if(commission.isTotallyPaid()) {
+						transactionDate = "maxPayDate(h.c_Invoice_ID)";
+					}
+					if(commission.isDaysDueFromPaymentTerm()) {
+						sqlWhere.append(" AND paymenttermduedays(h.C_PaymentTerm_ID, h.DateInvoiced, " + transactionDate + ") >= ").append(commissionLine.get_ValueAsInt(MCommissionLine.COLUMNNAME_DaysFrom));
+					} else {
+						sqlWhere.append(" AND daysbetween(" + transactionDate + ", h.DateInvoiced) >= ").append(commissionLine.get_ValueAsInt(MCommissionLine.COLUMNNAME_DaysFrom));
+					}
+				}
+				if (commissionLine.getDaysTo() != 0) {
+					String transactionDate = getSQLColumnName("p.DateTrx", commissionType);
+					if(commission.isTotallyPaid()) {
+						transactionDate = "maxPayDate(h.c_Invoice_ID)";
+					}
+					if(commission.isDaysDueFromPaymentTerm()) {
+						sqlWhere.append(" AND paymenttermduedays(h.C_PaymentTerm_ID, h.DateInvoiced, " + transactionDate + ") <= ").append(commissionLine.get_ValueAsInt(MCommissionLine.COLUMNNAME_DaysTo));
+					} else {
+						sqlWhere.append(" AND daysbetween(" + transactionDate + ", h.DateInvoiced) <= ").append(commissionLine.get_ValueAsInt(MCommissionLine.COLUMNNAME_DaysTo));
+					}
+				}
 			}
 			//	For Forecast
 			if(MCommission.DOCBASISTYPE_ForecastVsInvoice.equals(commission.getDocBasisType())) {	//	For Invoices
-				if(!commissionLine.isPercentageFromPrice()) {	//	Based in variation from Quantity on forecast [SUM(QtyInvoiced) / ForecastQty]
+				if(!commissionLine.isPercentageFromPrice()) {	//	Based in variation from Quantity on forecast [SUM(QtyInvoiced) / Qty]
 					if(commissionLine.getMinCompliance() != null
 							&& commissionLine.getMinCompliance().compareTo(Env.ZERO) > 0) {
 						sql.append(" AND EXISTS(SELECT 1 "
 							+ "FROM C_Invoice i "
 							+ "INNER JOIN C_InvoiceLine il ON(il.C_Invoice_ID = i.C_Invoice_ID)	"
 							+ "INNER JOIN (SELECT fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, " 
-							+ "	            pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) ForecastQty " 
+							+ "	            pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) Qty " 
 							+ "		FROM M_Forecast f "
 							+ "		INNER JOIN M_ForecastLine fl ON(fl.M_Forecast_ID = f.M_Forecast_ID) "
 							+ "		INNER JOIN PP_Period pd ON(pd.PP_Period_ID = fl.PP_Period_ID) "
@@ -791,12 +808,12 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 							+ "WHERE il.M_Product_ID = l.M_Product_ID "
 							+ "AND i.DocStatus IN('CL','CO') "
 							+ "AND i.SalesRep_ID = h.SalesRep_ID "
-							+ "GROUP BY l.M_Product_ID, fl.ForecastQty "
-							+ "HAVING(((SUM(il.QtyInvoiced) / fl.ForecastQty) * 100) >= " + DB.TO_NUMBER(commissionLine.getMinCompliance(), DisplayType.Amount));
+							+ "GROUP BY l.M_Product_ID, fl.Qty "
+							+ "HAVING(CASE WHEN COALESCE(fl.Qty, 0) > 0 THEN ((SUM(il.QtyInvoiced) / fl.Qty) * 100) ELSE 0 END >= " + DB.TO_NUMBER(commissionLine.getMinCompliance(), DisplayType.Amount));
 							//	For Max Compliance
 						if(commissionLine.getMaxCompliance() != null
 								&& commissionLine.getMaxCompliance().compareTo(Env.ZERO) > 0) {
-							sql.append(" AND ((SUM(il.QtyInvoiced) / fl.ForecastQty) * 100) <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")");
+							sql.append(" AND CASE WHEN COALESCE(fl.Qty, 0) > 0 THEN ((SUM(il.QtyInvoiced) / fl.Qty) * 100) ELSE 0 END <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")");
 						} else {
 							sql.append(")");
 						}
@@ -808,7 +825,7 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 								+ "FROM C_Invoice i "
 								+ "INNER JOIN C_InvoiceLine il ON(il.C_Invoice_ID = i.C_Invoice_ID)	"
 								+ "	INNER JOIN (SELECT fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, " 
-								+ "	            pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) ForecastQty " 
+								+ "	            pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) Qty " 
 								+ "		FROM M_Forecast f "
 								+ "		INNER JOIN M_ForecastLine fl ON(fl.M_Forecast_ID = f.M_Forecast_ID) "
 								+ "		INNER JOIN PP_Period pd ON(pd.PP_Period_ID = fl.PP_Period_ID) "
@@ -821,11 +838,11 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 								+ "WHERE il.M_Product_ID = l.M_Product_ID "
 								+ "AND i.DocStatus IN('CL','CO') "
 								+ "AND i.SalesRep_ID = h.SalesRep_ID "
-								+ "GROUP BY l.M_Product_ID, fl.ForecastQty "
-								+ "HAVING(((SUM(il.QtyInvoiced) / fl.ForecastQty) * 100) <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")"
+								+ "GROUP BY l.M_Product_ID, fl.Qty "
+								+ "HAVING(CASE WHEN COALESCE(fl.Qty, 0) > 0 THEN ((SUM(il.QtyInvoiced) / fl.Qty) * 100) ELSE 0 END <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")"
 								+ ")");
 					}
-				} else {	//	Based in variation from Price on forecast [SUM(lineNetAmt) / (ForecastQty * PriceList)]
+				} else {	//	Based in variation from Price on forecast [SUM(lineNetAmt) / (Qty * PriceList)]
 					if(commissionLine.getMinCompliance() != null
 							&& commissionLine.getMinCompliance().compareTo(Env.ZERO) > 0) {
 						sql.append(" AND EXISTS(SELECT 1 "
@@ -843,11 +860,11 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 							+ "AND i.DocStatus IN('CL','CO') "
 							+ "AND i.SalesRep_ID = h.SalesRep_ID "
 							+ "GROUP BY l.M_Product_ID, fl.ForecastAmt "
-							+ "HAVING(((SUM(linenetamtrealinvoiceline(il.c_Invoiceline_ID)) / fl.ForecastAmt) * 100) >= " + DB.TO_NUMBER(commissionLine.getMinCompliance(), DisplayType.Amount));
+							+ "HAVING(CASE WHEN COALESCE(fl.ForecastAmt, 0) > 0 THEN ((SUM(linenetamtrealinvoiceline(il.c_Invoiceline_ID)) / fl.ForecastAmt) * 100) ELSE 0 END >= " + DB.TO_NUMBER(commissionLine.getMinCompliance(), DisplayType.Amount));
 							//	For Max Compliance
 						if(commissionLine.getMaxCompliance() != null
 								&& commissionLine.getMaxCompliance().compareTo(Env.ZERO) > 0) {
-							sql.append(" AND ((SUM(linenetamtrealinvoiceline(il.c_Invoiceline_ID)) / fl.ForecastAmt) * 100) <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")");
+							sql.append(" AND CASE WHEN COALESCE(fl.ForecastAmt, 0) > 0 THEN ((SUM(linenetamtrealinvoiceline(il.c_Invoiceline_ID)) / fl.ForecastAmt) * 100) ELSE 0 END <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")");
 						} else {
 							sql.append(")");
 						}
@@ -870,19 +887,19 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 								+ "AND i.DocStatus IN('CL','CO') "
 								+ "AND i.SalesRep_ID = h.SalesRep_ID "
 								+ "GROUP BY l.M_Product_ID, fl.ForecastAmt "
-								+ "HAVING(((SUM(linenetamtrealinvoiceline(il.c_Invoiceline_ID)) / fl.ForecastAmt) * 100) <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")"
+								+ "HAVING(CASE WHEN COALESCE(fl.ForecastAmt, 0) > 0 THEN ((SUM(linenetamtrealinvoiceline(il.c_Invoiceline_ID)) / fl.ForecastAmt) * 100) ELSE 0 END <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")"
 								+ ")");
 					}
 				}
 			} else if(MCommission.DOCBASISTYPE_ForecastVsOrder.equals(commission.getDocBasisType())) {	//	For Orders
-				if(!commissionLine.isPercentageFromPrice()) {	//	Based in variation from Quantity on forecast [SUM(QtyInvoiced) / ForecastQty]
+				if(!commissionLine.isPercentageFromPrice()) {	//	Based in variation from Quantity on forecast [SUM(QtyInvoiced) / Qty]
 					if(commissionLine.getMinCompliance() != null
 							&& commissionLine.getMinCompliance().compareTo(Env.ZERO) > 0) {
 						sql.append(" AND EXISTS(SELECT 1 "
 							+ "FROM C_Order i "
 							+ "INNER JOIN C_OrderLine il ON(il.C_Order_ID = i.C_Order_ID)	"
 							+ "INNER JOIN (SELECT fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, " 
-							+ "	            pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) ForecastQty " 
+							+ "	            pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) Qty " 
 							+ "		FROM M_Forecast f "
 							+ "		INNER JOIN M_ForecastLine fl ON(fl.M_Forecast_ID = f.M_Forecast_ID) "
 							+ "		INNER JOIN PP_Period pd ON(pd.PP_Period_ID = fl.PP_Period_ID) "
@@ -895,12 +912,12 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 							+ "WHERE il.M_Product_ID = l.M_Product_ID "
 							+ "AND i.DocStatus IN('CL','CO') "
 							+ "AND i.SalesRep_ID = h.SalesRep_ID "
-							+ "GROUP BY l.M_Product_ID, fl.ForecastQty "
-							+ "HAVING(((SUM(il.QtyOrdered) / fl.ForecastQty) * 100) >= " + DB.TO_NUMBER(commissionLine.getMinCompliance(), DisplayType.Amount));
+							+ "GROUP BY l.M_Product_ID, fl.Qty "
+							+ "HAVING(CASE WHEN COALESCE(fl.Qty, 0) > 0 THEN ((SUM(il.QtyOrdered) / fl.Qty) * 100) ELSE 0 END >= " + DB.TO_NUMBER(commissionLine.getMinCompliance(), DisplayType.Amount));
 							//	For Max Compliance
 						if(commissionLine.getMaxCompliance() != null
 								&& commissionLine.getMaxCompliance().compareTo(Env.ZERO) > 0) {
-							sql.append(" AND ((SUM(il.QtyOrdered) / fl.ForecastQty) * 100) <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")");
+							sql.append(" AND CASE WHEN COALESCE(fl.Qty, 0) > 0 THEN ((SUM(il.QtyOrdered) / fl.Qty) * 100) ELSE 0 END <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")");
 						} else {
 							sql.append(")");
 						}
@@ -912,7 +929,7 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 								+ "FROM C_Order i "
 								+ "INNER JOIN C_OrderLine il ON(il.C_Order_ID = i.C_Order_ID)	"
 								+ "	INNER JOIN (SELECT fl.M_Product_ID, fl.SalesRep_ID, pd.PP_Period_ID, " 
-								+ "	            pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) ForecastQty " 
+								+ "	            pd.Name, pd.StartDate, pd.EndDate, SUM(fl.Qty) Qty " 
 								+ "		FROM M_Forecast f "
 								+ "		INNER JOIN M_ForecastLine fl ON(fl.M_Forecast_ID = f.M_Forecast_ID) "
 								+ "		INNER JOIN PP_Period pd ON(pd.PP_Period_ID = fl.PP_Period_ID) "
@@ -925,11 +942,11 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 								+ "WHERE il.M_Product_ID = l.M_Product_ID "
 								+ "AND i.DocStatus IN('CL','CO') "
 								+ "AND i.SalesRep_ID = h.SalesRep_ID "
-								+ "GROUP BY l.M_Product_ID, fl.ForecastQty "
-								+ "HAVING(((SUM(il.QtyOrdered) / fl.ForecastQty) * 100) <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")"
+								+ "GROUP BY l.M_Product_ID, fl.Qty "
+								+ "HAVING(CASE WHEN COALESCE(fl.Qty, 0) > 0 THEN ((SUM(il.QtyOrdered) / fl.Qty) * 100) ELSE 0 END <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")"
 								+ ")");
 					}
-				} else {	//	Based in variation from Price on forecast [SUM(lineNetAmt) / (ForecastQty * PriceList)]
+				} else {	//	Based in variation from Price on forecast [SUM(lineNetAmt) / (Qty * PriceList)]
 					if(commissionLine.getMinCompliance() != null
 							&& commissionLine.getMinCompliance().compareTo(Env.ZERO) > 0) {
 						sql.append(" AND EXISTS(SELECT 1 "
@@ -947,11 +964,11 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 							+ "AND i.DocStatus IN('CL','CO') "
 							+ "AND i.SalesRep_ID = h.SalesRep_ID "
 							+ "GROUP BY l.M_Product_ID, fl.ForecastAmt "
-							+ "HAVING(((SUM(linenetamtrealorderline(il.C_Orderline_ID)) / fl.ForecastAmt) * 100) >= " + DB.TO_NUMBER(commissionLine.getMinCompliance(), DisplayType.Amount));
+							+ "HAVING(CASE WHEN COALESCE(fl.ForecastAmt, 0) > 0 THEN ((SUM(linenetamtrealorderline(il.C_Orderline_ID)) / fl.ForecastAmt) * 100) ELSE 0 END >= " + DB.TO_NUMBER(commissionLine.getMinCompliance(), DisplayType.Amount));
 							//	For Max Compliance
 						if(commissionLine.getMaxCompliance() != null
 								&& commissionLine.getMaxCompliance().compareTo(Env.ZERO) > 0) {
-							sql.append(" AND ((SUM(linenetamtrealorderline(il.C_Orderline_ID)) / fl.ForecastAmt) * 100) <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")");
+							sql.append(" AND CASE WHEN COALESCE(fl.ForecastAmt, 0) > 0 THEN ((SUM(linenetamtrealorderline(il.C_Orderline_ID)) / fl.ForecastAmt) * 100) ELSE 0 END <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")");
 						} else {
 							sql.append(")");
 						}
@@ -974,7 +991,7 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 								+ "AND i.DocStatus IN('CL','CO') "
 								+ "AND i.SalesRep_ID = h.SalesRep_ID "
 								+ "GROUP BY l.M_Product_ID, fl.ForecastAmt "
-								+ "HAVING(((SUM(linenetamtrealorderline(il.C_Orderline_ID)) / fl.ForecastAmt) * 100) <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")"
+								+ "HAVING(CASE WHEN COALESCE(fl.ForecastAmt, 0) > 0 THEN ((SUM(linenetamtrealorderline(il.C_Orderline_ID)) / fl.ForecastAmt) * 100) ELSE 0 END <= " + DB.TO_NUMBER(commissionLine.getMaxCompliance(), DisplayType.Amount) + ")"
 								+ ")");
 					}
 				}
@@ -1120,6 +1137,20 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 				String columnName = getSQLColumnName("h.S_Contract_ID", commissionType);
 				if(!Util.isEmpty(columnName)) {
 					sqlWhere.append(" AND ").append(columnName).append("=").append(commissionLine.get_ValueAsInt("S_Contract_ID"));
+				}
+			}
+			//	For Currency
+			if(commission.get_ValueAsBoolean("IsSearchOnlySameCurrency")) {
+				String columnName = getSQLColumnName("h." + I_C_Currency.COLUMNNAME_C_Currency_ID, commissionType);
+				if(!Util.isEmpty(columnName)) {
+					sqlWhere.append(" AND ").append(columnName).append("=").append(commission.getC_Currency_ID());
+				}
+			} else {
+				if (commissionLine.get_ValueAsInt(I_C_Currency.COLUMNNAME_C_Currency_ID) != 0) {
+					String columnName = getSQLColumnName("h." + I_C_Currency.COLUMNNAME_C_Currency_ID, commissionType);
+					if(!Util.isEmpty(columnName)) {
+						sqlWhere.append(" AND ").append(columnName).append("=").append(commissionLine.get_ValueAsInt(I_C_Currency.COLUMNNAME_C_Currency_ID));
+					}
 				}
 			}
 			//	
@@ -1557,25 +1588,9 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 			setStartDate(new Timestamp (cal.getTimeInMillis()));
 			//
 			cal.add(Calendar.YEAR, 1);
-			cal.add(Calendar.DAY_OF_YEAR, -1);
-		}
-		//	Six-monthly
-		else if (MCommission.FREQUENCYTYPE_Six_Monthly.equals(frequencyType)) {
-			cal.set(Calendar.DAY_OF_MONTH, 1);
-			int month = cal.get(Calendar.MONTH);
-			// first six-monthly
-			if (month <= Calendar.JUNE) {
-				cal.set(Calendar.MONTH, Calendar.JANUARY);
-				setStartDate(new Timestamp (cal.getTimeInMillis()));
-			}
-			// second six-monthly
-			else {
-				cal.set(Calendar.MONTH, Calendar.JULY);
-				setStartDate(new Timestamp (cal.getTimeInMillis()));
-			}
-			//
-			cal.add(Calendar.MONTH, 6);
-			cal.add(Calendar.DAY_OF_YEAR, -1);
+			cal.add(Calendar.DAY_OF_YEAR, -1); 
+			setEndDate(new Timestamp (cal.getTimeInMillis()));
+			
 		}
 		//	Quarterly
 		else if (MCommission.FREQUENCYTYPE_Quarterly.equals(frequencyType)) {
@@ -1592,34 +1607,16 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 			setStartDate(new Timestamp (cal.getTimeInMillis()));
 			//
 			cal.add(Calendar.MONTH, 3);
-			cal.add(Calendar.DAY_OF_YEAR, -1);
+			cal.add(Calendar.DAY_OF_YEAR, -1); 
+			setEndDate(new Timestamp (cal.getTimeInMillis()));
 		}
 		//	Weekly
 		else if (MCommission.FREQUENCYTYPE_Weekly.equals(frequencyType)) {
 			cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 			setStartDate(new Timestamp (cal.getTimeInMillis()));
 			//
-			cal.add(Calendar.DAY_OF_YEAR, 7);
-		}
-		//	Biweekly
-		else if (MCommission.FREQUENCYTYPE_Biweekly.equals(frequencyType)) {
-			int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-			// first biweekly
-			if (dayOfMonth <= 15) {
-				cal.set(Calendar.DAY_OF_MONTH, 1);
-				setStartDate(new Timestamp(cal.getTimeInMillis()));
-				//
-				cal.set(Calendar.DAY_OF_MONTH, 15);
-			}
-			// second biweekly
-			else {
-				cal.set(Calendar.DAY_OF_MONTH, 16);
-				setStartDate(new Timestamp(cal.getTimeInMillis()));
-				//
-				cal.set(Calendar.DAY_OF_MONTH, 1);
-				cal.add(Calendar.MONTH, 1);
-				cal.add(Calendar.DAY_OF_YEAR, -1);
-			}
+			cal.add(Calendar.DAY_OF_YEAR, 7); 
+			setEndDate(new Timestamp (cal.getTimeInMillis()));
 		}
 		//	Monthly
 		else {
@@ -1627,11 +1624,9 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 			setStartDate(new Timestamp (cal.getTimeInMillis()));
 			//
 			cal.add(Calendar.MONTH, 1);
-			cal.add(Calendar.DAY_OF_YEAR, -1);
+			cal.add(Calendar.DAY_OF_YEAR, -1); 
+			setEndDate(new Timestamp (cal.getTimeInMillis()));
 		}
-		
-		setEndDate(new Timestamp(cal.getTimeInMillis()));
-		
 		log.fine("setStartEndDate = " + getStartDate() + " - " + getEndDate());
 	}	//	setStartEndDate
 	
