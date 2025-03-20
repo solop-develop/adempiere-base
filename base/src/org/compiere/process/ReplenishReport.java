@@ -18,39 +18,19 @@ package org.compiere.process;
  *****************************************************************************/
 
 
+import org.adempiere.core.domains.models.X_DD_Order;
+import org.adempiere.core.domains.models.X_DD_OrderLine;
+import org.adempiere.core.domains.models.X_T_Replenish;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.*;
+import org.compiere.util.*;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.X_DD_Order;
-import org.adempiere.core.domains.models.X_DD_OrderLine;
-import org.adempiere.core.domains.models.X_T_Replenish;
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MBPartner;
-import org.compiere.model.MBPartnerLocation;
-import org.compiere.model.MClient;
-import org.compiere.model.MDocType;
-import org.compiere.model.MMovement;
-import org.compiere.model.MMovementLine;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MOrg;
-import org.compiere.model.MProduct;
-import org.compiere.model.MRequisition;
-import org.compiere.model.MRequisitionLine;
-import org.compiere.model.MStorage;
-import org.compiere.model.MWarehouse;
-import org.compiere.model.Query;
-import org.compiere.util.AdempiereSystemError;
-import org.compiere.util.AdempiereUserError;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.ReplenishInterface;
-import org.compiere.util.Util;
 
 /**
  *	Replenishment Report
@@ -769,8 +749,8 @@ public class ReplenishReport extends ReplenishReportAbstract {
 			return getReplenishFromSmartBrowser(isMandatoryBusinessPartner);
 		}
 		//	For Standard Process
-		StringBuffer localWhere = new StringBuffer("AD_PInstance_ID=?");
-		if(!isMandatoryBusinessPartner) {
+		StringBuilder localWhere = new StringBuilder("AD_PInstance_ID=?");
+		if(isMandatoryBusinessPartner) {
 			localWhere.append(" AND ").append(" C_BPartner_ID > 0");
 		}
 		if (!Util.isEmpty(where)) {
