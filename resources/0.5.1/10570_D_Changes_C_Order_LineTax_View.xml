@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="D Changes C_Order_LineTax View" ReleaseNo="" SeqNo="10570">
+  <Migration EntityType="D" Name="D Changes C_Order_LineTax View" ReleaseNo="0.5.1" SeqNo="10570">
     <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
       <SQLStatement>CREATE OR REPLACE VIEW C_ORDER_LINETAX_V
 (AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, CREATEDBY, 
