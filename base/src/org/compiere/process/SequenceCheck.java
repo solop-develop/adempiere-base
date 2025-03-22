@@ -16,16 +16,20 @@
  *****************************************************************************/
 package org.compiere.process;
 
+import org.adempiere.core.domains.models.I_AD_Sequence;
 import org.compiere.Adempiere;
 import org.compiere.db.CConnection;
 import org.compiere.model.MClient;
 import org.compiere.model.MSequence;
 import org.compiere.model.MSysConfig;
+import org.compiere.model.Query;
 import org.compiere.util.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 /**
@@ -201,94 +205,69 @@ public class SequenceCheck extends SvrProcess
 				"SELECT MIN(IDRangeStart)-1 FROM AD_Replication");
 		s_log.info("IDRangeEnd = " + IDRangeEnd);
 		//
-		String sql = "SELECT * FROM AD_Sequence "
-			+ "WHERE IsTableID='Y' ";
+		String whereClause = "IsTableID = 'Y'";
 		if (onlyADSequence) {
-			sql += " AND AD_Sequence_ID = 16 "; // HARDCODED: AD_Sequence  #284
+			whereClause += " AND AD_Sequence_ID = 16"; // HARDCODED: AD_Sequence  #284
 		}
-		sql	+= "ORDER BY Name";
-		int counter = 0;
-		PreparedStatement pstmt = null;
-		String trxName = null;
-		if (sp != null)
-			trxName = sp.get_TrxName();
-		try
-		{
-			pstmt = DB.prepareStatement(sql, trxName);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next())
-			{
-				MSequence seq = new MSequence (ctx, rs, trxName);
-				int old = seq.getCurrentNext();
-				int oldSys = seq.getCurrentNextSys();
-				boolean isNewSequence = seq.getCreated().equals(seq.getUpdated());
-				if (seq.validateTableIDValue())
-				{
-					if (seq.getCurrentNext() != old)
-					{
-						String msg = seq.getName() + " ID  " 
-							+ old + " -> " + seq.getCurrentNext();
-						if (sp != null)
+		List<Integer> sequenceIds = new Query(ctx, I_AD_Sequence.Table_Name, whereClause, sp.get_TrxName())
+				.setOrderBy(I_AD_Sequence.COLUMNNAME_Name)
+				.getIDsAsList();
+		AtomicInteger counterValue = new AtomicInteger(0);
+		sequenceIds.stream().parallel().forEach(sequenceId -> {
+			Trx.run(transactionName -> {
+				try {
+					MSequence seq = new MSequence (ctx, sequenceId, transactionName);
+					int old = seq.getCurrentNext();
+					int oldSys = seq.getCurrentNextSys();
+					boolean isNewSequence = seq.getCreated().equals(seq.getUpdated());
+					if (seq.validateTableIDValue()) {
+						if (seq.getCurrentNext() != old) {
+							String msg = seq.getName() + " ID  "
+									+ old + " -> " + seq.getCurrentNext();
+                            sp.addLog(0, null, null, msg);
+						}
+						if (seq.getCurrentNextSys() != oldSys) {
+							String msg = seq.getName() + " Sys "
+									+ oldSys + " -> " + seq.getCurrentNextSys();
 							sp.addLog(0, null, null, msg);
-						else
-							s_log.fine(msg);
-					}
-					if (seq.getCurrentNextSys() != oldSys)
-					{
-						String msg = seq.getName() + " Sys " 
-							+ oldSys + " -> " + seq.getCurrentNextSys();
-						if (sp != null)
-							sp.addLog(0, null, null, msg);
-						else
-							s_log.fine(msg);
-					}
-					if (seq.save()) {
+						}
+						seq.saveEx();
 						if(isNewSequence) {
-							createMissingNativeSequence(seq, trxName);
-							if (sp != null) {
+							if(createMissingNativeSequence(seq, transactionName)) {
 								sp.addLog("Native Sequence Created => " + seq.getName());
 							}
 						}
-						counter++;
-					} else {
-						s_log.severe("Not updated: " + seq);
+						counterValue.incrementAndGet();
+					} else if(isNewSequence) {
+						String originalDescription = seq.getDescription();
+						seq.setDescription(originalDescription + "-");
+						seq.saveEx();
+						seq.setDescription(originalDescription);
+						seq.saveEx();
+						if(createMissingNativeSequence(seq, transactionName)) {
+							sp.addLog("Native Sequence Created => " + seq.getName());
+						}
 					}
+				} catch (Exception e) {
+					s_log.severe(e.getLocalizedMessage());
 				}
-			//	else if (CLogMgt.isLevel(6)) 
-			//		log.fine("checkTableID - skipped " + tableName);
-			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			s_log.log(Level.SEVERE, sql, e);
-		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}
-		s_log.fine("#" + counter);
+			});
+		});
+		s_log.fine("#" + counterValue);
 	}	//	checkTableID
 
 	/**
 	 * Create Native sequence if not exists
 	 */
-	private static void createMissingNativeSequence(MSequence sequence, String transactionName) {
+	private static boolean createMissingNativeSequence(MSequence sequence, String transactionName) {
 		if(!sequence.isTableID()) {
-			return;
+			return false;
 		}
 		boolean SYSTEM_NATIVE_SEQUENCE = MSysConfig.getBooleanValue("SYSTEM_NATIVE_SEQUENCE",false);
 		if(SYSTEM_NATIVE_SEQUENCE) {
 			CConnection.get().getDatabase().createSequence(sequence.getName()+"_SEQ", 1, 0 , 99999999,  sequence.getNextID(), transactionName);
 		}
+		return true;
 	}
 	
 	/**
