@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Update process validation for class name" ReleaseNo="0.5.2" SeqNo="10590">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="108" Action="U" Record_ID="52981" Table="AD_Val_Rule">
+        <Data AD_Column_ID="188" Column="Name" oldValue="AD_Process only class">AD_Process only class process</Data>
+        <Data AD_Column_ID="193" Column="Code" oldValue="AD_Process.Classname IS NOT NULL">AD_Process.Classname IS NOT NULL AND AD_Process.IsReport = 'N'</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
