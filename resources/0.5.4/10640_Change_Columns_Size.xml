@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Change Columns Size" ReleaseNo="0.5.4" SeqNo="10640">
+    <Comments>ALTER TABLE M_Warehouse ALTER COLUMN ReplenishmentClass TYPE VARCHAR(255);
+ALTER TABLE M_Replenish ALTER COLUMN ReplenishmentClass TYPE VARCHAR(255);</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>ALTER TABLE M_Warehouse ALTER COLUMN ReplenishmentClass TYPE VARCHAR(255);
+ALTER TABLE M_Replenish ALTER COLUMN ReplenishmentClass TYPE VARCHAR(255);</SQLStatement>
+      <RollbackStatement>ALTER TABLE M_Warehouse ALTER COLUMN ReplenishmentClass TYPE VARCHAR(60);
+ALTER TABLE M_Replenish ALTER COLUMN ReplenishmentClass TYPE VARCHAR(60);</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
