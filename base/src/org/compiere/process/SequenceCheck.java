@@ -16,19 +16,17 @@
  *****************************************************************************/
 package org.compiere.process;
 
+import org.compiere.Adempiere;
+import org.compiere.db.CConnection;
+import org.compiere.model.MClient;
+import org.compiere.model.MSequence;
+import org.compiere.model.MSysConfig;
+import org.compiere.util.*;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.compiere.Adempiere;
-import org.compiere.model.MClient;
-import org.compiere.model.MSequence;
-import org.compiere.util.CLogMgt;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Trx;
 
 /**
  *	System + Document Sequence Check
@@ -57,7 +55,7 @@ public class SequenceCheck extends SvrProcess
 	 *  @return Message to be translated
 	 *  @throws Exception
 	 */
-	protected String doIt() throws java.lang.Exception
+	protected String doIt() throws Exception
 	{
 		log.info("");
 		//
@@ -223,6 +221,7 @@ public class SequenceCheck extends SvrProcess
 				MSequence seq = new MSequence (ctx, rs, trxName);
 				int old = seq.getCurrentNext();
 				int oldSys = seq.getCurrentNextSys();
+				boolean isNewSequence = seq.getCreated().equals(seq.getUpdated());
 				if (seq.validateTableIDValue())
 				{
 					if (seq.getCurrentNext() != old)
@@ -243,10 +242,17 @@ public class SequenceCheck extends SvrProcess
 						else
 							s_log.fine(msg);
 					}
-					if (seq.save())
+					if (seq.save()) {
+						if(isNewSequence) {
+							createMissingNativeSequence(seq, trxName);
+							if (sp != null) {
+								sp.addLog("Native Sequence Created => " + seq.getName());
+							}
+						}
 						counter++;
-					else
+					} else {
 						s_log.severe("Not updated: " + seq);
+					}
 				}
 			//	else if (CLogMgt.isLevel(6)) 
 			//		log.fine("checkTableID - skipped " + tableName);
@@ -272,6 +278,18 @@ public class SequenceCheck extends SvrProcess
 		s_log.fine("#" + counter);
 	}	//	checkTableID
 
+	/**
+	 * Create Native sequence if not exists
+	 */
+	private static void createMissingNativeSequence(MSequence sequence, String transactionName) {
+		if(!sequence.isTableID()) {
+			return;
+		}
+		boolean SYSTEM_NATIVE_SEQUENCE = MSysConfig.getBooleanValue("SYSTEM_NATIVE_SEQUENCE",false);
+		if(SYSTEM_NATIVE_SEQUENCE) {
+			CConnection.get().getDatabase().createSequence(sequence.getName()+"_SEQ", 1, 0 , 99999999,  sequence.getNextID(), transactionName);
+		}
+	}
 	
 	/**
 	 *	Check/Initialize DocumentNo/Value Sequences for all Clients 	
