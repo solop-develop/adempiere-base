@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Change Ref Value to 255" ReleaseNo="0.5.3" SeqNo="10630">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="200" Table="AD_Column">
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">Value</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="60">255</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="14098" Table="AD_Column">
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="60">255</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="102380" Table="AD_Column">
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">ReplenishmentClass</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="60">255</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="276" Action="U" Record_ID="2815" Table="AD_Element">
+        <Data AD_Column_ID="58589" Column="FieldLength" oldValue="60">255</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="2815" Table="AD_Element_Trl">
+        <Data AD_Column_ID="84317" Column="UUID" isOldNull="true">8fa8218b-3868-42ac-bfb4-f81351a81e8f</Data>
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Clase Reabastecimiento">Regla de Reabastecimiento</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Clase Reabastecimiento">Regla de Reabastecimiento</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="2815">2815</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="276" Action="U" Record_ID="2815" Table="AD_Element">
+        <Data AD_Column_ID="4299" Column="PrintName" oldValue="Replenishment Class">Replenishment Rule</Data>
+        <Data AD_Column_ID="2603" Column="Name" oldValue="Replenishment Class">Replenishment Rule</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="2815" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2649" Column="IsTranslated" oldValue="true">false</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="2815">2815</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="14098" Table="AD_Column">
+        <Data AD_Column_ID="111" Column="Name" oldValue="Replenishment Class">Replenishment Rule</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="752" Action="U" Record_ID="14098" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID" isOldNull="true">0999aca9-3dd2-48ab-80da-d28ec34b25ab</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated" oldValue="true">false</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID" oldValue="14098">14098</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="57581" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" oldValue="Replenishment Class">Replenishment Rule</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="12131" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" oldValue="Replenishment Class">Replenishment Rule</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="127" Action="U" Record_ID="12131" Table="AD_Field_Trl">
+        <Data AD_Column_ID="84323" Column="UUID" isOldNull="true">29441ede-73ed-47fd-9135-e148fcfc38f2</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated" oldValue="true">false</Data>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="12131">12131</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="102380" Table="AD_Column">
+        <Data AD_Column_ID="111" Column="Name" oldValue="Replenishment Class">Replenishment Rule</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="105136" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" oldValue="Replenishment Class">Replenishment Rule</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="127" Action="U" Record_ID="105136" Table="AD_Field_Trl">
+        <Data AD_Column_ID="289" Column="IsTranslated" oldValue="true">false</Data>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="105136">105136</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="102381" Table="AD_Column">
+        <Data AD_Column_ID="111" Column="Name" oldValue="Replenishment Class">Replenishment Rule</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="149" Table="AD_Column">
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">Name</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="60">255</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
