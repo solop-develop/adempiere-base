@@ -18,10 +18,7 @@
 
 package org.solop.process;
 
-import org.adempiere.core.domains.models.X_C_BPartner_Location;
-import org.adempiere.core.domains.models.X_DD_Order;
-import org.adempiere.core.domains.models.X_DD_OrderLine;
-import org.adempiere.core.domains.models.X_T_Replenish;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.util.AdempiereUserError;
@@ -145,6 +142,7 @@ public class ProductReplenishmentProcess extends ProductReplenishmentProcessAbst
 			line.setQty(replenish.getQtyToOrder());
 			line.setPrice();
 			line.saveEx();
+			setLastMovementDate(replenish.getM_Product_ID(), replenish.getM_Warehouse_ID());
 		}
 	}	//	createPO
 
@@ -179,6 +177,7 @@ public class ProductReplenishmentProcess extends ProductReplenishmentProcessAbst
 			line.setQty(replenish.getQtyToOrder());
 			line.setPrice();
 			line.saveEx();
+			setLastMovementDate(replenish.getM_Product_ID(), replenish.getM_Warehouse_ID());
 		}
 	}	//	createRequisition
 
@@ -238,6 +237,7 @@ public class ProductReplenishmentProcess extends ProductReplenishmentProcessAbst
                 if (target.signum() == 0)
                     break;
             }
+			setLastMovementDate(replenish.getM_Product_ID(), replenish.getM_Warehouse_ID());
 		}
 		if (replenishList.isEmpty()) {
 			throw new AdempiereException("@Error@ @M_WarehouseSource_ID@ @NotFound@");
@@ -316,11 +316,24 @@ public class ProductReplenishmentProcess extends ProductReplenishmentProcessAbst
 			line.setM_AttributeSetInstanceTo_ID(0);
 			line.setIsInvoiced(false);
 			line.saveEx();
+			setLastMovementDate(replenish.getM_Product_ID(), replenish.getM_Warehouse_ID());
 		}
 		if (replenishList.isEmpty()) {
 			throw new AdempiereException("@Error@ @M_WarehouseSource_ID@ @NotFound@");
 		}
 	}	//	create Distribution Order
+
+	private void setLastMovementDate(int productId, int warehouseId) {
+		PO replenish = new Query(getCtx(), I_M_Replenish.Table_Name, "M_Product_ID = ? AND M_Warehouse_ID = ?", get_TrxName())
+				.setParameters(productId, warehouseId)
+				.setOnlyActiveRecords(true)
+				.first();
+		if(replenish != null) {
+			Timestamp lastReplenishmentDate = new Timestamp(System.currentTimeMillis());
+			replenish.set_ValueOfColumn("LastReplenishmentDate", lastReplenishmentDate);
+			replenish.saveEx();
+		}
+	}
 
 	/**
 	 * Set Business Partner Reference
