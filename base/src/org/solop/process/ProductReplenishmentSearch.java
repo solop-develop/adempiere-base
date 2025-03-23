@@ -77,19 +77,23 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 	private void runRules() {
 		//	Custom Replenishment
 		getCustomReplenish().forEach(replenish -> {
-			ReplenishInterface custom = getResolver(replenish.get_ValueAsString("ReplenishmentClass"));
-			BigDecimal qto = null;
-			try {
-				MWarehouse warehouse = MWarehouse.get(getCtx(), replenish.getM_Warehouse_ID());
-				qto = custom.getQtyToOrder(warehouse, replenish);
-			} catch (Exception e) {
-				log.log(Level.SEVERE, custom.toString(), e);
+			if(replenish.get_ValueAsString("ReplenishmentClass") != null) {
+				ReplenishInterface custom = getResolver(replenish.get_ValueAsString("ReplenishmentClass"));
+				if(custom != null) {
+					BigDecimal qto = null;
+					try {
+						MWarehouse warehouse = MWarehouse.get(getCtx(), replenish.getM_Warehouse_ID());
+						qto = custom.getQtyToOrder(warehouse, replenish);
+					} catch (Exception e) {
+						log.log(Level.SEVERE, custom.toString(), e);
+					}
+					if (qto == null) {
+						qto = Env.ZERO;
+					}
+					replenish.setQtyToOrder(qto);
+					replenish.saveEx();
+				}
 			}
-			if (qto == null) {
-				qto = Env.ZERO;
-			}
-			replenish.setQtyToOrder(qto);
-			replenish.saveEx();
 		});
 		//	Delete rows where nothing to order
 		String sql = "DELETE FROM T_Replenish "
