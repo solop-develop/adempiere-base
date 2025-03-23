@@ -15,22 +15,21 @@
  *****************************************************************************/
 package org.eevolution.manufacturing.process;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_PP_Product_BOM;
+import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
 import org.adempiere.core.domains.models.X_T_BOMLine;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MProduct;
 import org.compiere.model.Query;
 import org.compiere.util.CLogger;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.ValueNamePair;
 import org.eevolution.manufacturing.model.MPPProductBOM;
 import org.eevolution.manufacturing.model.MPPProductBOMLine;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Simulated Pick List
@@ -117,35 +116,16 @@ public class SimulatedPickList extends SimulatedPickListAbstract {
 	 * @param PP_Product_BOMLine_ID
 	 *            ID BOM Line
 	 */
-	public void parentExplotion(int PP_Product_BOM_ID, BigDecimal qtyRequiered)
-			throws Exception {
-		ArrayList<Object> parameters = new ArrayList<Object>();
-		parameters.add(PP_Product_BOM_ID);
-
-		final StringBuilder whereClause = new StringBuilder(
-				MPPProductBOMLine.COLUMNNAME_PP_Product_BOM_ID).append("=?");
-
-		if (getBackflushGroup() != null) {
-			whereClause.append(" AND ")
-					.append(MPPProductBOMLine.COLUMNNAME_BackflushGroup)
-					.append("LIKE ?");
-			parameters.add(getBackflushGroup());
-		}
-
-		List<MPPProductBOMLine> bomLines = new Query(getCtx(),
-				MPPProductBOMLine.Table_Name, whereClause.toString(),
-				get_TrxName()).setClient_ID().setOnlyActiveRecords(true)
-				.setParameters(parameters)
-				.setOrderBy(MPPProductBOMLine.COLUMNNAME_Line).list();
-
-		for (MPPProductBOMLine line : bomLines) {
+	public void parentExplotion(int productBomId, BigDecimal qtyRequiered) {
+		getProductionBomLinesFromBom(productBomId).forEach(bomLineId -> {
+			MPPProductBOMLine line = new MPPProductBOMLine(getCtx(), bomLineId, null);
 			if (line.isValidFromTo(getDateTrx())) {
 				SeqNo += 1;
 				MProduct product = new MProduct(getCtx(),
 						line.getM_Product_ID(), get_TrxName());
 				X_T_BOMLine tboml = new X_T_BOMLine(getCtx(), 0, get_TrxName());
 				tboml.setAD_Org_ID(product.getAD_Org_ID());
-				tboml.setPP_Product_BOM_ID(PP_Product_BOM_ID);
+				tboml.setPP_Product_BOM_ID(productBomId);
 				tboml.setPP_Product_BOMLine_ID(line.get_ID());
 				tboml.setM_Product_ID(line.getM_Product_ID());
 				tboml.setLevelNo(levelNo);
@@ -161,7 +141,7 @@ public class SimulatedPickList extends SimulatedPickListAbstract {
 				tboml.saveEx();
 				component(line.getM_Product_ID(), tboml.getQtyBOM());
 			}
-		}
+		});
 	}
 
 	/**
@@ -170,36 +150,39 @@ public class SimulatedPickList extends SimulatedPickListAbstract {
 	 * @param M_Product_ID
 	 *            ID Component
 	 */
-	public void component(int M_Product_ID, BigDecimal qtyRequiered)
-			throws Exception {
+	public void component(int M_Product_ID, BigDecimal qtyRequiered) {
 
 		if (levelNo == getSimulateLevelNo())
 			return;
-
-		String value = DB.getSQLValueString(get_TrxName(),
-				"SELECT Value FROM M_Product WHERE M_Product_ID=?",
-				M_Product_ID);
-
-		final StringBuilder whereClause = new StringBuilder(
-				MPPProductBOM.COLUMNNAME_Value).append("=? AND ")
-				.append(MPPProductBOM.COLUMNNAME_M_Product_ID).append("=?");
-		List<MPPProductBOM> boms = new Query(getCtx(),
-				MPPProductBOM.Table_Name, whereClause.toString(), get_TrxName())
-				.setClient_ID().setOnlyActiveRecords(true)
-				.setParameters(value, M_Product_ID).list();
-
+		
 		boolean level = false;
-		for (MPPProductBOM bom : boms) {
-			if (bom.isValidFromTo(getDateTrx())) {
-				if (!level)
-					levelNo += 1;
-				level = true;
-				parentExplotion(bom.get_ID(), qtyRequiered);
-				levelNo -= 1;
-			}
+		int bomId = getDefaultBomIdFromProduct(M_Product_ID);
+		if(bomId > 0) {
+			if (!level)
+				levelNo += 1;
+			level = true;
+			parentExplotion(bomId, qtyRequiered);
+			levelNo -= 1;
 		}
 	}
+	
+	private int getDefaultBomIdFromProduct(int productId) {
+		return new Query(getCtx(), X_PP_Product_BOM.Table_Name, "M_Product_ID = ? AND ValidFrom <= ? AND (ValidTo >= ? OR ValidTo IS NULL)", null)
+				.setClient_ID()
+				.setParameters(productId, getDateTrx(), getDateTrx())
+				.setOnlyActiveRecords(true)
+				.setOrderBy("IsDefault DESC")
+				.firstId();
+	}
 
+	private List<Integer> getProductionBomLinesFromBom(int bomId) {
+		return new Query(getCtx(), X_PP_Product_BOMLine.Table_Name, "PP_Product_BOM_ID = ?", null)
+				.setClient_ID()
+				.setParameters(bomId)
+				.setOnlyActiveRecords(true)
+				.getIDsAsList();
+	}
+	
 	private void raiseError(String string, String hint) throws Exception {
 		String msg = string;
 		ValueNamePair pp = CLogger.retrieveError();

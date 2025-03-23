@@ -3,36 +3,22 @@
  */
 package org.adempiere.engine;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.adempiere.core.domains.models.I_C_InvoiceLine;
 import org.adempiere.core.domains.models.I_C_OrderLine;
 import org.adempiere.core.domains.models.I_M_InOutLine;
 import org.adempiere.core.domains.models.X_PP_Cost_Collector;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MCost;
-import org.compiere.model.MCostDetail;
-import org.compiere.model.MCostElement;
-import org.compiere.model.MCostType;
-import org.compiere.model.MDocType;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MInventoryLine;
-import org.compiere.model.MMatchInv;
-import org.compiere.model.MMatchPO;
-import org.compiere.model.MMovementLine;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MPeriod;
-import org.compiere.model.MTransaction;
-import org.compiere.model.PO;
+import org.compiere.model.*;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Util;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author anca_bradau
@@ -156,8 +142,8 @@ public abstract class AbstractCostingMethod implements ICostingMethod {
 	    String description = "";
 		if (model instanceof MMatchInv){
 			MMatchInv original = new MMatchInv(model.getCtx(), ((MMatchInv) model).getReversal_ID(), model.get_TrxName());
-			if (original.getM_MatchInv_ID() <= 0)
-			    return;
+			if (original == null)
+			    return ;
 			StringBuffer whereClause = new StringBuffer();
 			whereClause.append(" M_CostType_ID=" + dimension.getM_CostType_ID());
 			whereClause.append(" AND M_CostElement_ID=" + dimension.getM_CostElement_ID());
@@ -299,9 +285,20 @@ public abstract class AbstractCostingMethod implements ICostingMethod {
             currentCostPrice = lastCostDetail.getCurrentCostPrice().negate();
             currentCostPriceLowerLevel = lastCostDetail.getCurrentCostPriceLL().negate();
         }
-
-		updateAmountCost();
 		
+		MCostDetail lastTrxCostDetail = MCostDetail.getLastTransaction(model, transaction,
+                accountSchema.getC_AcctSchema_ID(), dimension.getM_CostType_ID(),
+                dimension.getM_CostElement_ID(),dateAccounting,
+                costingLevel);
+		if (lastCostDetail != lastTrxCostDetail) {
+			MCostDetail tmp = lastCostDetail;
+			lastCostDetail = lastTrxCostDetail;
+			updateAmountCost();
+			costDetail.setSeqNo(lastCostDetail.getSeqNo() + 10);
+			lastCostDetail = tmp;
+		}
+		
+
 		// Update the new cost detail
 		accumulatedQuantity = getNewAccumulatedQuantity(costDetail);
 		accumulatedAmount = getNewAccumulatedAmount(costDetail);

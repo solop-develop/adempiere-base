@@ -28,15 +28,7 @@ import org.compiere.util.KeyNamePair;
 import org.compiere.util.Util;
 
 import javax.script.ScriptEngine;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -88,7 +80,7 @@ public class ModelValidationEngine {
 		try {
 			List<X_AD_ModelValidator> entityTypes = new Query(Env.getCtx(), I_AD_ModelValidator.Table_Name, null, null)
 					.setOnlyActiveRecords(true)
-					.setOrderBy(I_AD_ModelValidator.COLUMNNAME_SeqNo)
+					.setOrderBy(I_AD_ModelValidator.COLUMNNAME_AD_Client_ID + ", " + I_AD_ModelValidator.COLUMNNAME_SeqNo)
 					.list();
 			entityTypes
 				.stream()
@@ -130,7 +122,7 @@ public class ModelValidationEngine {
 	}
 	
 	private void loadValidatorClass(MClient client, String className) {
-		if(existValidatorClass(className)) {
+		if(existValidatorClass(client != null? client.getAD_Client_ID(): 0, className)) {
 			log.warning((client != null ? ("client " + client.getName()) : " global") + " already exists for class: " + className);
 			return;
 		}
@@ -151,7 +143,7 @@ public class ModelValidationEngine {
 	/**	Logger					*/
 	private static CLogger log = CLogger.getCLogger(ModelValidationEngine.class);
 	/**	Verify Class	*/
-	private List<String> validatorClasses = new ArrayList<String>();
+	private Map<String, Boolean> validatorClasses = new HashMap<String, Boolean>();
 	/**	Validators						*/
 	private List<ModelValidator> validators = new ArrayList<ModelValidator>();
 	/**	Model Change Listeners			*/
@@ -180,22 +172,21 @@ public class ModelValidationEngine {
 
 	/**
 	 * Verify if exist a validator class
+	 * @param clientId
 	 * @param validatorClass
 	 * @return
 	 */
-	private boolean existValidatorClass(String validatorClass) {
+	private boolean existValidatorClass(int clientId, String validatorClass) {
 		if(Util.isEmpty(validatorClass)) {
 			return true;
 		}
-		boolean alreadyExist = validatorClasses
-				.stream()
-				.filter(validatorClassToFind -> validatorClassToFind.equals(validatorClass))
-				.findFirst()
-				.isPresent();
-		if(!alreadyExist) {
-			validatorClasses.add(validatorClass);
+		boolean alreadyExist = validatorClasses.containsKey(clientId + "|" + validatorClass);
+		boolean alreadyExistWithSystem = validatorClasses.containsKey(0 + "|" + validatorClass);
+		if(!alreadyExist
+				&& !alreadyExistWithSystem) {
+			validatorClasses.put(clientId + "|" + validatorClass, true);
 		}
-		return alreadyExist;
+		return alreadyExist || alreadyExistWithSystem;
 	}
 	
 	/**

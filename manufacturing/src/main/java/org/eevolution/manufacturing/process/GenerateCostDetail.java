@@ -16,28 +16,23 @@
 
 package org.eevolution.manufacturing.process;
 
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.adempiere.core.domains.models.I_M_Cost;
 import org.adempiere.engine.CostEngineFactory;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MCostDetail;
-import org.compiere.model.MCostElement;
-import org.compiere.model.MCostType;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MLandedCostAllocation;
-import org.compiere.model.MMatchInv;
-import org.compiere.model.MMatchPO;
-import org.compiere.model.MTransaction;
+import org.adempiere.engine.IDocumentLine;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.*;
 import org.compiere.util.DB;
-import org.compiere.util.KeyNamePair;
+import org.compiere.util.Env;
 import org.compiere.util.Trx;
-import org.eevolution.manufacturing.model.MPPCostCollector;
-import org.eevolution.manufacturing.services.StandardCostCollector;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * Regenerate Cost Detail The Generate Cost Transaction process allows the
@@ -61,17 +56,18 @@ public class GenerateCostDetail extends GenerateCostDetailAbstract {
     private List<MCostElement> costElements = new ArrayList<MCostElement>();
     private StringBuffer deleteCostDetailWhereClause;
     private StringBuffer resetCostWhereClause;
-    //private List<MTransaction> deferredTransactions = new ArrayList<MTransaction>();
-    //private List<I_M_Product> deferredProducts = new ArrayList<I_M_Product>();
+    private AtomicInteger processed = new AtomicInteger();
+    private List<TransactionsToProcess> transactionsToProcess = new ArrayList<>();
+    private boolean isResetAccount = false;
 
     /**
      * Prepare - e.g., get Parameters.
      */
     protected void prepare() {
         super.prepare();
-        if (getDateAcct() != null)
-            setup();
-
+        if (getDateAcct() != null) {
+        	setup();
+        }
     } // prepare
 
     /**
@@ -79,7 +75,7 @@ public class GenerateCostDetail extends GenerateCostDetailAbstract {
      */
     protected String doIt() throws Exception {
         generateCostDetail();
-        return "@Ok@";
+        return "@Processed@: " + processed;
 
     }
 
@@ -146,6 +142,8 @@ public class GenerateCostDetail extends GenerateCostDetailAbstract {
             costElements.add(MCostElement.get(getCtx(), getCostElementId()));
         else
             costElements = MCostElement.getCostElement(getCtx(), get_TrxName());
+        
+        isResetAccount = getParameterAsBoolean("IsResetAccount");
     }
 
     /**
@@ -205,187 +203,336 @@ public class GenerateCostDetail extends GenerateCostDetailAbstract {
     }
 
     public void generateCostDetail() {
-    	//Generate Costdetail
-        KeyNamePair[] transactions = getTransactionIdsByDateAcct();
-       // System.out.println("Transaction to process : " + transactions.length);
-        Integer process = 0;
-        Integer productId = 0;
-        Trx dbTransaction = null;
-
-        try {
-
-            //Process transaction
-            for (KeyNamePair keyNamePair : transactions) {
-
-                int transactionId = keyNamePair.getKey();
-                int transactionProductId = Integer.valueOf(keyNamePair.getName());
-
-                //Detected a new product
-                if (productId != transactionProductId) {
-
-                    //commit last transaction by product
-                    if (dbTransaction != null) {
-                        dbTransaction.commit(true);
-                        dbTransaction.close();
-                    }
-
-                    productId = transactionProductId;
-                    //Create new transaction for this product
-                    dbTransaction = Trx.get(productId.toString(), true);   
-                    //Delete and reset 
-                    for (MAcctSchema accountSchema : acctSchemas) {
-                        // for each Cost Type
-                        for (MCostType costType : costTypes) {
-                            // for each Cost Element
-                            for (MCostElement costElement : costElements) {
-                                {
-                                    applyCriteria(accountSchema.getC_AcctSchema_ID(),
-                                            costType.getM_CostType_ID(), costElement.getM_CostElement_ID(),
-                                            productId, getDateAcct(), getDateAcctTo());
-                                    deleteCostDetail(dbTransaction.getTrxName());
-                                    resetCostDimension(costType.getCostingMethod(), dbTransaction.getTrxName());
-                                    generateCostCollectorNotTransaction(accountSchema , costType , productId, dbTransaction.getTrxName());
-                                }
-                            }
-                        }
-                    }
-                }
-                MTransaction transaction = new MTransaction(getCtx(), transactionId, dbTransaction.getTrxName());
-                // for each Account Schema
-                for (MAcctSchema accountSchema : acctSchemas) {
-                    // for each Cost Type
-                    for (MCostType costType : costTypes) {
-                        // for each Cost Element
-                        for (MCostElement costElement : costElements) {
-                            generateCostDetail(accountSchema, costType, costElement, transaction);
-                        }
-                    }
-                }
-
-                process++;
-                //System.out.println("Transaction : " + transactionId + " Transaction Type :"+ transaction.getMovementType() + " record ..." + process);
-            }
-
-            if (dbTransaction != null) {
-                dbTransaction.commit(true);
-                dbTransaction.close();
-                dbTransaction = null;
-            }
-
-        } catch (Exception e) {
-            if (dbTransaction != null) {
-                dbTransaction.rollback();
-                dbTransaction.close();
-                dbTransaction = null;
-                e.printStackTrace();
-                addLog(e.getMessage());
-            }
-        } finally {
-            if (dbTransaction != null) {
-                dbTransaction.commit();
-                dbTransaction.close();
-                dbTransaction = null;
-            }
-        }
+    	//	Generate Cost detail
+    	transactionsToProcess = getTransactionIdsByDateAcct();
+        Map<Integer, Timestamp> productMap = new HashMap<>();
+        transactionsToProcess
+        .stream()
+        .map(productTransactions -> productTransactions.getProductId())
+        .distinct()
+        .forEach(productTransactionId -> {
+        	int transactionProductId = productTransactionId;//new Integer(productTransaction.getName());
+            //	
+            Trx.run(transactionName -> {
+            	acctSchemas.forEach(accountSchema -> {
+            		costTypes.forEach(costType -> {
+            			costElements.forEach(costElement -> {
+            				applyCriteria(accountSchema.getC_AcctSchema_ID(), costType.getM_CostType_ID(), costElement.getM_CostElement_ID(), transactionProductId, getDateAcct(), getDateAcctTo());
+            				try {
+            					deleteCostDetail(transactionName);
+                                resetCostDimension(costType.getCostingMethod(), transactionName);
+            				} catch (Exception e) {
+								throw new AdempiereException(e);
+							}
+            			});
+            		});
+            	});
+        		MProduct product = MProduct.get(getCtx(), transactionProductId);
+                addLog(transactionProductId, new Timestamp(System.currentTimeMillis()), null, "@M_Product_ID@: " + product .getValue() + " - " + product.getName() + " @Deleted@");
+            });
+        });
+        List<TransactionsToProcess> TransactionsToProcessCopy = transactionsToProcess
+        																.stream()
+        																.filter(transaction -> transaction.getMovementType().equals(MTransaction.MOVEMENTTYPE_VendorReceipts) && transaction.getInOutLineId() > 0)
+        																.collect(Collectors.toList());
+        TransactionsToProcessCopy.forEach(transaction -> {
+        	addLandedAndAdjustmentsCosts(transaction);
+        });
+        AtomicReference <Timestamp> beforeProcessFirst  = new AtomicReference<>(null);
+        //	Generate Cost
+        transactionsToProcess
+        .stream()
+        .sorted(Comparator.comparing(TransactionsToProcess::getProductId)
+        				  .thenComparing(TransactionsToProcess::getDateAcct)
+        		)
+        .forEach(productTransaction -> {
+            int transactionProductId = productTransaction.getProductId();
+            //	
+            Trx.run(transactionName -> {
+            	//	
+            	//Generate cost
+//            	Timestamp beforeProcess = new Timestamp(System.currentTimeMillis());
+//            	beforeProcessFirst.set(Optional.ofNullable(beforeProcessFirst.get()).orElse(new Timestamp(System.currentTimeMillis())));
+            	acctSchemas.forEach(accountSchema -> {
+            		costTypes.forEach(costType -> {
+            			costElements.forEach(costElement -> {
+            				try {
+            					productTransaction.getTransaction().set_TrxName(transactionName);
+//            					System.out.println( productTransaction.getDateAcct());
+                                generateCostDetail(accountSchema, costType, costElement, productTransaction);
+                                
+            				} catch (Exception e) {
+								throw new AdempiereException(e);
+							}
+            			});
+            		});
+            	});
+//            	System.out.println(TimeUtil.formatElapsed(beforeProcess, null));
+//            	System.out.println("Total -> " + TimeUtil.formatElapsed(beforeProcessFirst.get(), null));
+            });
+            
+        	productMap.put(transactionProductId, new Timestamp(System.currentTimeMillis()));
+        });
+        productMap.entrySet().forEach(products -> {
+        	//	Add to log
+    		MProduct product = MProduct.get(getCtx(), products.getKey());
+            addLog(products.getKey(), products.getValue(), null, "@M_Product_ID@: " + product .getValue() + " - " + product.getName() + " @Processed@");
+        	//	Increment counter
+        	processed.incrementAndGet();
+        });
 
     }
+    
+    private void addLandedAndAdjustmentsCosts(TransactionsToProcess transaction) {
+    	
+    	MInOutLine line = MInOutLine.get(getCtx(), transaction.getInOutLineId());
+    	
+    	// Calculate adjustment cost by variances in
+        // invoices
+    	List<MMatchPO> orderMatches = MMatchPO.getInOutLine(line);
+        orderMatches.stream().forEach(match -> {
+            if (match.getM_Product_ID() == transaction.getProductId()
+		            && match.getDateAcct().after(getDateAcct())
+		            	&& match.getDateAcct().before(getDateAcctTo())) 
+            	transactionsToProcess.add(new TransactionsToProcess(transaction.getTransaction(), match, get_TrxName()));
+            
+        });
+        
+        List<MMatchInv> invoiceMatches = MMatchInv.getInOutLine(line);
+        invoiceMatches.forEach(match -> {
+             if (match.getM_Product_ID() == transaction.getProductId()
+            		 && match.getDateAcct().after(getDateAcct())
+            		 	&& match.getDateAcct().before(getDateAcctTo())) 
+            	 transactionsToProcess.add(new TransactionsToProcess(transaction.getTransaction(), match, get_TrxName()));
+        });
+        
+    	//get landed allocation cost
+        List<MLandedCostAllocation> landedCostAllocations;
+        if (getCostElementId() > 0 )
+        	landedCostAllocations = MLandedCostAllocation.getOfInOutline(line, getCostElementId());
+        else
+        	landedCostAllocations = MLandedCostAllocation.getOfInOutline(line);
+        
+        landedCostAllocations.stream().filter(allocation -> allocation.getM_InOutLine().isProcessed()).forEach(allocation -> {
+            if (allocation.getDateAcct().after(getDateAcct()) && allocation.getDateAcct().before(getDateAcctTo())) 
+            	transactionsToProcess.add(new TransactionsToProcess(transaction.getTransaction(), allocation, get_TrxName()));
+        });
+    	
+    }
+    
+    public void generateCostDetail(MAcctSchema accountSchema, MCostType costType, MCostElement costElement, TransactionsToProcess transaction) {
 
-    public void generateCostDetail(MAcctSchema accountSchema, MCostType costType, MCostElement costElement, MTransaction transaction) {
-
+    	MTransaction inventoryTransaction = transaction.getTransaction(); 
         //Create Cost Detail for this Transaction
-        CostEngineFactory.getCostEngine(accountSchema.getAD_Client_ID()).createCostDetail(accountSchema, costType, costElement, transaction, transaction.getDocumentLine(), true);
-        CostEngineFactory.getCostEngine(accountSchema.getAD_Client_ID()).clearAccounting(accountSchema, transaction);
-
+    	if (transaction.isInventory()) 
+    		CostEngineFactory.getCostEngine(accountSchema.getAD_Client_ID()).createCostDetail(accountSchema, costType, costElement, inventoryTransaction, inventoryTransaction.getDocumentLine(), true);
+    	
+    	if (isResetAccount)
+    		CostEngineFactory.getCostEngine(accountSchema.getAD_Client_ID()).clearAccounting(accountSchema, inventoryTransaction);
+    	
+    	
         // Calculate adjustment cost by variances in
         // invoices
-        if (MTransaction.MOVEMENTTYPE_VendorReceipts.equals(transaction.getMovementType())) {
-            MInOutLine line = (MInOutLine) transaction.getDocumentLine();
-            if (MCostElement.COSTELEMENTTYPE_Material.equals(costElement.getCostElementType())) {
-                //get purchase matches
-                List<MMatchPO> orderMatches = MMatchPO.getInOutLine(line);
-                orderMatches.stream().forEach(match -> {
-                    if (match.getM_Product_ID() == transaction.getM_Product_ID()
-                    && match.getDateAcct().after(getDateAcct())
-                    && match.getDateAcct().before(getDateAcctTo())) {
-                        CostEngineFactory.getCostEngine(accountSchema.getAD_Client_ID()).createCostDetail(accountSchema, costType, costElement, transaction, match, true);
-                    }
-                });
-                //get invoice matches
-               List<MMatchInv> invoiceMatches = MMatchInv.getInOutLine(line);
-               invoiceMatches.forEach(match -> {
-                    if (match.getM_Product_ID() == transaction.getM_Product_ID()
-                    && match.getDateAcct().after(getDateAcct())
-                    && match.getDateAcct().before(getDateAcctTo())) {
-                        CostEngineFactory.getCostEngine(
-                                accountSchema.getAD_Client_ID())
-                                .createCostDetail(accountSchema, costType, costElement, transaction,
-                                        match, true);
-                    }
-                });
-            }
-
+        if (MTransaction.MOVEMENTTYPE_VendorReceipts.equals(inventoryTransaction.getMovementType())) {
+            if (MCostElement.COSTELEMENTTYPE_Material.equals(costElement.getCostElementType())
+            		&& (transaction.getModel() instanceof MMatchInv || transaction.getModel() instanceof MMatchPO)) {
+            	CostEngineFactory.getCostEngine(accountSchema.getAD_Client_ID()).createCostDetail(accountSchema, costType, costElement, inventoryTransaction, transaction.getModel(), true);
+            }	
             //get landed allocation cost
-            MLandedCostAllocation.getOfInOutline(line, costElement.getM_CostElement_ID()).stream().forEach(allocation -> {
-                if (allocation.getDateAcct().after(getDateAcct()) && allocation.getDateAcct().before(getDateAcctTo()))
-                    CostEngineFactory.getCostEngine(accountSchema.getAD_Client_ID()).createCostDetail(accountSchema, costType, costElement, transaction, allocation, true);
-            });
-        }
-    }
-
-    private void generateCostCollectorNotTransaction(MAcctSchema accountSchema , MCostType costType ,  int productId, String trxName)
-            throws SQLException {
-        List<MPPCostCollector> costCollectors = StandardCostCollector.getCostCollectorNotTransaction(getCtx(), productId, getDateAcct(), getDateAcctTo(), trxName);
-        // Process Collector Cost Manufacturing
-        for (MPPCostCollector costCollector : costCollectors) {
-            for (MCostDetail costDetail : StandardCostCollector.getByCollectorCost(costCollector)) {
-                costDetail.deleteEx(true);
+            if (transaction.getModel() instanceof MLandedCostAllocation) {
+            	MLandedCostAllocation landedCostAllocation = (MLandedCostAllocation) transaction.getModel();
+            	if (landedCostAllocation.getM_CostElement_ID() == costElement.getM_CostElement_ID()) {
+	                	CostEngineFactory.getCostEngine(accountSchema.getAD_Client_ID()).createCostDetail(accountSchema, costType, costElement, inventoryTransaction, landedCostAllocation, true);
+            	}
             }
-            CostEngineFactory.getCostEngine(getAD_Client_ID()).clearAccounting(accountSchema, costType, costCollector, productId , costCollector.getDateAcct());
-            if (MPPCostCollector.COSTCOLLECTORTYPE_UsegeVariance.equals(costCollector.getCostCollectorType()))
-            	StandardCostCollector.createUsageVariances(costCollector);
-            else if (MPPCostCollector.COSTCOLLECTORTYPE_MethodChangeVariance.equals(costCollector.getCostCollectorType()))
-            	StandardCostCollector.createMethodVariancesFromActivityControl(costCollector);
-            else if (MPPCostCollector.COSTCOLLECTORTYPE_RateVariance.equals(costCollector.getCostCollectorType()))
-            	StandardCostCollector.createRateVariances(costCollector);
-            else if (MPPCostCollector.COSTCOLLECTORTYPE_ActivityControl.equals(costCollector.getCostCollectorType()))
-            	StandardCostCollector.createActivityControl(costCollector);
-            //else
-                //System.out.println("Cost Collector Type: " + costCollector.getCostCollectorType());
         }
     }
 
-    private KeyNamePair[] getTransactionIdsByDateAcct() {
+    private List<TransactionsToProcess> getTransactionIdsByDateAcct() {
         StringBuilder sql = new StringBuilder();
-        List<Object> parameters = new ArrayList<Object>();
         StringBuilder whereClause = new StringBuilder("WHERE ");
-        whereClause.append(MCostDetail.COLUMNNAME_AD_Client_ID).append("=")
-                .append(getAD_Client_ID()).append(" AND ");
-        if (getProductId() > 0) {
-            whereClause.append(MCostDetail.COLUMNNAME_M_Product_ID)
-                    .append("=?").append(" AND ");
-            parameters.add(getProductId());
+       
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        ArrayList<TransactionsToProcess> list = new ArrayList<TransactionsToProcess>();
+        try
+        {
+        	 whereClause.append(MCostDetail.COLUMNNAME_AD_Client_ID).append("=")
+             .append(getAD_Client_ID()).append(" AND ");
+		     if (getProductId() > 0) {
+		         whereClause.append(MCostDetail.COLUMNNAME_M_Product_ID)
+		                 .append("=?").append(" AND ");
+		     }
+		     
+		     if (getProductCategoryId() > 0) {
+		         whereClause.append("M_Product_Category_ID")
+		                 .append("=?").append(" AND ");
+		     }
+		     whereClause.append("TRUNC(").append(MCostDetail.COLUMNNAME_DateAcct).append(")>=?");
+		
+		     if (getDateAcctTo() != null) {
+		         whereClause.append(" AND TRUNC(").append(MCostDetail.COLUMNNAME_DateAcct).append(")<=?");
+		     }
+		
+		     sql.append("SELECT M_Transaction_ID , M_Product_ID, DateAcct, MovementType, M_InOutLine_ID FROM RV_Transaction ")
+		             .append(whereClause)
+		             .append(" ORDER BY lowlevel desc, M_Product_ID ,  TRUNC( DateAcct ) , M_Transaction_ID , SUBSTR(MovementType,2,1) , IsReversed");
+		     
+		     
+        	int index = 1;
+            pstmt = DB.prepareStatement(sql.toString(), get_TrxName());
+            if (getProductId() > 0)
+            	pstmt.setInt(index++, getProductId());
+            
+            if (getProductCategoryId() > 0)
+            	pstmt.setInt(index++, getProductCategoryId());
+            
+            pstmt.setTimestamp(index++, getDateAcct());
+            
+            if (getDateAcctTo() != null)
+            	pstmt.setTimestamp(index++, getDateAcctTo());
+            
+            
+            rs = pstmt.executeQuery();
+            while (rs.next())
+                list.add(new TransactionsToProcess(rs.getInt(MTransaction.COLUMNNAME_M_Transaction_ID),
+                										rs.getInt(MTransaction.COLUMNNAME_M_Product_ID), 
+                										rs.getTimestamp(MCostDetail.COLUMNNAME_DateAcct),
+                										rs.getString(MTransaction.COLUMNNAME_MovementType),
+                										Optional.ofNullable(rs.getInt(MTransaction.COLUMNNAME_M_InOutLine_ID)).orElse(0),
+                										get_TrxName()
+                										));
+            
+        }
+        catch (Exception e)
+        {
+            log.severe(e.getMessage());
+        }
+        finally
+        {
+        	DB.close(rs, pstmt);
+            rs= null;
+            pstmt = null;
         }
         
-        if (getProductCategoryId() > 0) {
-            whereClause.append("M_Product_Category_ID")
-                    .append("=?").append(" AND ");
-            parameters.add(getProductCategoryId());
-        }
-        whereClause.append("TRUNC(").append(MCostDetail.COLUMNNAME_DateAcct).append(")>=?");
-        parameters.add(getDateAcct());
-
-        if (getDateAcctTo() != null) {
-            whereClause.append(" AND TRUNC(").append(MCostDetail.COLUMNNAME_DateAcct).append(")<=?");
-            parameters.add(getDateAcctTo());
-        }
-
-        sql.append("SELECT M_Transaction_ID , M_Product_ID FROM RV_Transaction ")
-                .append(whereClause)
-                .append(" ORDER BY lowlevel desc, M_Product_ID ,  TRUNC( DateAcct ) , M_Transaction_ID , SUBSTR(MovementType,2,1) ");
-        //.append(" ORDER BY M_Product_ID , DateAcct , M_Transaction_ID");
-        //System.out.append("SQL :" + sql);
-        return DB.getKeyNamePairs(get_TrxName(), sql.toString(), false, parameters.toArray());
+        return list;
     }
-    
-    
 }
+
+class TransactionsToProcess{
+
+	private MTransaction transaction;
+	private IDocumentLine model;
+	private Timestamp dateAcct;
+	private int transactionId =0;
+	private int productId = 0;
+	private boolean process = false;
+	private boolean isInventory = false;
+	private String movementType = "";
+	private int inOutLineId = 0;
+	private String trxName = null;
+	
+	public TransactionsToProcess(MTransaction transaction , IDocumentLine model, String trxName) {
+		this.transaction = transaction;
+		this.model = model;
+		this.dateAcct = model.getDateAcct();
+		this.trxName = trxName;
+		Optional.ofNullable(this.transaction).ifPresent(trx -> setProductId(trx.getM_Product_ID())); 
+		isInventory = false;
+		
+	}
+	
+	public TransactionsToProcess(int transactionId, int productId, Timestamp dateAcct, String movementType, int inOutLineId, String trxName) {
+		this.transactionId = transactionId;
+		this.productId = productId;
+		this.dateAcct = dateAcct;
+		this.movementType = movementType;
+		this.inOutLineId = inOutLineId; 
+		this.trxName = trxName;
+		isInventory =true;
+	}
+	
+	public MTransaction getTransaction() {
+		transaction = Optional.ofNullable(transaction).orElseGet(() -> new MTransaction(Env.getCtx(), transactionId, trxName));
+		return transaction;
+	}
+	
+	public void setTransaction(MTransaction transaction) {
+		this.transaction = transaction;
+		Optional.ofNullable(this.transaction).ifPresent(trx -> setTransactionId(trx.getM_Transaction_ID()));
+	}
+	
+	public IDocumentLine getModel() {
+		return model;
+	}
+	
+	public void setModel(IDocumentLine model) {
+		this.model = model;
+	}
+	
+	public Timestamp getDateAcct() {
+		return dateAcct;
+	}
+	
+	public void setDateAcct(Timestamp dateAcct) {
+		this.dateAcct = dateAcct;
+	}
+	
+	public int getTransactionId() {
+		return transactionId;
+	}
+	
+	public void setTransactionId(int transactionId) {
+		this.transactionId = transactionId;
+	}
+	
+	public int getProductId() {
+		return productId;
+	}
+	
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+	
+	public boolean isProcess() {
+		return process;
+	}
+	
+	public void setProcess(boolean process) {
+		this.process = process;
+	}
+	
+	public boolean isInventory() {
+		return isInventory;
+	}
+	
+	public String getMovementType() {
+		return movementType;
+	}
+	
+	public void setMovementType(String movementType) {
+		this.movementType = movementType;
+	}
+	
+	public int getInOutLineId() {
+		return inOutLineId;
+	}
+	
+	public void setInOutLineId(int inOutLineId) {
+		this.inOutLineId = inOutLineId;
+	}
+	
+	public String getTrxName() {
+		return trxName;
+	}
+	
+	public void setTrxName(String trxName) {
+		this.trxName = trxName;
+	}
+	
+	@Override
+	public String toString() {
+		return getDateAcct().toString().concat(" ").concat(Integer.toString(getTransactionId())).concat(" ").concat(this.model ==null ? "" : this.model.getClass().getCanonicalName());
+	}
+}
+ 
