@@ -16,16 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_M_CostDetail;
 import org.adempiere.core.domains.models.I_M_CostType;
 import org.adempiere.core.domains.models.X_M_CostDetail;
@@ -35,6 +25,16 @@ import org.compiere.acct.DocLine;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * 	Cost Detail Model
@@ -189,34 +189,8 @@ public class MCostDetail extends X_M_CostDetail
 		ArrayList<Object> params = new ArrayList<Object>();
 		StringBuffer whereClause = new StringBuffer();
 		StringBuffer orderBy = new StringBuffer();
-		if(model instanceof MLandedCostAllocation 
-				|| model instanceof MMatchInv)
-		{
-			if (model.getReversalLine_ID()!= 0){
-				if (model.getDateAcct().compareTo(transaction.getDocumentLine().getDateAcct())==0){
-					whereClause.append(MCostDetail.COLUMNNAME_M_Transaction_ID + "=? AND ");
-					params.add(transaction.getM_Transaction_ID());
-				}
-				else
-					whereClause.append("DateAcct <= " +DB.TO_DATE(dateAcct) + " AND ");
-			}
-			else {
-				Timestamp dateacct = transaction.getDocumentLine().getDateAcct();
-				MDocType dt = new MDocType(transaction.getCtx(), transaction.getDocumentLine().getC_DocType_ID(), transaction.get_TrxName());
-				if (MPeriod.isOpen(transaction.getCtx(), dateacct, dt.getDocBaseType(), transaction.getAD_Org_ID())) {
-					whereClause.append(MCostDetail.COLUMNNAME_M_Transaction_ID + "=? AND ");
-					params.add(transaction.getM_Transaction_ID());
-				} else
-					whereClause.append("DateAcct <= " + DB.TO_DATE(dateAcct) + " AND ");
-				if (model instanceof MMatchInv) {
-					whereClause.append(" (M_MatchInv_ID <>? OR M_MatchInv_ID is null) AND ");
-					params.add(model.get_ID());
-				}
-			}
-								
-		}	
-		else
-			whereClause.append("DateAcct <= " +DB.TO_DATE(dateAcct) + " AND ");
+
+		whereClause.append("DateAcct <= " +DB.TO_DATE(dateAcct) + " AND ");
 		orderBy.append(MCostDetail.COLUMNNAME_SeqNo).append(" DESC");			
 		
 		whereClause.append(MCostDetail.COLUMNNAME_AD_Client_ID + "=? AND ");
@@ -960,6 +934,13 @@ public class MCostDetail extends X_M_CostDetail
 				+" INNER JOIN C_LandedCostAllocation la ON (il.C_InvoiceLine_ID=la.C_InvoiceLine_ID)"
 				+" WHERE la.C_LandedCostAllocation_ID=?";
 			param1 = getC_LandedCostAllocation_ID();
+		}else if (getM_ProductionLine_ID() > 0)
+		{
+			sql = "SELECT p.MovementDate FROM M_ProductionLine pl"
+				+" LEFT JOIN M_ProductionPlan pp ON (pl.M_ProductionPlan_ID = pp.M_ProductionPlan_ID)"
+				+" LEFT JOIN M_Production p ON (p.M_Production_ID = COALESCE(pl.M_Production_ID,pp.M_Production_ID))"
+				+" WHERE pl.M_ProductionLine_ID=?";
+			param1 = getM_ProductionLine_ID();
 		}
 		//
 		dateAcct = DB.getSQLValueTSEx(get_TrxName(), sql, param1);

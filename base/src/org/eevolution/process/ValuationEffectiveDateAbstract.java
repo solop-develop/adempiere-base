@@ -17,8 +17,9 @@
 
 package org.eevolution.process;
 
-import java.sql.Timestamp;
 import org.compiere.process.SvrProcess;
+
+import java.sql.Timestamp;
 
 /** Generated Process for (Valuation Effective Date)
  *  @author ADempiere (generated) 

@@ -15,20 +15,16 @@
  *****************************************************************************/
 package org.eevolution.process;
 
+import org.adempiere.core.domains.models.I_M_Product;
+import org.compiere.model.*;
+import org.compiere.util.DB;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.adempiere.core.domains.models.I_M_Product;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MCostElement;
-import org.compiere.model.MCostType;
-import org.compiere.model.MWarehouse;
-import org.compiere.model.Query;
-import org.compiere.util.DB;
 
 /**
  * Regenerate Cost Detail
@@ -195,13 +191,42 @@ public class ValuationEffectiveDate extends ValuationEffectiveDateAbstract {
 				.append("tc.DateAcct")
 				.append(",")
 				.append("p.AD_Client_ID,p.AD_Org_ID, tc.C_AcctSchema_ID ,tc.M_CostElement_ID,tc.M_CostType_ID, tc.M_Warehouse_ID,p.M_Product_ID,")
-				.append("p.M_Product_Category_ID,tc.M_AttributeSetInstance_ID,p.Group1,p.Group2,  tc.qty + tc.cumulatedqty AS QtyOnHand,")
+				.append("p.M_Product_Category_ID,tc.M_AttributeSetInstance_ID,p.Group1,p.Group2,SUM(t.MovementQty) AS QtyOnHand,")
 				.append(" CASE WHEN tc.Qty < 0 OR (tc.qty = 0 AND tc.cumulatedqty < 0) THEN ((tc.costAmt + tc.costadjustment) * -1) + tc.CumulatedAmt ELSE ((tc.costAmt + tc.costadjustment) * 1) + tc.CumulatedAmt END  AS CostAmt,")
 				.append(" CASE WHEN tc.Qty < 0 OR (tc.qty = 0 AND tc.cumulatedqty < 0) THEN ((tc.costAmtLL + tc.costadjustmentLL) * -1)  + tc.CumulatedAmtLL ELSE ((tc.costAmtLL + tc.costadjustmentLL) * 1) + tc.CumulatedAmtLL END AS CostAmtLL, ")
 				.append(getPriceListVersionId() != 0? getPriceListVersionId(): "null").append(", ? ")
 				.append(" FROM M_Product p ")
+				.append(" INNER JOIN M_Transaction t ON (p.M_Product_ID = t.M_Product_ID) ")
+				.append(" INNER JOIN M_Locator l ON (l.M_Locator_ID = t.M_Locator_ID) ")
 				.append(" INNER JOIN M_CostDetail tc ON (p.M_Product_ID=tc.M_Product_ID) ");
 		insert.append(whereClause1).append(whereClause2);
+		
+		String groubByClause = "GROUP BY "
+								+ "tc.M_Warehouse_ID, "
+								+ "tc.DateAcct, "
+								+ "p.AD_Client_ID, "
+								+ "p.AD_Org_ID,  "
+								+ "tc.C_AcctSchema_ID , "
+								+ "tc.M_CostElement_ID, "
+								+ "tc.M_CostType_ID,  "
+								+ "tc.M_Warehouse_ID, "
+								+ "p.M_Product_ID, "
+								+ "p.M_Product_Category_ID, "
+								+ "tc.M_AttributeSetInstance_ID, "
+								+ "p.Group1, "
+								+ "p.Group2, "
+								+ "tc.Qty, "
+								+ "tc.cumulatedqty, "
+								+ "tc.costAmt, "
+								+ "tc.costadjustment, "
+								+ "tc.CumulatedAmt, "
+								+ "tc.costAmt, "
+								+ "tc.costadjustment, "
+								+ "tc.CumulatedAmt, "
+								+ "tc.costAmtLL, "
+								+ "tc.costadjustmentLL, "
+								+ "tc.CumulatedAmtLL ";
+		insert.append(groubByClause);
 		pstmt = DB.prepareStatement(insert.toString(),
 				ResultSet.TYPE_SCROLL_INSENSITIVE,
 				ResultSet.CONCUR_UPDATABLE, get_TrxName());
@@ -216,6 +241,10 @@ public class ValuationEffectiveDate extends ValuationEffectiveDateAbstract {
 
 		whereClause1.append("AND tc.DateAcct<= ").append(DB.TO_DATE(getDateValue()));
 		whereClause2.append("AND tc1.DateAcct<= ").append(DB.TO_DATE(getDateValue()));
+		
+		whereClause1.append(" AND t.MovementDate<= ").append(DB.TO_DATE(getDateValue()));
+		whereClause1.append(" AND tc.M_Warehouse_ID = l.M_Warehouse_ID");
+		
 
 		whereClause1.append(" AND p.M_Product_ID=? ");
 

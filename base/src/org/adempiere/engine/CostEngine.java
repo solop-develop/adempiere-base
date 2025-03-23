@@ -16,6 +16,13 @@
 
 package org.adempiere.engine;
 
+import org.adempiere.core.domains.models.*;
+import org.compiere.model.*;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Util;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
@@ -24,53 +31,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.adempiere.core.domains.models.I_C_InvoiceLine;
-import org.adempiere.core.domains.models.I_C_OrderLine;
-import org.adempiere.core.domains.models.I_C_ProjectIssue;
-import org.adempiere.core.domains.models.I_M_CostElement;
-import org.adempiere.core.domains.models.I_M_CostType;
-import org.adempiere.core.domains.models.I_M_InOut;
-import org.adempiere.core.domains.models.I_M_Inventory;
-import org.adempiere.core.domains.models.I_M_MatchInv;
-import org.adempiere.core.domains.models.I_M_MatchPO;
-import org.adempiere.core.domains.models.I_M_Movement;
-import org.adempiere.core.domains.models.I_M_Product;
-import org.adempiere.core.domains.models.I_M_Production;
-import org.adempiere.core.domains.models.I_M_Transaction;
-import org.adempiere.core.domains.models.I_PP_Cost_Collector;
-import org.adempiere.core.domains.models.X_M_Product;
-import org.adempiere.core.domains.models.X_PP_Cost_Collector;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MClient;
-import org.compiere.model.MConversionRate;
-import org.compiere.model.MConversionType;
-import org.compiere.model.MCost;
-import org.compiere.model.MCostDetail;
-import org.compiere.model.MCostElement;
-import org.compiere.model.MCostType;
-import org.compiere.model.MDocType;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MInventoryLine;
-import org.compiere.model.MLandedCostAllocation;
-import org.compiere.model.MMatchInv;
-import org.compiere.model.MMatchPO;
-import org.compiere.model.MMovementLine;
-import org.compiere.model.MPeriod;
-import org.compiere.model.MPeriodControl;
-import org.compiere.model.MProduct;
-import org.compiere.model.MProductCategoryAcct;
-import org.compiere.model.MProductPO;
-import org.compiere.model.MProduction;
-import org.compiere.model.MProductionLine;
-import org.compiere.model.MProjectIssue;
-import org.compiere.model.MTransaction;
-import org.compiere.model.PO;
-import org.compiere.model.Query;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Util;
 
 
 /**
@@ -314,7 +274,7 @@ public class CostEngine {
 
 		if (model instanceof MLandedCostAllocation) {
 			MLandedCostAllocation allocation = (MLandedCostAllocation) model;
-			costThisLevel  = allocation.getPriceActual();
+			costThisLevel = convertCostToSchemaCurrency(accountSchema, model , model.getPriceActualCurrency());
 		}
 
 		MCost cost = MCost.validateCostForCostType(accountSchema, costType, costElement,
@@ -340,7 +300,7 @@ public class CostEngine {
 					MInventoryLine inventoryLine = (MInventoryLine) model;
 					// If cost this level is zero and is a physical inventory then
 					// try get cost from physical inventory
-					if (costThisLevel.signum() == 0 && MCostElement.COSTELEMENTTYPE_Material.equals(costElement.getCostElementType())) {
+					if (MCostElement.COSTELEMENTTYPE_Material.equals(costElement.getCostElementType())) {
 						// Use the current cost only for Physical Inventory
 						if (inventoryLine.getQtyInternalUse().signum() == 0 &&
 								inventoryLine.getCurrentCostPrice() != null &&
@@ -380,6 +340,12 @@ public class CostEngine {
 			} else if (MCostElement.COSTELEMENTTYPE_Material.equals(costElement.getCostElementType())) {
 					costThisLevel = convertCostToSchemaCurrency(accountSchema , model , model.getPriceActualCurrency());
 			}
+		}else if ((MCostElement.COSTELEMENTTYPE_Material.equals(costElement
+				.getCostElementType()))
+				&& transaction.getMovementType().equals(MTransaction.MOVEMENTTYPE_VendorReturns)
+				&& !MCostType.COSTINGMETHOD_StandardCosting.equals(costType
+						.getCostingMethod())) {
+			costThisLevel = convertCostToSchemaCurrency(accountSchema , model , model.getPriceActualCurrency());
 		}
 
 		if (!MCostType.COSTINGMETHOD_StandardCosting.equals(costType.getCostingMethod())) {
@@ -507,15 +473,21 @@ public class CostEngine {
 	 */
 	private BigDecimal convertCostToSchemaCurrency(MAcctSchema acctSchema , IDocumentLine model , BigDecimal cost)
 	{
-		BigDecimal totalCostThisLevel = MConversionRate.convertBase(
-				model.getCtx(),
-				cost,
-				model.getC_Currency_ID(),
-				model.getDateAcct(),
-				model.getC_ConversionType_ID(),
-				model.getAD_Client_ID(),
-				model.getAD_Org_ID());
-		return totalCostThisLevel;
+		BigDecimal costThisLevel = BigDecimal.ZERO;
+		BigDecimal rate = MConversionRate.getRate(
+				model.getC_Currency_ID(), acctSchema.getC_Currency_ID() ,
+				model.getDateAcct(), model.getC_ConversionType_ID() ,
+				model.getAD_Client_ID(), model.getAD_Org_ID());
+		if (rate != null) {
+			if (rate.compareTo(BigDecimal.ONE) == 0)
+				costThisLevel = cost;
+			else {
+				costThisLevel = cost.multiply(rate);
+				if (costThisLevel.scale() > acctSchema.getCostingPrecision())
+					costThisLevel = costThisLevel.setScale(acctSchema.getCostingPrecision(), BigDecimal.ROUND_HALF_UP);
+			}
+		}
+		return costThisLevel;
 	}
 
 	//Create cost detail for by document
@@ -612,6 +584,8 @@ public class CostEngine {
 							lastCostDetail.getCostAdjustment())
 							.divide(lastCostDetail.getQty(), accountSchema.getCostingPrecision(), RoundingMode.HALF_UP)
 							.abs();
+					if (lastCostDetail.getCurrentCostPrice().signum() != 0)
+						costThisLevel = costThisLevel.multiply(BigDecimal.valueOf(lastCostDetail.getCurrentCostPrice().signum()));
 				}
 				// return unit cost from last transaction
 				// transaction quantity is zero
