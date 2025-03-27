@@ -35,7 +35,8 @@ SELECT t.M_Transaction_ID, t.AD_Client_ID,t.AD_Org_ID,
     COALESCE(i.User2_ID, iol.User2_ID, m.User2_ID , cc.User2_ID) AS User2_ID,
     COALESCE(i.User3_ID, iol.User1_ID, m.User3_ID , cc.User3_ID) AS User3_ID,
     COALESCE(i.User4_ID, iol.User4_ID, m.User4_ID , cc.User4_ID) AS User4_ID,
-    p.lowlevel, p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID
+    p.lowlevel, p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID,
+    CASE WHEN COALESCE(i.Reversal_ID, m.Reversal_ID, io.Reversal_ID, prd.Reversal_ID, 0, cc.Reversal_ID) > 0 THEN 'Y' ELSE 'N' END AS IsReversed
 FROM M_Transaction t
   INNER JOIN M_Locator l ON (t.M_Locator_ID=l.M_Locator_ID)
   INNER JOIN M_Product p ON (t.M_Product_ID=p.M_Product_ID)
