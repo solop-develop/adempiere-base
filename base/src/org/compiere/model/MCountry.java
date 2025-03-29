@@ -87,7 +87,7 @@ public final class MCountry extends X_C_Country
 		//	Try database
 		Query query = new Query(ctx, I_C_Country.Table_Name, "CountryCode=?", null);
 		query.setParameters(ISOcode);
-		retValue = (MCountry)query.firstOnly();
+		retValue = (MCountry)query.first();
 		
 		return retValue;
 	}	

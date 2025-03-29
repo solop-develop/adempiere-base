@@ -62,7 +62,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocumentLine ,
 									+" AND M_Product_ID=? AND M_AttributeSetInstance_ID=?";
 		return new Query(inventory.getCtx(), I_M_InventoryLine.Table_Name, whereClause, inventory.get_TrxName())
 			.setParameters(inventory.get_ID(), M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID)
-			.firstOnly();
+			.first();
 	}	//	get
 	
 	/**************************************************************************

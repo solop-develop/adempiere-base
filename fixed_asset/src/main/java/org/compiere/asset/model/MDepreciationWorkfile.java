@@ -332,13 +332,13 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile
 									+" AND "+COLUMNNAME_PostingType+"=? AND "+COLUMNNAME_A_QTY_Current+">?";
 		MDepreciationWorkfile wk = new Query(ctx, MDepreciationWorkfile.Table_Name, whereClause, trxName)
 											.setParameters(new Object[]{A_Asset_ID, postingType, 0})
-											.firstOnly();
+											.first();
 		*/
 		final String whereClause = COLUMNNAME_A_Asset_ID+"=?"
 									+" AND "+COLUMNNAME_PostingType+"=? ";
 		MDepreciationWorkfile wk = new Query(ctx, MDepreciationWorkfile.Table_Name, whereClause, trxName)
 				.setParameters(new Object[]{A_Asset_ID, postingType})
-				.firstOnly();
+				.first();
 		
 		
 		if (trxName == null && wk != null)

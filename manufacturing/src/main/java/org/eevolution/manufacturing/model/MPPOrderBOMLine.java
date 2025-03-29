@@ -59,7 +59,7 @@ public class MPPOrderBOMLine extends X_PP_Order_BOMLine
 		final String whereClause = COLUMNNAME_PP_Order_ID+"=? AND "+COLUMNNAME_M_Product_ID+"=?";
 		return new Query(ctx, Table_Name, whereClause, trxName)
 			.setParameters(new Object[]{PP_Order_ID, M_Product_ID})
-			.firstOnly();
+			.first();
 	}
 	
 	public MPPOrderBOMLine(Properties ctx, int PP_Order_BOMLine_ID, String trxName)

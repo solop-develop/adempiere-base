@@ -106,7 +106,7 @@ public class MPPMRP extends X_PP_MRP
 								MPPProductBOM.BOMTYPE_Make_To_Kit, 
 								MPPProductBOM.BOMUSE_Manufacturing,
 								product.getValue())
-						.firstOnly();
+						.first();
 
 			
 			//Search workflow standard
@@ -685,7 +685,7 @@ public class MPPMRP extends X_PP_MRP
 		Properties ctx = fl.getCtx();
 		
 		MForecast f = new MForecast(ctx, fl.getM_Forecast_ID(), trxName);
-		MPPMRP mrp = getQuery(fl, null, null).firstOnly();
+		MPPMRP mrp = getQuery(fl, null, null).first();
 		if (mrp == null)
 		{
 			mrp = new MPPMRP(ctx, 0, trxName);     
@@ -752,7 +752,7 @@ public class MPPMRP extends X_PP_MRP
 		if(ol.isConsumesForecast())
 			return ;
 		
-		MPPMRP mrp = getQuery(ol, null, null).firstOnly();
+		MPPMRP mrp = getQuery(ol, null, null).first();
 		if(mrp == null)
 		{	
 			mrp = new MPPMRP(ol.getCtx(), 0, ol.get_TrxName());                                                          
@@ -798,7 +798,7 @@ public class MPPMRP extends X_PP_MRP
 		String trxName = o.get_TrxName();
 		//
 		// Supply
-		MPPMRP mrpSupply = getQuery(o, TYPEMRP_Supply, ORDERTYPE_ManufacturingOrder).firstOnly();
+		MPPMRP mrpSupply = getQuery(o, TYPEMRP_Supply, ORDERTYPE_ManufacturingOrder).first();
 		if(mrpSupply == null)
 		{		                    
 			mrpSupply = new MPPMRP(ctx, 0, trxName);                                                                                                                 
@@ -839,7 +839,7 @@ public class MPPMRP extends X_PP_MRP
 			qty = qty.negate();
 		}
 		//
-		MPPMRP mrp = getQuery(obl, null, ORDERTYPE_ManufacturingOrder).firstOnly();
+		MPPMRP mrp = getQuery(obl, null, ORDERTYPE_ManufacturingOrder).first();
 		if(mrp == null)
 		{
 			mrp = new MPPMRP(ctx, 0, trxName);                                                                           
@@ -891,7 +891,7 @@ public class MPPMRP extends X_PP_MRP
 		String trxName = ol.get_TrxName();
 		Properties m_ctx = ol.getCtx();
 		//
-		MPPMRP mrp = getQuery(ol, TYPEMRP_Demand, ORDERTYPE_DistributionOrder).firstOnly();
+		MPPMRP mrp = getQuery(ol, TYPEMRP_Demand, ORDERTYPE_DistributionOrder).first();
 		MLocator source = MLocator.get( m_ctx , ol.getM_Locator_ID());
 		MLocator target = MLocator.get( m_ctx , ol.getM_LocatorTo_ID());
 		if(mrp != null)
@@ -927,7 +927,7 @@ public class MPPMRP extends X_PP_MRP
 			mrp.saveEx();
 
 		}
-		mrp = getQuery(ol, TYPEMRP_Supply, ORDERTYPE_DistributionOrder).firstOnly();
+		mrp = getQuery(ol, TYPEMRP_Supply, ORDERTYPE_DistributionOrder).first();
 		if(mrp != null)
 		{	
 			mrp.setAD_Org_ID(target.getAD_Org_ID());
@@ -981,7 +981,7 @@ public class MPPMRP extends X_PP_MRP
 	 */
 	public static void M_RequisitionLine(MRequisitionLine rl)
 	{
-		MPPMRP mrp = getQuery(rl, null, null).firstOnly();
+		MPPMRP mrp = getQuery(rl, null, null).first();
 		MRequisition r = rl.getParent();
 		if (mrp == null)
 		{

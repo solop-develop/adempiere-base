@@ -213,7 +213,7 @@ public class InOutGenerateRMA extends SvrProcess
             			I_C_InvoiceLine.COLUMNNAME_M_RMALine_ID+"=?",
             			shipment.get_TrxName())
             	.setParameters(rmaLine.getM_RMALine_ID())
-            	.firstOnly();
+            	.first();
             	if (invoiceLine != null)
             	{
             		invoiceLine.setM_InOutLine_ID(shipLine.getM_InOutLine_ID());

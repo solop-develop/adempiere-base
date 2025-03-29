@@ -88,7 +88,7 @@ public class MPPOrderCost extends X_PP_Order_Cost
 				cost.getM_CostElement_ID(), 
 				cost.getM_Product_ID(), 
 				cost.getM_AttributeSetInstance_ID())
-		.firstOnly();
+		.first();
 	}
 
 	public MPPOrderCost(Properties ctx, int PP_Order_Cost_ID,String trxName)

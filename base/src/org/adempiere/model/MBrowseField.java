@@ -170,7 +170,7 @@ public class MBrowseField extends X_AD_Browse_Field {
 		return new Query(browse.getCtx(), MBrowseField.Table_Name, whereClause,
 				browse.get_TrxName())
 				.setParameters(browse.getAD_Browse_ID(),columnName)
-				.firstIdOnly();
+				.firstId();
 	}
 
 	/** Element */

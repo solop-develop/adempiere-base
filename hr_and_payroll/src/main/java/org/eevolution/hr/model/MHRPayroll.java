@@ -175,7 +175,7 @@ public class MHRPayroll extends X_HR_Payroll {
         return new Query(getCtx(), MHRPeriod.Table_Name, where.toString(), get_TrxName())
                 .setClient_ID()
                 .setParameters(getHR_Payroll_ID(), date)
-                .firstOnly();
+                .first();
     }
 
     /**
@@ -231,6 +231,6 @@ public class MHRPayroll extends X_HR_Payroll {
         return new Query(getCtx(), MHRPeriod.Table_Name, where.toString(), get_TrxName())
                 .setClient_ID()
                 .setParameters(getHR_Payroll_ID(), periodNo, year)
-                .firstOnly();
+                .first();
     }
 }    //	MPayroll

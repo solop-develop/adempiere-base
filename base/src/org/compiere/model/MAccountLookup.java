@@ -142,7 +142,7 @@ public final class MAccountLookup extends Lookup implements Serializable
 		final String whereClause = "C_ValidCombination_ID=?";
 		MAccount account = new Query(Env.getCtx(),I_C_ValidCombination.Table_Name,whereClause,null)
 		.setParameters(ID)
-		.firstOnly();
+		.first();
 		
 		if(account == null)
 			return false;

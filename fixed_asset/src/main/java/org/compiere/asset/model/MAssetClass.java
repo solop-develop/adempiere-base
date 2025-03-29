@@ -71,7 +71,7 @@ public class MAssetClass extends X_A_Asset_Class
 		return new Query(ctx, Table_Name, whereClause, null)
 				.setParameters(new Object[]{value, Env.getAD_Client_ID(ctx)})
 				.setOrderBy("AD_Client_ID DESC")
-				.firstOnly();
+				.first();
 	} // get
 
 	/**

@@ -109,7 +109,7 @@ public class MDepreciation extends X_A_Depreciation
 		depr = new Query(ctx, Table_Name, whereClause, null)
 						.setOrderBy("AD_Client_ID DESC")
 						.setParameters(new Object[]{depreciationType, AD_Client_ID})
-						.firstOnly();
+						.first();
 		addToCache(depr);
 		return depr;
 	}	//	get

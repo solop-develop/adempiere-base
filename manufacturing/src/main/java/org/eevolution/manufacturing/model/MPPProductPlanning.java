@@ -130,7 +130,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning
 		return new Query(ctx, MPPProductPlanning.Table_Name, whereClause, trxname)
 			.setParameters(ad_client_id, ad_org_id, m_product_id, m_warehouse_id, s_resource_id)
 			.setOnlyActiveRecords(true)
-			.firstOnly();
+			.first();
 	}       
 
 

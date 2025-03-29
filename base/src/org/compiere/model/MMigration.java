@@ -350,7 +350,7 @@ public class MMigration extends X_AD_Migration {
 			+ " AND TRIM(both from ReleaseNo) = ?";
 //		MMigration mmigration = new Query(ctx, MMigration.Table_Name, where, trxName) // Locks migrationtable
 		MMigration mmigration = new Query(ctx, MMigration.Table_Name, where, null)
-		.setParameters(name, Integer.parseInt(seqNo), entityType, releaseNo).firstOnly();
+		.setParameters(name, Integer.parseInt(seqNo), entityType, releaseNo).first();
 		if ( mmigration != null ) {
 			return mmigration;  // already exists (TODO: update?)
 		}

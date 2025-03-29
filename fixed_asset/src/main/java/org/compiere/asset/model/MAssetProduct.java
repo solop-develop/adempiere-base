@@ -73,7 +73,7 @@ public class MAssetProduct extends X_A_Asset_Product
 									+ " AND " + COLUMNNAME_M_AttributeSetInstance_ID + "=?";
 		MAssetProduct ap = new Query(ctx, MAssetProduct.Table_Name, whereClause, trxName)
 								.setParameters(new Object[]{A_Asset_ID, M_Product_ID, M_ASI_ID})
-								.firstOnly();
+								.first();
 		// If found, return
 		if (ap != null)
 			return ap;

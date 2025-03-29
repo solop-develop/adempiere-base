@@ -134,7 +134,7 @@ public class MPPProductBOM extends X_PP_Product_BOM
 				.setParameters(new Object[]{product.getM_Product_ID(), product.getValue()}).setOnlyActiveRecords(true)
 				.setOnlyActiveRecords(true)
 				.setClient_ID()
-				.firstOnly();
+				.first();
 		// If outside trx, then cache it
 		if (bom != null && trxName == null)
 		{

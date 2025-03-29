@@ -124,7 +124,7 @@ public class MTransaction extends X_M_Transaction
 		return new Query(line.getCtx(), Table_Name, whereClause, line.get_TrxName())
 		.setClient_ID()
 		.setParameters(line.getM_Product_ID(),line.getM_InOutLine_ID(), M_ASI_ID)
-		.firstOnly();
+		.first();
 	}
 	
 	

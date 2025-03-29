@@ -52,7 +52,7 @@ public class MPPPeriod extends X_PP_Period {
 				+ "=? AND " + MPPPeriod.COLUMNNAME_PeriodNo + "= ?";
 		return new Query(definition.getCtx(), Table_Name, whereClause,
 				definition.get_TrxName()).setClient_ID()
-				.setParameters(definition.get_ID(), periodNo).firstIdOnly();
+				.setParameters(definition.get_ID(), periodNo).firstId();
 	}
 
 	/**

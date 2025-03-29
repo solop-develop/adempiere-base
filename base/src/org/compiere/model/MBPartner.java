@@ -153,7 +153,7 @@ public class MBPartner extends X_C_BPartner
 		final String whereClause = "Value=? AND AD_Client_ID=?";
 		MBPartner retValue = new Query(ctx, I_C_BPartner.Table_Name, whereClause, null)
 		.setParameters(Value,Env.getAD_Client_ID(ctx))
-		.firstOnly();
+		.first();
 		return retValue;
 	}	//	get
 
@@ -168,7 +168,7 @@ public class MBPartner extends X_C_BPartner
 		final String whereClause = "C_BPartner_ID=? AND AD_Client_ID=?";
 		MBPartner retValue = new Query(ctx,I_C_BPartner.Table_Name,whereClause,null)
 		.setParameters(C_BPartner_ID,Env.getAD_Client_ID(ctx))
-		.firstOnly();
+		.first();
 		return retValue;
 	}	//	get
 

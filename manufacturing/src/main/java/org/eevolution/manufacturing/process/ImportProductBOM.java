@@ -190,7 +190,7 @@ public class ImportProductBOM extends SvrProcess {
 				whereClause, get_TrxName())
 				.setClient_ID()
 				.setParameters(importBOM.getM_Product_ID(),
-						importBOM.getValue()).firstOnly();
+						importBOM.getValue()).first();
 
 		if (bom == null) {
 			bom = new MPPProductBOM(Env.getCtx(), 0, get_TrxName());
@@ -297,7 +297,7 @@ public class ImportProductBOM extends SvrProcess {
 	 */
 	private int getID(String tableName, String whereClause, Object[] values) {
 		return new Query(getCtx(), tableName, whereClause, get_TrxName())
-				.setClient_ID().setParameters(values).firstIdOnly();
+				.setClient_ID().setParameters(values).firstId();
 	}
 
 	/**

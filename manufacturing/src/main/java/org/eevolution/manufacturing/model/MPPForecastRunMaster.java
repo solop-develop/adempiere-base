@@ -56,7 +56,7 @@ public class MPPForecastRunMaster extends X_PP_ForecastRunMaster {
 		final String whereClause = COLUMNNAME_PP_ForecastRun_ID + "=? AND "
 				+ COLUMNNAME_M_Product_ID + "=? ";
 		return new Query(ctx, Table_Name, whereClause, trxName).setClient_ID()
-				.setParameters(PP_ForecastRun_ID, M_Product_ID).firstOnly();
+				.setParameters(PP_ForecastRun_ID, M_Product_ID).first();
 	}
 
 	public MPPForecastRunMaster(Properties ctx, int PP_ForecastRunMaster_ID,

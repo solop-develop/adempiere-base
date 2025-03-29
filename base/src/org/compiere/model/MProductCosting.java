@@ -70,7 +70,7 @@ public class MProductCosting extends X_M_Product_Costing
 		
 		return new Query(ctx, I_M_Product_Costing.Table_Name,whereClause, trxName )
 		.setParameters(M_Product_ID, C_AcctSchema_ID)
-		.firstOnly();	
+		.first();	
 	}	//	get
 	
 	/**************************************************************************
