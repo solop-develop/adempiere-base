@@ -32,6 +32,10 @@ public class EntityTypeExport extends GenericPOHandler {
 		packOut.createGenericPO(document, I_AD_EntityType.Table_ID, entityTypeId, false, null);
 		//	Windows
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Window.Table_Name, false, null);
+		//	Validation Rules
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Val_Rule.Table_Name, false, null);
+		//	Reference
+		createReferenceListAndTable(packOut, document, entityType.getEntityType());
 		//	Elements
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Element.Table_Name, false, null);
 		//	Tables
@@ -149,6 +153,33 @@ public class EntityTypeExport extends GenericPOHandler {
 				.getIDsAsList();
 		for (int id : referenceIds) {
 			packOut.createGenericPO(document, I_AD_View_Column.Table_ID, id, false, null);
+		}
+	}
+
+	private void createReferenceListAndTable(PackOut packOut, TransformerHandler document, String entityType) throws SAXException {
+		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_Reference.Table_Name, "EntityType = ?", null)
+				.setParameters(entityType)
+				.getIDsAsList();
+		for (int id : referenceIds) {
+			X_AD_Reference reference = new X_AD_Reference(Env.getCtx(), id, null);
+			packOut.createGenericPO(document, reference, false, null);
+			if(reference.getValidationType().equals(X_AD_Reference.VALIDATIONTYPE_ListValidation)) {
+				List<X_AD_Ref_List> referenceListAsList = new Query(Env.getCtx(), I_AD_Ref_List.Table_Name, I_AD_Ref_List.COLUMNNAME_AD_Reference_ID + " = ?", null)
+						.setParameters(id)
+						.setOnlyActiveRecords(true)
+						.list();
+				for(X_AD_Ref_List referenceList : referenceListAsList) {
+					packOut.createGenericPO(document, referenceList, false, null);
+				}
+			} else if(reference.getValidationType().equals(X_AD_Reference.VALIDATIONTYPE_TableValidation)) {
+				List<X_AD_Ref_Table> referenceTableAsList = new Query(Env.getCtx(), I_AD_Ref_Table.Table_Name, I_AD_Ref_Table.COLUMNNAME_AD_Reference_ID + " = ?", null)
+						.setParameters(id)
+						.setOnlyActiveRecords(true)
+						.list();
+				for(X_AD_Ref_Table referenceTable : referenceTableAsList) {
+					packOut.createGenericPO(document, referenceTable, false, null);
+				}
+			}
 		}
 	}
 }
