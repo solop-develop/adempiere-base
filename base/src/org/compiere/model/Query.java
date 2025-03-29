@@ -43,12 +43,12 @@ import java.util.logging.Level;
  * 			<li>FR [ 2041894 ] Add Query.match() method
  * 			<li>FR [ 2107068 ] Query.setOrderBy should be more error tolerant
  * 			<li>FR [ 2107109 ] Add method Query.setOnlyActiveRecords
- * 			<li>FR [ 2421313 ] Introduce Query.firstOnly convenient method
+ * 			<li>FR [ 2421313 ] Introduce Query.first convenient method
  * 			<li>FR [ 2546052 ] Introduce Query aggregate methods
  * 			<li>FR [ 2726447 ] Query aggregate methods for all return types
  * 			<li>FR [ 2818547 ] Implement Query.setOnlySelection
  * 				https://sourceforge.net/tracker/?func=detail&aid=2818547&group_id=176962&atid=879335
- * 			<li>FR [ 2818646 ] Implement Query.firstId/firstIdOnly
+ * 			<li>FR [ 2818646 ] Implement Query.firstId/firstId
  * 				https://sourceforge.net/tracker/?func=detail&aid=2818646&group_id=176962&atid=879335
  * @author Redhuan D. Oon
  * 			<li>FR: [ 2214883 ] Remove SQL code and Replace for Query // introducing SQL String prompt in log.info 
@@ -329,71 +329,11 @@ public class Query
 	}
 	
 	/**
-	 * Return first PO that match query criteria.
-	 * If there are more records that match criteria an exception will be throwed 
-	 * @return first PO
-	 * @throws DBException
-	 * @see {@link #first()}
-	 */
-	@SuppressWarnings("unchecked")
-	public <T extends PO> T firstOnly() throws DBException
-	{
-		//Set limit to 1 Record
-		setLimit(1);
-		
-		T po = null;
-		String sql = buildSQL(null, true);
-		
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trxName);
-			rs = createResultSet(pstmt);
-			if (rs.next())
-			{
-				po = (T)table.getPO(rs, trxName);
-			}
-			if (rs.next())
-			{
-				throw new DBException("QueryMoreThanOneRecordsFound"); // TODO : translate
-			}
-		}
-		catch (SQLException e)
-		{
-			log.log(Level.SEVERE, sql, e);
-			throw new DBException(e, sql);
-		}
-		finally
-		{
-			DB.close(rs, pstmt);
-			rs = null; pstmt = null;
-		}
-		return po;
-	}
-	
-	/**
 	 * Return first ID
 	 * @return first ID or -1 if not found
 	 * @throws DBException
 	 */
 	public int firstId() throws DBException
-	{
-		return firstId(false);
-	}
-	
-	/**
-	 * Return first ID.
-	 * If there are more results and exception is thrown.
-	 * @return first ID or -1 if not found
-	 * @throws DBException
-	 */
-	public int firstIdOnly() throws DBException
-	{
-		return firstId(true);
-	}
-	
-	private int firstId(boolean assumeOnlyOneResult) throws DBException
 	{
 		String[] keys = table.getKeyColumns();
 		if (keys.length != 1)
@@ -418,10 +358,6 @@ public class Query
 			if (rs.next())
 			{
 				id = rs.getInt(1);
-			}
-			if (assumeOnlyOneResult && rs.next())
-			{
-				throw new DBException("QueryMoreThanOneRecordsFound"); // TODO : translate
 			}
 		}
 		catch (SQLException e)

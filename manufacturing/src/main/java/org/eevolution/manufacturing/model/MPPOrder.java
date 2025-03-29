@@ -94,7 +94,7 @@ public class MPPOrder extends X_PP_Order implements DocAction
 	{
 		return new Query(ctx, MPPOrder.Table_Name, COLUMNNAME_C_OrderLine_ID+"=? AND "+ COLUMNNAME_M_Product_ID+"=?", trxName)
 								.setParameters(C_OrderLine_ID,M_Product_ID)
-								.firstOnly();
+								.first();
 	}
 	
 	/**
@@ -669,7 +669,7 @@ public class MPPOrder extends X_PP_Order implements DocAction
 			String whereClause = COLUMNNAME_PP_Product_BOM_ID+"=? AND "+COLUMNNAME_AD_Workflow_ID+"=?";
 			MQMSpecification qms = new Query(getCtx(), MQMSpecification.Table_Name, whereClause, get_TrxName())
 										.setParameters(new Object[]{getPP_Product_BOM_ID(), getAD_Workflow_ID()})
-										.firstOnly();
+										.first();
 			return qms != null ? qms.isValid(getM_AttributeSetInstance_ID()) : true;
 		}
 		else
@@ -1035,7 +1035,7 @@ public class MPPOrder extends X_PP_Order implements DocAction
 		final String whereClause = MPPOrderBOM.COLUMNNAME_PP_Order_ID+"=?";
 		return new Query(getCtx(), MPPOrderBOM.Table_Name, whereClause, get_TrxName())
 				.setParameters(new Object[]{getPP_Order_ID()})
-				.firstOnly();
+				.first();
 	}
 	
 	private MPPOrderWorkflow m_PP_Order_Workflow = null;
@@ -1048,7 +1048,7 @@ public class MPPOrder extends X_PP_Order implements DocAction
 		final String whereClause = MPPOrderWorkflow.COLUMNNAME_PP_Order_ID+"=?";
 		m_PP_Order_Workflow = new Query(getCtx(), MPPOrderWorkflow.Table_Name, whereClause, get_TrxName())
 				.setParameters(new Object[]{getPP_Order_ID()})
-				.firstOnly();
+				.first();
 		return m_PP_Order_Workflow;
 	}
 	

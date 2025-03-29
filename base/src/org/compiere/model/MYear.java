@@ -306,7 +306,7 @@ public class MYear extends X_C_Year
 				.setClient_ID()
 				.setOnlyActiveRecords(true)
 				.setParameters(getC_Year_ID(), periodNo)
-				.firstOnly();
+				.first();
 	}
 	
 }	//	MYear

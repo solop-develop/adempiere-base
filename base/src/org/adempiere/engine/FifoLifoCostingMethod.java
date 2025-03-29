@@ -343,7 +343,7 @@ public class FifoLifoCostingMethod extends AbstractCostingMethod
 		MTransaction trx = new Query(cd.getCtx(), MTransaction.Table_Name, whereClause, cd.get_TrxName())
 		.setClient_ID()
 		.setParameters(cd.getM_Product_ID(),cd.getM_Transaction_ID(), cd.getQty())
-		.firstOnly();
+		.first();
 		return trx;
 		
 	}

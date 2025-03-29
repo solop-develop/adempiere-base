@@ -184,7 +184,7 @@ public class ImportWorkflow extends SvrProcess {
 	public MWorkflow getWorkflow(X_I_Workflow iWf) {
 		MWorkflow workflow = new Query(getCtx(), MWorkflow.Table_Name,
 				"Value=? AND Name=?", get_TrxName()).setClient_ID()
-				.setParameters(iWf.getValue(), iWf.getName()).firstOnly();
+				.setParameters(iWf.getValue(), iWf.getName()).first();
 
 		if (workflow == null) {
 			workflow = new MWorkflow(getCtx(), 0, get_TrxName());

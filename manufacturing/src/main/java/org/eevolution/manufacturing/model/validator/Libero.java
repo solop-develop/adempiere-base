@@ -393,7 +393,7 @@ public class Libero implements ModelValidator
 				 			MPPOrder.DOCSTATUS_InProgress,
 				 			MPPOrder.DOCSTATUS_Completed,
 					 		MPPOrderBOM.BOMTYPE_Make_To_Kit)
-			 	.firstOnly();
+			 	.first();
 
 		if (order == null || order.get_ID() <= 0)
 				return;

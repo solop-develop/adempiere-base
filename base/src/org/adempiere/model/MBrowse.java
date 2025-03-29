@@ -265,7 +265,7 @@ public class MBrowse extends X_AD_Browse {
 				+ MBrowseField.COLUMNNAME_Name + "!=? ";
 		m_fieldKey = new Query(getCtx(), MBrowseField.Table_Name, whereClause,
 				get_TrxName()).setParameters(this.getAD_Browse_ID(), "Y",
-				getName()).firstOnly();
+				getName()).first();
 		return m_fieldKey;
 	}
 

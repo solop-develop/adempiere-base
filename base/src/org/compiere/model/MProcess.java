@@ -116,7 +116,7 @@ public class MProcess extends X_AD_Process
 							+" WHERE m.AD_Process_ID=AD_Process.AD_Process_ID AND m.AD_Menu_ID=?)";
 		MProcess p = new Query(ctx, I_AD_Process.Table_Name, whereClause, null)
 			.setParameters(AD_Menu_ID)
-			.firstOnly();
+			.first();
 		if (p != null)
 		{
 			s_cache.put (p.get_ID(), p);

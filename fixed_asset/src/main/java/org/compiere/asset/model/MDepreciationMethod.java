@@ -99,7 +99,7 @@ public class MDepreciationMethod extends X_A_Depreciation_Method
 		}
 		depr = new Query(ctx, Table_Name, COLUMNNAME_DepreciationType+"=?", null)
 					.setParameters(new Object[]{depreciationType})
-					.firstOnly();
+					.first();
 		addToCache(depr);
 		return depr;
 	}

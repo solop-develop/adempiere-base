@@ -1640,7 +1640,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		return new Query(ctx, I_PP_Product_Planning.Table_Name, whereClause, transactionName)
 			.setParameters(clientId, organizationId, productId, warehouseId, resourceId)
 			.setOnlyActiveRecords(true)
-			.firstOnly();
+			.first();
 	}
 
 	/**

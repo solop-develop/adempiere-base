@@ -187,7 +187,7 @@ public class MView extends X_AD_View {
 				MViewDefinition.Table_Name, whereClause, get_TrxName())
 				.setParameters(getAD_View_ID())
 				.setOnlyActiveRecords(true)
-				.setOrderBy(MViewDefinition.COLUMNNAME_SeqNo).firstOnly();
+				.setOrderBy(MViewDefinition.COLUMNNAME_SeqNo).first();
 
 		return definition;
 	}

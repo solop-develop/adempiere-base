@@ -410,7 +410,7 @@ public class MRelationType extends X_AD_RelationType implements IZoomProvider {
 
 		final MRefTable refTable = new Query(ctx, I_AD_Ref_Table.Table_Name,
 				COLUMNNAME_AD_Reference_ID + "=?", trxName).setParameters(
-				params).firstOnly();
+				params).first();
 
 		return refTable;
 	}

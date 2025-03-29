@@ -158,7 +158,7 @@ public final class POCacheLocal
 
 		final PO po = new Query(ctx, this.tableName, this.loadWhereClause, trxName)
 				.setParameters(id)
-				.firstOnly();
+				.first();
 		return po;
 	}
 

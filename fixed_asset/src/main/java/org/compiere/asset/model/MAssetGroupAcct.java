@@ -63,7 +63,7 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct
 		final String whereClause = COLUMNNAME_A_Asset_Group_ID+"=? AND "+COLUMNNAME_PostingType+"=?";
 		return new Query(ctx, Table_Name, whereClause, trxName)
 					.setParameters(new Object[]{A_Asset_Group_ID, postingType})
-					.firstOnly();
+					.first();
 	}
 	
 	/**

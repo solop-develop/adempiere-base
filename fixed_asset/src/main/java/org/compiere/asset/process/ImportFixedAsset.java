@@ -324,7 +324,7 @@ public class ImportFixedAsset extends ImportFixedAssetAbstract
 				final String whereClause = "Value=? AND AD_Client_ID=?";
 				MProduct product = new Query(getCtx(), MProduct.Table_Name, whereClause, null)
 				.setParameters(Value,Env.getAD_Client_ID(getCtx()))
-				.firstOnly();
+				.first();
 				if (product == null)
 				{
 					product = new MProduct (getCtx (), -1, get_TrxName());

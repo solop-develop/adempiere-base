@@ -67,7 +67,7 @@ public class StandardCostCollector {
 		MPPOrderCost oc = d.toQuery(MPPOrderCost.class,
 				MPPOrderCost.COLUMNNAME_PP_Order_ID + "=?",
 				new Object[] { cc.getPP_Order_ID() }, cc.get_TrxName())
-				.firstOnly();
+				.first();
 		if (oc == null) {
 			return Env.ZERO;
 		}
@@ -141,7 +141,7 @@ public class StandardCostCollector {
 				.setClient_ID()
 				.setParameters(
 						new Object[] { cc.getPP_Cost_Collector_ID(),
-								M_CostElement_ID }).firstOnly();
+								M_CostElement_ID }).first();
 		return cd;
 	}
 
@@ -355,7 +355,7 @@ public class StandardCostCollector {
 			return Env.ZERO;
 		final MProduct resourceProduct = MProduct.forS_Resource_ID(Env.getCtx(), resourceId, trxName);
 		CostDimension resourcecCostDimension = new CostDimension(costDimension.setM_Product(resourceProduct));
-		MCost cost = resourcecCostDimension.toQuery(MCost.class, trxName).firstOnly();
+		MCost cost = resourcecCostDimension.toQuery(MCost.class, trxName).first();
 		if (cost == null)
 			return Env.ZERO;
 		BigDecimal price = cost.getCurrentCostPrice().add(cost.getCurrentCostPriceLL());
@@ -401,7 +401,7 @@ public class StandardCostCollector {
 		CostDimension costDimension = new CostDimension(product, acctSchema, acctSchema.getM_CostType_ID(),
 				orgId, warehouseId ,attributeSetInstanceId, // M_ASI_ID,
 				element.getM_CostElement_ID());
-		MCost cost = costDimension.toQuery(MCost.class, trxName).firstOnly();
+		MCost cost = costDimension.toQuery(MCost.class, trxName).first();
  		if (cost == null)
 			return Env.ZERO;
 		BigDecimal price = cost.getCurrentCostPrice().add(

@@ -308,7 +308,7 @@ public class PromotionRule {
 			  "C_OrderLine.C_Order_ID=? AND C_Charge_ID=? AND M_Promotion_ID=? AND priceactual=? AND Description='" + 
 			  description + "'" + " AND C_OrderLine.IsActive='Y'", order.get_TrxName())
 		.setParameters(ol.getC_Order_ID(), C_Charge_ID, promotion.getM_Promotion_ID(), discount.negate())
-    	.firstOnly();
+    	.first();
 		
     	if (nol != null)
     	{   // just add one to he Order line
@@ -673,7 +673,7 @@ public class PromotionRule {
 				"C_OrderLine.C_Order_ID=? AND C_OrderLine.m_product_id=? " + " AND C_OrderLine.discount=" + discount.toString() +
 				" AND C_OrderLine.IsActive='Y'", order.get_TrxName())
 		.setParameters(ol.getC_Order_ID(), ol.getM_Product_ID())
-    	.firstOnly();
+    	.first();
 		
     	if (nol != null)
     	{   // just add one to he Order line

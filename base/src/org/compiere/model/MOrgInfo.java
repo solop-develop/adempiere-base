@@ -66,7 +66,7 @@ public class MOrgInfo extends X_AD_OrgInfo
 		}
 		retValue = new Query(ctx, Table_Name, "AD_Org_ID=?", trxName)
 						.setParameters(AD_Org_ID)
-						.firstOnly();
+						.first();
 		if (retValue != null)
 		{
 			s_cache.put(AD_Org_ID, retValue);

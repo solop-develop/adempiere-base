@@ -109,7 +109,7 @@ public class MCurrency extends X_C_Currency
 		//	Try database
 		Query query = new Query(ctx, I_C_Currency.Table_Name, "ISO_Code=?", null);
 		query.setParameters(ISOcode);
-		retValue = (MCurrency)query.firstOnly();
+		retValue = (MCurrency)query.first();
 		
 		//	Save 
 		if (retValue!=null)

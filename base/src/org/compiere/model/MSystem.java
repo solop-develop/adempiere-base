@@ -69,7 +69,7 @@ public class MSystem extends X_AD_System
 		//
 		s_system = new Query(ctx, Table_Name, null, null)
 						.setOrderBy(COLUMNNAME_AD_System_ID)
-						.firstOnly();
+						.first();
 		if (s_system == null)
 			return null;
 		//

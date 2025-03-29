@@ -42,7 +42,7 @@ import org.compiere.util.Env;
  *  @author     victor.perez@e-evolution.com, www.e-evolution.com
  *    			<li>RF [ 2214883 ] Remove SQL code and Replace for Query http://sourceforge.net/tracker/index.php?func=detail&aid=2214883&group_id=176962&atid=879335
  *  @author     Teo Sarca, www.arhipac.ro
- *    			<li>FR [ 2694043 ] Query. first/firstOnly usage best practice
+ *    			<li>FR [ 2694043 ] Query. first/first usage best practice
  *  @version 	$Id: MAccount.java,v 1.4 2006/07/30 00:58:04 jjanke Exp $
  */
 public class MAccount extends X_C_ValidCombination
@@ -304,7 +304,7 @@ public class MAccount extends X_C_ValidCombination
 										.setClient_ID()
 										.setParameters(params)
 										.setOnlyActiveRecords(true)
-										.firstOnly();
+										.first();
 
 		//	Existing
 		if (existingAccount != null)
@@ -355,7 +355,7 @@ public class MAccount extends X_C_ValidCombination
 		final String whereClause = "C_AcctSchema_ID=? AND Alias=?";
 		MAccount retValue =  new Query(ctx,I_C_ValidCombination.Table_Name,whereClause,null)
 		.setParameters(C_AcctSchema_ID,alias)
-		.firstOnly();
+		.first();
 		return retValue;
 	}	//	get
 

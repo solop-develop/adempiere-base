@@ -110,7 +110,7 @@ public class AverageInvoiceCostCollector {
 				attributeSetInstanceId,
 				warehouseId, //warehouse
 				costElement.getM_CostElement_ID());
-		MCost cost = costDimension.toQuery(MCost.class, trxName).firstOnly();
+		MCost cost = costDimension.toQuery(MCost.class, trxName).first();
 
 		if (cost == null)
 			return Env.ZERO;
@@ -177,7 +177,7 @@ public class AverageInvoiceCostCollector {
 				attributeSetInstanceId,
 				warehouseId, //warehouse
 				costElement.getM_CostElement_ID());
-		MCost cost = d.toQuery(MCost.class, trxName).firstOnly();
+		MCost cost = d.toQuery(MCost.class, trxName).first();
 
 		if (cost == null)
 			return Env.ZERO;

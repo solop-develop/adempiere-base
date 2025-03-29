@@ -484,7 +484,7 @@ public class MMigrationStep extends X_AD_MigrationStep {
 			//	Get PO from Query
 			po = new Query(getCtx(), table, where, get_TrxName())
 			.setParameters(params)
-			.firstOnly();
+			.first();
 		}
 		//	Return PO
 		return po;

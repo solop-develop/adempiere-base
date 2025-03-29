@@ -38,7 +38,7 @@ import org.compiere.util.ValueNamePair;
  *  
  *  @author Teo Sarca, www.arhipac.ro
  *  		<li>BF [ 1748449 ] Info Account - Posting Type is not translated
- *  		<li>FR [ 2694043 ] Query. first/firstOnly usage best practice
+ *  		<li>FR [ 2694043 ] Query. first/first usage best practice
  */
 public class MRefList extends X_AD_Ref_List
 {
@@ -64,7 +64,7 @@ public class MRefList extends X_AD_Ref_List
 
 		referenceList = new Query(ctx, Table_Name, "AD_Reference_ID=? AND Value=?", trxName)
 					.setParameters(referenceId, value)
-					.firstOnly();
+					.first();
 		if (referenceList != null) {
 			referenceList.set_TrxName(null);
 			referenceListCache.put(key, referenceList);

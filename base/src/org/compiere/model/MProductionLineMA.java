@@ -54,7 +54,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
 		String where = " M_ProductionLine_ID = ? AND M_AttributeSetInstance_ID = ? ";
 		
 		MProductionLineMA lineMA = MTable.get(parent.getCtx(), MProductionLineMA.Table_Name).createQuery(where, parent.get_TrxName())
-		.setParameters(parent.getM_ProductionLine_ID(), asi).firstOnly();
+		.setParameters(parent.getM_ProductionLine_ID(), asi).first();
 		
 		if (lineMA != null)
 			return lineMA;

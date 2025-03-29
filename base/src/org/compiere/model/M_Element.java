@@ -112,7 +112,7 @@ public class M_Element extends X_AD_Element
  	 	final String whereClause = "UPPER(ColumnName)=?";
 	 	M_Element retValue = new Query(ctx, I_AD_Element.Table_Name, whereClause, trxName)
 			.setParameters(columnName.toUpperCase())
-			.firstOnly();
+			.first();
 		return retValue;
 	}	//	get
 
@@ -131,7 +131,7 @@ public class M_Element extends X_AD_Element
 				+ "WHERE c.AD_Element_ID=AD_Element.AD_Element_ID AND c.AD_Column_ID=?)";
 		M_Element retValue = new Query(ctx, Table_Name, whereClause, trxName)
 		.setParameters(columnId)
-		.firstOnly();
+		.first();
 		return retValue;
 	}	//	get
 

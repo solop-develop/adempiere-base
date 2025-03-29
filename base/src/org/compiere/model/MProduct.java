@@ -173,7 +173,7 @@ public class MProduct extends X_M_Product
 		}
 		MProduct p = new Query(ctx, Table_Name, COLUMNNAME_S_Resource_ID+"=?", trxName)
 						.setParameters(new Object[]{S_Resource_ID})
-						.firstOnly();
+						.first();
 		if (p != null && trxName == null)
 		{
 			s_cache.put(p.getM_Product_ID(), p);

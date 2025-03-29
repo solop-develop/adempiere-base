@@ -162,6 +162,6 @@ public class GenerateSurrogateKeys extends GenerateSurrogateKeysAbstract
 		final String whereClause = I_AD_Element.COLUMNNAME_ColumnName + "=?";
 		return new Query(Env.getCtx(), I_AD_Element.Table_Name, whereClause, trxName)
 				.setParameters(name)
-				.firstOnly();
+				.first();
 	}
 }
