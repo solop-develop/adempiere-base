@@ -161,16 +161,12 @@ public final class Env
 
 		//	Cache
 		CacheMgt.get().reset();
-//		if (Ini.isClient())
-//			DB.closeTarget();
 		//	Reset Role Access
-		if (!finalCall)
-		{
-//			if (Ini.isClient())
-//				DB.setDBTarget(CConnection.get());
+		if (!finalCall) {
 			MRole defaultRole = MRole.getDefault(getCtx(), false);
-			if (defaultRole != null)
+			if (defaultRole != null) {
 				defaultRole.loadAccess(true);	//	Reload
+			}
 		}
 	}	//	resetAll
 
