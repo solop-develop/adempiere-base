@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="ECA14" Name="ECA14 POS Gift Card as Payment Method" ReleaseNo="0.5.9" SeqNo="10740">
+  <Migration EntityType="ECA14" Name="ECA14 POS Gift Card as Payment Method" ReleaseNo="0.6.0" SeqNo="10740">
     <Comments>ECA14 POS Add Gift Card as Payment Method. By EdwinBetanc0urt.</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="104" Action="I" Record_ID="55937" Table="AD_Ref_List">
