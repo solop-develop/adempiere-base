@@ -1890,6 +1890,8 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 	public static final String PAYMENTRULE_DirectDebit = "D";
 	/** Mixed = M */
 	public static final String PAYMENTRULE_Mixed = "M";
+	/** Gift Card = G */
+	public static final String PAYMENTRULE_GiftCard = "G";
 	/** Set Payment Rule.
 		@param PaymentRule 
 		How you pay the invoice

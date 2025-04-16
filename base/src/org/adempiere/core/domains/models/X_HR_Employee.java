@@ -1165,6 +1165,8 @@ public class X_HR_Employee extends PO implements I_HR_Employee, I_Persistent
 	public static final String PAYMENTRULE_DirectDebit = "D";
 	/** Mixed = M */
 	public static final String PAYMENTRULE_Mixed = "M";
+	/** Gift Card = G */
+	public static final String PAYMENTRULE_GiftCard = "G";
 	/** Set Payment Rule.
 		@param PaymentRule 
 		How you pay the invoice
