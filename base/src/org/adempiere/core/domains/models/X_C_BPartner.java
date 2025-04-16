@@ -1350,6 +1350,8 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 	public static final String PAYMENTRULE_DirectDebit = "D";
 	/** Mixed = M */
 	public static final String PAYMENTRULE_Mixed = "M";
+	/** Gift Card = G */
+	public static final String PAYMENTRULE_GiftCard = "G";
 	/** Set Payment Rule.
 		@param PaymentRule 
 		How you pay the invoice
@@ -1384,6 +1386,8 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 	public static final String PAYMENTRULEPO_DirectDebit = "D";
 	/** Mixed = M */
 	public static final String PAYMENTRULEPO_Mixed = "M";
+	/** Gift Card = G */
+	public static final String PAYMENTRULEPO_GiftCard = "G";
 	/** Set Payment Rule.
 		@param PaymentRulePO 
 		Purchase payment option

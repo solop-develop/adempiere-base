@@ -729,6 +729,8 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
 	public static final String PAYMENTRULE_DirectDebit = "D";
 	/** Mixed = M */
 	public static final String PAYMENTRULE_Mixed = "M";
+	/** Gift Card = G */
+	public static final String PAYMENTRULE_GiftCard = "G";
 	/** Set Payment Rule.
 		@param PaymentRule 
 		How you pay the invoice
