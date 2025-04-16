@@ -38,13 +38,7 @@ import javax.sql.DataSource;
 import javax.sql.RowSet;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -153,7 +147,7 @@ public class DB_PostgreSQL implements AdempiereDatabase
 	 *  Get and register Database Driver
 	 *  @return Driver
 	 */
-	public java.sql.Driver getDriver() throws SQLException
+	public Driver getDriver() throws SQLException
 	{
 		if (s_driver == null)
 		{
@@ -413,7 +407,7 @@ public class DB_PostgreSQL implements AdempiereDatabase
 	 *
 	 *  @return TRIM(TO_CHAR(columnName,'999G999G999G990D00','NLS_NUMERIC_CHARACTERS='',.'''))
 	 *      or TRIM(TO_CHAR(columnName,'TM9')) depending on DisplayType and Language
-	 *  @see org.compiere.util.DisplayType
+	 *  @see DisplayType
 	 *  @see org.compiere.util.Env
 	 *
 	 **/
@@ -510,7 +504,7 @@ public class DB_PostgreSQL implements AdempiereDatabase
 	 *  @return RowSet
 	 *  @throws SQLException
 	 */
-	public RowSet getRowSet (java.sql.ResultSet rs) throws SQLException
+	public RowSet getRowSet (ResultSet rs) throws SQLException
 	{
 		throw new UnsupportedOperationException("PostgreSQL does not support RowSets");
 	}	//	getRowSet
@@ -635,9 +629,13 @@ public class DB_PostgreSQL implements AdempiereDatabase
 	 *	@return data dource
 	 */
 	public DataSource getDataSource(CConnection connection) {
-		if (datasourceLongRunning != null)
+		if (datasourceLongRunning != null) {
 			return datasourceLongRunning;
-
+		}
+		datasourceLongRunning = connection.getDataSource();
+		if(datasourceLongRunning != null) {
+			return datasourceLongRunning;
+		}
 		try
 		{
 			if (Ini.isClient()) {

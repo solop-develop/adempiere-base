@@ -16,19 +16,20 @@
  *****************************************************************************/
 package org.compiere.db;
 
+import org.compiere.interfaces.Server;
+import org.compiere.util.CLogger;
+import org.compiere.util.Ini;
+import org.compiere.util.SecureEngine;
+import org.compiere.util.ValueNamePair;
+
+import javax.sql.DataSource;
+import javax.swing.*;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.logging.Level;
-import javax.sql.DataSource;
-import javax.swing.JOptionPane;
-import org.compiere.interfaces.Server;
-import org.compiere.util.CLogger;
-import org.compiere.util.Ini;
-import org.compiere.util.SecureEngine;
-import org.compiere.util.ValueNamePair;
 
 /**
  *  Adempiere Connection Descriptor
@@ -80,8 +81,44 @@ public class CConnection implements Serializable, Cloneable
 	 */
 	public static CConnection get ()
 	{
-		return get(null);
+		return get((String) null);
 	}	//	get
+
+	public static CConnection get(DataSource datasource) {
+		s_cc = new CConnection (null);
+		s_cc.setDataSource(datasource);
+		s_cc.loadDataBase(datasource);
+		return s_cc;
+	}
+
+	private void loadDataBase(DataSource datasource) {
+		try {
+			DatabaseMetaData metadata = datasource.getConnection().getMetaData();
+			m_type = metadata.getDatabaseProductName();
+			for (int i = 0; i < Database.DB_NAMES.length; i++) {
+				if (m_type.contains(Database.DB_NAMES[i])) {
+					Class<?> driverClass = Database.DB_CLASSES[i];
+					m_db = (AdempiereDatabase) driverClass.getDeclaredConstructor().newInstance();
+					break;
+				}
+			}
+			if (m_db != null)	 {
+				m_db.getDataSource(this);
+			}
+		} catch (NoClassDefFoundError ee) {
+			if (Ini.isClient()) {
+				if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog
+						(null, "There is a configuration error:\n" + ee
+										+ "\nDo you want to reset the saved configuration?",
+								"Adempiere Configuration Error",
+								JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE))
+					Ini.deletePropertyFile();
+			}
+			System.exit (1);
+		} catch (Exception e) {
+			log.severe(e.toString ());
+		}
+	}
 
 	/**
 	 *  Get/Set default client/server Connection
@@ -195,7 +232,7 @@ public class CConnection implements Serializable, Cloneable
 	 *  Adempiere Connection
 	 *  @param	host optional application/db host
 	 */
-	public CConnection (String host)
+	public CConnection(String host)
 	{
 		if (host != null)
 		{
