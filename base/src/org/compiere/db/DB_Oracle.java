@@ -562,9 +562,13 @@ public class DB_Oracle implements AdempiereDatabase
      *  @return data dource
      */
     public DataSource getDataSource(CConnection connection) {
-        if (datasourceLongRunning != null)
+        if (datasourceLongRunning != null) {
             return datasourceLongRunning;
-
+        }
+        datasourceLongRunning = connection.getDataSource();
+        if(datasourceLongRunning != null) {
+            return datasourceLongRunning;
+        }
         try
         {
             if (Ini.isClient()) {

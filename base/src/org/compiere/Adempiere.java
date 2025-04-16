@@ -363,7 +363,7 @@ public final class Adempiere
 		}
 
 		//  Set Default Database Connection from Ini
-		DB.setDBTarget(CConnection.get(null));
+		DB.setDBTarget(CConnection.get((String) null));
 
 		if (isClient)		//	don't test connection
 			return false;	//	need to call
