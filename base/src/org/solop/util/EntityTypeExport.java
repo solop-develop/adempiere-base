@@ -30,8 +30,6 @@ public class EntityTypeExport extends GenericPOHandler {
 		MEntityType entityType = new MEntityType(Env.getCtx(), entityTypeId, null);
 		//	Entity Type
 		packOut.createGenericPO(document, I_AD_EntityType.Table_ID, entityTypeId, false, null);
-		//	Windows
-		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Window.Table_Name, false, null);
 		//	Validation Rules
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Val_Rule.Table_Name, false, null);
 		//	Reference
@@ -40,22 +38,6 @@ public class EntityTypeExport extends GenericPOHandler {
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Element.Table_Name, false, null);
 		//	Tables
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Table.Table_Name, true, null);
-		//	Columns
-		createColumns(packOut, document, entityType.getEntityType());
-		//	Tabs
-		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Tab.Table_Name, false, null);
-		//	Fields
-		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Field.Table_Name, false, null);
-		//	Rules
-		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Rule.Table_Name, false, null);
-		//	Table Rules
-		createScriptValidators(packOut, document, entityType.getEntityType());
-		//	Process
-		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Process.Table_Name, false, null);
-		//	Table Process
-		createReferencesNoId(packOut, document, entityType.getEntityType(),  I_AD_Table_Process.Table_Name, false, null);
-		//	Parameters
-		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Process_Para.Table_Name, false, null);
 		//	View
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_View.Table_Name, false, null);
 		//	View Definition
@@ -66,6 +48,24 @@ public class EntityTypeExport extends GenericPOHandler {
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Browse.Table_Name, false, null);
 		//	Browse Fields
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Browse_Field.Table_Name, false, null);
+		//	Process
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Process.Table_Name, false, null);
+		//	Table Process
+		createReferencesNoId(packOut, document, entityType.getEntityType(),  I_AD_Table_Process.Table_Name, false, null);
+		//	Parameters
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Process_Para.Table_Name, false, null);
+		//	Columns
+		createColumns(packOut, document, entityType.getEntityType());
+		//	Tabs
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Tab.Table_Name, false, null);
+		//	Fields
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Field.Table_Name, false, null);
+		//	Rules
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Rule.Table_Name, false, null);
+		//	Table Rules
+		createScriptValidators(packOut, document, entityType.getEntityType());
+		//	Windows
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Window.Table_Name, false, null);
 		//	Create Menu
 		createMenu(packOut, document, entityType.getEntityType());
 	}
