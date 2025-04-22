@@ -92,12 +92,6 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
-		// Amount
-		if (getPriceEntered().signum() == 0)
-		{
-			log.saveError("FillMandatory", Msg.getElement(getCtx(), "PriceEntered"));
-			return false;
-		}
 		return true;
 	}	//	beforeSave
 	
