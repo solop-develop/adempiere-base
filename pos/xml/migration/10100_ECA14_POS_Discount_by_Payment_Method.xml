@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="ECA14" Name="ECA14 POS Discount by Payment Method" ReleaseNo="0.5.9" SeqNo="10720">
+  <Migration EntityType="ECA14" Name="ECA14 POS Discount by Payment Method" ReleaseNo="3.9.4" SeqNo="10100">
     <Comments>ECA14 POS Apply Discount by Payment Method. By EdwinBetanc0urt.</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="101" Action="I" Record_ID="102482" Table="AD_Column">

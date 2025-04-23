@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="ECA14" Name="ECA14 POS add Window Gift Card/Coupon/Voucher" ReleaseNo="0.5.8" SeqNo="10700">
+  <Migration EntityType="ECA14" Name="ECA14 POS add Window Gift Card/Coupon/Voucher" ReleaseNo="3.9.4" SeqNo="10070">
     <Comments>ECA14 POS Window Gift Card/Coupon/Voucher. By EdwinBetanc0urt.</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="105" Action="I" Record_ID="53825" Table="AD_Window">

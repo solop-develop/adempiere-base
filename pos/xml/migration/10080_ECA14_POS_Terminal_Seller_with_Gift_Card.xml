@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="ECA14" Name="ECA14 POS Terrminal/Seller with Gift Card" ReleaseNo="0.5.9" SeqNo="10710">
+  <Migration EntityType="ECA14" Name="ECA14 POS Terrminal/Seller with Gift Card" ReleaseNo="3.9.4" SeqNo="10080">
     <Comments>ECA14 POS Terrminal/Seller with Gift Card/Coupon/Voucher. By EdwinBetanc0urt.</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="276" Action="I" Record_ID="62607" Table="AD_Element">

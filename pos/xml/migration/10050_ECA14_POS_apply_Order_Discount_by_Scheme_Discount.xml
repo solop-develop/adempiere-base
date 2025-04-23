@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="ECA14" Name="ECA14 POS apply Order Discount by Schema Discount" ReleaseNo="0.5.1" SeqNo="10580">
+  <Migration EntityType="ECA14" Name="ECA14 POS apply Order Discount by Schema Discount" ReleaseNo="3.9.4" SeqNo="10050">
     <Comments>ECA14 Apply flat discount on sales order by schmea discount. By EdwinBetanc0urt.</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="276" Action="I" Record_ID="62581" Table="AD_Element">
