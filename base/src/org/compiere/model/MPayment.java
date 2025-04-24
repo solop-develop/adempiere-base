@@ -537,6 +537,79 @@ public final class MPayment extends X_C_Payment
 		return approved;
 	}   //  processOnline
 
+	/**************************************************************************
+	 *  Reverse Payment
+	 *  @return
+	 */
+	public boolean reverseOnlineTransaction()
+	{
+		log.info ("Amt=" + getPayAmt());
+		//
+		setIsOnline(true);
+		setErrorMessage(null);
+		if (m_mPaymentProcessor == null)
+			setPaymentProcessor();
+		if (m_mPaymentProcessor == null) {
+			log.log(Level.WARNING, "No Payment Processor Model");
+			setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
+			return false;
+		}
+		boolean result = true;
+		try
+		{
+			PaymentProcessor pp = PaymentProcessor.create(m_mPaymentProcessor, this);
+			if (pp == null) {
+				result = false;
+			}
+			else
+			{
+				if (PaymentProcessorReverse.class.isAssignableFrom(pp.getClass())) {
+					result = ((PaymentProcessorReverse) pp).transactionReverse();
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			result = false;
+		}
+		return result;
+	}   //  reverseOnlineTransaction
+
+	/**************************************************************************
+	 *  Get payment Status
+	 *  @return
+	 */
+	public boolean getOnlineStatus()
+	{
+		log.info ("Amt=" + getPayAmt());
+		//
+		setIsOnline(true);
+		setErrorMessage(null);
+		if (m_mPaymentProcessor == null)
+			setPaymentProcessor();
+		if (m_mPaymentProcessor == null) {
+			return false;
+		}
+		boolean result = true;
+		try
+		{
+			PaymentProcessor pp = PaymentProcessor.create(m_mPaymentProcessor, this);
+			if (pp == null)
+				return false;
+			else
+			{
+				if (PaymentProcessorStatus.class.isAssignableFrom(pp.getClass())) {
+					result = ((PaymentProcessorStatus) pp).transactionStatus();
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+		return result;
+	}   //  onlineStatus
+
 	/**
 	 *  Process Online Payment.
 	 *  implements ProcessCall after standard constructor
