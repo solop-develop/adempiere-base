@@ -541,7 +541,7 @@ public final class MPayment extends X_C_Payment
 	 *  Reverse Payment
 	 *  @return
 	 */
-	public String reverseOnlineTransaction()
+	public boolean reverseOnlineTransaction()
 	{
 		log.info ("Amt=" + getPayAmt());
 		//
@@ -552,15 +552,14 @@ public final class MPayment extends X_C_Payment
 		if (m_mPaymentProcessor == null) {
 			log.log(Level.WARNING, "No Payment Processor Model");
 			setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
-			return "@Error@ " + getErrorMessage();
+			return false;
 		}
-		String result = "";
+		boolean result = true;
 		try
 		{
 			PaymentProcessor pp = PaymentProcessor.create(m_mPaymentProcessor, this);
 			if (pp == null) {
-				setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
-				result = "@Error@ " + getErrorMessage();
+				result = false;
 			}
 			else
 			{
@@ -571,9 +570,7 @@ public final class MPayment extends X_C_Payment
 		}
 		catch (Exception e)
 		{
-			log.log(Level.SEVERE, "reverseOnlineTransaction", e);
-			setErrorMessage(e.getMessage());
-			result = "@Error@ " + getErrorMessage();
+			result = false;
 		}
 		return result;
 	}   //  reverseOnlineTransaction
@@ -582,7 +579,7 @@ public final class MPayment extends X_C_Payment
 	 *  Get payment Status
 	 *  @return
 	 */
-	public String getOnlineStatus()
+	public boolean getOnlineStatus()
 	{
 		log.info ("Amt=" + getPayAmt());
 		//
@@ -591,30 +588,26 @@ public final class MPayment extends X_C_Payment
 		if (m_mPaymentProcessor == null)
 			setPaymentProcessor();
 		if (m_mPaymentProcessor == null) {
-			log.log(Level.WARNING, "No Payment Processor Model");
-			setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
-			return "";
+			return false;
 		}
-		String status = "";
+		boolean result = true;
 		try
 		{
 			PaymentProcessor pp = PaymentProcessor.create(m_mPaymentProcessor, this);
 			if (pp == null)
-				setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
+				return false;
 			else
 			{
 				if (PaymentProcessorStatus.class.isAssignableFrom(pp.getClass())) {
-					status = ((PaymentProcessorStatus) pp).transactionStatus();
+					result = ((PaymentProcessorStatus) pp).transactionStatus();
 				}
 			}
 		}
 		catch (Exception e)
 		{
-			log.log(Level.SEVERE, "getOnlineStatus", e);
-			setErrorMessage(e.getMessage());
-			return "@Error@ " + getErrorMessage();
+			return false;
 		}
-		return status;
+		return result;
 	}   //  onlineStatus
 
 	/**
