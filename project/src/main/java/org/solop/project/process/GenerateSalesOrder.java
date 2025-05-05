@@ -24,6 +24,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.util.Env;
 import org.compiere.util.TimeUtil;
+import org.compiere.util.Trx;
 import org.compiere.util.Util;
 
 import java.math.BigDecimal;
@@ -41,7 +42,7 @@ import java.util.logging.Level;
  *  @version Release 3.9.4
  */
 public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
-	private List<String> generated = new ArrayList<>();
+	private final List<String> generated = new ArrayList<>();
 	@Override
 	protected void prepare() {
 		super.prepare();
@@ -54,7 +55,11 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 
 	@Override
 	protected String doIt() throws Exception {
-		getProjectLineIds().forEach(this::generateOrderFromProjectLine);
+		getProjectLineIds().forEach(projectLineId -> {
+			Trx.run(transactionName -> {
+				generateOrderFromProjectLine(projectLineId, transactionName);
+			});
+		});
 		return "@Created@ " + generated.toString();
 	}	//	doIt
 
@@ -65,10 +70,10 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 		return List.of(getRecord_ID());
 	}
 
-	private void generateOrderFromProjectLine(int projectLineId) {
-		MProjectLine mainLine = new MProjectLine(getCtx(), projectLineId, get_TrxName());
+	private void generateOrderFromProjectLine(int projectLineId, String transactionName) {
+		MProjectLine mainLine = new MProjectLine(getCtx(), projectLineId, transactionName);
 		log.info("doIt - C_ProjectPhase_ID=" + projectLineId);
-		MProject project = getProject (getCtx(), mainLine.getC_Project_ID(), get_TrxName());
+		MProject project = getProject (getCtx(), mainLine.getC_Project_ID(), transactionName);
 		if (project.getC_PaymentTerm_ID() <= 0) {
 			throw new AdempiereException("@C_PaymentTerm_ID@ @NotFound@");
 		}
@@ -97,7 +102,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 		//	Get Lines
 		List<MProjectLine> projectLines = mainLine.getChildren();
 		for (MProjectLine pLine : projectLines) {
-			Timestamp datePromisedLine = (Timestamp) pLine.getDatePromised();
+			Timestamp datePromisedLine = pLine.getDatePromised();
 			Timestamp dateOrder = TimeUtil.addDays(order.getDateOrdered(), -1);
 			if (datePromisedLine != null && datePromisedLine.compareTo(dateOrder) <= 0) {
 				throw new AdempiereException("@DatePromised@ < @DateOrdered@");
@@ -108,10 +113,11 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 		if(mainLine.getDatePromised() != null) {
 			order.setDatePromised(mainLine.getDatePromised());
 		}
-		order.saveEx();
+		order.saveEx(transactionName);
 
 		//	Create an order on Phase Level
-		if (mainLine.getM_Product_ID() != 0) {
+		String lineInvoiceRule = Optional.ofNullable(mainLine.getProjInvoiceRule()).orElse(MProjectLine.PROJINVOICERULE_None);
+		if (lineInvoiceRule.equals(MProjectLine.PROJINVOICERULE_ProductQuantity) && mainLine.getM_Product_ID() != 0) {
 			String description = mainLine.getDescription();
 			BigDecimal quantityToOrder = mainLine.getPlannedQty();
 			//	Add UOM
@@ -134,7 +140,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 				orderLine.setPrice(mainLine.getPlannedAmt());
 			}
 			orderLine.setTax();
-			orderLine.saveEx();
+			orderLine.saveEx(transactionName);
 			generated.add("@C_Order_ID@ " + order.getDocumentNo() + " (1)");
 			return;
 		}
@@ -148,7 +154,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 					orderLine.setDescription(projectLine.getDescription());
 					//
 					orderLine.setM_Product_ID(projectLine.getM_Product_ID(), true);
-					MProduct product = new MProduct(getCtx(),projectLine.getM_Product_ID(),get_TrxName());
+					MProduct product = new MProduct(getCtx(),projectLine.getM_Product_ID(), transactionName);
 					BigDecimal toOrder = projectLine.getPlannedQty().subtract(projectLine.getInvoicedQty());
 					setQuantityToOrder(orderLine, product, projectLine.get_ValueAsInt("C_UOM_ID"), projectLine.getPlannedQty(), toOrder);
 					orderLine.setPrice();
@@ -166,7 +172,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 					orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_StartDate, projectLine.getStartDate());
 					orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_EndDate, projectLine.getEndDate());
 					orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_C_ProjectLine_ID, projectLine.getC_ProjectLine_ID());
-					orderLine.saveEx();
+					orderLine.saveEx(transactionName);
 					count.getAndUpdate(no -> no + 1);
 				});    //	for all lines
 		if (projectLines.size() != count.get())
@@ -176,11 +182,6 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 
 	/**
 	 * Set line Quantity
-	 * @param orderLine
-	 * @param product
-	 * @param uomToId
-	 * @param quantityEntered
-	 * @param quantityOrdered
 	 */
 	private void setQuantityToOrder(MOrderLine orderLine, MProduct product, int uomToId, BigDecimal quantityEntered, BigDecimal quantityOrdered) {
 		int uomId = product.getC_UOM_ID();
@@ -206,8 +207,8 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 		orderLine.setC_UOM_ID(uomId);
 	}
 
-	private MProject getProject (Properties ctx, int projectId, String trxName) {
-		MProject fromProject = new MProject (ctx, projectId, trxName);
+	private MProject getProject (Properties ctx, int projectId, String transactionName) {
+		MProject fromProject = new MProject (ctx, projectId, transactionName);
 		if (fromProject.getC_Project_ID() == 0)
 			throw new AdempiereException("@C_Project_ID@ @NotFound@" + projectId);
 		if (fromProject.getM_PriceList_Version_ID() == 0)

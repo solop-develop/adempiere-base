@@ -23,6 +23,7 @@ import org.adempiere.core.domains.models.I_C_ProjectLine;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.util.Env;
+import org.compiere.util.Trx;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProjectAbstract {
 
-	private List<String> generated = new ArrayList<>();
+	private final List<String> generated = new ArrayList<>();
 	protected void prepare() {
 		super.prepare();
 		if(!isSelection()) {
@@ -50,16 +51,20 @@ public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProject
 
 	@Override
 	protected String doIt() throws Exception {
-		getProjectIds().forEach(this::generateOrderFromProject);
+		getProjectIds().forEach(projectId -> {
+			Trx.run(transactionName -> {
+				generateOrderFromProject(projectId, transactionName);
+			});
+		});
 		return "@Created@ " + generated.toString();
 	}
 
-	private void generateOrderFromProject(int projectId) {
-		MProject project = getProject (getCtx(), projectId, get_TrxName());
+	private void generateOrderFromProject(int projectId, String transactionName) {
+		MProject project = getProject (getCtx(), projectId, transactionName);
 		if (project.getC_PaymentTerm_ID() <= 0) {
 			throw new AdempiereException("@C_PaymentTerm_ID@ @NotFound@");
 		}
-		List<Integer> projectLineIds = getProjectLineIds(projectId);
+		List<Integer> projectLineIds = getProjectLineIds(projectId, transactionName);
 		if(projectLineIds == null || projectLineIds.isEmpty()) {
 			throw new AdempiereException("@C_ProjectLine_ID@ @NotFound@");
 		}
@@ -71,17 +76,17 @@ public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProject
 		order.setC_Project_ID(projectId);
 		order.setDescription(order.getDescription() + " - " + project.getName());
 		order.setDateOrdered(getDateOrdered());
-		order.saveEx();
+		order.saveEx(transactionName);
 		//	Add Lines
 		AtomicInteger count = new AtomicInteger(0);
 		projectLineIds.forEach(projectLineId -> {
-			MProjectLine projectLine = new MProjectLine(getCtx(), projectLineId, get_TrxName());
+			MProjectLine projectLine = new MProjectLine(getCtx(), projectLineId, transactionName);
 			MOrderLine orderLine = new MOrderLine(order);
 			orderLine.setLine(projectLine.getLine());
 			orderLine.setDescription(projectLine.getDescription());
 			//
 			orderLine.setM_Product_ID(projectLine.getM_Product_ID(), true);
-			MProduct product = new MProduct(getCtx(),projectLine.getM_Product_ID(),get_TrxName());
+			MProduct product = new MProduct(getCtx(),projectLine.getM_Product_ID(),transactionName);
 			BigDecimal toOrder = projectLine.getPlannedQty().subtract(projectLine.getInvoicedQty());
 			setQuantityToOrder(orderLine, product, projectLine.get_ValueAsInt("C_UOM_ID"), projectLine.getPlannedQty(), toOrder);
 			orderLine.setPrice();
@@ -99,7 +104,7 @@ public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProject
 			orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_StartDate, projectLine.getStartDate());
 			orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_EndDate, projectLine.getEndDate());
 			orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_C_ProjectLine_ID, projectLine.getC_ProjectLine_ID());
-			orderLine.saveEx();
+			orderLine.saveEx(transactionName);
 			count.getAndUpdate(no -> no + 1);
 		});
 		generated.add(project.getValue() + " - " + project.getName() + ": " + order.getDocumentNo() + "(" + count.get() + ")");
@@ -107,11 +112,6 @@ public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProject
 
 	/**
 	 * Set line Quantity
-	 * @param orderLine
-	 * @param product
-	 * @param uomToId
-	 * @param quantityEntered
-	 * @param quantityOrdered
 	 */
 	private void setQuantityToOrder(MOrderLine orderLine, MProduct product, int uomToId, BigDecimal quantityEntered, BigDecimal quantityOrdered) {
 		int uomId = product.getC_UOM_ID();
@@ -137,8 +137,8 @@ public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProject
 		orderLine.setC_UOM_ID(uomId);
 	}
 
-	private List<Integer> getProjectLineIds(int projectId) {
-		return new Query(getCtx(), I_C_ProjectLine.Table_Name, "C_Project_ID = ? AND IsSummary = 'N'", get_TrxName())
+	private List<Integer> getProjectLineIds(int projectId, String transactionName) {
+		return new Query(getCtx(), I_C_ProjectLine.Table_Name, "C_Project_ID = ? AND IsSummary = 'N'", transactionName)
 				.setParameters(projectId).setOrderBy(I_C_ProjectLine.COLUMNNAME_Line)
 				.getIDsAsList();
 	}
@@ -150,8 +150,8 @@ public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProject
 		return List.of(getRecord_ID());
 	}
 
-	private MProject getProject (Properties ctx, int projectId, String trxName) {
-		MProject fromProject = new MProject (ctx, projectId, trxName);
+	private MProject getProject (Properties ctx, int projectId, String transactionName) {
+		MProject fromProject = new MProject (ctx, projectId, transactionName);
 		if (fromProject.getC_Project_ID() == 0)
 			throw new AdempiereException("@C_Project_ID@ @NotFound@" + projectId);
 		if (fromProject.getM_PriceList_Version_ID() == 0)
