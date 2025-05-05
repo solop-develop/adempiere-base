@@ -56,9 +56,13 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 	@Override
 	protected String doIt() throws Exception {
 		getProjectLineIds().forEach(projectLineId -> {
-			Trx.run(transactionName -> {
-				generateOrderFromProjectLine(projectLineId, transactionName);
-			});
+			try {
+				Trx.run(transactionName -> {
+					generateOrderFromProjectLine(projectLineId, transactionName);
+				});
+			} catch (Exception e) {
+				addLog(e.getLocalizedMessage());
+			}
 		});
 		return "@Created@ " + generated.toString();
 	}	//	doIt
@@ -75,7 +79,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 		log.info("doIt - C_ProjectPhase_ID=" + projectLineId);
 		MProject project = getProject (getCtx(), mainLine.getC_Project_ID(), transactionName);
 		if (project.getC_PaymentTerm_ID() <= 0) {
-			throw new AdempiereException("@C_PaymentTerm_ID@ @NotFound@");
+			throw new AdempiereException(mainLine.getName() + " @C_PaymentTerm_ID@ @NotFound@");
 		}
 		if(!mainLine.isSummary()) {
 			return;
@@ -105,7 +109,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 			Timestamp datePromisedLine = pLine.getDatePromised();
 			Timestamp dateOrder = TimeUtil.addDays(order.getDateOrdered(), -1);
 			if (datePromisedLine != null && datePromisedLine.compareTo(dateOrder) <= 0) {
-				throw new AdempiereException("@DatePromised@ < @DateOrdered@");
+				throw new AdempiereException(mainLine.getName() + " @DatePromised@ < @DateOrdered@");
 			}
 		}
 
@@ -210,15 +214,15 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 	private MProject getProject (Properties ctx, int projectId, String transactionName) {
 		MProject fromProject = new MProject (ctx, projectId, transactionName);
 		if (fromProject.getC_Project_ID() == 0)
-			throw new AdempiereException("@C_Project_ID@ @NotFound@" + projectId);
+			throw new AdempiereException(fromProject.getName() + " @C_Project_ID@ @NotFound@" + projectId);
 		if (fromProject.getM_PriceList_Version_ID() == 0)
-			throw new AdempiereException("@M_PriceList_ID@ @NotFound @@To@ @C_Project_ID@");
+			throw new AdempiereException(fromProject.getName() + " @M_PriceList_ID@ @NotFound @@To@ @C_Project_ID@");
 		if (fromProject.getM_Warehouse_ID() == 0)
-			throw new AdempiereException("@M_Warehouse_ID@ @NotFound@ @To@ @C_Project_ID@");
+			throw new AdempiereException(fromProject.getName() + " @M_Warehouse_ID@ @NotFound@ @To@ @C_Project_ID@");
 		if (fromProject.getC_BPartner_ID() == 0)
-			throw new AdempiereException("@C_BPartner_ID@ @NotFound@");
+			throw new AdempiereException(fromProject.getName() + " @C_BPartner_ID@ @NotFound@");
 		if (fromProject.getC_BPartner_Location_ID() == 0)
-			throw new AdempiereException("@C_BPartner_Location_ID@ @NotFound@");
+			throw new AdempiereException(fromProject.getName() + " @C_BPartner_Location_ID@ @NotFound@");
 		return fromProject;
 	}
 }

@@ -52,9 +52,13 @@ public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProject
 	@Override
 	protected String doIt() throws Exception {
 		getProjectIds().forEach(projectId -> {
-			Trx.run(transactionName -> {
-				generateOrderFromProject(projectId, transactionName);
-			});
+			try {
+				Trx.run(transactionName -> {
+					generateOrderFromProject(projectId, transactionName);
+				});
+			} catch (Exception e) {
+				addLog(e.getLocalizedMessage());
+			}
 		});
 		return "@Created@ " + generated.toString();
 	}
@@ -62,11 +66,11 @@ public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProject
 	private void generateOrderFromProject(int projectId, String transactionName) {
 		MProject project = getProject (getCtx(), projectId, transactionName);
 		if (project.getC_PaymentTerm_ID() <= 0) {
-			throw new AdempiereException("@C_PaymentTerm_ID@ @NotFound@");
+			throw new AdempiereException(project.getName() + " @C_PaymentTerm_ID@ @NotFound@");
 		}
 		List<Integer> projectLineIds = getProjectLineIds(projectId, transactionName);
 		if(projectLineIds == null || projectLineIds.isEmpty()) {
-			throw new AdempiereException("@C_ProjectLine_ID@ @NotFound@");
+			throw new AdempiereException(project.getName() + " @C_ProjectLine_ID@ @NotFound@");
 		}
 		MOrder order = new MOrder (project, true, MDocType.COLUMNNAME_DocSubTypeSO);
 		//	Add Document Type Target
@@ -153,15 +157,15 @@ public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProject
 	private MProject getProject (Properties ctx, int projectId, String transactionName) {
 		MProject fromProject = new MProject (ctx, projectId, transactionName);
 		if (fromProject.getC_Project_ID() == 0)
-			throw new AdempiereException("@C_Project_ID@ @NotFound@" + projectId);
+			throw new AdempiereException(fromProject.getName() + " @C_Project_ID@ @NotFound@" + projectId);
 		if (fromProject.getM_PriceList_Version_ID() == 0)
-			throw new AdempiereException("@M_PriceList_ID@ @NotFound @@To@ @C_Project_ID@");
+			throw new AdempiereException(fromProject.getName() + " @M_PriceList_ID@ @NotFound @@To@ @C_Project_ID@");
 		if (fromProject.getM_Warehouse_ID() == 0)
-			throw new AdempiereException("@M_Warehouse_ID@ @NotFound@ @To@ @C_Project_ID@");
+			throw new AdempiereException(fromProject.getName() + " @M_Warehouse_ID@ @NotFound@ @To@ @C_Project_ID@");
 		if (fromProject.getC_BPartner_ID() == 0)
-			throw new AdempiereException("@C_BPartner_ID@ @NotFound@");
+			throw new AdempiereException(fromProject.getName() + " @C_BPartner_ID@ @NotFound@");
 		if (fromProject.getC_BPartner_Location_ID() == 0)
-			throw new AdempiereException("@C_BPartner_Location_ID@ @NotFound@");
+			throw new AdempiereException(fromProject.getName() + " @C_BPartner_Location_ID@ @NotFound@");
 		return fromProject;
 	}
 }
