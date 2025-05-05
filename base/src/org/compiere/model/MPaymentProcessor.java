@@ -66,6 +66,10 @@ public class MPaymentProcessor extends X_C_PaymentProcessor
 		int AD_Client_ID, int C_Currency_ID, BigDecimal Amt, String trxName)
 	{
 		ArrayList<MPaymentProcessor> list = new ArrayList<MPaymentProcessor>();
+
+		if (MPayment.TENDERTYPE_Cash.equals(tender)) {
+			return null;
+		}
 		StringBuffer sql = new StringBuffer("SELECT * "
 			+ "FROM C_PaymentProcessor "
 			+ "WHERE AD_Client_ID=? AND IsActive='Y'"				//	#1
