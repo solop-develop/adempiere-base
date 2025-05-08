@@ -16,22 +16,23 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_C_OrderLine;
 import org.adempiere.engine.IDocumentLine;
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.ProductNotOnPriceListException;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.compiere.util.Util;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *  Order Line Model.
@@ -133,7 +134,7 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 	 *  @param  C_OrderLine_ID  order line to load
 	 *  @param trxName trx name
 	 */
-	public MOrderLine (Properties ctx, int C_OrderLine_ID, String trxName)
+	public MOrderLine(Properties ctx, int C_OrderLine_ID, String trxName)
 	{
 		super (ctx, C_OrderLine_ID, trxName);
 		if (C_OrderLine_ID == 0)
@@ -181,7 +182,7 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 			ol.saveEx();
 	 *  @param  order parent order
 	 */
-	public MOrderLine (MOrder order)
+	public MOrderLine(MOrder order)
 	{
 		this (order.getCtx(), 0, order.get_TrxName());
 		if (order.get_ID() == 0)
@@ -196,7 +197,7 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MOrderLine (Properties ctx, ResultSet rs, String trxName)
+	public MOrderLine(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MOrderLine
@@ -898,6 +899,21 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 		//	Product
 		else	//	Set/check Product Price
 		{
+			//	Set UOM from Product
+			if(getC_UOM_ID() <= 0) {
+				MProduct product = MProduct.get(getCtx(), getM_Product_ID());
+				setC_UOM_ID(product.getC_UOM_ID());
+			}
+			//	Validate Quantity Ordered
+			BigDecimal quantityEntered = getQtyEntered();
+			BigDecimal quantityOrdered = getQtyOrdered();
+			if(Optional.ofNullable(quantityEntered).orElse(Env.ZERO).compareTo(Env.ZERO) > 0 && Optional.ofNullable(quantityOrdered).orElse(Env.ZERO).compareTo(Env.ZERO) == 0) {
+				quantityOrdered = MUOMConversion.convertProductFrom (getCtx(), getM_Product_ID(), getC_UOM_ID(), quantityEntered);
+				if (quantityOrdered == null) {
+					throw new AdempiereException("@NoUOMConversion@");
+				}
+				setQtyOrdered(quantityOrdered);
+			}
 			//	Set Price if Actual = 0
 			if (m_productPrice == null 
 				&&  Env.ZERO.compareTo(getPriceActual()) == 0
