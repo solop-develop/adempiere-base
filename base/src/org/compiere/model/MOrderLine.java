@@ -313,20 +313,21 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 		setPriceActual (m_productPrice.getPriceStd());
 		setPriceList (m_productPrice.getPriceList());
 		setPriceLimit (m_productPrice.getPriceLimit());
+		if( getC_UOM_ID() == 0 ) {
+			setC_UOM_ID(m_productPrice.getC_UOM_ID());
+		}
 		//
-		if (getQtyEntered().compareTo(getQtyOrdered()) == 0)
-			setPriceEntered(getPriceActual());
-		else
-			setPriceEntered(getPriceActual().multiply(getQtyOrdered()
-				.divide(getQtyEntered(), 12, RoundingMode.HALF_UP)));	//	recision
-		
+		BigDecimal priceEntered = getPriceEntered();
+		BigDecimal priceActual = getPriceActual();
+		if(priceEntered.compareTo(Env.ZERO) > 0 && priceActual.compareTo(Env.ZERO) == 0) {
+			priceActual = MUOMConversion.convertProductTo (getCtx(), getM_Product_ID(), getC_UOM_ID(), priceEntered);
+			setPriceActual(priceActual);
+		} else if(priceActual.compareTo(Env.ZERO) > 0 && priceEntered.compareTo(Env.ZERO) == 0) {
+			priceEntered = MUOMConversion.convertProductFrom(getCtx(), getM_Product_ID(), getC_UOM_ID(), priceActual);
+			setPriceEntered(priceEntered);
+		}
 		//	Calculate Discount
 		setDiscount(m_productPrice.getDiscount());
-		//	Set UOM
-		
-		if( getC_UOM_ID() == 0 ){                           //Adempiere-122 changes
-		     setC_UOM_ID(m_productPrice.getC_UOM_ID());
-		}
 	}	//	setPrice
 
 	/**
@@ -914,15 +915,10 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 				}
 				setQtyOrdered(quantityOrdered);
 			}
-			//	Set Price if Actual = 0
-			if (m_productPrice == null 
-				&&  Env.ZERO.compareTo(getPriceActual()) == 0
-				&&  Env.ZERO.compareTo(getPriceList()) == 0)
-				setPrice();
 			//	Check if on Price list
-			if (m_productPrice == null)
+			if (m_productPrice == null) {
 				getProductPricing(m_M_PriceList_ID);
-			
+			}
 			if (!isProcessed()
 					&& !getParent().isProcessed()
 					&& (newRecord
@@ -941,9 +937,7 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 						|| is_ValueChanged(COLUMNNAME_QtyEntered)
 						|| is_ValueChanged(COLUMNNAME_PriceEntered)) {
 					if(!getParent().isReturnOrder()) {
-						setPriceList(m_productPrice.getPriceList());
-						setPriceLimit(m_productPrice.getPriceLimit());
-						setDiscount(m_productPrice.getDiscount());
+						setPrice();
 					}
 				}
 			}
