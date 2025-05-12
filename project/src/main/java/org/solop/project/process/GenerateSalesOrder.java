@@ -69,7 +69,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 
 	private List<Integer> getProjectLineIds() {
 		if(isSelection()) {
-			return Optional.ofNullable(getSelectionKeys()).orElse(List.of());
+			return Optional.ofNullable(getSelectionKeys()).orElse(List.of(getRecord_ID()));
 		}
 		return List.of(getRecord_ID());
 	}
