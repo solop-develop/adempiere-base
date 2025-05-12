@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="ECA14 POS Gift Card as Store Payment Method" ReleaseNo="3.9.4" SeqNo="10140">
+    <Comments>ECA14 POS Add Gift Card as Store Payment Method. By EdwinBetanc0urt.</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="104" Action="I" Record_ID="55942" Table="AD_Ref_List">
+        <Data AD_Column_ID="371" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="372" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="148" Column="AD_Ref_List_ID">55942</Data>
+        <Data AD_Column_ID="151" Column="AD_Reference_ID">214</Data>
+        <Data AD_Column_ID="564" Column="Created">2025-05-12 10:49:57.975</Data>
+        <Data AD_Column_ID="565" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="150" Column="Description">Gift Cards/Vouchers/Coupons</Data>
+        <Data AD_Column_ID="7712" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="563" Column="IsActive">true</Data>
+        <Data AD_Column_ID="149" Column="Name">Gift Card</Data>
+        <Data AD_Column_ID="84390" Column="UUID">a93fca63-f945-4765-8c38-74e62460bf0c</Data>
+        <Data AD_Column_ID="566" Column="Updated">2025-05-12 10:49:57.976</Data>
+        <Data AD_Column_ID="567" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
+        <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
+        <Data AD_Column_ID="200" Column="Value">G</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="136" Action="I" Record_ID="0" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="1215" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="337" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1216" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID">55942</Data>
+        <Data AD_Column_ID="707" Column="Created">2025-05-12 10:49:59.331</Data>
+        <Data AD_Column_ID="708" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="339" Column="Description">Tarjetas/Cupones/Vales de Regalo</Data>
+        <Data AD_Column_ID="706" Column="IsActive">true</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="338" Column="Name">Tarjeta de Regalo</Data>
+        <Data AD_Column_ID="84391" Column="UUID">6ff56a1d-0143-4a64-9467-871f72a99275</Data>
+        <Data AD_Column_ID="709" Column="Updated">2025-05-12 10:49:59.331</Data>
+        <Data AD_Column_ID="710" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
