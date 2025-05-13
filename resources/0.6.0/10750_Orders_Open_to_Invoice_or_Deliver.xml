@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Orders Open to Invoice, To Deliver or Both" ReleaseNo="" SeqNo="10750">
+    <Comments>Orders Open to Invoice, To Deliver or Both. By EdwinBetanc0urt</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="103" Action="U" Record_ID="138" Table="AD_Ref_Table">
+        <Data AD_Column_ID="147" Column="OrderByClause" isNewNull="true" oldValue=""/>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="103" Action="U" Record_ID="159" Table="AD_Ref_Table">
+        <Data AD_Column_ID="147" Column="OrderByClause" isNewNull="true" oldValue=""/>
+        <Data AD_Column_ID="146" Column="WhereClause" isNewNull="true" oldValue=""/>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="103" Action="U" Record_ID="200" Table="AD_Ref_Table">
+        <Data AD_Column_ID="147" Column="OrderByClause" isNewNull="true" oldValue=""/>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="361" Action="I" Record_ID="53389" Table="AD_ReportView">
+        <Data AD_Column_ID="4385" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="4386" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="4384" Column="AD_ReportView_ID">53389</Data>
+        <Data AD_Column_ID="4394" Column="AD_Table_ID">360</Data>
+        <Data AD_Column_ID="85531" Column="Classname" isNewNull="true"/>
+        <Data AD_Column_ID="4388" Column="Created">2025-05-12 11:21:06.428</Data>
+        <Data AD_Column_ID="4389" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4393" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="10032" Column="EntityType">D</Data>
+        <Data AD_Column_ID="4387" Column="IsActive">true</Data>
+        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="4392" Column="Name">Order_Detail_Only_Open_To_Deliver</Data>
+        <Data AD_Column_ID="4396" Column="OrderByClause" isNewNull="true"/>
+        <Data AD_Column_ID="78517" Column="PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="84405" Column="UUID">0f4cc9b6-e3c3-45bf-a389-5944b7a845a6</Data>
+        <Data AD_Column_ID="4390" Column="Updated">2025-05-12 11:21:06.428</Data>
+        <Data AD_Column_ID="4391" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="4395" Column="WhereClause">RV_OrderDetail.QtyToDeliver&lt;&gt;0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="54060" Action="I" Record_ID="0" Table="AD_ReportView_Trl">
+        <Data AD_Column_ID="78518" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="78526" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="78519" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="78525" Column="AD_ReportView_ID">53389</Data>
+        <Data AD_Column_ID="78521" Column="Created">2025-05-12 11:21:08.442</Data>
+        <Data AD_Column_ID="78523" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="78529" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="78520" Column="IsActive">true</Data>
+        <Data AD_Column_ID="78534" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="78528" Column="Name">Ordenes por Entregar</Data>
+        <Data AD_Column_ID="78527" Column="PrintName">Ordenes por Entregar</Data>
+        <Data AD_Column_ID="84407" Column="UUID">b0247391-18a3-4405-8ed3-582039c5d2c7</Data>
+        <Data AD_Column_ID="78522" Column="Updated">2025-05-12 11:21:08.442</Data>
+        <Data AD_Column_ID="78524" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="361" Action="I" Record_ID="53390" Table="AD_ReportView">
+        <Data AD_Column_ID="4385" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="4386" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="4384" Column="AD_ReportView_ID">53390</Data>
+        <Data AD_Column_ID="4394" Column="AD_Table_ID">360</Data>
+        <Data AD_Column_ID="85531" Column="Classname" isNewNull="true"/>
+        <Data AD_Column_ID="4388" Column="Created">2025-05-12 11:21:08.501</Data>
+        <Data AD_Column_ID="4389" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4393" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="10032" Column="EntityType">D</Data>
+        <Data AD_Column_ID="4387" Column="IsActive">true</Data>
+        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="4392" Column="Name">Order_Detail_Only_Open_To_Invoice</Data>
+        <Data AD_Column_ID="4396" Column="OrderByClause" isNewNull="true"/>
+        <Data AD_Column_ID="78517" Column="PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="84405" Column="UUID">c49012c4-af8d-49a5-a75b-0f28193be734</Data>
+        <Data AD_Column_ID="4390" Column="Updated">2025-05-12 11:21:08.501</Data>
+        <Data AD_Column_ID="4391" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="4395" Column="WhereClause">RV_OrderDetail.QtyToInvoice&lt;&gt;0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="54060" Action="I" Record_ID="0" Table="AD_ReportView_Trl">
+        <Data AD_Column_ID="78518" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="78526" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="78519" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="78525" Column="AD_ReportView_ID">53390</Data>
+        <Data AD_Column_ID="78521" Column="Created">2025-05-12 11:21:09.08</Data>
+        <Data AD_Column_ID="78523" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="78529" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="78520" Column="IsActive">true</Data>
+        <Data AD_Column_ID="78534" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="78528" Column="Name">Ordenes por Facturar</Data>
+        <Data AD_Column_ID="78527" Column="PrintName">Ordenes por Facturar</Data>
+        <Data AD_Column_ID="84407" Column="UUID">90fe825a-8bf7-4bd1-ae86-dce80e421a8d</Data>
+        <Data AD_Column_ID="78522" Column="Updated">2025-05-12 11:21:09.08</Data>
+        <Data AD_Column_ID="78524" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="361" Action="I" Record_ID="53391" Table="AD_ReportView">
+        <Data AD_Column_ID="4385" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="4386" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="4384" Column="AD_ReportView_ID">53391</Data>
+        <Data AD_Column_ID="4394" Column="AD_Table_ID">360</Data>
+        <Data AD_Column_ID="85531" Column="Classname" isNewNull="true"/>
+        <Data AD_Column_ID="4388" Column="Created">2025-05-12 11:21:09.139</Data>
+        <Data AD_Column_ID="4389" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4393" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="10032" Column="EntityType">D</Data>
+        <Data AD_Column_ID="4387" Column="IsActive">true</Data>
+        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="4392" Column="Name">Order_Detail_Open_To_Deliver_Or_Invoice</Data>
+        <Data AD_Column_ID="4396" Column="OrderByClause" isNewNull="true"/>
+        <Data AD_Column_ID="78517" Column="PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="84405" Column="UUID">5190f92a-971a-46e4-b200-738f2a67c8ae</Data>
+        <Data AD_Column_ID="4390" Column="Updated">2025-05-12 11:21:09.139</Data>
+        <Data AD_Column_ID="4391" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="4395" Column="WhereClause">RV_OrderDetail.QtyToInvoice &lt;&gt; 0 OR RV_OrderDetail.QtyToDeliver &lt;&gt; 0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="54060" Action="I" Record_ID="0" Table="AD_ReportView_Trl">
+        <Data AD_Column_ID="78518" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="78526" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="78519" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="78525" Column="AD_ReportView_ID">53391</Data>
+        <Data AD_Column_ID="78521" Column="Created">2025-05-12 11:21:09.66</Data>
+        <Data AD_Column_ID="78523" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="78529" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="78520" Column="IsActive">true</Data>
+        <Data AD_Column_ID="78534" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="78528" Column="Name">Ordenes por Entregar o Facturar</Data>
+        <Data AD_Column_ID="78527" Column="PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="84407" Column="UUID">28a3af7d-850d-4c30-9d62-b4ec190c642e</Data>
+        <Data AD_Column_ID="78522" Column="Updated">2025-05-12 11:21:09.66</Data>
+        <Data AD_Column_ID="78524" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
