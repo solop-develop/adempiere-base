@@ -30,7 +30,7 @@
         <Data AD_Column_ID="4393" Column="Description" isNewNull="true"/>
         <Data AD_Column_ID="10032" Column="EntityType">D</Data>
         <Data AD_Column_ID="4387" Column="IsActive">true</Data>
-        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">false</Data>
         <Data AD_Column_ID="4392" Column="Name">Order_Detail_Only_Open_To_Deliver</Data>
         <Data AD_Column_ID="4396" Column="OrderByClause" isNewNull="true"/>
         <Data AD_Column_ID="78517" Column="PrintName" isNewNull="true"/>
@@ -70,7 +70,7 @@
         <Data AD_Column_ID="4393" Column="Description" isNewNull="true"/>
         <Data AD_Column_ID="10032" Column="EntityType">D</Data>
         <Data AD_Column_ID="4387" Column="IsActive">true</Data>
-        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">false</Data>
         <Data AD_Column_ID="4392" Column="Name">Order_Detail_Only_Open_To_Invoice</Data>
         <Data AD_Column_ID="4396" Column="OrderByClause" isNewNull="true"/>
         <Data AD_Column_ID="78517" Column="PrintName" isNewNull="true"/>
@@ -110,7 +110,7 @@
         <Data AD_Column_ID="4393" Column="Description" isNewNull="true"/>
         <Data AD_Column_ID="10032" Column="EntityType">D</Data>
         <Data AD_Column_ID="4387" Column="IsActive">true</Data>
-        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">false</Data>
         <Data AD_Column_ID="4392" Column="Name">Order_Detail_Open_To_Deliver_Or_Invoice</Data>
         <Data AD_Column_ID="4396" Column="OrderByClause" isNewNull="true"/>
         <Data AD_Column_ID="78517" Column="PrintName" isNewNull="true"/>
