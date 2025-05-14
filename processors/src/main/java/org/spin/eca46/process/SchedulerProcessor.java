@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.adempiere.exceptions.AdempiereException;
@@ -38,6 +39,7 @@ import org.compiere.model.MUser;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.ProcessInfo;
 import org.compiere.process.ProcessInfoUtil;
+import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.TimeUtil;
@@ -58,7 +60,6 @@ public class SchedulerProcessor extends SchedulerProcessorAbstract {
 	private MScheduler			schedulerProcessor = null;
 	/**	Last Summary				*/
 	private StringBuffer 		summary = new StringBuffer();
-	
 	// ctx for the report/process
 	Properties 					schedulerContext = new Properties();
 	/**	Initial work time			*/
@@ -100,32 +101,46 @@ public class SchedulerProcessor extends SchedulerProcessorAbstract {
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
 		SimpleDateFormat dateFormat4Timestamp = new SimpleDateFormat("yyyy-MM-dd"); 
 		Env.setContext(schedulerContext, "#Date", dateFormat4Timestamp.format(ts)+" 00:00:00" );    //  JDBC format
+		AtomicBoolean isError = new AtomicBoolean(false);
 		Trx.run(transactionName -> {
 			try {
 				MProcess process = new MProcess(schedulerContext, schedulerProcessor.getAD_Process_ID(), transactionName);
 				summary.append(runProcess(process));
 			} catch (Exception e) {
-				summary.append(e.toString());
+				summary.append(e);
+				isError.set(true);
 				throw new AdempiereException(e);
+			} finally {
+				Trx.run(failTrx -> {
+					int no = deleteLog(schedulerProcessor.get_ID(), schedulerProcessor.getKeepLogDays(), failTrx);
+					summary.append(" Logs deleted=").append(no);
+					addSchedulerLog(isError.get(), failTrx);
+				});
 			}
-		});	
+		});
 		//
-		int no = schedulerProcessor.deleteLog();
-		summary.append(" Logs deleted=").append(no);
-		if (schedulerProcessor.get_TrxName() == null ) {
-			Trx.run(this::addSchedulerLog);
-		} else {
-			addSchedulerLog(schedulerProcessor.get_TrxName());
-		}
-		return TimeUtil.formatElapsed(new Timestamp(startWork));
+
+		return TimeUtil.formatElapsed(new Timestamp(startWork)) + " - " + summary.toString();
 	}
+
+	public int deleteLog(int schedulerId, int keepLogDays, String trxName)
+	{
+		if (keepLogDays < 1)
+			return 0;
+		String sql = "DELETE AD_SchedulerLog "
+				+ "WHERE AD_Scheduler_ID=" + schedulerId
+				+ " AND (Created+" + keepLogDays + ") < SysDate";
+		int no = DB.executeUpdateEx(sql, trxName);
+		return no;
+	}	//	deleteLog
 
 	/**
 	 * Add Scheduler Log
 	 * @param trxName
 	 */
-	private void addSchedulerLog(String trxName) {
+	private void addSchedulerLog(boolean isError, String trxName) {
 		MSchedulerLog schedulerLog = new MSchedulerLog(schedulerProcessor, summary.toString(), trxName);
+		schedulerLog.setIsError(isError);
 		schedulerLog.setReference(TimeUtil.formatElapsed(new Timestamp(startWork)));
 		schedulerLog.saveEx();
 	}
@@ -233,6 +248,9 @@ public class SchedulerProcessor extends SchedulerProcessorAbstract {
 					info.setSummary(Optional.ofNullable(info.getSummary()).orElse("") + Env.NL + errorsSending.toString());
 				}
 			}
+		}
+		if (info.isError()) {
+			throw new AdempiereException(info.getSummary());
 		}
 		return info.getSummary();
 	}	//	runProcess
