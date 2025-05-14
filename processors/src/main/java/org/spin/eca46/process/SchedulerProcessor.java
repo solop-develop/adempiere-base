@@ -58,7 +58,8 @@ public class SchedulerProcessor extends SchedulerProcessorAbstract {
 	private MScheduler			schedulerProcessor = null;
 	/**	Last Summary				*/
 	private StringBuffer 		summary = new StringBuffer();
-	
+
+	private boolean				isError = false;
 	// ctx for the report/process
 	Properties 					schedulerContext = new Properties();
 	/**	Initial work time			*/
@@ -105,7 +106,7 @@ public class SchedulerProcessor extends SchedulerProcessorAbstract {
 				MProcess process = new MProcess(schedulerContext, schedulerProcessor.getAD_Process_ID(), transactionName);
 				summary.append(runProcess(process));
 			} catch (Exception e) {
-				summary.append(e.toString());
+				summary.append("SchedulerErr - " + e.toString());
 				throw new AdempiereException(e);
 			}
 		});	
@@ -117,7 +118,7 @@ public class SchedulerProcessor extends SchedulerProcessorAbstract {
 		} else {
 			addSchedulerLog(schedulerProcessor.get_TrxName());
 		}
-		return TimeUtil.formatElapsed(new Timestamp(startWork));
+		return TimeUtil.formatElapsed(new Timestamp(startWork)) + " - " + summary.toString();
 	}
 
 	/**
@@ -126,6 +127,7 @@ public class SchedulerProcessor extends SchedulerProcessorAbstract {
 	 */
 	private void addSchedulerLog(String trxName) {
 		MSchedulerLog schedulerLog = new MSchedulerLog(schedulerProcessor, summary.toString(), trxName);
+		schedulerLog.setIsError(isError);
 		schedulerLog.setReference(TimeUtil.formatElapsed(new Timestamp(startWork)));
 		schedulerLog.saveEx();
 	}
@@ -156,6 +158,7 @@ public class SchedulerProcessor extends SchedulerProcessorAbstract {
 		//	Get Process Info
 		ProcessInfo info = builder.getProcessInfo();
 		if(info.isError()) {
+			isError = true;
 			// notify supervisor if error
 			int supervisor = schedulerProcessor.getSupervisor_ID();
 			if (supervisor > 0) {
@@ -234,7 +237,7 @@ public class SchedulerProcessor extends SchedulerProcessorAbstract {
 				}
 			}
 		}
-		return info.getSummary();
+		return (isError ? "SchedulerErr - " : "") + info.getSummary();
 	}	//	runProcess
 
 	private int getRunningUserId() {
