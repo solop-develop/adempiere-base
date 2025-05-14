@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="SP005 Entity Type" ReleaseNo="" SeqNo="10760">
+    <Comments>SP005 Entity Type. By EdwinBetanc0urt</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="882" Action="I" Record_ID="50185" Table="AD_EntityType">
+        <Data AD_Column_ID="15593" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="15595" Column="AD_EntityType_ID">50185</Data>
+        <Data AD_Column_ID="15594" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="15606" Column="Classpath" isNewNull="true"/>
+        <Data AD_Column_ID="15597" Column="Created">2025-05-12 11:34:21.113</Data>
+        <Data AD_Column_ID="15598" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="15602" Column="Description">ADempiere Core Changes</Data>
+        <Data AD_Column_ID="15592" Column="EntityType">SP005</Data>
+        <Data AD_Column_ID="15603" Column="Help">https://solopsoftware.com</Data>
+        <Data AD_Column_ID="15596" Column="IsActive">true</Data>
+        <Data AD_Column_ID="15605" Column="ModelPackage">com.solop.sp005.model</Data>
+        <Data AD_Column_ID="15601" Column="Name">Solop: ADempiere Core Changes</Data>
+        <Data AD_Column_ID="15607" Column="Processing">false</Data>
+        <Data AD_Column_ID="84318" Column="UUID">54d49d2a-5a4d-4d8e-8e58-2a6457a717e7</Data>
+        <Data AD_Column_ID="15599" Column="Updated">2025-05-12 11:34:21.113</Data>
+        <Data AD_Column_ID="15600" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="15604" Column="Version" isNewNull="true"/>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
