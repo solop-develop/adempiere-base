@@ -46,6 +46,8 @@ public class EntityTypeExport extends GenericPOHandler {
 		createViewDefinition(packOut, document, entityType.getEntityType());
 		//	Columns
 		createViewColumns(packOut, document, entityType.getEntityType());
+		//	Process Without Browser
+		createProcessWithoutBrowser(packOut, document, entityType.getEntityType());
 		//	Smart Browser
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Browse.Table_Name, false, null);
 		//	Browse Fields
@@ -110,6 +112,16 @@ public class EntityTypeExport extends GenericPOHandler {
 		int tableId = MTable.getTable_ID(tableName);
 		for (int id : referenceIds) {
 			packOut.createGenericPO(document, tableId, id, includeParents, excludedParentList);
+		}
+	}
+
+	private void createProcessWithoutBrowser(PackOut packOut, TransformerHandler document, String entityType) throws SAXException {
+		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_Process.Table_Name, "EntityType = ? AND AD_Browse_ID IS NULL", null)
+				.setParameters(entityType)
+				.getIDsAsList();
+		int tableId = MTable.getTable_ID(I_AD_Process.Table_Name);
+		for (int id : referenceIds) {
+			packOut.createGenericPO(document, tableId, id, false, null);
 		}
 	}
 
