@@ -245,7 +245,7 @@ public class ASPUtil {
 	public List<MBrowseField> getBrowseCriteriaFields(int browseId) {
 		List<MBrowseField> fields = getBrowseFields(browseId);
 		if(fields == null) {
-			return null;
+			return new ArrayList<MBrowseField>();
 		}
 		//	Filter
 		return fields.stream()
@@ -262,7 +262,7 @@ public class ASPUtil {
 	public List<MBrowseField> getBrowseIdentifierFields(int browseId) {
 		List<MBrowseField> fields = getBrowseFields(browseId);
 		if(fields == null) {
-			return null;
+			return new ArrayList<MBrowseField>();
 		}
 		//	Filter
 		return fields.stream()
@@ -279,7 +279,7 @@ public class ASPUtil {
 	public List<MBrowseField> getBrowseOrderByFields(int browseId) {
 		List<MBrowseField> fields = getBrowseFields(browseId);
 		if(fields == null) {
-			return null;
+			return new ArrayList<MBrowseField>();
 		}
 		//	Filter
 		return fields.stream()
@@ -296,7 +296,7 @@ public class ASPUtil {
 	public List<MBrowseField> getBrowseDisplayFields(int browseId) {
 		List<MBrowseField> fields = getBrowseFields(browseId);
 		if(fields == null) {
-			return null;
+			return new ArrayList<MBrowseField>();
 		}
 		//	Filter
 		return fields.stream()
@@ -373,9 +373,12 @@ public class ASPUtil {
 			return tabCache.get(getClientKey(windowId));
 		}
 		//	Dictionary Level Base
-		return tabCache.get(getDictionaryKey(windowId));
+		if (tabCache.get(getDictionaryKey(windowId)) != null) {
+			return tabCache.get(getDictionaryKey(windowId));
+		}
+		return new ArrayList<MTab>();
 	}
-	
+
 	/**
 	 * Get window Tab from ID
 	 * @param windowId
@@ -420,9 +423,12 @@ public class ASPUtil {
 			return fieldCache.get(getClientKey(tabId));
 		}
 		//	Dictionary Level Base
-		return fieldCache.get(getDictionaryKey(tabId));
+		if (fieldCache.get(getDictionaryKey(tabId)) != null) {
+			return fieldCache.get(getDictionaryKey(tabId));
+		}
+		return new ArrayList<MField>();
 	}
-	
+
 	/**
 	 * Get Process Parameter
 	 * @param processId
@@ -445,9 +451,12 @@ public class ASPUtil {
 			return processParameterCache.get(getClientKey(processId));
 		}
 		//	Dictionary Level Base
-		return processParameterCache.get(getDictionaryKey(processId));
+		if (processParameterCache.get(getDictionaryKey(processId)) != null) {
+			return processParameterCache.get(getDictionaryKey(processId));
+		}
+		return new ArrayList<MProcessPara>();
 	}
-	
+
 	/**
 	 * Get / Load process for ASP
 	 * @param processId
