@@ -842,7 +842,7 @@ implements IDocumentLine , DocumentReversalLineEnable
 	@Override
 	public int getC_ConversionType_ID()
 	{
-		int conversionTypeId = MConversionType.getDefault(getAD_Client_ID());
+		int conversionTypeId = 0;
 		if (getC_OrderLine_ID() > 0)
 		{
 			conversionTypeId = DB.getSQLValueEx(get_TrxName(),
@@ -865,9 +865,9 @@ implements IDocumentLine , DocumentReversalLineEnable
 								" INNER JOIN C_Invoice i ON (i.C_Invoice_ID=il.C_Invoice_ID) " +
 								" WHERE  mi."+MMatchInv.COLUMNNAME_M_InOutLine_ID+"=?", getM_InOutLine_ID());
 		}
-		//if (getM_RMALine_ID() > 0)
-		//	conversionTypeId = -1;
-
+		if(conversionTypeId <= 0) {
+			conversionTypeId = MConversionType.getDefault(getAD_Client_ID());
+		}
 		return conversionTypeId;
 	}
 
