@@ -937,7 +937,9 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 						|| is_ValueChanged(COLUMNNAME_QtyEntered)
 						|| is_ValueChanged(COLUMNNAME_PriceEntered)) {
 					if(!getParent().isReturnOrder()) {
-						setPrice();
+						setPriceList(m_productPrice.getPriceList());
+						setPriceLimit(m_productPrice.getPriceLimit());
+						setDiscount(m_productPrice.getDiscount());
 					}
 				}
 			}
