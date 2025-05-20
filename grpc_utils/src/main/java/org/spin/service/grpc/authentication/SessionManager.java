@@ -810,7 +810,7 @@ public class SessionManager {
 							+ "AND ColumnName = 'IsDefault' "
 							+ "AND t.AD_Table_ID = cc.AD_Table_ID"
 					+ ")"
-					// TODO: Only conversion type
+					// TODO: Only conversion type, and table dimensions
 					+ "AND t.AD_Table_ID IN(" + I_C_ConversionType.Table_ID + ") "
 			;
 			pstmt = DB.prepareStatement(sql, null);
