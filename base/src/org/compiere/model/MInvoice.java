@@ -1064,6 +1064,15 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			int no = DB.executeUpdate(sql, get_TrxName());
 			log.fine("Lines -> #" + no);
 		}
+		MInvoiceLine[] lines = getLines();
+		if (is_ValueChanged(MInvoice.COLUMNNAME_C_Project_ID)) {
+			for (MInvoiceLine line : lines) {
+				if (line.get_ValueAsInt("C_ProjectLine_ID") <= 0) {
+					line.setC_Project_ID(getC_Project_ID());
+				}
+				line.saveEx();
+			}
+		}
 		return true;
 	}	//	afterSave
 
