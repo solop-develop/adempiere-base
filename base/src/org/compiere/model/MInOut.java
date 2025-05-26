@@ -1293,6 +1293,9 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			//	Qty & Type
 			String MovementType = getMovementType();
 			BigDecimal quantity = inOutLine.getMovementQty();
+			if(Optional.ofNullable(quantity).orElse(Env.ZERO).compareTo(Env.ZERO) == 0) {
+				throw new AdempiereException("@Line@ " + inOutLine.getLine() + ": " + product.getValue() + " - " + product.getName() + " @MovementQty@ @Zero@");
+			}
 			if (MovementType.charAt(1) == '-' )	//	C- Customer Shipment - V- Vendor Return
 				quantity = quantity.negate();
 			BigDecimal QtySO = Env.ZERO;
