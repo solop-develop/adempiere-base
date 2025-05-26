@@ -218,10 +218,11 @@ public class AverageInvoiceCostingMethod extends AbstractCostingMethod
 					whereClause.append(" AND M_CostElement_ID=" + dimension.getM_CostElement_ID());
 					whereClause.append(" AND M_MatchInv_ID is null and C_LandedCostAllocation_ID is null");
 					whereClause.append(" AND M_InOutline_ID=?");
+					whereClause.append(" AND Qty <> 0");
 					MCostDetail receiptCostDetail = MCostDetail.get(model.getCtx(),whereClause.toString(),
 							((MMatchInv) model).getM_InOutLine_ID(),
 							model.getM_AttributeSetInstance_ID(), dimension.getC_AcctSchema_ID(), model.get_TrxName());
-					if (receiptCostDetail!=null) {
+					if (receiptCostDetail != null && Optional.ofNullable(model.getMovementQty()).orElse(Env.ZERO).compareTo(Env.ZERO) > 0) {
 						provisionOfPurchaseCost = receiptCostDetail.getCostAmt().divide(receiptCostDetail.getQty()).multiply(model.getMovementQty());//receiptCostDetail.getCostAmt();
 						provisionOfPurchaseCostLL =  receiptCostDetail.getCostAmtLL().divide(receiptCostDetail.getQty()).multiply(model.getMovementQty());
 					}
