@@ -826,6 +826,23 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 		}
 		// Re-set invoice header (need to update m_IsSOTrx flag) - phib [ 1686773 ]
 		setInvoice(getParent());
+		//Project
+		if (getC_Project_ID() <= 0) {
+			if (get_ValueAsInt("C_ProjectLine_ID") > 0) {
+				MProjectLine projectLine = new MProjectLine(getCtx(), get_ValueAsInt("C_ProjectLine_ID"), get_TrxName());
+				setC_Project_ID(projectLine.getC_Project_ID());
+			} else if (m_parent.getC_Project_ID() > 0){
+				setC_Project_ID(m_parent.getC_Project_ID());
+			}
+		} else if (is_ValueChanged("C_ProjectLine_ID")) {
+			if(get_ValueAsInt("C_ProjectLine_ID") > 0) {
+				MProjectLine projectLine = new MProjectLine(getCtx(), get_ValueAsInt("C_ProjectLine_ID"), get_TrxName());
+				setC_Project_ID(projectLine.getC_Project_ID());
+			} else {
+				setC_Project_ID(0);
+			}
+		}
+
 		//	Charge
 		if (getC_Charge_ID() != 0)
 		{
