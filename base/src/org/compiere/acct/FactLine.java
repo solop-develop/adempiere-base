@@ -1179,7 +1179,7 @@ public final class FactLine extends X_Fact_Acct
 			+ "WHERE C_AcctSchema_ID=? AND AD_Table_ID=? AND Record_ID=?"
 			+ " AND Line_ID=? AND Account_ID=? ";
 
-		if (quantity.compareTo(Env.ZERO) != 0) {
+		if (quantity != null && quantity.compareTo(Env.ZERO) != 0) {
 			sql += "AND Qty=?";
 		}
 		// MZ Goodwill
@@ -1198,7 +1198,7 @@ public final class FactLine extends X_Fact_Acct
 			pstmt.setInt(index++, Line_ID);
 			pstmt.setInt(index++, m_acct.getAccount_ID());
 
-			if (quantity.compareTo(Env.ZERO) != 0) {
+			if (quantity != null && quantity.compareTo(Env.ZERO) != 0) {
 				pstmt.setBigDecimal(index++, quantity.negate()); // Negate quantity to get the credit account fact
 			}
 			// MZ Goodwill
