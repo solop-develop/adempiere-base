@@ -1144,6 +1144,15 @@ public final class FactLine extends X_Fact_Acct
 	}   //  createRevenueRecognition
 
 
+	public boolean updateReverseLine (
+		int AD_Table_ID,
+		int Record_ID,
+		int Line_ID,
+		BigDecimal multiplier
+	){
+		return updateReverseLine(AD_Table_ID, Record_ID, Line_ID, Env.ZERO, multiplier);
+	}
+
 	/**************************************************************************
 	 * 	Update Line with reversed Original Amount in Accounting Currency.
 	 * 	Also copies original dimensions like Project, etc.
@@ -1164,10 +1173,15 @@ public final class FactLine extends X_Fact_Acct
 	{
 		boolean success = false;
 
+		int index = 1;
 		String sql = "SELECT * "
 			+ "FROM Fact_Acct "
 			+ "WHERE C_AcctSchema_ID=? AND AD_Table_ID=? AND Record_ID=?"
-			+ " AND Line_ID=? AND Account_ID=? AND Qty=?";
+			+ " AND Line_ID=? AND Account_ID=? ";
+
+		if (quantity.compareTo(Env.ZERO) != 0) {
+			sql += "AND Qty=?";
+		}
 		// MZ Goodwill
 		// for Inventory Move
 		if (MMovement.Table_ID == AD_Table_ID)
@@ -1178,16 +1192,19 @@ public final class FactLine extends X_Fact_Acct
 		try
 		{
 			pstmt = DB.prepareStatement(sql, get_TrxName());
-			pstmt.setInt(1, getC_AcctSchema_ID());
-			pstmt.setInt(2, AD_Table_ID);
-			pstmt.setInt(3, Record_ID);
-			pstmt.setInt(4, Line_ID);
-			pstmt.setInt(5, m_acct.getAccount_ID());
-            pstmt.setBigDecimal(6, quantity.negate()); // Negate quantity to get the credit account fact
+			pstmt.setInt(index++, getC_AcctSchema_ID());
+			pstmt.setInt(index++, AD_Table_ID);
+			pstmt.setInt(index++, Record_ID);
+			pstmt.setInt(index++, Line_ID);
+			pstmt.setInt(index++, m_acct.getAccount_ID());
+
+			if (quantity.compareTo(Env.ZERO) != 0) {
+				pstmt.setBigDecimal(index++, quantity.negate()); // Negate quantity to get the credit account fact
+			}
 			// MZ Goodwill
 			// for Inventory Move
 			if (MMovement.Table_ID == AD_Table_ID)
-				pstmt.setInt(7, getM_Locator_ID());
+				pstmt.setInt(index++, getM_Locator_ID());
 			// end MZ
 			rs = pstmt.executeQuery();
 			if (rs.next())
