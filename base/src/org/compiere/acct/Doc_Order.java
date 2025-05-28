@@ -98,7 +98,7 @@ public class Doc_Order extends Doc
 	 *	@param order order
 	 *  @return DocLine Array
 	 */
-	private DocLine[] loadLines(MOrder order)
+	public DocLine[] loadLines(MOrder order)
 	{
 		ArrayList<DocLine> list = new ArrayList<DocLine>();
 		MOrderLine[] lines = order.getLines();
@@ -157,7 +157,7 @@ public class Doc_Order extends Doc
 	 * 	Load Requisitions
 	 *	@return requisition lines of Order
 	 */
-	private DocLine[] loadRequisitions ()
+	public DocLine[] loadRequisitions ()
 	{
 		MOrder order = (MOrder)getPO();
 		MOrderLine[] oLines = order.getLines();
@@ -225,7 +225,7 @@ public class Doc_Order extends Doc
 	 * 	Get Currency Precision
 	 *	@return precision
 	 */
-	private int getStdPrecision()
+	public int getStdPrecision()
 	{
 		if (m_precision == -1)
 			m_precision = MCurrency.getStdPrecision(getCtx(), getC_Currency_ID());
@@ -236,7 +236,7 @@ public class Doc_Order extends Doc
 	 *	Load Invoice Taxes
 	 *  @return DocTax Array
 	 */
-	private DocTax[] loadTaxes()
+	public DocTax[] loadTaxes()
 	{
 		ArrayList<DocTax> list = new ArrayList<DocTax>();
 		String sql = "SELECT it.C_Tax_ID, t.Name, t.Rate, it.TaxBaseAmt, it.TaxAmt, t.IsSalesTax "
@@ -451,7 +451,7 @@ public class Doc_Order extends Doc
 	 * 	Update ProductPO PriceLastPO
 	 *	@param as accounting schema
 	 */
-	private void updateProductPO(MAcctSchema as)
+	public void updateProductPO(MAcctSchema as)
 	{
 		MClientInfo ci = MClientInfo.get(getCtx(), as.getAD_Client_ID());
 		if (ci.getC_AcctSchema1_ID() != as.getC_AcctSchema_ID())
@@ -562,7 +562,7 @@ public class Doc_Order extends Doc
 	 * @param maxQuantity
 	 * @return
 	 */
-	private static DocLine[] getCommitments(Doc document, List<MOrderLine> orderLineList, BigDecimal maxQuantity) {
+	public static DocLine[] getCommitments(Doc document, List<MOrderLine> orderLineList, BigDecimal maxQuantity) {
 		int precision = -1;
 		ArrayList<DocLine> list = new ArrayList<DocLine>();
 		//	
@@ -692,7 +692,7 @@ public class Doc_Order extends Doc
 	 *  @param C_AcctSchema_ID accounting schema
 	 *  @deprecated old costing
 	 */
-	private void updateProductInfo (int C_AcctSchema_ID)
+	public void updateProductInfo (int C_AcctSchema_ID)
 	{
 		log.fine("C_Order_ID=" + get_ID());
 
