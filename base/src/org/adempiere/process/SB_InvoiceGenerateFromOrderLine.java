@@ -16,6 +16,13 @@
  *****************************************************************************/
 package org.adempiere.process;
 
+import org.compiere.model.*;
+import org.compiere.process.DocAction;
+import org.compiere.util.DisplayType;
+import org.compiere.util.Env;
+import org.compiere.util.Language;
+import org.compiere.util.Msg;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
@@ -23,25 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
-
-import org.compiere.model.MBPartner;
-import org.compiere.model.MClient;
-import org.compiere.model.MDocType;
-import org.compiere.model.MInOut;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MInvoiceSchedule;
-import org.compiere.model.MLocation;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.Query;
-import org.compiere.process.DocAction;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
-import org.compiere.util.Language;
-import org.compiere.util.Msg;
 
 /**
  *	Generate Invoices
@@ -112,7 +102,7 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 		ordersToInvoice = new ArrayList<MOrder>();
 		for (MOrderLine orderLine: m_records) 
 		{	
-			Boolean isadded =  false;
+			boolean isadded = false;
 			for (MOrder order:ordersToInvoice)
 			{
 				if (order.getC_Order_ID() ==  orderLine.getC_Order_ID())
@@ -207,8 +197,8 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 				{
 					MOrderLine oLine = oLines[i];
 					if ( !getSelectionKeys().contains(oLine.getC_OrderLine_ID()))
-						continue;	
-					BigDecimal toInvoice = oLine.getQtyOrdered().subtract(oLine.getQtyInvoiced());
+						continue;
+					BigDecimal toInvoice = Optional.ofNullable(getSelectionAsBigDecimal(oLine.getC_OrderLine_ID(), "OLINE_QtyEntered")).orElse(oLine.getQtyOrdered().subtract(oLine.getQtyInvoiced()));
 					if (toInvoice.compareTo(Env.ZERO) == 0 && oLine.getM_Product_ID() != 0)
 						continue;
 					//
