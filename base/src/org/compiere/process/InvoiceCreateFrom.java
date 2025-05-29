@@ -16,24 +16,14 @@
 
 package org.compiere.process;
 
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.*;
+import org.compiere.util.Env;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MInOut;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MProduct;
-import org.compiere.model.MRMA;
-import org.compiere.model.MRMALine;
-import org.compiere.model.MUOMConversion;
-import org.compiere.model.PO;
-import org.compiere.util.Env;
 
 /** Generated Process for (Invoice Create From)
  *  @author ADempiere (generated)
@@ -66,11 +56,11 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 		AtomicInteger referenceId = new AtomicInteger(0);
 		AtomicInteger 	created = new AtomicInteger(0);
 		List<Integer> recordIds =  getSelectionKeys();
-		String createFromType = recordIds.size() > 0 ?  getSelectionAsString(recordIds.get(0), "CF_CreateFromType") : null;
+		String createFromType = !recordIds.isEmpty() ?  getSelectionAsString(recordIds.get(0), "CF_CreateFromType") : null;
 		log.fine("CreateFromType=" + createFromType);
-		if (createFromType == null || createFromType.length() == 0)
+		if (createFromType == null || createFromType.isEmpty()) {
 			throw new AdempiereException("@CreateFromType@ @NotFound@");
-
+		}
 		//	Loop
 		recordIds.forEach(key -> {
 			// variable values
@@ -103,11 +93,9 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 			}
 
 			qtyEntered = qtyEntered.setScale(precision, RoundingMode.HALF_DOWN);
-			if (qtyInvoiced == null)
+			if (qtyInvoiced == null) {
 				qtyInvoiced = qtyEntered;
-
-			invoiceLine.setQty(qtyEntered);							//	Movement/Entered
-			invoiceLine.setQtyInvoiced(qtyInvoiced);
+			}
 			if(createFromType.equals(ORDER)) {
 				MOrderLine orderLine = new MOrderLine (getCtx(), key, get_TrxName());
 				//	Set reference
@@ -116,7 +104,7 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 			} else if(createFromType.equals(INVOICE)) {
 				MInvoiceLine fromLine = new MInvoiceLine(getCtx(), key, get_TrxName());
 				//	Set reference
-				referenceId.set(invoiceLine.getParent().getC_Invoice_ID());
+				referenceId.set(fromLine.getParent().getC_Invoice_ID());
 				//	Copy Values
 				PO.copyValues(fromLine, invoiceLine);
 				invoiceLine.setC_Invoice_ID(invoiceLine.getParent().getC_Invoice_ID());
@@ -145,6 +133,8 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 				referenceId.set(inOutLine.getM_InOut_ID());
 				invoiceLine.setShipLine(inOutLine);
 			}
+			invoiceLine.setQty(qtyEntered);							//	Movement/Entered
+			invoiceLine.setQtyInvoiced(qtyInvoiced);
 			//	Save
 			invoiceLine.saveEx();
 			if(createFromType.equals(INVOICE)) {
@@ -169,7 +159,7 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 	 * @param createFromType
 	 * @param referenceId
      */
-	private void addReference(MInvoice invoice, String createFromType , int referenceId ) {
+	private void addReference(MInvoice invoice, String createFromType , int referenceId) {
 		//	Valid Reference
 		if(referenceId == 0)
 			return;
@@ -186,6 +176,9 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 			invoice.setUser2_ID(fromInvoice.getUser2_ID());
 			invoice.setUser3_ID(fromInvoice.getUser3_ID());
 			invoice.setUser4_ID(fromInvoice.getUser4_ID());
+			if(fromInvoice.getC_Order_ID() > 0) {
+				invoice.setC_Order_ID(fromInvoice.getC_Order_ID());
+			}
 		} else if(createFromType.equals(RMA)) {
 			MRMA rma = new MRMA(getCtx(), referenceId, get_TrxName());
 			invoice.setRMA(rma);
