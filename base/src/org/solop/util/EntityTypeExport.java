@@ -34,6 +34,8 @@ public class EntityTypeExport extends GenericPOHandler {
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Window.Table_Name, false, null);
 		//	Tables
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Table.Table_Name, false, null);
+		//	Report Views
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_ReportView.Table_Name, false, null);
 		//	Validation Rules
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Val_Rule.Table_Name, false, null);
 		//	Reference Header Only
