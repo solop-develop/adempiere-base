@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="10800_Increase_Packin_and_AD_Rule_column_size" ReleaseNo="" SeqNo="10800">
-    <Comments>Increase table AD_Package_Imp_Backup column ColValue and table AD_Rule column Script size to 160.000 to permit large scripts </Comments>
+  <Migration EntityType="D" Name="10800_Increase_Packin_and_AD_Rule_column_size" ReleaseNo="0.7.6" SeqNo="10800">
+    <Comments>Increase column ColValue in table AD_Package_Imp_Backup and column Script in table AD_Rule size to 160.000 to permit importing and saving large scripts </Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="101" Action="U" Record_ID="50035" Table="AD_Column">
         <Data AD_Column_ID="118" Column="FieldLength" oldValue="2000">160000</Data>
