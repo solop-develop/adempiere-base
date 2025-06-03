@@ -211,6 +211,7 @@ public class SequenceCheck extends SvrProcess
 		}
 		List<Integer> sequenceIds = new Query(ctx, I_AD_Sequence.Table_Name, whereClause, sp.get_TrxName())
 				.setOrderBy(I_AD_Sequence.COLUMNNAME_Name)
+				.setOnlyActiveRecords(true)
 				.getIDsAsList();
 		AtomicInteger counterValue = new AtomicInteger(0);
 		sequenceIds.stream().parallel().forEach(sequenceId -> {
