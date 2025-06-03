@@ -18,10 +18,10 @@
     </Step>
     <Step  DBType="Postgres" Parse="N" SeqNo="30" StepType="SQL">
       <SQLStatement>
-        ALTER TABLE AD_Package_Imp_Backup ALTER COLUMN ColValue TYPE varchar(160000) USING colvalue::varchar(160000);
+        ALTER TABLE AD_Package_Imp_Backup ALTER COLUMN ColValue TYPE TEXT USING ColValue::TEXT;
       </SQLStatement>
       <RollbackStatement>
-        ALTER TABLE AD_Package_Imp_Backup ALTER COLUMN ColValue TYPE varchar(2000) USING colvalue::varchar(2000);
+        ALTER TABLE AD_Package_Imp_Backup ALTER COLUMN ColValue TYPE VARCHAR(2000) USING colvalue::VARCHAR(2000);
       </RollbackStatement>
     </Step>
   </Migration>
