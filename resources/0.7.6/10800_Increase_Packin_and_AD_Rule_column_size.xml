@@ -21,7 +21,7 @@
         ALTER TABLE AD_Package_Imp_Backup ALTER COLUMN ColValue TYPE TEXT USING ColValue::TEXT;
       </SQLStatement>
       <RollbackStatement>
-        ALTER TABLE AD_Package_Imp_Backup ALTER COLUMN ColValue TYPE VARCHAR(2000) USING colvalue::VARCHAR(2000);
+        ALTER TABLE AD_Package_Imp_Backup ALTER COLUMN ColValue TYPE VARCHAR(2000) USING ColValue::VARCHAR(2000);
       </RollbackStatement>
     </Step>
   </Migration>
