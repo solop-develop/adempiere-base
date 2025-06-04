@@ -127,13 +127,8 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 				MTable allocateInvoiceTable = MTable.get(getCtx(), "C_AllocateInvoice");
 				if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
 					PO allocateInvoice = allocateInvoiceTable.getPO(0, invoiceLine.get_TrxName());
-					allocateInvoice.set_ValueOfColumn("AD_Client_ID", invoiceLine.getAD_Client_ID());
-					allocateInvoice.setAD_Org_ID(invoiceLine.getAD_Org_ID());
 					allocateInvoice.set_ValueOfColumn("C_Invoice_ID", getRecord_ID());
 					allocateInvoice.set_ValueOfColumn("ReferenceDocument_ID", fromLine.getC_Invoice_ID());
-
-
-
 					AtomicReference<BigDecimal> maybeAllocateAmount = new AtomicReference<>();
 					Optional.of(MTax.get(invoiceLine.getCtx(), invoiceLine.getC_Tax_ID())).ifPresent(tax ->{
 						BigDecimal amountToAllocate = invoiceLine.getLineNetAmt();
