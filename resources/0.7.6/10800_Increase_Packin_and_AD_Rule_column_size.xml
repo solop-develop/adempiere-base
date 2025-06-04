@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="10800_Increase_Packin_and_AD_Rule_column_size" ReleaseNo="0.7.6" SeqNo="10800">
+    <Comments>Increase column ColValue in table AD_Package_Imp_Backup and column Script in table AD_Rule size to 160.000 to permit importing and saving large scripts </Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="50035" Table="AD_Column">
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="2000">160000</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">ColValue</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="54257" Table="AD_Column">
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="8000">160000</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">Script</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step  DBType="Postgres" Parse="N" SeqNo="30" StepType="SQL">
+      <SQLStatement>
+        ALTER TABLE AD_Package_Imp_Backup ALTER COLUMN ColValue TYPE TEXT USING ColValue::TEXT;
+      </SQLStatement>
+      <RollbackStatement>
+        ALTER TABLE AD_Package_Imp_Backup ALTER COLUMN ColValue TYPE VARCHAR(2000) USING ColValue::VARCHAR(2000);
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
