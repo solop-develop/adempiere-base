@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -2012,27 +2013,45 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 
 		//Automatic Allocation
 		MDocType documentType = MDocType.get(getCtx(), getC_DocTypeTarget_ID());
-		if(documentType.get_ValueAsBoolean("IsAutomaticAllocation")) { //TODO: Doctype new Column
+		if(documentType.get_ValueAsBoolean("IsAutomaticAllocation")) {
 			AllocationManager allocationManager = new AllocationManager(this);
 			int invoiceToAllocateId = get_ValueAsInt("ReferenceDocument_ID");
 			if (invoiceToAllocateId > 0) {
 				allocationManager.addAllocateDocument(invoiceToAllocateId, getGrandTotal(), Env.ZERO, Env.ZERO);
 				allocationManager.createAllocation();
+			} else {
+				MTable allocateInvoiceTable = MTable.get(getCtx(), "C_AllocateInvoice");
+				if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
+					String whereClause = "C_Invoice_ID = ?";
+					List<PO> allocateInvoices = new Query(getCtx(), allocateInvoiceTable.getTableName(),whereClause, get_TrxName())
+						.setParameters(get_ID())
+						.list();
+					HashMap<Integer, BigDecimal> currencyConvertRate = new HashMap<>();
+					allocateInvoices.forEach(allocation -> {
+						BigDecimal amountToAllocate = Optional.ofNullable((BigDecimal) get_Value("AllocateAmount"))
+							.orElse(Env.ZERO);
+						if (amountToAllocate.signum() == 0) {
+							MInvoice referenceInvoice = MInvoice.get(getCtx(), allocation.get_ValueAsInt("ReferenceDocument_ID"));
+							int referenceCurrencyId = referenceInvoice.getC_Currency_ID();
+							BigDecimal rate = currencyConvertRate.get(referenceCurrencyId);
+							if (rate == null) {
+								rate = MConversionRate.getRate(referenceCurrencyId, getC_Currency_ID(), getDateInvoiced(), getC_ConversionType_ID(), getAD_Client_ID(), getAD_Org_ID());
+								//TODO: Validate Rate Null
+								currencyConvertRate.put(referenceCurrencyId, rate);
+							}
+							amountToAllocate = referenceInvoice.getOpenAmt();
+							amountToAllocate = amountToAllocate.multiply(rate);
+						}
+						if (amountToAllocate.signum() != 0) {
+							allocationManager.addAllocateDocument(allocation.get_ValueAsInt("ReferenceDocument_ID"),amountToAllocate, Env.ZERO, Env.ZERO);
+						}
+
+					});
+					if (!allocateInvoices.isEmpty()) {
+						allocationManager.createAllocation();
+					}
+				}
 			}
-
-			//TODO: Allocate by lines in new table
-			/*Arrays.asList(getLines())
-					.stream()
-					.filter(invoiceLine -> invoiceLine.get_ValueAsInt("InvoiceToAllocate_ID") != 0) //
-					.forEach(invoiceLine -> {
-						Optional.ofNullable(MTax.get(invoiceLine.getCtx(), invoiceLine.getC_Tax_ID())).ifPresent(tax ->{
-							BigDecimal amountToAllocate = invoiceLine.getLineNetAmt();
-							amountToAllocate = amountToAllocate.add(tax.calculateTax(amountToAllocate, invoiceLine.isTaxIncluded(), invoiceLine.getPrecision()));
-							allocationManager.addAllocateDocument(invoiceLine.get_ValueAsInt("InvoiceToAllocate_ID"), amountToAllocate, Env.ZERO, Env.ZERO);
-						});
-					});*/
-
-			//allocationToRepost.put(invoice.get_ID(), allocationManager); TODO: Post the Allocation
 		} //Automatic Allocation
 
 		//	User Validation
