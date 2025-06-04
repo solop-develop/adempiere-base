@@ -56,6 +56,7 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
+import org.solop.util.AllocationManager;
 
 
 /**
@@ -2008,6 +2009,31 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 				return DocAction.STATUS_Invalid;
 			}
 		}	//	project
+
+		//Automatic Allocation
+		MDocType documentType = MDocType.get(getCtx(), getC_DocTypeTarget_ID());
+		if(documentType.get_ValueAsBoolean("IsAutomaticAllocation")) { //TODO: Doctype new Column
+			AllocationManager allocationManager = new AllocationManager(this);
+			int invoiceToAllocateId = get_ValueAsInt("ReferenceDocument_ID");
+			if (invoiceToAllocateId > 0) {
+				allocationManager.addAllocateDocument(invoiceToAllocateId, getGrandTotal(), Env.ZERO, Env.ZERO);
+				allocationManager.createAllocation();
+			}
+
+			//TODO: Allocate by lines in new table
+			/*Arrays.asList(getLines())
+					.stream()
+					.filter(invoiceLine -> invoiceLine.get_ValueAsInt("InvoiceToAllocate_ID") != 0) //
+					.forEach(invoiceLine -> {
+						Optional.ofNullable(MTax.get(invoiceLine.getCtx(), invoiceLine.getC_Tax_ID())).ifPresent(tax ->{
+							BigDecimal amountToAllocate = invoiceLine.getLineNetAmt();
+							amountToAllocate = amountToAllocate.add(tax.calculateTax(amountToAllocate, invoiceLine.isTaxIncluded(), invoiceLine.getPrecision()));
+							allocationManager.addAllocateDocument(invoiceLine.get_ValueAsInt("InvoiceToAllocate_ID"), amountToAllocate, Env.ZERO, Env.ZERO);
+						});
+					});*/
+
+			//allocationToRepost.put(invoice.get_ID(), allocationManager); TODO: Post the Allocation
+		} //Automatic Allocation
 
 		//	User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
