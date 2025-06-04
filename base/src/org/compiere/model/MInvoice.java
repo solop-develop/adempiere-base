@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -56,6 +57,7 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
+import org.solop.util.AllocationManager;
 
 
 /**
@@ -79,7 +81,7 @@ import org.compiere.util.TimeUtil;
 public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversalEnabled
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 816227083897031327L;
 
@@ -192,7 +194,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		if (from.getLines(true).length > 0) {
 			if (to.copyLinesFrom(from, counter, setOrder) == 0)
 				throw new IllegalStateException("Could not create Invoice Lines");
-		}	
+		}
 
 		return to;
 	}
@@ -954,7 +956,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 				}
 			}
 		}
-		
+
 		//	Default Sales Rep
 		if (getSalesRep_ID() == 0) {
 			int salesRepresentativeId = 0;
@@ -971,7 +973,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					}
 				}
 			}
-			//	
+			//
 			if(salesRepresentativeId == 0) {
 				salesRepresentativeId = Env.getContextAsInt(getCtx(), "#SalesRep_ID");
 			}
@@ -1336,9 +1338,9 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		return engine.processIt (processAction, getDocAction());
 	}	//	process
 
-	
+
 	DocumentEngine documentEngine = null;
-	
+
 	/**
 	 * A method added for testing. Do not use outside of tests.
 	 * @return The invoice document engine
@@ -1346,14 +1348,14 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
     protected DocumentEngine getDocumentEngine(MInvoice invoice, String docStatus) {
 
         return Optional.ofNullable(documentEngine)
-                .orElseGet(() -> new DocumentEngine (invoice, docStatus)); 
+                .orElseGet(() -> new DocumentEngine (invoice, docStatus));
 
     }
 
     public void setDocumentEngine_forTestingOnly(DocumentEngine engine) {
 
         documentEngine = engine;
-        
+
     }
 
 	/**	Process Message 			*/
@@ -1538,7 +1540,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			renumberLines (10);
 		}	//	while count != 0
 	}	//	explodeBOM
-	
+
 	/**
 	 * 	Get BOM Lines for Product BOM
 	 * 	@return BOM Lines
@@ -1550,27 +1552,27 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 				.setOnlyActiveRecords(true)
 				.setOrderBy(X_PP_Product_BOMLine.COLUMNNAME_Line)
 				.getIDsAsList();
-	}	//	getLines    	
-	
+	}	//	getLines
+
 	private X_PP_Product_BOM getProductBom(MProduct product, int organizationId, Timestamp promisedDate, String transactionName) {
 		X_PP_Product_BOM bom = null;
 		Properties ctx = product.getCtx();
-		// find Default BOM in Product Data Planning  
-		if (organizationId > 0 ) {	
+		// find Default BOM in Product Data Planning
+		if (organizationId > 0 ) {
 			X_PP_Product_Planning pp = getProductPlanning(ctx, product.getAD_Client_ID(), organizationId, product.getM_Product_ID(), transactionName);
 			if(pp != null && pp.getPP_Product_BOM_ID() > 0) {
 				bom = new X_PP_Product_BOM(ctx, pp.getPP_Product_BOM_ID(), transactionName);
 			}
-		}	
+		}
 		if (bom == null) {
-			//Find BOM with Default Logic where product = bom product and bom value = value 
+			//Find BOM with Default Logic where product = bom product and bom value = value
 			bom = getDefaultProductBom(product, transactionName);
 		}
 		return bom;
 	}
-	
+
 	/**
-	 * Get BOM with Default Logic (Product = BOM Product and BOM Value = Product Value) 
+	 * Get BOM with Default Logic (Product = BOM Product and BOM Value = Product Value)
 	 * @param product
 	 * @param trxName
 	 * @return product BOM
@@ -1582,27 +1584,27 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 				.setClient_ID()
 				.first();
 	}
-	
+
 	/**
 	 * Get Data Product Planning to Organization
 	 * @param ctx Context
 	 * @param organizationId Organization ID
 	 * @param productId Product ID
-	 * @param transactionName Transaction Name 
+	 * @param transactionName Transaction Name
 	 * @return MPPProductPlanning
-	 */    
+	 */
 	private X_PP_Product_Planning getProductPlanning(Properties ctx, int clientId, int organizationId, int productId, String transactionName) {
 		int warehouseId = MOrgInfo.get(ctx, organizationId, transactionName).getM_Warehouse_ID();
 		if(warehouseId <= 0) {
 			return null;
 		}
-		int resourceId = getPlantForWarehouse(warehouseId); 
+		int resourceId = getPlantForWarehouse(warehouseId);
 		if (resourceId <= 0)
 			return null;
 
 		return getProductPlanning(ctx, clientId,organizationId, warehouseId, resourceId, productId, transactionName);
 	}
-	
+
 	/**
 	 * Get plant resource for warehouse. If more than one resource is found, first will be used.
 	 * @param warehouseId
@@ -1613,13 +1615,13 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 							+" FROM "+MResource.Table_Name
 							+" WHERE "+MResource.COLUMNNAME_IsManufacturingResource+"=?"
 							+" AND "+MResource.COLUMNNAME_ManufacturingResourceType+"=?"
-							+" AND "+MResource.COLUMNNAME_M_Warehouse_ID+"=?"; 
+							+" AND "+MResource.COLUMNNAME_M_Warehouse_ID+"=?";
 		int plantId = DB.getSQLValueEx(null, sql, true, MResource.MANUFACTURINGRESOURCETYPE_Plant, warehouseId);
 		return plantId;
 	}
 
 	/**
-	 * Get Data Product Planning 
+	 * Get Data Product Planning
 	 * @param ctx Context
 	 * @param AD_Client_ID ID Organization
 	 * @param AD_Org_ID ID Organization
@@ -1628,7 +1630,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	 * @param M_Product_ID ID Product
 	 * @param transactionName Trx Name
 	 * @return MPPProductPlanning
-	 */     
+	 */
 	private X_PP_Product_Planning getProductPlanning(Properties ctx, int clientId, int organizationId,
 											int warehouseId, int resourceId, int productId,
 											String transactionName)
@@ -1805,7 +1807,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			approveIt();
 		log.info(toString());
 		StringBuffer info = new StringBuffer();
-		
+
 		// POS supports multiple payments
 		boolean fromPOS = false;
 		if (getC_Order_ID() > 0) {
@@ -2008,6 +2010,50 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 				return DocAction.STATUS_Invalid;
 			}
 		}	//	project
+
+		//Automatic Allocation
+		MDocType documentType = MDocType.get(getCtx(), getC_DocTypeTarget_ID());
+		if(documentType.get_ValueAsBoolean("IsAutomaticAllocation")) {
+			AllocationManager allocationManager = new AllocationManager(this);
+			int invoiceToAllocateId = get_ValueAsInt("ReferenceDocument_ID");
+			if (invoiceToAllocateId > 0) {
+				allocationManager.addAllocateDocument(invoiceToAllocateId, getGrandTotal(), Env.ZERO, Env.ZERO);
+				allocationManager.createAllocation();
+			} else {
+				MTable allocateInvoiceTable = MTable.get(getCtx(), "C_AllocateInvoice");
+				if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
+					String whereClause = "C_Invoice_ID = ?";
+					List<Integer> allocateInvoiceIds = new Query(getCtx(), allocateInvoiceTable.getTableName(),whereClause, get_TrxName())
+						.setParameters(get_ID())
+							.getIDsAsList();
+					HashMap<Integer, BigDecimal> currencyConvertRate = new HashMap<>();
+					allocateInvoiceIds.forEach(allocationId -> {
+						PO allocation = allocateInvoiceTable.getPO(allocationId, get_TrxName());
+						BigDecimal amountToAllocate = Optional.ofNullable((BigDecimal) get_Value("AllocateAmount"))
+							.orElse(Env.ZERO);
+						if (amountToAllocate.signum() == 0) {
+							MInvoice referenceInvoice = MInvoice.get(getCtx(), allocation.get_ValueAsInt("ReferenceDocument_ID"));
+							int referenceCurrencyId = referenceInvoice.getC_Currency_ID();
+							BigDecimal rate = currencyConvertRate.get(referenceCurrencyId);
+							if (rate == null) {
+								rate = MConversionRate.getRate(referenceCurrencyId, getC_Currency_ID(), getDateInvoiced(), getC_ConversionType_ID(), getAD_Client_ID(), getAD_Org_ID());
+								//TODO: Validate Rate Null
+								currencyConvertRate.put(referenceCurrencyId, rate);
+							}
+							amountToAllocate = referenceInvoice.getOpenAmt();
+							amountToAllocate = amountToAllocate.multiply(rate);
+						}
+						if (amountToAllocate.signum() != 0) {
+							allocationManager.addAllocateDocument(allocation.get_ValueAsInt("ReferenceDocument_ID"),amountToAllocate, Env.ZERO, Env.ZERO);
+						}
+
+					});
+					if (!allocateInvoiceIds.isEmpty()) {
+						allocationManager.createAllocation();
+					}
+				}
+			}
+		} //Automatic Allocation
 
 		//	User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
@@ -2584,7 +2630,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			|| DOCSTATUS_Closed.equals(ds)
 			|| DOCSTATUS_Reversed.equals(ds);
 	}	//	isComplete
-	
+
 	/**
 	 * Get Bank Account for Cash as Payment
 	 * @return
@@ -2603,7 +2649,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Get cash book
 	 * @return
@@ -2622,7 +2668,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		//	
 		return -1;
 	}
-	
+
 	/**
 	 * Validate if exist a valid cash book
 	 * @return
@@ -2630,7 +2676,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	private boolean isValidCashBook() {
 		return getCashBankAccount() > 0 || getCashBook() > 0;
 	}
-	
+
 	/**
 	 * Pay it with cash
 	 * @return message
@@ -2664,7 +2710,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		MBankStatement.addPayment(paymentCash);
 		return "@C_Payment_ID@: " + paymentCash.getDocumentNo();
 	}
-	
+
 	/**
 	 * Pay Invoice with cash
 	 * @return message
@@ -2682,7 +2728,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		setC_CashLine_ID(cashLine.getC_CashLine_ID());
 		return "@C_Cash_ID@: " + cash.getName() +  " #" + cashLine.getLine();
 	}
-	
+
     /**
      * 	Create Allocation of the invoice to prepayments of the same Order
      *	@return void
