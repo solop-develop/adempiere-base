@@ -112,7 +112,6 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 				invoiceLine.setC_Invoice_ID(invoiceLine.getParent().getC_Invoice_ID());
 				invoiceLine.setAD_Org_ID(fromLine.getAD_Org_ID());
 				//	Reset
-				invoiceLine.setC_OrderLine_ID(0);
 				invoiceLine.setRef_InvoiceLine_ID(0);
 				invoiceLine.setM_InOutLine_ID(0);
 				invoiceLine.setA_Asset_ID(0);
