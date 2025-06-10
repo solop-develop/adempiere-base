@@ -1,0 +1,1224 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP032" Name="SP032 Remove some fields and columns" ReleaseNo="1.0" SeqNo="6960">
+    <Comments>Remove some fields and columns</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99760" Table="AD_Field_Trl">
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Generar Tipo de Conversión Automaticamente"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99760">99760</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99760" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Generated Currency Type Automatically"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:14:14.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:14:14.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99760"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="340"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97243"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="600"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="186"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="8e2c4ae7-14da-45bc-acff-2e87b96c6c8c"/>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99761" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99761">99761</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Tasa de Cambio Negociada"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99761" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Negotiated Currency Rate"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:14:15.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:14:15.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99761"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="350"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97244"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="610"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="186"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="4c863451-2799-424a-b445-9b7378bcff49"/>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99762" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Generar Tipo de Conversión Automaticamente"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99762">99762</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99762" Table="AD_Field">
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="8b2957e9-dc3a-4386-b59a-55b8e0dc9f07"/>
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Generated Currency Type Automatically"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:14:42.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:14:42.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99762"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="280"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97243"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="510"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="294"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99763" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Tasa de Cambio Negociada"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99763">99763</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99763" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Negotiated Currency Rate"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97244"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="520"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="294"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="93e05cea-f46a-47ba-8d77-3f9cf0073fb8"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:14:43.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:14:43.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99763"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="290"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="752" Action="D" Record_ID="97244" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12959" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="12952" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID" oldValue="97244">97244</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="12957" Column="Name" isNewNull="true" oldValue="Tasa de Cambio Negociada"/>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12958" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12956" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12953" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="101" Action="D" Record_ID="97244" Table="AD_Column">
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="549" Column="Created" isNewNull="true" oldValue="2020-11-09 15:12:33.0"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:12:33.0"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID" isNewNull="true" oldValue="97244"/>
+        <Data AD_Column_ID="126" Column="IsIdentifier" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="111" Column="Name" isNewNull="true" oldValue="Negotiated Currency Rate"/>
+        <Data AD_Column_ID="124" Column="IsMandatory" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="125" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="119" Column="IsKey" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="110" Column="Version" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName" isNewNull="true" oldValue="SP032_NegotiatedRate"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="128" Column="IsEncrypted" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="68024" Column="IsRange" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="6482" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID" isNewNull="true" oldValue="259"/>
+        <Data AD_Column_ID="550" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID" isNewNull="true" oldValue="61521"/>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" isNewNull="true" oldValue="12"/>
+        <Data AD_Column_ID="552" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="84306" Column="UUID" isNewNull="true" oldValue="bd70e64f-01f1-444b-bcd9-159663a42ca4"/>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="752" Action="D" Record_ID="97243" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12959" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="12952" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID" oldValue="97243">97243</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="12957" Column="Name" isNewNull="true" oldValue="Generar Tipo de Conversión Automaticamente"/>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12958" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12956" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12953" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="101" Action="D" Record_ID="97243" Table="AD_Column">
+        <Data AD_Column_ID="110" Column="Version" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="549" Column="Created" isNewNull="true" oldValue="2020-11-09 15:12:31.0"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:12:31.0"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID" isNewNull="true" oldValue="97243"/>
+        <Data AD_Column_ID="126" Column="IsIdentifier" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="111" Column="Name" isNewNull="true" oldValue="Generated Currency Type Automatically"/>
+        <Data AD_Column_ID="124" Column="IsMandatory" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="125" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="119" Column="IsKey" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName" isNewNull="true" oldValue="SP032_IsGeneratedCurrencyType"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="128" Column="IsEncrypted" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="68024" Column="IsRange" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="6482" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID" isNewNull="true" oldValue="259"/>
+        <Data AD_Column_ID="550" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID" isNewNull="true" oldValue="61519"/>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength" isNewNull="true" oldValue="1"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" isNewNull="true" oldValue="20"/>
+        <Data AD_Column_ID="552" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="84306" Column="UUID" isNewNull="true" oldValue="06b672f3-ca83-4969-be70-7d350aa0b6d6"/>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99768" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Generar Tipo de Conversión Automaticamente"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99768">99768</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99768" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Generated Currency Type Automatically"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:16:09.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:16:09.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99768"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="260"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97247"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="730"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="330"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="3fea0439-d23e-4c1f-a648-6ccf59d9891d"/>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99769" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Tasa de Cambio Negociada"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99769">99769</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99769" Table="AD_Field">
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Negotiated Currency Rate"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:16:10.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:16:10.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99769"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="270"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97248"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="740"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="330"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="eddcb98f-1549-4300-bcab-979c47749c26"/>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99770" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Generar Tipo de Conversión Automaticamente"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99770">99770</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99770" Table="AD_Field">
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Generated Currency Type Automatically"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:16:43.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:16:43.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99770"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="260"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97247"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="700"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="54419"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="b408d031-e9fe-4dff-bd4a-19242df4a3a4"/>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99771" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Tasa de Cambio Negociada"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99771">99771</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99771" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Negotiated Currency Rate"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99771"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="270"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97248"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="710"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="54419"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="30c8cd1c-31dd-42b0-8a1f-973ba1e1400c"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:16:44.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:16:44.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="752" Action="D" Record_ID="97247" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12959" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="12952" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID" oldValue="97247">97247</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="12957" Column="Name" isNewNull="true" oldValue="Generar Tipo de Conversión Automaticamente"/>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12958" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12956" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12953" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="101" Action="D" Record_ID="97247" Table="AD_Column">
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="549" Column="Created" isNewNull="true" oldValue="2020-11-09 15:13:21.0"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:13:21.0"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID" isNewNull="true" oldValue="97247"/>
+        <Data AD_Column_ID="126" Column="IsIdentifier" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="111" Column="Name" isNewNull="true" oldValue="Generated Currency Type Automatically"/>
+        <Data AD_Column_ID="124" Column="IsMandatory" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="125" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="119" Column="IsKey" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="110" Column="Version" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName" isNewNull="true" oldValue="SP032_IsGeneratedCurrencyType"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="128" Column="IsEncrypted" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="68024" Column="IsRange" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="6482" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID" isNewNull="true" oldValue="335"/>
+        <Data AD_Column_ID="550" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID" isNewNull="true" oldValue="61519"/>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength" isNewNull="true" oldValue="1"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" isNewNull="true" oldValue="20"/>
+        <Data AD_Column_ID="552" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="84306" Column="UUID" isNewNull="true" oldValue="679e90cc-df6e-4ee7-9db8-761b206676e6"/>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="752" Action="D" Record_ID="97248" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12959" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="12952" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID" oldValue="97248">97248</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="12957" Column="Name" isNewNull="true" oldValue="Tasa de Cambio Negociada"/>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12958" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12956" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12953" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="101" Action="D" Record_ID="97248" Table="AD_Column">
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="549" Column="Created" isNewNull="true" oldValue="2020-11-09 15:13:22.0"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:13:22.0"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID" isNewNull="true" oldValue="97248"/>
+        <Data AD_Column_ID="126" Column="IsIdentifier" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="111" Column="Name" isNewNull="true" oldValue="Negotiated Currency Rate"/>
+        <Data AD_Column_ID="124" Column="IsMandatory" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="125" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="119" Column="IsKey" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="110" Column="Version" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName" isNewNull="true" oldValue="SP032_NegotiatedRate"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="128" Column="IsEncrypted" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="68024" Column="IsRange" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="6482" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID" isNewNull="true" oldValue="335"/>
+        <Data AD_Column_ID="550" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID" isNewNull="true" oldValue="61521"/>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" isNewNull="true" oldValue="12"/>
+        <Data AD_Column_ID="552" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="84306" Column="UUID" isNewNull="true" oldValue="4e1aa347-e185-4c43-b87d-9eae33aac11b"/>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="250" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99764" Table="AD_Field_Trl">
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Generar Tipo de Conversión Automaticamente"/>
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99764">99764</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="260" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99764" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Generated Currency Type Automatically"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:15:03.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:15:03.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99764"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="180"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97245"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="480"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="263"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="7207d04c-f7dc-49d1-bb77-f529e189ff16"/>
+      </PO>
+    </Step>
+    <Step SeqNo="270" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99765" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Tasa de Cambio Negociada"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99765">99765</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="280" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99765" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Negotiated Currency Rate"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="263"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="c5f43c3d-a367-46e8-97ad-9edbb4c264ab"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="490"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:15:04.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:15:04.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99765"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="190"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97246"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="290" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99766" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Generar Tipo de Conversión Automaticamente"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99766">99766</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="300" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99766" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Generated Currency Type Automatically"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="180"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97245"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="460"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="290"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="4d8250d6-cb3d-4027-bafd-8af5f57d3cb8"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:15:43.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:15:43.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99766"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+      </PO>
+    </Step>
+    <Step SeqNo="310" StepType="AD">
+      <PO AD_Table_ID="127" Action="D" Record_ID="99767" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="672" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="674" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:27.323323"/>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="287" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="289" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="286" Column="Name" isNewNull="true" oldValue="Tasa de Cambio Negociada"/>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="99767">99767</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="675" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="320" StepType="AD">
+      <PO AD_Table_ID="107" Action="D" Record_ID="99767" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name" isNewNull="true" oldValue="Negotiated Currency Rate"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="383" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID" isNewNull="true" oldValue="99767"/>
+        <Data AD_Column_ID="7714" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="582" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="580" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="181" Column="SeqNo" isNewNull="true" oldValue="190"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID" isNewNull="true" oldValue="97246"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid" isNewNull="true" oldValue="470"/>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID" isNewNull="true" oldValue="290"/>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID" isNewNull="true" oldValue="d6a1574f-a04c-4895-a23e-bac3f38c430a"/>
+        <Data AD_Column_ID="2007" Column="IsReadOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="579" Column="Created" isNewNull="true" oldValue="2020-11-09 15:15:45.0"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:15:45.0"/>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="169" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="176" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="183" Column="IsSameLine" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="330" StepType="AD">
+      <PO AD_Table_ID="752" Action="D" Record_ID="97245" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12959" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="12952" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID" oldValue="97245">97245</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="12957" Column="Name" isNewNull="true" oldValue="Generar Tipo de Conversión Automaticamente"/>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12958" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12956" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12953" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="340" StepType="AD">
+      <PO AD_Table_ID="101" Action="D" Record_ID="97245" Table="AD_Column">
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName" isNewNull="true" oldValue="SP032_IsGeneratedCurrencyType"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="128" Column="IsEncrypted" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="68024" Column="IsRange" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="6482" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID" isNewNull="true" oldValue="318"/>
+        <Data AD_Column_ID="550" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID" isNewNull="true" oldValue="61519"/>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength" isNewNull="true" oldValue="1"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" isNewNull="true" oldValue="20"/>
+        <Data AD_Column_ID="552" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="84306" Column="UUID" isNewNull="true" oldValue="302b246a-cadc-40a8-a7ee-58a35d497a29"/>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="549" Column="Created" isNewNull="true" oldValue="2020-11-09 15:12:39.0"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:12:39.0"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID" isNewNull="true" oldValue="97245"/>
+        <Data AD_Column_ID="126" Column="IsIdentifier" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="111" Column="Name" isNewNull="true" oldValue="Generated Currency Type Automatically"/>
+        <Data AD_Column_ID="124" Column="IsMandatory" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="125" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="119" Column="IsKey" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="110" Column="Version" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="350" StepType="AD">
+      <PO AD_Table_ID="752" Action="D" Record_ID="97246" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12959" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="12952" Column="Updated" isNewNull="true" oldValue="2021-04-30 16:45:18.870696"/>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID" oldValue="97246">97246</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="12957" Column="Name" isNewNull="true" oldValue="Tasa de Cambio Negociada"/>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="12958" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12956" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="12953" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID" isNewNull="true" isOldNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="360" StepType="AD">
+      <PO AD_Table_ID="101" Action="D" Record_ID="97246" Table="AD_Column">
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="125" Column="IsTranslated" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="119" Column="IsKey" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="110" Column="Version" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName" isNewNull="true" oldValue="SP032_NegotiatedRate"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="128" Column="IsEncrypted" isNewNull="true" oldValue="N"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="68024" Column="IsRange" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="6482" Column="EntityType" isNewNull="true" oldValue="SP032"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID" isNewNull="true" oldValue="318"/>
+        <Data AD_Column_ID="550" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID" isNewNull="true" oldValue="61521"/>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" isNewNull="true" oldValue="12"/>
+        <Data AD_Column_ID="552" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="84306" Column="UUID" isNewNull="true" oldValue="2280e5eb-22ba-4369-8057-1adda8f5a132"/>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="549" Column="Created" isNewNull="true" oldValue="2020-11-09 15:12:40.0"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated" isNewNull="true" oldValue="2020-11-09 15:12:40.0"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID" isNewNull="true" oldValue="97246"/>
+        <Data AD_Column_ID="126" Column="IsIdentifier" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="111" Column="Name" isNewNull="true" oldValue="Negotiated Currency Rate"/>
+        <Data AD_Column_ID="124" Column="IsMandatory" isNewNull="true" oldValue="false"/>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
