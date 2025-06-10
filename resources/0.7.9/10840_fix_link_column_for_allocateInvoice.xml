@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="10840_fix_link_column_for_allocateInvoice" ReleaseNo="0.7.9" SeqNo="10840">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="106" Action="U" Record_ID="55281" Table="AD_Tab">
+        <Data AD_Column_ID="2740" Column="AD_Column_ID" isOldNull="true">102691</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
