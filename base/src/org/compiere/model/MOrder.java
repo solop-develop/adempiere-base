@@ -987,8 +987,7 @@ public class MOrder extends X_C_Order implements DocAction
 				setM_PriceList_ID (ii);
 		}
 		//	Default Currency
-		if (getC_Currency_ID() == 0)
-		{
+		if (getC_Currency_ID() == 0 || (is_ValueChanged(COLUMNNAME_M_PriceList_ID) && getM_PriceList_ID() > 0)) {
 			String sql = "SELECT C_Currency_ID FROM M_PriceList WHERE M_PriceList_ID=?";
 			int ii = DB.getSQLValue (null, sql, getM_PriceList_ID());
 			if (ii != 0)
