@@ -234,7 +234,7 @@ public class WithholdingGenerate extends WithholdingGenerateAbstract {
 						
 						invoice.setC_DocType_ID(invoice.getC_DocTypeTarget_ID());
 						invoice.setUser1_ID(invoiceFrom.getUser1_ID());
-						invoice.setC_Project_ID(withholding.get_ValueAsInt("C_Project_ID"));
+						invoice.setC_Project_ID(invoiceFrom.getC_Project_ID());
 						invoice.saveEx();
 					}
 					
@@ -448,6 +448,5 @@ class Withholding{
 	 */
 	public void setC_ConversionType_ID(int c_ConversionType_ID) {
 		C_ConversionType_ID = c_ConversionType_ID;
-	}
-	
+	}	
 }
