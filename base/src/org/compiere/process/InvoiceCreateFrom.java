@@ -151,6 +151,8 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 			}
 			invoiceLine.setQty(qtyEntered);							//	Movement/Entered
 			invoiceLine.setQtyInvoiced(qtyInvoiced);
+			invoiceLine.setLineNetAmt();
+			invoiceLine.setTaxAmt();
 			//	Save
 			invoiceLine.saveEx();
 			if(createFromType.equals(INVOICE)) {
