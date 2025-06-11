@@ -212,13 +212,13 @@ public class WithholdingGenerate extends WithholdingGenerateAbstract {
 						if (withholding.isManual())
 							invoice.setDocumentNo(getDocumentNo());
 						
-						invoice.setAD_Org_ID(withholding.getAD_Org_ID());
-						invoice.setC_BPartner_ID(withholding.getC_BPartner_ID());
-						invoice.setC_BPartner_Location_ID(withholding.getC_BPartner_Location_ID());
-						invoice.setIsSOTrx(withholding.isSOTrx());
+						invoice.setAD_Org_ID(invoiceFrom.getAD_Org_ID());
+						invoice.setC_BPartner_ID(invoiceFrom.getC_BPartner_ID());
+						invoice.setC_BPartner_Location_ID(invoiceFrom.getC_BPartner_Location_ID());
+						invoice.setIsSOTrx(invoiceFrom.isSOTrx());
 						invoice.setDateInvoiced(getDateDoc());
 						invoice.setDateAcct(getDateDoc());
-						invoice.setC_ConversionType_ID(withholding.getC_ConversionType_ID());
+						invoice.setC_ConversionType_ID(invoiceFrom.getC_ConversionType_ID());
 						invoice.setM_PriceList_ID(invoiceFrom.getM_PriceList_ID());
 						Optional<MPriceList> maybePriceList = Optional
 																.ofNullable(MPriceList.getDefault(getCtx(), 
@@ -233,8 +233,33 @@ public class WithholdingGenerate extends WithholdingGenerateAbstract {
 							throw new AdempiereException("@NotFound@ @WithholdingDebitDocType_ID@");
 						
 						invoice.setC_DocType_ID(invoice.getC_DocTypeTarget_ID());
-						invoice.setUser1_ID(invoiceFrom.getUser1_ID());
-						invoice.setC_Project_ID(invoiceFrom.getC_Project_ID());
+						if(invoiceFrom.getUser1_ID() > 0){
+							invoice.setUser1_ID(invoiceFrom.getUser1_ID());
+						}
+						if(invoiceFrom.getUser2_ID() > 0){
+							invoice.setUser2_ID(invoiceFrom.getUser2_ID());
+						}
+						if(invoiceFrom.getUser3_ID() > 0){
+							invoice.setUser3_ID(invoiceFrom.getUser3_ID());
+						}
+						if(invoiceFrom.getUser4_ID() > 0){
+							invoice.setUser4_ID(invoiceFrom.getUser4_ID());
+						}
+						if(invoiceFrom.getC_Project_ID() > 0){
+							invoice.setC_Project_ID(invoiceFrom.getC_Project_ID());
+						}
+						if(invoiceFrom.getC_Activity_ID() > 0){
+							invoice.setC_Activity_ID(invoiceFrom.getC_Activity_ID());
+						}
+						if(invoiceFrom.getC_Campaign_ID() > 0){
+							invoice.setC_Campaign_ID(invoiceFrom.getC_Campaign_ID());
+						}
+						if(invoiceFrom.getC_SalesRegion_ID() > 0){
+							invoice.setC_SalesRegion_ID(invoiceFrom.getC_SalesRegion_ID());
+						}
+						if(invoiceFrom.get_ValueAsInt("S_Contract_ID") > 0){
+							invoice.set_ValueOfColumn("S_Contract_ID", invoiceFrom.get_ValueAsInt("S_Contract_ID"));
+						}
 						invoice.saveEx();
 					}
 					
