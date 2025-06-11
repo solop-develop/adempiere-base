@@ -2016,20 +2016,35 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		if(documentType.get_ValueAsBoolean("IsAutomaticAllocation")) {
 			AllocationManager allocationManager = new AllocationManager(this);
 			int invoiceToAllocateId = get_ValueAsInt("ReferenceDocument_ID");
+			MTable allocateInvoiceTable = MTable.get(getCtx(), "C_AllocateInvoice");
+			String whereClause = "C_Invoice_ID = ?";
+			if (invoiceToAllocateId <= 0) {
+				if (allocateInvoiceTable != null && allocateInvoiceTable.get_ID() > 0) {
+					String getAllocateInvoicesCountSql = "SELECT COUNT(DISTINCT(ReferenceDocument_ID)) FROM C_AllocateInvoice WHERE C_Invoice_ID = ?";
+					int allocateInvoicesCount = DB.getSQLValue(get_TrxName(), getAllocateInvoicesCountSql, get_ID());
+					if (allocateInvoicesCount == 1) {
+						int allocateInvoiceId = new Query(getCtx(), allocateInvoiceTable.getTableName(),whereClause, get_TrxName())
+								.setParameters(get_ID())
+								.firstId();
+						PO AllocateInvoice = allocateInvoiceTable.getPO(allocateInvoiceId,get_TrxName());
+						invoiceToAllocateId = AllocateInvoice.get_ValueAsInt("ReferenceDocument_ID");
+						set_ValueOfColumn("ReferenceDocument_ID", invoiceToAllocateId);
+					}
+				}
+			}
 			if (invoiceToAllocateId > 0) {
 				allocationManager.addAllocateDocument(invoiceToAllocateId, getGrandTotal(), Env.ZERO, Env.ZERO);
 				allocationManager.createAllocation();
 			} else {
-				MTable allocateInvoiceTable = MTable.get(getCtx(), "C_AllocateInvoice");
+
 				if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
-					String whereClause = "C_Invoice_ID = ?";
 					List<Integer> allocateInvoiceIds = new Query(getCtx(), allocateInvoiceTable.getTableName(),whereClause, get_TrxName())
 						.setParameters(get_ID())
-							.getIDsAsList();
+						.getIDsAsList();
 					HashMap<Integer, BigDecimal> currencyConvertRate = new HashMap<>();
 					allocateInvoiceIds.forEach(allocationId -> {
 						PO allocation = allocateInvoiceTable.getPO(allocationId, get_TrxName());
-						BigDecimal amountToAllocate = Optional.ofNullable((BigDecimal) get_Value("AllocateAmount"))
+						BigDecimal amountToAllocate = Optional.ofNullable((BigDecimal) allocation.get_Value("AllocateAmount"))
 							.orElse(Env.ZERO);
 						if (amountToAllocate.signum() == 0) {
 							MInvoice referenceInvoice = MInvoice.get(getCtx(), allocation.get_ValueAsInt("ReferenceDocument_ID"));
@@ -2665,7 +2680,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		if(cash != null) {
 			return cash.getC_CashBook_ID();
 		}
-		//	
+		//
 		return -1;
 	}
 
@@ -2686,7 +2701,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		if(cashAccountId <= 0) {
 			throw new AdempiereException("@NoCashBook@");
 		}
-		//	
+		//
 		MPayment paymentCash = new MPayment(getCtx(), 0, get_TrxName());
 		paymentCash.setC_BankAccount_ID(cashAccountId);
 		paymentCash.setC_DocType_ID(true);

@@ -17,7 +17,19 @@
 package org.compiere.process;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
+import org.compiere.model.MInOut;
+import org.compiere.model.MInOutLine;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
+import org.compiere.model.MProduct;
+import org.compiere.model.MRMA;
+import org.compiere.model.MRMALine;
+import org.compiere.model.MTable;
+import org.compiere.model.MTax;
+import org.compiere.model.MUOMConversion;
+import org.compiere.model.PO;
 import org.compiere.util.Env;
 
 import java.math.BigDecimal;
@@ -122,6 +134,26 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 					invoiceLine.setTax();	//	recalculate
 				//
 				invoiceLine.setProcessed(false);
+			} else if(createFromType.equals(RMA)) {
+				MRMALine rmaLine = new MRMALine(getCtx(), key, get_TrxName());
+				//	Set reference
+				referenceId.set(rmaLine.getM_RMA_ID());
+				//
+				invoiceLine.setRMALine(rmaLine);
+			} else if(createFromType.equals(RECEIPT)) {
+				MInOutLine inOutLine = new MInOutLine(getCtx(), key, get_TrxName());
+				//	Set reference
+				referenceId.set(inOutLine.getM_InOut_ID());
+				invoiceLine.setShipLine(inOutLine);
+			}
+			invoiceLine.setQty(qtyEntered);							//	Movement/Entered
+			invoiceLine.setQtyInvoiced(qtyInvoiced);
+			invoiceLine.setLineNetAmt();
+			invoiceLine.setTaxAmt();
+			//	Save
+			invoiceLine.saveEx();
+			if(createFromType.equals(INVOICE)) {
+				MInvoiceLine fromLine = new MInvoiceLine(getCtx(), key, get_TrxName());
 				//Automatic Allocation
 				MTable allocateInvoiceTable = MTable.get(getCtx(), "C_AllocateInvoice");
 				if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
@@ -137,24 +169,6 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 					allocateInvoice.set_ValueOfColumn("AllocateAmount", maybeAllocateAmount.get());
 					allocateInvoice.saveEx();
 				}
-			} else if(createFromType.equals(RMA)) {
-				MRMALine rmaLine = new MRMALine(getCtx(), key, get_TrxName());
-				//	Set reference
-				referenceId.set(rmaLine.getM_RMA_ID());
-				//
-				invoiceLine.setRMALine(rmaLine);
-			} else if(createFromType.equals(RECEIPT)) {
-				MInOutLine inOutLine = new MInOutLine(getCtx(), key, get_TrxName());
-				//	Set reference
-				referenceId.set(inOutLine.getM_InOut_ID());
-				invoiceLine.setShipLine(inOutLine);
-			}
-			invoiceLine.setQty(qtyEntered);							//	Movement/Entered
-			invoiceLine.setQtyInvoiced(qtyInvoiced);
-			//	Save
-			invoiceLine.saveEx();
-			if(createFromType.equals(INVOICE)) {
-				MInvoiceLine fromLine = new MInvoiceLine(getCtx(), key, get_TrxName());
 				// MZ Goodwill
 				// copy the landed cost
 				invoiceLine.copyLandedCostFrom(fromLine);
