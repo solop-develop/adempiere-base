@@ -17,7 +17,19 @@
 package org.compiere.process;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
+import org.compiere.model.MInOut;
+import org.compiere.model.MInOutLine;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
+import org.compiere.model.MProduct;
+import org.compiere.model.MRMA;
+import org.compiere.model.MRMALine;
+import org.compiere.model.MTable;
+import org.compiere.model.MTax;
+import org.compiere.model.MUOMConversion;
+import org.compiere.model.PO;
 import org.compiere.util.Env;
 
 import java.math.BigDecimal;
@@ -122,21 +134,6 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 					invoiceLine.setTax();	//	recalculate
 				//
 				invoiceLine.setProcessed(false);
-				//Automatic Allocation
-				MTable allocateInvoiceTable = MTable.get(getCtx(), "C_AllocateInvoice");
-				if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
-					PO allocateInvoice = allocateInvoiceTable.getPO(0, invoiceLine.get_TrxName());
-					allocateInvoice.set_ValueOfColumn("C_Invoice_ID", getRecord_ID());
-					allocateInvoice.set_ValueOfColumn("ReferenceDocument_ID", fromLine.getC_Invoice_ID());
-					AtomicReference<BigDecimal> maybeAllocateAmount = new AtomicReference<>();
-					Optional.of(MTax.get(invoiceLine.getCtx(), invoiceLine.getC_Tax_ID())).ifPresent(tax ->{
-						BigDecimal amountToAllocate = invoiceLine.getLineNetAmt();
-						amountToAllocate = amountToAllocate.add(tax.calculateTax(amountToAllocate, invoiceLine.isTaxIncluded(), invoiceLine.getPrecision()));
-						maybeAllocateAmount.set(amountToAllocate);
-					});
-					allocateInvoice.set_ValueOfColumn("AllocateAmount", maybeAllocateAmount.get());
-					allocateInvoice.saveEx();
-				}
 			} else if(createFromType.equals(RMA)) {
 				MRMALine rmaLine = new MRMALine(getCtx(), key, get_TrxName());
 				//	Set reference
@@ -157,6 +154,21 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 			invoiceLine.saveEx();
 			if(createFromType.equals(INVOICE)) {
 				MInvoiceLine fromLine = new MInvoiceLine(getCtx(), key, get_TrxName());
+				//Automatic Allocation
+				MTable allocateInvoiceTable = MTable.get(getCtx(), "C_AllocateInvoice");
+				if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
+					PO allocateInvoice = allocateInvoiceTable.getPO(0, invoiceLine.get_TrxName());
+					allocateInvoice.set_ValueOfColumn("C_Invoice_ID", getRecord_ID());
+					allocateInvoice.set_ValueOfColumn("ReferenceDocument_ID", fromLine.getC_Invoice_ID());
+					AtomicReference<BigDecimal> maybeAllocateAmount = new AtomicReference<>();
+					Optional.of(MTax.get(invoiceLine.getCtx(), invoiceLine.getC_Tax_ID())).ifPresent(tax ->{
+						BigDecimal amountToAllocate = invoiceLine.getLineNetAmt();
+						amountToAllocate = amountToAllocate.add(tax.calculateTax(amountToAllocate, invoiceLine.isTaxIncluded(), invoiceLine.getPrecision()));
+						maybeAllocateAmount.set(amountToAllocate);
+					});
+					allocateInvoice.set_ValueOfColumn("AllocateAmount", maybeAllocateAmount.get());
+					allocateInvoice.saveEx();
+				}
 				// MZ Goodwill
 				// copy the landed cost
 				invoiceLine.copyLandedCostFrom(fromLine);
