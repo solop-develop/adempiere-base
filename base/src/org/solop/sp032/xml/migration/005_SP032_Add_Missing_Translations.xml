@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP032" Name="SP032 Add Missing Translations" ReleaseNo="1.0" SeqNo="6950">
+    <Comments>Add Missing Translations</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2642" Column="Created">2021-04-30 16:31:21.88</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">61519</Data>
+        <Data AD_Column_ID="84317" Column="UUID">f502ed83-c94e-40d2-bd7e-106ab0336895</Data>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2021-04-30 16:31:21.88</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">Generar Tipo de Conversión Automaticamente</Data>
+        <Data AD_Column_ID="2647" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Generar Tipo de Conversión Automaticamente</Data>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2642" Column="Created">2021-04-30 16:31:22.481</Data>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2021-04-30 16:31:22.481</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">Tasa de Cambio Negociada</Data>
+        <Data AD_Column_ID="2647" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Tasa de Cambio Negociada</Data>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">61521</Data>
+        <Data AD_Column_ID="84317" Column="UUID">60991107-aae3-46a4-a0d5-86808f4505a8</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2642" Column="Created">2021-04-30 16:31:22.926</Data>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2021-04-30 16:31:22.926</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">Tipo de Conversión Padre</Data>
+        <Data AD_Column_ID="2647" Column="Description">Tipo de Conversión Padre</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Tipo de Conversión Padre</Data>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">61520</Data>
+        <Data AD_Column_ID="84317" Column="UUID">bbe013b2-3924-4c64-8c0c-8d852c739d0a</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="132" Action="I" Record_ID="0" Table="AD_Window_Trl">
+        <Data AD_Column_ID="309" Column="Help">El tipo del índice de conversión de moneda le deja definir diversos tipos de tarifas por documentos, ej. tarifas del punto, corporativas y/o de Compra/Venta.</Data>
+        <Data AD_Column_ID="699" Column="Updated">2021-04-30 16:31:23.48</Data>
+        <Data AD_Column_ID="308" Column="Description">Mantiene tipos de conversión de moneda (Por Documentos)</Data>
+        <Data AD_Column_ID="697" Column="Created">2021-04-30 16:31:23.48</Data>
+        <Data AD_Column_ID="696" Column="IsActive">true</Data>
+        <Data AD_Column_ID="307" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="310" Column="Name">Tipo de Conversión (Por Documentos)</Data>
+        <Data AD_Column_ID="311" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="1211" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1212" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="698" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="700" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="306" Column="AD_Window_ID">53741</Data>
+        <Data AD_Column_ID="84480" Column="UUID">634f91fd-59ad-433a-877f-f7a494a0ef3c</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="123" Action="I" Record_ID="55020" Table="AD_Tab_Trl">
+        <Data AD_Column_ID="267" Column="Description">Mantenga el tipo del índice de conversión de moneda (Por Documentos)</Data>
+        <Data AD_Column_ID="654" Column="Updated">2021-04-30 16:31:24.045</Data>
+        <Data AD_Column_ID="651" Column="IsActive">true</Data>
+        <Data AD_Column_ID="652" Column="Created">2021-04-30 16:31:24.045</Data>
+        <Data AD_Column_ID="266" Column="Name">Conversión Moneda (Por Documentos)</Data>
+        <Data AD_Column_ID="3376" Column="CommitWarning" isNewNull="true"/>
+        <Data AD_Column_ID="268" Column="Help">El tipo del índice de conversión de moneda permite definir diversos tipos de tarifas por documentos, tarifas. Ej. de punto, corporativas y/o de Venta/Compra.</Data>
+        <Data AD_Column_ID="269" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="1198" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1199" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="264" Column="AD_Tab_ID">55020</Data>
+        <Data AD_Column_ID="655" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="653" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="265" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84424" Column="UUID">09cf2c82-415d-4b08-a8a4-94922520e9e6</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="123" Action="I" Record_ID="55021" Table="AD_Tab_Trl">
+        <Data AD_Column_ID="267" Column="Description">Definir tasas de cambio (Por Documentos)</Data>
+        <Data AD_Column_ID="654" Column="Updated">2021-04-30 16:31:24.573</Data>
+        <Data AD_Column_ID="651" Column="IsActive">true</Data>
+        <Data AD_Column_ID="652" Column="Created">2021-04-30 16:31:24.573</Data>
+        <Data AD_Column_ID="266" Column="Name">Tasa de Cambio (Por Documentos)</Data>
+        <Data AD_Column_ID="3376" Column="CommitWarning" isNewNull="true"/>
+        <Data AD_Column_ID="268" Column="Help">La pestaña de tasas de cambio es usada para definir tasas de cambio a ser usadas cuando se convierten Totales de documentos de una moneda a otra. Las tasas de cambio pueden ser definidas para tipos de tasas múltiples por documentos. También pueden ser efectivas para un rango definido de fechas.</Data>
+        <Data AD_Column_ID="269" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="1198" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1199" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="264" Column="AD_Tab_ID">55021</Data>
+        <Data AD_Column_ID="655" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="653" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="265" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84424" Column="UUID">a5d78469-40ce-4979-bd3a-5d2e710bb258</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

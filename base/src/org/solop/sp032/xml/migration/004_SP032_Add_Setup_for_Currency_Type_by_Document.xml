@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP032" Name="SP032 Add Setup for Currency Type by Document" ReleaseNo="1.0" SeqNo="6940">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="54786" Action="I" Record_ID="50006" Table="AD_SetupDefinition">
+        <Data AD_Column_ID="97364" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="97365" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97366" Column="AD_SetupDefinition_ID">50006</Data>
+        <Data AD_Column_ID="97367" Column="Classname">com.solop.sp032.setup.Deploy</Data>
+        <Data AD_Column_ID="97368" Column="Created">2020-12-22 01:52:29.22</Data>
+        <Data AD_Column_ID="97369" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97370" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="97371" Column="EntityType">SP032</Data>
+        <Data AD_Column_ID="97372" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="97373" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97374" Column="Name">Setup for Customized Conversion</Data>
+        <Data AD_Column_ID="97375" Column="Updated">2020-12-22 01:52:29.22</Data>
+        <Data AD_Column_ID="97376" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97377" Column="UUID">a9bebd30-2e45-4c9c-a93e-5fabb6f9f4e1</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
