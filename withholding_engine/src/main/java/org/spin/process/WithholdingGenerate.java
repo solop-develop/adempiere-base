@@ -233,6 +233,33 @@ public class WithholdingGenerate extends WithholdingGenerateAbstract {
 							throw new AdempiereException("@NotFound@ @WithholdingDebitDocType_ID@");
 						
 						invoice.setC_DocType_ID(invoice.getC_DocTypeTarget_ID());
+						if(invoiceFrom.getUser1_ID() > 0){
+							invoice.setUser1_ID(invoiceFrom.getUser1_ID());
+						}
+						if(invoiceFrom.getUser2_ID() > 0){
+							invoice.setUser2_ID(invoiceFrom.getUser2_ID());
+						}
+						if(invoiceFrom.getUser3_ID() > 0){
+							invoice.setUser3_ID(invoiceFrom.getUser3_ID());
+						}
+						if(invoiceFrom.getUser4_ID() > 0){
+							invoice.setUser4_ID(invoiceFrom.getUser4_ID());
+						}
+						if(invoiceFrom.getC_Project_ID() > 0){
+							invoice.setC_Project_ID(invoiceFrom.getC_Project_ID());
+						}
+						if(invoiceFrom.getC_Activity_ID() > 0){
+							invoice.setC_Activity_ID(invoiceFrom.getC_Activity_ID());
+						}
+						if(invoiceFrom.getC_Campaign_ID() > 0){
+							invoice.setC_Campaign_ID(invoiceFrom.getC_Campaign_ID());
+						}
+						if(invoiceFrom.getC_SalesRegion_ID() > 0){
+							invoice.setC_SalesRegion_ID(invoiceFrom.getC_SalesRegion_ID());
+						}
+						if(invoiceFrom.get_ValueAsInt("S_Contract_ID") > 0){
+							invoice.set_ValueOfColumn("S_Contract_ID", invoiceFrom.get_ValueAsInt("S_Contract_ID"));
+						}
 						invoice.saveEx();
 					}
 					
@@ -446,6 +473,5 @@ class Withholding{
 	 */
 	public void setC_ConversionType_ID(int c_ConversionType_ID) {
 		C_ConversionType_ID = c_ConversionType_ID;
-	}
-	
+	}	
 }
