@@ -212,13 +212,13 @@ public class WithholdingGenerate extends WithholdingGenerateAbstract {
 						if (withholding.isManual())
 							invoice.setDocumentNo(getDocumentNo());
 						
-						invoice.setAD_Org_ID(invoiceFrom.getAD_Org_ID());
-						invoice.setC_BPartner_ID(invoiceFrom.getC_BPartner_ID());
-						invoice.setC_BPartner_Location_ID(invoiceFrom.getC_BPartner_Location_ID());
-						invoice.setIsSOTrx(invoiceFrom.isSOTrx());
+						invoice.setAD_Org_ID(withholding.getAD_Org_ID());
+						invoice.setC_BPartner_ID(withholding.getC_BPartner_ID());
+						invoice.setC_BPartner_Location_ID(withholding.getC_BPartner_Location_ID());
+						invoice.setIsSOTrx(withholding.isSOTrx());
 						invoice.setDateInvoiced(getDateDoc());
 						invoice.setDateAcct(getDateDoc());
-						invoice.setC_ConversionType_ID(invoiceFrom.getC_ConversionType_ID());
+						invoice.setC_ConversionType_ID(withholding.getC_ConversionType_ID());
 						invoice.setM_PriceList_ID(invoiceFrom.getM_PriceList_ID());
 						Optional<MPriceList> maybePriceList = Optional
 																.ofNullable(MPriceList.getDefault(getCtx(), 
