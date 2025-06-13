@@ -23,7 +23,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Util;
 
 /**
- * Class for handle SQL From
+ * Class for handle SQL FROM
  * @author Edwin Betancourt, EdwinBetanc0urt@outlook.com, https://github.com/EdwinBetanc0urt
  */
 public class FromUtil {
@@ -34,7 +34,7 @@ public class FromUtil {
 
 		MViewDefinition fromViewDefinition = viewDefinitionsList.get(0);
 		MTable table = new MTable(Env.getCtx(), fromViewDefinition.getAD_Table_ID(), null);
-		String fromClause = " FROM " + table.getTableName() + " " + fromViewDefinition.getTableAlias();
+		String fromClause = " FROM " + table.getTableName() + " AS " + fromViewDefinition.getTableAlias();
 		return fromClause;
 	}
 
