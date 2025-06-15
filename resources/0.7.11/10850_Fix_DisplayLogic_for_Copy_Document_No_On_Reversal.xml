@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="U" Name="10850_Fix_DisplayLogic_for_Copy_Document_No_On_Reversal" ReleaseNo="" SeqNo="10850">
+  <Migration EntityType="D" Name="10850_Fix_DisplayLogic_for_Copy_Document_No_On_Reversal" ReleaseNo="" SeqNo="10850">
     <Comments>DisplayLogic was not getting correctly context information</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="107" Action="U" Record_ID="82920" Table="AD_Field">
