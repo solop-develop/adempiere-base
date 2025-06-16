@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="10860_Allow_Same_Document_No" ReleaseNo="" SeqNo="10860">
+  <Migration EntityType="D" Name="10860_Allow_Same_Document_No" ReleaseNo="0.7.11" SeqNo="10860">
     <Comments>Add column in C_DocType for validating if it should liberate the Document No when voiding or reversing a document</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="276" Action="I" Record_ID="62675" Table="AD_Element">
