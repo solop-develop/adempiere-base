@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="10850_Fix_DisplayLogic_for_Copy_Document_No_On_Reversal" ReleaseNo="" SeqNo="10850">
+    <Comments>DisplayLogic was not getting correctly context information</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="82920" Table="AD_Field">
+        <Data AD_Column_ID="177" Column="DisplayLogic" oldValue="DocBaseType='MMI' | DocBaseType='MMM' | DocBaseType='MMR' | DocBaseType='MMS' | DocBaseType='MMP' | DocBaseType='API' | DocBaseType='APC' | DocBaseType='ARI' | DocBaseType='ARC' | DocBaseType='ARR' | DocBaseType='APP' | DocBaseType='GLJ' | DocBaseType='PRJ' | DocBaseType='RRJ'  | DocBaseType='DRI'">@DocBaseType@='MMI' | @DocBaseType@='MMM' | @DocBaseType@='MMR' | @DocBaseType@='MMS' | @DocBaseType@='MMP' | @DocBaseType@='API' | @DocBaseType@='APC' | @DocBaseType@='ARI' | @DocBaseType@='ARC' | @DocBaseType@='ARR' | @DocBaseType@='APP' | @DocBaseType@='GLJ' | @DocBaseType@='PRJ' | @DocBaseType@='RRJ'  | @DocBaseType@='DRI'</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
