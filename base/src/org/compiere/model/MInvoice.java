@@ -2351,6 +2351,9 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		// Reload invoice from DB
 		load(get_TrxName());	//	reload allocation reversal info
 		setReversal(true);
+		if (checkIfMustLiberateDocumentNo(getC_DocTypeTarget_ID())) {
+			setDocumentNo(getLiberatedDocumentNo());
+		}
 		//	Deep Copy
 		MInvoice reversal = copyFrom (this, reversalDateInvoice, reversalDate, getC_DocType_ID(), isSOTrx(), false, true, get_TrxName(), true);
 		if (reversal == null)
@@ -2441,6 +2444,21 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 
 		allocationHdr.saveEx();
 		return  reversal;
+	}
+
+	private String getLiberatedDocumentNo(){
+        return getDocumentNo() + "-" + get_ID();
+	}
+
+	private boolean checkIfMustLiberateDocumentNo(int docTypeId){
+		if (docTypeId <= 0) {
+			return false;
+		}
+		MDocType documentType = MDocType.get(getCtx(), docTypeId);
+		if (documentType.get_ID() <= 0) {
+			return false;
+		}
+		return documentType.get_ValueAsBoolean("AllowsSameDocumentNo");
 	}
 
 	/**
