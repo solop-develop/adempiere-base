@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fixed error with Column Type for Browser" ReleaseNo="0.7.12" SeqNo="10870">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="66098" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57971" Column="AD_View_Column_ID" oldValue="67554">67548</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
