@@ -2458,7 +2458,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		if (documentType.get_ID() <= 0) {
 			return false;
 		}
-		return documentType.get_ValueAsBoolean("BORRAR_AllowsSameDocumentNo");
+		return documentType.get_ValueAsBoolean("AllowsSameDocumentNo");
 	}
 
 	/**
