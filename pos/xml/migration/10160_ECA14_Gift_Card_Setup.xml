@@ -6,7 +6,7 @@
         <Data AD_Column_ID="97364" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="97365" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="97366" Column="AD_SetupDefinition_ID">50118</Data>
-        <Data AD_Column_ID="97367" Column="Classname">org.spin.pos.model.validator.GiftCardModelValidator</Data>
+        <Data AD_Column_ID="97367" Column="Classname">org.spin.pos.setup.DeployGiftCard</Data>
         <Data AD_Column_ID="97368" Column="Created">2025-06-17 21:03:48.413</Data>
         <Data AD_Column_ID="97369" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="97370" Column="Description" isNewNull="true"/>
