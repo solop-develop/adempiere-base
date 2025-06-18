@@ -23,6 +23,7 @@ import org.compiere.model.MOrderLine;
 import org.compiere.model.MProduct;
 import org.compiere.model.MProductCategory;
 import org.compiere.model.MTable;
+import org.compiere.model.MUOM;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
@@ -79,10 +80,15 @@ public class GiftCardModelValidator implements ModelValidator {
 		}
 		if (po instanceof MOrderLine) {
 			MOrderLine orderLine = (MOrderLine) po;
-			if (type == TYPE_BEFORE_NEW) {
-				MProduct product = orderLine.getProduct();
-				if (product != null) {
-					orderLine.set_ValueOfColumn(IGiftCard.IsGenerateGiftCard, product.get_ValueAsBoolean(IGiftCard.IsGenerateGiftCard));
+			if (type == TYPE_BEFORE_NEW || type == TYPE_BEFORE_CHANGE) {
+				if (orderLine.is_new()
+					|| orderLine.is_ValueChanged(MOrderLine.COLUMNNAME_M_Product_ID)) {
+					MProduct product = orderLine.getProduct();
+					boolean isGenerateGiftCard = false;
+					if (product != null) {
+						isGenerateGiftCard = product.get_ValueAsBoolean(IGiftCard.IsGenerateGiftCard);
+					}
+					orderLine.set_ValueOfColumn(IGiftCard.IsGenerateGiftCard, isGenerateGiftCard);
 				}
 			}
 		}
@@ -116,7 +122,13 @@ public class GiftCardModelValidator implements ModelValidator {
 						.getIDsAsList();
 				lineIds.forEach( lineId -> {
 					MOrderLine orderLine = new MOrderLine(order.getCtx(), lineId, order.get_TrxName());
-					iterateOrderLineQty(orderLine.getQtyEntered(), order, orderLine);
+					MUOM uom = (MUOM) orderLine.getC_UOM();
+					int precision = uom.getStdPrecision();
+					if (precision == 0) {
+						iterateOrderLineQty(orderLine.getQtyEntered(), order, orderLine);
+					} else {
+						createGiftCard(order, orderLine, orderLine.getQtyEntered());
+					}
 				});
 			}
 		}
@@ -124,19 +136,10 @@ public class GiftCardModelValidator implements ModelValidator {
 	}
 
 	private void iterateOrderLineQty(BigDecimal lineQty, MOrder order, MOrderLine orderLine) {
-		BigDecimal rounded = lineQty.setScale(0, RoundingMode.DOWN);
-		BigDecimal remainder = lineQty.subtract(rounded);
-		boolean hasRemainder = remainder.compareTo(BigDecimal.ZERO) > 0;
-
-		Stream.concat(
-			Stream.iterate(BigDecimal.ONE,
-	current -> current.compareTo(rounded) <= 0,
+		Stream.iterate(BigDecimal.ONE,
+	current -> current.compareTo(lineQty) <= 0,
 	current -> current.add(BigDecimal.ONE))
-			.map(unit -> BigDecimal.ONE),
-			hasRemainder ? Stream.of(remainder) : Stream.empty()
-		).forEach(unit -> {
-			createGiftCard(order, orderLine, unit);
-		});
+		.forEach(unit -> 	createGiftCard(order, orderLine, BigDecimal.ONE));
 	}
 
 	private void createGiftCard(MOrder order, MOrderLine orderLine, BigDecimal qty) {
