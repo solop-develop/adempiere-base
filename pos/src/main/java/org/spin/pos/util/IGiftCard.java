@@ -1,11 +1,11 @@
 package org.spin.pos.util;
 
 public interface IGiftCard {
-    String GIFT_CARD_TABLE_NAME = "ECA14_GiftCard";
-    String GIFT_CARD_LINE_TABLE_NAME = "ECA14_GiftCardLine";
-    String COLUMNNAME_IsGenerateGiftCard = "IsGenerateGiftCard";
-    String COLUMNNAME_IsPrepayment = "IsPrepayment";
-    String COLUMNNAME_DateDoc = "DateDoc";
-    String COLUMNNAME_Amount = "Amount";
-    String COLUMNNAME_ECA14_GiftCard_ID = "ECA14_GiftCard_ID";
+    String ECA14_GiftCard = "ECA14_GiftCard";
+    String ECA14_GiftCardLine = "ECA14_GiftCardLine";
+    String IsGenerateGiftCard = "IsGenerateGiftCard";
+    String IsPrepayment = "IsPrepayment";
+    String DateDoc = "DateDoc";
+    String Amount = "Amount";
+    String ECA14_GiftCard_ID = "ECA14_GiftCard_ID";
 }

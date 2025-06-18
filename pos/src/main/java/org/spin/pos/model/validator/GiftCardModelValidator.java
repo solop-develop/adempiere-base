@@ -74,7 +74,7 @@ public class GiftCardModelValidator implements ModelValidator {
 			MProduct product = (MProduct) po;
 			if (type == TYPE_BEFORE_NEW) {
 				MProductCategory productCategory = (MProductCategory) product.getM_Product_Category();
-				product.set_ValueOfColumn(IGiftCard.COLUMNNAME_IsGenerateGiftCard, productCategory.get_ValueAsBoolean(IGiftCard.COLUMNNAME_IsGenerateGiftCard));
+				product.set_ValueOfColumn(IGiftCard.IsGenerateGiftCard, productCategory.get_ValueAsBoolean(IGiftCard.IsGenerateGiftCard));
 			}
 		}
 		if (po instanceof MOrderLine) {
@@ -82,7 +82,7 @@ public class GiftCardModelValidator implements ModelValidator {
 			if (type == TYPE_BEFORE_NEW) {
 				MProduct product = orderLine.getProduct();
 				if (product != null) {
-					orderLine.set_ValueOfColumn(IGiftCard.COLUMNNAME_IsGenerateGiftCard, product.get_ValueAsBoolean(IGiftCard.COLUMNNAME_IsGenerateGiftCard));
+					orderLine.set_ValueOfColumn(IGiftCard.IsGenerateGiftCard, product.get_ValueAsBoolean(IGiftCard.IsGenerateGiftCard));
 				}
 			}
 		}
@@ -102,15 +102,15 @@ public class GiftCardModelValidator implements ModelValidator {
 				if (!order.isSOTrx()) {
 					return null;
 				}
-				MTable giftCardTable = MTable.get(order.getCtx(), IGiftCard.GIFT_CARD_TABLE_NAME);
-				MTable giftCardLineTable = MTable.get(order.getCtx(), IGiftCard.GIFT_CARD_LINE_TABLE_NAME);
+				MTable giftCardTable = MTable.get(order.getCtx(), IGiftCard.ECA14_GiftCard);
+				MTable giftCardLineTable = MTable.get(order.getCtx(), IGiftCard.ECA14_GiftCardLine);
 				if (giftCardTable == null || giftCardTable.get_ID() <= 0) {
 					return null;
 				}
 				if (giftCardLineTable == null || giftCardLineTable.get_ID() <= 0) {
 					return null;
 				}
-				String whereClause = IGiftCard.COLUMNNAME_IsGenerateGiftCard + " = 'Y' AND C_Order_ID = ?";
+				String whereClause = IGiftCard.IsGenerateGiftCard + " = 'Y' AND C_Order_ID = ?";
 				List<Integer> lineIds = new Query(order.getCtx(), MOrderLine.Table_Name, whereClause, order.get_TrxName())
 						.setParameters(order.getC_Order_ID())
 						.getIDsAsList();
@@ -140,25 +140,25 @@ public class GiftCardModelValidator implements ModelValidator {
 	}
 
 	private void createGiftCard(MOrder order, MOrderLine orderLine, BigDecimal qty) {
-		MTable giftCardTable = MTable.get(order.getCtx(), IGiftCard.GIFT_CARD_TABLE_NAME);
-		MTable giftCardLineTable = MTable.get(order.getCtx(), IGiftCard.GIFT_CARD_LINE_TABLE_NAME);
+		MTable giftCardTable = MTable.get(order.getCtx(), IGiftCard.ECA14_GiftCard);
+		MTable giftCardLineTable = MTable.get(order.getCtx(), IGiftCard.ECA14_GiftCardLine);
 
 		PO giftCard = giftCardTable.getPO(0, order.get_TrxName());
 		giftCard.set_ValueOfColumn(MOrder.COLUMNNAME_C_BPartner_ID, order.getC_BPartner_ID());
 		giftCard.set_ValueOfColumn(MOrder.COLUMNNAME_C_ConversionType_ID, order.getC_ConversionType_ID());
 		giftCard.set_ValueOfColumn(MOrder.COLUMNNAME_C_Currency_ID, order.getC_Currency_ID());
 		giftCard.set_ValueOfColumn(MOrder.COLUMNNAME_C_Order_ID, order.getC_Order_ID());
-		giftCard.set_ValueOfColumn(IGiftCard.COLUMNNAME_DateDoc, order.getDateOrdered());
+		giftCard.set_ValueOfColumn(IGiftCard.DateDoc, order.getDateOrdered());
 		giftCard.set_ValueOfColumn(MOrder.COLUMNNAME_Description, order.getDescription());
-		giftCard.set_ValueOfColumn(IGiftCard.COLUMNNAME_IsPrepayment, false);
+		giftCard.set_ValueOfColumn(IGiftCard.IsPrepayment, false);
 		giftCard.saveEx();
 
 		PO giftCardLine = giftCardLineTable.getPO(0, order.get_TrxName());
-		giftCardLine.set_ValueOfColumn(IGiftCard.COLUMNNAME_Amount, qty.multiply(orderLine.getPriceEntered()));
+		giftCardLine.set_ValueOfColumn(IGiftCard.Amount, qty.multiply(orderLine.getPriceEntered()));
 		giftCardLine.set_ValueOfColumn(MOrderLine.COLUMNNAME_C_OrderLine_ID, orderLine.getC_OrderLine_ID());
 		giftCardLine.set_ValueOfColumn(MOrderLine.COLUMNNAME_C_UOM_ID, orderLine.getC_UOM_ID());
 		giftCardLine.set_ValueOfColumn(MOrderLine.COLUMNNAME_Description, orderLine.getDescription());
-		giftCardLine.set_ValueOfColumn(IGiftCard.COLUMNNAME_ECA14_GiftCard_ID, giftCard.get_ValueAsInt(IGiftCard.COLUMNNAME_ECA14_GiftCard_ID));
+		giftCardLine.set_ValueOfColumn(IGiftCard.ECA14_GiftCard_ID, giftCard.get_ValueAsInt(IGiftCard.ECA14_GiftCard_ID));
 		giftCardLine.set_ValueOfColumn(MOrderLine.COLUMNNAME_M_Product_ID, orderLine.getM_Product_ID());
 		giftCardLine.set_ValueOfColumn(MOrderLine.COLUMNNAME_QtyEntered, qty);
 		giftCardLine.set_ValueOfColumn(MOrderLine.COLUMNNAME_QtyOrdered, qty);
