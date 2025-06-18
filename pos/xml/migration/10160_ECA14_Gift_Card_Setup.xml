@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="10150_ECA14_Gift_Card_Setup" ReleaseNo="3.9.4" SeqNo="10160">
+  <Migration EntityType="ECA14" Name="10150_ECA14_Gift_Card_Setup" ReleaseNo="3.9.4" SeqNo="10160">
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="54786" Action="I" Record_ID="50118" Table="AD_SetupDefinition">
         <Data AD_Column_ID="97364" Column="AD_Client_ID">0</Data>
