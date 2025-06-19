@@ -61,12 +61,12 @@ public class S3Manager {
 			//	Push it
 			IS3 fileHandler = (IS3) supportedApi;
 			ResourceMetadata resourceMetadata = ResourceMetadata.newInstance()
-					.withClientId(Env.getAD_Client_ID(Env.getCtx()))
-					.withUserId(Env.getAD_User_ID(Env.getCtx()))
-					.withContainerType(ResourceMetadata.ContainerType.RESOURCE)
-					.withContainerId("tmp")
-					.withName(file.getName())
-					;
+				.withClientId(Env.getAD_Client_ID(Env.getCtx()))
+				.withUserId(Env.getAD_User_ID(Env.getCtx()))
+				.withContainerType(ResourceMetadata.ContainerType.RESOURCE)
+				.withContainerId("tmp")
+				.withName(file.getName())
+			;
 			String fileName = fileHandler.putResource(resourceMetadata, new FileInputStream(file));
 			return fileName;
 		} catch (Exception e) {

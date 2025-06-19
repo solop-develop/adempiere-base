@@ -30,13 +30,13 @@ import org.compiere.util.Util;
  */
 public class ResourceMetadata {
 	
-	private int clientId;
-	private int userId;
-	private int roleId;
+	private int clientId = -1;
+	private int userId = -1;
+	private int roleId = -1;
 	private String containerId;
 	private String tableName;
 	private String columnName;
-	private int recordId;
+	private int recordId = -1;
 	private String name;
 	private String resourceName;
 	private ContainerType containerType;
@@ -147,42 +147,43 @@ public class ResourceMetadata {
 	}
 
 	public String getResourcePath() {
-		if(clientId <= 0) {
+		if(clientId < 0) {
 			throw new AdempiereException("Client ID is Mandatory");
 		}
 		if(containerType == null) {
 			throw new AdempiereException("Container Type is Mandatory");
 		}
-		if(recordId > 0 && Util.isEmpty(tableName)) {
+		// TODO: Validate Zero with AD_Client, AD_Role, M_Warehouse
+		if(recordId > 0 && Util.isEmpty(tableName, true)) {
 			throw new AdempiereException("Table Name is Mandatory");
 		}
-		if(recordId <= 0 && !Util.isEmpty(tableName)) {
+		if(recordId <= 0 && !Util.isEmpty(tableName, true)) {
 			throw new AdempiereException("Record ID is Mandatory");
 		}
-		if(!Util.isEmpty(columnName) && Util.isEmpty(tableName)) {
+		if(!Util.isEmpty(columnName, true) && Util.isEmpty(tableName, true)) {
 			throw new AdempiereException("Table Name is Mandatory");
 		}
-		if(containerType != ContainerType.ATTACHMENT && Util.isEmpty(containerId)) {
+		if(containerType != ContainerType.ATTACHMENT && Util.isEmpty(containerId, true)) {
 			throw new AdempiereException("Container ID is Mandatory");
 		}
-		if(containerType == ContainerType.ATTACHMENT && recordId <= 0 && Util.isEmpty(tableName)) {
+		if(containerType == ContainerType.ATTACHMENT && recordId <= 0 && Util.isEmpty(tableName, true)) {
 			throw new AdempiereException("Invalid Container Type (Mandatory Record ID and Table Name)");
 		}
 		String clientUuid = MClient.get(Env.getCtx(), clientId).getUUID();
-		if(Util.isEmpty(clientUuid)) {
+		if(Util.isEmpty(clientUuid, true)) {
 			throw new AdempiereException("Client UUID is Mandatory");
 		}
 		//	Create Path
 		StringBuffer path = new StringBuffer(clientUuid).append("/");
-		if(userId > 0) {
+		if(userId >= 0) {
 			String userUuid = MUser.get(Env.getCtx(), userId).getUUID();
-			if(Util.isEmpty(userUuid)) {
+			if(Util.isEmpty(userUuid, true)) {
 				throw new AdempiereException("User UUID is Mandatory");
 			}
 			path.append("user").append("/").append(userUuid).append("/");
-		} else if(roleId > 0) {
+		} else if(roleId >= 0) {
 			String roleUuid = MRole.get(Env.getCtx(), roleId).getUUID();
-			if(Util.isEmpty(roleUuid)) {
+			if(Util.isEmpty(roleUuid, true)) {
 				throw new AdempiereException("Role UUID is Mandatory");
 			}
 			path.append("role").append("/").append(roleUuid).append("/");
@@ -191,25 +192,25 @@ public class ResourceMetadata {
 		}
 		//	Container Type
 		path.append(containerType.toString());
-		if(!Util.isEmpty(containerId)) {
+		if(!Util.isEmpty(containerId, true)) {
 			path.append("/").append(containerId);
 		}
 		//	Table Name
-		if(!Util.isEmpty(tableName)) {
+		if(!Util.isEmpty(tableName, true)) {
 			path.append("/").append(getValidPathName(tableName)).append("/").append(recordId);
 		}
 		//	Column
-		if(!Util.isEmpty(columnName)) {
+		if(!Util.isEmpty(columnName, true)) {
 			path.append("/").append(getValidPathName(columnName));
 		}
 		return getValidPathName(path.toString().toLowerCase());
 	}
 	
 	public String getResourceFileName() {
-		if(!Util.isEmpty(resourceName)) {
+		if(!Util.isEmpty(resourceName, true)) {
 			return resourceName;
 		}
-		if(Util.isEmpty(name)) {
+		if(Util.isEmpty(name, true)) {
 			throw new AdempiereException("Resource Name is Mandatory");
 		}
 		return (getResourcePath() + "/" + getValidFileName(name)).toLowerCase();
