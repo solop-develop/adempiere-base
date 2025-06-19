@@ -87,15 +87,15 @@ public class S3 implements IWebDav, IS3 {
 		}
 		MADAppRegistration registration = MADAppRegistration.getById(Env.getCtx(), getAppRegistrationId(), null);
 		//	Access Key
-		if(Util.isEmpty(registration.getParameterValue(ACCESS_KEY))) {
+		if(Util.isEmpty(registration.getParameterValue(ACCESS_KEY), true)) {
 			throw new AdempiereException(ACCESS_KEY + " @NotFound@");
 		}
 		//	Secret Key
-		if(Util.isEmpty(registration.getParameterValue(SECRET_KEY))) {
+		if(Util.isEmpty(registration.getParameterValue(SECRET_KEY), true)) {
 			throw new AdempiereException(SECRET_KEY + " @NotFound@");
 		}
 		//	Bucket End Point
-		if(Util.isEmpty(registration.getHost())) {
+		if(Util.isEmpty(registration.getHost(), true)) {
 			throw new AdempiereException("@Host@ @NotFound@");
 		}
 		host = registration.getHost();
@@ -107,11 +107,11 @@ public class S3 implements IWebDav, IS3 {
 			host = host + ":" + port;
 		}
 		//	Region Name
-		if(Util.isEmpty(registration.getParameterValue(BUCKET_REGION))) {
+		if(Util.isEmpty(registration.getParameterValue(BUCKET_REGION), true)) {
 			throw new AdempiereException(BUCKET_REGION + " @NotFound@");
 		}
 		//	Bucket Name
-		if(Util.isEmpty(registration.getParameterValue(BUCKET_NAME))) {
+		if(Util.isEmpty(registration.getParameterValue(BUCKET_NAME), true)) {
 			throw new AdempiereException(BUCKET_NAME + " @NotFound@");
 		}
 		//	Set bucket name
@@ -125,7 +125,7 @@ public class S3 implements IWebDav, IS3 {
 	 * @return
 	 */
 	private String getBucketName() {
-		if(Util.isEmpty(bucketName)) {
+		if(Util.isEmpty(bucketName), true) {
 			getRegistrationInstance();
 		}
 		return bucketName;
@@ -163,7 +163,7 @@ public class S3 implements IWebDav, IS3 {
 	
 	@Override
 	public InputStream getResource(String relativePath) throws Exception {
-		if(Util.isEmpty(relativePath)) {
+		if(Util.isEmpty(relativePath), true) {
 			return null;
 		}
 		AmazonS3 s3Client = getS3Instance();
@@ -179,12 +179,10 @@ public class S3 implements IWebDav, IS3 {
 
 	@Override
 	public void putResource(String relativePath, InputStream resource) throws Exception {
-		if(Util.isEmpty(relativePath)
-				|| resource == null) {
+		if(Util.isEmpty(relativePath, true) || resource == null) {
 			return;
 		}
-		if(Util.isEmpty(relativePath)
-				|| resource == null) {
+		if(Util.isEmpty(relativePath, true) || resource == null) {
 			return;
 		}
 		AmazonS3 s3Client = getS3Instance();
@@ -199,7 +197,7 @@ public class S3 implements IWebDav, IS3 {
 
 	@Override
 	public void deleteResource(String relativePath) throws Exception {
-		if(Util.isEmpty(relativePath)) {
+		if(Util.isEmpty(relativePath, true)) {
 			return;
 		}
 		AmazonS3 s3Client = getS3Instance();
@@ -209,7 +207,7 @@ public class S3 implements IWebDav, IS3 {
 
 	@Override
 	public void createDirectory(String relativePathName) throws Exception {
-		if(Util.isEmpty(relativePathName)) {
+		if(Util.isEmpty(relativePathName, true)) {
 			return;
 		}
 		AmazonS3 s3Client = getS3Instance();
@@ -224,8 +222,7 @@ public class S3 implements IWebDav, IS3 {
 
 	@Override
 	public void moveResource(String relativeSourcePath, String relativeTargetPath) throws Exception {
-		if(Util.isEmpty(relativeSourcePath)
-				|| Util.isEmpty(relativeTargetPath)) {
+		if(Util.isEmpty(relativeSourcePath, true) || Util.isEmpty(relativeTargetPath, true)) {
 			return;
 		}
 		copyResource(relativeSourcePath, relativeTargetPath);
@@ -234,8 +231,7 @@ public class S3 implements IWebDav, IS3 {
 
 	@Override
 	public void copyResource(String relativeSourcePath, String relativeTargetPath) throws Exception {
-		if(Util.isEmpty(relativeSourcePath)
-				|| Util.isEmpty(relativeTargetPath)) {
+		if(Util.isEmpty(relativeSourcePath, true) || Util.isEmpty(relativeTargetPath, true)) {
 			return;
 		}
 		AmazonS3 s3Client = getS3Instance();
@@ -245,7 +241,7 @@ public class S3 implements IWebDav, IS3 {
 
 	@Override
 	public boolean exists(String relativePath) throws Exception {
-		if(Util.isEmpty(relativePath)) {
+		if(Util.isEmpty(relativePath, true)) {
 			return false;
 		}
 		//	Verify if exist a object
@@ -265,8 +261,7 @@ public class S3 implements IWebDav, IS3 {
 
 	@Override
 	public void putResource(String relativePath, byte[] resource) throws Exception {
-		if(Util.isEmpty(relativePath)
-				|| resource == null) {
+		if(Util.isEmpty(relativePath, true) || resource == null) {
 			return;
 		}
 		AmazonS3 s3Client = getS3Instance();
@@ -306,12 +301,12 @@ public class S3 implements IWebDav, IS3 {
 	@Override
 	public String putTemporaryFile(File file) throws Exception {
 		ResourceMetadata resourceMetadata = ResourceMetadata.newInstance()
-				.withClientId(Env.getAD_Client_ID(Env.getCtx()))
-				.withUserId(Env.getAD_User_ID(Env.getCtx()))
-				.withContainerType(ResourceMetadata.ContainerType.RESOURCE)
-				.withContainerId("tmp")
-				.withName(file.getName())
-				;
+			.withClientId(Env.getAD_Client_ID(Env.getCtx()))
+			.withUserId(Env.getAD_User_ID(Env.getCtx()))
+			.withContainerType(ResourceMetadata.ContainerType.RESOURCE)
+			.withContainerId("tmp")
+			.withName(file.getName())
+		;
 		return putResource(resourceMetadata, new FileInputStream(file));
 	}
 
