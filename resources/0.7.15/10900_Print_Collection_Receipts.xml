@@ -75,7 +75,7 @@
         <Data AD_Column_ID="4214" Column="IsDirectPrint">false</Data>
         <Data AD_Column_ID="3371" Column="IsReport">true</Data>
         <Data AD_Column_ID="14084" Column="IsServerProcess">false</Data>
-        <Data AD_Column_ID="50182" Column="JasperReport">Attachment:ECA14_PrintCollectionReceipts.jasper</Data>
+        <Data AD_Column_ID="50182" Column="JasperReport">http://viewer.report/ECA14/ECA14_PrintCollectionReceipts.jasper</Data>
         <Data AD_Column_ID="2809" Column="Name">Print Collection Receipts</Data>
         <Data AD_Column_ID="2813" Column="ProcedureName" isNewNull="true"/>
         <Data AD_Column_ID="50181" Column="ShowHelp">Y</Data>
