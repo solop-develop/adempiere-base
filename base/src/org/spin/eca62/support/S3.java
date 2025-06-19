@@ -125,7 +125,7 @@ public class S3 implements IWebDav, IS3 {
 	 * @return
 	 */
 	private String getBucketName() {
-		if(Util.isEmpty(bucketName), true) {
+		if(Util.isEmpty(bucketName, true)) {
 			getRegistrationInstance();
 		}
 		return bucketName;
@@ -163,7 +163,7 @@ public class S3 implements IWebDav, IS3 {
 	
 	@Override
 	public InputStream getResource(String relativePath) throws Exception {
-		if(Util.isEmpty(relativePath), true) {
+		if(Util.isEmpty(relativePath, true)) {
 			return null;
 		}
 		AmazonS3 s3Client = getS3Instance();
