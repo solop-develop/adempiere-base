@@ -25,15 +25,20 @@ import java.math.RoundingMode;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.adempiere.core.domains.models.I_C_Payment;
+import org.adempiere.core.domains.models.I_C_PaymentProcessor;
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Trx;
 
 /**
  *  Payment Processor Abstract Class
@@ -43,6 +48,19 @@ import org.compiere.util.Msg;
  */
 public abstract class PaymentProcessor
 {
+
+    /**	Value Type */
+	public final String MetadataValueType = "MetadataValueType";
+	public final String Code = "Value";
+	public final String ValueBoolean = "ValueBoolean";
+	public final String ValueDate = "ValueDate";
+	public final String ValueNumber = "ValueNumber";
+	public final String ValueText = "ValueText";
+	public final String MetadataValueType_Boolean = "B";
+	public final String MetadataValueType_Date = "D";
+	public final String MetadataValueType_Number = "N";
+	public final String MetadataValueType_Text = "T";
+
 	/**
 	 *  Public Constructor
 	 */
@@ -108,6 +126,58 @@ public abstract class PaymentProcessor
 		//
 		return myProcessor;
 	}   //  create
+
+	private PO getNewPaymentProcessorLogInstance(String transactionName) {
+        MTable table = MTable.get(p_mp.getCtx(), "C_PaymentProcessorLog");
+		if(table == null) {
+			throw new AdempiereException("@C_PaymentProcessorLog_ID@ @NotFound@");
+		}
+		PO paymentProcessorLog = table.getPO(0, transactionName);
+		paymentProcessorLog.setAD_Org_ID(p_mp.getAD_Org_ID());
+		paymentProcessorLog.set_ValueOfColumn(I_C_Payment.COLUMNNAME_C_Payment_ID, p_mp.getC_Payment_ID());
+		paymentProcessorLog.set_ValueOfColumn(I_C_PaymentProcessor.COLUMNNAME_C_PaymentProcessor_ID, p_mpp.getC_PaymentProcessor_ID());
+		return paymentProcessorLog;
+	}
+
+	public void addBooleanValue(String code, boolean value) {
+		Trx.run(transactionName -> {
+			PO paymentProcessorLog = getNewPaymentProcessorLogInstance(transactionName);
+			paymentProcessorLog.set_ValueOfColumn(MetadataValueType, MetadataValueType_Boolean);
+			paymentProcessorLog.set_ValueOfColumn(Code, code);
+			paymentProcessorLog.set_ValueOfColumn(ValueBoolean, value);
+			paymentProcessorLog.saveEx();
+		});
+	}
+
+	public void addDateValue(String code, Timestamp value) {
+		Trx.run(transactionName -> {
+			PO paymentProcessorLog = getNewPaymentProcessorLogInstance(transactionName);
+			paymentProcessorLog.set_ValueOfColumn(MetadataValueType, MetadataValueType_Date);
+			paymentProcessorLog.set_ValueOfColumn(Code, code);
+			paymentProcessorLog.set_ValueOfColumn(ValueDate, value);
+			paymentProcessorLog.saveEx();
+		});
+	}
+
+	public void addTextValue(String code, String value) {
+		Trx.run(transactionName -> {
+			PO paymentProcessorLog = getNewPaymentProcessorLogInstance(transactionName);
+			paymentProcessorLog.set_ValueOfColumn(MetadataValueType, MetadataValueType_Text);
+			paymentProcessorLog.set_ValueOfColumn(Code, code);
+			paymentProcessorLog.set_ValueOfColumn(ValueText, value);
+			paymentProcessorLog.saveEx();
+		});
+	}
+
+	public void addNumericValue(String code, BigDecimal value) {
+		Trx.run(transactionName -> {
+			PO paymentProcessorLog = getNewPaymentProcessorLogInstance(transactionName);
+			paymentProcessorLog.set_ValueOfColumn(MetadataValueType, MetadataValueType_Number);
+			paymentProcessorLog.set_ValueOfColumn(Code, code);
+			paymentProcessorLog.set_ValueOfColumn(ValueNumber, value);
+			paymentProcessorLog.saveEx();
+		});
+	}
 
 	/*************************************************************************/
 
