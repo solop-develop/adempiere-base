@@ -35,10 +35,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.adempiere.core.domains.models.I_C_Payment;
 import org.adempiere.core.domains.models.I_C_PaymentProcessor;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.util.CLogger;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.Trx;
+import org.compiere.util.*;
 
 /**
  *  Payment Processor Abstract Class
@@ -140,6 +137,9 @@ public abstract class PaymentProcessor
 	}
 
 	public void addBooleanValue(String code, boolean value) {
+		if(Util.isEmpty(code, true)) {
+			return;
+		}
 		Trx.run(transactionName -> {
 			PO paymentProcessorLog = getNewPaymentProcessorLogInstance(transactionName);
 			paymentProcessorLog.set_ValueOfColumn(MetadataValueType, MetadataValueType_Boolean);
@@ -150,6 +150,9 @@ public abstract class PaymentProcessor
 	}
 
 	public void addDateValue(String code, Timestamp value) {
+		if(Util.isEmpty(code, true) || value == null) {
+			return;
+		}
 		Trx.run(transactionName -> {
 			PO paymentProcessorLog = getNewPaymentProcessorLogInstance(transactionName);
 			paymentProcessorLog.set_ValueOfColumn(MetadataValueType, MetadataValueType_Date);
@@ -160,6 +163,9 @@ public abstract class PaymentProcessor
 	}
 
 	public void addTextValue(String code, String value) {
+		if(Util.isEmpty(code, true) || Util.isEmpty(value, true)) {
+			return;
+		}
 		Trx.run(transactionName -> {
 			PO paymentProcessorLog = getNewPaymentProcessorLogInstance(transactionName);
 			paymentProcessorLog.set_ValueOfColumn(MetadataValueType, MetadataValueType_Text);
@@ -170,6 +176,9 @@ public abstract class PaymentProcessor
 	}
 
 	public void addNumericValue(String code, BigDecimal value) {
+		if(Util.isEmpty(code, true) || value == null) {
+			return;
+		}
 		Trx.run(transactionName -> {
 			PO paymentProcessorLog = getNewPaymentProcessorLogInstance(transactionName);
 			paymentProcessorLog.set_ValueOfColumn(MetadataValueType, MetadataValueType_Number);
