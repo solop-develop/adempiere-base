@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="ECA14" Name="10900_Print_Collection_Receipts" ReleaseNo="" SeqNo="10900">
+  <Migration EntityType="ECA14" Name="10900_Print_Collection_Receipts" ReleaseNo="0.7.15" SeqNo="10900">
     <Comments>Add process, column and Field in C_Order Table for Printing Collection Receipts</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="276" Action="I" Record_ID="62684" Table="AD_Element">
@@ -75,7 +75,7 @@
         <Data AD_Column_ID="4214" Column="IsDirectPrint">false</Data>
         <Data AD_Column_ID="3371" Column="IsReport">true</Data>
         <Data AD_Column_ID="14084" Column="IsServerProcess">false</Data>
-        <Data AD_Column_ID="50182" Column="JasperReport">Attachment:ECA14_PrintCollectionReceipts.jasper</Data>
+        <Data AD_Column_ID="50182" Column="JasperReport">http://viewer.report/ECA14/ECA14_PrintCollectionReceipts.jasper</Data>
         <Data AD_Column_ID="2809" Column="Name">Print Collection Receipts</Data>
         <Data AD_Column_ID="2813" Column="ProcedureName" isNewNull="true"/>
         <Data AD_Column_ID="50181" Column="ShowHelp">Y</Data>
@@ -243,11 +243,6 @@
         <Data AD_Column_ID="674" Column="Updated">2025-06-18 19:21:59.017</Data>
         <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="84323" Column="UUID">88ea6535-8c79-4ec8-8e2a-3b68ffb59a50</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="90" StepType="AD">
-      <PO AD_Table_ID="101" Action="U" Record_ID="102870" Table="AD_Column">
-        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="true">false</Data>
       </PO>
     </Step>
   </Migration>
