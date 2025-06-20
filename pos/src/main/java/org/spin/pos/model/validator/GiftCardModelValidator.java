@@ -32,7 +32,6 @@ import org.compiere.util.CLogger;
 import org.spin.pos.util.IGiftCard;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -83,10 +82,12 @@ public class GiftCardModelValidator implements ModelValidator {
 			if (type == TYPE_BEFORE_NEW || type == TYPE_BEFORE_CHANGE) {
 				if (orderLine.is_new()
 					|| orderLine.is_ValueChanged(MOrderLine.COLUMNNAME_M_Product_ID)) {
-					MProduct product = orderLine.getProduct();
 					boolean isGenerateGiftCard = false;
-					if (product != null) {
-						isGenerateGiftCard = product.get_ValueAsBoolean(IGiftCard.IsGenerateGiftCard);
+					if (orderLine.getM_Product_ID() > 0) {
+						MProduct product = orderLine.getProduct();
+						if (product != null) {
+							isGenerateGiftCard = product.get_ValueAsBoolean(IGiftCard.IsGenerateGiftCard);
+						}
 					}
 					orderLine.set_ValueOfColumn(IGiftCard.IsGenerateGiftCard, isGenerateGiftCard);
 				}
@@ -116,11 +117,17 @@ public class GiftCardModelValidator implements ModelValidator {
 				if (giftCardLineTable == null || giftCardLineTable.get_ID() <= 0) {
 					return null;
 				}
-				String whereClause = IGiftCard.IsGenerateGiftCard + " = 'Y' AND C_Order_ID = ?";
-				List<Integer> lineIds = new Query(order.getCtx(), MOrderLine.Table_Name, whereClause, order.get_TrxName())
-						.setParameters(order.getC_Order_ID())
-						.getIDsAsList();
-				lineIds.forEach( lineId -> {
+				final String whereClause = IGiftCard.IsGenerateGiftCard + " = 'Y' AND C_Order_ID = ?";
+				List<Integer> lineIds = new Query(
+					order.getCtx(),
+					MOrderLine.Table_Name,
+					whereClause,
+					order.get_TrxName()
+				)
+					.setParameters(order.getC_Order_ID())
+					.getIDsAsList()
+				;
+				lineIds.forEach(lineId -> {
 					MOrderLine orderLine = new MOrderLine(order.getCtx(), lineId, order.get_TrxName());
 					MUOM uom = (MUOM) orderLine.getC_UOM();
 					int precision = uom.getStdPrecision();
@@ -137,9 +144,12 @@ public class GiftCardModelValidator implements ModelValidator {
 
 	private void iterateOrderLineQty(BigDecimal lineQty, MOrder order, MOrderLine orderLine) {
 		Stream.iterate(BigDecimal.ONE,
-	current -> current.compareTo(lineQty) <= 0,
-	current -> current.add(BigDecimal.ONE))
-		.forEach(unit -> 	createGiftCard(order, orderLine, BigDecimal.ONE));
+			current -> current.compareTo(lineQty) <= 0,
+			current -> current.add(BigDecimal.ONE)
+		)
+		.forEach(unit -> {
+			createGiftCard(order, orderLine, BigDecimal.ONE);
+		});
 	}
 
 	private void createGiftCard(MOrder order, MOrderLine orderLine, BigDecimal qty) {
@@ -154,6 +164,8 @@ public class GiftCardModelValidator implements ModelValidator {
 		giftCard.set_ValueOfColumn(IGiftCard.DateDoc, order.getDateOrdered());
 		giftCard.set_ValueOfColumn(MOrder.COLUMNNAME_Description, order.getDescription());
 		giftCard.set_ValueOfColumn(IGiftCard.IsPrepayment, false);
+		// set total amount on header
+		giftCard.set_ValueOfColumn(IGiftCard.Amount, orderLine.getLineNetAmt());
 		giftCard.saveEx();
 
 		PO giftCardLine = giftCardLineTable.getPO(0, order.get_TrxName());
