@@ -260,6 +260,7 @@ public class WithholdingGenerate extends WithholdingGenerateAbstract {
 						if(invoiceFrom.get_ValueAsInt("S_Contract_ID") > 0){
 							invoice.set_ValueOfColumn("S_Contract_ID", invoiceFrom.get_ValueAsInt("S_Contract_ID"));
 						}
+						invoice.set_ValueOfColumn("ReferenceDocument_ID", invoiceFrom.get_ID());
 						invoice.saveEx();
 					}
 					
