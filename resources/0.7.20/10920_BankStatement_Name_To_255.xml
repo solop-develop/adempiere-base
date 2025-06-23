@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="10920_BankStatement_Name_To_255" ReleaseNo="0.7.20" SeqNo="10920">
+    <Comments>Change C_BankStatement Name column Length to 255</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="5214" Table="AD_Column">
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="60">255</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">Name</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
