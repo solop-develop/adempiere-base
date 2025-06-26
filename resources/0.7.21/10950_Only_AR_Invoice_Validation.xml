@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="10950_Only_AR_Invoice_Validation" ReleaseNo="0.7.21" SeqNo="10950">
+    <Comments>Add dynamic validation for C_DocType only ARI</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="108" Action="I" Record_ID="53004" Table="AD_Val_Rule">
+        <Data AD_Column_ID="387" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="388" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="187" Column="AD_Val_Rule_ID">53004</Data>
+        <Data AD_Column_ID="193" Column="Code">C_DocType.DocBaseType = 'ARI'</Data>
+        <Data AD_Column_ID="584" Column="Created">2025-06-26 17:54:09.69</Data>
+        <Data AD_Column_ID="585" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="189" Column="Description">Document Type AR Invoice Only</Data>
+        <Data AD_Column_ID="7715" Column="EntityType">D</Data>
+        <Data AD_Column_ID="583" Column="IsActive">true</Data>
+        <Data AD_Column_ID="188" Column="Name">C_DocType ARI Only</Data>
+        <Data AD_Column_ID="192" Column="Type">S</Data>
+        <Data AD_Column_ID="586" Column="Updated">2025-06-26 17:54:09.69</Data>
+        <Data AD_Column_ID="587" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84460" Column="UUID">95db08c7-6913-4c94-9539-314b08a2aa5b</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="57032" Table="AD_Process_Para">
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" oldValue="52529">53004</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
