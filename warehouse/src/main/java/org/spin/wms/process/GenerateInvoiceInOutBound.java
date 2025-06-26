@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import io.vavr.Tuple2;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
@@ -35,7 +34,9 @@ import org.compiere.util.Trx;
 import org.eevolution.wms.model.MWMInOutBound;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 
-/** 
+
+
+/**
  * Class for generate invoices from outbound orders
  * @author Yamel Senih, ysenih@erpya.com , http://www.erpya.com
  * @version Release 3.9.3
@@ -49,19 +50,20 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 	private int withError = 0;
 	private StringBuffer generatedDocuments = new StringBuffer();
 	private int maxLines = 0;
-	
+
 	@Override
 	protected String doIt() throws Exception {
 		invoices  = new Hashtable<String, MInvoice>();
 		numberOfLines = new Hashtable<>();
+		numberOfInvoices = new Hashtable<>();
 		Trx.run(transactionName -> {
 			List<MWMInOutBoundLine> outBoundLines = null;
 			//	Get from record
 			if(getRecord_ID() > 0) {
 				outBoundLines = new Query(getCtx(), MWMInOutBoundLine.Table_Name, MWMInOutBound.COLUMNNAME_WM_InOutBound_ID + "=?", transactionName)
-					.setParameters(getRecord_ID())
-					.setOrderBy(MWMInOutBoundLine.COLUMNNAME_C_Order_ID + ", " + MWMInOutBoundLine.COLUMNNAME_DD_Order_ID)
-					.list();
+						.setParameters(getRecord_ID())
+						.setOrderBy(MWMInOutBoundLine.COLUMNNAME_C_Order_ID + ", " + MWMInOutBoundLine.COLUMNNAME_DD_Order_ID)
+						.list();
 			} else if(isSelection()) {
 				// Overwrite table RV_WM_InOutBoundLine by WM_InOutBoundLine
 				getProcessInfo().setTableSelectionId(MWMInOutBoundLine.Table_ID);
@@ -74,17 +76,17 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 					maxLines = docType.get_ValueAsInt("MaxLinesPerDocument");
 				}
 				outBoundLines.stream()
-					.filter(outBoundLine -> outBoundLine.getC_Invoice_ID() <= 0)
-					.forEach(outBoundLine -> createInvoice(outBoundLine));
+						.filter(outBoundLine -> outBoundLine.getC_Invoice_ID() <= 0)
+						.forEach(outBoundLine -> createInvoice(outBoundLine));
 			}
 		});
 
-		//	
+		//
 		processingInvoices();
-		//	
+		//
 		return "@Created@ " + created + (generatedDocuments.length() > 0? " [" + generatedDocuments + "]": "") +  (withError > 0 ? " | @Error@ " + withError : "");
 	}
-	
+
 	/**
 	 * Create Invoice from Outbound Line
 	 * @param outboundLine
@@ -116,7 +118,7 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 
 		}
 	}
-	
+
 	/**
 	 * Create Invoice header
 	 * @param orderLine Sales Order Line
@@ -130,7 +132,7 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 		}
 		int keyNumber = numberOfInvoices.getOrDefault(key, 0);
 		String keyString = String.valueOf(key) + keyNumber;
-		//	
+		//
 		MInvoice invoice = invoices.get(keyString);
 		if (invoice != null) {
 			if (getDocTypeTargetId() <= 0) {
@@ -159,7 +161,7 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 		numberOfInvoices.put(key, keyNumber);
 		return invoice;
 	}
-	
+
 	/**
 	 * Add Document Info for message to return
 	 * @param documentInfo
@@ -168,10 +170,10 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 		if(generatedDocuments.length() > 0) {
 			generatedDocuments.append(", ");
 		}
-		//	
+		//
 		generatedDocuments.append(documentInfo);
 	}
-	
+
 	/**
 	 * Process Invoices
 	 */
