@@ -261,7 +261,6 @@ import java.util.concurrent.atomic.AtomicReference;
 		// Un-link Payment if TrxAmt is zero - teo_sarca BF [ 1896880 ] 
 		if (getTrxAmt().signum() == 0 && getC_Payment_ID() > 0)
 		{
-			setC_Payment_ID(I_ZERO);
 			setC_Invoice_ID(I_ZERO);
 		}
 		//	Set Line No
