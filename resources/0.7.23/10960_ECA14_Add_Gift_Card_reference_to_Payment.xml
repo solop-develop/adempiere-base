@@ -13,479 +13,420 @@
     </Step>
     <Step SeqNo="30" StepType="AD">
       <PO AD_Table_ID="102" Action="I" Record_ID="54483" Table="AD_Reference">
-        <Data AD_Column_ID="1180" Column="VFormat" isNewNull="true"/>
-        <Data AD_Column_ID="139" Column="ValidationType">T</Data>
-        <Data AD_Column_ID="84393" Column="UUID">564e053c-247b-46d1-9014-12e545b4cc23</Data>
-        <Data AD_Column_ID="557" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="556" Column="Updated">2025-06-28 16:55:29.25</Data>
-        <Data AD_Column_ID="130" Column="Name">ECA14_GiftCard reference</Data>
-        <Data AD_Column_ID="54355" Column="IsOrderByValue">false</Data>
-        <Data AD_Column_ID="553" Column="IsActive">true</Data>
-        <Data AD_Column_ID="132" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="6486" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="131" Column="Description" isNewNull="true"/>
-        <Data AD_Column_ID="555" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="554" Column="Created">2025-06-28 16:55:29.25</Data>
-        <Data AD_Column_ID="129" Column="AD_Reference_ID">54483</Data>
-        <Data AD_Column_ID="364" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="363" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="364" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="129" Column="AD_Reference_ID">54483</Data>
+        <Data AD_Column_ID="554" Column="Created">2025-06-28 16:55:29.25</Data>
+        <Data AD_Column_ID="555" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="131" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="6486" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="132" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="553" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54355" Column="IsOrderByValue">false</Data>
+        <Data AD_Column_ID="130" Column="Name">ECA14_GiftCard reference</Data>
+        <Data AD_Column_ID="556" Column="Updated">2025-06-28 16:55:29.25</Data>
+        <Data AD_Column_ID="557" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84393" Column="UUID">564e053c-247b-46d1-9014-12e545b4cc23</Data>
+        <Data AD_Column_ID="139" Column="ValidationType">T</Data>
+        <Data AD_Column_ID="1180" Column="VFormat" isNewNull="true"/>
       </PO>
     </Step>
     <Step SeqNo="40" StepType="AD">
       <PO AD_Table_ID="126" Action="I" Record_ID="0" Table="AD_Reference_Trl">
-        <Data AD_Column_ID="84394" Column="UUID">8eea65a2-6f1b-4c05-a398-17cd93ec2721</Data>
-        <Data AD_Column_ID="670" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="669" Column="Updated">2025-06-28 16:55:30.03</Data>
-        <Data AD_Column_ID="280" Column="Name">ECA14_GiftCard reference</Data>
-        <Data AD_Column_ID="283" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="666" Column="IsActive">true</Data>
-        <Data AD_Column_ID="282" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="281" Column="Description" isNewNull="true"/>
-        <Data AD_Column_ID="668" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="667" Column="Created">2025-06-28 16:55:30.03</Data>
-        <Data AD_Column_ID="278" Column="AD_Reference_ID">54483</Data>
-        <Data AD_Column_ID="1203" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="279" Column="AD_Language">es_MX</Data>
         <Data AD_Column_ID="1202" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="279" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1203" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="278" Column="AD_Reference_ID">54483</Data>
+        <Data AD_Column_ID="667" Column="Created">2025-06-28 16:55:30.03</Data>
+        <Data AD_Column_ID="668" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="281" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="282" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="666" Column="IsActive">true</Data>
+        <Data AD_Column_ID="283" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="280" Column="Name">ECA14_GiftCard reference</Data>
+        <Data AD_Column_ID="669" Column="Updated">2025-06-28 16:55:30.03</Data>
+        <Data AD_Column_ID="670" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84394" Column="UUID">8eea65a2-6f1b-4c05-a398-17cd93ec2721</Data>
       </PO>
     </Step>
     <Step SeqNo="50" StepType="AD">
       <PO AD_Table_ID="103" Action="I" Record_ID="54483" Table="AD_Ref_Table">
-        <Data AD_Column_ID="146" Column="WhereClause" isNewNull="true"/>
-        <Data AD_Column_ID="84392" Column="UUID">090c32c7-0446-4e9e-a4ea-ce5eafd78fe3</Data>
-        <Data AD_Column_ID="562" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="561" Column="Updated">2025-06-28 16:55:46.873</Data>
-        <Data AD_Column_ID="147" Column="OrderByClause" isNewNull="true"/>
-        <Data AD_Column_ID="2377" Column="IsValueDisplayed">false</Data>
-        <Data AD_Column_ID="62122" Column="IsDisplayIdentifier">false</Data>
-        <Data AD_Column_ID="62120" Column="IsAlert">false</Data>
-        <Data AD_Column_ID="558" Column="IsActive">true</Data>
-        <Data AD_Column_ID="7711" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="62121" Column="DisplaySQL" isNewNull="true"/>
-        <Data AD_Column_ID="560" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="559" Column="Created">2025-06-28 16:55:46.873</Data>
-        <Data AD_Column_ID="57270" Column="AD_Window_ID" isNewNull="true"/>
-        <Data AD_Column_ID="143" Column="AD_Table_ID">54982</Data>
-        <Data AD_Column_ID="142" Column="AD_Reference_ID">54483</Data>
-        <Data AD_Column_ID="368" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="144" Column="AD_Key">102411</Data>
-        <Data AD_Column_ID="145" Column="AD_Display">102420</Data>
         <Data AD_Column_ID="367" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="145" Column="AD_Display">102420</Data>
+        <Data AD_Column_ID="144" Column="AD_Key">102411</Data>
+        <Data AD_Column_ID="368" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="142" Column="AD_Reference_ID">54483</Data>
+        <Data AD_Column_ID="143" Column="AD_Table_ID">54982</Data>
+        <Data AD_Column_ID="57270" Column="AD_Window_ID" isNewNull="true"/>
+        <Data AD_Column_ID="559" Column="Created">2025-06-28 16:55:46.873</Data>
+        <Data AD_Column_ID="560" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="62121" Column="DisplaySQL" isNewNull="true"/>
+        <Data AD_Column_ID="7711" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="558" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62120" Column="IsAlert">false</Data>
+        <Data AD_Column_ID="62122" Column="IsDisplayIdentifier">false</Data>
+        <Data AD_Column_ID="2377" Column="IsValueDisplayed">false</Data>
+        <Data AD_Column_ID="147" Column="OrderByClause" isNewNull="true"/>
+        <Data AD_Column_ID="561" Column="Updated">2025-06-28 16:55:46.873</Data>
+        <Data AD_Column_ID="562" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84392" Column="UUID">090c32c7-0446-4e9e-a4ea-ce5eafd78fe3</Data>
+        <Data AD_Column_ID="146" Column="WhereClause" isNewNull="true"/>
       </PO>
     </Step>
     <Step SeqNo="60" StepType="AD">
       <PO AD_Table_ID="101" Action="I" Record_ID="103437" Table="AD_Column">
-        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
-        <Data AD_Column_ID="110" Column="Version">0</Data>
-        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
-        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
-        <Data AD_Column_ID="84306" Column="UUID">4c359a4a-9ede-4452-ab26-8bb8e91cff54</Data>
-        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="551" Column="Updated">2025-06-28 16:55:55.698</Data>
-        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
-        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
-        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
-        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
-        <Data AD_Column_ID="111" Column="Name">Gift Card</Data>
-        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
-        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
-        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
-        <Data AD_Column_ID="6244" Column="IsSelectionColumn">true</Data>
-        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
-        <Data AD_Column_ID="120" Column="IsParent">false</Data>
-        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
-        <Data AD_Column_ID="119" Column="IsKey">false</Data>
-        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
-        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
-        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
-        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
-        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
-        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
-        <Data AD_Column_ID="548" Column="IsActive">true</Data>
-        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
-        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
-        <Data AD_Column_ID="118" Column="FieldLength">0</Data>
-        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="112" Column="Description">Gift Cards/Vouchers/Coupons</Data>
-        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
-        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="549" Column="Created">2025-06-28 16:55:55.698</Data>
-        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
-        <Data AD_Column_ID="116" Column="ColumnName">ECA14_GiftCard_ID</Data>
-        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
-        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
-        <Data AD_Column_ID="114" Column="AD_Table_ID">335</Data>
-        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">54483</Data>
-        <Data AD_Column_ID="226" Column="AD_Reference_ID">30</Data>
-        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
-        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
-        <Data AD_Column_ID="2608" Column="AD_Element_ID">62588</Data>
-        <Data AD_Column_ID="109" Column="AD_Column_ID">103437</Data>
-        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">103437</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">62588</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">30</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">54483</Data>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">335</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">ECA14_GiftCard_ID</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2025-06-28 16:55:55.698</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="112" Column="Description">Gift Cards/Vouchers/Coupons</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">0</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">true</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Gift Card</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="551" Column="Updated">2025-06-28 16:55:55.698</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">4c359a4a-9ede-4452-ab26-8bb8e91cff54</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
       </PO>
     </Step>
     <Step SeqNo="70" StepType="AD">
       <PO AD_Table_ID="752" Action="I" Record_ID="103437" Table="AD_Column_Trl">
-        <Data AD_Column_ID="84310" Column="UUID">e266a457-c866-48ba-b910-916dc30a978b</Data>
-        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="12952" Column="Updated">2025-06-28 16:55:56.7</Data>
-        <Data AD_Column_ID="12957" Column="Name">Gift Card</Data>
-        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
-        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="12960" Column="Created">2025-06-28 16:55:56.7</Data>
-        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="12955" Column="AD_Column_ID">103437</Data>
         <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">103437</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-06-28 16:55:56.7</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Gift Card</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-06-28 16:55:56.7</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">e266a457-c866-48ba-b910-916dc30a978b</Data>
       </PO>
     </Step>
     <Step SeqNo="80" StepType="AD">
       <PO AD_Table_ID="276" Action="U" Record_ID="62588" Table="AD_Element">
-        <Data AD_Column_ID="58589" Column="FieldLength" isOldNull="true">10</Data>
-        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isOldNull="true">54483</Data>
         <Data AD_Column_ID="58588" Column="AD_Reference_ID" isOldNull="true">30</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isOldNull="true">54483</Data>
+        <Data AD_Column_ID="58589" Column="FieldLength" isOldNull="true">10</Data>
       </PO>
     </Step>
     <Step SeqNo="90" StepType="AD">
       <PO AD_Table_ID="101" Action="U" Record_ID="103437" Table="AD_Column">
-        <Data AD_Column_ID="118" Column="FieldLength" oldValue="0">10</Data>
         <Data AD_Column_ID="117" Column="DefaultValue" isOldNull="true">-1</Data>
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="0">10</Data>
       </PO>
     </Step>
     <Step SeqNo="100" StepType="AD">
       <PO AD_Table_ID="107" Action="I" Record_ID="105958" Table="AD_Field">
-        <Data AD_Column_ID="84320" Column="UUID">c0f4cd17-6c1c-49b5-b81d-f6369c280c86</Data>
-        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="581" Column="Updated">2025-06-28 16:58:40.364</Data>
-        <Data AD_Column_ID="182" Column="SortNo">0</Data>
-        <Data AD_Column_ID="62479" Column="SeqNoGrid">840</Data>
-        <Data AD_Column_ID="181" Column="SeqNo">840</Data>
-        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
-        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
-        <Data AD_Column_ID="168" Column="Name">Gift Card</Data>
-        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
-        <Data AD_Column_ID="2007" Column="IsReadOnly">true</Data>
-        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
-        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
-        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
-        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
-        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
-        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
-        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
-        <Data AD_Column_ID="176" Column="IsDisplayed">false</Data>
-        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
-        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
-        <Data AD_Column_ID="578" Column="IsActive">true</Data>
-        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
-        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
-        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
-        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
-        <Data AD_Column_ID="169" Column="Description">Gift Cards/Vouchers/Coupons</Data>
-        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
-        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="579" Column="Created">2025-06-28 16:58:40.363</Data>
-        <Data AD_Column_ID="101775" Column="AD_Window_ID">195</Data>
-        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
-        <Data AD_Column_ID="172" Column="AD_Tab_ID">330</Data>
-        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
-        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
-        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
-        <Data AD_Column_ID="167" Column="AD_Field_ID">105958</Data>
-        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
-        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
-        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
-        <Data AD_Column_ID="174" Column="AD_Column_ID">103437</Data>
         <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">103437</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">105958</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">330</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">195</Data>
+        <Data AD_Column_ID="579" Column="Created">2025-06-28 16:58:40.363</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="169" Column="Description">Gift Cards/Vouchers/Coupons</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">true</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Gift Card</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">840</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">840</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="581" Column="Updated">2025-06-28 16:58:40.364</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84320" Column="UUID">c0f4cd17-6c1c-49b5-b81d-f6369c280c86</Data>
       </PO>
     </Step>
     <Step SeqNo="110" StepType="AD">
       <PO AD_Table_ID="127" Action="I" Record_ID="105958" Table="AD_Field_Trl">
-        <Data AD_Column_ID="84323" Column="UUID">e199f95d-dcca-42bf-be17-98227e424e50</Data>
-        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="674" Column="Updated">2025-06-28 16:58:41.375</Data>
-        <Data AD_Column_ID="286" Column="Name">Gift Card</Data>
-        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="671" Column="IsActive">true</Data>
-        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="287" Column="Description">Gift Cards/Vouchers/Coupons</Data>
-        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="672" Column="Created">2025-06-28 16:58:41.375</Data>
-        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="284" Column="AD_Field_ID">105958</Data>
         <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">105958</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="672" Column="Created">2025-06-28 16:58:41.375</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="287" Column="Description">Gift Cards/Vouchers/Coupons</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Gift Card</Data>
+        <Data AD_Column_ID="674" Column="Updated">2025-06-28 16:58:41.375</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84323" Column="UUID">e199f95d-dcca-42bf-be17-98227e424e50</Data>
       </PO>
     </Step>
     <Step SeqNo="120" StepType="AD">
       <PO AD_Table_ID="107" Action="I" Record_ID="105959" Table="AD_Field">
-        <Data AD_Column_ID="84320" Column="UUID">308c1068-4802-46e6-9f5c-54d718172451</Data>
-        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="581" Column="Updated">2025-06-28 16:59:03.078</Data>
-        <Data AD_Column_ID="182" Column="SortNo">0</Data>
-        <Data AD_Column_ID="62479" Column="SeqNoGrid">820</Data>
-        <Data AD_Column_ID="181" Column="SeqNo">820</Data>
-        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
-        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
-        <Data AD_Column_ID="168" Column="Name">Gift Card</Data>
-        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
-        <Data AD_Column_ID="2007" Column="IsReadOnly">true</Data>
-        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
-        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
-        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
-        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
-        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
-        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
-        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
-        <Data AD_Column_ID="176" Column="IsDisplayed">false</Data>
-        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
-        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
-        <Data AD_Column_ID="578" Column="IsActive">true</Data>
-        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
-        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
-        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
-        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
-        <Data AD_Column_ID="169" Column="Description">Gift Cards/Vouchers/Coupons</Data>
-        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
-        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="579" Column="Created">2025-06-28 16:59:03.078</Data>
-        <Data AD_Column_ID="101775" Column="AD_Window_ID">53552</Data>
-        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
-        <Data AD_Column_ID="172" Column="AD_Tab_ID">54419</Data>
-        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
-        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
-        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
-        <Data AD_Column_ID="167" Column="AD_Field_ID">105959</Data>
-        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
-        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
-        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
-        <Data AD_Column_ID="174" Column="AD_Column_ID">103437</Data>
         <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">103437</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">105959</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">54419</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">53552</Data>
+        <Data AD_Column_ID="579" Column="Created">2025-06-28 16:59:03.078</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="169" Column="Description">Gift Cards/Vouchers/Coupons</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">true</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Gift Card</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">820</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">820</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="581" Column="Updated">2025-06-28 16:59:03.078</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84320" Column="UUID">308c1068-4802-46e6-9f5c-54d718172451</Data>
       </PO>
     </Step>
     <Step SeqNo="130" StepType="AD">
       <PO AD_Table_ID="127" Action="I" Record_ID="105959" Table="AD_Field_Trl">
-        <Data AD_Column_ID="84323" Column="UUID">02d91374-41cb-4a65-89c8-9d1da9a29119</Data>
-        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="674" Column="Updated">2025-06-28 16:59:04.336</Data>
-        <Data AD_Column_ID="286" Column="Name">Gift Card</Data>
-        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="671" Column="IsActive">true</Data>
-        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="287" Column="Description">Gift Cards/Vouchers/Coupons</Data>
-        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="672" Column="Created">2025-06-28 16:59:04.336</Data>
-        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="284" Column="AD_Field_ID">105959</Data>
         <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="140" StepType="AD">
-      <PO AD_Table_ID="276" Action="I" Record_ID="62906" Table="AD_Element">
-        <Data AD_Column_ID="84316" Column="UUID">7f8c0b33-0446-4e62-bc49-631d9560b189</Data>
-        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="2600" Column="Updated">2025-06-28 17:04:51.033</Data>
-        <Data AD_Column_ID="4299" Column="PrintName">Refund Document Type</Data>
-        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
-        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
-        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
-        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
-        <Data AD_Column_ID="2603" Column="Name">Refund Document Type</Data>
-        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
-        <Data AD_Column_ID="2605" Column="Help">You can convert document types (e.g. from Offer to Order or Invoice).  The conversion is then reflected in the current type.  This processing is initiated by selecting the appropriate Document Action.</Data>
-        <Data AD_Column_ID="58589" Column="FieldLength">22</Data>
-        <Data AD_Column_ID="6484" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="2604" Column="Description">Target document type for conversing documents</Data>
-        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="2598" Column="Created">2025-06-28 17:04:51.033</Data>
-        <Data AD_Column_ID="2602" Column="ColumnName">RefundDocumentType_ID</Data>
-        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID">170</Data>
-        <Data AD_Column_ID="58588" Column="AD_Reference_ID">18</Data>
-        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="2594" Column="AD_Element_ID">62906</Data>
-        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="150" StepType="AD">
-      <PO AD_Table_ID="277" Action="I" Record_ID="62906" Table="AD_Element_Trl">
-        <Data AD_Column_ID="84317" Column="UUID">41c26aef-8fca-4fe1-b47a-d548375e2909</Data>
-        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="2644" Column="Updated">2025-06-28 17:04:51.807</Data>
-        <Data AD_Column_ID="4300" Column="PrintName">Refund Document Type</Data>
-        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
-        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
-        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
-        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
-        <Data AD_Column_ID="2646" Column="Name">Refund Document Type</Data>
-        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
-        <Data AD_Column_ID="2648" Column="Help">You can convert document types (e.g. from Offer to Order or Invoice).  The conversion is then reflected in the current type.  This processing is initiated by selecting the appropriate Document Action.</Data>
-        <Data AD_Column_ID="2647" Column="Description">Target document type for conversing documents</Data>
-        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="2642" Column="Created">2025-06-28 17:04:51.807</Data>
-        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="2637" Column="AD_Element_ID">62906</Data>
-        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="160" StepType="AD">
-      <PO AD_Table_ID="277" Action="U" Record_ID="62906" Table="AD_Element_Trl">
-        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Refund Document Type">Tipo de Documento para Reembolso</Data>
-        <Data AD_Column_ID="2646" Column="Name" oldValue="Refund Document Type">Tipo de Documento para Reembolso</Data>
-        <Data AD_Column_ID="2648" Column="Help" oldValue="You can convert document types (e.g. from Offer to Order or Invoice).  The conversion is then reflected in the current type.  This processing is initiated by selecting the appropriate Document Action.">Tipo de documento utilizado para realizar los reembolsos</Data>
-        <Data AD_Column_ID="2647" Column="Description" oldValue="Target document type for conversing documents">Tipo de Documento para Reembolso de dinero</Data>
-        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
-        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="62906">62906</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">105959</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="672" Column="Created">2025-06-28 16:59:04.336</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="287" Column="Description">Gift Cards/Vouchers/Coupons</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Gift Card</Data>
+        <Data AD_Column_ID="674" Column="Updated">2025-06-28 16:59:04.336</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84323" Column="UUID">02d91374-41cb-4a65-89c8-9d1da9a29119</Data>
       </PO>
     </Step>
     <Step SeqNo="170" StepType="AD">
       <PO AD_Table_ID="101" Action="I" Record_ID="103438" Table="AD_Column">
-        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
-        <Data AD_Column_ID="110" Column="Version">0</Data>
-        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
-        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
-        <Data AD_Column_ID="84306" Column="UUID">d49ed832-4092-4e10-bc57-75b05cd21271</Data>
-        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="551" Column="Updated">2025-06-28 17:06:46.137</Data>
-        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
-        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
-        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
-        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
-        <Data AD_Column_ID="111" Column="Name">Refund Document Type</Data>
-        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
-        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
-        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
-        <Data AD_Column_ID="6244" Column="IsSelectionColumn">true</Data>
-        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
-        <Data AD_Column_ID="120" Column="IsParent">false</Data>
-        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
-        <Data AD_Column_ID="119" Column="IsKey">false</Data>
-        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
-        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
-        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
-        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
-        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
-        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
-        <Data AD_Column_ID="548" Column="IsActive">true</Data>
-        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
-        <Data AD_Column_ID="113" Column="Help">You can convert document types (e.g. from Offer to Order or Invoice).  The conversion is then reflected in the current type.  This processing is initiated by selecting the appropriate Document Action.</Data>
-        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
-        <Data AD_Column_ID="118" Column="FieldLength">22</Data>
-        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="112" Column="Description">Target document type for conversing documents</Data>
-        <Data AD_Column_ID="117" Column="DefaultValue">-1</Data>
-        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="549" Column="Created">2025-06-28 17:06:46.137</Data>
-        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
-        <Data AD_Column_ID="116" Column="ColumnName">RefundDocumentType_ID</Data>
-        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
-        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID">52457</Data>
-        <Data AD_Column_ID="114" Column="AD_Table_ID">54848</Data>
-        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">170</Data>
-        <Data AD_Column_ID="226" Column="AD_Reference_ID">18</Data>
-        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
-        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
-        <Data AD_Column_ID="2608" Column="AD_Element_ID">62906</Data>
-        <Data AD_Column_ID="109" Column="AD_Column_ID">103438</Data>
-        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">61910</Data>
         <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">103438</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">18</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">170</Data>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">54848</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID">52457</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">POSRefundDocumentType_ID</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2025-06-28 17:06:46.137</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">-1</Data>
+        <Data AD_Column_ID="112" Column="Description">Target document type for conversing documents</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help">You can convert document types (e.g. from Offer to Order or Invoice).  The conversion is then reflected in the current type.  This processing is initiated by selecting the appropriate Document Action.</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">true</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Refund Document Type</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="551" Column="Updated">2025-06-28 17:06:46.137</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">d49ed832-4092-4e10-bc57-75b05cd21271</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
       </PO>
     </Step>
     <Step SeqNo="180" StepType="AD">
       <PO AD_Table_ID="752" Action="I" Record_ID="103438" Table="AD_Column_Trl">
-        <Data AD_Column_ID="84310" Column="UUID">0175ea9c-5426-4307-99be-5b340a475cd3</Data>
-        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="12952" Column="Updated">2025-06-28 17:06:48.199</Data>
-        <Data AD_Column_ID="12957" Column="Name">Refund Document Type</Data>
-        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
-        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="12960" Column="Created">2025-06-28 17:06:48.199</Data>
-        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="12955" Column="AD_Column_ID">103438</Data>
         <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">103438</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-06-28 17:06:48.199</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Refund Document Type</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-06-28 17:06:48.199</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">0175ea9c-5426-4307-99be-5b340a475cd3</Data>
       </PO>
     </Step>
     <Step SeqNo="190" StepType="AD">
       <PO AD_Table_ID="107" Action="I" Record_ID="105960" Table="AD_Field">
-        <Data AD_Column_ID="84320" Column="UUID">5d4442f4-c5d0-43cf-9041-0daf79b6f0d5</Data>
-        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="581" Column="Updated">2025-06-28 17:07:06.48</Data>
-        <Data AD_Column_ID="182" Column="SortNo">0</Data>
-        <Data AD_Column_ID="62479" Column="SeqNoGrid">310</Data>
-        <Data AD_Column_ID="181" Column="SeqNo">310</Data>
-        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
-        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
-        <Data AD_Column_ID="168" Column="Name">Refund Document Type</Data>
-        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
-        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
-        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
-        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
-        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
-        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
-        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
-        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
-        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
-        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
-        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
-        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
-        <Data AD_Column_ID="578" Column="IsActive">true</Data>
-        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
-        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
-        <Data AD_Column_ID="170" Column="Help">You can convert document types (e.g. from Offer to Order or Invoice).  The conversion is then reflected in the current type.  This processing is initiated by selecting the appropriate Document Action.</Data>
-        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
-        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
-        <Data AD_Column_ID="169" Column="Description">Target document type for conversing documents</Data>
-        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
-        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="579" Column="Created">2025-06-28 17:07:06.48</Data>
-        <Data AD_Column_ID="101775" Column="AD_Window_ID">338</Data>
-        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
-        <Data AD_Column_ID="172" Column="AD_Tab_ID">55110</Data>
-        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
-        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
-        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
-        <Data AD_Column_ID="167" Column="AD_Field_ID">105960</Data>
-        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
-        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
-        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
-        <Data AD_Column_ID="174" Column="AD_Column_ID">103438</Data>
         <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">103438</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">105960</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55110</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">338</Data>
+        <Data AD_Column_ID="579" Column="Created">2025-06-28 17:07:06.48</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="169" Column="Description">Target document type for conversing documents</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="170" Column="Help">You can convert document types (e.g. from Offer to Order or Invoice).  The conversion is then reflected in the current type.  This processing is initiated by selecting the appropriate Document Action.</Data>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Refund Document Type</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">310</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">310</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="581" Column="Updated">2025-06-28 17:07:06.48</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84320" Column="UUID">5d4442f4-c5d0-43cf-9041-0daf79b6f0d5</Data>
       </PO>
     </Step>
     <Step SeqNo="200" StepType="AD">
       <PO AD_Table_ID="127" Action="I" Record_ID="105960" Table="AD_Field_Trl">
-        <Data AD_Column_ID="84323" Column="UUID">0fb24c28-b783-4a0a-a1b2-6c6fda6a2c3c</Data>
-        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="674" Column="Updated">2025-06-28 17:07:07.46</Data>
-        <Data AD_Column_ID="286" Column="Name">Refund Document Type</Data>
-        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="671" Column="IsActive">true</Data>
-        <Data AD_Column_ID="288" Column="Help">You can convert document types (e.g. from Offer to Order or Invoice).  The conversion is then reflected in the current type.  This processing is initiated by selecting the appropriate Document Action.</Data>
-        <Data AD_Column_ID="287" Column="Description">Target document type for conversing documents</Data>
-        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="672" Column="Created">2025-06-28 17:07:07.46</Data>
-        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="284" Column="AD_Field_ID">105960</Data>
         <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">105960</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="672" Column="Created">2025-06-28 17:07:07.46</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="287" Column="Description">Target document type for conversing documents</Data>
+        <Data AD_Column_ID="288" Column="Help">You can convert document types (e.g. from Offer to Order or Invoice).  The conversion is then reflected in the current type.  This processing is initiated by selecting the appropriate Document Action.</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Refund Document Type</Data>
+        <Data AD_Column_ID="674" Column="Updated">2025-06-28 17:07:07.46</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84323" Column="UUID">0fb24c28-b783-4a0a-a1b2-6c6fda6a2c3c</Data>
       </PO>
     </Step>
     <Step SeqNo="210" StepType="AD">
@@ -600,198 +541,198 @@
     </Step>
     <Step SeqNo="430" StepType="AD">
       <PO AD_Table_ID="276" Action="I" Record_ID="62907" Table="AD_Element">
-        <Data AD_Column_ID="84316" Column="UUID">5f457d3b-6e0b-447a-81f5-c819e36659f3</Data>
-        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="2600" Column="Updated">2025-06-28 17:10:10.201</Data>
-        <Data AD_Column_ID="4299" Column="PrintName">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
-        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
-        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
-        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
-        <Data AD_Column_ID="2603" Column="Name">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
-        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="58589" Column="FieldLength">1</Data>
-        <Data AD_Column_ID="6484" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="2604" Column="Description">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="2598" Column="Created">2025-06-28 17:10:10.2</Data>
-        <Data AD_Column_ID="2602" Column="ColumnName">IsMandatoryCreditMemoRef</Data>
-        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
-        <Data AD_Column_ID="58588" Column="AD_Reference_ID">20</Data>
-        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="2594" Column="AD_Element_ID">62907</Data>
         <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">62907</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2602" Column="ColumnName">IsMandatoryCreditMemoRef</Data>
+        <Data AD_Column_ID="2598" Column="Created">2025-06-28 17:10:10.2</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2604" Column="Description">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="58589" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2603" Column="Name">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="4299" Column="PrintName">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="2600" Column="Updated">2025-06-28 17:10:10.201</Data>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84316" Column="UUID">5f457d3b-6e0b-447a-81f5-c819e36659f3</Data>
       </PO>
     </Step>
     <Step SeqNo="440" StepType="AD">
       <PO AD_Table_ID="277" Action="I" Record_ID="62907" Table="AD_Element_Trl">
-        <Data AD_Column_ID="84317" Column="UUID">4911046d-806c-41ce-995a-8e731e627609</Data>
-        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="2644" Column="Updated">2025-06-28 17:10:11.011</Data>
-        <Data AD_Column_ID="4300" Column="PrintName">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
-        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
-        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
-        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
-        <Data AD_Column_ID="2646" Column="Name">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
-        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="2647" Column="Description">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="2642" Column="Created">2025-06-28 17:10:11.011</Data>
-        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="2637" Column="AD_Element_ID">62907</Data>
         <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">62907</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2642" Column="Created">2025-06-28 17:10:11.011</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2647" Column="Description">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2646" Column="Name">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="4300" Column="PrintName">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2025-06-28 17:10:11.011</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84317" Column="UUID">4911046d-806c-41ce-995a-8e731e627609</Data>
       </PO>
     </Step>
     <Step SeqNo="450" StepType="AD">
       <PO AD_Table_ID="277" Action="U" Record_ID="62907" Table="AD_Element_Trl">
         <Data AD_Column_ID="4300" Column="PrintName" oldValue="Mandatory Credit Memo Reference">Referencia de Nota de Crédito Obligatoria</Data>
-        <Data AD_Column_ID="2646" Column="Name" oldValue="Mandatory Credit Memo Reference">Referencia de Nota de Crédito Obligatoria</Data>
-        <Data AD_Column_ID="2647" Column="Description" oldValue="Mandatory Credit Memo Reference">Referencia de Nota de Crédito Obligatoria</Data>
-        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
         <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="62907">62907</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2647" Column="Description" oldValue="Mandatory Credit Memo Reference">Referencia de Nota de Crédito Obligatoria</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Mandatory Credit Memo Reference">Referencia de Nota de Crédito Obligatoria</Data>
       </PO>
     </Step>
     <Step SeqNo="460" StepType="AD">
       <PO AD_Table_ID="101" Action="I" Record_ID="103439" Table="AD_Column">
-        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
-        <Data AD_Column_ID="110" Column="Version">0</Data>
-        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
-        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
-        <Data AD_Column_ID="84306" Column="UUID">ad5bc0e1-ce4a-4ba6-8e47-5d270b6d4178</Data>
-        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="551" Column="Updated">2025-06-28 17:10:58.742</Data>
-        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
-        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
-        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
-        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
-        <Data AD_Column_ID="111" Column="Name">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
-        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
-        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
-        <Data AD_Column_ID="6244" Column="IsSelectionColumn">true</Data>
-        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
-        <Data AD_Column_ID="120" Column="IsParent">false</Data>
-        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
-        <Data AD_Column_ID="119" Column="IsKey">false</Data>
-        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
-        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
-        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
-        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
-        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
-        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
-        <Data AD_Column_ID="548" Column="IsActive">true</Data>
-        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
-        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
-        <Data AD_Column_ID="118" Column="FieldLength">1</Data>
-        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="112" Column="Description">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="117" Column="DefaultValue">N</Data>
-        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="549" Column="Created">2025-06-28 17:10:58.742</Data>
-        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
-        <Data AD_Column_ID="116" Column="ColumnName">IsMandatoryCreditMemoRef</Data>
-        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
-        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
-        <Data AD_Column_ID="114" Column="AD_Table_ID">54848</Data>
-        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
-        <Data AD_Column_ID="226" Column="AD_Reference_ID">20</Data>
-        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
-        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
-        <Data AD_Column_ID="2608" Column="AD_Element_ID">62907</Data>
-        <Data AD_Column_ID="109" Column="AD_Column_ID">103439</Data>
-        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">103439</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">62907</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">54848</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">IsMandatoryCreditMemoRef</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2025-06-28 17:10:58.742</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">N</Data>
+        <Data AD_Column_ID="112" Column="Description">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">true</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="551" Column="Updated">2025-06-28 17:10:58.742</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">ad5bc0e1-ce4a-4ba6-8e47-5d270b6d4178</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
       </PO>
     </Step>
     <Step SeqNo="470" StepType="AD">
       <PO AD_Table_ID="752" Action="I" Record_ID="103439" Table="AD_Column_Trl">
-        <Data AD_Column_ID="84310" Column="UUID">02058765-0961-436f-a829-ad1bb166fc0d</Data>
-        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="12952" Column="Updated">2025-06-28 17:10:59.824</Data>
-        <Data AD_Column_ID="12957" Column="Name">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
-        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="12960" Column="Created">2025-06-28 17:10:59.824</Data>
-        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="12955" Column="AD_Column_ID">103439</Data>
         <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">103439</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-06-28 17:10:59.824</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-06-28 17:10:59.824</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">02058765-0961-436f-a829-ad1bb166fc0d</Data>
       </PO>
     </Step>
     <Step SeqNo="480" StepType="AD">
       <PO AD_Table_ID="107" Action="I" Record_ID="105961" Table="AD_Field">
-        <Data AD_Column_ID="84320" Column="UUID">98fd66f8-768a-4c03-b962-3fc82dd3505d</Data>
-        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="581" Column="Updated">2025-06-28 17:11:08.605</Data>
-        <Data AD_Column_ID="182" Column="SortNo">0</Data>
-        <Data AD_Column_ID="62479" Column="SeqNoGrid">260</Data>
-        <Data AD_Column_ID="181" Column="SeqNo">260</Data>
-        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
-        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
-        <Data AD_Column_ID="168" Column="Name">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
-        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
-        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
-        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
-        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
-        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
-        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
-        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
-        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
-        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
-        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
-        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
-        <Data AD_Column_ID="578" Column="IsActive">true</Data>
-        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
-        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
-        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
-        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
-        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
-        <Data AD_Column_ID="169" Column="Description">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
-        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="579" Column="Created">2025-06-28 17:11:08.605</Data>
-        <Data AD_Column_ID="101775" Column="AD_Window_ID">338</Data>
-        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
-        <Data AD_Column_ID="172" Column="AD_Tab_ID">55110</Data>
-        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
-        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
-        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
-        <Data AD_Column_ID="167" Column="AD_Field_ID">105961</Data>
-        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
-        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
-        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
-        <Data AD_Column_ID="174" Column="AD_Column_ID">103439</Data>
         <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">103439</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">105961</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55110</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">338</Data>
+        <Data AD_Column_ID="579" Column="Created">2025-06-28 17:11:08.605</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="169" Column="Description">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="7714" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">260</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">260</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="581" Column="Updated">2025-06-28 17:11:08.605</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84320" Column="UUID">98fd66f8-768a-4c03-b962-3fc82dd3505d</Data>
       </PO>
     </Step>
     <Step SeqNo="490" StepType="AD">
       <PO AD_Table_ID="127" Action="I" Record_ID="105961" Table="AD_Field_Trl">
-        <Data AD_Column_ID="84323" Column="UUID">f24f1795-588f-4dc6-b5f0-d3572f093597</Data>
-        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="674" Column="Updated">2025-06-28 17:11:09.967</Data>
-        <Data AD_Column_ID="286" Column="Name">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="671" Column="IsActive">true</Data>
-        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="287" Column="Description">Mandatory Credit Memo Reference</Data>
-        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="672" Column="Created">2025-06-28 17:11:09.967</Data>
-        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="284" Column="AD_Field_ID">105961</Data>
         <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">105961</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="672" Column="Created">2025-06-28 17:11:09.967</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="287" Column="Description">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Mandatory Credit Memo Reference</Data>
+        <Data AD_Column_ID="674" Column="Updated">2025-06-28 17:11:09.967</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84323" Column="UUID">f24f1795-588f-4dc6-b5f0-d3572f093597</Data>
       </PO>
     </Step>
   </Migration>
