@@ -83,12 +83,8 @@ public class GiftCardModelValidator implements ModelValidator {
 				if (orderLine.isSOTrx() && (orderLine.is_new()
 					|| orderLine.is_ValueChanged(MOrderLine.COLUMNNAME_M_Product_ID))) {
 					boolean isGenerateGiftCard = false;
-					boolean isReverse = false;
 					MOrder order = orderLine.getParent();
-					if(order.get_ValueAsInt("ECA14_Source_Order_ID") > 0) {
-						isReverse = true;
-					}
-					if (!isReverse && orderLine.getM_Product_ID() > 0) {
+					if (!order.isReturnOrder() && orderLine.getM_Product_ID() > 0) {
 						MProduct product = orderLine.getProduct();
 						if (product != null) {
 							isGenerateGiftCard = product.get_ValueAsBoolean(IGiftCard.IsGenerateGiftCard);
