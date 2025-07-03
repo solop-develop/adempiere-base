@@ -201,9 +201,9 @@ public final class MPayment extends X_C_Payment
 	}	//	MPayment
 
 	/**	Temporary	Payment Processors		*/
-	private MPaymentProcessor[]	m_mPaymentProcessors = null;
+	private List<MPaymentProcessor> paymentProcessors = null;
 	/**	Temporary	Payment Processor		*/
-	private MPaymentProcessor	m_mPaymentProcessor = null;
+	private MPaymentProcessor currentPaymentProcessor = null;
 	/** Logger								*/
 	private static CLogger		s_log = CLogger.getCLogger (MPayment.class);
 	/** Error Message						*/
@@ -497,9 +497,9 @@ public final class MPayment extends X_C_Payment
 		//
 		setIsOnline(true);
 		setErrorMessage(null);
-		if (m_mPaymentProcessor == null)
+		if (currentPaymentProcessor == null)
 			setPaymentProcessor();
-		if (m_mPaymentProcessor == null) {
+		if (currentPaymentProcessor == null) {
 			log.log(Level.WARNING, "No Payment Processor Model");
 			setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
 			return false;
@@ -509,7 +509,7 @@ public final class MPayment extends X_C_Payment
 
 		try
 		{
-			PaymentProcessor pp = PaymentProcessor.create(m_mPaymentProcessor, this);
+			PaymentProcessor pp = PaymentProcessor.create(currentPaymentProcessor, this);
 			if (pp == null)
 				setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
 			else
@@ -547,9 +547,9 @@ public final class MPayment extends X_C_Payment
 		//
 		setIsOnline(true);
 		setErrorMessage(null);
-		if (m_mPaymentProcessor == null)
+		if (currentPaymentProcessor == null)
 			setPaymentProcessor();
-		if (m_mPaymentProcessor == null) {
+		if (currentPaymentProcessor == null) {
 			log.log(Level.WARNING, "No Payment Processor Model");
 			setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
 			return false;
@@ -557,7 +557,7 @@ public final class MPayment extends X_C_Payment
 		boolean result = true;
 		try
 		{
-			PaymentProcessor pp = PaymentProcessor.create(m_mPaymentProcessor, this);
+			PaymentProcessor pp = PaymentProcessor.create(currentPaymentProcessor, this);
 			if (pp == null) {
 				result = false;
 			}
@@ -585,15 +585,15 @@ public final class MPayment extends X_C_Payment
 		//
 		setIsOnline(true);
 		setErrorMessage(null);
-		if (m_mPaymentProcessor == null)
+		if (currentPaymentProcessor == null)
 			setPaymentProcessor();
-		if (m_mPaymentProcessor == null) {
+		if (currentPaymentProcessor == null) {
 			return false;
 		}
 		boolean result = true;
 		try
 		{
-			PaymentProcessor pp = PaymentProcessor.create(m_mPaymentProcessor, this);
+			PaymentProcessor pp = PaymentProcessor.create(currentPaymentProcessor, this);
 			if (pp == null)
 				return false;
 			else
@@ -704,12 +704,10 @@ public final class MPayment extends X_C_Payment
 		}
 
 		//	Document Type/Receipt
-		if (getC_DocType_ID() == 0)
-			setC_DocType_ID();
-		else
-		{
-			MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
-			setIsReceipt(dt.isSOTrx());
+		if(newRecord || is_ValueChanged("C_DocType_ID") || is_ValueChanged("IsReceipt")) {
+			if (getC_DocType_ID() == 0) {
+				setC_DocType_ID();
+			}
 		}
 		setDocumentNo();
 		//
@@ -912,46 +910,30 @@ public final class MPayment extends X_C_Payment
 	}	//	setC_BankAccount_ID
 
 	/**
-	 *  Set BankAccount and PaymentProcessor
-	 *  @return true if found
+	 * Set BankAccount and PaymentProcessor
 	 */
-	public boolean setPaymentProcessor ()
-	{
-		return setPaymentProcessor (getTenderType(), getCreditCardType());
-	}	//	setPaymentProcessor
-
-	/**
-	 *  Set BankAccount and PaymentProcessor
-	 *  @param tender TenderType see TENDER_
-	 *  @param CCType CC Type see CC_
-	 *  @return true if found
-	 */
-	public boolean setPaymentProcessor (String tender, String CCType)
-	{
-		m_mPaymentProcessor = null;
+	public void setPaymentProcessor () {
+		currentPaymentProcessor = null;
 		//	Get Processor List
-		if (m_mPaymentProcessors == null || m_mPaymentProcessors.length == 0)
-			m_mPaymentProcessors = MPaymentProcessor.find (getCtx(), tender, CCType, getAD_Client_ID(),
-				getC_Currency_ID(), getPayAmt(), get_TrxName());
+		if (paymentProcessors == null || paymentProcessors.isEmpty()) {
+			paymentProcessors = MPaymentProcessor.find(getTenderType(), getCreditCardType(),
+					getC_Currency_ID(), getPayAmt());
+		}
 		//	Relax Amount
-		if (m_mPaymentProcessors == null || m_mPaymentProcessors.length == 0)
-			m_mPaymentProcessors = MPaymentProcessor.find (getCtx(), tender, CCType, getAD_Client_ID(),
-				getC_Currency_ID(), Env.ZERO, get_TrxName());
-		if (m_mPaymentProcessors == null || m_mPaymentProcessors.length == 0)
-			return false;
-
-		//	Find the first right one
-		for (int i = 0; i < m_mPaymentProcessors.length; i++)
-		{
-			if (m_mPaymentProcessors[i].accepts (tender, CCType))
-			{
-				m_mPaymentProcessor = m_mPaymentProcessors[i];
+		if (paymentProcessors == null || paymentProcessors.isEmpty()) {
+			paymentProcessors = MPaymentProcessor.find(getTenderType(), getCreditCardType(),
+					getC_Currency_ID(), Env.ZERO);
+		}
+		if (paymentProcessors == null || paymentProcessors.isEmpty()) {
+			return;
+		}
+		Optional<MPaymentProcessor> maybeProcessor = paymentProcessors.stream().filter(processor -> processor.accepts(getTenderType(), getCreditCardType())).findFirst();
+		if(maybeProcessor.isPresent()) {
+			currentPaymentProcessor = maybeProcessor.get();
+			if (getC_BankAccount_ID() == 0) {
+				setC_BankAccount_ID (currentPaymentProcessor.getC_BankAccount_ID());
 			}
 		}
-		if (m_mPaymentProcessor != null)
-			setC_BankAccount_ID (m_mPaymentProcessor.getC_BankAccount_ID());
-		//
-		return m_mPaymentProcessor != null;
 	}   //  setPaymentProcessor
 
 
@@ -967,37 +949,42 @@ public final class MPayment extends X_C_Payment
 
 	/**
 	 * 	Get Accepted Credit Cards for amount
-	 *	@param amt trx amount
+	 *	@param paymentAmount trx amount
 	 *	@return credit cards
 	 */
-	public ValueNamePair[] getCreditCards (BigDecimal amt)
-	{
+	public ValueNamePair[] getCreditCards (BigDecimal paymentAmount) {
 		try
 		{
-			if (m_mPaymentProcessors == null || m_mPaymentProcessors.length == 0)
-				m_mPaymentProcessors = MPaymentProcessor.find (getCtx (), null, null, 
-					getAD_Client_ID (), getC_Currency_ID (), amt, get_TrxName());
-			//
-			HashMap<String,ValueNamePair> map = new HashMap<String,ValueNamePair>(); //	to eliminate duplicates
-			for (int i = 0; i < m_mPaymentProcessors.length; i++)
-			{
-				if (m_mPaymentProcessors[i].isAcceptAMEX ())
-					map.put (CREDITCARDTYPE_Amex, getCreditCardPair (CREDITCARDTYPE_Amex));
-				if (m_mPaymentProcessors[i].isAcceptDiners ())
-					map.put (CREDITCARDTYPE_Diners, getCreditCardPair (CREDITCARDTYPE_Diners));
-				if (m_mPaymentProcessors[i].isAcceptDiscover ())
-					map.put (CREDITCARDTYPE_Discover, getCreditCardPair (CREDITCARDTYPE_Discover));
-				if (m_mPaymentProcessors[i].isAcceptMC ())
-					map.put (CREDITCARDTYPE_MasterCard, getCreditCardPair (CREDITCARDTYPE_MasterCard));
-				if (m_mPaymentProcessors[i].isAcceptCorporate ())
-					map.put (CREDITCARDTYPE_PurchaseCard, getCreditCardPair (CREDITCARDTYPE_PurchaseCard));
-				if (m_mPaymentProcessors[i].isAcceptVisa ())
-					map.put (CREDITCARDTYPE_Visa, getCreditCardPair (CREDITCARDTYPE_Visa));
-			} //	for all payment processors
+			if (paymentProcessors == null || paymentProcessors.isEmpty()) {
+				paymentProcessors = MPaymentProcessor.find (null, null, getC_Currency_ID (), paymentAmount);
+			}
+			HashMap<String,ValueNamePair> map = new HashMap<String,ValueNamePair>();
+			if(paymentProcessors != null && !paymentProcessors.isEmpty()) {
+				paymentProcessors.forEach(processor -> {
+					if (processor.isAcceptAMEX()) {
+						map.put (CREDITCARDTYPE_Amex, getCreditCardPair (CREDITCARDTYPE_Amex));
+					}
+					if (processor.isAcceptDiners()) {
+						map.put (CREDITCARDTYPE_Diners, getCreditCardPair (CREDITCARDTYPE_Diners));
+					}
+					if (processor.isAcceptDiscover()) {
+						map.put (CREDITCARDTYPE_Discover, getCreditCardPair (CREDITCARDTYPE_Discover));
+					}
+					if (processor.isAcceptMC()) {
+						map.put (CREDITCARDTYPE_MasterCard, getCreditCardPair (CREDITCARDTYPE_MasterCard));
+					}
+					if (processor.isAcceptCorporate()) {
+						map.put (CREDITCARDTYPE_PurchaseCard, getCreditCardPair (CREDITCARDTYPE_PurchaseCard));
+					}
+					if (processor.isAcceptVisa()) {
+						map.put (CREDITCARDTYPE_Visa, getCreditCardPair (CREDITCARDTYPE_Visa));
+					}
+				});
+			}
 			//
 			ValueNamePair[] retValue = new ValueNamePair[map.size ()];
 			map.values ().toArray (retValue);
-			log.fine("getCreditCards - #" + retValue.length + " - Processors=" + m_mPaymentProcessors.length);
+			log.fine("getCreditCards - #" + retValue.length + " - Processors=" + paymentProcessors.size());
 			return retValue;
 		}
 		catch (Exception ex)
