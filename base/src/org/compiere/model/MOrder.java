@@ -808,20 +808,36 @@ public class MOrder extends X_C_Order implements DocAction
 	 * 	Get Shipments of Order
 	 * 	@return shipments
 	 */
-	public MInOut[] getShipments(String where)
+	public MInOut[] getShipments()
 	{
-		String whereClause = "EXISTS (SELECT 1 FROM M_InOutLine iol, C_OrderLine ol"
+		final String whereClause = "EXISTS (SELECT 1 FROM M_InOutLine iol, C_OrderLine ol"
 			+" WHERE iol.M_InOut_ID=M_InOut.M_InOut_ID"
 			+" AND iol.C_OrderLine_ID=ol.C_OrderLine_ID"
 			+" AND ol.C_Order_ID=?)";
-		if(where != null && !where.equalsIgnoreCase(""))
-			whereClause += where;
 		List<MInOut> list = new Query(getCtx(), I_M_InOut.Table_Name, whereClause, get_TrxName())
 									.setParameters(get_ID())
 									.setOrderBy("M_InOut_ID DESC")
 									.list();
 		return list.toArray(new MInOut[list.size()]);
 	}	//	getShipments
+
+	/**
+	 * 	Get Complete Shipments of Order
+	 * 	@return shipments
+	 */
+	public MInOut[] getShipmentsComplete()
+	{
+		final String whereClause = "EXISTS (SELECT 1 FROM M_InOutLine iol, C_OrderLine ol"
+				+" WHERE iol.M_InOut_ID=M_InOut.M_InOut_ID"
+				+" AND iol.C_OrderLine_ID=ol.C_OrderLine_ID"
+				+" AND ol.C_Order_ID=?)"
+				+" AND DocStatus = '" + MInOut.STATUS_Completed + "'";
+		List<MInOut> list = new Query(getCtx(), I_M_InOut.Table_Name, whereClause, get_TrxName())
+				.setParameters(get_ID())
+				.setOrderBy("M_InOut_ID DESC")
+				.list();
+		return list.toArray(new MInOut[list.size()]);
+	}	//	getShipments	
 
 	/**
 	 * 	Get RMA of Order
@@ -2125,7 +2141,7 @@ public class MOrder extends X_C_Order implements DocAction
 				createReversals(true);
 			} else {
 				StringBuffer receipts = new StringBuffer();
-				Arrays.asList(getShipments(" AND " + MInOut.COLUMNNAME_DocStatus + " = '" + MInOut.STATUS_Completed + "'")).forEach(receipt -> {
+				Arrays.asList(getShipmentsComplete()).forEach(receipt -> {
 					receipts.append(Env.NL);
 					//	Add document no
 					receipts.append(receipt.getDocumentNo());
@@ -2179,7 +2195,7 @@ public class MOrder extends X_C_Order implements DocAction
 		// UnLink All Requisitions
 		MRequisitionLine.unlinkC_Order_ID(getCtx(), get_ID(), get_TrxName());
 		
-		if (!createReversals(false))
+		if (!versals(false))
 			return false;
 		
 		/* globalqss - 2317928 - Reactivating/Voiding order must reset posted */
@@ -2211,7 +2227,7 @@ public class MOrder extends X_C_Order implements DocAction
 		
 		//	Reverse All *Shipments*
 		info.append("@M_InOut_ID@:");
-		MInOut[] shipments = getShipments("");
+		MInOut[] shipments = getShipments();
 		for (int i = 0; i < shipments.length; i++)
 		{
 			MInOut ship = shipments[i];
