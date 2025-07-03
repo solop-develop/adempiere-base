@@ -2195,7 +2195,7 @@ public class MOrder extends X_C_Order implements DocAction
 		// UnLink All Requisitions
 		MRequisitionLine.unlinkC_Order_ID(getCtx(), get_ID(), get_TrxName());
 		
-		if (!versals(false))
+		if (!createReversals(false))
 			return false;
 		
 		/* globalqss - 2317928 - Reactivating/Voiding order must reset posted */
