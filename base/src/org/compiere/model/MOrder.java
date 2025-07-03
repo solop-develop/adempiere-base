@@ -808,12 +808,14 @@ public class MOrder extends X_C_Order implements DocAction
 	 * 	Get Shipments of Order
 	 * 	@return shipments
 	 */
-	public MInOut[] getShipments()
+	public MInOut[] getShipments(String where)
 	{
-		final String whereClause = "EXISTS (SELECT 1 FROM M_InOutLine iol, C_OrderLine ol"
+		String whereClause = "EXISTS (SELECT 1 FROM M_InOutLine iol, C_OrderLine ol"
 			+" WHERE iol.M_InOut_ID=M_InOut.M_InOut_ID"
 			+" AND iol.C_OrderLine_ID=ol.C_OrderLine_ID"
 			+" AND ol.C_Order_ID=?)";
+		if(where != null && !where.equalsIgnoreCase(""))
+			whereClause += where;
 		List<MInOut> list = new Query(getCtx(), I_M_InOut.Table_Name, whereClause, get_TrxName())
 									.setParameters(get_ID())
 									.setOrderBy("M_InOut_ID DESC")
@@ -2123,7 +2125,7 @@ public class MOrder extends X_C_Order implements DocAction
 				createReversals(true);
 			} else {
 				StringBuffer receipts = new StringBuffer();
-				Arrays.asList(getShipments()).forEach(receipt -> {
+				Arrays.asList(getShipments(" AND " + MInOut.COLUMNNAME_DocStatus + " = '" + MInOut.STATUS_Completed + "'")).forEach(receipt -> {
 					receipts.append(Env.NL);
 					//	Add document no
 					receipts.append(receipt.getDocumentNo());
@@ -2209,7 +2211,7 @@ public class MOrder extends X_C_Order implements DocAction
 		
 		//	Reverse All *Shipments*
 		info.append("@M_InOut_ID@:");
-		MInOut[] shipments = getShipments();
+		MInOut[] shipments = getShipments("");
 		for (int i = 0; i < shipments.length; i++)
 		{
 			MInOut ship = shipments[i];
