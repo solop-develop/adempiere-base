@@ -290,6 +290,24 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 		
 		//	Iterate for each commission definition and  Sales Representative
 		for(MCommission commission : commissionList) {
+			if (commission.getC_CommissionType_ID() > 0) {
+				MCommissionType commissionType = MCommissionType.getById(getCtx(), commission.getC_CommissionType_ID(), get_TrxName());
+				if (!commissionType.get_ValueAsBoolean("IsViewBased")) {
+					if(!Util.isEmpty(commissionType.get_ValueAsString("Classname"))) {
+						ICommissionCalculation commissionEngine = CommissionClassLoader.loadClass(commissionType.get_ValueAsString("Classname"));
+						if(commissionEngine == null) {
+							throw new AdempiereException("@Classname@ @NotFound@");
+						}
+						commissionEngine.processCommission(getCtx(), 0, commission.getC_Commission_ID(), getC_CommissionRun_ID(), get_TrxName());
+					}else if(commissionType.getAD_Rule_ID() > 0) {
+
+					} else {
+						throw new AdempiereException("@Classname@ @NotFound@");
+					}
+					saveEx();
+					return;
+				}
+			}
 			for(MBPartner salesRep : commission.getSalesRepsOfCommission()) {
 				//	Add support to Commission Calculation Class
 				if(commission.getC_CommissionType_ID() > 0) {
