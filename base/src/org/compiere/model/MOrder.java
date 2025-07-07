@@ -822,6 +822,25 @@ public class MOrder extends X_C_Order implements DocAction
 	}	//	getShipments
 
 	/**
+	 * 	Get Complete Shipments of Order
+	 * 	@return shipments
+	 */
+	public List<MInOut> getShipmentsComplete()
+	{
+		final String whereClause = "EXISTS (SELECT 1 FROM M_InOutLine iol, C_OrderLine ol"
+				+" WHERE iol.M_InOut_ID=M_InOut.M_InOut_ID"
+				+" AND iol.C_OrderLine_ID=ol.C_OrderLine_ID"
+				+" AND ol.C_Order_ID=?)"
+				+" AND DocStatus IN ('" + MInOut.STATUS_Completed + "','"
+				+ MInOut.STATUS_Closed + "','" + MInOut.STATUS_InProgress + "')";
+		List<MInOut> list = new Query(getCtx(), I_M_InOut.Table_Name, whereClause, get_TrxName())
+				.setParameters(get_ID())
+				.setOrderBy("M_InOut_ID DESC")
+				.list();
+		return list;
+	}	//	getShipments
+	
+	/**
 	 * 	Get RMA of Order
 	 * 	@return RMAs
 	 */
@@ -2123,7 +2142,7 @@ public class MOrder extends X_C_Order implements DocAction
 				createReversals(true);
 			} else {
 				StringBuffer receipts = new StringBuffer();
-				Arrays.asList(getShipments()).forEach(receipt -> {
+				getShipmentsComplete().forEach(receipt -> {
 					receipts.append(Env.NL);
 					//	Add document no
 					receipts.append(receipt.getDocumentNo());
