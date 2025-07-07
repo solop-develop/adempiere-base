@@ -567,26 +567,6 @@
         <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
       </PO>
     </Step>
-    <Step SeqNo="670" StepType="AD">
-      <PO AD_Table_ID="440" Action="U" Record_ID="101" Table="PA_Goal">
-        <Data AD_Column_ID="5903" Column="DateLastRun" oldValue="2018-06-29 13:42:36.0">2018-07-03 13:58:14.143</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="680" StepType="AD">
-      <PO AD_Table_ID="440" Action="U" Record_ID="102" Table="PA_Goal">
-        <Data AD_Column_ID="5903" Column="DateLastRun" oldValue="2018-06-29 13:42:36.0">2018-07-03 13:58:14.865</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="690" StepType="AD">
-      <PO AD_Table_ID="440" Action="U" Record_ID="104" Table="PA_Goal">
-        <Data AD_Column_ID="5903" Column="DateLastRun" oldValue="2018-06-29 13:42:36.0">2018-07-03 13:58:15.002</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="700" StepType="AD">
-      <PO AD_Table_ID="440" Action="U" Record_ID="105" Table="PA_Goal">
-        <Data AD_Column_ID="5903" Column="DateLastRun" oldValue="2018-06-29 13:42:36.0">2018-07-03 13:58:15.209</Data>
-      </PO>
-    </Step>
     <Step SeqNo="710" StepType="AD">
       <PO AD_Table_ID="452" Action="U" Record_ID="328" Table="AD_TreeNodeMM">
         <Data AD_Column_ID="6161" Column="Node_ID" oldValue="328">328</Data>
