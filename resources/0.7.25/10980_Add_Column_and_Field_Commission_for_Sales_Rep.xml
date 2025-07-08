@@ -8,7 +8,7 @@
         <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="58588" Column="AD_Reference_ID">20</Data>
         <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
-        <Data AD_Column_ID="2602" Column="ColumnName">CommissionForSalesReps</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">IsCommissionForSalesReps</Data>
         <Data AD_Column_ID="2598" Column="Created">2025-07-07 18:45:20.683</Data>
         <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="2604" Column="Description" isNewNull="true"/>
@@ -65,7 +65,7 @@
         <Data AD_Column_ID="114" Column="AD_Table_ID">429</Data>
         <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
         <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
-        <Data AD_Column_ID="116" Column="ColumnName">CommissionForSalesReps</Data>
+        <Data AD_Column_ID="116" Column="ColumnName">IsCommissionForSalesReps</Data>
         <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
         <Data AD_Column_ID="549" Column="Created">2025-07-07 18:45:52.392</Data>
         <Data AD_Column_ID="550" Column="CreatedBy">100</Data>

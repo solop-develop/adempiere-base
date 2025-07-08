@@ -290,7 +290,7 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 		
 		//	Iterate for each commission definition
 		for(MCommission commission : commissionList) {
-			if (!commission.get_ValueAsBoolean("CommissionForSalesReps")){
+			if (!commission.get_ValueAsBoolean("IsCommissionForSalesReps")){
 				if (commission.getC_CommissionType_ID() > 0) {
 					MCommissionType commissionType = MCommissionType.getById(getCtx(), commission.getC_CommissionType_ID(), get_TrxName());
 					if (!commissionType.get_ValueAsBoolean("IsViewBased")) {
