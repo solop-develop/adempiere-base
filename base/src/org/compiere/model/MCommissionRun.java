@@ -306,7 +306,6 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 							throw new AdempiereException("@Classname@ @NotFound@");
 						}
 						saveEx();
-						return;
 					}
 				}
 			} else {
