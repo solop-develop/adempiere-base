@@ -166,7 +166,7 @@ public class GiftCardModelValidator implements ModelValidator {
 		giftCard.set_ValueOfColumn(MOrder.COLUMNNAME_Description, order.getDescription());
 		giftCard.set_ValueOfColumn(IGiftCard.IsPrepayment, false);
 		// set total amount on header
-		giftCard.set_ValueOfColumn(IGiftCard.Amount, orderLine.getLineNetAmt());
+		giftCard.set_ValueOfColumn(IGiftCard.Amount, qty.multiply(orderLine.getPriceEntered()));
 		giftCard.saveEx();
 
 		PO giftCardLine = giftCardLineTable.getPO(0, order.get_TrxName());
