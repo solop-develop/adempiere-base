@@ -18,13 +18,13 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
-import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_RevenueRecognition
  *  @author Adempiere (generated) 
@@ -35,7 +35,7 @@ public class X_C_RevenueRecognition extends PO implements I_C_RevenueRecognition
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250708L;
 
     /** Standard Constructor */
     public X_C_RevenueRecognition (Properties ctx, int C_RevenueRecognition_ID, String trxName)
@@ -46,7 +46,6 @@ public class X_C_RevenueRecognition extends PO implements I_C_RevenueRecognition
 			setC_RevenueRecognition_ID (0);
 			setIsTimeBased (false);
 			setName (null);
-			setRecognitionFrequency (null);
         } */
     }
 
@@ -205,6 +204,42 @@ public class X_C_RevenueRecognition extends PO implements I_C_RevenueRecognition
 	public String getRecognitionFrequency () 
 	{
 		return (String)get_Value(COLUMNNAME_RecognitionFrequency);
+	}
+
+	/** RecognitionType AD_Reference_ID=54496 */
+	public static final int RECOGNITIONTYPE_AD_Reference_ID=54496;
+	/** Sales Basis = SB */
+	public static final String RECOGNITIONTYPE_SalesBasis = "SB";
+	/** Completed Contract = CC */
+	public static final String RECOGNITIONTYPE_CompletedContract = "CC";
+	/** Percentage of Completion = PC */
+	public static final String RECOGNITIONTYPE_PercentageOfCompletion = "PC";
+	/** Installment = II */
+	public static final String RECOGNITIONTYPE_Installment = "II";
+	/** Cost Recovery = CR */
+	public static final String RECOGNITIONTYPE_CostRecovery = "CR";
+	/** Accrual = AC */
+	public static final String RECOGNITIONTYPE_Accrual = "AC";
+	/** Deferred Revenue = DR */
+	public static final String RECOGNITIONTYPE_DeferredRevenue = "DR";
+	/** Milestone Based = MB */
+	public static final String RECOGNITIONTYPE_MilestoneBased = "MB";
+	/** Set Recognition Type.
+		@param RecognitionType 
+		Recognition Type
+	  */
+	public void setRecognitionType (String RecognitionType)
+	{
+
+		set_Value (COLUMNNAME_RecognitionType, RecognitionType);
+	}
+
+	/** Get Recognition Type.
+		@return Recognition Type
+	  */
+	public String getRecognitionType () 
+	{
+		return (String)get_Value(COLUMNNAME_RecognitionType);
 	}
 
 	/** Set Immutable Universally Unique Identifier.

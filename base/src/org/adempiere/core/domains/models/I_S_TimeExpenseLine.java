@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.                                     *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,19 +12,19 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net                                                  *
- * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
 /** Generated Interface for S_TimeExpenseLine
  *  @author Adempiere (generated) 
- *  @version Release 3.9.4
+ *  @version Release 3.9.3
  */
 public interface I_S_TimeExpenseLine 
 {
@@ -64,6 +64,34 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name AD_OrgTrx_ID */
+    public static final String COLUMNNAME_AD_OrgTrx_ID = "AD_OrgTrx_ID";
+
+	/** Set Trx Organization.
+	  * Performing or initiating organization
+	  */
+	public void setAD_OrgTrx_ID (int AD_OrgTrx_ID);
+
+	/** Get Trx Organization.
+	  * Performing or initiating organization
+	  */
+	public int getAD_OrgTrx_ID();
+
+	public I_AD_Org getAD_OrgTrx() throws RuntimeException;
+
+    /** Column name AllocatedAmt */
+    public static final String COLUMNNAME_AllocatedAmt = "AllocatedAmt";
+
+	/** Set Allocated Amountt.
+	  * Amount allocated to this document
+	  */
+	public void setAllocatedAmt (BigDecimal AllocatedAmt);
+
+	/** Get Allocated Amountt.
+	  * Amount allocated to this document
+	  */
+	public BigDecimal getAllocatedAmt();
+
     /** Column name C_Activity_ID */
     public static final String COLUMNNAME_C_Activity_ID = "C_Activity_ID";
 
@@ -77,7 +105,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getC_Activity_ID();
 
-	public org.adempiere.core.domains.models.I_C_Activity getC_Activity() throws RuntimeException;
+	public I_C_Activity getC_Activity() throws RuntimeException;
 
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
@@ -92,7 +120,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_Campaign_ID */
     public static final String COLUMNNAME_C_Campaign_ID = "C_Campaign_ID";
@@ -107,7 +135,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getC_Campaign_ID();
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException;
+	public I_C_Campaign getC_Campaign() throws RuntimeException;
 
     /** Column name C_Currency_ID */
     public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
@@ -122,7 +150,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getC_Currency_ID();
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException;
+	public I_C_Currency getC_Currency() throws RuntimeException;
 
     /** Column name C_InvoiceLine_ID */
     public static final String COLUMNNAME_C_InvoiceLine_ID = "C_InvoiceLine_ID";
@@ -137,7 +165,20 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getC_InvoiceLine_ID();
 
-	public org.adempiere.core.domains.models.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException;
+	public I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException;
+
+    /** Column name ConvertedAmt */
+    public static final String COLUMNNAME_ConvertedAmt = "ConvertedAmt";
+
+	/** Set Converted Amount.
+	  * Converted Amount
+	  */
+	public void setConvertedAmt (BigDecimal ConvertedAmt);
+
+	/** Get Converted Amount.
+	  * Converted Amount
+	  */
+	public BigDecimal getConvertedAmt();
 
     /** Column name C_OrderLine_ID */
     public static final String COLUMNNAME_C_OrderLine_ID = "C_OrderLine_ID";
@@ -152,7 +193,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getC_OrderLine_ID();
 
-	public org.adempiere.core.domains.models.I_C_OrderLine getC_OrderLine() throws RuntimeException;
+	public I_C_OrderLine getC_OrderLine() throws RuntimeException;
 
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
@@ -167,7 +208,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getC_Project_ID();
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
+	public I_C_Project getC_Project() throws RuntimeException;
 
     /** Column name C_ProjectPhase_ID */
     public static final String COLUMNNAME_C_ProjectPhase_ID = "C_ProjectPhase_ID";
@@ -182,7 +223,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getC_ProjectPhase_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException;
+	public I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException;
 
     /** Column name C_ProjectTask_ID */
     public static final String COLUMNNAME_C_ProjectTask_ID = "C_ProjectTask_ID";
@@ -197,50 +238,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getC_ProjectTask_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
-
-    /** Column name C_Tax_ID */
-    public static final String COLUMNNAME_C_Tax_ID = "C_Tax_ID";
-
-	/** Set Tax.
-	  * Tax identifier
-	  */
-	public void setC_Tax_ID (int C_Tax_ID);
-
-	/** Get Tax.
-	  * Tax identifier
-	  */
-	public int getC_Tax_ID();
-
-	public org.adempiere.core.domains.models.I_C_Tax getC_Tax() throws RuntimeException;
-
-    /** Column name C_UOM_ID */
-    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
-
-	/** Set UOM.
-	  * Unit of Measure
-	  */
-	public void setC_UOM_ID (int C_UOM_ID);
-
-	/** Get UOM.
-	  * Unit of Measure
-	  */
-	public int getC_UOM_ID();
-
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM() throws RuntimeException;
-
-    /** Column name ConvertedAmt */
-    public static final String COLUMNNAME_ConvertedAmt = "ConvertedAmt";
-
-	/** Set Converted Amount.
-	  * Converted Amount
-	  */
-	public void setConvertedAmt (BigDecimal ConvertedAmt);
-
-	/** Get Converted Amount.
-	  * Converted Amount
-	  */
-	public BigDecimal getConvertedAmt();
+	public I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -257,6 +255,36 @@ public interface I_S_TimeExpenseLine
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name C_Tax_ID */
+    public static final String COLUMNNAME_C_Tax_ID = "C_Tax_ID";
+
+	/** Set Tax.
+	  * Tax identifier
+	  */
+	public void setC_Tax_ID (int C_Tax_ID);
+
+	/** Get Tax.
+	  * Tax identifier
+	  */
+	public int getC_Tax_ID();
+
+	public I_C_Tax getC_Tax() throws RuntimeException;
+
+    /** Column name C_UOM_ID */
+    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
+
+	/** Set UOM.
+	  * Unit of Measure
+	  */
+	public void setC_UOM_ID (int C_UOM_ID);
+
+	/** Get UOM.
+	  * Unit of Measure
+	  */
+	public int getC_UOM_ID();
+
+	public I_C_UOM getC_UOM() throws RuntimeException;
 
     /** Column name DateExpense */
     public static final String COLUMNNAME_DateExpense = "DateExpense";
@@ -283,6 +311,19 @@ public interface I_S_TimeExpenseLine
 	  * Optional short description of the record
 	  */
 	public String getDescription();
+
+    /** Column name DiscountAmt */
+    public static final String COLUMNNAME_DiscountAmt = "DiscountAmt";
+
+	/** Set Discount Amount.
+	  * Calculated amount of discount
+	  */
+	public void setDiscountAmt (BigDecimal DiscountAmt);
+
+	/** Get Discount Amount.
+	  * Calculated amount of discount
+	  */
+	public BigDecimal getDiscountAmt();
 
     /** Column name ExpenseAmt */
     public static final String COLUMNNAME_ExpenseAmt = "ExpenseAmt";
@@ -335,6 +376,19 @@ public interface I_S_TimeExpenseLine
 	  * Is this invoiced?
 	  */
 	public boolean isInvoiced();
+
+    /** Column name IsPaid */
+    public static final String COLUMNNAME_IsPaid = "IsPaid";
+
+	/** Set Paid.
+	  * The document is paid
+	  */
+	public void setIsPaid (boolean IsPaid);
+
+	/** Get Paid.
+	  * The document is paid
+	  */
+	public boolean isPaid();
 
     /** Column name IsTimeReport */
     public static final String COLUMNNAME_IsTimeReport = "IsTimeReport";
@@ -401,7 +455,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getM_Product_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
+	public I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name Note */
     public static final String COLUMNNAME_Note = "Note";
@@ -415,6 +469,51 @@ public interface I_S_TimeExpenseLine
 	  * Optional additional user defined information
 	  */
 	public String getNote();
+
+    /** Column name PP_Calendar_ID */
+    public static final String COLUMNNAME_PP_Calendar_ID = "PP_Calendar_ID";
+
+	/** Set Operational Calendar.
+	  * Operational Period, allows to define the periods for the Operational Calendar
+	  */
+	public void setPP_Calendar_ID (int PP_Calendar_ID);
+
+	/** Get Operational Calendar.
+	  * Operational Period, allows to define the periods for the Operational Calendar
+	  */
+	public int getPP_Calendar_ID();
+
+	public I_PP_Calendar getPP_Calendar() throws RuntimeException;
+
+    /** Column name PP_PeriodDefinition_ID */
+    public static final String COLUMNNAME_PP_PeriodDefinition_ID = "PP_PeriodDefinition_ID";
+
+	/** Set Current Period.
+	  * Period Definition, allows to define time cycles for the Operational Calendar
+	  */
+	public void setPP_PeriodDefinition_ID (int PP_PeriodDefinition_ID);
+
+	/** Get Current Period.
+	  * Period Definition, allows to define time cycles for the Operational Calendar
+	  */
+	public int getPP_PeriodDefinition_ID();
+
+	public I_PP_PeriodDefinition getPP_PeriodDefinition() throws RuntimeException;
+
+    /** Column name PP_Period_ID */
+    public static final String COLUMNNAME_PP_Period_ID = "PP_Period_ID";
+
+	/** Set Operational Period.
+	  * Forecast Definition Periods.
+	  */
+	public void setPP_Period_ID (int PP_Period_ID);
+
+	/** Get Operational Period.
+	  * Forecast Definition Periods.
+	  */
+	public int getPP_Period_ID();
+
+	public I_PP_Period getPP_Period() throws RuntimeException;
 
     /** Column name PriceInvoiced */
     public static final String COLUMNNAME_PriceInvoiced = "PriceInvoiced";
@@ -494,6 +593,21 @@ public interface I_S_TimeExpenseLine
 	  */
 	public BigDecimal getQtyReimbursed();
 
+    /** Column name S_ContractLine_ID */
+    public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
+
+	/** Set Contract Line.
+	  * Contract Line
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID);
+
+	/** Get Contract Line.
+	  * Contract Line
+	  */
+	public int getS_ContractLine_ID();
+
+	public I_S_ContractLine getS_ContractLine() throws RuntimeException;
+
     /** Column name S_ResourceAssignment_ID */
     public static final String COLUMNNAME_S_ResourceAssignment_ID = "S_ResourceAssignment_ID";
 
@@ -520,7 +634,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getS_TimeExpense_ID();
 
-	public org.adempiere.core.domains.models.I_S_TimeExpense getS_TimeExpense() throws RuntimeException;
+	public I_S_TimeExpense getS_TimeExpense() throws RuntimeException;
 
     /** Column name S_TimeExpenseLine_ID */
     public static final String COLUMNNAME_S_TimeExpenseLine_ID = "S_TimeExpenseLine_ID";
@@ -548,7 +662,7 @@ public interface I_S_TimeExpenseLine
 	  */
 	public int getS_TimeType_ID();
 
-	public org.adempiere.core.domains.models.I_S_TimeType getS_TimeType() throws RuntimeException;
+	public I_S_TimeType getS_TimeType() throws RuntimeException;
 
     /** Column name TaxAmt */
     public static final String COLUMNNAME_TaxAmt = "TaxAmt";
@@ -578,6 +692,66 @@ public interface I_S_TimeExpenseLine
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name User1_ID */
+    public static final String COLUMNNAME_User1_ID = "User1_ID";
+
+	/** Set User List 1.
+	  * User defined list element #1
+	  */
+	public void setUser1_ID (int User1_ID);
+
+	/** Get User List 1.
+	  * User defined list element #1
+	  */
+	public int getUser1_ID();
+
+	public I_C_ElementValue getUser1() throws RuntimeException;
+
+    /** Column name User2_ID */
+    public static final String COLUMNNAME_User2_ID = "User2_ID";
+
+	/** Set User List 2.
+	  * User defined list element #2
+	  */
+	public void setUser2_ID (int User2_ID);
+
+	/** Get User List 2.
+	  * User defined list element #2
+	  */
+	public int getUser2_ID();
+
+	public I_C_ElementValue getUser2() throws RuntimeException;
+
+    /** Column name User3_ID */
+    public static final String COLUMNNAME_User3_ID = "User3_ID";
+
+	/** Set User List 3.
+	  * User defined list element #3
+	  */
+	public void setUser3_ID (int User3_ID);
+
+	/** Get User List 3.
+	  * User defined list element #3
+	  */
+	public int getUser3_ID();
+
+	public I_C_ElementValue getUser3() throws RuntimeException;
+
+    /** Column name User4_ID */
+    public static final String COLUMNNAME_User4_ID = "User4_ID";
+
+	/** Set User List 4.
+	  * User defined list element #4
+	  */
+	public void setUser4_ID (int User4_ID);
+
+	/** Get User List 4.
+	  * User defined list element #4
+	  */
+	public int getUser4_ID();
+
+	public I_C_ElementValue getUser4() throws RuntimeException;
 
     /** Column name UUID */
     public static final String COLUMNNAME_UUID = "UUID";

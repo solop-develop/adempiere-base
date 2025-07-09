@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
-import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for C_RevenueRecognition_Run
  *  @author Adempiere (generated) 
@@ -37,7 +38,7 @@ public class X_C_RevenueRecognition_Run extends PO implements I_C_RevenueRecogni
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250708L;
 
     /** Standard Constructor */
     public X_C_RevenueRecognition_Run (Properties ctx, int C_RevenueRecognition_Run_ID, String trxName)
@@ -47,7 +48,6 @@ public class X_C_RevenueRecognition_Run extends PO implements I_C_RevenueRecogni
         {
 			setC_RevenueRecognition_Plan_ID (0);
 			setC_RevenueRecognition_Run_ID (0);
-			setGL_Journal_ID (0);
 			setRecognizedAmt (Env.ZERO);
         } */
     }
@@ -80,9 +80,93 @@ public class X_C_RevenueRecognition_Run extends PO implements I_C_RevenueRecogni
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan getC_RevenueRecognition_Plan() throws RuntimeException
+	public I_C_ConversionType getC_ConversionType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan.Table_Name)
+		return (I_C_ConversionType)MTable.get(getCtx(), I_C_ConversionType.Table_Name)
+			.getPO(getC_ConversionType_ID(), get_TrxName());	}
+
+	/** Set Currency Type.
+		@param C_ConversionType_ID 
+		Currency Conversion Rate Type
+	  */
+	public void setC_ConversionType_ID (int C_ConversionType_ID)
+	{
+		if (C_ConversionType_ID < 1) 
+			set_Value (COLUMNNAME_C_ConversionType_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_ConversionType_ID, Integer.valueOf(C_ConversionType_ID));
+	}
+
+	/** Get Currency Type.
+		@return Currency Conversion Rate Type
+	  */
+	public int getC_ConversionType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_ConversionType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DocType getC_DocType() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getC_DocType_ID(), get_TrxName());	}
+
+	/** Set Document Type.
+		@param C_DocType_ID 
+		Document type or rules
+	  */
+	public void setC_DocType_ID (int C_DocType_ID)
+	{
+		if (C_DocType_ID < 0) 
+			set_Value (COLUMNNAME_C_DocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+	}
+
+	/** Get Document Type.
+		@return Document type or rules
+	  */
+	public int getC_DocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_RevenueRecognition getC_RevenueRecognition() throws RuntimeException
+    {
+		return (I_C_RevenueRecognition)MTable.get(getCtx(), I_C_RevenueRecognition.Table_Name)
+			.getPO(getC_RevenueRecognition_ID(), get_TrxName());	}
+
+	/** Set Revenue Recognition.
+		@param C_RevenueRecognition_ID 
+		Method for recording revenue
+	  */
+	public void setC_RevenueRecognition_ID (int C_RevenueRecognition_ID)
+	{
+		if (C_RevenueRecognition_ID < 1) 
+			set_Value (COLUMNNAME_C_RevenueRecognition_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_RevenueRecognition_ID, Integer.valueOf(C_RevenueRecognition_ID));
+	}
+
+	/** Get Revenue Recognition.
+		@return Method for recording revenue
+	  */
+	public int getC_RevenueRecognition_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_RevenueRecognition_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_RevenueRecognition_Plan getC_RevenueRecognition_Plan() throws RuntimeException
+    {
+		return (I_C_RevenueRecognition_Plan)MTable.get(getCtx(), I_C_RevenueRecognition_Plan.Table_Name)
 			.getPO(getC_RevenueRecognition_Plan_ID(), get_TrxName());	}
 
 	/** Set Revenue Recognition Plan.
@@ -108,14 +192,6 @@ public class X_C_RevenueRecognition_Run extends PO implements I_C_RevenueRecogni
 		return ii.intValue();
 	}
 
-    /** Get Record ID/ColumnName
-        @return ID/ColumnName pair
-      */
-    public KeyNamePair getKeyNamePair() 
-    {
-        return new KeyNamePair(get_ID(), String.valueOf(getC_RevenueRecognition_Plan_ID()));
-    }
-
 	/** Set Revenue Recognition Run.
 		@param C_RevenueRecognition_Run_ID 
 		Revenue Recognition Run or Process
@@ -139,9 +215,180 @@ public class X_C_RevenueRecognition_Run extends PO implements I_C_RevenueRecogni
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_GL_Journal getGL_Journal() throws RuntimeException
+	/** Set Document Date.
+		@param DateDoc 
+		Date of the Document
+	  */
+	public void setDateDoc (Timestamp DateDoc)
+	{
+		set_Value (COLUMNNAME_DateDoc, DateDoc);
+	}
+
+	/** Get Document Date.
+		@return Date of the Document
+	  */
+	public Timestamp getDateDoc () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateDoc);
+	}
+
+	/** Set Description.
+		@param Description 
+		Optional short description of the record
+	  */
+	public void setDescription (String Description)
+	{
+		set_Value (COLUMNNAME_Description, Description);
+	}
+
+	/** Get Description.
+		@return Optional short description of the record
+	  */
+	public String getDescription () 
+	{
+		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	/** DocAction AD_Reference_ID=135 */
+	public static final int DOCACTION_AD_Reference_ID=135;
+	/** Complete = CO */
+	public static final String DOCACTION_Complete = "CO";
+	/** Approve = AP */
+	public static final String DOCACTION_Approve = "AP";
+	/** Reject = RJ */
+	public static final String DOCACTION_Reject = "RJ";
+	/** Post = PO */
+	public static final String DOCACTION_Post = "PO";
+	/** Void = VO */
+	public static final String DOCACTION_Void = "VO";
+	/** Close = CL */
+	public static final String DOCACTION_Close = "CL";
+	/** Reverse - Correct = RC */
+	public static final String DOCACTION_Reverse_Correct = "RC";
+	/** Reverse - Accrual = RA */
+	public static final String DOCACTION_Reverse_Accrual = "RA";
+	/** Invalidate = IN */
+	public static final String DOCACTION_Invalidate = "IN";
+	/** Re-activate = RE */
+	public static final String DOCACTION_Re_Activate = "RE";
+	/** <None> = -- */
+	public static final String DOCACTION_None = "--";
+	/** Prepare = PR */
+	public static final String DOCACTION_Prepare = "PR";
+	/** Unlock = XL */
+	public static final String DOCACTION_Unlock = "XL";
+	/** Wait Complete = WC */
+	public static final String DOCACTION_WaitComplete = "WC";
+	/** Set Document Action.
+		@param DocAction 
+		The targeted status of the document
+	  */
+	public void setDocAction (String DocAction)
+	{
+
+		set_Value (COLUMNNAME_DocAction, DocAction);
+	}
+
+	/** Get Document Action.
+		@return The targeted status of the document
+	  */
+	public String getDocAction () 
+	{
+		return (String)get_Value(COLUMNNAME_DocAction);
+	}
+
+	/** DocStatus AD_Reference_ID=131 */
+	public static final int DOCSTATUS_AD_Reference_ID=131;
+	/** Drafted = DR */
+	public static final String DOCSTATUS_Drafted = "DR";
+	/** Completed = CO */
+	public static final String DOCSTATUS_Completed = "CO";
+	/** Approved = AP */
+	public static final String DOCSTATUS_Approved = "AP";
+	/** Not Approved = NA */
+	public static final String DOCSTATUS_NotApproved = "NA";
+	/** Voided = VO */
+	public static final String DOCSTATUS_Voided = "VO";
+	/** Invalid = IN */
+	public static final String DOCSTATUS_Invalid = "IN";
+	/** Reversed = RE */
+	public static final String DOCSTATUS_Reversed = "RE";
+	/** Closed = CL */
+	public static final String DOCSTATUS_Closed = "CL";
+	/** Unknown = ?? */
+	public static final String DOCSTATUS_Unknown = "??";
+	/** In Progress = IP */
+	public static final String DOCSTATUS_InProgress = "IP";
+	/** Waiting Payment = WP */
+	public static final String DOCSTATUS_WaitingPayment = "WP";
+	/** Waiting Confirmation = WC */
+	public static final String DOCSTATUS_WaitingConfirmation = "WC";
+	/** Set Document Status.
+		@param DocStatus 
+		The current status of the document
+	  */
+	public void setDocStatus (String DocStatus)
+	{
+
+		set_Value (COLUMNNAME_DocStatus, DocStatus);
+	}
+
+	/** Get Document Status.
+		@return The current status of the document
+	  */
+	public String getDocStatus () 
+	{
+		return (String)get_Value(COLUMNNAME_DocStatus);
+	}
+
+	/** Set Document No.
+		@param DocumentNo 
+		Document sequence number of the document
+	  */
+	public void setDocumentNo (String DocumentNo)
+	{
+		set_Value (COLUMNNAME_DocumentNo, DocumentNo);
+	}
+
+	/** Get Document No.
+		@return Document sequence number of the document
+	  */
+	public String getDocumentNo () 
+	{
+		return (String)get_Value(COLUMNNAME_DocumentNo);
+	}
+
+	public I_GL_JournalBatch getGL_JournalBatch() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_GL_Journal)MTable.get(getCtx(), org.adempiere.core.domains.models.I_GL_Journal.Table_Name)
+		return (I_GL_JournalBatch)MTable.get(getCtx(), I_GL_JournalBatch.Table_Name)
+			.getPO(getGL_JournalBatch_ID(), get_TrxName());	}
+
+	/** Set Journal Batch.
+		@param GL_JournalBatch_ID 
+		General Ledger Journal Batch
+	  */
+	public void setGL_JournalBatch_ID (int GL_JournalBatch_ID)
+	{
+		if (GL_JournalBatch_ID < 1) 
+			set_Value (COLUMNNAME_GL_JournalBatch_ID, null);
+		else 
+			set_Value (COLUMNNAME_GL_JournalBatch_ID, Integer.valueOf(GL_JournalBatch_ID));
+	}
+
+	/** Get Journal Batch.
+		@return General Ledger Journal Batch
+	  */
+	public int getGL_JournalBatch_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_GL_JournalBatch_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_GL_Journal getGL_Journal() throws RuntimeException
+    {
+		return (I_GL_Journal)MTable.get(getCtx(), I_GL_Journal.Table_Name)
 			.getPO(getGL_Journal_ID(), get_TrxName());	}
 
 	/** Set Journal.
@@ -167,6 +414,119 @@ public class X_C_RevenueRecognition_Run extends PO implements I_C_RevenueRecogni
 		return ii.intValue();
 	}
 
+	/** Set Approved.
+		@param IsApproved 
+		Indicates if this document requires approval
+	  */
+	public void setIsApproved (boolean IsApproved)
+	{
+		set_Value (COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+	}
+
+	/** Get Approved.
+		@return Indicates if this document requires approval
+	  */
+	public boolean isApproved () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsApproved);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Posted.
+		@param Posted 
+		Posting status
+	  */
+	public void setPosted (boolean Posted)
+	{
+		set_Value (COLUMNNAME_Posted, Boolean.valueOf(Posted));
+	}
+
+	/** Get Posted.
+		@return Posting status
+	  */
+	public boolean isPosted () 
+	{
+		Object oo = get_Value(COLUMNNAME_Posted);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Processed.
+		@param Processed 
+		The document has been processed
+	  */
+	public void setProcessed (boolean Processed)
+	{
+		set_Value (COLUMNNAME_Processed, Boolean.valueOf(Processed));
+	}
+
+	/** Get Processed.
+		@return The document has been processed
+	  */
+	public boolean isProcessed () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Processed On.
+		@param ProcessedOn 
+		The date+time (expressed in decimal format) when the document has been processed
+	  */
+	public void setProcessedOn (BigDecimal ProcessedOn)
+	{
+		set_Value (COLUMNNAME_ProcessedOn, ProcessedOn);
+	}
+
+	/** Get Processed On.
+		@return The date+time (expressed in decimal format) when the document has been processed
+	  */
+	public BigDecimal getProcessedOn () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ProcessedOn);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Process Now.
+		@param Processing Process Now	  */
+	public void setProcessing (boolean Processing)
+	{
+		set_Value (COLUMNNAME_Processing, Boolean.valueOf(Processing));
+	}
+
+	/** Get Process Now.
+		@return Process Now	  */
+	public boolean isProcessing () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processing);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Recognized Amount.
 		@param RecognizedAmt Recognized Amount	  */
 	public void setRecognizedAmt (BigDecimal RecognizedAmt)
@@ -179,6 +539,51 @@ public class X_C_RevenueRecognition_Run extends PO implements I_C_RevenueRecogni
 	public BigDecimal getRecognizedAmt () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_RecognizedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public I_C_RevenueRecognition_Run getReversal() throws RuntimeException
+    {
+		return (I_C_RevenueRecognition_Run)MTable.get(getCtx(), I_C_RevenueRecognition_Run.Table_Name)
+			.getPO(getReversal_ID(), get_TrxName());	}
+
+	/** Set Reversal ID.
+		@param Reversal_ID 
+		ID of document reversal
+	  */
+	public void setReversal_ID (int Reversal_ID)
+	{
+		if (Reversal_ID < 1) 
+			set_Value (COLUMNNAME_Reversal_ID, null);
+		else 
+			set_Value (COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
+	}
+
+	/** Get Reversal ID.
+		@return ID of document reversal
+	  */
+	public int getReversal_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Reversal_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Recognized Amount (Source).
+		@param SourceRecognizedAmt Recognized Amount (Source)	  */
+	public void setSourceRecognizedAmt (BigDecimal SourceRecognizedAmt)
+	{
+		set_Value (COLUMNNAME_SourceRecognizedAmt, SourceRecognizedAmt);
+	}
+
+	/** Get Recognized Amount (Source).
+		@return Recognized Amount (Source)	  */
+	public BigDecimal getSourceRecognizedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_SourceRecognizedAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;

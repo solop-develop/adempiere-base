@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.                                     *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,29 +12,27 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net                                                  *
- * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/** Generated Interface for C_RevenueRecognition
+/** Generated Interface for S_ContractTermConditionLine
  *  @author Adempiere (generated) 
- *  @version Release 3.9.4
+ *  @version Release 3.9.3
  */
-public interface I_C_RevenueRecognition 
+public interface I_S_ContractTermConditionLine 
 {
 
-    /** TableName=C_RevenueRecognition */
-    public static final String Table_Name = "C_RevenueRecognition";
+    /** TableName=S_ContractTermConditionLine */
+    public static final String Table_Name = "S_ContractTermConditionLine";
 
-    /** AD_Table_ID=336 */
-    public static final int Table_ID = MTable.getTable_ID(Table_Name);
+    /** AD_Table_ID=54712 */
+    public static final int Table_ID = org.compiere.model.MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
@@ -81,19 +79,6 @@ public interface I_C_RevenueRecognition
 	  */
 	public int getCreatedBy();
 
-    /** Column name C_RevenueRecognition_ID */
-    public static final String COLUMNNAME_C_RevenueRecognition_ID = "C_RevenueRecognition_ID";
-
-	/** Set Revenue Recognition.
-	  * Method for recording revenue
-	  */
-	public void setC_RevenueRecognition_ID (int C_RevenueRecognition_ID);
-
-	/** Get Revenue Recognition.
-	  * Method for recording revenue
-	  */
-	public int getC_RevenueRecognition_ID();
-
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -120,62 +105,63 @@ public interface I_C_RevenueRecognition
 	  */
 	public boolean isActive();
 
-    /** Column name IsTimeBased */
-    public static final String COLUMNNAME_IsTimeBased = "IsTimeBased";
+    /** Column name S_AgreementClause_ID */
+    public static final String COLUMNNAME_S_AgreementClause_ID = "S_AgreementClause_ID";
 
-	/** Set Time based.
-	  * Time based Revenue Recognition rather than Service Level based
+	/** Set Agreement Clause.
+	  * The Agreement Clause Library allows you to maintain a collection of clauses to define the terms and conditions of a contract.
 	  */
-	public void setIsTimeBased (boolean IsTimeBased);
+	public void setS_AgreementClause_ID (int S_AgreementClause_ID);
 
-	/** Get Time based.
-	  * Time based Revenue Recognition rather than Service Level based
+	/** Get Agreement Clause.
+	  * The Agreement Clause Library allows you to maintain a collection of clauses to define the terms and conditions of a contract.
 	  */
-	public boolean isTimeBased();
+	public int getS_AgreementClause_ID();
 
-    /** Column name Name */
-    public static final String COLUMNNAME_Name = "Name";
+	public I_S_AgreementClause getS_AgreementClause() throws RuntimeException;
 
-	/** Set Name.
-	  * Alphanumeric identifier of the entity
+    /** Column name S_ContractTermCondition_ID */
+    public static final String COLUMNNAME_S_ContractTermCondition_ID = "S_ContractTermCondition_ID";
+
+	/** Set Contract Terms And Condition.
+	  * Terms and Conditions of a Contract
 	  */
-	public void setName (String Name);
+	public void setS_ContractTermCondition_ID (int S_ContractTermCondition_ID);
 
-	/** Get Name.
-	  * Alphanumeric identifier of the entity
+	/** Get Contract Terms And Condition.
+	  * Terms and Conditions of a Contract
 	  */
-	public String getName();
+	public int getS_ContractTermCondition_ID();
 
-    /** Column name NoMonths */
-    public static final String COLUMNNAME_NoMonths = "NoMonths";
+	public I_S_ContractTermCondition getS_ContractTermCondition() throws RuntimeException;
 
-	/** Set Number of Months	  */
-	public void setNoMonths (int NoMonths);
+    /** Column name S_ContractTermConditionLine_ID */
+    public static final String COLUMNNAME_S_ContractTermConditionLine_ID = "S_ContractTermConditionLine_ID";
 
-	/** Get Number of Months	  */
-	public int getNoMonths();
-
-    /** Column name RecognitionFrequency */
-    public static final String COLUMNNAME_RecognitionFrequency = "RecognitionFrequency";
-
-	/** Set Recognition frequency	  */
-	public void setRecognitionFrequency (String RecognitionFrequency);
-
-	/** Get Recognition frequency	  */
-	public String getRecognitionFrequency();
-
-    /** Column name RecognitionType */
-    public static final String COLUMNNAME_RecognitionType = "RecognitionType";
-
-	/** Set Recognition Type.
-	  * Recognition Type
+	/** Set Contract Terms And Condition Lines.
+	  * Allows defining the terms and conditions lines of a Contract.
 	  */
-	public void setRecognitionType (String RecognitionType);
+	public void setS_ContractTermConditionLine_ID (int S_ContractTermConditionLine_ID);
 
-	/** Get Recognition Type.
-	  * Recognition Type
+	/** Get Contract Terms And Condition Lines.
+	  * Allows defining the terms and conditions lines of a Contract.
 	  */
-	public String getRecognitionType();
+	public int getS_ContractTermConditionLine_ID();
+
+    /** Column name SeqNo */
+    public static final String COLUMNNAME_SeqNo = "SeqNo";
+
+	/** Set Sequence.
+	  * Method of ordering records;
+ lowest number comes first
+	  */
+	public void setSeqNo (int SeqNo);
+
+	/** Get Sequence.
+	  * Method of ordering records;
+ lowest number comes first
+	  */
+	public int getSeqNo();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

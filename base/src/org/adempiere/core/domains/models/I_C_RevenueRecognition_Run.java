@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_RevenueRecognition_Run
  *  @author Adempiere (generated) 
@@ -64,33 +65,35 @@ public interface I_C_RevenueRecognition_Run
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name C_RevenueRecognition_Plan_ID */
-    public static final String COLUMNNAME_C_RevenueRecognition_Plan_ID = "C_RevenueRecognition_Plan_ID";
+    /** Column name C_ConversionType_ID */
+    public static final String COLUMNNAME_C_ConversionType_ID = "C_ConversionType_ID";
 
-	/** Set Revenue Recognition Plan.
-	  * Plan for recognizing or recording revenue
+	/** Set Currency Type.
+	  * Currency Conversion Rate Type
 	  */
-	public void setC_RevenueRecognition_Plan_ID (int C_RevenueRecognition_Plan_ID);
+	public void setC_ConversionType_ID (int C_ConversionType_ID);
 
-	/** Get Revenue Recognition Plan.
-	  * Plan for recognizing or recording revenue
+	/** Get Currency Type.
+	  * Currency Conversion Rate Type
 	  */
-	public int getC_RevenueRecognition_Plan_ID();
+	public int getC_ConversionType_ID();
 
-	public org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan getC_RevenueRecognition_Plan() throws RuntimeException;
+	public I_C_ConversionType getC_ConversionType() throws RuntimeException;
 
-    /** Column name C_RevenueRecognition_Run_ID */
-    public static final String COLUMNNAME_C_RevenueRecognition_Run_ID = "C_RevenueRecognition_Run_ID";
+    /** Column name C_DocType_ID */
+    public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
 
-	/** Set Revenue Recognition Run.
-	  * Revenue Recognition Run or Process
+	/** Set Document Type.
+	  * Document type or rules
 	  */
-	public void setC_RevenueRecognition_Run_ID (int C_RevenueRecognition_Run_ID);
+	public void setC_DocType_ID (int C_DocType_ID);
 
-	/** Get Revenue Recognition Run.
-	  * Revenue Recognition Run or Process
+	/** Get Document Type.
+	  * Document type or rules
 	  */
-	public int getC_RevenueRecognition_Run_ID();
+	public int getC_DocType_ID();
+
+	public I_C_DocType getC_DocType() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -108,6 +111,129 @@ public interface I_C_RevenueRecognition_Run
 	  */
 	public int getCreatedBy();
 
+    /** Column name C_RevenueRecognition_ID */
+    public static final String COLUMNNAME_C_RevenueRecognition_ID = "C_RevenueRecognition_ID";
+
+	/** Set Revenue Recognition.
+	  * Method for recording revenue
+	  */
+	public void setC_RevenueRecognition_ID (int C_RevenueRecognition_ID);
+
+	/** Get Revenue Recognition.
+	  * Method for recording revenue
+	  */
+	public int getC_RevenueRecognition_ID();
+
+	public I_C_RevenueRecognition getC_RevenueRecognition() throws RuntimeException;
+
+    /** Column name C_RevenueRecognition_Plan_ID */
+    public static final String COLUMNNAME_C_RevenueRecognition_Plan_ID = "C_RevenueRecognition_Plan_ID";
+
+	/** Set Revenue Recognition Plan.
+	  * Plan for recognizing or recording revenue
+	  */
+	public void setC_RevenueRecognition_Plan_ID (int C_RevenueRecognition_Plan_ID);
+
+	/** Get Revenue Recognition Plan.
+	  * Plan for recognizing or recording revenue
+	  */
+	public int getC_RevenueRecognition_Plan_ID();
+
+	public I_C_RevenueRecognition_Plan getC_RevenueRecognition_Plan() throws RuntimeException;
+
+    /** Column name C_RevenueRecognition_Run_ID */
+    public static final String COLUMNNAME_C_RevenueRecognition_Run_ID = "C_RevenueRecognition_Run_ID";
+
+	/** Set Revenue Recognition Run.
+	  * Revenue Recognition Run or Process
+	  */
+	public void setC_RevenueRecognition_Run_ID (int C_RevenueRecognition_Run_ID);
+
+	/** Get Revenue Recognition Run.
+	  * Revenue Recognition Run or Process
+	  */
+	public int getC_RevenueRecognition_Run_ID();
+
+    /** Column name DateDoc */
+    public static final String COLUMNNAME_DateDoc = "DateDoc";
+
+	/** Set Document Date.
+	  * Date of the Document
+	  */
+	public void setDateDoc (Timestamp DateDoc);
+
+	/** Get Document Date.
+	  * Date of the Document
+	  */
+	public Timestamp getDateDoc();
+
+    /** Column name Description */
+    public static final String COLUMNNAME_Description = "Description";
+
+	/** Set Description.
+	  * Optional short description of the record
+	  */
+	public void setDescription (String Description);
+
+	/** Get Description.
+	  * Optional short description of the record
+	  */
+	public String getDescription();
+
+    /** Column name DocAction */
+    public static final String COLUMNNAME_DocAction = "DocAction";
+
+	/** Set Document Action.
+	  * The targeted status of the document
+	  */
+	public void setDocAction (String DocAction);
+
+	/** Get Document Action.
+	  * The targeted status of the document
+	  */
+	public String getDocAction();
+
+    /** Column name DocStatus */
+    public static final String COLUMNNAME_DocStatus = "DocStatus";
+
+	/** Set Document Status.
+	  * The current status of the document
+	  */
+	public void setDocStatus (String DocStatus);
+
+	/** Get Document Status.
+	  * The current status of the document
+	  */
+	public String getDocStatus();
+
+    /** Column name DocumentNo */
+    public static final String COLUMNNAME_DocumentNo = "DocumentNo";
+
+	/** Set Document No.
+	  * Document sequence number of the document
+	  */
+	public void setDocumentNo (String DocumentNo);
+
+	/** Get Document No.
+	  * Document sequence number of the document
+	  */
+	public String getDocumentNo();
+
+    /** Column name GL_JournalBatch_ID */
+    public static final String COLUMNNAME_GL_JournalBatch_ID = "GL_JournalBatch_ID";
+
+	/** Set Journal Batch.
+	  * General Ledger Journal Batch
+	  */
+	public void setGL_JournalBatch_ID (int GL_JournalBatch_ID);
+
+	/** Get Journal Batch.
+	  * General Ledger Journal Batch
+	  */
+	public int getGL_JournalBatch_ID();
+
+	public I_GL_JournalBatch getGL_JournalBatch() throws RuntimeException;
+
     /** Column name GL_Journal_ID */
     public static final String COLUMNNAME_GL_Journal_ID = "GL_Journal_ID";
 
@@ -121,7 +247,7 @@ public interface I_C_RevenueRecognition_Run
 	  */
 	public int getGL_Journal_ID();
 
-	public org.adempiere.core.domains.models.I_GL_Journal getGL_Journal() throws RuntimeException;
+	public I_GL_Journal getGL_Journal() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -136,6 +262,67 @@ public interface I_C_RevenueRecognition_Run
 	  */
 	public boolean isActive();
 
+    /** Column name IsApproved */
+    public static final String COLUMNNAME_IsApproved = "IsApproved";
+
+	/** Set Approved.
+	  * Indicates if this document requires approval
+	  */
+	public void setIsApproved (boolean IsApproved);
+
+	/** Get Approved.
+	  * Indicates if this document requires approval
+	  */
+	public boolean isApproved();
+
+    /** Column name Posted */
+    public static final String COLUMNNAME_Posted = "Posted";
+
+	/** Set Posted.
+	  * Posting status
+	  */
+	public void setPosted (boolean Posted);
+
+	/** Get Posted.
+	  * Posting status
+	  */
+	public boolean isPosted();
+
+    /** Column name Processed */
+    public static final String COLUMNNAME_Processed = "Processed";
+
+	/** Set Processed.
+	  * The document has been processed
+	  */
+	public void setProcessed (boolean Processed);
+
+	/** Get Processed.
+	  * The document has been processed
+	  */
+	public boolean isProcessed();
+
+    /** Column name ProcessedOn */
+    public static final String COLUMNNAME_ProcessedOn = "ProcessedOn";
+
+	/** Set Processed On.
+	  * The date+time (expressed in decimal format) when the document has been processed
+	  */
+	public void setProcessedOn (BigDecimal ProcessedOn);
+
+	/** Get Processed On.
+	  * The date+time (expressed in decimal format) when the document has been processed
+	  */
+	public BigDecimal getProcessedOn();
+
+    /** Column name Processing */
+    public static final String COLUMNNAME_Processing = "Processing";
+
+	/** Set Process Now	  */
+	public void setProcessing (boolean Processing);
+
+	/** Get Process Now	  */
+	public boolean isProcessing();
+
     /** Column name RecognizedAmt */
     public static final String COLUMNNAME_RecognizedAmt = "RecognizedAmt";
 
@@ -144,6 +331,30 @@ public interface I_C_RevenueRecognition_Run
 
 	/** Get Recognized Amount	  */
 	public BigDecimal getRecognizedAmt();
+
+    /** Column name Reversal_ID */
+    public static final String COLUMNNAME_Reversal_ID = "Reversal_ID";
+
+	/** Set Reversal ID.
+	  * ID of document reversal
+	  */
+	public void setReversal_ID (int Reversal_ID);
+
+	/** Get Reversal ID.
+	  * ID of document reversal
+	  */
+	public int getReversal_ID();
+
+	public I_C_RevenueRecognition_Run getReversal() throws RuntimeException;
+
+    /** Column name SourceRecognizedAmt */
+    public static final String COLUMNNAME_SourceRecognizedAmt = "SourceRecognizedAmt";
+
+	/** Set Recognized Amount (Source)	  */
+	public void setSourceRecognizedAmt (BigDecimal SourceRecognizedAmt);
+
+	/** Get Recognized Amount (Source)	  */
+	public BigDecimal getSourceRecognizedAmt();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.                                     *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net                                                  *
- * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
@@ -23,17 +22,17 @@ import org.compiere.util.KeyNamePair;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/** Generated Interface for C_RevenueRecognition
+/** Generated Interface for S_ContractTermCondition
  *  @author Adempiere (generated) 
- *  @version Release 3.9.4
+ *  @version Release 3.9.3
  */
-public interface I_C_RevenueRecognition 
+public interface I_S_ContractTermCondition 
 {
 
-    /** TableName=C_RevenueRecognition */
-    public static final String Table_Name = "C_RevenueRecognition";
+    /** TableName=S_ContractTermCondition */
+    public static final String Table_Name = "S_ContractTermCondition";
 
-    /** AD_Table_ID=336 */
+    /** AD_Table_ID=54711 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -81,31 +80,18 @@ public interface I_C_RevenueRecognition
 	  */
 	public int getCreatedBy();
 
-    /** Column name C_RevenueRecognition_ID */
-    public static final String COLUMNNAME_C_RevenueRecognition_ID = "C_RevenueRecognition_ID";
+    /** Column name CreateFrom */
+    public static final String COLUMNNAME_CreateFrom = "CreateFrom";
 
-	/** Set Revenue Recognition.
-	  * Method for recording revenue
+	/** Set Create lines from.
+	  * Process which will generate a new document lines based on an existing document
 	  */
-	public void setC_RevenueRecognition_ID (int C_RevenueRecognition_ID);
+	public void setCreateFrom (String CreateFrom);
 
-	/** Get Revenue Recognition.
-	  * Method for recording revenue
+	/** Get Create lines from.
+	  * Process which will generate a new document lines based on an existing document
 	  */
-	public int getC_RevenueRecognition_ID();
-
-    /** Column name Description */
-    public static final String COLUMNNAME_Description = "Description";
-
-	/** Set Description.
-	  * Optional short description of the record
-	  */
-	public void setDescription (String Description);
-
-	/** Get Description.
-	  * Optional short description of the record
-	  */
-	public String getDescription();
+	public String getCreateFrom();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -120,62 +106,61 @@ public interface I_C_RevenueRecognition
 	  */
 	public boolean isActive();
 
-    /** Column name IsTimeBased */
-    public static final String COLUMNNAME_IsTimeBased = "IsTimeBased";
+    /** Column name S_AgreementType_ID */
+    public static final String COLUMNNAME_S_AgreementType_ID = "S_AgreementType_ID";
 
-	/** Set Time based.
-	  * Time based Revenue Recognition rather than Service Level based
+	/** Set Agreement Type.
+	  * The Agreement Types are used to define the terms and conditions of a contract
 	  */
-	public void setIsTimeBased (boolean IsTimeBased);
+	public void setS_AgreementType_ID (int S_AgreementType_ID);
 
-	/** Get Time based.
-	  * Time based Revenue Recognition rather than Service Level based
+	/** Get Agreement Type.
+	  * The Agreement Types are used to define the terms and conditions of a contract
 	  */
-	public boolean isTimeBased();
+	public int getS_AgreementType_ID();
 
-    /** Column name Name */
-    public static final String COLUMNNAME_Name = "Name";
+	public I_S_AgreementType getS_AgreementType() throws RuntimeException;
 
-	/** Set Name.
-	  * Alphanumeric identifier of the entity
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
 	  */
-	public void setName (String Name);
+	public void setS_Contract_ID (int S_Contract_ID);
 
-	/** Get Name.
-	  * Alphanumeric identifier of the entity
+	/** Get Contract.
+	  * Contract
 	  */
-	public String getName();
+	public int getS_Contract_ID();
 
-    /** Column name NoMonths */
-    public static final String COLUMNNAME_NoMonths = "NoMonths";
+	public I_S_Contract getS_Contract() throws RuntimeException;
 
-	/** Set Number of Months	  */
-	public void setNoMonths (int NoMonths);
+    /** Column name S_ContractTermCondition_ID */
+    public static final String COLUMNNAME_S_ContractTermCondition_ID = "S_ContractTermCondition_ID";
 
-	/** Get Number of Months	  */
-	public int getNoMonths();
-
-    /** Column name RecognitionFrequency */
-    public static final String COLUMNNAME_RecognitionFrequency = "RecognitionFrequency";
-
-	/** Set Recognition frequency	  */
-	public void setRecognitionFrequency (String RecognitionFrequency);
-
-	/** Get Recognition frequency	  */
-	public String getRecognitionFrequency();
-
-    /** Column name RecognitionType */
-    public static final String COLUMNNAME_RecognitionType = "RecognitionType";
-
-	/** Set Recognition Type.
-	  * Recognition Type
+	/** Set Contract Terms And Condition.
+	  * Terms and Conditions of a Contract
 	  */
-	public void setRecognitionType (String RecognitionType);
+	public void setS_ContractTermCondition_ID (int S_ContractTermCondition_ID);
 
-	/** Get Recognition Type.
-	  * Recognition Type
+	/** Get Contract Terms And Condition.
+	  * Terms and Conditions of a Contract
 	  */
-	public String getRecognitionType();
+	public int getS_ContractTermCondition_ID();
+
+    /** Column name TermsAndConditions */
+    public static final String COLUMNNAME_TermsAndConditions = "TermsAndConditions";
+
+	/** Set Terms And Conditions.
+	  * Terms and Conditions for a Contract
+	  */
+	public void setTermsAndConditions (String TermsAndConditions);
+
+	/** Get Terms And Conditions.
+	  * Terms and Conditions for a Contract
+	  */
+	public String getTermsAndConditions();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -205,4 +190,17 @@ public interface I_C_RevenueRecognition
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name VersionNo */
+    public static final String COLUMNNAME_VersionNo = "VersionNo";
+
+	/** Set Version No.
+	  * Version Number
+	  */
+	public void setVersionNo (String VersionNo);
+
+	/** Get Version No.
+	  * Version Number
+	  */
+	public String getVersionNo();
 }

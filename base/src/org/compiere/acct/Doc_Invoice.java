@@ -16,6 +16,10 @@
  *****************************************************************************/
 package org.compiere.acct;
 
+import org.compiere.model.*;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.PreparedStatement;
@@ -23,22 +27,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
-
-import org.compiere.model.MAccount;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MClientInfo;
-import org.compiere.model.MCostDetail;
-import org.compiere.model.MCostType;
-import org.compiere.model.MCurrency;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MLandedCostAllocation;
-import org.compiere.model.MTax;
-import org.compiere.model.ProductCost;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 /**
  *  Post Invoice Documents.
@@ -273,6 +264,7 @@ public class Doc_Invoice extends Doc
 		return retValue;
 	}   //  getBalance
 
+
 	/**
 	 *  Create Facts (the accounting logic) for
 	 *  ARI, ARC, ARF, API, APC.
@@ -339,6 +331,7 @@ public class Doc_Invoice extends Doc
 						tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
 				}
 			}
+			List<MRevenueRecognitionPlan> revenueRecognitionPlans = MRevenueRecognitionPlan.getPlansFromInvoiceAndSchema((MInvoice) getPO(), acctSchema.getC_AcctSchema_ID());
 			//  Revenue                 CR
 			for (int i = 0; i < p_lines.length; i++)
 			{
@@ -356,8 +349,14 @@ public class Doc_Invoice extends Doc
 								getC_Currency_ID(), dAmt, null);
 					}
 				}
+				int invoiceLineId = p_lines[i].get_ID();
+				Optional<MRevenueRecognitionPlan> maybePlan = revenueRecognitionPlans.stream().filter(plan -> plan.getC_InvoiceLine_ID() == invoiceLineId).findFirst();
+				MAccount revenueAccount = p_lines[i].getAccount(ProductCost.ACCTTYPE_P_Revenue, acctSchema);
+				if(maybePlan.isPresent()) {
+					revenueAccount = (MAccount) maybePlan.get().getUnEarnedRevenue_A();
+				}
 				fact.createLine (p_lines[i],
-					p_lines[i].getAccount(ProductCost.ACCTTYPE_P_Revenue, acctSchema),
+						revenueAccount,
 					getC_Currency_ID(), null, amt);
 				if (!p_lines[i].isItem())
 				{
