@@ -19,6 +19,13 @@
  *****************************************************************************/
 package org.adempiere.util;
 
+import org.adempiere.exceptions.DBException;
+import org.compiere.Adempiere;
+import org.compiere.model.MEntityType;
+import org.compiere.model.MTable;
+import org.compiere.util.*;
+import org.compiere.util.Util;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
@@ -28,18 +35,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.TreeSet;
 import java.util.logging.Level;
-
-import org.adempiere.exceptions.DBException;
-import org.compiere.Adempiere;
-import org.compiere.model.MTable;
-import org.compiere.util.CLogMgt;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
 
 /**
  *  Generate Model Classes extending PO.
@@ -75,7 +74,7 @@ public class ModelClassGenerator
 	 * 	@param directory directory
 	 * 	@param packageName package name
 	 */
-	public ModelClassGenerator (int AD_Table_ID, String directory, String packageName)
+	public ModelClassGenerator(int AD_Table_ID, String directory, String packageName)
 	{
 		this.packageName = packageName;
 		//	Yamel Senih, FR[ 94 ] 2015-11-16
@@ -95,7 +94,7 @@ public class ModelClassGenerator
 		//	Write to file "X_" class
 		writeToFile (sb, directory + className + ".java");
 		//	Create Document Class
-		/*if(table.isDocument()) {
+		if(table.isDocument()) {
 			sb = new StringBuffer();
 			className = createHeaderDocument(table, className, sb, packageName);
 			if(className != null) {
@@ -108,7 +107,7 @@ public class ModelClassGenerator
 					writeToFile (sb, fileName);
 				}
 			}
-		}*/
+		}
 	}
 
 	public static final String NL = "\n";
@@ -119,6 +118,42 @@ public class ModelClassGenerator
 	/** Package Name */
 	private String packageName = "";
 
+
+	private String getClassName(String tableName) {
+		String[]	s_packages = new String[] {
+
+				"org.compiere.model", "org.compiere.wf",
+				"org.compiere.report", // teo_sarca BF[3133032]
+				"org.compiere.print", "org.compiere.impexp",
+				"compiere.model",			//	globalqss allow compatibility with other plugins
+				"adempiere.model",			//	Extensions
+				"org.adempiere.model"
+		};
+		//	Not supported
+		if (tableName == null || tableName.endsWith("_Trl")) {
+			return null;
+		}
+		MTable table = MTable.get(Env.getCtx(), tableName);
+		String entityType = table.getEntityType();
+		String className = tableName;
+		int index = className.indexOf('_');
+		if (index > 0)
+		{
+			if (index < 3)		//	AD_, A_
+				className = className.substring(index+1);
+		}
+		//	Remove underlines
+		className = Util.replace(className, "_", "");
+		//	No dictionary
+		if(!"D".equals(entityType)) {
+			MEntityType entityTypeModel = MEntityType.get(Env.getCtx(), entityType);
+			if(entityTypeModel.getModelPackage() != null
+					&& Arrays.stream(s_packages).noneMatch(specialPackage -> specialPackage.equals(entityTypeModel.getModelPackage()))) {
+				return entityTypeModel.getModelPackage() + ".M" + className;
+			}
+		}
+		return "org.compiere.model" + ".M" + className;
+	}
 
 	/**
 	 * 	Add Header info to buffer
@@ -153,11 +188,11 @@ public class ModelClassGenerator
 		;
 
 		addImportClass(java.util.Properties.class);
-		addImportClass(java.sql.ResultSet.class);
+		addImportClass(ResultSet.class);
 		addImportClass(org.compiere.model.PO.class);
 		addImportClass(org.compiere.model.I_Persistent.class);
 		addImportClass(org.compiere.model.POInfo.class);
-		addImportClass(org.compiere.model.MTable.class);
+		addImportClass(MTable.class);
 		
 		if (!packageName.equals("org.adempiere.core.domains.models"))
 			addImportClass("org.adempiere.core.domains.models.*");
@@ -275,7 +310,14 @@ public class ModelClassGenerator
 		if(clazz == null) {
 			return null;
 		}
-		String className = clazz.getSimpleName();
+		String className = getClassName(p_Table.getTableName());
+		if(className == null) {
+			return null;
+		}
+		int lastDotIndex = className.lastIndexOf('.');
+		if (lastDotIndex > -1) {
+			className = className.substring(lastDotIndex + 1);
+		}
 		//
 		StringBuffer start = new StringBuffer ()
 			.append (ModelInterfaceGenerator.COPY)
@@ -283,14 +325,14 @@ public class ModelClassGenerator
 			.append(NL)
 		;
 		//	
-		addImportClass(java.io.File.class);
-		addImportClass(java.math.BigDecimal.class);
-		addImportClass(java.sql.ResultSet.class);
-		addImportClass(java.sql.Timestamp.class);
+		addImportClass(File.class);
+		addImportClass(BigDecimal.class);
+		addImportClass(ResultSet.class);
+		addImportClass(Timestamp.class);
 		addImportClass(java.util.Properties.class);
 		addImportClass(org.compiere.process.DocAction.class);
 		addImportClass(org.compiere.process.DocumentEngine.class);
-		addImportClass(org.compiere.util.DB.class);
+		addImportClass(DB.class);
 		//	
 		if (!packageName.equals("org.adempiere.core.domains.models"))
 			addImportClass("org.adempiere.core.domains.models.*");
@@ -613,8 +655,8 @@ public class ModelClassGenerator
 				.append("\t\tif (bd == null)").append(NL)
 				.append("\t\t\t return Env.ZERO;").append(NL)
 				.append("\t\treturn bd;").append(NL);
-			addImportClass(java.math.BigDecimal.class);
-			addImportClass(org.compiere.util.Env.class);
+			addImportClass(BigDecimal.class);
+			addImportClass(Env.class);
 		}
 		else if (clazz.equals(Boolean.class)) {
 			sb.append("Object oo = ").append(getValue).append("(").append ("COLUMNNAME_").append(columnName).append(");").append(NL)
@@ -812,7 +854,7 @@ public class ModelClassGenerator
 			.append("        return new KeyNamePair(get_ID(), ").append(method).append(");").append(NL)
 			.append("    }").append(NL)
 		;
-		addImportClass(org.compiere.util.KeyNamePair.class);
+		addImportClass(KeyNamePair.class);
 		return sb;
 	}	//	createKeyNamePair
 
