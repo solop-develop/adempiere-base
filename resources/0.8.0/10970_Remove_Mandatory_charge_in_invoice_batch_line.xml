@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="10970_Remove_Mandatory_charge_in_invoice_batch_line" ReleaseNo="0.7.25" SeqNo="10970">
+  <Migration EntityType="D" Name="10970_Remove_Mandatory_charge_in_invoice_batch_line" ReleaseNo="0.8.0" SeqNo="10970">
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="101" Action="U" Record_ID="13407" Table="AD_Column">
         <Data AD_Column_ID="124" Column="IsMandatory" oldValue="true">false</Data>
