@@ -43,13 +43,8 @@ public class RevenueRecognitionRun extends Doc {
         BigDecimal totalCredit = Env.ZERO;
         MAccount revenue = (MAccount) recognitionPlan.getP_Revenue_A();
         MAccount unEarnedRevenue = (MAccount) recognitionPlan.getUnEarnedRevenue_A();
-        if(!recognition.isReversal()) {
-            fact.createLine(line, unEarnedRevenue, getC_Currency_ID(), recognition.getRecognizedAmt(), null);
-            fact.createLine(line, revenue, getC_Currency_ID(), null, recognition.getRecognizedAmt());
-        } else {
-            fact.createLine(line, unEarnedRevenue, getC_Currency_ID(), null, recognition.getRecognizedAmt().negate());
-            fact.createLine(line, revenue, getC_Currency_ID(), recognition.getRecognizedAmt().negate(), null);
-        }
+        fact.createLine(line, unEarnedRevenue, getC_Currency_ID(), recognition.getRecognizedAmt(), null);
+        fact.createLine(line, revenue, getC_Currency_ID(), null, recognition.getRecognizedAmt());
         ArrayList<Fact> facts = new ArrayList<Fact>();
         facts.add(fact);
         return facts;
