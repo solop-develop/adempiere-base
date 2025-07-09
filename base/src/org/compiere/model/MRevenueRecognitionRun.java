@@ -52,13 +52,13 @@ public class MRevenueRecognitionRun extends X_C_RevenueRecognition_Run implement
 	private String processMsg = null;
 
     /** Standard Constructor */
-    public MRevenueRecognitionRun (Properties ctx, int C_RevenueRecognition_Run_ID, String trxName)
+    public MRevenueRecognitionRun(Properties ctx, int C_RevenueRecognition_Run_ID, String trxName)
     {
       super (ctx, C_RevenueRecognition_Run_ID, trxName);
     }
 
     /** Load Constructor */
-    public MRevenueRecognitionRun (Properties ctx, ResultSet rs, String trxName)
+    public MRevenueRecognitionRun(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -129,6 +129,7 @@ public class MRevenueRecognitionRun extends X_C_RevenueRecognition_Run implement
 	private String		m_processMsg = null;
 	/**	Just Prepared Flag			*/
 	private boolean		m_justPrepared = false;
+	private boolean isReversal;
 
 	/**
 	 * 	Unlock Document.
@@ -199,6 +200,9 @@ public class MRevenueRecognitionRun extends X_C_RevenueRecognition_Run implement
 	}	//	prepareIt
 
 	private void runRecognition() {
+		if(isReversal()) {
+			return;
+		}
 		MRevenueRecognitionPlan recognitionPlan = new MRevenueRecognitionPlan(getCtx(), getC_RevenueRecognition_Plan_ID(), get_TrxName());
 		MRevenueRecognition recognition = (MRevenueRecognition) recognitionPlan.getC_RevenueRecognition();
 		IRecognitionRevenue recognitionEngine = null;
@@ -468,9 +472,17 @@ public class MRevenueRecognitionRun extends X_C_RevenueRecognition_Run implement
 		PO.copyValues(this, reverse);
 		reverse.setRecognizedAmt(getRecognizedAmt().negate());
 		reverse.setSourceRecognizedAmt(getSourceRecognizedAmt().negate());
-		reverse.setReversal_ID(getC_RevenueRecognition_Run_ID());
+		reverse.setReversal(true);
+		reverse.setDocStatus(DOCSTATUS_Drafted);
+		reverse.setDocAction(DOCACTION_Complete);
+		reverse.saveEx();
+		if(!reverse.processIt(DOCACTION_Complete)) {
+			throw new AdempiereException(reverse.getProcessMsg());
+		}
+		reverse.saveEx();
 		reverse.setDocStatus(DOCSTATUS_Reversed);
 		reverse.setDocAction(DOCACTION_None);
+		reverse.setReversal_ID(getC_RevenueRecognition_Run_ID());
 		reverse.saveEx();
 		setReversal_ID(reverse.getC_RevenueRecognition_Run_ID());
 		setDocStatus(DOCSTATUS_Reversed);
@@ -481,12 +493,12 @@ public class MRevenueRecognitionRun extends X_C_RevenueRecognition_Run implement
 
 	@Override
 	public boolean isReversal() {
-		return getReversal_ID() > 0;
+		return getReversal_ID() > 0 || isReversal;
 	}
 
 	@Override
-	public void setReversal(boolean b) {
-
+	public void setReversal(boolean isReversal) {
+		this.isReversal = isReversal;
 	}
 
 	/** 
