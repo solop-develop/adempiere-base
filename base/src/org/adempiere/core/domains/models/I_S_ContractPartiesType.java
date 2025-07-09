@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.                                     *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net                                                  *
- * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
@@ -23,17 +22,17 @@ import org.compiere.util.KeyNamePair;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/** Generated Interface for C_RevenueRecognition
+/** Generated Interface for S_ContractPartiesType
  *  @author Adempiere (generated) 
- *  @version Release 3.9.4
+ *  @version Release 3.9.3
  */
-public interface I_C_RevenueRecognition 
+public interface I_S_ContractPartiesType 
 {
 
-    /** TableName=C_RevenueRecognition */
-    public static final String Table_Name = "C_RevenueRecognition";
+    /** TableName=S_ContractPartiesType */
+    public static final String Table_Name = "S_ContractPartiesType";
 
-    /** AD_Table_ID=336 */
+    /** AD_Table_ID=54445 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -81,19 +80,6 @@ public interface I_C_RevenueRecognition
 	  */
 	public int getCreatedBy();
 
-    /** Column name C_RevenueRecognition_ID */
-    public static final String COLUMNNAME_C_RevenueRecognition_ID = "C_RevenueRecognition_ID";
-
-	/** Set Revenue Recognition.
-	  * Method for recording revenue
-	  */
-	public void setC_RevenueRecognition_ID (int C_RevenueRecognition_ID);
-
-	/** Get Revenue Recognition.
-	  * Method for recording revenue
-	  */
-	public int getC_RevenueRecognition_ID();
-
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -106,6 +92,19 @@ public interface I_C_RevenueRecognition
 	  * Optional short description of the record
 	  */
 	public String getDescription();
+
+    /** Column name Help */
+    public static final String COLUMNNAME_Help = "Help";
+
+	/** Set Comment/Help.
+	  * Comment or Hint
+	  */
+	public void setHelp (String Help);
+
+	/** Get Comment/Help.
+	  * Comment or Hint
+	  */
+	public String getHelp();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -120,18 +119,18 @@ public interface I_C_RevenueRecognition
 	  */
 	public boolean isActive();
 
-    /** Column name IsTimeBased */
-    public static final String COLUMNNAME_IsTimeBased = "IsTimeBased";
+    /** Column name IsDefault */
+    public static final String COLUMNNAME_IsDefault = "IsDefault";
 
-	/** Set Time based.
-	  * Time based Revenue Recognition rather than Service Level based
+	/** Set Default.
+	  * Default value
 	  */
-	public void setIsTimeBased (boolean IsTimeBased);
+	public void setIsDefault (boolean IsDefault);
 
-	/** Get Time based.
-	  * Time based Revenue Recognition rather than Service Level based
+	/** Get Default.
+	  * Default value
 	  */
-	public boolean isTimeBased();
+	public boolean isDefault();
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -146,36 +145,14 @@ public interface I_C_RevenueRecognition
 	  */
 	public String getName();
 
-    /** Column name NoMonths */
-    public static final String COLUMNNAME_NoMonths = "NoMonths";
+    /** Column name S_ContractPartiesType_ID */
+    public static final String COLUMNNAME_S_ContractPartiesType_ID = "S_ContractPartiesType_ID";
 
-	/** Set Number of Months	  */
-	public void setNoMonths (int NoMonths);
+	/** Set Contract Parties Type ID	  */
+	public void setS_ContractPartiesType_ID (int S_ContractPartiesType_ID);
 
-	/** Get Number of Months	  */
-	public int getNoMonths();
-
-    /** Column name RecognitionFrequency */
-    public static final String COLUMNNAME_RecognitionFrequency = "RecognitionFrequency";
-
-	/** Set Recognition frequency	  */
-	public void setRecognitionFrequency (String RecognitionFrequency);
-
-	/** Get Recognition frequency	  */
-	public String getRecognitionFrequency();
-
-    /** Column name RecognitionType */
-    public static final String COLUMNNAME_RecognitionType = "RecognitionType";
-
-	/** Set Recognition Type.
-	  * Recognition Type
-	  */
-	public void setRecognitionType (String RecognitionType);
-
-	/** Get Recognition Type.
-	  * Recognition Type
-	  */
-	public String getRecognitionType();
+	/** Get Contract Parties Type ID	  */
+	public int getS_ContractPartiesType_ID();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -205,4 +182,17 @@ public interface I_C_RevenueRecognition
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name Value */
+    public static final String COLUMNNAME_Value = "Value";
+
+	/** Set Search Key.
+	  * Search key for the record in the format required - must be unique
+	  */
+	public void setValue (String Value);
+
+	/** Get Search Key.
+	  * Search key for the record in the format required - must be unique
+	  */
+	public String getValue();
 }

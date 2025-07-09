@@ -16,32 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
-import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_C_InvoiceLine;
-import org.adempiere.core.domains.models.I_C_InvoiceTax;
-import org.adempiere.core.domains.models.I_PP_Product_Planning;
-import org.adempiere.core.domains.models.X_C_Bank;
-import org.adempiere.core.domains.models.X_C_Invoice;
-import org.adempiere.core.domains.models.X_C_Payment;
-import org.adempiere.core.domains.models.X_PP_Product_BOM;
-import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
-import org.adempiere.core.domains.models.X_PP_Product_Planning;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.engine.CostEngineFactory;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoAddressException;
@@ -49,15 +24,22 @@ import org.adempiere.exceptions.DBException;
 import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
-import org.compiere.process.DocumentReversalEnabled;
 import org.compiere.process.DocumentEngine;
-import org.compiere.util.CCache;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
+import org.compiere.process.DocumentReversalEnabled;
+import org.compiere.util.*;
 import org.solop.util.AllocationManager;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
+import java.util.logging.Level;
 
 
 /**
@@ -247,7 +229,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	 * 	@param C_Invoice_ID invoice or 0 for new
 	 * 	@param trxName trx name
 	 */
-	public MInvoice (Properties ctx, int C_Invoice_ID, String trxName)
+	public MInvoice(Properties ctx, int C_Invoice_ID, String trxName)
 	{
 		super (ctx, C_Invoice_ID, trxName);
 		if (C_Invoice_ID == 0)
@@ -287,7 +269,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	 *  @param rs result set record
 	 *	@param trxName transaction
 	 */
-	public MInvoice (Properties ctx, ResultSet rs, String trxName)
+	public MInvoice(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MInvoice
@@ -298,7 +280,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	 *	@param C_DocTypeTarget_ID target document type
 	 *	@param invoiceDate date or null
 	 */
-	public MInvoice (MOrder order, int C_DocTypeTarget_ID, Timestamp invoiceDate)
+	public MInvoice(MOrder order, int C_DocTypeTarget_ID, Timestamp invoiceDate)
 	{
 		this (order.getCtx(), 0, order.get_TrxName());
 		setClientOrg(order);
@@ -335,7 +317,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	 *	@param ship shipment
 	 *	@param invoiceDate date or null
 	 */
-	public MInvoice (MInOut ship, Timestamp invoiceDate)
+	public MInvoice(MInOut ship, Timestamp invoiceDate)
 	{
 		this (ship.getCtx(), 0, ship.get_TrxName());
 		setClientOrg(ship);
@@ -354,7 +336,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	 *	@param batch batch
 	 *	@param line batch line
 	 */
-	public MInvoice (MInvoiceBatch batch, MInvoiceBatchLine line)
+	public MInvoice(MInvoiceBatch batch, MInvoiceBatchLine line)
 	{
 		this (line.getCtx(), 0, line.get_TrxName());
 		setClientOrg(line);
@@ -1459,6 +1441,8 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			}
 		}
 
+		createRevenueRecognitionPlan();
+
 		processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
 		if (processMsg != null)
 			return DocAction.STATUS_Invalid;
@@ -1469,6 +1453,113 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			setDocAction(DOCACTION_Complete);
 		return DocAction.STATUS_InProgress;
 	}	//	prepareIt
+
+	private int getUnearnedRevenueAccountId(int businessPartnerGroupId, int acctSchemaId) {
+		I_C_BP_Group_Acct groupAccount = new Query(getCtx(), I_C_BP_Group_Acct.Table_Name, "C_BP_Group_ID = ? AND C_AcctSchema_ID = ?", null)
+				.setParameters(businessPartnerGroupId, acctSchemaId)
+				.setOnlyActiveRecords(true)
+				.first();
+		if(groupAccount != null) {
+			return groupAccount.getUnEarnedRevenue_Acct();
+		}
+		return -1;
+	}
+
+	private void deletePreviousRecognitionPlans() {
+		getUnprocessedPlansIds().forEach(planId -> {
+			MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), planId, get_TrxName());
+			plan.deleteEx(true);
+		});
+	}
+
+	private void processRecognitionPlans() {
+		getUnprocessedPlansIds().forEach(planId -> {
+			MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), planId, get_TrxName());
+			plan.setProcessed(true);
+			plan.saveEx();
+		});
+	}
+
+	private List<Integer> getUnprocessedPlansIds() {
+		return new Query(getCtx(), I_C_RevenueRecognition_Plan.Table_Name, "C_Invoice_ID = ? " +
+				"AND Processed = 'N'", get_TrxName())
+				.setParameters(getC_Invoice_ID())
+				.getIDsAsList();
+	}
+
+	private void createRevenueRecognitionPlan() {
+		if(isReversal()) {
+			return;
+		}
+		deletePreviousRecognitionPlans();
+		MBPartner businessPartner = MBPartner.get(getCtx(), getC_BPartner_ID());
+		int businessPartnerGroupId = businessPartner.getC_BP_Group_ID();
+		List<MAcctSchema> schemas = Arrays.asList(MAcctSchema.getClientAcctSchema(getCtx(), getAD_Client_ID()));
+		List<Integer> invoiceRecognitionLines = getRecognitionInvoiceLinesIds();
+		schemas.forEach(schema -> {
+			int unearnedRevenueRecognitionAccount = getUnearnedRevenueAccountId(businessPartnerGroupId, schema.getC_AcctSchema_ID());
+			if(unearnedRevenueRecognitionAccount <= 0) {
+				throw new AdempiereException("@UnEarnedRevenue_Acct@ @NotFound@");
+			}
+			invoiceRecognitionLines.forEach(invoiceLineId -> {
+				MInvoiceLine invoiceLine = new MInvoiceLine(getCtx(), invoiceLineId, get_TrxName());
+				MProduct product = MProduct.get(getCtx(), invoiceLine.getM_Product_ID());
+				ProductCost productCostAccount = new ProductCost (Env.getCtx(),
+						invoiceLine.getM_Product_ID(), invoiceLine.getM_AttributeSetInstance_ID(), invoiceLine.get_TrxName());
+				MAccount productRevenueAccount = productCostAccount.getAccount(ProductCost.ACCTTYPE_P_Revenue, schema);
+				MAccount revenue = MAccount.get(getCtx(),
+						getAD_Client_ID(), getAD_Org_ID(), schema.getC_AcctSchema_ID(), productRevenueAccount.getAccount_ID(), 0,
+						invoiceLine.getM_Product_ID(), getC_BPartner_ID(), getAD_OrgTrx_ID(), 0, 0, getC_SalesRegion_ID(),
+						getC_Project_ID(), getC_Campaign_ID(), getC_Activity_ID(),
+						getUser1_ID(), getUser2_ID() , getUser3_ID(), getUser4_ID(), 0, 0, null);
+				if(revenue == null || revenue.get_ID() <= 0) {
+					throw new AdempiereException("@P_Revenue_Acct@ @NotFound@");
+				}
+				MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), 0, get_TrxName());
+				plan.setClientOrg(invoiceLine);
+				plan.setC_RevenueRecognition_ID (product.getC_RevenueRecognition_ID());
+				plan.setC_AcctSchema_ID (schema.getC_AcctSchema_ID());
+				plan.setUnEarnedRevenue_Acct (unearnedRevenueRecognitionAccount);
+				plan.setP_Revenue_Acct (revenue.get_ID());
+				plan.setC_Currency_ID (getC_Currency_ID());
+				plan.setM_Product_ID(invoiceLine.getM_Product_ID());
+				plan.setTotalAmt (invoiceLine.getLineNetAmt());
+				plan.setAccountDimensions(invoiceLine);
+				plan.setC_Invoice_ID(getC_Invoice_ID());
+				plan.setC_InvoiceLine_ID (invoiceLineId);
+				if(getC_Order_ID() != 0) {
+					plan.setC_Order_ID(getC_Order_ID());
+				}
+				if(invoiceLine.getC_OrderLine_ID() != 0) {
+					plan.setC_OrderLine_ID(invoiceLine.getC_OrderLine_ID());
+				}
+				if(get_ValueAsInt("S_Contract_ID") > 0) {
+					plan.setS_Contract_ID(get_ValueAsInt("S_Contract_ID"));
+				}
+				if(getC_Project_ID() > 0) {
+					plan.setC_Project_ID(getC_Project_ID());
+				}
+				plan.saveEx();
+			});
+		});
+	}
+
+	private void reverseAllRecognitionPlans() {
+		List<MRevenueRecognitionPlan> plans = MRevenueRecognitionPlan.getPlansFromInvoice(this);
+		plans.forEach(MRevenueRecognitionPlan::reverseAllRecognitionRuns);
+	}
+
+	private List<Integer> getRecognitionInvoiceLinesIds() {
+		return new Query(getCtx(), I_C_InvoiceLine.Table_Name, "C_Invoice_ID = ? " +
+				"AND M_Product_ID IS NOT NULL " +
+				"AND EXISTS(SELECT 1 FROM M_Product p WHERE p.M_Product_ID = C_InvoiceLine.M_Product_ID " +
+				"AND p.C_RevenueRecognition_ID IS NOT NULL)", get_TrxName())
+				.setParameters(getC_Invoice_ID())
+				.setOrderBy(I_C_InvoiceLine.COLUMNNAME_Line)
+				.getIDsAsList();
+	}
+
+
 
 	/**
 	 * 	Explode non stocked BOM.
@@ -2069,7 +2160,8 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 				}
 			}
 		} //Automatic Allocation
-
+		//	Revenue Recognition Process
+		processRecognitionPlans();
 		//	User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
 		if (valid != null)
@@ -2443,6 +2535,8 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			throw new AdempiereException("Failed when processing document - " + allocationHdr.getProcessMsg());
 
 		allocationHdr.saveEx();
+		//	Reverse all Recognitions
+		reverseAllRecognitionPlans();
 		return  reversal;
 	}
 

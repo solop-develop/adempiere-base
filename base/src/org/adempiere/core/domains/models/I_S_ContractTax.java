@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.                                     *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,8 +12,7 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net                                                  *
- * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
@@ -23,24 +22,24 @@ import org.compiere.util.KeyNamePair;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/** Generated Interface for C_RevenueRecognition
+/** Generated Interface for S_ContractTax
  *  @author Adempiere (generated) 
- *  @version Release 3.9.4
+ *  @version Release 3.9.3
  */
-public interface I_C_RevenueRecognition 
+public interface I_S_ContractTax 
 {
 
-    /** TableName=C_RevenueRecognition */
-    public static final String Table_Name = "C_RevenueRecognition";
+    /** TableName=S_ContractTax */
+    public static final String Table_Name = "S_ContractTax";
 
-    /** AD_Table_ID=336 */
+    /** AD_Table_ID=54446 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
-    /** AccessLevel = 3 - Client - Org 
+    /** AccessLevel = 1 - Org 
      */
-    BigDecimal accessLevel = BigDecimal.valueOf(3);
+    BigDecimal accessLevel = BigDecimal.valueOf(1);
 
     /** Load Meta Data */
 
@@ -81,31 +80,20 @@ public interface I_C_RevenueRecognition
 	  */
 	public int getCreatedBy();
 
-    /** Column name C_RevenueRecognition_ID */
-    public static final String COLUMNNAME_C_RevenueRecognition_ID = "C_RevenueRecognition_ID";
+    /** Column name C_Tax_ID */
+    public static final String COLUMNNAME_C_Tax_ID = "C_Tax_ID";
 
-	/** Set Revenue Recognition.
-	  * Method for recording revenue
+	/** Set Tax.
+	  * Tax identifier
 	  */
-	public void setC_RevenueRecognition_ID (int C_RevenueRecognition_ID);
+	public void setC_Tax_ID (int C_Tax_ID);
 
-	/** Get Revenue Recognition.
-	  * Method for recording revenue
+	/** Get Tax.
+	  * Tax identifier
 	  */
-	public int getC_RevenueRecognition_ID();
+	public int getC_Tax_ID();
 
-    /** Column name Description */
-    public static final String COLUMNNAME_Description = "Description";
-
-	/** Set Description.
-	  * Optional short description of the record
-	  */
-	public void setDescription (String Description);
-
-	/** Get Description.
-	  * Optional short description of the record
-	  */
-	public String getDescription();
+	public I_C_Tax getC_Tax() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -120,62 +108,81 @@ public interface I_C_RevenueRecognition
 	  */
 	public boolean isActive();
 
-    /** Column name IsTimeBased */
-    public static final String COLUMNNAME_IsTimeBased = "IsTimeBased";
+    /** Column name IsTaxIncluded */
+    public static final String COLUMNNAME_IsTaxIncluded = "IsTaxIncluded";
 
-	/** Set Time based.
-	  * Time based Revenue Recognition rather than Service Level based
+	/** Set Price includes Tax.
+	  * Tax is included in the price 
 	  */
-	public void setIsTimeBased (boolean IsTimeBased);
+	public void setIsTaxIncluded (boolean IsTaxIncluded);
 
-	/** Get Time based.
-	  * Time based Revenue Recognition rather than Service Level based
+	/** Get Price includes Tax.
+	  * Tax is included in the price 
 	  */
-	public boolean isTimeBased();
+	public boolean isTaxIncluded();
 
-    /** Column name Name */
-    public static final String COLUMNNAME_Name = "Name";
+    /** Column name Processed */
+    public static final String COLUMNNAME_Processed = "Processed";
 
-	/** Set Name.
-	  * Alphanumeric identifier of the entity
+	/** Set Processed.
+	  * The document has been processed
 	  */
-	public void setName (String Name);
+	public void setProcessed (boolean Processed);
 
-	/** Get Name.
-	  * Alphanumeric identifier of the entity
+	/** Get Processed.
+	  * The document has been processed
 	  */
-	public String getName();
+	public boolean isProcessed();
 
-    /** Column name NoMonths */
-    public static final String COLUMNNAME_NoMonths = "NoMonths";
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
 
-	/** Set Number of Months	  */
-	public void setNoMonths (int NoMonths);
-
-	/** Get Number of Months	  */
-	public int getNoMonths();
-
-    /** Column name RecognitionFrequency */
-    public static final String COLUMNNAME_RecognitionFrequency = "RecognitionFrequency";
-
-	/** Set Recognition frequency	  */
-	public void setRecognitionFrequency (String RecognitionFrequency);
-
-	/** Get Recognition frequency	  */
-	public String getRecognitionFrequency();
-
-    /** Column name RecognitionType */
-    public static final String COLUMNNAME_RecognitionType = "RecognitionType";
-
-	/** Set Recognition Type.
-	  * Recognition Type
+	/** Set Contract.
+	  * Contract
 	  */
-	public void setRecognitionType (String RecognitionType);
+	public void setS_Contract_ID (int S_Contract_ID);
 
-	/** Get Recognition Type.
-	  * Recognition Type
+	/** Get Contract.
+	  * Contract
 	  */
-	public String getRecognitionType();
+	public int getS_Contract_ID();
+
+	public I_S_Contract getS_Contract() throws RuntimeException;
+
+    /** Column name S_ContractTax_ID */
+    public static final String COLUMNNAME_S_ContractTax_ID = "S_ContractTax_ID";
+
+	/** Set Contract Tax ID	  */
+	public void setS_ContractTax_ID (int S_ContractTax_ID);
+
+	/** Get Contract Tax ID	  */
+	public int getS_ContractTax_ID();
+
+    /** Column name TaxAmt */
+    public static final String COLUMNNAME_TaxAmt = "TaxAmt";
+
+	/** Set Tax Amount.
+	  * Tax Amount for a document
+	  */
+	public void setTaxAmt (BigDecimal TaxAmt);
+
+	/** Get Tax Amount.
+	  * Tax Amount for a document
+	  */
+	public BigDecimal getTaxAmt();
+
+    /** Column name TaxBaseAmt */
+    public static final String COLUMNNAME_TaxBaseAmt = "TaxBaseAmt";
+
+	/** Set Tax base Amount.
+	  * Base for calculating the tax amount
+	  */
+	public void setTaxBaseAmt (BigDecimal TaxBaseAmt);
+
+	/** Get Tax base Amount.
+	  * Base for calculating the tax amount
+	  */
+	public BigDecimal getTaxBaseAmt();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

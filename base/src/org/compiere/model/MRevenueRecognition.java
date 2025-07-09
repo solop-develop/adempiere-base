@@ -16,10 +16,10 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_C_RevenueRecognition;
+
 import java.sql.ResultSet;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.X_C_RevenueRecognition;
 
 
 /**

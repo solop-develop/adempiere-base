@@ -16,11 +16,17 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.ResultSet;
-import java.util.Properties;
-
+import org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan;
+import org.adempiere.core.domains.models.I_C_RevenueRecognition_Run;
 import org.adempiere.core.domains.models.X_C_RevenueRecognition_Plan;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 
 /**
  *	Revenue Recognition Plan
@@ -104,4 +110,107 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 		}
 		return success;
 	}	//	afterSave
+
+	/**
+	 * Update Recognized Amount
+	 */
+	public void updateRecognizedAmount(Timestamp runningDate) {
+		BigDecimal recognizedAmt = new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, I_C_RevenueRecognition_Run.COLUMNNAME_C_RevenueRecognition_Plan_ID + " = ?", get_TrxName())
+				.setParameters(getC_RevenueRecognition_Plan_ID())
+				.sum(I_C_RevenueRecognition_Run.COLUMNNAME_RecognizedAmt);
+		if(recognizedAmt == null) {
+			recognizedAmt = Env.ZERO;
+		}
+		setRecognizedAmt(recognizedAmt);
+		setIsRecognized(Optional.ofNullable(getTotalAmt()).orElse(Env.ZERO).compareTo(recognizedAmt) == 0);
+		if(runningDate != null) {
+			setDateLastRun(runningDate);
+		}
+		saveEx();
+	}
+
+	public static List<MRevenueRecognitionPlan> getPlansFromInvoiceAndSchema(MInvoice invoice, int accSchemaId) {
+		return new Query(invoice.getCtx(), I_C_RevenueRecognition_Plan.Table_Name, "C_Invoice_ID = ? AND C_AcctSchema_ID = ?", invoice.get_TrxName())
+				.setParameters(invoice.getC_Invoice_ID(), accSchemaId)
+				.<MRevenueRecognitionPlan>list();
+	}
+
+	public static List<MRevenueRecognitionPlan> getPlansFromInvoice(MInvoice invoice) {
+		return new Query(invoice.getCtx(), I_C_RevenueRecognition_Plan.Table_Name, "C_Invoice_ID = ?", invoice.get_TrxName())
+				.setParameters(invoice.getC_Invoice_ID())
+				.<MRevenueRecognitionPlan>list();
+	}
+
+	public static MRevenueRecognitionPlan getPlanFromInvoiceLineAndSchema(MInvoiceLine invoiceLine, int accSchemaId) {
+		return new Query(invoiceLine.getCtx(), I_C_RevenueRecognition_Plan.Table_Name, "C_InvoiceLine_ID = ? AND C_AcctSchema_ID = ?", invoiceLine.get_TrxName())
+				.setParameters(invoiceLine.getC_InvoiceLine_ID(), accSchemaId)
+				.<MRevenueRecognitionPlan>first();
+	}
+
+	public MRevenueRecognitionRun getLastRecognitionRun() {
+		return new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, "C_RevenueRecognition_Plan_ID = ?", get_TrxName())
+				.setParameters(getC_RevenueRecognition_Plan_ID())
+				.setOrderBy(I_C_RevenueRecognition_Run.Table_Name + "." + I_C_RevenueRecognition_Run.COLUMNNAME_C_RevenueRecognition_Run_ID + " DESC")
+				.<MRevenueRecognitionRun>first();
+	}
+
+	public List<Integer> getAllRecognitionsRun() {
+		return new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, "C_RevenueRecognition_Plan_ID = ?", get_TrxName())
+				.setParameters(getC_RevenueRecognition_Plan_ID())
+				.getIDsAsList();
+	}
+
+	public void reverseAllRecognitionRuns() {
+		getAllRecognitionsRun().forEach(runId -> {
+			MRevenueRecognitionRun run = new MRevenueRecognitionRun(getCtx(), runId, get_TrxName());
+			run.reverseIt(false);
+		});
+		setIsRecognized(true);
+		saveEx();
+	}
+
+	public void setAccountDimensions(PO source) {
+		if(source == null) {
+			return;
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_C_BPartner_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_C_BPartner_ID) > 0) {
+			setC_BPartner_ID(source.get_ValueAsInt(COLUMNNAME_C_BPartner_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_S_Contract_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_S_Contract_ID) > 0) {
+			setS_Contract_ID(source.get_ValueAsInt(COLUMNNAME_S_Contract_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_C_Project_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_C_Project_ID) > 0) {
+			setC_Project_ID(source.get_ValueAsInt(COLUMNNAME_C_Project_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_C_Campaign_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_C_Campaign_ID) > 0) {
+			setC_Campaign_ID(source.get_ValueAsInt(COLUMNNAME_C_Campaign_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_C_Activity_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_C_Activity_ID) > 0) {
+			setC_Activity_ID(source.get_ValueAsInt(COLUMNNAME_C_Activity_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_C_SalesRegion_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_C_SalesRegion_ID) > 0) {
+			setC_SalesRegion_ID(source.get_ValueAsInt(COLUMNNAME_C_SalesRegion_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_AD_OrgTrx_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_AD_OrgTrx_ID) > 0) {
+			setAD_OrgTrx_ID(source.get_ValueAsInt(COLUMNNAME_AD_OrgTrx_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_User1_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_User1_ID) > 0) {
+			setUser1_ID(source.get_ValueAsInt(COLUMNNAME_User1_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_User2_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_User2_ID) > 0) {
+			setUser2_ID(source.get_ValueAsInt(COLUMNNAME_User2_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_User3_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_User3_ID) > 0) {
+			setUser3_ID(source.get_ValueAsInt(COLUMNNAME_User3_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_User4_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_User4_ID) > 0) {
+			setUser4_ID(source.get_ValueAsInt(COLUMNNAME_User4_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_UserElement1_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_UserElement1_ID) > 0) {
+			setUserElement1_ID(source.get_ValueAsInt(COLUMNNAME_UserElement1_ID));
+		}
+		if(source.get_ColumnIndex(COLUMNNAME_UserElement2_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_UserElement2_ID) > 0) {
+			setUserElement2_ID(source.get_ValueAsInt(COLUMNNAME_UserElement2_ID));
+		}
+	}
 }	//	MRevenueRecognitionPlan
