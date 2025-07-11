@@ -341,6 +341,19 @@ public interface I_C_RevenueRecognition_Plan
 	  */
 	public boolean isRecognized();
 
+    /** Column name IsSOTrx */
+    public static final String COLUMNNAME_IsSOTrx = "IsSOTrx";
+
+	/** Set Sales Transaction.
+	  * This is a Sales Transaction
+	  */
+	public void setIsSOTrx (boolean IsSOTrx);
+
+	/** Get Sales Transaction.
+	  * This is a Sales Transaction
+	  */
+	public boolean isSOTrx();
+
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
 
@@ -384,6 +397,19 @@ public interface I_C_RevenueRecognition_Plan
 	  */
 	public boolean isProcessed();
 
+    /** Column name RecognitionPlanQty */
+    public static final String COLUMNNAME_RecognitionPlanQty = "RecognitionPlanQty";
+
+	/** Set Recognition Quantities (Planned).
+	  * Recognition Quantities (Planned)
+	  */
+	public void setRecognitionPlanQty (int RecognitionPlanQty);
+
+	/** Get Recognition Quantities (Planned).
+	  * Recognition Quantities (Planned)
+	  */
+	public int getRecognitionPlanQty();
+
     /** Column name RecognizedAmt */
     public static final String COLUMNNAME_RecognizedAmt = "RecognizedAmt";
 
@@ -392,6 +418,19 @@ public interface I_C_RevenueRecognition_Plan
 
 	/** Get Recognized Amount	  */
 	public BigDecimal getRecognizedAmt();
+
+    /** Column name RecognizedRunQty */
+    public static final String COLUMNNAME_RecognizedRunQty = "RecognizedRunQty";
+
+	/** Set Recognized Quantities (Runned).
+	  * Recognized Quantities (Runned)
+	  */
+	public void setRecognizedRunQty (int RecognizedRunQty);
+
+	/** Get Recognized Quantities (Runned).
+	  * Recognized Quantities (Runned)
+	  */
+	public int getRecognizedRunQty();
 
     /** Column name S_Contract_ID */
     public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
@@ -406,7 +445,7 @@ public interface I_C_RevenueRecognition_Plan
 	  */
 	public int getS_Contract_ID();
 
-	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
+	public I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name TotalAmt */
     public static final String COLUMNNAME_TotalAmt = "TotalAmt";

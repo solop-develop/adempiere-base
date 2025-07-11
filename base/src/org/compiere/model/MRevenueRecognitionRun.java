@@ -216,7 +216,6 @@ public class MRevenueRecognitionRun extends X_C_RevenueRecognition_Run implement
 			addDescription(Msg.parseTranslation(getCtx(), message));
 			saveEx();
 		}
-		recognitionPlan.updateRecognizedAmount(TimeUtil.getDayTime(getDateDoc(), new Timestamp(System.currentTimeMillis())));
 	}
 
 	public void addDescription(String description) {

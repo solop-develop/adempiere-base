@@ -19,17 +19,18 @@
 package org.adempiere.core.domains.models;
 
 import org.compiere.model.I_Persistent;
+import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
-import org.compiere.util.KeyNamePair;
 
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 
-/** Generated Model for C_RevenueRecognition
+/** Generated Model for C_RecognitionSetup
  *  @author Adempiere (generated) 
  *  @version Release 3.9.4 - $Id$ */
-public class X_C_RevenueRecognition extends PO implements I_C_RevenueRecognition, I_Persistent 
+public class X_C_RecognitionSetup extends PO implements I_C_RecognitionSetup, I_Persistent 
 {
 
 	/**
@@ -38,25 +39,25 @@ public class X_C_RevenueRecognition extends PO implements I_C_RevenueRecognition
 	private static final long serialVersionUID = 20250711L;
 
     /** Standard Constructor */
-    public X_C_RevenueRecognition (Properties ctx, int C_RevenueRecognition_ID, String trxName)
+    public X_C_RecognitionSetup (Properties ctx, int C_RecognitionSetup_ID, String trxName)
     {
-      super (ctx, C_RevenueRecognition_ID, trxName);
-      /** if (C_RevenueRecognition_ID == 0)
+      super (ctx, C_RecognitionSetup_ID, trxName);
+      /** if (C_RecognitionSetup_ID == 0)
         {
-			setC_RevenueRecognition_ID (0);
-			setIsTimeBased (false);
-			setName (null);
+			setC_RecognitionSetup_ID (0);
+			setRecognitionType (null);
+// 'AC'
         } */
     }
 
     /** Load Constructor */
-    public X_C_RevenueRecognition (Properties ctx, ResultSet rs, String trxName)
+    public X_C_RecognitionSetup (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
 
     /** AccessLevel
-      * @return 3 - Client - Org 
+      * @return 1 - Org 
       */
     protected int get_AccessLevel()
     {
@@ -72,99 +73,106 @@ public class X_C_RevenueRecognition extends PO implements I_C_RevenueRecognition
 
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("X_C_RevenueRecognition[")
+      StringBuffer sb = new StringBuffer ("X_C_RecognitionSetup[")
         .append(get_ID()).append("]");
       return sb.toString();
     }
 
-	/** Set Revenue Recognition.
-		@param C_RevenueRecognition_ID 
-		Method for recording revenue
+	public I_C_Invoice getC_Invoice() throws RuntimeException
+    {
+		return (I_C_Invoice)MTable.get(getCtx(), I_C_Invoice.Table_Name)
+			.getPO(getC_Invoice_ID(), get_TrxName());	}
+
+	/** Set Invoice.
+		@param C_Invoice_ID 
+		Invoice Identifier
 	  */
-	public void setC_RevenueRecognition_ID (int C_RevenueRecognition_ID)
+	public void setC_Invoice_ID (int C_Invoice_ID)
 	{
-		if (C_RevenueRecognition_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_C_RevenueRecognition_ID, null);
+		if (C_Invoice_ID < 1) 
+			set_Value (COLUMNNAME_C_Invoice_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_C_RevenueRecognition_ID, Integer.valueOf(C_RevenueRecognition_ID));
+			set_Value (COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
 	}
 
-	/** Get Revenue Recognition.
-		@return Method for recording revenue
+	/** Get Invoice.
+		@return Invoice Identifier
 	  */
-	public int getC_RevenueRecognition_ID () 
+	public int getC_Invoice_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_RevenueRecognition_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Invoice_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
 	}
 
-	/** Set Description.
-		@param Description 
-		Optional short description of the record
-	  */
-	public void setDescription (String Description)
-	{
-		set_Value (COLUMNNAME_Description, Description);
-	}
-
-	/** Get Description.
-		@return Optional short description of the record
-	  */
-	public String getDescription () 
-	{
-		return (String)get_Value(COLUMNNAME_Description);
-	}
-
-	/** Set Time based.
-		@param IsTimeBased 
-		Time based Revenue Recognition rather than Service Level based
-	  */
-	public void setIsTimeBased (boolean IsTimeBased)
-	{
-		set_Value (COLUMNNAME_IsTimeBased, Boolean.valueOf(IsTimeBased));
-	}
-
-	/** Get Time based.
-		@return Time based Revenue Recognition rather than Service Level based
-	  */
-	public boolean isTimeBased () 
-	{
-		Object oo = get_Value(COLUMNNAME_IsTimeBased);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Name.
-		@param Name 
-		Alphanumeric identifier of the entity
-	  */
-	public void setName (String Name)
-	{
-		set_Value (COLUMNNAME_Name, Name);
-	}
-
-	/** Get Name.
-		@return Alphanumeric identifier of the entity
-	  */
-	public String getName () 
-	{
-		return (String)get_Value(COLUMNNAME_Name);
-	}
-
-    /** Get Record ID/ColumnName
-        @return ID/ColumnName pair
-      */
-    public KeyNamePair getKeyNamePair() 
+	public I_C_Order getC_Order() throws RuntimeException
     {
-        return new KeyNamePair(get_ID(), getName());
-    }
+		return (I_C_Order)MTable.get(getCtx(), I_C_Order.Table_Name)
+			.getPO(getC_Order_ID(), get_TrxName());	}
+
+	/** Set Order.
+		@param C_Order_ID 
+		Order
+	  */
+	public void setC_Order_ID (int C_Order_ID)
+	{
+		if (C_Order_ID < 1) 
+			set_Value (COLUMNNAME_C_Order_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
+	}
+
+	/** Get Order.
+		@return Order
+	  */
+	public int getC_Order_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Order_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Revenue Recognition Setup.
+		@param C_RecognitionSetup_ID 
+		Revenue Recognition Setup
+	  */
+	public void setC_RecognitionSetup_ID (int C_RecognitionSetup_ID)
+	{
+		if (C_RecognitionSetup_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_C_RecognitionSetup_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_C_RecognitionSetup_ID, Integer.valueOf(C_RecognitionSetup_ID));
+	}
+
+	/** Get Revenue Recognition Setup.
+		@return Revenue Recognition Setup
+	  */
+	public int getC_RecognitionSetup_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_RecognitionSetup_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set End Date.
+		@param EndDate 
+		Last effective date (inclusive)
+	  */
+	public void setEndDate (Timestamp EndDate)
+	{
+		set_Value (COLUMNNAME_EndDate, EndDate);
+	}
+
+	/** Get End Date.
+		@return Last effective date (inclusive)
+	  */
+	public Timestamp getEndDate () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_EndDate);
+	}
 
 	/** Set Number of Months.
 		@param NoMonths Number of Months	  */
@@ -181,29 +189,6 @@ public class X_C_RevenueRecognition extends PO implements I_C_RevenueRecognition
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** RecognitionFrequency AD_Reference_ID=196 */
-	public static final int RECOGNITIONFREQUENCY_AD_Reference_ID=196;
-	/** Month = M */
-	public static final String RECOGNITIONFREQUENCY_Month = "M";
-	/** Quarter = Q */
-	public static final String RECOGNITIONFREQUENCY_Quarter = "Q";
-	/** Year = Y */
-	public static final String RECOGNITIONFREQUENCY_Year = "Y";
-	/** Set Recognition frequency.
-		@param RecognitionFrequency Recognition frequency	  */
-	public void setRecognitionFrequency (String RecognitionFrequency)
-	{
-
-		set_Value (COLUMNNAME_RecognitionFrequency, RecognitionFrequency);
-	}
-
-	/** Get Recognition frequency.
-		@return Recognition frequency	  */
-	public String getRecognitionFrequency () 
-	{
-		return (String)get_Value(COLUMNNAME_RecognitionFrequency);
 	}
 
 	/** RecognitionType AD_Reference_ID=54496 */
@@ -240,6 +225,23 @@ public class X_C_RevenueRecognition extends PO implements I_C_RevenueRecognition
 	public String getRecognitionType () 
 	{
 		return (String)get_Value(COLUMNNAME_RecognitionType);
+	}
+
+	/** Set Start Date.
+		@param StartDate 
+		First effective day (inclusive)
+	  */
+	public void setStartDate (Timestamp StartDate)
+	{
+		set_Value (COLUMNNAME_StartDate, StartDate);
+	}
+
+	/** Get Start Date.
+		@return First effective day (inclusive)
+	  */
+	public Timestamp getStartDate () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_StartDate);
 	}
 
 	/** Set Immutable Universally Unique Identifier.
