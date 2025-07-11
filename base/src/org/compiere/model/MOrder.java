@@ -16,6 +16,16 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.*;
+import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.exceptions.BPartnerNoBillToAddressException;
+import org.adempiere.exceptions.BPartnerNoShipToAddressException;
+import org.adempiere.exceptions.FillMandatoryException;
+import org.compiere.print.ReportEngine;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.util.*;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,37 +33,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
-
-import org.adempiere.core.domains.models.I_C_Invoice;
-import org.adempiere.core.domains.models.I_C_OrderLine;
-import org.adempiere.core.domains.models.I_C_OrderTax;
-import org.adempiere.core.domains.models.I_M_InOut;
-import org.adempiere.core.domains.models.I_M_RMA;
-import org.adempiere.core.domains.models.I_PP_Product_Planning;
-import org.adempiere.core.domains.models.X_C_Order;
-import org.adempiere.core.domains.models.X_PP_Product_BOM;
-import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
-import org.adempiere.core.domains.models.X_PP_Product_Planning;
-import org.adempiere.exceptions.BPartnerNoBillToAddressException;
-import org.adempiere.exceptions.BPartnerNoShipToAddressException;
-import org.adempiere.exceptions.FillMandatoryException;
-import org.compiere.print.ReportEngine;
-import org.compiere.process.DocAction;
-import org.compiere.process.DocumentEngine;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Util;
 
 
 /**
@@ -217,7 +201,7 @@ public class MOrder extends X_C_Order implements DocAction
 	 *  @param IsSOTrx sales order
 	 * 	@param	DocSubTypeSO if SO DocType Target (default DocSubTypeSO_OnCredit)
 	 */
-	public MOrder (MProject project, boolean IsSOTrx, String DocSubTypeSO)
+	public MOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO)
 	{
 		this (project.getCtx(), 0, project.get_TrxName());
 		setAD_Client_ID(project.getAD_Client_ID());
@@ -268,7 +252,7 @@ public class MOrder extends X_C_Order implements DocAction
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MOrder (Properties ctx, ResultSet rs, String trxName)
+	public MOrder(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MOrder
@@ -1395,6 +1379,8 @@ public class MOrder extends X_C_Order implements DocAction
 				}
 			}
 		}
+
+		createRevenueRecognitionPlan();
 		
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
 		if (m_processMsg != null)
@@ -1403,6 +1389,103 @@ public class MOrder extends X_C_Order implements DocAction
 		m_justPrepared = true;
 		return DocAction.STATUS_InProgress;
 	}	//	prepareIt
+
+	private void deletePreviousRecognitionPlans() {
+		getUnprocessedPlansIds().forEach(planId -> {
+			MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), planId, get_TrxName());
+			plan.deleteEx(true);
+		});
+	}
+
+	private void processRecognitionPlans() {
+		getUnprocessedPlansIds().forEach(planId -> {
+			MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), planId, get_TrxName());
+			plan.setProcessed(true);
+			plan.saveEx();
+		});
+	}
+
+	private List<Integer> getUnprocessedPlansIds() {
+		return new Query(getCtx(), I_C_RevenueRecognition_Plan.Table_Name, "C_Order_ID = ? " +
+				"AND Processed = 'N'", get_TrxName())
+				.setParameters(getC_Order_ID())
+				.getIDsAsList();
+	}
+
+	private void createRevenueRecognitionPlan() {
+		deletePreviousRecognitionPlans();
+		MBPartner businessPartner = MBPartner.get(getCtx(), getC_BPartner_ID());
+		int businessPartnerGroupId = businessPartner.getC_BP_Group_ID();
+		List<MAcctSchema> schemas = Arrays.asList(MAcctSchema.getClientAcctSchema(getCtx(), getAD_Client_ID()));
+		List<Integer> orderRecognitionLines = getRecognitionOrderLinesIds();
+		List<MRecognitionSetup> recognitionSetups = MRecognitionSetup.getSetupsFromOrder(this);
+		schemas.forEach(schema -> {
+			int unearnedRevenueRecognitionAccount = MRevenueRecognitionPlan.getUnearnedRevenueAccountId(getCtx(), businessPartnerGroupId, schema.getC_AcctSchema_ID());
+			if(unearnedRevenueRecognitionAccount <= 0) {
+				throw new AdempiereException("@UnEarnedRevenue_Acct@ @NotFound@");
+			}
+			orderRecognitionLines.forEach(orderLineId -> {
+				MOrderLine orderLine = new MOrderLine(getCtx(), orderLineId, get_TrxName());
+				MProduct product = MProduct.get(getCtx(), orderLine.getM_Product_ID());
+				ProductCost productCostAccount = new ProductCost (Env.getCtx(),
+						orderLine.getM_Product_ID(), orderLine.getM_AttributeSetInstance_ID(), orderLine.get_TrxName());
+				MAccount productRevenueAccount = productCostAccount.getAccount(MRevenueRecognitionPlan.getFinalAccountType(isSOTrx(), product.isItem()), schema);
+				MAccount revenue = MAccount.get(getCtx(),
+						getAD_Client_ID(), getAD_Org_ID(), schema.getC_AcctSchema_ID(), productRevenueAccount.getAccount_ID(), 0,
+						orderLine.getM_Product_ID(), getC_BPartner_ID(), getAD_OrgTrx_ID(), 0, 0, getC_SalesRegion_ID(),
+						getC_Project_ID(), getC_Campaign_ID(), getC_Activity_ID(),
+						getUser1_ID(), getUser2_ID() , getUser3_ID(), getUser4_ID(), 0, 0, null);
+				if(revenue == null || revenue.get_ID() <= 0) {
+					throw new AdempiereException("@P_Revenue_Acct@ @NotFound@");
+				}
+				MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), 0, get_TrxName());
+				plan.setClientOrg(orderLine);
+				plan.setC_RevenueRecognition_ID (product.getC_RevenueRecognition_ID());
+				plan.setC_AcctSchema_ID (schema.getC_AcctSchema_ID());
+				plan.setUnEarnedRevenue_Acct (unearnedRevenueRecognitionAccount);
+				plan.setP_Revenue_Acct (revenue.get_ID());
+				plan.setC_Currency_ID (getC_Currency_ID());
+				plan.setM_Product_ID(orderLine.getM_Product_ID());
+				plan.setTotalAmt (orderLine.getLineNetAmt());
+				plan.setAccountDimensions(orderLine);
+				plan.setC_Order_ID(getC_Order_ID());
+				plan.setC_OrderLine_ID (orderLineId);
+				plan.setIsSOTrx(isSOTrx());
+				setRecognitionPlanSetup(plan, recognitionSetups);
+				if(getC_Order_ID() != 0) {
+					plan.setC_Order_ID(getC_Order_ID());
+				}
+				if(orderLine.getC_OrderLine_ID() != 0) {
+					plan.setC_OrderLine_ID(orderLine.getC_OrderLine_ID());
+				}
+				plan.saveEx();
+			});
+		});
+	}
+
+	private void setRecognitionPlanSetup(MRevenueRecognitionPlan plan, List<MRecognitionSetup> setups) {
+		MRevenueRecognition recognition = (MRevenueRecognition) plan.getC_RevenueRecognition();
+		plan.setRecognitionPlanQty(recognition.getNoMonths());
+		Optional<MRecognitionSetup> maybeCustomSetup = setups.stream().filter(setup -> setup.getRecognitionType().equals(recognition.getRecognitionType())).findFirst();
+		maybeCustomSetup.ifPresent(customSetup -> {
+			plan.setRecognitionPlanQty(customSetup.getNoMonths());
+		});
+	}
+
+	private void reverseAllRecognitionPlans() {
+		List<MRevenueRecognitionPlan> plans = MRevenueRecognitionPlan.getPlansFromOrder(this);
+		plans.forEach(MRevenueRecognitionPlan::reverseAllRecognitionRuns);
+	}
+
+	private List<Integer> getRecognitionOrderLinesIds() {
+		return new Query(getCtx(), I_C_OrderLine.Table_Name, "C_Order_ID = ? " +
+				"AND M_Product_ID IS NOT NULL " +
+				"AND EXISTS(SELECT 1 FROM M_Product p WHERE p.M_Product_ID = C_OrderLine.M_Product_ID " +
+				"AND p.C_RevenueRecognition_ID IS NOT NULL)", get_TrxName())
+				.setParameters(getC_Order_ID())
+				.setOrderBy(I_C_OrderLine.COLUMNNAME_Line)
+				.getIDsAsList();
+	}
 
 	/**
 	 * get Document Type
@@ -1895,6 +1978,8 @@ public class MOrder extends X_C_Order implements DocAction
 			return DocAction.STATUS_Invalid;
 		}
 
+		processRecognitionPlans();
+
 		// Set the definite document number after completed (if needed)
 		setDefiniteDocumentNo();
 
@@ -2202,7 +2287,9 @@ public class MOrder extends X_C_Order implements DocAction
 		/* globalqss - 2317928 - Reactivating/Voiding order must reset posted */
 		MFactAcct.deleteEx(MOrder.Table_ID, getC_Order_ID(), get_TrxName());
 		setPosted(false);
-		
+
+		reverseAllRecognitionPlans();
+
 		// After Void
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_VOID);
 		if (m_processMsg != null)

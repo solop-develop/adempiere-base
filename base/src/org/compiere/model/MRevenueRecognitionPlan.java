@@ -16,6 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_C_BP_Group_Acct;
 import org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan;
 import org.adempiere.core.domains.models.I_C_RevenueRecognition_Run;
 import org.adempiere.core.domains.models.X_C_RevenueRecognition_Plan;
@@ -118,10 +119,14 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 		BigDecimal recognizedAmt = new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, I_C_RevenueRecognition_Run.COLUMNNAME_C_RevenueRecognition_Plan_ID + " = ?", get_TrxName())
 				.setParameters(getC_RevenueRecognition_Plan_ID())
 				.sum(I_C_RevenueRecognition_Run.COLUMNNAME_RecognizedAmt);
+		int recognizedQuantity = new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, I_C_RevenueRecognition_Run.COLUMNNAME_C_RevenueRecognition_Plan_ID + " = ? AND DocStatus IN('CO', 'CL')", get_TrxName())
+				.setParameters(getC_RevenueRecognition_Plan_ID())
+				.count();
 		if(recognizedAmt == null) {
 			recognizedAmt = Env.ZERO;
 		}
 		setRecognizedAmt(recognizedAmt);
+		setRecognizedRunQty(recognizedQuantity);
 		setIsRecognized(Optional.ofNullable(getTotalAmt()).orElse(Env.ZERO).compareTo(recognizedAmt) == 0);
 		if(runningDate != null) {
 			setDateLastRun(runningDate);
@@ -141,9 +146,21 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 				.<MRevenueRecognitionPlan>list();
 	}
 
+	public static List<MRevenueRecognitionPlan> getPlansFromOrder(MOrder order) {
+		return new Query(order.getCtx(), I_C_RevenueRecognition_Plan.Table_Name, "C_Order_ID = ?", order.get_TrxName())
+				.setParameters(order.getC_Order_ID())
+				.<MRevenueRecognitionPlan>list();
+	}
+
 	public static MRevenueRecognitionPlan getPlanFromInvoiceLineAndSchema(MInvoiceLine invoiceLine, int accSchemaId) {
 		return new Query(invoiceLine.getCtx(), I_C_RevenueRecognition_Plan.Table_Name, "C_InvoiceLine_ID = ? AND C_AcctSchema_ID = ?", invoiceLine.get_TrxName())
 				.setParameters(invoiceLine.getC_InvoiceLine_ID(), accSchemaId)
+				.<MRevenueRecognitionPlan>first();
+	}
+
+	public static MRevenueRecognitionPlan getPlanFromOrderLineAndSchema(MOrderLine orderLine, int accSchemaId) {
+		return new Query(orderLine.getCtx(), I_C_RevenueRecognition_Plan.Table_Name, "C_OrderLine_ID = ? AND C_AcctSchema_ID = ?", orderLine.get_TrxName())
+				.setParameters(orderLine.getC_OrderLine_ID(), accSchemaId)
 				.<MRevenueRecognitionPlan>first();
 	}
 
@@ -167,6 +184,16 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 		});
 		setIsRecognized(true);
 		saveEx();
+	}
+
+	public static int getFinalAccountType(boolean isSOTrx, boolean isItem) {
+		if(isSOTrx) {
+			return ProductCost.ACCTTYPE_P_Revenue;
+		}
+		if(isItem) {
+			return ProductCost.ACCTTYPE_P_InventoryClearing;
+		}
+		return ProductCost.ACCTTYPE_P_Expense;
 	}
 
 	public void setAccountDimensions(PO source) {
@@ -212,5 +239,16 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 		if(source.get_ColumnIndex(COLUMNNAME_UserElement2_ID) > 0 && source.get_ValueAsInt(COLUMNNAME_UserElement2_ID) > 0) {
 			setUserElement2_ID(source.get_ValueAsInt(COLUMNNAME_UserElement2_ID));
 		}
+	}
+
+	public static int getUnearnedRevenueAccountId(Properties context, int businessPartnerGroupId, int acctSchemaId) {
+		I_C_BP_Group_Acct groupAccount = new Query(context, I_C_BP_Group_Acct.Table_Name, "C_BP_Group_ID = ? AND C_AcctSchema_ID = ?", null)
+				.setParameters(businessPartnerGroupId, acctSchemaId)
+				.setOnlyActiveRecords(true)
+				.first();
+		if(groupAccount != null) {
+			return groupAccount.getUnEarnedRevenue_Acct();
+		}
+		return -1;
 	}
 }	//	MRevenueRecognitionPlan

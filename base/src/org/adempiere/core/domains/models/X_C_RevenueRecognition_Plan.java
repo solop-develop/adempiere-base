@@ -39,7 +39,7 @@ public class X_C_RevenueRecognition_Plan extends PO implements I_C_RevenueRecogn
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250708L;
+	private static final long serialVersionUID = 20250711L;
 
     /** Standard Constructor */
     public X_C_RevenueRecognition_Plan (Properties ctx, int C_RevenueRecognition_Plan_ID, String trxName)
@@ -49,7 +49,6 @@ public class X_C_RevenueRecognition_Plan extends PO implements I_C_RevenueRecogn
         {
 			setC_AcctSchema_ID (0);
 			setC_Currency_ID (0);
-			setC_InvoiceLine_ID (0);
 			setC_RevenueRecognition_ID (0);
 			setC_RevenueRecognition_Plan_ID (0);
 			setP_Revenue_Acct (0);
@@ -547,6 +546,30 @@ public class X_C_RevenueRecognition_Plan extends PO implements I_C_RevenueRecogn
 		return false;
 	}
 
+	/** Set Sales Transaction.
+		@param IsSOTrx 
+		This is a Sales Transaction
+	  */
+	public void setIsSOTrx (boolean IsSOTrx)
+	{
+		set_Value (COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
+	}
+
+	/** Get Sales Transaction.
+		@return This is a Sales Transaction
+	  */
+	public boolean isSOTrx () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsSOTrx);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	public I_M_Product getM_Product() throws RuntimeException
     {
 		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
@@ -624,6 +647,26 @@ public class X_C_RevenueRecognition_Plan extends PO implements I_C_RevenueRecogn
 		return false;
 	}
 
+	/** Set Recognition Quantities (Planned).
+		@param RecognitionPlanQty 
+		Recognition Quantities (Planned)
+	  */
+	public void setRecognitionPlanQty (int RecognitionPlanQty)
+	{
+		set_Value (COLUMNNAME_RecognitionPlanQty, Integer.valueOf(RecognitionPlanQty));
+	}
+
+	/** Get Recognition Quantities (Planned).
+		@return Recognition Quantities (Planned)
+	  */
+	public int getRecognitionPlanQty () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_RecognitionPlanQty);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Recognized Amount.
 		@param RecognizedAmt Recognized Amount	  */
 	public void setRecognizedAmt (BigDecimal RecognizedAmt)
@@ -641,9 +684,29 @@ public class X_C_RevenueRecognition_Plan extends PO implements I_C_RevenueRecogn
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+	/** Set Recognized Quantities (Runned).
+		@param RecognizedRunQty 
+		Recognized Quantities (Runned)
+	  */
+	public void setRecognizedRunQty (int RecognizedRunQty)
+	{
+		set_Value (COLUMNNAME_RecognizedRunQty, Integer.valueOf(RecognizedRunQty));
+	}
+
+	/** Get Recognized Quantities (Runned).
+		@return Recognized Quantities (Runned)
+	  */
+	public int getRecognizedRunQty () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_RecognizedRunQty);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_S_Contract getS_Contract() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
 			.getPO(getS_Contract_ID(), get_TrxName());	}
 
 	/** Set Contract.

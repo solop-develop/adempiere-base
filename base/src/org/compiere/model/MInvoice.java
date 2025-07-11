@@ -1454,17 +1454,6 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		return DocAction.STATUS_InProgress;
 	}	//	prepareIt
 
-	private int getUnearnedRevenueAccountId(int businessPartnerGroupId, int acctSchemaId) {
-		I_C_BP_Group_Acct groupAccount = new Query(getCtx(), I_C_BP_Group_Acct.Table_Name, "C_BP_Group_ID = ? AND C_AcctSchema_ID = ?", null)
-				.setParameters(businessPartnerGroupId, acctSchemaId)
-				.setOnlyActiveRecords(true)
-				.first();
-		if(groupAccount != null) {
-			return groupAccount.getUnEarnedRevenue_Acct();
-		}
-		return -1;
-	}
-
 	private void deletePreviousRecognitionPlans() {
 		getUnprocessedPlansIds().forEach(planId -> {
 			MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), planId, get_TrxName());
@@ -1496,51 +1485,71 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		int businessPartnerGroupId = businessPartner.getC_BP_Group_ID();
 		List<MAcctSchema> schemas = Arrays.asList(MAcctSchema.getClientAcctSchema(getCtx(), getAD_Client_ID()));
 		List<Integer> invoiceRecognitionLines = getRecognitionInvoiceLinesIds();
+		List<MRecognitionSetup> recognitionSetups = MRecognitionSetup.getSetupsFromInvoice(this);
 		schemas.forEach(schema -> {
-			int unearnedRevenueRecognitionAccount = getUnearnedRevenueAccountId(businessPartnerGroupId, schema.getC_AcctSchema_ID());
+			int unearnedRevenueRecognitionAccount = MRevenueRecognitionPlan.getUnearnedRevenueAccountId(getCtx(), businessPartnerGroupId, schema.getC_AcctSchema_ID());
 			if(unearnedRevenueRecognitionAccount <= 0) {
 				throw new AdempiereException("@UnEarnedRevenue_Acct@ @NotFound@");
 			}
 			invoiceRecognitionLines.forEach(invoiceLineId -> {
 				MInvoiceLine invoiceLine = new MInvoiceLine(getCtx(), invoiceLineId, get_TrxName());
-				MProduct product = MProduct.get(getCtx(), invoiceLine.getM_Product_ID());
-				ProductCost productCostAccount = new ProductCost (Env.getCtx(),
-						invoiceLine.getM_Product_ID(), invoiceLine.getM_AttributeSetInstance_ID(), invoiceLine.get_TrxName());
-				MAccount productRevenueAccount = productCostAccount.getAccount(ProductCost.ACCTTYPE_P_Revenue, schema);
-				MAccount revenue = MAccount.get(getCtx(),
-						getAD_Client_ID(), getAD_Org_ID(), schema.getC_AcctSchema_ID(), productRevenueAccount.getAccount_ID(), 0,
-						invoiceLine.getM_Product_ID(), getC_BPartner_ID(), getAD_OrgTrx_ID(), 0, 0, getC_SalesRegion_ID(),
-						getC_Project_ID(), getC_Campaign_ID(), getC_Activity_ID(),
-						getUser1_ID(), getUser2_ID() , getUser3_ID(), getUser4_ID(), 0, 0, null);
-				if(revenue == null || revenue.get_ID() <= 0) {
-					throw new AdempiereException("@P_Revenue_Acct@ @NotFound@");
+				boolean alreadyExistsPlan = false;
+				if(invoiceLine.getC_OrderLine_ID() > 0) {
+					MRevenueRecognitionPlan currentPlan = MRevenueRecognitionPlan.getPlanFromOrderLineAndSchema((MOrderLine) invoiceLine.getC_OrderLine(), schema.getC_AcctSchema_ID());
+					if(currentPlan != null) {
+						currentPlan.setC_Invoice_ID(getC_Invoice_ID());
+						currentPlan.setC_InvoiceLine_ID(invoiceLine.getC_InvoiceLine_ID());
+						currentPlan.setIsInvoiced(true);
+						currentPlan.saveEx();
+						alreadyExistsPlan = true;
+					}
 				}
-				MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), 0, get_TrxName());
-				plan.setClientOrg(invoiceLine);
-				plan.setC_RevenueRecognition_ID (product.getC_RevenueRecognition_ID());
-				plan.setC_AcctSchema_ID (schema.getC_AcctSchema_ID());
-				plan.setUnEarnedRevenue_Acct (unearnedRevenueRecognitionAccount);
-				plan.setP_Revenue_Acct (revenue.get_ID());
-				plan.setC_Currency_ID (getC_Currency_ID());
-				plan.setM_Product_ID(invoiceLine.getM_Product_ID());
-				plan.setTotalAmt (invoiceLine.getLineNetAmt());
-				plan.setAccountDimensions(invoiceLine);
-				plan.setC_Invoice_ID(getC_Invoice_ID());
-				plan.setC_InvoiceLine_ID (invoiceLineId);
-				if(getC_Order_ID() != 0) {
-					plan.setC_Order_ID(getC_Order_ID());
+				if(!alreadyExistsPlan) {
+					MProduct product = MProduct.get(getCtx(), invoiceLine.getM_Product_ID());
+					ProductCost productCostAccount = new ProductCost (Env.getCtx(),
+							invoiceLine.getM_Product_ID(), invoiceLine.getM_AttributeSetInstance_ID(), invoiceLine.get_TrxName());
+					MAccount productRevenueAccount = productCostAccount.getAccount(MRevenueRecognitionPlan.getFinalAccountType(isSOTrx(), product.isItem()), schema);
+					MAccount revenue = MAccount.get(getCtx(),
+							getAD_Client_ID(), getAD_Org_ID(), schema.getC_AcctSchema_ID(), productRevenueAccount.getAccount_ID(), 0,
+							invoiceLine.getM_Product_ID(), getC_BPartner_ID(), getAD_OrgTrx_ID(), 0, 0, getC_SalesRegion_ID(),
+							getC_Project_ID(), getC_Campaign_ID(), getC_Activity_ID(),
+							getUser1_ID(), getUser2_ID() , getUser3_ID(), getUser4_ID(), 0, 0, null);
+					if(revenue == null || revenue.get_ID() <= 0) {
+						throw new AdempiereException("@P_Revenue_Acct@ @NotFound@");
+					}
+					MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), 0, get_TrxName());
+					plan.setClientOrg(invoiceLine);
+					plan.setC_RevenueRecognition_ID (product.getC_RevenueRecognition_ID());
+					plan.setC_AcctSchema_ID (schema.getC_AcctSchema_ID());
+					plan.setUnEarnedRevenue_Acct (unearnedRevenueRecognitionAccount);
+					plan.setP_Revenue_Acct (revenue.get_ID());
+					plan.setC_Currency_ID (getC_Currency_ID());
+					plan.setM_Product_ID(invoiceLine.getM_Product_ID());
+					plan.setTotalAmt (invoiceLine.getLineNetAmt());
+					plan.setAccountDimensions(invoiceLine);
+					plan.setC_Invoice_ID(getC_Invoice_ID());
+					plan.setC_InvoiceLine_ID (invoiceLineId);
+					plan.setIsSOTrx(isSOTrx());
+					plan.setIsInvoiced(true);
+					setRecognitionPlanSetup(plan, recognitionSetups);
+					if(getC_Order_ID() != 0) {
+						plan.setC_Order_ID(getC_Order_ID());
+					}
+					if(invoiceLine.getC_OrderLine_ID() != 0) {
+						plan.setC_OrderLine_ID(invoiceLine.getC_OrderLine_ID());
+					}
+					plan.saveEx();
 				}
-				if(invoiceLine.getC_OrderLine_ID() != 0) {
-					plan.setC_OrderLine_ID(invoiceLine.getC_OrderLine_ID());
-				}
-				if(get_ValueAsInt("S_Contract_ID") > 0) {
-					plan.setS_Contract_ID(get_ValueAsInt("S_Contract_ID"));
-				}
-				if(getC_Project_ID() > 0) {
-					plan.setC_Project_ID(getC_Project_ID());
-				}
-				plan.saveEx();
 			});
+		});
+	}
+
+	private void setRecognitionPlanSetup(MRevenueRecognitionPlan plan, List<MRecognitionSetup> setups) {
+		MRevenueRecognition recognition = (MRevenueRecognition) plan.getC_RevenueRecognition();
+		plan.setRecognitionPlanQty(recognition.getNoMonths());
+		Optional<MRecognitionSetup> maybeCustomSetup = setups.stream().filter(setup -> setup.getRecognitionType().equals(recognition.getRecognitionType())).findFirst();
+		maybeCustomSetup.ifPresent(customSetup -> {
+			plan.setRecognitionPlanQty(customSetup.getNoMonths());
 		});
 	}
 
@@ -1558,8 +1567,6 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 				.setOrderBy(I_C_InvoiceLine.COLUMNNAME_Line)
 				.getIDsAsList();
 	}
-
-
 
 	/**
 	 * 	Explode non stocked BOM.

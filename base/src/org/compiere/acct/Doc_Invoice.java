@@ -264,6 +264,15 @@ public class Doc_Invoice extends Doc
 		return retValue;
 	}   //  getBalance
 
+	private MAccount getRevenueRecognitionAccount(MAcctSchema acctSchema, DocLine line, int accountType, List<MRevenueRecognitionPlan> revenueRecognitionPlans) {
+		int invoiceLineId = line.get_ID();
+		Optional<MRevenueRecognitionPlan> maybePlan = revenueRecognitionPlans.stream().filter(plan -> plan.getC_InvoiceLine_ID() == invoiceLineId).findFirst();
+		MAccount revenueAccount = line.getAccount(accountType, acctSchema);
+		if(maybePlan.isPresent()) {
+			revenueAccount = (MAccount) maybePlan.get().getUnEarnedRevenue_A();
+		}
+		return revenueAccount;
+	}
 
 	/**
 	 *  Create Facts (the accounting logic) for
@@ -306,7 +315,7 @@ public class Doc_Invoice extends Doc
 		//  Cash based accounting
 		if (!acctSchema.isAccrual())
 			return facts;
-
+		List<MRevenueRecognitionPlan> revenueRecognitionPlans = MRevenueRecognitionPlan.getPlansFromInvoiceAndSchema((MInvoice) getPO(), acctSchema.getC_AcctSchema_ID());
 		//  ** ARI, ARF
 		if (getDocumentType().equals(DOCTYPE_ARInvoice) 
 			|| getDocumentType().equals(DOCTYPE_ARProForma))
@@ -331,7 +340,6 @@ public class Doc_Invoice extends Doc
 						tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
 				}
 			}
-			List<MRevenueRecognitionPlan> revenueRecognitionPlans = MRevenueRecognitionPlan.getPlansFromInvoiceAndSchema((MInvoice) getPO(), acctSchema.getC_AcctSchema_ID());
 			//  Revenue                 CR
 			for (int i = 0; i < p_lines.length; i++)
 			{
@@ -349,14 +357,8 @@ public class Doc_Invoice extends Doc
 								getC_Currency_ID(), dAmt, null);
 					}
 				}
-				int invoiceLineId = p_lines[i].get_ID();
-				Optional<MRevenueRecognitionPlan> maybePlan = revenueRecognitionPlans.stream().filter(plan -> plan.getC_InvoiceLine_ID() == invoiceLineId).findFirst();
-				MAccount revenueAccount = p_lines[i].getAccount(ProductCost.ACCTTYPE_P_Revenue, acctSchema);
-				if(maybePlan.isPresent()) {
-					revenueAccount = (MAccount) maybePlan.get().getUnEarnedRevenue_A();
-				}
 				fact.createLine (p_lines[i],
-						revenueAccount,
+						getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_Revenue, revenueRecognitionPlans),
 					getC_Currency_ID(), null, amt);
 				if (!p_lines[i].isItem())
 				{
@@ -437,7 +439,7 @@ public class Doc_Invoice extends Doc
 					}
 				}
 				fact.createLine (p_lines[i],
-					p_lines[i].getAccount (ProductCost.ACCTTYPE_P_Revenue, acctSchema),
+						getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_Revenue, revenueRecognitionPlans),
 					getC_Currency_ID(), amt, null);
 				if (!p_lines[i].isItem())
 				{
@@ -519,9 +521,9 @@ public class Doc_Invoice extends Doc
 				}
 				if (!landedCost)
 				{
-					MAccount expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, acctSchema);
+					MAccount expense = getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_Expense, revenueRecognitionPlans);
 					if (line.isItem())
-						expense = line.getAccount (ProductCost.ACCTTYPE_P_InventoryClearing, acctSchema);
+						expense = getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_InventoryClearing, revenueRecognitionPlans);
 					BigDecimal amt = line.getAmtSource();
 					BigDecimal dAmt = null;
 					if (acctSchema.isTradeDiscountPosted() && !line.isItem())
@@ -628,9 +630,9 @@ public class Doc_Invoice extends Doc
 				}
 				if (!landedCost)
 				{
-					MAccount expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, acctSchema);
+					MAccount expense = getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_Expense, revenueRecognitionPlans);
 					if (line.isItem())
-						expense = line.getAccount (ProductCost.ACCTTYPE_P_InventoryClearing, acctSchema);
+						expense = getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_InventoryClearing, revenueRecognitionPlans);
 					BigDecimal amt = line.getAmtSource();
 					BigDecimal dAmt = null;
 					if (acctSchema.isTradeDiscountPosted() && !line.isItem())
