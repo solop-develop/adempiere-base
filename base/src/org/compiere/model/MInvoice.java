@@ -1555,7 +1555,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 
 	private void reverseAllRecognitionPlans() {
 		List<MRevenueRecognitionPlan> plans = MRevenueRecognitionPlan.getPlansFromInvoice(this);
-		plans.forEach(MRevenueRecognitionPlan::reverseAllRecognitionRuns);
+		plans.stream().filter(plan -> plan.getC_Order_ID() <= 0).forEach(MRevenueRecognitionPlan::reverseAllRecognitionRuns);
 	}
 
 	private List<Integer> getRecognitionInvoiceLinesIds() {

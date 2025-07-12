@@ -130,6 +130,7 @@ public class MRevenueRecognitionRun extends X_C_RevenueRecognition_Run implement
 	/**	Just Prepared Flag			*/
 	private boolean		m_justPrepared = false;
 	private boolean isReversal;
+	private boolean isVoided = false;
 
 	/**
 	 * 	Unlock Document.
@@ -366,7 +367,7 @@ public class MRevenueRecognitionRun extends X_C_RevenueRecognition_Run implement
 			{
 				accrual = true;
 			}
-
+			isVoided = true;
 			if (accrual)
 				return reverseAccrualIt();
 			else
@@ -479,14 +480,16 @@ public class MRevenueRecognitionRun extends X_C_RevenueRecognition_Run implement
 			throw new AdempiereException(reverse.getProcessMsg());
 		}
 		reverse.saveEx();
-		reverse.setDocStatus(DOCSTATUS_Reversed);
+		String newStatus = isVoided? DOCSTATUS_Voided: DOCSTATUS_Reversed;
+		reverse.setDocStatus(newStatus);
 		reverse.setDocAction(DOCACTION_None);
 		reverse.setReversal_ID(getC_RevenueRecognition_Run_ID());
 		reverse.saveEx();
 		setReversal_ID(reverse.getC_RevenueRecognition_Run_ID());
-		setDocStatus(DOCSTATUS_Reversed);
+		setDocStatus(newStatus);
 		setDocAction(DOCACTION_None);
 		saveEx();
+		isVoided = false;
 		return reverse;
 	}
 

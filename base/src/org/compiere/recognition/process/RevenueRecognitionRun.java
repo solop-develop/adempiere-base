@@ -26,6 +26,7 @@ import org.compiere.util.TimeUtil;
 import org.compiere.util.Trx;
 import org.compiere.util.Util;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,24 +46,28 @@ public class RevenueRecognitionRun extends RevenueRecognitionRunAbstract {
 				Trx.run(transactionName -> {
 					MRevenueRecognitionPlan recognitionPlan = new MRevenueRecognitionPlan(getCtx(), revenuePlanId, transactionName);
 					if(isForce()) {
-						MRevenueRecognitionRun previousRecognitionRun = recognitionPlan.getLastRecognitionRun();
+						MRevenueRecognitionRun previousRecognitionRun = recognitionPlan.getLastValidRecognitionRun(getDateDoc());
 						if(previousRecognitionRun != null) {
 							previousRecognitionRun.reverseIt(getDateDoc());
 							revenueCount.incrementAndGet();
 						}
 					}
-					MRevenueRecognitionRun recognitionRun = new MRevenueRecognitionRun(recognitionPlan, transactionName);
-					recognitionRun.setDateDoc(getDateDoc());
-					recognitionRun.saveEx();
-					String message = null;
-					if(!recognitionRun.processIt(MRevenueRecognitionRun.DOCSTATUS_Completed)) {
-						message = recognitionRun.getProcessMsg();
+					MRevenueRecognitionRun monthlyRecognition = recognitionPlan.getLastValidRecognitionRunForDate(getDateDoc());
+					if(monthlyRecognition == null) {
+						MRevenueRecognitionRun recognitionRun = new MRevenueRecognitionRun(recognitionPlan, transactionName);
+						recognitionRun.setDateDoc(getDateDoc());
+						recognitionRun.saveEx();
+						String message = null;
+						if(!recognitionRun.processIt(MRevenueRecognitionRun.DOCSTATUS_Completed)) {
+							message = recognitionRun.getProcessMsg();
+						}
+						recognitionRun.saveEx();
+						recognitionPlan.updateRecognizedAmount(TimeUtil.getDayTime(getDateDoc(), new Timestamp(System.currentTimeMillis())));
+						if(!Util.isEmpty(message, true)) {
+							addLog(message);
+						}
+						revenueCount.incrementAndGet();
 					}
-					recognitionRun.saveEx();
-					if(!Util.isEmpty(message, true)) {
-						addLog(message);
-					}
-					revenueCount.incrementAndGet();
 				});
 			} catch (Exception e) {
 				addLog(e.getLocalizedMessage());
@@ -90,6 +95,14 @@ public class RevenueRecognitionRun extends RevenueRecognitionRunAbstract {
 		if (getProjectId() > 0) {
 			whereClause.append(" AND C_Project_ID = ?");
 			parameters.add(getProjectId());
+		}
+		if (getOrderId() > 0) {
+			whereClause.append(" AND C_Order_ID = ?");
+			parameters.add(getOrderId());
+		}
+		if (getInvoiceId() > 0) {
+			whereClause.append(" AND C_Invoice_ID = ?");
+			parameters.add(getInvoiceId());
 		}
 		if (!isForce()) {
 			whereClause.append(" AND (DateLastRun IS NULL OR DateLastRun < ?)");
