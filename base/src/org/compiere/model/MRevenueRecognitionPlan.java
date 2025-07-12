@@ -21,6 +21,7 @@ import org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan;
 import org.adempiere.core.domains.models.I_C_RevenueRecognition_Run;
 import org.adempiere.core.domains.models.X_C_RevenueRecognition_Plan;
 import org.compiere.util.Env;
+import org.compiere.util.TimeUtil;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -48,7 +49,7 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 	 *	@param ctx context
 	 *	@param C_RevenueRecognition_Plan_ID id
 	 */
-	public MRevenueRecognitionPlan(Properties ctx, int C_RevenueRecognition_Plan_ID, String trxName)
+	public MRevenueRecognitionPlan (Properties ctx, int C_RevenueRecognition_Plan_ID, String trxName)
 	{
 		super (ctx, C_RevenueRecognition_Plan_ID, trxName);
 		if (C_RevenueRecognition_Plan_ID == 0)
@@ -70,7 +71,7 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 	 *	@param ctx context
 	 *	@param rs result set
 	 */
-	public MRevenueRecognitionPlan(Properties ctx, ResultSet rs, String trxName)
+	public MRevenueRecognitionPlan (Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MRevenueRecognitionPlan
@@ -164,16 +165,16 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 				.<MRevenueRecognitionPlan>first();
 	}
 
-	public MRevenueRecognitionRun getLastValidRecognitionRun() {
-		return new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, "C_RevenueRecognition_Plan_ID = ? AND DocStatus = 'CO'", get_TrxName())
-				.setParameters(getC_RevenueRecognition_Plan_ID())
+	public MRevenueRecognitionRun getLastValidRecognitionRun(Timestamp mothDate) {
+		return new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, "C_RevenueRecognition_Plan_ID = ? AND DocStatus = 'CO' AND DateDoc >= ? AND DateDoc <= ?", get_TrxName())
+				.setParameters(getC_RevenueRecognition_Plan_ID(), TimeUtil.getMonthFirstDay(mothDate), TimeUtil.getMonthLastDay(mothDate))
 				.setOrderBy(I_C_RevenueRecognition_Run.Table_Name + "." + I_C_RevenueRecognition_Run.COLUMNNAME_C_RevenueRecognition_Run_ID + " DESC")
 				.<MRevenueRecognitionRun>first();
 	}
 
-	public MRevenueRecognitionRun getLastValidRecognitionRunForDate(Timestamp validFrom, Timestamp validTo) {
+	public MRevenueRecognitionRun getLastValidRecognitionRunForDate(Timestamp mothDate) {
 		return new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, "C_RevenueRecognition_Plan_ID = ? AND DocStatus = 'CO' AND DateDoc >= ? AND DateDoc <= ?", get_TrxName())
-				.setParameters(getC_RevenueRecognition_Plan_ID(), validFrom, validTo)
+				.setParameters(getC_RevenueRecognition_Plan_ID(), TimeUtil.getMonthFirstDay(mothDate), TimeUtil.getMonthLastDay(mothDate))
 				.setOrderBy(I_C_RevenueRecognition_Run.Table_Name + "." + I_C_RevenueRecognition_Run.COLUMNNAME_C_RevenueRecognition_Run_ID + " DESC")
 				.<MRevenueRecognitionRun>first();
 	}

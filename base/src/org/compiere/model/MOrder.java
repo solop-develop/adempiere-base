@@ -2591,6 +2591,8 @@ public class MOrder extends X_C_Order implements DocAction
 		/* globalqss - 2317928 - Reactivating/Voiding order must reset posted */
 		MFactAcct.deleteEx(MOrder.Table_ID, getC_Order_ID(), get_TrxName());
 		setPosted(false);
+
+		reverseAllRecognitionPlans();
 		
 		// After reActivate
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_REACTIVATE);

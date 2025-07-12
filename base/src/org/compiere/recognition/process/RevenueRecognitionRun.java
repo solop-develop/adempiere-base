@@ -46,13 +46,13 @@ public class RevenueRecognitionRun extends RevenueRecognitionRunAbstract {
 				Trx.run(transactionName -> {
 					MRevenueRecognitionPlan recognitionPlan = new MRevenueRecognitionPlan(getCtx(), revenuePlanId, transactionName);
 					if(isForce()) {
-						MRevenueRecognitionRun previousRecognitionRun = recognitionPlan.getLastValidRecognitionRun();
+						MRevenueRecognitionRun previousRecognitionRun = recognitionPlan.getLastValidRecognitionRun(getDateDoc());
 						if(previousRecognitionRun != null) {
 							previousRecognitionRun.reverseIt(getDateDoc());
 							revenueCount.incrementAndGet();
 						}
 					}
-					MRevenueRecognitionRun monthlyRecognition = recognitionPlan.getLastValidRecognitionRunForDate(TimeUtil.getMonthFirstDay(getDateDoc()), TimeUtil.getMonthFirstDay(getDateDoc()));
+					MRevenueRecognitionRun monthlyRecognition = recognitionPlan.getLastValidRecognitionRunForDate(getDateDoc());
 					if(monthlyRecognition == null) {
 						MRevenueRecognitionRun recognitionRun = new MRevenueRecognitionRun(recognitionPlan, transactionName);
 						recognitionRun.setDateDoc(getDateDoc());

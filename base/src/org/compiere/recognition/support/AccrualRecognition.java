@@ -1,6 +1,9 @@
 package org.compiere.recognition.support;
 
-import org.compiere.model.*;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MOrder;
+import org.compiere.model.MRevenueRecognitionPlan;
+import org.compiere.model.MRevenueRecognitionRun;
 import org.compiere.util.DisplayType;
 
 import java.math.BigDecimal;
@@ -13,8 +16,7 @@ public class AccrualRecognition implements IRecognitionRevenue {
     @Override
     public String run(MRevenueRecognitionRun recognitionRun) {
         MRevenueRecognitionPlan recognitionPlan = recognitionRun.getRevenueRecognitionPlan();
-        MRevenueRecognition recognition = recognitionRun.getRevenueRecognition();
-        int months = recognition.getNoMonths();
+        int months = recognitionPlan.getRecognitionPlanQty();
         if(months <= 0) {
             months = 1;
         }
