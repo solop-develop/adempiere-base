@@ -46,25 +46,28 @@ public class RevenueRecognitionRun extends RevenueRecognitionRunAbstract {
 				Trx.run(transactionName -> {
 					MRevenueRecognitionPlan recognitionPlan = new MRevenueRecognitionPlan(getCtx(), revenuePlanId, transactionName);
 					if(isForce()) {
-						MRevenueRecognitionRun previousRecognitionRun = recognitionPlan.getLastRecognitionRun();
+						MRevenueRecognitionRun previousRecognitionRun = recognitionPlan.getLastValidRecognitionRun();
 						if(previousRecognitionRun != null) {
 							previousRecognitionRun.reverseIt(getDateDoc());
 							revenueCount.incrementAndGet();
 						}
 					}
-					MRevenueRecognitionRun recognitionRun = new MRevenueRecognitionRun(recognitionPlan, transactionName);
-					recognitionRun.setDateDoc(getDateDoc());
-					recognitionRun.saveEx();
-					String message = null;
-					if(!recognitionRun.processIt(MRevenueRecognitionRun.DOCSTATUS_Completed)) {
-						message = recognitionRun.getProcessMsg();
+					MRevenueRecognitionRun monthlyRecognition = recognitionPlan.getLastValidRecognitionRunForDate(TimeUtil.getMonthFirstDay(getDateDoc()), TimeUtil.getMonthFirstDay(getDateDoc()));
+					if(monthlyRecognition == null) {
+						MRevenueRecognitionRun recognitionRun = new MRevenueRecognitionRun(recognitionPlan, transactionName);
+						recognitionRun.setDateDoc(getDateDoc());
+						recognitionRun.saveEx();
+						String message = null;
+						if(!recognitionRun.processIt(MRevenueRecognitionRun.DOCSTATUS_Completed)) {
+							message = recognitionRun.getProcessMsg();
+						}
+						recognitionRun.saveEx();
+						recognitionPlan.updateRecognizedAmount(TimeUtil.getDayTime(getDateDoc(), new Timestamp(System.currentTimeMillis())));
+						if(!Util.isEmpty(message, true)) {
+							addLog(message);
+						}
+						revenueCount.incrementAndGet();
 					}
-					recognitionRun.saveEx();
-					recognitionPlan.updateRecognizedAmount(TimeUtil.getDayTime(getDateDoc(), new Timestamp(System.currentTimeMillis())));
-					if(!Util.isEmpty(message, true)) {
-						addLog(message);
-					}
-					revenueCount.incrementAndGet();
 				});
 			} catch (Exception e) {
 				addLog(e.getLocalizedMessage());

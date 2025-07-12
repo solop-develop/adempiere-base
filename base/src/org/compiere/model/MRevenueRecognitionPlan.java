@@ -48,7 +48,7 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 	 *	@param ctx context
 	 *	@param C_RevenueRecognition_Plan_ID id
 	 */
-	public MRevenueRecognitionPlan (Properties ctx, int C_RevenueRecognition_Plan_ID, String trxName)
+	public MRevenueRecognitionPlan(Properties ctx, int C_RevenueRecognition_Plan_ID, String trxName)
 	{
 		super (ctx, C_RevenueRecognition_Plan_ID, trxName);
 		if (C_RevenueRecognition_Plan_ID == 0)
@@ -70,7 +70,7 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 	 *	@param ctx context
 	 *	@param rs result set
 	 */
-	public MRevenueRecognitionPlan (Properties ctx, ResultSet rs, String trxName)
+	public MRevenueRecognitionPlan(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MRevenueRecognitionPlan
@@ -164,9 +164,16 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 				.<MRevenueRecognitionPlan>first();
 	}
 
-	public MRevenueRecognitionRun getLastRecognitionRun() {
-		return new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, "C_RevenueRecognition_Plan_ID = ?", get_TrxName())
+	public MRevenueRecognitionRun getLastValidRecognitionRun() {
+		return new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, "C_RevenueRecognition_Plan_ID = ? AND DocStatus = 'CO'", get_TrxName())
 				.setParameters(getC_RevenueRecognition_Plan_ID())
+				.setOrderBy(I_C_RevenueRecognition_Run.Table_Name + "." + I_C_RevenueRecognition_Run.COLUMNNAME_C_RevenueRecognition_Run_ID + " DESC")
+				.<MRevenueRecognitionRun>first();
+	}
+
+	public MRevenueRecognitionRun getLastValidRecognitionRunForDate(Timestamp validFrom, Timestamp validTo) {
+		return new Query(getCtx(), I_C_RevenueRecognition_Run.Table_Name, "C_RevenueRecognition_Plan_ID = ? AND DocStatus = 'CO' AND DateDoc >= ? AND DateDoc <= ?", get_TrxName())
+				.setParameters(getC_RevenueRecognition_Plan_ID(), validFrom, validTo)
 				.setOrderBy(I_C_RevenueRecognition_Run.Table_Name + "." + I_C_RevenueRecognition_Run.COLUMNNAME_C_RevenueRecognition_Run_ID + " DESC")
 				.<MRevenueRecognitionRun>first();
 	}
