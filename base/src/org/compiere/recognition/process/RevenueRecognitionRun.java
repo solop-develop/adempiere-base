@@ -26,6 +26,7 @@ import org.compiere.util.TimeUtil;
 import org.compiere.util.Trx;
 import org.compiere.util.Util;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -59,6 +60,7 @@ public class RevenueRecognitionRun extends RevenueRecognitionRunAbstract {
 						message = recognitionRun.getProcessMsg();
 					}
 					recognitionRun.saveEx();
+					recognitionPlan.updateRecognizedAmount(TimeUtil.getDayTime(getDateDoc(), new Timestamp(System.currentTimeMillis())));
 					if(!Util.isEmpty(message, true)) {
 						addLog(message);
 					}
@@ -90,6 +92,14 @@ public class RevenueRecognitionRun extends RevenueRecognitionRunAbstract {
 		if (getProjectId() > 0) {
 			whereClause.append(" AND C_Project_ID = ?");
 			parameters.add(getProjectId());
+		}
+		if (getOrderId() > 0) {
+			whereClause.append(" AND C_Order_ID = ?");
+			parameters.add(getOrderId());
+		}
+		if (getInvoiceId() > 0) {
+			whereClause.append(" AND C_Invoice_ID = ?");
+			parameters.add(getInvoiceId());
 		}
 		if (!isForce()) {
 			whereClause.append(" AND (DateLastRun IS NULL OR DateLastRun < ?)");
