@@ -31,14 +31,7 @@ package org.eevolution.wms.process;
 
 import org.adempiere.core.domains.models.X_C_Order;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MDocType;
-import org.compiere.model.MInOut;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MMovement;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MStorage;
-import org.compiere.model.PO;
+import org.compiere.model.*;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.Trx;
 import org.eevolution.distribution.model.MDDOrder;
@@ -52,11 +45,8 @@ import org.eevolution.wms.model.MWMInOutBound;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -71,7 +61,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
     private HashMap<Integer, List<MWMInOutBoundLine>> groupedOutBoundLinesForMovements;
     private HashMap<Integer, List<MWMInOutBoundLine>> groupedOutBoundLinesForIssues;
     private int documentCreated = 0;
-    private int withError = 0;
+    private final AtomicInteger withError = new AtomicInteger(0);
 
     /**
      * Get Parameters
@@ -103,7 +93,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
 
         StringBuilder documentGenerated = new StringBuilder();
         shipmentsData.forEach(value -> documentGenerated.append(" , ").append(value));
-        return "@Created@ " + documentCreated + documentGenerated.toString() + (withError > 0 ? " | @Error@ " + withError : "");
+        return "@Created@ " + documentCreated + documentGenerated.toString() + (withError.get() > 0 ? " | @Error@ " + withError.get() : "");
     }
 
     private void createAndProcessShipments() {
@@ -168,7 +158,9 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
 
                 });
             } catch (Exception e) {
-                withError += entry.getValue().size();
+                addLog(e.getLocalizedMessage());
+                withError.addAndGet(entry.getValue().size());
+                log.warning(e.getLocalizedMessage());
             }
         });
         printDocument(documentsToPrint, true);
@@ -210,7 +202,9 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                     });
                 });
             } catch (Exception e) {
-                withError += entry.getValue().size();
+                addLog(e.getLocalizedMessage());
+                withError.addAndGet(entry.getValue().size());
+                log.warning(e.getLocalizedMessage());
             }
         });
         printDocument(documentsToPrint, true);
@@ -252,7 +246,9 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
 
                 });
             } catch (Exception e) {
-                withError += entry.getValue().size();
+                addLog(e.getLocalizedMessage());
+                withError.addAndGet(entry.getValue().size());
+                log.warning(e.getLocalizedMessage());
             }
         });
     }
