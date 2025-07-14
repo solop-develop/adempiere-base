@@ -18,14 +18,7 @@
 package org.spin.wms.process;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MDocType;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MUOMConversion;
-import org.compiere.model.PO;
-import org.compiere.model.Query;
+import org.compiere.model.*;
 import org.compiere.util.Trx;
 import org.eevolution.wms.model.MWMInOutBound;
 import org.eevolution.wms.model.MWMInOutBoundLine;
@@ -35,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -50,8 +44,8 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 	private HashMap<String, List<MWMInOutBoundLine>> groupedOutBoundLines;
 	List<PO> invoicesToPrint;
 	private int created = 0;
-	private int withError = 0;
-	private StringBuffer generatedDocuments = new StringBuffer();
+	private final AtomicInteger withError = new AtomicInteger(0);
+	private final StringBuffer generatedDocuments = new StringBuffer();
 	private int maxLines = 0;
 
 	@Override
@@ -90,7 +84,7 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 		//
 		//processingInvoices();
 		//
-		return "@Created@ " + created + (generatedDocuments.length() > 0? " [" + generatedDocuments + "]": "") +  (withError > 0 ? " | @Error@ " + withError : "");
+		return "@Created@ " + created + (generatedDocuments.length() > 0? " [" + generatedDocuments + "]": "") +  (withError.get() > 0 ? " | @Error@ " + withError.get() : "");
 	}
 
 	private void createAndProcessInvoices() {
@@ -140,7 +134,9 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 
 				});
 			} catch (Exception e) {
-				withError += entry.getValue().size();
+				addLog(e.getLocalizedMessage());
+				withError.addAndGet(entry.getValue().size());
+				log.warning(e.getLocalizedMessage());
 			}
 		});
 
