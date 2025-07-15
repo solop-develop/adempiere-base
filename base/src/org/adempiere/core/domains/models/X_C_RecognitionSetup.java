@@ -36,7 +36,7 @@ public class X_C_RecognitionSetup extends PO implements I_C_RecognitionSetup, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250711L;
+	private static final long serialVersionUID = 20250715L;
 
     /** Standard Constructor */
     public X_C_RecognitionSetup (Properties ctx, int C_RecognitionSetup_ID, String trxName)

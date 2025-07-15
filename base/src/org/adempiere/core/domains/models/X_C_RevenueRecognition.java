@@ -35,7 +35,7 @@ public class X_C_RevenueRecognition extends PO implements I_C_RevenueRecognition
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250711L;
+	private static final long serialVersionUID = 20250715L;
 
     /** Standard Constructor */
     public X_C_RevenueRecognition (Properties ctx, int C_RevenueRecognition_ID, String trxName)
@@ -115,6 +115,30 @@ public class X_C_RevenueRecognition extends PO implements I_C_RevenueRecognition
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	/** Set Reverse All Before Process.
+		@param IsReverseBeforeProcess 
+		Reverse All Before Process
+	  */
+	public void setIsReverseBeforeProcess (boolean IsReverseBeforeProcess)
+	{
+		set_Value (COLUMNNAME_IsReverseBeforeProcess, Boolean.valueOf(IsReverseBeforeProcess));
+	}
+
+	/** Get Reverse All Before Process.
+		@return Reverse All Before Process
+	  */
+	public boolean isReverseBeforeProcess () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsReverseBeforeProcess);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Time based.

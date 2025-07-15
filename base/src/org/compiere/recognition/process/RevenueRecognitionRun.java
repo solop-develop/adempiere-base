@@ -45,8 +45,16 @@ public class RevenueRecognitionRun extends RevenueRecognitionRunAbstract {
 			try {
 				Trx.run(transactionName -> {
 					MRevenueRecognitionPlan recognitionPlan = new MRevenueRecognitionPlan(getCtx(), revenuePlanId, transactionName);
+					boolean reverseAllPreviousRun = recognitionPlan.getC_RevenueRecognition().isReverseBeforeProcess();
 					if(isForce()) {
-						MRevenueRecognitionRun previousRecognitionRun = recognitionPlan.getLastValidRecognitionRun(getDateDoc());
+						MRevenueRecognitionRun previousRecognitionRun = recognitionPlan.getLastValidRecognitionRunForDate(getDateDoc());
+						if(previousRecognitionRun != null) {
+							previousRecognitionRun.reverseIt(getDateDoc());
+							revenueCount.incrementAndGet();
+						}
+					}
+					if(reverseAllPreviousRun) {
+						MRevenueRecognitionRun previousRecognitionRun = recognitionPlan.getPreviousValidRecognitionRun(getDateDoc());
 						if(previousRecognitionRun != null) {
 							previousRecognitionRun.reverseIt(getDateDoc());
 							revenueCount.incrementAndGet();
