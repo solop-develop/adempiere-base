@@ -120,6 +120,19 @@ public interface I_C_RevenueRecognition
 	  */
 	public boolean isActive();
 
+    /** Column name IsReverseBeforeProcess */
+    public static final String COLUMNNAME_IsReverseBeforeProcess = "IsReverseBeforeProcess";
+
+	/** Set Reverse All Before Process.
+	  * Reverse All Before Process
+	  */
+	public void setIsReverseBeforeProcess (boolean IsReverseBeforeProcess);
+
+	/** Get Reverse All Before Process.
+	  * Reverse All Before Process
+	  */
+	public boolean isReverseBeforeProcess();
+
     /** Column name IsTimeBased */
     public static final String COLUMNNAME_IsTimeBased = "IsTimeBased";
 
