@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA16" Name="Add Validation Rule for Deposit" ReleaseNo="1.0" SeqNo="7090">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="108" Action="I" Record_ID="52879" Table="AD_Val_Rule">
+        <Data AD_Column_ID="583" Column="IsActive">true</Data>
+        <Data AD_Column_ID="192" Column="Type">S</Data>
+        <Data AD_Column_ID="193" Column="Code">EXISTS(SELECT 1 FROM C_Bank b WHERE b.C_Bank_ID = C_BankAccount.C_Bank_ID AND b.IsActive = 'Y')</Data>
+        <Data AD_Column_ID="586" Column="Updated">2021-05-19 09:53:56.355</Data>
+        <Data AD_Column_ID="584" Column="Created">2021-05-19 09:53:56.355</Data>
+        <Data AD_Column_ID="188" Column="Name">C_BankAccount from Active Bank (Cash-Management)</Data>
+        <Data AD_Column_ID="189" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="387" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="388" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="187" Column="AD_Val_Rule_ID">52879</Data>
+        <Data AD_Column_ID="7715" Column="EntityType">ECA16</Data>
+        <Data AD_Column_ID="587" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="585" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="84460" Column="UUID">63e45144-5ab5-4f4c-9f07-766d08471296</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
