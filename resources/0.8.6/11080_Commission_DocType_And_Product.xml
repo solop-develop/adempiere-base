@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="11060_Commission_DocType_And_Product" ReleaseNo="0.8.6" SeqNo="11060">
+  <Migration EntityType="D" Name="11060_Commission_DocType_And_Product" ReleaseNo="0.8.6" SeqNo="11080">
     <Comments>Add columns for DocumentType for Order and for Invoice also adds Product for the documents that will be created from Commission</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="108" Action="I" Record_ID="53019" Table="AD_Val_Rule">
