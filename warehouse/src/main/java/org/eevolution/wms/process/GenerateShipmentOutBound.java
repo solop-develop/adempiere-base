@@ -98,7 +98,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
 
     private void createAndProcessShipments() {
         List<PO> documentsToPrint = new ArrayList<PO>();
-        groupedOutBoundLinesForShipments.entrySet().stream().filter(entry -> entry != null).forEach(entry -> {
+        groupedOutBoundLinesForShipments.entrySet().stream().filter(Objects::nonNull).forEach(entry -> {
             try {
                 Trx.run(transactionName -> {
                     List<MWMInOutBoundLine> lines = entry.getValue();
@@ -255,20 +255,20 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
 
     private BigDecimal getSalesOrderQtyToDelivery(MWMInOutBoundLine outboundLine, MOrderLine orderLine) {
         BigDecimal qtyToDelivery;
-        if (isIncludeNotAvailable())
+        if (isIncludeNotAvailable()) {
             qtyToDelivery = outboundLine.getQtyToPick();
-        else {
+        } else {
             //Sales Order Qty To Delivery
-            BigDecimal salesOrderQtyToDelivery = orderLine.getQtyToDelivery();
+            BigDecimal salesOrderQtyToDelivery = getSelectionAsBigDecimal(outboundLine.getWM_InOutBoundLine_ID(), "QtyToDeliver");
             //Outbound Order Qty To Delivery
             BigDecimal outboundOrderQtyToDelivery = outboundLine.getPickedQty().subtract(outboundLine.getShipmentQtyDelivered());
             //The quantity to delivery of the Outbound order cannot be greater than the pending quantity to delivery  of the sales order.
             if (outboundOrderQtyToDelivery.compareTo(salesOrderQtyToDelivery) > 0){
                 qtyToDelivery = salesOrderQtyToDelivery;
-            }else if (!X_C_Order.DELIVERYRULE_Force.equals(orderLine.getParent().getDeliveryRule())
+            } else if (!X_C_Order.DELIVERYRULE_Force.equals(orderLine.getParent().getDeliveryRule())
                     && !X_C_Order.DELIVERYRULE_Manual.equals(orderLine.getParent().getDeliveryRule())) {
                 qtyToDelivery = outboundOrderQtyToDelivery;
-            }else {
+            } else {
                 qtyToDelivery = salesOrderQtyToDelivery;
             }
         }
