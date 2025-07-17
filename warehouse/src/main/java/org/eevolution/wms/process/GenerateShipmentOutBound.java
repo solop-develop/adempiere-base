@@ -33,6 +33,7 @@ import org.adempiere.core.domains.models.X_C_Order;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.process.ProcessInfo;
+import org.compiere.util.Env;
 import org.compiere.util.Trx;
 import org.eevolution.distribution.model.MDDOrder;
 import org.eevolution.distribution.model.MDDOrderLine;
@@ -113,9 +114,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                             if (docTypeId == 0) {
                                 docTypeId = MDocType.getDocType(MDocType.DOCBASETYPE_MaterialDelivery, orderLine.getAD_Org_ID());
                             }
-
                             MWMInOutBound outbound = outboundLine.getParent();
-
                             shipment = new MInOut(order, docTypeId, getMovementDate());
                             shipment.setIsSOTrx(true);
                             shipment.setM_Shipper_ID(outbound.getM_Shipper_ID());
@@ -144,18 +143,19 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                         shipmentLine.setM_AttributeSetInstance_ID(outboundLine.getM_AttributeSetInstance_ID());
                         shipmentLine.setWM_InOutBoundLine_ID(outboundLine.getWM_InOutBoundLine_ID());
                         shipmentLine.saveEx();
+                        outboundLine.setPickedQty(Optional.ofNullable(outboundLine.getPickedQty()).orElse(Env.ZERO).add(qtyToDelivery));
+                        outboundLine.saveEx();
                     });
                     MInOut shipment = maybeShipment.get();
                     if (!shipment.processIt(getDocAction())) {
                         addLog("@ProcessFailed@ : " + shipment.getDocumentInfo());
-                        log.warning("@ProcessFailed@ :" + shipment.getDocumentInfo());
+                        throw new AdempiereException("@ProcessFailed@ :" + shipment.getDocumentInfo());
                     }
                     shipment.saveEx();
                     shipmentsData.add(shipment.getDocumentInfo());
                     documentCreated++;
                     addLog(shipment.getDocumentInfo());
                     documentsToPrint.add(shipment);
-
                 });
             } catch (Exception e) {
                 addLog(e.getLocalizedMessage());
@@ -188,9 +188,9 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                             .withParameter(MMovement.COLUMNNAME_MovementDate, getMovementDate())
                             .withoutTransactionClose()
                             .execute(transactionName);
-                    if (processInfo.isError())
+                    if (processInfo.isError()) {
                         throw new AdempiereException(processInfo.getSummary());
-
+                    }
                     addLog(processInfo.getSummary());
                     Arrays.stream(processInfo.getIDs()).forEach(recordId -> {
                         if (recordId <= 0) {
@@ -236,7 +236,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                                         || MPPCostCollector.DOCSTATUS_InProgress.equals(costCollector.getDocStatus())) {
                                     if (!costCollector.processIt(MPPCostCollector.DOCACTION_Complete)) {
                                         addLog("@ProcessFailed@ : " + costCollector.getDocumentInfo());
-                                        log.warning("@ProcessFailed@ :" + costCollector.getDocumentInfo());
+                                        throw new AdempiereException("@ProcessFailed@ :" + costCollector.getDocumentInfo());
                                     }
                                     costCollector.saveEx();
                                 }
