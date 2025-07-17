@@ -23,20 +23,14 @@ import org.compiere.process.DocAction;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Language;
-import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
 
 /**
  *	Generate Invoices
@@ -47,8 +41,6 @@ import java.util.logging.Level;
  * 		@see FR [ 1070 ] Class Not Found on SB for Generate Invoice from Order Line</a>
  */
 public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrderLineAbstract {
-	/**	The current Invoice	*/
-	private MInvoice 	invoice = null;
 	/**	The current Shipment	*/
 	private MInOut	 	m_ship = null;
 	/** Number of Invoices		*/
@@ -61,9 +53,9 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 
 	private HashMap<String, List<Tuple2<Integer,Integer>>> groupedOrderLinesAfterDelivery;
 	private HashMap<String, List<MOrderLine>> groupedOrderLinesImmediate;
-	private HashMap<Integer, Integer> numberOfInvoices;
 	private HashSet<Integer> ordersToIgnore;
 	private HashSet<Integer> ordersCanInvoice;
+	private InvoiceGrouping grouping;
 	private int withError = 0;
 
 	private int maxLines = 0;
@@ -73,6 +65,7 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 	 */
 	protected void prepare() {
 		super.prepare();
+		grouping = InvoiceGrouping.newInstance();
 		//	Login Date
 		if(getDateInvoiced() == null) {
 			setDateInvoiced(Env.getContextAsDate(getCtx(), "#Date"));
@@ -98,7 +91,6 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 		resultMsg = new StringBuilder();
 		groupedOrderLinesAfterDelivery = new HashMap<>();
 		groupedOrderLinesImmediate = new HashMap<>();
-		numberOfInvoices = new HashMap<>();
 		ordersToIgnore = new HashSet<>();
 		ordersCanInvoice = new HashSet<>();
 		getProcessInfo().setTableSelectionId(MOrderLine.Table_ID);
@@ -175,40 +167,11 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 				.setParameters(line.get_ID())
 				.getIDsAsList();
 
-
 			shipLineIds.forEach(shipLineId -> {
-				int key = line.getC_Order_ID();
-				if (isConsolidateDocument()) {
-					key = order.getBill_Location_ID();
-				}
-				int keyNumber = numberOfInvoices.getOrDefault(key, 0);
-				String keyString = String.valueOf(key) + keyNumber;
+				String keyString = grouping.getKey(order, getDocTypeId(), isConsolidateDocument());
 				List<Tuple2<Integer, Integer>> lines = groupedOrderLinesAfterDelivery.getOrDefault(keyString, new ArrayList<>());
-				if (getDocTypeId() <= 0) {
-					MDocType orderDocType = MDocType.get(getCtx(), line.getParent().getC_DocType_ID());
-					int invoiceDocTypeId = orderDocType.getC_DocTypeInvoice_ID();
-					if (invoiceDocTypeId <= 0) {
-						throw new AdempiereException("@NotFound@ @C_DocTypeInvoice_ID@ - @C_DocType_ID@:" + orderDocType.get_Translation("Name"));
-					}
-					MDocType invoiceDocType = MDocType.get(getCtx(),invoiceDocTypeId);
-					maxLines = invoiceDocType.get_ValueAsInt("MaxLinesPerDocument");
-				}
-				if (lines.isEmpty()) {
-					keyNumber++;
-					keyString = String.valueOf(key) + keyNumber;
-					groupedOrderLinesAfterDelivery.put(keyString, lines);
-					numberOfInvoices.put(key, keyNumber);
-					lines.add(new Tuple2<>(order.get_ID(), shipLineId));
-					return;
-				}
-				if (maxLines > 0 && lines.size() >= maxLines) {
-					keyNumber++;
-					keyString = String.valueOf(key) + keyNumber;
-					lines = new ArrayList<>();
-					groupedOrderLinesAfterDelivery.put(keyString, lines);
-					numberOfInvoices.put(key, keyNumber);
-				}
 				lines.add(new Tuple2<>(order.get_ID(), shipLineId));
+				groupedOrderLinesAfterDelivery.put(keyString, lines);
 			});
 			return;
 		}//END For After Delivery
@@ -217,44 +180,14 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 		if (toInvoice.compareTo(Env.ZERO) == 0 && line.getM_Product_ID() != 0) {
 			return;
 		}
-
-		int key = line.getC_Order_ID();
-		if (isConsolidateDocument()) {
-			key = order.getBill_Location_ID();
-		}
-		int keyNumber = numberOfInvoices.getOrDefault(key, 0);
-		String keyString = String.valueOf(key) + keyNumber;
+		String keyString = grouping.getKey(order, getDocTypeId(), isConsolidateDocument());
 		List<MOrderLine> lines = groupedOrderLinesImmediate.getOrDefault(keyString, new ArrayList<>());
-		if (getDocTypeId() <= 0) {
-			MDocType orderDocType = MDocType.get(getCtx(), line.getParent().getC_DocType_ID());
-			int invoiceDocTypeId = orderDocType.getC_DocTypeInvoice_ID();
-            if (invoiceDocTypeId <= 0) {
-                throw new AdempiereException("@NotFound@ @C_DocTypeInvoice_ID@ - @C_DocType_ID@:" + orderDocType.get_Translation("Name"));
-            }
-            MDocType invoiceDocType = MDocType.get(getCtx(),invoiceDocTypeId);
-			maxLines = invoiceDocType.get_ValueAsInt("MaxLinesPerDocument");
-		}
-		if (lines.isEmpty()) {
-			keyNumber++;
-			keyString = String.valueOf(key) + keyNumber;
-			groupedOrderLinesImmediate.put(keyString, lines);
-			numberOfInvoices.put(key, keyNumber);
-			lines.add(line);
-			return;
-		}
-		if (maxLines > 0 && lines.size() >= maxLines) {
-			keyNumber++;
-			keyString = String.valueOf(key) + keyNumber;
-			lines = new ArrayList<>();
-			groupedOrderLinesImmediate.put(keyString, lines);
-			numberOfInvoices.put(key, keyNumber);
-		}
 		lines.add(line);
+		groupedOrderLinesImmediate.put(keyString, lines);
 	}
 
-
 	private void createAndProcessInvoicesAfterDelivery() {
-		groupedOrderLinesAfterDelivery.entrySet().stream().filter(entry -> entry != null).forEach(entry -> {
+		groupedOrderLinesAfterDelivery.entrySet().stream().filter(Objects::nonNull).forEach(entry -> {
 			try {
 				Trx.run(transactionName -> {
 
@@ -318,7 +251,7 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 
 
 	private void createAndProcessInvoicesImmediate() {
-		groupedOrderLinesImmediate.entrySet().stream().filter(entry -> entry != null).forEach(entry -> {
+		groupedOrderLinesImmediate.entrySet().stream().filter(Objects::nonNull).forEach(entry -> {
 			try {
 				Trx.run(transactionName -> {
 
