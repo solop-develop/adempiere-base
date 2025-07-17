@@ -290,7 +290,7 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 				if(shiftIncidence.getAD_Rule_ID() > 0) {
 					processRule(incidence);
 				}
-				incidence.set_ValueOfColumn(MHRAttendanceRecord.COLUMNNAME_C_Project_ID, projectId);
+				incidence.setC_Project_ID(projectId);
 				incidence.saveEx();
 				//	Set value for worked hours
 				attendanceHours = attendanceHours.add(new BigDecimal(MHRIncidence.getTime(MHRShiftIncidence.TIMEUNIT_Hour, durationInMillis)));
