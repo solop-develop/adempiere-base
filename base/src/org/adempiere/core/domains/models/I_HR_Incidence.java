@@ -19,6 +19,7 @@ package org.adempiere.core.domains.models;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.adempiere.core.domains.models.*;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
@@ -106,6 +107,21 @@ public interface I_HR_Incidence
 	public int getC_DocType_ID();
 
 	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException;
+
+    /** Column name C_Project_ID */
+    public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
+
+	/** Set Project.
+	  * Financial Project
+	  */
+	public void setC_Project_ID (int C_Project_ID);
+
+	/** Get Project.
+	  * Financial Project
+	  */
+	public int getC_Project_ID();
+
+	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -336,6 +352,19 @@ public interface I_HR_Incidence
 	  */
 	public BigDecimal getQty();
 
+    /** Column name ServiceDate */
+    public static final String COLUMNNAME_ServiceDate = "ServiceDate";
+
+	/** Set Service date.
+	  * Date service was provided
+	  */
+	public void setServiceDate (Timestamp ServiceDate);
+
+	/** Get Service date.
+	  * Date service was provided
+	  */
+	public Timestamp getServiceDate();
+
     /** Column name S_TimeExpense_ID */
     public static final String COLUMNNAME_S_TimeExpense_ID = "S_TimeExpense_ID";
 
@@ -365,19 +394,6 @@ public interface I_HR_Incidence
 	public int getS_TimeExpenseLine_ID();
 
 	public org.adempiere.core.domains.models.I_S_TimeExpenseLine getS_TimeExpenseLine() throws RuntimeException;
-
-    /** Column name ServiceDate */
-    public static final String COLUMNNAME_ServiceDate = "ServiceDate";
-
-	/** Set Service date.
-	  * Date service was provided
-	  */
-	public void setServiceDate (Timestamp ServiceDate);
-
-	/** Get Service date.
-	  * Date service was provided
-	  */
-	public Timestamp getServiceDate();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
