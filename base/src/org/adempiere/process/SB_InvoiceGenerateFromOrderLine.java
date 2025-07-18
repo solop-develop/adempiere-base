@@ -18,6 +18,7 @@ package org.adempiere.process;
 
 import io.vavr.Tuple2;
 import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.process.util.InvoiceGrouping;
 import org.compiere.model.*;
 import org.compiere.process.DocAction;
 import org.compiere.util.DisplayType;

@@ -1,4 +1,4 @@
-package org.adempiere.process;
+package org.adempiere.process.util;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MDocType;
