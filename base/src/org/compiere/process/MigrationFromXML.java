@@ -1,22 +1,5 @@
 package org.compiere.process;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.apache.commons.io.FileUtils;
 import org.compiere.model.MMigration;
@@ -30,6 +13,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.logging.Level;
 
 // This process is called from the Application Dictionary Menu to load Migrations from XML files.
 // It is also called from the MigrationLoader which is called by RUN_MigrateXML.
@@ -147,17 +142,10 @@ public class MigrationFromXML extends MigrationFromXMLAbstract {
 							log.log(Level.INFO, "XML file not a Migration. Skipping.");
 							return;
 						}
-
 						if (isApply()) {
-                            if (MMigration.STATUSCODE_Applied.equals(migration.getStatusCode())) {
+                            if (!MMigration.STATUSCODE_Unapplied.equals(migration.getStatusCode())) {
                                 log.log(Level.INFO, migration.toString() + " ---> Migration already applied - skipping.");
                                 return;
-                            }
-                            if (MMigration.STATUSCODE_Failed.equals(migration.getStatusCode())
-                        		|| MMigration.STATUSCODE_PartiallyApplied.equals(migration.getStatusCode())) {
-                                log.log(Level.INFO, migration.toString() + " ---> Migration exists but has to be rolled back.");
-                                // Rollback the migration to try and correct the error.
-    							applyMigration(migration.getCtx(), migration.getAD_Migration_ID(), trxName);                                
                             }
                             // Apply the migration
 							applyMigration(migration.getCtx(), migration.getAD_Migration_ID(), trxName);
