@@ -63,7 +63,6 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
     private HashMap<Integer, List<MWMInOutBoundLine>> groupedOutBoundLinesForIssues;
     private int documentCreated = 0;
     private final AtomicInteger withError = new AtomicInteger(0);
-
     /**
      * Get Parameters
      */
@@ -143,7 +142,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                         shipmentLine.setM_AttributeSetInstance_ID(outboundLine.getM_AttributeSetInstance_ID());
                         shipmentLine.setWM_InOutBoundLine_ID(outboundLine.getWM_InOutBoundLine_ID());
                         shipmentLine.saveEx();
-                        outboundLine.setPickedQty(Optional.ofNullable(outboundLine.getPickedQty()).orElse(Env.ZERO).add(qtyToDelivery));
+                        outboundLine.setPickedQty(Optional.ofNullable(outboundLine.getShipmentQtyDelivered()).orElse(Env.ZERO).add(qtyToDelivery));
                         outboundLine.saveEx();
                     });
                     MInOut shipment = maybeShipment.get();
@@ -255,11 +254,11 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
 
     private BigDecimal getSalesOrderQtyToDelivery(MWMInOutBoundLine outboundLine, MOrderLine orderLine) {
         BigDecimal qtyToDelivery;
+        //Sales Order Qty To Delivery
+        BigDecimal salesOrderQtyToDelivery = getSelectionAsBigDecimal(outboundLine.getWM_InOutBoundLine_ID(), "QtyToDeliver");
         if (isIncludeNotAvailable()) {
-            qtyToDelivery = outboundLine.getQtyToPick();
+            qtyToDelivery = salesOrderQtyToDelivery;
         } else {
-            //Sales Order Qty To Delivery
-            BigDecimal salesOrderQtyToDelivery = getSelectionAsBigDecimal(outboundLine.getWM_InOutBoundLine_ID(), "QtyToDeliver");
             //Outbound Order Qty To Delivery
             BigDecimal outboundOrderQtyToDelivery = outboundLine.getPickedQty().subtract(outboundLine.getShipmentQtyDelivered());
             //The quantity to delivery of the Outbound order cannot be greater than the pending quantity to delivery  of the sales order.
