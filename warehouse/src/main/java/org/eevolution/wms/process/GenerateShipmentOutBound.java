@@ -63,7 +63,6 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
     private HashMap<Integer, List<MWMInOutBoundLine>> groupedOutBoundLinesForIssues;
     private int documentCreated = 0;
     private final AtomicInteger withError = new AtomicInteger(0);
-
     /**
      * Get Parameters
      */
