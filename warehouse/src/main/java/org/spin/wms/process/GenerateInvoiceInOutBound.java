@@ -143,6 +143,7 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 		lines.add(line);
 		groupedOutBoundLines.put(keyString, lines);
 	}
+
 	/**
 	 * Add Document Info for message to return
 	 * @param documentInfo
