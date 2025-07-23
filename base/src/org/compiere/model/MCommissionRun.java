@@ -99,12 +99,13 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 	{
 		MCommissionAmt[] amts = getAmts();
 		BigDecimal grandTotal = Env.ZERO;
-		for (int i = 0; i < amts.length; i++)
-		{
-			MCommissionAmt amt = amts[i];
-			grandTotal = grandTotal.add(amt.getConvertedAmt());
-		}
+		BigDecimal commissionTotal = Env.ZERO;
+        for (MCommissionAmt amt : amts) {
+            grandTotal = grandTotal.add(amt.getConvertedAmt());
+			commissionTotal = commissionTotal.add(amt.getCommissionAmt());
+        }
 		setGrandTotal(grandTotal);
+		setTotalCommissionAmt(commissionTotal);
 	}	//	updateFromAmt
 
 	/**
