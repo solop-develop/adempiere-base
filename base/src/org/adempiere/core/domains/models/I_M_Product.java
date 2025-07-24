@@ -615,6 +615,17 @@ public interface I_M_Product
 
 	public I_M_AttributeSetInstance getM_AttributeSetInstance() throws RuntimeException;
 
+    /** Column name M_Brand_ID */
+    public static final String COLUMNNAME_M_Brand_ID = "M_Brand_ID";
+
+	/** Set Product Brand	  */
+	public void setM_Brand_ID (int M_Brand_ID);
+
+	/** Get Product Brand	  */
+	public int getM_Brand_ID();
+
+	public org.adempiere.core.domains.models.I_M_Brand getM_Brand() throws RuntimeException;
+
     /** Column name M_FreightCategory_ID */
     public static final String COLUMNNAME_M_FreightCategory_ID = "M_FreightCategory_ID";
 
@@ -630,6 +641,17 @@ public interface I_M_Product
 
 	public org.adempiere.core.domains.models.I_M_FreightCategory getM_FreightCategory() throws RuntimeException;
 
+    /** Column name M_Industry_Sector_ID */
+    public static final String COLUMNNAME_M_Industry_Sector_ID = "M_Industry_Sector_ID";
+
+	/** Set Industry Sector	  */
+	public void setM_Industry_Sector_ID (int M_Industry_Sector_ID);
+
+	/** Get Industry Sector	  */
+	public int getM_Industry_Sector_ID();
+
+	public org.adempiere.core.domains.models.I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException;
+
     /** Column name M_Locator_ID */
     public static final String COLUMNNAME_M_Locator_ID = "M_Locator_ID";
 
@@ -644,6 +666,28 @@ public interface I_M_Product
 	public int getM_Locator_ID();
 
 	public I_M_Locator getM_Locator() throws RuntimeException;
+
+    /** Column name M_Material_Group_ID */
+    public static final String COLUMNNAME_M_Material_Group_ID = "M_Material_Group_ID";
+
+	/** Set Material Group	  */
+	public void setM_Material_Group_ID (int M_Material_Group_ID);
+
+	/** Get Material Group	  */
+	public int getM_Material_Group_ID();
+
+	public org.adempiere.core.domains.models.I_M_Material_Group getM_Material_Group() throws RuntimeException;
+
+    /** Column name M_Material_Type_ID */
+    public static final String COLUMNNAME_M_Material_Type_ID = "M_Material_Type_ID";
+
+	/** Set Material Type	  */
+	public void setM_Material_Type_ID (int M_Material_Type_ID);
+
+	/** Get Material Type	  */
+	public int getM_Material_Type_ID();
+
+	public org.adempiere.core.domains.models.I_M_Material_Type getM_Material_Type() throws RuntimeException;
 
     /** Column name M_PartType_ID */
     public static final String COLUMNNAME_M_PartType_ID = "M_PartType_ID";
@@ -728,6 +772,28 @@ public interface I_M_Product
 	  * Product, Service, Item
 	  */
 	public int getM_Product_ID();
+
+    /** Column name M_Purchase_Group_ID */
+    public static final String COLUMNNAME_M_Purchase_Group_ID = "M_Purchase_Group_ID";
+
+	/** Set Purchase Group	  */
+	public void setM_Purchase_Group_ID (int M_Purchase_Group_ID);
+
+	/** Get Purchase Group	  */
+	public int getM_Purchase_Group_ID();
+
+	public org.adempiere.core.domains.models.I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException;
+
+    /** Column name M_Sales_Group_ID */
+    public static final String COLUMNNAME_M_Sales_Group_ID = "M_Sales_Group_ID";
+
+	/** Set Sales Group	  */
+	public void setM_Sales_Group_ID (int M_Sales_Group_ID);
+
+	/** Get Sales Group	  */
+	public int getM_Sales_Group_ID();
+
+	public org.adempiere.core.domains.models.I_M_Sales_Group getM_Sales_Group() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -875,6 +941,21 @@ public interface I_M_Product
 	  * Stock Keeping Unit
 	  */
 	public String getSKU();
+
+	/** Column name SourceCountry_ID */
+	public static final String COLUMNNAME_SourceCountry_ID = "SourceCountry_ID";
+
+	/** Set Source Country.
+	 * Source Country for Product or reference
+	 */
+	public void setSourceCountry_ID (int SourceCountry_ID);
+
+	/** Get Source Country.
+	 * Source Country for Product or reference
+	 */
+	public int getSourceCountry_ID();
+
+	public org.adempiere.core.domains.models.I_C_Country getSourceCountry() throws RuntimeException;
 
     /** Column name S_Resource_ID */
     public static final String COLUMNNAME_S_Resource_ID = "S_Resource_ID";
