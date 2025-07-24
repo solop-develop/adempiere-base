@@ -299,6 +299,19 @@ public interface I_C_CommissionRun
 	  */
 	public Timestamp getStartDate();
 
+    /** Column name TotalCommissionAmt */
+    public static final String COLUMNNAME_TotalCommissionAmt = "TotalCommissionAmt";
+
+	/** Set Total Commission Amount.
+	  * Total Commission Amount
+	  */
+	public void setTotalCommissionAmt (BigDecimal TotalCommissionAmt);
+
+	/** Get Total Commission Amount.
+	  * Total Commission Amount
+	  */
+	public BigDecimal getTotalCommissionAmt();
+
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
 
