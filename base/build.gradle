@@ -2,6 +2,7 @@ plugins {
 	id 'java-library'
 	id 'maven-publish'
 	id 'signing'
+    id 'com.google.protobuf' version '0.9.4'
 }
 
 java {
@@ -13,6 +14,8 @@ repositories {
     mavenLocal()
     mavenCentral()
 }
+def protobufVersion = '3.25.3'
+def grpcVersion = '1.63.0'
 
 dependencies {
 	api "com.amazonaws:aws-java-sdk-s3:1.12.777"
@@ -56,12 +59,15 @@ dependencies {
     // https://mvnrepository.com/artifact/org.beanshell/bsh
     api 'org.beanshell:bsh:2.0b5'
     api 'javax.xml:jaxb-api:2.1'
+    api "com.google.protobuf:protobuf-java:${protobufVersion}"
 }
 
 sourceSets {
 	main {
 		java {
-			srcDirs = ['src']
+            srcDirs 'src'
+            srcDirs 'build/generated/source/protobuf/main/java'
+            srcDirs 'src/proto'
 		}
 	}
 }
@@ -76,6 +82,22 @@ jar {
 			"EntityType": entityType
 		)
 	}
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc{}
+        }
+    }
 }
 
 publishing {
