@@ -36,7 +36,6 @@ import org.compiere.model.MTable;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Util;
-import org.solop.util.SequenceUtil;
 
 /**
  *	Import Products from I_Product
@@ -534,24 +533,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 			.append(clientCheck);
 		try
 		{
-			//	Insert Product from Import
-			PreparedStatement pstmt_insertProductPO = DB.prepareStatement
-				("INSERT INTO M_Product_PO (M_Product_ID,C_BPartner_ID, M_Product_PO_ID, UUID, "
-				+ "AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy,"
-				+ "IsCurrentVendor,C_UOM_ID,C_Currency_ID,UPC,"
-				+ "PriceList,PricePO,RoyaltyAmt,PriceEffective,"
-				+ "VendorProductNo,VendorCategory,Manufacturer,"
-				+ "Discontinued,DiscontinuedBy, DiscontinuedAt, Order_Min,Order_Pack,"
-				+ "CostPerOrder,DeliveryTime_Promised) "
-				+ "SELECT ?,?,"+ SequenceUtil.getNextSequenceSqlString(MProductPO.Table_Name, false) + ", getUUID(), "
-				+ "AD_Client_ID,AD_Org_ID,'Y',SysDate,CreatedBy,SysDate,UpdatedBy,"
-				+ "'Y',C_UOM_ID,C_Currency_ID,UPC,"
-				+ "PriceList,PricePO,RoyaltyAmt,PriceEffective,"
-				+ "VendorProductNo,VendorCategory,Manufacturer,"
-				+ "Discontinued,DiscontinuedBy, DiscontinuedAt, Order_Min,Order_Pack,"
-				+ "CostPerOrder,DeliveryTime_Promised "
-				+ "FROM I_Product "
-				+ "WHERE I_Product_ID=?", get_TrxName());
+
 
 			//	Set Imported = Y
 			PreparedStatement pstmt_setImported = DB.prepareStatement
@@ -759,16 +741,31 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 					}
 					if (no == 0)		//	Insert PO
 					{
-						pstmt_insertProductPO.setInt(1, M_Product_ID);
-						pstmt_insertProductPO.setInt(2, C_BPartner_ID);
-						pstmt_insertProductPO.setInt(3, I_Product_ID);
+
+						MProductPO productPO = new MProductPO(getCtx(), M_Product_ID,C_BPartner_ID, imp.getC_Currency_ID(), get_TrxName());
+						productPO.setC_UOM_ID(imp.getC_UOM_ID());
+						productPO.setUPC(imp.getUPC());
+						productPO.setPriceList(imp.getPriceList());
+						productPO.setPricePO(imp.getPricePO());
+						productPO.setRoyaltyAmt(imp.getRoyaltyAmt());
+						productPO.setPriceEffective(imp.getPriceEffective());
+						productPO.setVendorProductNo(imp.getVendorProductNo());
+						productPO.setVendorCategory(imp.getVendorCategory());
+						productPO.setManufacturer(imp.getManufacturer());
+						productPO.setDiscontinued(imp.isDiscontinued());
+						productPO.setDiscontinuedBy(imp.getDiscontinuedBy());
+						productPO.setDiscontinuedAt(imp.getDiscontinuedAt());
+						productPO.setOrder_Min(BigDecimal.valueOf(imp.getOrder_Min()));
+						productPO.setOrder_Pack(BigDecimal.valueOf(imp.getOrder_Pack()));
+						productPO.setCostPerOrder(imp.getCostPerOrder());
+						productPO.setDeliveryTime_Promised(imp.getDeliveryTime_Promised());
 						try
 						{
-							no = pstmt_insertProductPO.executeUpdate();
-							log.finer("Insert Product_PO = " + no);
+							productPO.saveEx();
+							log.finer("Insert Product_PO");
 							noInsertPO++;
 						}
-						catch (SQLException ex)
+						catch (Exception ex)
 						{
 							log.warning("Insert Product_PO - " + ex.toString());
 							noInsert--;			//	assume that product also did not exist
@@ -814,7 +811,6 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 			//
 			//	pstmt_insertProduct.close();
 			// pstmt_updateProduct.close();
-			pstmt_insertProductPO.close();
 			// pstmt_updateProductPO.close();
 			pstmt_setImported.close();
 			//
