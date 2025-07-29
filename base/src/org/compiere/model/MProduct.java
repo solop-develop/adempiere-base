@@ -292,6 +292,13 @@ public class MProduct extends X_M_Product
 		setM_Product_Class_ID(impP.getM_Product_Class_ID());
 		setM_Product_Classification_ID(impP.getM_Product_Classification_ID());
 		setM_Product_Group_ID(impP.getM_Product_Group_ID());
+		setM_Brand_ID(impP.getM_Brand_ID());
+		setM_Industry_Sector_ID(impP.getM_Industry_Sector_ID());
+		setM_Material_Group_ID(impP.getM_Material_Group_ID());
+		setM_Material_Type_ID(impP.getM_Material_Type_ID());
+		setM_PartType_ID(impP.getM_PartType_ID());
+		setM_Purchase_Group_ID(impP.getM_Purchase_Group_ID());
+		setM_Sales_Group_ID(impP.getM_Sales_Group_ID());
 	}	//	MProduct
 	
 	/** Additional Downloads				*/

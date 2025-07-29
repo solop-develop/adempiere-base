@@ -77,6 +77,24 @@ public interface I_I_Product
 	  */
 	public String getBPartner_Value();
 
+    /** Column name Brand_Name */
+    public static final String COLUMNNAME_Brand_Name = "Brand_Name";
+
+	/** Set Brand Name	  */
+	public void setBrand_Name (String Brand_Name);
+
+	/** Get Brand Name	  */
+	public String getBrand_Name();
+
+    /** Column name Brand_Value */
+    public static final String COLUMNNAME_Brand_Value = "Brand_Value";
+
+	/** Set Brand Value	  */
+	public void setBrand_Value (String Brand_Value);
+
+	/** Get Brand Value	  */
+	public String getBrand_Value();
+
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
 
@@ -307,6 +325,24 @@ public interface I_I_Product
 	  */
 	public String getImageURL();
 
+    /** Column name IndustrySector_Name */
+    public static final String COLUMNNAME_IndustrySector_Name = "IndustrySector_Name";
+
+	/** Set Industry Sector Name	  */
+	public void setIndustrySector_Name (String IndustrySector_Name);
+
+	/** Get Industry Sector Name	  */
+	public String getIndustrySector_Name();
+
+    /** Column name IndustrySector_Value */
+    public static final String COLUMNNAME_IndustrySector_Value = "IndustrySector_Value";
+
+	/** Set Industry Sector Value	  */
+	public void setIndustrySector_Value (String IndustrySector_Value);
+
+	/** Get Industry Sector Value	  */
+	public String getIndustrySector_Value();
+
     /** Column name I_Product_ID */
     public static final String COLUMNNAME_I_Product_ID = "I_Product_ID";
 
@@ -358,6 +394,97 @@ public interface I_I_Product
 	  * Manufacturer of the Product
 	  */
 	public String getManufacturer();
+
+    /** Column name MaterialGroup_Name */
+    public static final String COLUMNNAME_MaterialGroup_Name = "MaterialGroup_Name";
+
+	/** Set Material Group Name	  */
+	public void setMaterialGroup_Name (String MaterialGroup_Name);
+
+	/** Get Material Group Name	  */
+	public String getMaterialGroup_Name();
+
+    /** Column name MaterialGroup_Value */
+    public static final String COLUMNNAME_MaterialGroup_Value = "MaterialGroup_Value";
+
+	/** Set Material Group Value	  */
+	public void setMaterialGroup_Value (String MaterialGroup_Value);
+
+	/** Get Material Group Value	  */
+	public String getMaterialGroup_Value();
+
+    /** Column name MaterialType_Name */
+    public static final String COLUMNNAME_MaterialType_Name = "MaterialType_Name";
+
+	/** Set Material Type Name	  */
+	public void setMaterialType_Name (String MaterialType_Name);
+
+	/** Get Material Type Name	  */
+	public String getMaterialType_Name();
+
+    /** Column name MaterialType_Value */
+    public static final String COLUMNNAME_MaterialType_Value = "MaterialType_Value";
+
+	/** Set Material Type Value	  */
+	public void setMaterialType_Value (String MaterialType_Value);
+
+	/** Get Material Type Value	  */
+	public String getMaterialType_Value();
+
+    /** Column name M_Brand_ID */
+    public static final String COLUMNNAME_M_Brand_ID = "M_Brand_ID";
+
+	/** Set Product Brand	  */
+	public void setM_Brand_ID (int M_Brand_ID);
+
+	/** Get Product Brand	  */
+	public int getM_Brand_ID();
+
+	public org.adempiere.core.domains.models.I_M_Brand getM_Brand() throws RuntimeException;
+
+    /** Column name M_Industry_Sector_ID */
+    public static final String COLUMNNAME_M_Industry_Sector_ID = "M_Industry_Sector_ID";
+
+	/** Set Industry Sector	  */
+	public void setM_Industry_Sector_ID (int M_Industry_Sector_ID);
+
+	/** Get Industry Sector	  */
+	public int getM_Industry_Sector_ID();
+
+	public org.adempiere.core.domains.models.I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException;
+
+    /** Column name M_Material_Group_ID */
+    public static final String COLUMNNAME_M_Material_Group_ID = "M_Material_Group_ID";
+
+	/** Set Material Group	  */
+	public void setM_Material_Group_ID (int M_Material_Group_ID);
+
+	/** Get Material Group	  */
+	public int getM_Material_Group_ID();
+
+	public org.adempiere.core.domains.models.I_M_Material_Group getM_Material_Group() throws RuntimeException;
+
+    /** Column name M_Material_Type_ID */
+    public static final String COLUMNNAME_M_Material_Type_ID = "M_Material_Type_ID";
+
+	/** Set Material Type	  */
+	public void setM_Material_Type_ID (int M_Material_Type_ID);
+
+	/** Get Material Type	  */
+	public int getM_Material_Type_ID();
+
+	public org.adempiere.core.domains.models.I_M_Material_Type getM_Material_Type() throws RuntimeException;
+
+    /** Column name M_PartType_ID */
+    public static final String COLUMNNAME_M_PartType_ID = "M_PartType_ID";
+
+	/** Set Part Type	  */
+	public void setM_PartType_ID (int M_PartType_ID);
+
+	/** Get Part Type	  */
+	public int getM_PartType_ID();
+
+	public org.adempiere.core.domains.models.I_M_PartType getM_PartType() throws RuntimeException;
 
     /** Column name M_Product_Category_ID */
     public static final String COLUMNNAME_M_Product_Category_ID = "M_Product_Category_ID";
@@ -434,6 +561,28 @@ public interface I_I_Product
 
 	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
 
+    /** Column name M_Purchase_Group_ID */
+    public static final String COLUMNNAME_M_Purchase_Group_ID = "M_Purchase_Group_ID";
+
+	/** Set Purchase Group	  */
+	public void setM_Purchase_Group_ID (int M_Purchase_Group_ID);
+
+	/** Get Purchase Group	  */
+	public int getM_Purchase_Group_ID();
+
+	public org.adempiere.core.domains.models.I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException;
+
+    /** Column name M_Sales_Group_ID */
+    public static final String COLUMNNAME_M_Sales_Group_ID = "M_Sales_Group_ID";
+
+	/** Set Sales Group	  */
+	public void setM_Sales_Group_ID (int M_Sales_Group_ID);
+
+	/** Get Sales Group	  */
+	public int getM_Sales_Group_ID();
+
+	public org.adempiere.core.domains.models.I_M_Sales_Group getM_Sales_Group() throws RuntimeException;
+
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
 
@@ -472,6 +621,15 @@ public interface I_I_Product
 	  * Package order size in UOM (e.g. order set of 5 units)
 	  */
 	public int getOrder_Pack();
+
+    /** Column name PartType_Name */
+    public static final String COLUMNNAME_PartType_Name = "PartType_Name";
+
+	/** Set Part Type Name	  */
+	public void setPartType_Name (String PartType_Name);
+
+	/** Get Part Type Name	  */
+	public String getPartType_Name();
 
     /** Column name PriceEffective */
     public static final String COLUMNNAME_PriceEffective = "PriceEffective";
@@ -660,6 +818,24 @@ public interface I_I_Product
 	  */
 	public String getProductType();
 
+    /** Column name PurchaseGroup_Name */
+    public static final String COLUMNNAME_PurchaseGroup_Name = "PurchaseGroup_Name";
+
+	/** Set Purchase Group Name	  */
+	public void setPurchaseGroup_Name (String PurchaseGroup_Name);
+
+	/** Get Purchase Group Name	  */
+	public String getPurchaseGroup_Name();
+
+    /** Column name PurchaseGroup_Value */
+    public static final String COLUMNNAME_PurchaseGroup_Value = "PurchaseGroup_Value";
+
+	/** Set Purchase Group Value	  */
+	public void setPurchaseGroup_Value (String PurchaseGroup_Value);
+
+	/** Get Purchase Group Value	  */
+	public String getPurchaseGroup_Value();
+
     /** Column name RoyaltyAmt */
     public static final String COLUMNNAME_RoyaltyAmt = "RoyaltyAmt";
 
@@ -672,6 +848,24 @@ public interface I_I_Product
 	  * (Included) Amount for copyright, etc.
 	  */
 	public BigDecimal getRoyaltyAmt();
+
+    /** Column name SalesGroup_Name */
+    public static final String COLUMNNAME_SalesGroup_Name = "SalesGroup_Name";
+
+	/** Set Sales Group Name	  */
+	public void setSalesGroup_Name (String SalesGroup_Name);
+
+	/** Get Sales Group Name	  */
+	public String getSalesGroup_Name();
+
+    /** Column name SalesGroup_Value */
+    public static final String COLUMNNAME_SalesGroup_Value = "SalesGroup_Value";
+
+	/** Set Sales Group Value	  */
+	public void setSalesGroup_Value (String SalesGroup_Value);
+
+	/** Get Sales Group Value	  */
+	public String getSalesGroup_Value();
 
     /** Column name ShelfDepth */
     public static final String COLUMNNAME_ShelfDepth = "ShelfDepth";

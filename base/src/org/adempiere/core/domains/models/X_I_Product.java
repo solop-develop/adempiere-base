@@ -38,7 +38,7 @@ public class X_I_Product extends PO implements I_I_Product, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20231212L;
+	private static final long serialVersionUID = 20250724L;
 
     /** Standard Constructor */
     public X_I_Product (Properties ctx, int I_Product_ID, String trxName)
@@ -94,6 +94,34 @@ public class X_I_Product extends PO implements I_I_Product, I_Persistent
 	public String getBPartner_Value () 
 	{
 		return (String)get_Value(COLUMNNAME_BPartner_Value);
+	}
+
+	/** Set Brand Name.
+		@param Brand_Name Brand Name	  */
+	public void setBrand_Name (String Brand_Name)
+	{
+		set_Value (COLUMNNAME_Brand_Name, Brand_Name);
+	}
+
+	/** Get Brand Name.
+		@return Brand Name	  */
+	public String getBrand_Name () 
+	{
+		return (String)get_Value(COLUMNNAME_Brand_Name);
+	}
+
+	/** Set Brand Value.
+		@param Brand_Value Brand Value	  */
+	public void setBrand_Value (String Brand_Value)
+	{
+		set_Value (COLUMNNAME_Brand_Value, Brand_Value);
+	}
+
+	/** Get Brand Value.
+		@return Brand Value	  */
+	public String getBrand_Value () 
+	{
+		return (String)get_Value(COLUMNNAME_Brand_Value);
 	}
 
 	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
@@ -421,6 +449,34 @@ public class X_I_Product extends PO implements I_I_Product, I_Persistent
 		return (String)get_Value(COLUMNNAME_ImageURL);
 	}
 
+	/** Set Industry Sector Name.
+		@param IndustrySector_Name Industry Sector Name	  */
+	public void setIndustrySector_Name (String IndustrySector_Name)
+	{
+		set_Value (COLUMNNAME_IndustrySector_Name, IndustrySector_Name);
+	}
+
+	/** Get Industry Sector Name.
+		@return Industry Sector Name	  */
+	public String getIndustrySector_Name () 
+	{
+		return (String)get_Value(COLUMNNAME_IndustrySector_Name);
+	}
+
+	/** Set Industry Sector Value.
+		@param IndustrySector_Value Industry Sector Value	  */
+	public void setIndustrySector_Value (String IndustrySector_Value)
+	{
+		set_Value (COLUMNNAME_IndustrySector_Value, IndustrySector_Value);
+	}
+
+	/** Get Industry Sector Value.
+		@return Industry Sector Value	  */
+	public String getIndustrySector_Value () 
+	{
+		return (String)get_Value(COLUMNNAME_IndustrySector_Value);
+	}
+
 	/** Set Import Product.
 		@param I_Product_ID 
 		Import Item or Service
@@ -476,6 +532,187 @@ public class X_I_Product extends PO implements I_I_Product, I_Persistent
 	public String getManufacturer () 
 	{
 		return (String)get_Value(COLUMNNAME_Manufacturer);
+	}
+
+	/** Set Material Group Name.
+		@param MaterialGroup_Name Material Group Name	  */
+	public void setMaterialGroup_Name (String MaterialGroup_Name)
+	{
+		set_Value (COLUMNNAME_MaterialGroup_Name, MaterialGroup_Name);
+	}
+
+	/** Get Material Group Name.
+		@return Material Group Name	  */
+	public String getMaterialGroup_Name () 
+	{
+		return (String)get_Value(COLUMNNAME_MaterialGroup_Name);
+	}
+
+	/** Set Material Group Value.
+		@param MaterialGroup_Value Material Group Value	  */
+	public void setMaterialGroup_Value (String MaterialGroup_Value)
+	{
+		set_Value (COLUMNNAME_MaterialGroup_Value, MaterialGroup_Value);
+	}
+
+	/** Get Material Group Value.
+		@return Material Group Value	  */
+	public String getMaterialGroup_Value () 
+	{
+		return (String)get_Value(COLUMNNAME_MaterialGroup_Value);
+	}
+
+	/** Set Material Type Name.
+		@param MaterialType_Name Material Type Name	  */
+	public void setMaterialType_Name (String MaterialType_Name)
+	{
+		set_Value (COLUMNNAME_MaterialType_Name, MaterialType_Name);
+	}
+
+	/** Get Material Type Name.
+		@return Material Type Name	  */
+	public String getMaterialType_Name () 
+	{
+		return (String)get_Value(COLUMNNAME_MaterialType_Name);
+	}
+
+	/** Set Material Type Value.
+		@param MaterialType_Value Material Type Value	  */
+	public void setMaterialType_Value (String MaterialType_Value)
+	{
+		set_Value (COLUMNNAME_MaterialType_Value, MaterialType_Value);
+	}
+
+	/** Get Material Type Value.
+		@return Material Type Value	  */
+	public String getMaterialType_Value () 
+	{
+		return (String)get_Value(COLUMNNAME_MaterialType_Value);
+	}
+
+	public org.adempiere.core.domains.models.I_M_Brand getM_Brand() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Brand)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Brand.Table_Name)
+			.getPO(getM_Brand_ID(), get_TrxName());	}
+
+	/** Set Product Brand.
+		@param M_Brand_ID Product Brand	  */
+	public void setM_Brand_ID (int M_Brand_ID)
+	{
+		if (M_Brand_ID < 1) 
+			set_Value (COLUMNNAME_M_Brand_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Brand_ID, Integer.valueOf(M_Brand_ID));
+	}
+
+	/** Get Product Brand.
+		@return Product Brand	  */
+	public int getM_Brand_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Brand_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Industry_Sector)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Industry_Sector.Table_Name)
+			.getPO(getM_Industry_Sector_ID(), get_TrxName());	}
+
+	/** Set Industry Sector.
+		@param M_Industry_Sector_ID Industry Sector	  */
+	public void setM_Industry_Sector_ID (int M_Industry_Sector_ID)
+	{
+		if (M_Industry_Sector_ID < 1) 
+			set_Value (COLUMNNAME_M_Industry_Sector_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Industry_Sector_ID, Integer.valueOf(M_Industry_Sector_ID));
+	}
+
+	/** Get Industry Sector.
+		@return Industry Sector	  */
+	public int getM_Industry_Sector_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Industry_Sector_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_M_Material_Group getM_Material_Group() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Material_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Material_Group.Table_Name)
+			.getPO(getM_Material_Group_ID(), get_TrxName());	}
+
+	/** Set Material Group.
+		@param M_Material_Group_ID Material Group	  */
+	public void setM_Material_Group_ID (int M_Material_Group_ID)
+	{
+		if (M_Material_Group_ID < 1) 
+			set_Value (COLUMNNAME_M_Material_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Material_Group_ID, Integer.valueOf(M_Material_Group_ID));
+	}
+
+	/** Get Material Group.
+		@return Material Group	  */
+	public int getM_Material_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Material_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_M_Material_Type getM_Material_Type() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Material_Type)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Material_Type.Table_Name)
+			.getPO(getM_Material_Type_ID(), get_TrxName());	}
+
+	/** Set Material Type.
+		@param M_Material_Type_ID Material Type	  */
+	public void setM_Material_Type_ID (int M_Material_Type_ID)
+	{
+		if (M_Material_Type_ID < 1) 
+			set_Value (COLUMNNAME_M_Material_Type_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Material_Type_ID, Integer.valueOf(M_Material_Type_ID));
+	}
+
+	/** Get Material Type.
+		@return Material Type	  */
+	public int getM_Material_Type_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Material_Type_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_M_PartType getM_PartType() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_PartType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_PartType.Table_Name)
+			.getPO(getM_PartType_ID(), get_TrxName());	}
+
+	/** Set Part Type.
+		@param M_PartType_ID Part Type	  */
+	public void setM_PartType_ID (int M_PartType_ID)
+	{
+		if (M_PartType_ID < 1) 
+			set_Value (COLUMNNAME_M_PartType_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_PartType_ID, Integer.valueOf(M_PartType_ID));
+	}
+
+	/** Get Part Type.
+		@return Part Type	  */
+	public int getM_PartType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_PartType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category() throws RuntimeException
@@ -618,6 +855,56 @@ public class X_I_Product extends PO implements I_I_Product, I_Persistent
 		return ii.intValue();
 	}
 
+	public org.adempiere.core.domains.models.I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Purchase_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Purchase_Group.Table_Name)
+			.getPO(getM_Purchase_Group_ID(), get_TrxName());	}
+
+	/** Set Purchase Group.
+		@param M_Purchase_Group_ID Purchase Group	  */
+	public void setM_Purchase_Group_ID (int M_Purchase_Group_ID)
+	{
+		if (M_Purchase_Group_ID < 1) 
+			set_Value (COLUMNNAME_M_Purchase_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Purchase_Group_ID, Integer.valueOf(M_Purchase_Group_ID));
+	}
+
+	/** Get Purchase Group.
+		@return Purchase Group	  */
+	public int getM_Purchase_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Purchase_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_M_Sales_Group getM_Sales_Group() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Sales_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Sales_Group.Table_Name)
+			.getPO(getM_Sales_Group_ID(), get_TrxName());	}
+
+	/** Set Sales Group.
+		@param M_Sales_Group_ID Sales Group	  */
+	public void setM_Sales_Group_ID (int M_Sales_Group_ID)
+	{
+		if (M_Sales_Group_ID < 1) 
+			set_Value (COLUMNNAME_M_Sales_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Sales_Group_ID, Integer.valueOf(M_Sales_Group_ID));
+	}
+
+	/** Get Sales Group.
+		@return Sales Group	  */
+	public int getM_Sales_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Sales_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Name.
 		@param Name 
 		Alphanumeric identifier of the entity
@@ -673,6 +960,20 @@ public class X_I_Product extends PO implements I_I_Product, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Part Type Name.
+		@param PartType_Name Part Type Name	  */
+	public void setPartType_Name (String PartType_Name)
+	{
+		set_Value (COLUMNNAME_PartType_Name, PartType_Name);
+	}
+
+	/** Get Part Type Name.
+		@return Part Type Name	  */
+	public String getPartType_Name () 
+	{
+		return (String)get_Value(COLUMNNAME_PartType_Name);
 	}
 
 	/** Set Price effective.
@@ -963,6 +1264,34 @@ public class X_I_Product extends PO implements I_I_Product, I_Persistent
 		return (String)get_Value(COLUMNNAME_ProductType);
 	}
 
+	/** Set Purchase Group Name.
+		@param PurchaseGroup_Name Purchase Group Name	  */
+	public void setPurchaseGroup_Name (String PurchaseGroup_Name)
+	{
+		set_Value (COLUMNNAME_PurchaseGroup_Name, PurchaseGroup_Name);
+	}
+
+	/** Get Purchase Group Name.
+		@return Purchase Group Name	  */
+	public String getPurchaseGroup_Name () 
+	{
+		return (String)get_Value(COLUMNNAME_PurchaseGroup_Name);
+	}
+
+	/** Set Purchase Group Value.
+		@param PurchaseGroup_Value Purchase Group Value	  */
+	public void setPurchaseGroup_Value (String PurchaseGroup_Value)
+	{
+		set_Value (COLUMNNAME_PurchaseGroup_Value, PurchaseGroup_Value);
+	}
+
+	/** Get Purchase Group Value.
+		@return Purchase Group Value	  */
+	public String getPurchaseGroup_Value () 
+	{
+		return (String)get_Value(COLUMNNAME_PurchaseGroup_Value);
+	}
+
 	/** Set Royalty Amount.
 		@param RoyaltyAmt 
 		(Included) Amount for copyright, etc.
@@ -981,6 +1310,34 @@ public class X_I_Product extends PO implements I_I_Product, I_Persistent
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Sales Group Name.
+		@param SalesGroup_Name Sales Group Name	  */
+	public void setSalesGroup_Name (String SalesGroup_Name)
+	{
+		set_Value (COLUMNNAME_SalesGroup_Name, SalesGroup_Name);
+	}
+
+	/** Get Sales Group Name.
+		@return Sales Group Name	  */
+	public String getSalesGroup_Name () 
+	{
+		return (String)get_Value(COLUMNNAME_SalesGroup_Name);
+	}
+
+	/** Set Sales Group Value.
+		@param SalesGroup_Value Sales Group Value	  */
+	public void setSalesGroup_Value (String SalesGroup_Value)
+	{
+		set_Value (COLUMNNAME_SalesGroup_Value, SalesGroup_Value);
+	}
+
+	/** Get Sales Group Value.
+		@return Sales Group Value	  */
+	public String getSalesGroup_Value () 
+	{
+		return (String)get_Value(COLUMNNAME_SalesGroup_Value);
 	}
 
 	/** Set Shelf Depth.

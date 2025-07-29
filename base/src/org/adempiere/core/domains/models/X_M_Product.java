@@ -38,7 +38,7 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20231212L;
+	private static final long serialVersionUID = 20250724L;
 
     /** Standard Constructor */
     public X_M_Product (Properties ctx, int M_Product_ID, String trxName)
@@ -990,6 +990,31 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
+	public org.adempiere.core.domains.models.I_M_Brand getM_Brand() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Brand)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Brand.Table_Name)
+			.getPO(getM_Brand_ID(), get_TrxName());	}
+
+	/** Set Product Brand.
+		@param M_Brand_ID Product Brand	  */
+	public void setM_Brand_ID (int M_Brand_ID)
+	{
+		if (M_Brand_ID < 1) 
+			set_Value (COLUMNNAME_M_Brand_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Brand_ID, Integer.valueOf(M_Brand_ID));
+	}
+
+	/** Get Product Brand.
+		@return Product Brand	  */
+	public int getM_Brand_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Brand_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.adempiere.core.domains.models.I_M_FreightCategory getM_FreightCategory() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_M_FreightCategory)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_FreightCategory.Table_Name)
@@ -1018,6 +1043,31 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
+	public org.adempiere.core.domains.models.I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Industry_Sector)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Industry_Sector.Table_Name)
+			.getPO(getM_Industry_Sector_ID(), get_TrxName());	}
+
+	/** Set Industry Sector.
+		@param M_Industry_Sector_ID Industry Sector	  */
+	public void setM_Industry_Sector_ID (int M_Industry_Sector_ID)
+	{
+		if (M_Industry_Sector_ID < 1) 
+			set_Value (COLUMNNAME_M_Industry_Sector_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Industry_Sector_ID, Integer.valueOf(M_Industry_Sector_ID));
+	}
+
+	/** Get Industry Sector.
+		@return Industry Sector	  */
+	public int getM_Industry_Sector_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Industry_Sector_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public I_M_Locator getM_Locator() throws RuntimeException
     {
 		return (I_M_Locator)MTable.get(getCtx(), I_M_Locator.Table_Name)
@@ -1041,6 +1091,56 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 	public int getM_Locator_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_M_Locator_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_M_Material_Group getM_Material_Group() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Material_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Material_Group.Table_Name)
+			.getPO(getM_Material_Group_ID(), get_TrxName());	}
+
+	/** Set Material Group.
+		@param M_Material_Group_ID Material Group	  */
+	public void setM_Material_Group_ID (int M_Material_Group_ID)
+	{
+		if (M_Material_Group_ID < 1) 
+			set_Value (COLUMNNAME_M_Material_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Material_Group_ID, Integer.valueOf(M_Material_Group_ID));
+	}
+
+	/** Get Material Group.
+		@return Material Group	  */
+	public int getM_Material_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Material_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_M_Material_Type getM_Material_Type() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Material_Type)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Material_Type.Table_Name)
+			.getPO(getM_Material_Type_ID(), get_TrxName());	}
+
+	/** Set Material Type.
+		@param M_Material_Type_ID Material Type	  */
+	public void setM_Material_Type_ID (int M_Material_Type_ID)
+	{
+		if (M_Material_Type_ID < 1) 
+			set_Value (COLUMNNAME_M_Material_Type_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Material_Type_ID, Integer.valueOf(M_Material_Type_ID));
+	}
+
+	/** Get Material Type.
+		@return Material Type	  */
+	public int getM_Material_Type_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Material_Type_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -1201,6 +1301,56 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 	public int getM_Product_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Purchase_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Purchase_Group.Table_Name)
+			.getPO(getM_Purchase_Group_ID(), get_TrxName());	}
+
+	/** Set Purchase Group.
+		@param M_Purchase_Group_ID Purchase Group	  */
+	public void setM_Purchase_Group_ID (int M_Purchase_Group_ID)
+	{
+		if (M_Purchase_Group_ID < 1) 
+			set_Value (COLUMNNAME_M_Purchase_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Purchase_Group_ID, Integer.valueOf(M_Purchase_Group_ID));
+	}
+
+	/** Get Purchase Group.
+		@return Purchase Group	  */
+	public int getM_Purchase_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Purchase_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_M_Sales_Group getM_Sales_Group() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Sales_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Sales_Group.Table_Name)
+			.getPO(getM_Sales_Group_ID(), get_TrxName());	}
+
+	/** Set Sales Group.
+		@param M_Sales_Group_ID Sales Group	  */
+	public void setM_Sales_Group_ID (int M_Sales_Group_ID)
+	{
+		if (M_Sales_Group_ID < 1) 
+			set_Value (COLUMNNAME_M_Sales_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Sales_Group_ID, Integer.valueOf(M_Sales_Group_ID));
+	}
+
+	/** Get Sales Group.
+		@return Sales Group	  */
+	public int getM_Sales_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Sales_Group_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -1461,6 +1611,34 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 	public String getSKU () 
 	{
 		return (String)get_Value(COLUMNNAME_SKU);
+	}
+
+	public org.adempiere.core.domains.models.I_C_Country getSourceCountry() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_C_Country)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Country.Table_Name)
+			.getPO(getSourceCountry_ID(), get_TrxName());	}
+
+	/** Set Source Country.
+		@param SourceCountry_ID 
+		Source Country for Product or reference
+	  */
+	public void setSourceCountry_ID (int SourceCountry_ID)
+	{
+		if (SourceCountry_ID < 1) 
+			set_Value (COLUMNNAME_SourceCountry_ID, null);
+		else 
+			set_Value (COLUMNNAME_SourceCountry_ID, Integer.valueOf(SourceCountry_ID));
+	}
+
+	/** Get Source Country.
+		@return Source Country for Product or reference
+	  */
+	public int getSourceCountry_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SourceCountry_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	public org.adempiere.core.domains.models.I_S_Resource getS_Resource() throws RuntimeException
