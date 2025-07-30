@@ -46,7 +46,7 @@ LEFT JOIN M_Material_Group mg ON mg.M_Material_Group_ID = p.M_Material_Group_ID
 LEFT JOIN M_Material_Type mt ON mt.M_Material_Type_ID = p.M_Material_Type_ID
 LEFT JOIN M_Purchase_Group mpg ON mpg.M_Purchase_Group_ID = p.M_Purchase_Group_ID
 LEFT JOIN M_Sales_Group sg ON sg.M_Sales_Group_ID = p.M_Sales_Group_ID
-JOIN C_Invoice i ON (i.C_Invoice_ID = iol.C_Invoice_ID)
+LEFT JOIN C_Invoice i ON (i.C_Invoice_ID = iol.C_Invoice_ID)
 GROUP BY io.AD_Client_ID, io.AD_Org_ID, io.IsActive, pc.M_Product_Category_ID, pg.M_Product_Group_ID, mpc.M_Product_Class_ID, pcl.M_Product_Classification_ID,
 isp.M_Industry_Sector_ID, mg.M_Material_Group_ID, mt.M_Material_Type_ID, mpg.M_Purchase_Group_ID, sg.M_Sales_Group_ID,
 o.C_BPartner_ID, iol.C_UOM_ID, iol.M_Product_ID, io.WM_InOutbound_ID, p.UnitsPerPallet, o.C_Order_ID, i.DocumentNo, iol.C_Invoice_ID
