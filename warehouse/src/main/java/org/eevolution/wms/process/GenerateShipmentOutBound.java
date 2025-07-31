@@ -31,15 +31,9 @@ package org.eevolution.wms.process;
 
 import org.adempiere.core.domains.models.X_C_Order;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MDocType;
-import org.compiere.model.MInOut;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MMovement;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MStorage;
-import org.compiere.model.PO;
+import org.compiere.model.*;
 import org.compiere.process.ProcessInfo;
+import org.compiere.util.Env;
 import org.compiere.util.Trx;
 import org.eevolution.distribution.model.MDDOrder;
 import org.eevolution.distribution.model.MDDOrderLine;
@@ -52,11 +46,8 @@ import org.eevolution.wms.model.MWMInOutBound;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -71,7 +62,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
     private HashMap<Integer, List<MWMInOutBoundLine>> groupedOutBoundLinesForMovements;
     private HashMap<Integer, List<MWMInOutBoundLine>> groupedOutBoundLinesForIssues;
     private int documentCreated = 0;
-    private int withError = 0;
+    private final AtomicInteger withError = new AtomicInteger(0);
 
     /**
      * Get Parameters
@@ -103,12 +94,12 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
 
         StringBuilder documentGenerated = new StringBuilder();
         shipmentsData.forEach(value -> documentGenerated.append(" , ").append(value));
-        return "@Created@ " + documentCreated + documentGenerated.toString() + (withError > 0 ? " | @Error@ " + withError : "");
+        return "@Created@ " + documentCreated + documentGenerated.toString() + (withError.get() > 0 ? " | @Error@ " + withError.get() : "");
     }
 
     private void createAndProcessShipments() {
         List<PO> documentsToPrint = new ArrayList<PO>();
-        groupedOutBoundLinesForShipments.entrySet().stream().filter(entry -> entry != null).forEach(entry -> {
+        groupedOutBoundLinesForShipments.entrySet().stream().filter(Objects::nonNull).forEach(entry -> {
             try {
                 Trx.run(transactionName -> {
                     List<MWMInOutBoundLine> lines = entry.getValue();
@@ -123,9 +114,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                             if (docTypeId == 0) {
                                 docTypeId = MDocType.getDocType(MDocType.DOCBASETYPE_MaterialDelivery, orderLine.getAD_Org_ID());
                             }
-
                             MWMInOutBound outbound = outboundLine.getParent();
-
                             shipment = new MInOut(order, docTypeId, getMovementDate());
                             shipment.setIsSOTrx(true);
                             shipment.setM_Shipper_ID(outbound.getM_Shipper_ID());
@@ -154,21 +143,24 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                         shipmentLine.setM_AttributeSetInstance_ID(outboundLine.getM_AttributeSetInstance_ID());
                         shipmentLine.setWM_InOutBoundLine_ID(outboundLine.getWM_InOutBoundLine_ID());
                         shipmentLine.saveEx();
+                        outboundLine.setPickedQty(Optional.ofNullable(outboundLine.getShipmentQtyDelivered()).orElse(Env.ZERO).add(qtyToDelivery));
+                        outboundLine.saveEx();
                     });
                     MInOut shipment = maybeShipment.get();
                     if (!shipment.processIt(getDocAction())) {
                         addLog("@ProcessFailed@ : " + shipment.getDocumentInfo());
-                        log.warning("@ProcessFailed@ :" + shipment.getDocumentInfo());
+                        throw new AdempiereException("@ProcessFailed@ :" + shipment.getDocumentInfo());
                     }
                     shipment.saveEx();
                     shipmentsData.add(shipment.getDocumentInfo());
                     documentCreated++;
                     addLog(shipment.getDocumentInfo());
                     documentsToPrint.add(shipment);
-
                 });
             } catch (Exception e) {
-                withError += entry.getValue().size();
+                addLog(e.getLocalizedMessage());
+                withError.addAndGet(entry.getValue().size());
+                log.warning(e.getLocalizedMessage());
             }
         });
         printDocument(documentsToPrint, true);
@@ -196,9 +188,9 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                             .withParameter(MMovement.COLUMNNAME_MovementDate, getMovementDate())
                             .withoutTransactionClose()
                             .execute(transactionName);
-                    if (processInfo.isError())
+                    if (processInfo.isError()) {
                         throw new AdempiereException(processInfo.getSummary());
-
+                    }
                     addLog(processInfo.getSummary());
                     Arrays.stream(processInfo.getIDs()).forEach(recordId -> {
                         if (recordId <= 0) {
@@ -210,7 +202,9 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                     });
                 });
             } catch (Exception e) {
-                withError += entry.getValue().size();
+                addLog(e.getLocalizedMessage());
+                withError.addAndGet(entry.getValue().size());
+                log.warning(e.getLocalizedMessage());
             }
         });
         printDocument(documentsToPrint, true);
@@ -242,7 +236,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                                         || MPPCostCollector.DOCSTATUS_InProgress.equals(costCollector.getDocStatus())) {
                                     if (!costCollector.processIt(MPPCostCollector.DOCACTION_Complete)) {
                                         addLog("@ProcessFailed@ : " + costCollector.getDocumentInfo());
-                                        log.warning("@ProcessFailed@ :" + costCollector.getDocumentInfo());
+                                        throw new AdempiereException("@ProcessFailed@ :" + costCollector.getDocumentInfo());
                                     }
                                     costCollector.saveEx();
                                 }
@@ -252,27 +246,29 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
 
                 });
             } catch (Exception e) {
-                withError += entry.getValue().size();
+                addLog(e.getLocalizedMessage());
+                withError.addAndGet(entry.getValue().size());
+                log.warning(e.getLocalizedMessage());
             }
         });
     }
 
     private BigDecimal getSalesOrderQtyToDelivery(MWMInOutBoundLine outboundLine, MOrderLine orderLine) {
         BigDecimal qtyToDelivery;
-        if (isIncludeNotAvailable())
-            qtyToDelivery = outboundLine.getQtyToPick();
-        else {
-            //Sales Order Qty To Delivery
-            BigDecimal salesOrderQtyToDelivery = orderLine.getQtyToDelivery();
+        //Sales Order Qty To Delivery
+        BigDecimal salesOrderQtyToDelivery = getSelectionAsBigDecimal(outboundLine.getWM_InOutBoundLine_ID(), "QtyToDeliver");
+        if (isIncludeNotAvailable()) {
+            qtyToDelivery = salesOrderQtyToDelivery;
+        } else {
             //Outbound Order Qty To Delivery
             BigDecimal outboundOrderQtyToDelivery = outboundLine.getPickedQty().subtract(outboundLine.getShipmentQtyDelivered());
             //The quantity to delivery of the Outbound order cannot be greater than the pending quantity to delivery  of the sales order.
             if (outboundOrderQtyToDelivery.compareTo(salesOrderQtyToDelivery) > 0){
                 qtyToDelivery = salesOrderQtyToDelivery;
-            }else if (!X_C_Order.DELIVERYRULE_Force.equals(orderLine.getParent().getDeliveryRule())
+            } else if (!X_C_Order.DELIVERYRULE_Force.equals(orderLine.getParent().getDeliveryRule())
                     && !X_C_Order.DELIVERYRULE_Manual.equals(orderLine.getParent().getDeliveryRule())) {
                 qtyToDelivery = outboundOrderQtyToDelivery;
-            }else {
+            } else {
                 qtyToDelivery = salesOrderQtyToDelivery;
             }
         }

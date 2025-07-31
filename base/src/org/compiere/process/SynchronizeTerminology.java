@@ -13,17 +13,11 @@
  *****************************************************************************/
 package org.compiere.process;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.logging.Level;
-
 import org.compiere.Adempiere;
 import org.compiere.model.M_Element;
-import org.compiere.util.CLogMgt;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Trx;
+import org.compiere.util.*;
+
+import java.util.logging.Level;
 
 /**
  *	Synchronize Column with Database
@@ -36,8 +30,8 @@ import org.compiere.util.Trx;
 public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 {
 	/**	Static Logger	*/
-	private static CLogger	s_log	= CLogger.getCLogger (SynchronizeTerminology.class);
-	
+	private static final CLogger s_log = CLogger.getCLogger (SynchronizeTerminology.class);
+
 	/**
 	 *  Prepare - e.g., get Parameters.
 	 */
@@ -56,58 +50,50 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 		//TODO Error handling
 		String sql = null;
 		try {
-			int no;
-			Trx trx = Trx.get(get_TrxName(), false);
 			if (isCreateElement()) {
 				// Create Elements from ColumnNames
-				sql = "SELECT DISTINCT ColumnName, Name, Description, Help, EntityType "
+				String columnsSql = "SELECT DISTINCT ColumnName, Name, Description, Help, EntityType "
 						+ "FROM	AD_COLUMN c WHERE NOT EXISTS "
 						+ "(SELECT 1 FROM AD_ELEMENT e "
 						+ " WHERE UPPER(c.ColumnName)=UPPER(e.ColumnName))"
 						+ " AND c.isActive = 'Y'";
-				PreparedStatement pstmt = DB.prepareStatement(sql, get_TrxName());
-				ResultSet rs = pstmt.executeQuery();
-				while (rs.next()) {
-					String columnName = rs.getString(1);
-					String name = rs.getString(2);
-					String desc = rs.getString(3);
-					String help = rs.getString(4);
-					String entityType = rs.getString(5);
-					M_Element elem = new M_Element(getCtx(), columnName, entityType, get_TrxName());
-					elem.setDescription(desc);
-					elem.setHelp(help);
-					elem.setPrintName(name);
-					elem.saveEx();
-				}
-				pstmt.close();
-				rs.close();
-				trx.commit(true);
+				Trx.run(transactionName -> {
+					DB.runResultSet(transactionName, columnsSql, null, resultSet -> {
+						String columnName = resultSet.getString(1);
+						String name = resultSet.getString(2);
+						String desc = resultSet.getString(3);
+						String help = resultSet.getString(4);
+						String entityType = resultSet.getString(5);
+						M_Element elem = new M_Element(getCtx(), columnName, entityType, transactionName);
+						elem.setDescription(desc);
+						elem.setHelp(help);
+						elem.setPrintName(name);
+						elem.saveEx();
+					});
+				});
 				// Create Elements for Process Parameters which are centrally maintained
-				sql = "SELECT DISTINCT ColumnName, Name, Description, Help, EntityType "
+				String parametersSql = "SELECT DISTINCT ColumnName, Name, Description, Help, EntityType "
 						+ " FROM	AD_PROCESS_PARA p "
 						+ " WHERE NOT EXISTS "
 						+ " (SELECT 1 FROM AD_ELEMENT e "
 						+ " WHERE UPPER(p.ColumnName)=UPPER(e.ColumnName))"
 						+ " AND p.isCentrallyMaintained = 'Y'"
 						+ " AND p.isActive = 'Y'";
-				pstmt = DB.prepareStatement(sql, get_TrxName());
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					String columnName = rs.getString(1);
-					String name = rs.getString(2);
-					String desc = rs.getString(3);
-					String help = rs.getString(4);
-					String entityType = rs.getString(5);
-					//TODO AD_SEQ system !!!
-					M_Element elem = new M_Element(getCtx(), columnName, entityType, get_TrxName());
-					elem.setDescription(desc);
-					elem.setHelp(help);
-					elem.setPrintName(name);
-					elem.saveEx();
-				}
-				pstmt.close();
-				rs.close();
-				trx.commit(true);
+				Trx.run(transactionName -> {
+					DB.runResultSet(transactionName, parametersSql, null, resultSet -> {
+						String columnName = resultSet.getString(1);
+						String name = resultSet.getString(2);
+						String desc = resultSet.getString(3);
+						String help = resultSet.getString(4);
+						String entityType = resultSet.getString(5);
+						//TODO AD_SEQ system !!!
+						M_Element elem = new M_Element(getCtx(), columnName, entityType, transactionName);
+						elem.setDescription(desc);
+						elem.setHelp(help);
+						elem.setPrintName(name);
+						elem.saveEx();
+					});
+				});
 			}
 
 
@@ -122,19 +108,14 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" WHERE	l.IsActive = 'Y' AND l.IsSystemLanguage = 'Y'"
 				+" AND	AD_Element_ID || AD_LANGUAGE NOT IN "
 				+" (SELECT AD_Element_ID || AD_LANGUAGE FROM AD_ELEMENT_TRL)";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			log.info("Creating link from Element to Column");
 			sql="UPDATE	AD_COLUMN c"
 				+" SET		AD_Element_id =" 
 				+" 	(SELECT AD_Element_ID FROM AD_ELEMENT e" 
 				+" 	WHERE UPPER(c.ColumnName)=UPPER(e.ColumnName))"
 				+" 	WHERE AD_Element_ID IS NULL";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
+			runUpdate(sql);
 
 			if (isDeletingUnusedElement()) {
 				log.info("Deleting unused Elements");
@@ -145,19 +126,13 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 						+ " 	(SELECT 1 FROM AD_COLUMN c WHERE UPPER(e.ColumnName)=UPPER(c.ColumnName))"
 						+ " 	AND NOT EXISTS"
 						+ " 	(SELECT 1 FROM AD_PROCESS_PARA p WHERE UPPER(e.ColumnName)=UPPER(p.ColumnName)))";
-				no = DB.executeUpdate(sql, false, get_TrxName());
-				log.info("  rows deleted: " + no);
-				trx.commit(true);
-
-
+				runUpdate(sql);
 				sql = "DELETE	AD_ELEMENT e"
 						+ " 	WHERE AD_Element_ID >= 1000000 AND NOT EXISTS"
 						+ " 	(SELECT 1 FROM AD_COLUMN c WHERE UPPER(e.ColumnName)=UPPER(c.ColumnName))"
 						+ " 	AND NOT EXISTS"
 						+ " 	(SELECT 1 FROM AD_PROCESS_PARA p WHERE UPPER(e.ColumnName)=UPPER(p.ColumnName))";
-				no = DB.executeUpdate(sql, false, get_TrxName());
-				log.info("  rows deleted: " + no);
-				trx.commit(true);
+				runUpdate(sql);
 			}
 
 			//	Columns
@@ -171,10 +146,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" 				WHERE c.AD_Element_ID=e.AD_Element_ID"
 				+" 				  AND (c.ColumnName <> e.ColumnName OR c.Name <> e.Name "
 				+" 					OR NVL(c.Description,' ') <> NVL(e.Description,' ') OR NVL(c.Help,' ') <> NVL(e.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Fields should now be synchronized
 			log.info("Synchronize Field");
 			sql=" 	UPDATE AD_FIELD f"
@@ -188,10 +160,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" 				WHERE f.AD_Column_ID=c.AD_Column_ID"
 				+" 				  AND c.AD_Element_ID=e.AD_Element_ID AND c.AD_Process_ID IS NULL"
 				+" 				  AND (f.Name <> e.Name OR NVL(f.Description,' ') <> NVL(e.Description,' ') OR NVL(f.Help,' ') <> NVL(e.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Field Translations
 			log.info("Synchronize Field Translations");
 			sql="UPDATE AD_FIELD_TRL trl"
@@ -215,10 +184,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+"		  AND trl.AD_LANGUAGE=e.AD_LANGUAGE"
 				+"		  AND f.IsCentrallyMaintained='Y' AND f.IsActive='Y'"
 				+"		  AND (trl.Name <> e.Name OR NVL(trl.Description,' ') <> NVL(e.Description,' ') OR NVL(trl.Help,' ') <> NVL(e.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Fields should now be synchronized
 			log.info("Synchronize PO Field");
 			sql="UPDATE AD_FIELD f"
@@ -239,10 +205,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" 		WHERE f.AD_Tab_ID=t.AD_Tab_ID"
 				+" 		  AND t.AD_Window_ID=w.AD_Window_ID"
 				+" 		  AND w.IsSOTrx='N')";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Field Translations
 			log.info("Synchronize PO Field Translations");
 			sql=" UPDATE AD_FIELD_TRL trl"
@@ -272,10 +235,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" 	  AND f.AD_Tab_ID=t.AD_Tab_ID"
 				+" 	  AND t.AD_Window_ID=w.AD_Window_ID"
 				+" 	  AND w.IsSOTrx='N')";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Fields from Process
 			log.info("Synchronize Field from Process");
 			sql="UPDATE AD_FIELD f"
@@ -290,10 +250,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND EXISTS (SELECT 1 FROM AD_PROCESS p, AD_COLUMN c"
 				+" 		WHERE c.AD_Process_ID=p.AD_Process_ID AND f.AD_Column_ID=c.AD_Column_ID"
 				+" 		AND (f.Name<>p.Name OR NVL(f.Description,' ')<>NVL(p.Description,' ') OR NVL(f.Help,' ')<>NVL(p.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Field Translations from Process
 			log.info("Synchronize Field Trl from Process Trl");
 			sql="UPDATE AD_FIELD_TRL trl"
@@ -315,10 +272,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" 		AND f.AD_Field_ID=trl.AD_Field_ID AND p.AD_LANGUAGE=trl.AD_LANGUAGE"
 				+" 		AND f.IsCentrallyMaintained='Y' AND f.IsActive='Y'"
 				+" 		AND (trl.Name<>p.Name OR NVL(trl.Description,' ')<>NVL(p.Description,' ') OR NVL(trl.Help,' ')<>NVL(p.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-			
+			runUpdate(sql);
 			//Browse Fields should now be synchronized
 			log.info("Synchronize Browse Field");
 			sql=" 	UPDATE AD_BROWSE_FIELD f"
@@ -331,10 +285,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" 	 AND EXISTS (SELECT 1 FROM AD_ELEMENT e "
 				+" 				  WHERE f.AD_Element_ID=e.AD_Element_ID "
 				+" 				  AND (f.Name <> e.Name OR NVL(f.Description,' ') <> NVL(e.Description,' ') OR NVL(f.Help,' ') <> NVL(e.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Browse Field Translations
 			log.info("Synchronize Browse Field Translations");
 			sql="UPDATE AD_BROWSE_FIELD_TRL trl"
@@ -357,10 +308,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+"		  AND trl.AD_LANGUAGE=e.AD_LANGUAGE"
 				+"		  AND f.IsCentrallyMaintained='Y' AND f.IsActive='Y'"
 				+"		  AND (trl.Name <> e.Name OR NVL(trl.Description,' ') <> NVL(e.Description,' ') OR NVL(trl.Help,' ') <> NVL(e.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Sync Parameter ColumnName
 			sql="UPDATE	AD_PROCESS_PARA f"
 				+" SET	ColumnName = (SELECT e.ColumnName FROM AD_ELEMENT e"
@@ -370,19 +318,13 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND EXISTS (SELECT 1 FROM AD_ELEMENT e"
 				+" WHERE UPPER(e.ColumnName)=UPPER(f.ColumnName)"
 				+" AND e.ColumnName<>f.ColumnName)";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Parameter Fields
 			sql="UPDATE	AD_PROCESS_PARA p"
 				+" SET	IsCentrallyMaintained = 'N'"
 				+" WHERE	IsCentrallyMaintained <> 'N'"
-				+" AND NOT EXISTS (SELECT 1 FROM AD_ELEMENT e WHERE p.ColumnName=e.ColumnName)"; 
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+				+" AND NOT EXISTS (SELECT 1 FROM AD_ELEMENT e WHERE p.ColumnName=e.ColumnName)";
+			runUpdate(sql);
 			//	Parameter Fields
 			log.info("Synchronize Process Parameter");
 			sql="UPDATE AD_PROCESS_PARA f"
@@ -397,10 +339,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND EXISTS (SELECT 1 FROM AD_ELEMENT e"
 				+" 		WHERE e.ColumnName=f.ColumnName"
 				+" 		  AND (f.Name <> e.Name OR NVL(f.Description,' ') <> NVL(e.Description,' ') OR NVL(f.Help,' ') <> NVL(e.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Parameter Translations
 			log.info("Synchronize Process Parameter Trl");
 			sql="UPDATE AD_PROCESS_PARA_TRL trl"
@@ -422,10 +361,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" 			  AND e.ColumnName=f.ColumnName AND f.AD_Process_Para_ID=trl.AD_Process_Para_ID"
 				+" 			  AND f.IsCentrallyMaintained='Y' AND f.IsActive='Y'"
 				+" 			  AND (trl.Name <> et.Name OR NVL(trl.Description,' ') <> NVL(et.Description,' ') OR NVL(trl.Help,' ') <> NVL(et.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Workflow Node - Window
 			log.info("Synchronize Workflow Node from Window");
 			sql="UPDATE AD_WF_NODE n"
@@ -439,10 +375,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+"  AND EXISTS  (SELECT 1 FROM AD_WINDOW w"
 				+" 		WHERE w.AD_Window_ID=n.AD_Window_ID"
 				+" 		  AND (w.Name <> n.Name OR NVL(w.Description,' ') <> NVL(n.Description,' ') OR NVL(w.Help,' ') <> NVL(n.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Workflow Translations - Window
 			log.info("Synchronize Workflow Node Trl from Window Trl");
 			sql="UPDATE AD_WF_NODE_TRL trl"
@@ -459,10 +392,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" 		WHERE trl.AD_WF_Node_ID=n.AD_WF_Node_ID AND n.AD_Window_ID=t.AD_Window_ID"
 				+" 		  AND trl.AD_LANGUAGE=t.AD_LANGUAGE AND n.IsCentrallyMaintained='Y' AND n.IsActive='Y'"
 				+" 		  AND (trl.Name <> t.Name OR NVL(trl.Description,' ') <> NVL(t.Description,' ') OR NVL(trl.Help,' ') <> NVL(t.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Workflow Node - Form
 			log.info("Synchronize Workflow Node from Form");
 			sql="UPDATE AD_WF_NODE n"
@@ -473,10 +403,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND EXISTS  (SELECT 1 FROM AD_FORM f"
 				+" 		WHERE f.AD_Form_ID=n.AD_Form_ID"
 				+" 		  AND (f.Name <> n.Name OR NVL(f.Description,' ') <> NVL(n.Description,' ') OR NVL(f.Help,' ') <> NVL(n.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Workflow Translations - Form
 			log.info("Synchronize Workflow Node Trl from Form Trl");
 			sql=" UPDATE AD_WF_NODE_TRL trl"
@@ -488,10 +415,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" 		WHERE trl.AD_WF_Node_ID=n.AD_WF_Node_ID AND n.AD_Form_ID=t.AD_Form_ID"
 				+" 		  AND trl.AD_LANGUAGE=t.AD_LANGUAGE AND n.IsCentrallyMaintained='Y' AND n.IsActive='Y'"
 				+" 		  AND (trl.Name <> t.Name OR NVL(trl.Description,' ') <> NVL(t.Description,' ') OR NVL(trl.Help,' ') <> NVL(t.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Workflow Node - Report
 			log.info("Synchronize Workflow Node from Process");
 			sql="UPDATE AD_WF_NODE n"
@@ -502,10 +426,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND EXISTS  (SELECT 1 FROM AD_PROCESS f"
 				+" 		WHERE f.AD_Process_ID=n.AD_Process_ID"
 				+" 		  AND (f.Name <> n.Name OR NVL(f.Description,' ') <> NVL(n.Description,' ') OR NVL(f.Help,' ') <> NVL(n.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Workflow Translations - Form
 			log.info("Synchronize Workflow Node Trl from Process Trl");
 			sql="UPDATE AD_WF_NODE_TRL trl"
@@ -517,10 +438,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" WHERE trl.AD_WF_Node_ID=n.AD_WF_Node_ID AND n.AD_Process_ID=t.AD_Process_ID"
 				+"  AND trl.AD_LANGUAGE=t.AD_LANGUAGE AND n.IsCentrallyMaintained='Y' AND n.IsActive='Y'"
 				+"  AND (trl.Name <> t.Name OR NVL(trl.Description,' ') <> NVL(t.Description,' ') OR NVL(trl.Help,' ') <> NVL(t.Help,' ')))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//  Need centrally maintained flag here!
 			log.info("Synchronize PrintFormatItem Name from Element");
 			sql="UPDATE AD_PRINTFORMATITEM pfi"
@@ -536,10 +454,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND e.Name<>pfi.Name)"
 				+" AND EXISTS (SELECT 1 FROM AD_CLIENT" 
 				+" WHERE AD_Client_ID=pfi.AD_Client_ID AND IsMultiLingualDocument='Y')";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			log.info("Synchronize PrintFormatItem PrintName from Element");
 			sql="UPDATE AD_PRINTFORMATITEM pfi"
 				+" SET PrintName = (SELECT e.PrintName "
@@ -557,10 +472,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND pf.IsForm='N' AND IsTableBased='Y')"
 				+" AND EXISTS (SELECT 1 FROM AD_CLIENT "
 				+" WHERE AD_Client_ID=pfi.AD_Client_ID AND IsMultiLingualDocument='Y')";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			log.info("Synchronize PrintFormatItem Trl from Element Trl (Multi-Lingual)");
 			sql="UPDATE AD_PRINTFORMATITEM_TRL trl"
 				+" SET PrintName = (SELECT e.PrintName" 
@@ -582,10 +494,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND pf.IsForm='N' AND IsTableBased='Y')"
 				+" AND EXISTS (SELECT 1 FROM AD_CLIENT "
 				+" WHERE AD_Client_ID=trl.AD_Client_ID AND IsMultiLingualDocument='Y')";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			log.info("Synchronize PrintFormatItem Trl (Not Multi-Lingual)");
 			sql="UPDATE AD_PRINTFORMATITEM_TRL trl"
 				+" SET PrintName = (SELECT pfi.PrintName" 
@@ -601,10 +510,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND pf.IsForm='N' AND pf.IsTableBased='Y')"
 				+" AND EXISTS (SELECT 1 FROM AD_CLIENT "
 				+" WHERE AD_Client_ID=trl.AD_Client_ID AND IsMultiLingualDocument='N')";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			log.info("Reset PrintFormatItem Trl where not used in base table");
 			sql="UPDATE AD_PRINTFORMATITEM_TRL trl"
 				+" SET PrintName = NULL"
@@ -614,19 +520,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" WHERE pfi.AD_PrintFormatItem_ID=trl.AD_PrintFormatItem_ID" 
 				+" AND pfi.IsCentrallyMaintained='Y'"
 				+" AND (LENGTH (pfi.PrintName) = 0 OR pfi.PrintName IS NULL))";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
-			/**
-				SELECT 	e.PrintName "Element", pfi.PrintName "FormatItem", trl.AD_Language, trl.PrintName "Trl"
-				FROM 	AD_Element e
-				  INNER JOIN AD_Column c ON (e.AD_Element_ID=c.AD_Element_ID)
-				  INNER JOIN AD_PrintFormatItem pfi ON (c.AD_Column_ID=pfi.AD_Column_ID)
-				  INNER JOIN AD_PrintFormatItem_Trl trl ON (pfi.AD_PrintFormatItem_ID=trl.AD_PrintFormatItem_ID)
-				WHERE pfi.AD_PrintFormatItem_ID=?
-			 **/
-
+			runUpdate(sql);
 			//	Sync Names - Window
 			log.info("Synchronizing Menu with Window");
 			sql="UPDATE	AD_MENU m"
@@ -636,10 +530,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+"  AND m.Action = 'W'"
 				+"  AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				;
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			sql="UPDATE	AD_MENU_TRL mt"
 				+" SET		Name = (SELECT wt.Name FROM AD_WINDOW_TRL wt, AD_MENU m "
 				+" WHERE mt.AD_Menu_ID=m.AD_Menu_ID AND m.AD_Window_ID=wt.AD_Window_ID "
@@ -657,10 +548,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action = 'W'"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				+")";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			// Sync Names - Process
 			log.info("Synchronizing Menu with Processes");
 			sql="UPDATE	AD_MENU m"
@@ -670,10 +558,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action IN ('R', 'P')"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				;
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			sql="UPDATE	AD_MENU_TRL mt"
 				+" SET		Name = (SELECT pt.Name FROM AD_PROCESS_TRL pt, AD_MENU m"
 				+" WHERE mt.AD_Menu_ID=m.AD_Menu_ID AND m.AD_Process_ID=pt.AD_Process_ID"
@@ -691,10 +576,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action IN ('R', 'P')"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				+")";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Sync Names = Form
 			log.info("Synchronizing Menu with Forms");
 			sql="UPDATE	AD_MENU m"
@@ -704,10 +586,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action = 'X'"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				;
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			sql="UPDATE	AD_MENU_TRL mt"
 				+" SET		Name = (SELECT ft.Name FROM AD_FORM_TRL ft, AD_MENU m"
 				+" WHERE mt.AD_Menu_ID=m.AD_Menu_ID AND m.AD_Form_ID=ft.AD_Form_ID"
@@ -725,10 +604,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action = 'X'"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				+")";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Sync Names - Workflow
 			log.info("Synchronizing Menu with Workflows");
 			sql="UPDATE	AD_MENU m"
@@ -738,10 +614,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action = 'F'"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				;
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			sql="UPDATE	AD_MENU_TRL mt"
 				+" SET		Name = (SELECT pt.Name FROM AD_WORKFLOW_TRL pt, AD_MENU m"
 				+" WHERE mt.AD_Menu_ID=m.AD_Menu_ID AND m.AD_Workflow_ID=pt.AD_Workflow_ID"
@@ -759,10 +632,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action = 'F'"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				+")";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//	Sync Names = Task
 			log.info("Synchronizing Menu with Tasks");
 			sql="UPDATE	AD_MENU m"
@@ -772,10 +642,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action = 'T'"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				;
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			sql="UPDATE	AD_MENU_TRL mt"
 				+" SET		Name = (SELECT ft.Name FROM AD_TASK_TRL ft, AD_MENU m"
 				+" WHERE mt.AD_Menu_ID=m.AD_Menu_ID AND m.AD_Task_ID=ft.AD_Task_ID"
@@ -793,11 +660,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action = 'T'"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				+")";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-			
-			
+			runUpdate(sql);
 			//	Sync Names = Form
 			log.info("Synchronizing Menu with Forms");
 			sql="UPDATE	AD_MENU m"
@@ -807,10 +670,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action = 'S'"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				;
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			sql="UPDATE	AD_MENU_TRL mt"
 				+" SET		Name = (SELECT ft.Name FROM AD_Browse_Trl ft, AD_MENU m"
 				+" WHERE mt.AD_Menu_ID=m.AD_Menu_ID AND m.AD_Browse_ID=ft.AD_Browse_ID"
@@ -828,10 +688,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND m.Action = 'S'"
 				+" AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
 				+")";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//  Column Name + Element
 			log.info("Synchronizing Column with Element");
 			sql="UPDATE AD_COLUMN c"
@@ -842,8 +699,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" (SELECT 1 FROM AD_ELEMENT e "
 				+" WHERE c.AD_Element_ID=e.AD_Element_ID"
 				+" AND c.Name<>e.Name)";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
+			runUpdate(sql);
 			sql="UPDATE AD_COLUMN_TRL ct"
 				+" SET Name = (SELECT e.Name"
 				+" FROM AD_COLUMN c INNER JOIN AD_ELEMENT_TRL e ON (c.AD_Element_ID=e.AD_Element_ID)"
@@ -852,10 +708,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" (SELECT 1 FROM AD_COLUMN c INNER JOIN AD_ELEMENT_TRL e ON (c.AD_Element_ID=e.AD_Element_ID)"
 				+" WHERE ct.AD_Column_ID=c.AD_Column_ID AND ct.AD_LANGUAGE=e.AD_LANGUAGE"
 				+" AND ct.Name<>e.Name)";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//  Table Name + Element
 			log.info("Synchronizing Table with Element");
 			sql="UPDATE AD_TABLE t "
@@ -864,10 +717,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+"WHERE EXISTS (SELECT 1 FROM AD_ELEMENT e " 
 				+"WHERE t.TableName||'_ID'=e.ColumnName "
 				+"AND t.Name<>e.Name)";
-			no = DB.executeUpdate(sql, false, get_TrxName());
-			trx.commit(true);
-
-			log.info("  rows updated: " +no);
+			runUpdate(sql);
 			sql="UPDATE AD_TABLE_TRL tt" 
 				+" SET Name = (SELECT e.Name "
 				+" FROM AD_TABLE t INNER JOIN AD_ELEMENT ex ON (t.TableName||'_ID'=ex.ColumnName)"
@@ -878,10 +728,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" INNER JOIN AD_ELEMENT_TRL e ON (ex.AD_Element_ID=e.AD_Element_ID)"
 				+" WHERE tt.AD_Table_ID=t.AD_Table_ID AND tt.AD_LANGUAGE=e.AD_LANGUAGE"
 				+" AND tt.Name<>e.Name)";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  trl rows updated: "+no);
-			trx.commit(true);
-
+			runUpdate(sql);
 			//  Trl Table Name + Element
 			sql="UPDATE AD_TABLE t"
 				+" SET (Name,Description) = (SELECT e.Name||' Trl', e.Description "
@@ -891,10 +738,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" AND EXISTS (SELECT 1 FROM AD_ELEMENT e "
 				+" WHERE SUBSTR(t.TableName,1,LENGTH(t.TableName)-4)||'_ID'=e.ColumnName"
 				+" AND t.Name<>e.Name)";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  trl rows updated: "+no);
-			trx.commit(true);
-			
+			runUpdate(sql);
 			sql=" UPDATE AD_TABLE_TRL tt"
 				+" SET Name = (SELECT e.Name || ' **'"
 				+" FROM AD_TABLE t INNER JOIN AD_ELEMENT ex ON (SUBSTR(t.TableName,1,LENGTH(t.TableName)-4)||'_ID'=ex.ColumnName)"
@@ -906,10 +750,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 				+" WHERE tt.AD_Table_ID=t.AD_Table_ID AND tt.AD_LANGUAGE=e.AD_LANGUAGE"
 				+" AND t.TableName LIKE '%_Trl'"
 				+" AND tt.Name<>e.Name)";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  trl rows updated: "+no);
-			trx.commit(true);
-			
+			runUpdate(sql);
 			//	FR [ 237 ]
 			//	Copy parent Print Name
 			log.info("Synchronizing Report View with Table");
@@ -926,9 +767,7 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 					+"				WHERE rv.AD_ReportView_ID = rvt.AD_ReportView_ID "
 					+" 				AND tt.Name <> COALESCE(rvt.PrintName, NULL)"
 					+"				AND rv.IsCentrallyMaintained = 'Y') ";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  trl rows updated: "+no);
-			trx.commit(true);
+			runUpdate(sql);
 			//	For Translation
 			log.info("Synchronizing Report View with Table");
 			sql=" UPDATE AD_ReportView_Trl rvt "
@@ -962,16 +801,19 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 					+"				WHERE rv.AD_ReportView_ID = rvt.AD_ReportView_ID AND tt.AD_Language = rvt.AD_Language "
 					+" 				AND tt.Name<>rvt.Name"
 					+"				AND rv.IsCentrallyMaintained = 'Y') ";
-			no = DB.executeUpdate(sql, false, get_TrxName());	  	
-			log.info("  trl rows updated: "+no);
-			trx.commit(true);
-			
+			runUpdate(sql);
 		} catch (Exception e) {
 			log.log (Level.SEVERE, "@Failed@: "+e.getLocalizedMessage(), e);
 			throw e;
 		}
-
 		return "@OK@";
+	}
+
+	private void runUpdate(String sql) {
+		Trx.run(transactionName -> {
+			int no = DB.executeUpdate(sql, false, get_TrxName());
+			log.info("trl rows updated: " + no);
+		});
 	}
 
 	//add main method, preparing for nightly build

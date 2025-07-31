@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="11140_Add_DB_Views_for_InOutBound_Order" ReleaseNo="0.9.0" SeqNo="11140">
+    <Step DBType="ALL" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_FO_Partner_And_Product
+        AS SELECT io.AD_Client_ID,
+        io.AD_Org_ID,
+        io.IsActive,
+        pc.M_Product_Category_ID,
+        pg.M_Product_Group_ID,
+        mpc.M_Product_Class_ID,
+        pcl.M_Product_Classification_ID,
+        isp.M_Industry_Sector_ID,
+        mg.M_Material_Group_ID,
+        mt.M_Material_Type_ID,
+        mpg.M_Purchase_Group_ID,
+        sg.M_Sales_Group_ID,
+        o.C_BPartner_ID,
+        iol.M_Product_ID,
+        io.WM_InOutbound_ID,
+        p.UnitsPerPallet,
+        FLOOR(
+        CASE
+        WHEN COALESCE(p.UnitsPerPallet, 0::NUMERIC) > 0::NUMERIC THEN SUM(iol.MovementQty) / p.UnitsPerPallet
+        ELSE 0::NUMERIC
+        END) AS QtyBatchs,
+        SUM(iol.MovementQty) - FLOOR(
+        CASE
+        WHEN COALESCE(p.UnitsPerPallet, 0::NUMERIC) > 0::NUMERIC THEN SUM(iol.MovementQty) / p.UnitsPerPallet
+        ELSE 0::NUMERIC
+        END) * COALESCE(p.UnitsPerPallet, 0::NUMERIC) AS PickedQty,
+        SUM(iol.MovementQty) AS Qty,
+        SUM(iol.MovementQty * p.Weight) AS Weight,
+        SUM(iol.MovementQty * p.Volume) AS Volume,
+        iol.C_UOM_ID,
+        o.C_Order_ID,
+        i.DocumentNo,
+        iol.C_Invoice_ID
+        FROM WM_InOutbound io
+        JOIN WM_InOutboundLine iol ON iol.WM_InOutbound_ID = io.WM_InOutbound_ID
+        JOIN c_order o ON o.c_order_id = iol.c_order_id
+        JOIN c_bpartner bp ON bp.C_BPartner_ID = o.C_BPartner_ID
+        JOIN m_product p ON p.M_Product_ID = iol.M_Product_ID
+        JOIN m_product_category pc ON pc.m_product_category_id = p.m_product_category_id
+        LEFT JOIN m_product_group pg ON pg.m_product_group_id = p.m_product_group_id
+        LEFT JOIN m_product_class mpc ON mpc.m_product_class_id = p.m_product_class_id
+        LEFT JOIN m_product_classification pcl ON pcl.m_product_classification_id = p.m_product_classification_id
+        LEFT JOIN m_industry_sector isp ON isp.m_industry_sector_id = p.m_industry_sector_id
+        LEFT JOIN m_material_group mg ON mg.m_material_group_id = p.m_material_group_id
+        LEFT JOIN m_material_type mt ON mt.m_material_type_id = p.m_material_type_id
+        LEFT JOIN m_purchase_group mpg ON mpg.m_purchase_group_id = p.m_purchase_group_id
+        LEFT JOIN m_sales_group sg ON sg.m_sales_group_id = p.m_sales_group_id
+        JOIN C_Invoice i ON (i.C_Invoice_ID = iol.C_Invoice_ID)
+        GROUP BY io.AD_Client_ID, io.AD_Org_ID, io.IsActive, pc.M_Product_Category_ID, pg.M_Product_Group_ID, mpc.M_Product_Class_ID, pcl.M_Product_Classification_ID,
+        isp.M_Industry_Sector_ID, mg.M_Material_Group_ID, mt.M_Material_Type_ID, mpg.M_Purchase_Group_ID, sg.M_Sales_Group_ID,
+        o.C_BPartner_ID, iol.C_UOM_ID, iol.M_Product_ID, io.WM_InOutbound_ID, p.UnitsPerPallet, o.C_Order_ID, i.DocumentNo, iol.C_Invoice_ID
+        ;
+      </SQLStatement>
+      <RollbackStatement>
+        DROP VIEW RV_FO_Partner_And_Product
+      </RollbackStatement>
+    </Step>
+    <Step DBType="ALL" Parse="N" SeqNo="20" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_FO_Product_Grouping
+        AS SELECT io.AD_Client_ID,
+        io.AD_Org_ID,
+        io.IsActive,
+        pc.M_Product_Category_ID,
+        pg.M_Product_Group_ID,
+        mpc.M_Product_Class_ID,
+        pcl.M_Product_Classification_ID,
+        isp.M_Industry_Sector_ID,
+        mg.M_Material_Group_ID,
+        mt.M_Material_Type_ID,
+        mpg.M_Purchase_Group_ID,
+        sg.M_Sales_Group_ID,
+        io.WM_InOutbound_ID,
+        SUM(iol.MovementQty) - FLOOR(
+        CASE
+        WHEN COALESCE(p.UnitsPerPallet, 0::NUMERIC) > 0::NUMERIC THEN SUM(iol.MovementQty) / p.UnitsPerPallet
+        ELSE 0::NUMERIC
+        END) * COALESCE(p.UnitsPerPallet, 0::NUMERIC) AS PickedQty,
+        SUM(iol.MovementQty) AS Qty,
+        SUM(iol.MovementQty * p.Weight) AS Weight,
+        SUM(iol.MovementQty * p.Volume) AS Volume,
+        iol.C_UOM_ID
+        FROM WM_InOutbound io
+        JOIN WM_InOutboundLine iol ON iol.WM_InOutbound_ID = io.WM_InOutbound_ID
+        JOIN c_order o ON o.c_order_id = iol.c_order_id
+        JOIN c_bpartner bp ON bp.C_BPartner_ID = o.C_BPartner_ID
+        JOIN m_product p ON p.M_Product_ID = iol.M_Product_ID
+        JOIN m_product_category pc ON pc.m_product_category_id = p.m_product_category_id
+        LEFT JOIN m_product_group pg ON pg.m_product_group_id = p.m_product_group_id
+        LEFT JOIN m_product_class mpc ON mpc.m_product_class_id = p.m_product_class_id
+        LEFT JOIN m_product_classification pcl ON pcl.m_product_classification_id = p.m_product_classification_id
+        LEFT JOIN m_industry_sector isp ON isp.m_industry_sector_id = p.m_industry_sector_id
+        LEFT JOIN m_material_group mg ON mg.m_material_group_id = p.m_material_group_id
+        LEFT JOIN m_material_type mt ON mt.m_material_type_id = p.m_material_type_id
+        LEFT JOIN m_purchase_group mpg ON mpg.m_purchase_group_id = p.m_purchase_group_id
+        LEFT JOIN m_sales_group sg ON sg.m_sales_group_id = p.m_sales_group_id
+        GROUP BY io.AD_Client_ID, io.AD_Org_ID, io.IsActive,pc.M_Product_Category_ID, pg.M_Product_Group_ID, mpc.M_Product_Class_ID, pcl.M_Product_Classification_ID, isp.M_Industry_Sector_ID,
+        mg.M_Material_Group_ID, mt.M_Material_Type_ID, mpg.M_Purchase_Group_ID, sg.M_Sales_Group_ID, iol.C_UOM_ID, io.WM_InOutbound_ID, p.UnitsPerPallet, o.C_Order_ID
+        ;
+      </SQLStatement>
+      <RollbackStatement>
+        DROP VIEW RV_FO_Product_Grouping
+      </RollbackStatement>
+    </Step>
+    <Step DBType="ALL" Parse="N" SeqNo="30" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW adempiere.RV_FO_Products
+        AS SELECT io.AD_Client_ID,
+        io.AD_Org_ID,
+        io.IsActive,
+        pc.M_Product_Category_ID,
+        pg.M_Product_Group_ID,
+        mpc.M_Product_Class_ID,
+        pcl.M_Product_Classification_ID,
+        isp.M_Industry_Sector_ID,
+        mg.M_Material_Group_ID,
+        mt.M_Material_Type_ID,
+        mpg.M_Purchase_Group_ID,
+        sg.M_Sales_Group_ID,
+        iol.M_Product_ID,
+        io.WM_InOutbound_ID,
+        p.UnitsPerPallet,
+        FLOOR(
+        CASE
+        WHEN COALESCE(p.UnitsPerPallet, 0::NUMERIC) > 0::NUMERIC THEN SUM(iol.MovementQty) / p.UnitsPerPallet
+        ELSE 0::NUMERIC
+        END) AS QtyBatchs,
+        SUM(iol.MovementQty) - FLOOR(
+        CASE
+        WHEN COALESCE(p.UnitsPerPallet, 0::NUMERIC) > 0::NUMERIC THEN SUM(iol.MovementQty) / p.UnitsPerPallet
+        ELSE 0::NUMERIC
+        END) * COALESCE(p.UnitsPerPallet, 0::NUMERIC) AS PickedQty,
+        SUM(iol.MovementQty) AS Qty,
+        SUM(iol.MovementQty * p.Weight) AS Weight,
+        SUM(iol.MovementQty * p.Volume) AS Volume,
+        iol.C_UOM_ID,
+        iol.M_Locator_ID,
+        iol.M_LocatorTo_ID
+        FROM adempiere.WM_InOutbound io
+        JOIN adempiere.WM_InOutboundLine iol ON iol.WM_InOutbound_ID = io.WM_InOutbound_ID
+        JOIN adempiere.m_product p ON p.M_Product_ID = iol.M_Product_ID
+        LEFT JOIN m_product_category pc ON pc.m_product_category_id = p.m_product_category_id
+        LEFT JOIN m_product_group pg ON pg.m_product_group_id = p.m_product_group_id
+        LEFT JOIN m_product_class mpc ON mpc.m_product_class_id = p.m_product_class_id
+        LEFT JOIN m_product_classification pcl ON pcl.m_product_classification_id = p.m_product_classification_id
+        LEFT JOIN m_industry_sector isp ON isp.m_industry_sector_id = p.m_industry_sector_id
+        LEFT JOIN m_material_group mg ON mg.m_material_group_id = p.m_material_group_id
+        LEFT JOIN m_material_type mt ON mt.m_material_type_id = p.m_material_type_id
+        LEFT JOIN m_purchase_group mpg ON mpg.m_purchase_group_id = p.m_purchase_group_id
+        LEFT JOIN m_sales_group sg ON sg.m_sales_group_id = p.m_sales_group_id
+        GROUP BY pc.M_Product_Category_ID, pg.M_Product_Group_ID, mpc.M_Product_Class_ID, pcl.M_Product_Classification_ID, isp.M_Industry_Sector_ID,
+        mg.M_Material_Group_ID, mt.M_Material_Type_ID, mpg.M_Purchase_Group_ID, sg.M_Sales_Group_ID,iol.M_Product_ID, io.AD_Client_ID, io.AD_Org_ID,
+        io.IsActive, iol.C_UOM_ID, io.WM_InOutbound_ID, p.UnitsPerPallet, iol.M_Locator_ID, iol.M_LocatorTo_ID
+        ORDER BY iol.M_Product_ID
+        ;
+      </SQLStatement>
+      <RollbackStatement>
+        DROP VIEW RV_FO_Products
+      </RollbackStatement>
+    </Step>
+    <Step DBType="ALL" Parse="N" SeqNo="40" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_FO_Dispatch_Route
+        AS SELECT io.AD_Client_ID,
+        io.AD_Org_ID,
+        io.IsActive,
+        o.C_BPartner_ID,
+        io.WM_InOutbound_ID,
+        p.UnitsPerPallet,
+        FLOOR(
+        CASE
+        WHEN COALESCE(p.UnitsPerPallet, 0::NUMERIC) > 0::NUMERIC THEN SUM(iol.MovementQty) / p.UnitsPerPallet
+        ELSE 0::NUMERIC
+        END) AS QtyBatchs,
+        SUM(iol.MovementQty) - FLOOR(
+        CASE
+        WHEN COALESCE(p.UnitsPerPallet, 0::NUMERIC) > 0::NUMERIC THEN SUM(iol.MovementQty) / p.UnitsPerPallet
+        ELSE 0::NUMERIC
+        END) * COALESCE(p.UnitsPerPallet, 0::NUMERIC) AS PickedQty,
+        SUM(iol.MovementQty) AS Qty,
+        SUM(iol.MovementQty * p.Weight) AS Weight,
+        SUM(iol.MovementQty * p.Volume) AS Volume,
+        iol.C_UOM_ID,
+        o.C_Order_ID,
+        COALESCE(loc.Address1, '') || COALESCE(', ' || loc.Address2, '') || COALESCE(', ' || loc.Address3, '') || COALESCE(', ' || loc.Address4, '') DirectionName,
+        loc.City,
+        i.DocumentNo,
+        iol.C_Invoice_ID,
+        i.PaymentRule,
+        i.GrandTotal,
+        NULL::TEXT AS Comments
+        FROM WM_InOutbound io
+        JOIN WM_InOutboundLine iol ON iol.WM_InOutbound_ID = io.WM_InOutbound_ID
+        JOIN c_order o ON o.c_order_id = iol.c_order_id
+        JOIN c_bpartner bp ON bp.C_BPartner_ID = o.C_BPartner_ID
+        JOIN m_product p ON p.M_Product_ID = iol.M_Product_ID
+        JOIN C_BPartner_Location bpl ON (bpl.C_BPartner_Location_ID = o.C_BPartner_Location_ID)
+        JOIN C_Location loc ON (loc.C_Location_ID = bpl.C_Location_ID)
+        LEFT JOIN C_Invoice i ON (i.C_Invoice_ID = iol.C_Invoice_ID)
+        GROUP BY io.AD_Client_ID, io.AD_Org_ID, io.IsActive, o.C_BPartner_ID, iol.C_UOM_ID, io.WM_InOutbound_ID, p.UnitsPerPallet,o.C_Order_ID, loc.Address1,
+        loc.Address2, loc.Address3, loc.Address4, loc.City, i.DocumentNo, iol.C_Invoice_ID, i.PaymentRule, i.Grandtotal
+        ORDER BY o.C_BPartner_ID
+        ;
+      </SQLStatement>
+      <RollbackStatement>
+        DROP VIEW RV_FO_Dispatch_Route
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>

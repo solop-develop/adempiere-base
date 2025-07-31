@@ -16,7 +16,10 @@
  *****************************************************************************/
 package org.compiere.acct;
 
-import static java.util.Objects.requireNonNull;
+import org.adempiere.exceptions.DBException;
+import org.compiere.model.*;
+import org.compiere.process.DocumentEngine;
+import org.compiere.util.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -26,36 +29,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Stream;
 
-import org.adempiere.exceptions.DBException;
-import org.compiere.model.MAccount;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MConversionRate;
-import org.compiere.model.MDocType;
-import org.compiere.model.MFactAcct;
-import org.compiere.model.MNote;
-import org.compiere.model.MPeriod;
-import org.compiere.model.MTable;
-import org.compiere.model.ModelValidationEngine;
-import org.compiere.model.ModelValidator;
-import org.compiere.model.PO;
-import org.compiere.model.Query;
-import org.compiere.process.DocumentEngine;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Trx;
-import org.compiere.util.Util;
+import static java.util.Objects.requireNonNull;
 
 /**
  *  Posting Document Root.
@@ -413,7 +391,7 @@ public abstract class Doc
 	 * 	@param defaultDocumentType default document type or null
 	 * 	@param trxName trx
 	 */
-	public Doc (MAcctSchema[] ass, Class<?> clazz, ResultSet rs, String defaultDocumentType, String trxName)
+	public Doc(MAcctSchema[] ass, Class<?> clazz, ResultSet rs, String defaultDocumentType, String trxName)
 	{
 		p_Status = STATUS_Error;
 		accountingSchemes = ass;
@@ -445,7 +423,8 @@ public abstract class Doc
 		m_trxName = trxName;
 		m_manageLocalTrx = false;
 		if (m_trxName == null) {
-			m_trxName = "Post" + m_DocumentType + p_po.get_ID();
+			m_trxName = "Post" + "-" + m_DocumentType + "-" + p_po.get_ID();
+			Trx.get(m_trxName, true);
 			m_manageLocalTrx = true;
 		}
 		p_po.set_TrxName(m_trxName);
@@ -808,7 +787,7 @@ public abstract class Doc
 	/**
 	 *  Posting logic for Accounting Schema index
 	 *  @param  index   Accounting Schema index
-	 *  @return posting status/error code
+	 *  @return posting status/error code	
 	 */
 	private final String postLogic (int index)
 	{

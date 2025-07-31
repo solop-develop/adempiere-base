@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_RevenueRecognition
  *  @author Adempiere (generated) 
@@ -64,19 +65,6 @@ public interface I_C_RevenueRecognition
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name C_RevenueRecognition_ID */
-    public static final String COLUMNNAME_C_RevenueRecognition_ID = "C_RevenueRecognition_ID";
-
-	/** Set Revenue Recognition.
-	  * Method for recording revenue
-	  */
-	public void setC_RevenueRecognition_ID (int C_RevenueRecognition_ID);
-
-	/** Get Revenue Recognition.
-	  * Method for recording revenue
-	  */
-	public int getC_RevenueRecognition_ID();
-
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -92,6 +80,19 @@ public interface I_C_RevenueRecognition
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name C_RevenueRecognition_ID */
+    public static final String COLUMNNAME_C_RevenueRecognition_ID = "C_RevenueRecognition_ID";
+
+	/** Set Revenue Recognition.
+	  * Method for recording revenue
+	  */
+	public void setC_RevenueRecognition_ID (int C_RevenueRecognition_ID);
+
+	/** Get Revenue Recognition.
+	  * Method for recording revenue
+	  */
+	public int getC_RevenueRecognition_ID();
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -118,6 +119,19 @@ public interface I_C_RevenueRecognition
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name IsReverseBeforeProcess */
+    public static final String COLUMNNAME_IsReverseBeforeProcess = "IsReverseBeforeProcess";
+
+	/** Set Reverse All Before Process.
+	  * Reverse All Before Process
+	  */
+	public void setIsReverseBeforeProcess (boolean IsReverseBeforeProcess);
+
+	/** Get Reverse All Before Process.
+	  * Reverse All Before Process
+	  */
+	public boolean isReverseBeforeProcess();
 
     /** Column name IsTimeBased */
     public static final String COLUMNNAME_IsTimeBased = "IsTimeBased";
@@ -162,6 +176,19 @@ public interface I_C_RevenueRecognition
 
 	/** Get Recognition frequency	  */
 	public String getRecognitionFrequency();
+
+    /** Column name RecognitionType */
+    public static final String COLUMNNAME_RecognitionType = "RecognitionType";
+
+	/** Set Recognition Type.
+	  * Recognition Type
+	  */
+	public void setRecognitionType (String RecognitionType);
+
+	/** Get Recognition Type.
+	  * Recognition Type
+	  */
+	public String getRecognitionType();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

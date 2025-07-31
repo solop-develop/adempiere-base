@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Revenue Recognition Accounting Class" ReleaseNo="0.8.0" SeqNo="11010">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="54810" Action="I" Record_ID="50047" Table="C_DocBaseType">
+        <Data AD_Column_ID="97955" Column="UUID">c4746635-eea9-4f8b-ba15-6066af6b9dbb</Data>
+        <Data AD_Column_ID="97957" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97956" Column="Updated">2025-07-08 16:34:52.956</Data>
+        <Data AD_Column_ID="97954" Column="Name">Revenue Recognition</Data>
+        <Data AD_Column_ID="97953" Column="IsDefault">true</Data>
+        <Data AD_Column_ID="97952" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97951" Column="Help">Define the behavior for Sales Order Document Type</Data>
+        <Data AD_Column_ID="97950" Column="EntityType">D</Data>
+        <Data AD_Column_ID="97949" Column="DocBaseType">RRR</Data>
+        <Data AD_Column_ID="97948" Column="Description">Revenue Recognition</Data>
+        <Data AD_Column_ID="97947" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97946" Column="Created">2025-07-08 16:34:52.956</Data>
+        <Data AD_Column_ID="97945" Column="C_DocBaseType_ID">50047</Data>
+        <Data AD_Column_ID="97943" Column="AD_Table_ID">444</Data>
+        <Data AD_Column_ID="97942" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97941" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="97944" Column="AccountingClassname">org.compiere.acct.RevenueRecognitionRun</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="54811" Action="I" Record_ID="0" Table="C_DocBaseType_Trl">
+        <Data AD_Column_ID="97969" Column="UUID">11749646-0df1-4a0f-8ed3-8cefde2c77d4</Data>
+        <Data AD_Column_ID="97971" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97970" Column="Updated">2025-07-08 16:34:53.872</Data>
+        <Data AD_Column_ID="97968" Column="Name">Revenue Recognition</Data>
+        <Data AD_Column_ID="97967" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="97966" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97965" Column="Help">Define the behavior for Sales Order Document Type</Data>
+        <Data AD_Column_ID="97964" Column="Description">Revenue Recognition</Data>
+        <Data AD_Column_ID="97963" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97962" Column="Created">2025-07-08 16:34:53.872</Data>
+        <Data AD_Column_ID="97961" Column="C_DocBaseType_ID">50047</Data>
+        <Data AD_Column_ID="97960" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97959" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="97958" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

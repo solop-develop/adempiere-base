@@ -1,0 +1,61 @@
+/*************************************************************************************
+ * Copyright (C) 2012-2018 E.R.P. Consultores y Asociados, C.A.                      *
+ * Contributor(s): Yamel Senih ysenih@erpya.com                                      *
+ * This program is free software: you can redistribute it and/or modify              *
+ * it under the terms of the GNU General Public License as published by              *
+ * the Free Software Foundation, either version 2 of the License, or                 *
+ * (at your option) any later version.                                               *
+ * This program is distributed in the hope that it will be useful,                   *
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of                    *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the                     *
+ * GNU General Public License for more details.                                      *
+ * You should have received a copy of the GNU General Public License                 *
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.            *
+ ************************************************************************************/
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.solop.grpc.updates";
+option java_outer_classname = "ADempiereUpdate";
+
+package org.solop.updates;
+
+// Update
+message Update {
+	int32 id = 1;
+	string entity_type = 2;
+	string release_no = 3;
+	int32 sequence = 4;	
+	string name = 5;
+	string comments = 6;
+	repeated Step steps = 7;
+}
+
+// Step
+message Step {
+	int32 id = 1;
+	string step_type = 2;
+	string action = 3;
+	int32 table_id = 4;
+	int32 record_id = 5;
+	int32 column_id = 6;
+	string database_type = 7;
+	int32 sequence = 8;
+	string comments = 9;
+	bool is_parsed = 10;
+	string sql_statement = 11;
+	string rollback_statement = 12;
+	repeated StepValue step_values = 13;
+}
+
+// Step Value
+message StepValue {
+	int32 id = 1;
+	int32 column_id = 2;
+	string old_value = 3;
+	string new_value = 4;
+	string backup_value = 5;
+	bool is_old_null = 6;
+	bool is_new_null = 7;
+	bool is_backup_null = 8;
+}

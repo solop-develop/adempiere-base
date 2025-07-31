@@ -38,7 +38,7 @@ public class X_C_CommissionRun extends PO implements I_C_CommissionRun, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250723L;
 
     /** Standard Constructor */
     public X_C_CommissionRun (Properties ctx, int C_CommissionRun_ID, String trxName)
@@ -488,6 +488,26 @@ public class X_C_CommissionRun extends PO implements I_C_CommissionRun, I_Persis
 	public Timestamp getStartDate () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_StartDate);
+	}
+
+	/** Set Total Commission Amount.
+		@param TotalCommissionAmt 
+		Total Commission Amount
+	  */
+	public void setTotalCommissionAmt (BigDecimal TotalCommissionAmt)
+	{
+		set_Value (COLUMNNAME_TotalCommissionAmt, TotalCommissionAmt);
+	}
+
+	/** Get Total Commission Amount.
+		@return Total Commission Amount
+	  */
+	public BigDecimal getTotalCommissionAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_TotalCommissionAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Immutable Universally Unique Identifier.

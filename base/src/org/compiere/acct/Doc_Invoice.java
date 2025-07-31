@@ -16,6 +16,10 @@
  *****************************************************************************/
 package org.compiere.acct;
 
+import org.compiere.model.*;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.PreparedStatement;
@@ -23,22 +27,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
-
-import org.compiere.model.MAccount;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MClientInfo;
-import org.compiere.model.MCostDetail;
-import org.compiere.model.MCostType;
-import org.compiere.model.MCurrency;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MLandedCostAllocation;
-import org.compiere.model.MTax;
-import org.compiere.model.ProductCost;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 /**
  *  Post Invoice Documents.
@@ -273,6 +264,16 @@ public class Doc_Invoice extends Doc
 		return retValue;
 	}   //  getBalance
 
+	private MAccount getRevenueRecognitionAccount(MAcctSchema acctSchema, DocLine line, int accountType, List<MRevenueRecognitionPlan> revenueRecognitionPlans) {
+		int invoiceLineId = line.get_ID();
+		Optional<MRevenueRecognitionPlan> maybePlan = revenueRecognitionPlans.stream().filter(plan -> plan.getC_InvoiceLine_ID() == invoiceLineId).findFirst();
+		MAccount revenueAccount = line.getAccount(accountType, acctSchema);
+		if(maybePlan.isPresent()) {
+			revenueAccount = (MAccount) maybePlan.get().getUnEarnedRevenue_A();
+		}
+		return revenueAccount;
+	}
+
 	/**
 	 *  Create Facts (the accounting logic) for
 	 *  ARI, ARC, ARF, API, APC.
@@ -314,7 +315,7 @@ public class Doc_Invoice extends Doc
 		//  Cash based accounting
 		if (!acctSchema.isAccrual())
 			return facts;
-
+		List<MRevenueRecognitionPlan> revenueRecognitionPlans = MRevenueRecognitionPlan.getPlansFromInvoiceAndSchema((MInvoice) getPO(), acctSchema.getC_AcctSchema_ID());
 		//  ** ARI, ARF
 		if (getDocumentType().equals(DOCTYPE_ARInvoice) 
 			|| getDocumentType().equals(DOCTYPE_ARProForma))
@@ -357,7 +358,7 @@ public class Doc_Invoice extends Doc
 					}
 				}
 				fact.createLine (p_lines[i],
-					p_lines[i].getAccount(ProductCost.ACCTTYPE_P_Revenue, acctSchema),
+						getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_Revenue, revenueRecognitionPlans),
 					getC_Currency_ID(), null, amt);
 				if (!p_lines[i].isItem())
 				{
@@ -438,7 +439,7 @@ public class Doc_Invoice extends Doc
 					}
 				}
 				fact.createLine (p_lines[i],
-					p_lines[i].getAccount (ProductCost.ACCTTYPE_P_Revenue, acctSchema),
+						getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_Revenue, revenueRecognitionPlans),
 					getC_Currency_ID(), amt, null);
 				if (!p_lines[i].isItem())
 				{
@@ -520,9 +521,9 @@ public class Doc_Invoice extends Doc
 				}
 				if (!landedCost)
 				{
-					MAccount expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, acctSchema);
+					MAccount expense = getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_Expense, revenueRecognitionPlans);
 					if (line.isItem())
-						expense = line.getAccount (ProductCost.ACCTTYPE_P_InventoryClearing, acctSchema);
+						expense = getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_InventoryClearing, revenueRecognitionPlans);
 					BigDecimal amt = line.getAmtSource();
 					BigDecimal dAmt = null;
 					if (acctSchema.isTradeDiscountPosted() && !line.isItem())
@@ -629,9 +630,9 @@ public class Doc_Invoice extends Doc
 				}
 				if (!landedCost)
 				{
-					MAccount expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, acctSchema);
+					MAccount expense = getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_Expense, revenueRecognitionPlans);
 					if (line.isItem())
-						expense = line.getAccount (ProductCost.ACCTTYPE_P_InventoryClearing, acctSchema);
+						expense = getRevenueRecognitionAccount(acctSchema, p_lines[i], ProductCost.ACCTTYPE_P_InventoryClearing, revenueRecognitionPlans);
 					BigDecimal amt = line.getAmtSource();
 					BigDecimal dAmt = null;
 					if (acctSchema.isTradeDiscountPosted() && !line.isItem())

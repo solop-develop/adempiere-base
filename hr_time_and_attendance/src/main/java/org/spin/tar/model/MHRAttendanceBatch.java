@@ -252,11 +252,16 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 		//	Get Worked time
 		List<MHRShiftIncidence> shiftIncidenceList = MHRShiftIncidence.getShiftIncidenceList(getCtx(), workShift.getHR_WorkShift_ID(), X_HR_ShiftIncidence.EVENTTYPE_Attendance, getDateDoc());
 		BigDecimal attendanceHours = Env.ZERO;
+
 		for(MHRShiftIncidence shiftIncidence : shiftIncidenceList) {
+			int projectId = 0;
 			long durationInMillis = 0;
 			long startTime = 0;
 			long endTime = 0;
 			for(MHRAttendanceRecord attendance : getLines(false)) {
+				if (projectId <= 0) {
+					projectId = attendance.getC_Project_ID();
+				}
 				if(startTime == 0) {
 					startTime = attendance.getAttendanceTime().getTime();
 				} else {
@@ -285,6 +290,7 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 				if(shiftIncidence.getAD_Rule_ID() > 0) {
 					processRule(incidence);
 				}
+				incidence.setC_Project_ID(projectId);
 				incidence.saveEx();
 				//	Set value for worked hours
 				attendanceHours = attendanceHours.add(new BigDecimal(MHRIncidence.getTime(MHRShiftIncidence.TIMEUNIT_Hour, durationInMillis)));

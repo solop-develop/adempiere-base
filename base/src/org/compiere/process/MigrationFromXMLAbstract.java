@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,7 +12,8 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 
 package org.compiere.process;
@@ -21,7 +22,7 @@ package org.compiere.process;
 
 /** Generated Process for (Import migration from XML)
  *  @author ADempiere (generated) 
- *  @version Release 3.9.0
+ *  @version Release 3.9.4
  */
 public abstract class MigrationFromXMLAbstract extends SvrProcess {
 	/** Process Value 	*/
@@ -32,8 +33,6 @@ public abstract class MigrationFromXMLAbstract extends SvrProcess {
 	private static final int ID_FOR_PROCESS = 53175;
 	/**	Parameter Name for File Path or Name	*/
 	public static final String FILEPATHORNAME = "FilePathOrName";
-	/**	Parameter Name for File Name	*/  // Parameter changed name in DB
-	public static final String FILENAME = "FileName";
 	/**	Parameter Name for Apply	*/
 	public static final String APPLY = "Apply";
 	/**	Parameter Name for Force	*/
@@ -48,8 +47,6 @@ public abstract class MigrationFromXMLAbstract extends SvrProcess {
 	@Override
 	protected void prepare() {
 		filePathOrName = getParameterAsString(FILEPATHORNAME);
-		if (filePathOrName == null)
-			filePathOrName = getParameterAsString(FILENAME);
 		isApply = getParameterAsBoolean(APPLY);
 		isForce = getParameterAsBoolean(ISFORCE);
 	}

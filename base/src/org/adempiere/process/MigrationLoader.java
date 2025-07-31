@@ -89,7 +89,7 @@ public class MigrationLoader {
 			.withTitle("Import Migration from XML")
 			.withParameter("FailOnError",failOnError)
 			.withParameter(MigrationFromXML.FILEPATHORNAME, fileName) // Old parameter name
-			.withParameter(MigrationFromXML.FILENAME, fileName)  // New parameter name
+			.withParameter("FileName", fileName)  // New parameter name
 			.withParameter(MigrationFromXML.APPLY, apply)
 			.withParameter(MigrationFromXML.ISFORCE, isForce)
 			.withParameter("Clean", isClean)

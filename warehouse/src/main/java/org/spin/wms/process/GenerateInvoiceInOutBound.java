@@ -18,14 +18,8 @@
 package org.spin.wms.process;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MDocType;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MUOMConversion;
-import org.compiere.model.PO;
-import org.compiere.model.Query;
+import org.adempiere.process.util.InvoiceGrouping;
+import org.compiere.model.*;
 import org.compiere.util.Trx;
 import org.eevolution.wms.model.MWMInOutBound;
 import org.eevolution.wms.model.MWMInOutBoundLine;
@@ -33,8 +27,9 @@ import org.eevolution.wms.model.MWMInOutBoundLine;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -44,21 +39,16 @@ import java.util.concurrent.atomic.AtomicReference;
  * See: https://github.com/adempiere/adempiere/issues/2730
  */
 public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract {
-	private Hashtable<String, MInvoice> invoices;
-	private HashMap<Integer, Integer> numberOfLines;
-	private HashMap<Integer, Integer> numberOfInvoices;
 	private HashMap<String, List<MWMInOutBoundLine>> groupedOutBoundLines;
 	List<PO> invoicesToPrint;
 	private int created = 0;
-	private int withError = 0;
-	private StringBuffer generatedDocuments = new StringBuffer();
-	private int maxLines = 0;
+	private final AtomicInteger withError = new AtomicInteger(0);
+	private final StringBuffer generatedDocuments = new StringBuffer();
+	private InvoiceGrouping grouping;
 
 	@Override
 	protected String doIt() throws Exception {
-		invoices  = new Hashtable<String, MInvoice>();
-		numberOfLines = new HashMap<>();
-		numberOfInvoices = new HashMap<>();
+		grouping = InvoiceGrouping.newInstance();
 		groupedOutBoundLines = new HashMap<>();
 		invoicesToPrint = new ArrayList<PO>();
 		List<MWMInOutBoundLine> outBoundLines = null;
@@ -75,26 +65,17 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 		}
 		//	Create
 		if(outBoundLines != null) {
-			if (getDocTypeTargetId() > 0) {
-				MDocType docType = MDocType.get(getCtx(), getDocTypeTargetId());
-				maxLines = docType.get_ValueAsInt("MaxLinesPerDocument");
-			}
 			outBoundLines.stream()
 					.filter(outBoundLine -> outBoundLine.getC_Invoice_ID() <= 0)
-					.forEach(outBoundLine -> groupOutBoundLine(outBoundLine));
-			//.forEach(outBoundLine -> createInvoice(outBoundLine));
+					.forEach(this::groupOutBoundLine);
 			createAndProcessInvoices();
 			printDocument(invoicesToPrint, true);
 		}
-
-		//
-		//processingInvoices();
-		//
-		return "@Created@ " + created + (generatedDocuments.length() > 0? " [" + generatedDocuments + "]": "") +  (withError > 0 ? " | @Error@ " + withError : "");
+		return "@Created@ " + created + (generatedDocuments.length() > 0? " [" + generatedDocuments + "]": "") +  (withError.get() > 0 ? " | @Error@ " + withError.get() : "");
 	}
 
 	private void createAndProcessInvoices() {
-		groupedOutBoundLines.entrySet().stream().filter(entry -> entry != null).forEach(entry -> {
+		groupedOutBoundLines.entrySet().stream().filter(Objects::nonNull).forEach(entry -> {
 			try {
 				Trx.run(transactionName -> {
 					List<MWMInOutBoundLine> lines = entry.getValue();
@@ -131,7 +112,7 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 					invoice.setDocAction(getDocAction());
 					if (!invoice.processIt(getDocAction())) {
 						addLog("@ProcessFailed@ : " + invoice.getDocumentInfo());
-						log.warning("@ProcessFailed@ :" + invoice.getDocumentInfo());
+						throw new AdempiereException("@ProcessFailed@ :" + invoice.getDocumentInfo());
 					}
 					invoice.saveEx();
 					created++;
@@ -140,7 +121,9 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 
 				});
 			} catch (Exception e) {
-				withError += entry.getValue().size();
+				addLog(e.getLocalizedMessage());
+				withError.addAndGet(entry.getValue().size());
+				log.warning(e.getLocalizedMessage());
 			}
 		});
 
@@ -150,49 +133,15 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 		if (line.getC_OrderLine_ID() <= 0) {
 			return;
 		}
-
 		MOrderLine orderLine = line.getOrderLine();
+		MOrder order = orderLine.getParent();
 		if (orderLine.getQtyOrdered().subtract(orderLine.getQtyInvoiced()).subtract(line.getPickedQty()).signum() < 0 && !getParameterAsBoolean("IsIncludeNotAvailable")) {
 			return;
 		}
-		int key = orderLine.getC_Order_ID();
-		if(isConsolidateDocument()) {
-			key = orderLine.getC_BPartner_ID();
-		}
-		int keyNumber = numberOfInvoices.getOrDefault(key, 0);
-		String keyString = String.valueOf(key) + keyNumber;
+		String keyString = grouping.getKey(order, getDocTypeTargetId(), isConsolidateDocument());
 		List<MWMInOutBoundLine> lines = groupedOutBoundLines.getOrDefault(keyString, new ArrayList<>());
-
-
-		if (getDocTypeTargetId() <= 0) {
-			MDocType orderDocType = MDocType.get(getCtx(), orderLine.getParent().getC_DocType_ID());
-			int invoiceDocTypeId = 0;
-			if (orderDocType != null) {
-				invoiceDocTypeId = orderDocType.getC_DocTypeInvoice_ID();
-				if (invoiceDocTypeId <= 0) {
-					throw new AdempiereException("@NotFound@ @C_DocTypeInvoice_ID@ - @C_DocType_ID@:" + orderDocType.get_Translation("Name"));
-				}
-			}
-			MDocType invoiceDocType = MDocType.get(getCtx(),invoiceDocTypeId);
-			maxLines = invoiceDocType.get_ValueAsInt("MaxLinesPerDocument");
-		}
-		if (lines.isEmpty()) {
-			keyNumber++;
-			keyString = String.valueOf(key) + keyNumber;
-			groupedOutBoundLines.put(keyString, lines);
-			numberOfInvoices.put(key, keyNumber);
-			lines.add(line);
-			return;
-		}
-		if (maxLines > 0 && lines.size() >= maxLines) {
-			keyNumber++;
-			keyString = String.valueOf(key) + keyNumber;
-			lines = new ArrayList<>();
-			groupedOutBoundLines.put(keyString, lines);
-			numberOfInvoices.put(key, keyNumber);
-
-		}
 		lines.add(line);
+		groupedOutBoundLines.put(keyString, lines);
 	}
 
 	/**
