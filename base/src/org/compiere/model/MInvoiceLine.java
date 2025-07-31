@@ -219,6 +219,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 		setLineNetAmt(oLine.getLineNetAmt());
 		//
 		setC_Project_ID(oLine.getC_Project_ID());
+		set_ValueOfColumn("C_ProjectLine_ID", oLine.get_ValueAsInt("C_ProjectLine_ID"));
 		setC_ProjectPhase_ID(oLine.getC_ProjectPhase_ID());
 		setC_ProjectTask_ID(oLine.getC_ProjectTask_ID());
 		setC_Activity_ID(oLine.getC_Activity_ID());
