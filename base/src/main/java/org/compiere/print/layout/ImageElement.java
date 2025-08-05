@@ -25,6 +25,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,8 +40,6 @@ import org.compiere.print.MPrintFormatItem;
 import org.compiere.print.PrintDataElement;
 import org.compiere.util.CCache;
 import org.compiere.util.Env;
-
-import com.itextpdf.io.IOException;
 
 /**
  *	Image Element

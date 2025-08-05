@@ -95,7 +95,7 @@ public class IText7Document implements FileAppender  {
     
 	private PdfADocument merge7(OutputStream result, final InputStream origin, final String title) throws IOException {
         WriterProperties props = new WriterProperties(); 
-        if(debugMode) props.useDebugMode();
+//        if(debugMode) props.useDebugMode();
         PdfWriter writer = new PdfWriter(result, props);
         
         //Initialize PDFA document with output intent
