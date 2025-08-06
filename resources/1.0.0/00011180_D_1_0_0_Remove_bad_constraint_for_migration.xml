@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Remove bad constraint for migration" ReleaseNo="1.0.0" SeqNo="11180">
+    <Step DBType="Postgres" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>ALTER TABLE AD_Migration DROP CONSTRAINT entityt_admigration</SQLStatement>
+      <RollbackStatement>ALTER TABLE AD_Migration ADD CONSTRAINT entityt_admigration FOREIGN KEY (EntityType) REFERENCES AD_EntityType (EntityType)</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>

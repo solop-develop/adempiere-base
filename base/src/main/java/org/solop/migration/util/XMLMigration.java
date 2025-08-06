@@ -24,11 +24,13 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -89,18 +91,21 @@ public class XMLMigration implements IMigrationManagement {
 		if(files == null || files.isEmpty()) {
 			return List.of();
 		}
-		List<Integer> migrationsToApply = new ArrayList<>();
+		Map<String, Integer> migrationsToApply = new HashMap<>();
 		files.parallelStream().forEach(file ->{
 			try {
 				int migrationId = loadFile(file, finder);
 				if(migrationId > 0) {
-					migrationsToApply.add(migrationId);
+					migrationsToApply.put(file.getName(), migrationId);
 				}
 			} catch (Exception e) {
 				log.log(Level.SEVERE, e.getLocalizedMessage());
 			}
 		});
-		return migrationsToApply;
+		return migrationsToApply.keySet().stream()
+				.sorted()
+				.map(migrationsToApply::get)
+				.collect(Collectors.toList());
 	}
 
 	private int loadFile(File file, MigrationFinder finder) {
