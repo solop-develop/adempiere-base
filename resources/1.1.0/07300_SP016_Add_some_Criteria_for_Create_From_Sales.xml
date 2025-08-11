@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Add some criteria for Create From Sales" ReleaseNo="1.0" SeqNo="7300">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50211" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="i.IsSOTrx = 'Y'&#10;AND bp.IsDropShip = 'Y'&#10;AND i.DocStatus IN('CO', 'CL')&#10;AND p.IsDropShip = 'Y'&#10;AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0)&#10;AND EXISTS(SELECT 1 FROM C_Order o WHERE o.C_Order_ID = pol.C_Order_ID AND o.DocStatus = 'CO')">i.IsSOTrx = 'Y'
+AND bp.IsDropShip = 'Y'
+AND i.DocStatus IN('CO', 'CL')
+AND p.IsDropShip = 'Y'
+AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0)
+AND EXISTS(SELECT 1 FROM C_Order o WHERE o.C_Order_ID = pol.C_Order_ID AND o.DocStatus = 'CO' AND o.IsDropShip = 'Y')</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

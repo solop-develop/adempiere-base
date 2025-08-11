@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Add PricePO for View" ReleaseNo="1.0" SeqNo="7780">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="98965" Table="AD_Column">
+        <Data AD_Column_ID="112" Column="Description">Price based on a purchase order</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">131089</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">22</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">85f4918d-c7c1-4400-b03e-8b78817676e3</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2021-06-03 11:31:15.778</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated">2021-06-03 11:31:15.778</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">98965</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="111" Column="Name">PO Price</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true"/>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">PricePO</Data>
+        <Data AD_Column_ID="113" Column="Help">The PO Price indicates the price for a product per the purchase order.</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">false</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="6482" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">54842</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">1124</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="98965" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created">2021-06-03 11:31:17.253</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2021-06-03 11:31:17.253</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">98965</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">PO Price</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID">475d8066-ca89-4c08-bf6d-69725a2a0d5c</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="98965" Table="AD_Column">
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="131089">10</Data>
+      </PO>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="40" StepType="SQL">
+      <Comments>ALTER for View RV_ConsignementDetail</Comments>
+      <SQLStatement>CREATE OR REPLACE VIEW RV_ConsignementDetail AS
+SELECT po.C_Order_ID, pol.C_OrderLine_ID, po.C_Currency_ID, po.C_BPartner_ID AS DropShip_BPartner_ID, po.DateOrdered, pol.M_Product_ID, 
+s.Line, s.C_Invoice_ID, s.C_InvoiceLine_ID, s.M_Inventory_ID, s.M_InventoryLine_ID, s.DocumentNo, s.C_BPartner_ID, s.DateDoc, s.C_DocType_ID, s.QtyUsed, 
+s.ConsignementReturnQty, s.QtyToInvoice, s.IsAllocated, s.PriceLimit, s.PriceActual, s.LineNetAmt, s.SalesRep_ID, s.Link_OrderLine_ID, s.Description, po.AD_Client_ID, po.AD_Org_ID, po.IsActive, po.Created, po.CreatedBy, po.Updated, po.UpdatedBy, s.Link_Order_ID,
+pol.PriceActual AS PricePO
+FROM C_Order po
+INNER JOIN C_OrderLine pol ON(pol.C_Order_ID = po.C_Order_ID)
+INNER JOIN M_Product p ON(p.M_Product_ID = pol.M_Product_ID)
+INNER JOIN (SELECT il.M_Product_ID, il.Line, i.C_Invoice_ID, il.C_InvoiceLine_ID, NULL AS M_Inventory_ID, NULL AS M_InventoryLine_ID, i.DocumentNo, i.C_BPartner_ID, i.DateInvoiced AS DateDoc, i.C_DocType_ID, 
+(CASE WHEN i.Multiplier &gt; 0 THEN il.QtyInvoiced ELSE 0 END) AS QtyUsed, 
+(CASE WHEN i.Multiplier &lt; 0 THEN il.QtyInvoiced ELSE 0 END) AS ConsignementReturnQty, 
+(il.QtyInvoiced * i.Multiplier) AS QtyToInvoice,
+(CASE WHEN iol.Link_OrderLine_ID IS NULL THEN 'N' ELSE 'Y' END) IsAllocated, il.PriceLimit, il.PriceActual, il.LineNetAmt, i.SalesRep_ID, il.Description, iol.Link_OrderLine_ID, ior.C_Order_ID AS Link_Order_ID
+FROM RV_C_Invoice i
+INNER JOIN C_InvoiceLine il ON(il.C_Invoice_ID = i.C_Invoice_ID)
+INNER JOIN C_OrderLine iol ON(iol.C_OrderLine_ID = il.C_OrderLine_ID)
+LEFT JOIN C_OrderLine ior ON(ior.C_OrderLine_ID = iol.Link_OrderLine_ID)
+WHERE i.IsSOTrx = 'Y'
+AND i.DocStatus IN('CO', 'CL')
+UNION ALL
+SELECT il.M_Product_ID, il.Line, NULL AS C_Invoice_ID, NULL AS C_InvoiceLine_ID, i.M_Inventory_ID, il.M_InventoryLine_ID, i.DocumentNo, NULL AS C_BPartner_ID, i.MovementDate DateDoc, i.C_DocType_ID, 
+(CASE WHEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) &gt; 0 THEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) ELSE 0 END) AS QtyUsed, 
+(CASE WHEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) &lt; 0 THEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) ELSE 0 END) AS ConsignementReturnQty, 
+COALESCE(il.QtyInternalUse, il.QtyCount, 0) AS QtyToInvoice,
+(CASE WHEN il.Link_OrderLine_ID IS NULL THEN 'N' ELSE 'Y' END) IsAllocated, 0 AS PriceLimit, 0 AS PriceActual, 0 AS LineNetAmt, i.CreatedBy AS SalesRep_ID, il.Description, il.Link_OrderLine_ID, ior.C_Order_ID AS Link_Order_ID
+FROM M_Inventory i
+INNER JOIN M_InventoryLine il ON(il.M_Inventory_ID = i.M_Inventory_ID)
+INNER JOIN M_Product p ON(p.M_Product_ID = il.M_Product_ID)
+LEFT JOIN C_OrderLine ior ON(ior.C_OrderLine_ID = il.Link_OrderLine_ID)
+AND i.DocStatus IN('CO', 'CL')) s ON(s.M_Product_ID = pol.M_Product_ID)
+WHERE po.IsSOTrx = 'N'
+AND po.DocStatus IN('CO', 'CL')
+AND po.IsDropShip = 'Y'
+AND p.IsDropShip = 'Y'
+AND EXISTS(SELECT 1 FROM M_Product_PO pp WHERE pp.M_Product_ID = pol.M_Product_ID AND po.C_BPartner_ID = pp.C_BPartner_ID AND pp.IsActive = 'Y' AND pp.Discontinued = 'N')</SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS RV_ConsignementDetail;
+CREATE OR REPLACE VIEW RV_ConsignementDetail AS
+SELECT po.C_Order_ID, pol.C_OrderLine_ID, po.C_Currency_ID, po.C_BPartner_ID AS DropShip_BPartner_ID, po.DateOrdered, pol.M_Product_ID, 
+s.Line, s.C_Invoice_ID, s.C_InvoiceLine_ID, s.M_Inventory_ID, s.M_InventoryLine_ID, s.DocumentNo, s.C_BPartner_ID, s.DateDoc, s.C_DocType_ID, s.QtyUsed, 
+s.ConsignementReturnQty, s.QtyToInvoice, s.IsAllocated, s.PriceLimit, s.PriceActual, s.LineNetAmt, s.SalesRep_ID, s.Link_OrderLine_ID, s.Description, po.AD_Client_ID, po.AD_Org_ID, po.IsActive, po.Created, po.CreatedBy, po.Updated, po.UpdatedBy, s.Link_Order_ID
+FROM C_Order po
+INNER JOIN C_OrderLine pol ON(pol.C_Order_ID = po.C_Order_ID)
+INNER JOIN M_Product p ON(p.M_Product_ID = pol.M_Product_ID)
+INNER JOIN (SELECT il.M_Product_ID, il.Line, i.C_Invoice_ID, il.C_InvoiceLine_ID, NULL AS M_Inventory_ID, NULL AS M_InventoryLine_ID, i.DocumentNo, i.C_BPartner_ID, i.DateInvoiced AS DateDoc, i.C_DocType_ID, 
+(CASE WHEN i.Multiplier &gt; 0 THEN il.QtyInvoiced ELSE 0 END) AS QtyUsed, 
+(CASE WHEN i.Multiplier &lt; 0 THEN il.QtyInvoiced ELSE 0 END) AS ConsignementReturnQty, 
+(il.QtyInvoiced * i.Multiplier) AS QtyToInvoice,
+(CASE WHEN iol.Link_OrderLine_ID IS NULL THEN 'N' ELSE 'Y' END) IsAllocated, il.PriceLimit, il.PriceActual, il.LineNetAmt, i.SalesRep_ID, il.Description, iol.Link_OrderLine_ID, ior.C_Order_ID AS Link_Order_ID
+FROM RV_C_Invoice i
+INNER JOIN C_InvoiceLine il ON(il.C_Invoice_ID = i.C_Invoice_ID)
+INNER JOIN C_OrderLine iol ON(iol.C_OrderLine_ID = il.C_OrderLine_ID)
+LEFT JOIN C_OrderLine ior ON(ior.C_OrderLine_ID = iol.Link_OrderLine_ID)
+WHERE i.IsSOTrx = 'Y'
+AND i.DocStatus IN('CO', 'CL')
+UNION ALL
+SELECT il.M_Product_ID, il.Line, NULL AS C_Invoice_ID, NULL AS C_InvoiceLine_ID, i.M_Inventory_ID, il.M_InventoryLine_ID, i.DocumentNo, NULL AS C_BPartner_ID, i.MovementDate DateDoc, i.C_DocType_ID, 
+(CASE WHEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) &gt; 0 THEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) ELSE 0 END) AS QtyUsed, 
+(CASE WHEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) &lt; 0 THEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) ELSE 0 END) AS ConsignementReturnQty, 
+COALESCE(il.QtyInternalUse, il.QtyCount, 0) AS QtyToInvoice,
+(CASE WHEN il.Link_OrderLine_ID IS NULL THEN 'N' ELSE 'Y' END) IsAllocated, 0 AS PriceLimit, 0 AS PriceActual, 0 AS LineNetAmt, i.CreatedBy AS SalesRep_ID, il.Description, il.Link_OrderLine_ID, ior.C_Order_ID AS Link_Order_ID
+FROM M_Inventory i
+INNER JOIN M_InventoryLine il ON(il.M_Inventory_ID = i.M_Inventory_ID)
+INNER JOIN M_Product p ON(p.M_Product_ID = il.M_Product_ID)
+LEFT JOIN C_OrderLine ior ON(ior.C_OrderLine_ID = il.Link_OrderLine_ID)
+AND i.DocStatus IN('CO', 'CL')) s ON(s.M_Product_ID = pol.M_Product_ID)
+WHERE po.IsSOTrx = 'N'
+AND po.DocStatus IN('CO', 'CL')
+AND po.IsDropShip = 'Y'
+AND p.IsDropShip = 'Y'
+AND EXISTS(SELECT 1 FROM M_Product_PO pp WHERE pp.M_Product_ID = pol.M_Product_ID AND po.C_BPartner_ID = pp.C_BPartner_ID AND pp.IsActive = 'Y' AND pp.Discontinued = 'N')</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>

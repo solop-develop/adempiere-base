@@ -1,0 +1,38 @@
+DROP VIEW IF EXISTS RV_ConsignementDetail;
+CREATE OR REPLACE VIEW RV_ConsignementDetail AS
+SELECT o.C_Order_ID, o.C_OrderLine_ID, o.C_Currency_ID, o.C_BPartner_ID AS DropShip_BPartner_ID, o.DateOrdered, p.M_Product_ID, s.Line, s.C_Invoice_ID, s.C_InvoiceLine_ID, s.SO_Order_ID, s.SO_Orderline_id,s.M_Inventory_ID, s.M_InventoryLine_ID,s.DocumentNo, s.C_BPartner_ID, s.DateDoc,s.C_DocType_ID, s.QtyUsed, s.ConsignementReturnQty, s.QtyToInvoice, s.IsAllocated, s.PriceLimit, s.PriceActual, s.LineNetAmt, s.SalesRep_ID, s.Link_OrderLine_ID, (p.Value || ' - ' || p.Name || ' (' || trim(to_char(o.PricePO, '999G999G999G990D99')) || ')') AS Description, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.CreatedBy, p.Updated, p.UpdatedBy, s.Link_Order_ID,o.PricePO
+FROM (SELECT ior.C_Order_ID, il.M_Product_ID, il.Line, i.C_Invoice_ID, il.C_InvoiceLine_ID, iol.C_Order_ID AS SO_Order_ID, iol.C_OrderLine_ID AS SO_Orderline_ID, NULL AS M_Inventory_ID, NULL AS M_InventoryLine_ID, i.DocumentNo, i.C_BPartner_ID, i.DateInvoiced AS DateDoc, i.C_DocType_ID,
+(CASE WHEN i.Multiplier > 0 THEN il.QtyInvoiced ELSE 0 END) AS QtyUsed,
+(CASE WHEN i.Multiplier < 0 THEN il.QtyInvoiced ELSE 0 END) AS ConsignementReturnQty,
+(il.QtyInvoiced * i.Multiplier) AS QtyToInvoice,
+(CASE WHEN iol.Link_OrderLine_ID IS NULL THEN 'N' ELSE 'Y' END) IsAllocated, il.PriceLimit, il.PriceActual, il.LineNetAmt, i.SalesRep_ID, il.Description, iol.Link_OrderLine_ID, ior.C_Order_ID AS Link_Order_ID
+FROM C_OrderLine iol
+INNER JOIN C_Order ord ON ord.C_Order_ID = iol.C_Order_ID
+INNER JOIN C_InvoiceLine il ON il.C_OrderLine_ID = iol.C_OrderLine_ID
+INNER JOIN RV_C_Invoice i ON i.C_Invoice_ID = il.C_Invoice_ID
+LEFT JOIN C_OrderLine ior ON ior.C_OrderLine_ID = iol.Link_OrderLine_ID
+WHERE i.IsSOTrx = 'Y'
+AND i.DocStatus IN('CO', 'CL')
+AND ord.DocStatus IN('CO', 'CL')
+UNION ALL
+SELECT ior.C_Order_ID, il.M_Product_ID, il.Line, NULL AS C_Invoice_ID, NULL AS C_InvoiceLine_ID, NULL AS SO_Order_ID, NULL AS SO_Orderline_id, i.M_Inventory_ID, il.M_InventoryLine_ID, i.DocumentNo, NULL AS C_BPartner_ID, i.MovementDate DateDoc, i.C_DocType_ID,
+(CASE WHEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) > 0 THEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) ELSE 0 END) AS QtyUsed,
+(CASE WHEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) < 0 THEN COALESCE(il.QtyInternalUse, il.QtyCount, 0) ELSE 0 END) AS ConsignementReturnQty,
+COALESCE(il.QtyInternalUse, il.QtyCount, 0) AS QtyToInvoice,
+(CASE WHEN il.Link_OrderLine_ID IS NULL THEN 'N' ELSE 'Y' END) IsAllocated, 0 AS PriceLimit, 0 AS PriceActual, 0 AS LineNetAmt, i.CreatedBy AS SalesRep_ID, il.Description, il.Link_OrderLine_ID, ior.C_Order_ID AS Link_Order_ID
+FROM M_Inventory i
+INNER JOIN M_InventoryLine il ON(il.M_Inventory_ID = i.M_Inventory_ID)
+INNER JOIN M_Product p ON(p.M_Product_ID = il.M_Product_ID)
+LEFT JOIN C_OrderLine ior ON(ior.C_OrderLine_ID = il.Link_OrderLine_ID)
+WHERE i.DocStatus IN('CO', 'CL')) s
+INNER JOIN M_Product p ON(p.M_Product_ID = s.M_Product_ID)
+LEFT JOIN (SELECT pol.M_Product_ID, po.C_Currency_ID, po.C_BPartner_ID, MIN(pp.PricePO) AS PricePO, MIN(po.DateOrdered) AS DateOrdered, MIN(po.C_Order_ID) AS C_Order_ID, MIN(pol.C_OrderLine_ID) AS C_OrderLine_ID
+            FROM C_Order po
+            INNER JOIN C_OrderLine pol ON(pol.C_Order_ID = po.C_Order_ID)
+            INNER JOIN M_Product_PO pp ON(pp.M_Product_ID = pol.M_Product_ID AND po.C_BPartner_ID = pp.C_BPartner_ID AND pp.IsActive = 'Y' AND pp.Discontinued = 'N' AND pp.C_Currency_ID = po.C_Currency_ID)
+            WHERE po.DocStatus IN('CO', 'CL')
+            AND po.IsSOTrx = 'N'
+            AND po.IsDropShip = 'Y'
+--            AND EXISTS(SELECT 1 FROM M_Product_PO pp WHERE pp.M_Product_ID = pol.M_Product_ID AND po.C_BPartner_ID = pp.C_BPartner_ID AND pp.IsActive = 'Y' AND pp.Discontinued = 'N')
+            GROUP BY pol.M_Product_ID, po.C_Currency_ID, po.C_BPartner_ID) o ON(o.M_Product_ID = p.M_Product_ID)
+WHERE p.IsDropShip = 'Y'

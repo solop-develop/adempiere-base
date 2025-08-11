@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Add Where Where Clause for SB Create from Sales Transactions" ReleaseNo="1.0" SeqNo="5790">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53232" Action="I" Record_ID="69396" Table="AD_View_Column">
+        <Data AD_Column_ID="84462" Column="UUID">883d354b-9661-402e-8db9-e22adb1db193</Data>
+        <Data AD_Column_ID="58095" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58096" Column="Created">2020-04-02 19:26:27.694</Data>
+        <Data AD_Column_ID="58097" Column="Updated">2020-04-02 19:26:27.694</Data>
+        <Data AD_Column_ID="58101" Column="AD_View_Definition_ID">50485</Data>
+        <Data AD_Column_ID="58104" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58106" Column="ColumnSQL">('N')</Data>
+        <Data AD_Column_ID="58105" Column="Name">Allocated</Data>
+        <Data AD_Column_ID="58107" Column="ColumnName">PP_IsAllocated</Data>
+        <Data AD_Column_ID="58102" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58100" Column="AD_View_Column_ID">69396</Data>
+        <Data AD_Column_ID="58093" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58094" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58103" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="58099" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="58108" Column="AD_View_ID">50179</Data>
+        <Data AD_Column_ID="58109" Column="AD_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="58098" Column="CreatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53228" Action="I" Record_ID="69396" Table="AD_View_Column_Trl">
+        <Data AD_Column_ID="58044" Column="Updated">2020-04-02 19:26:28.411</Data>
+        <Data AD_Column_ID="58042" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58043" Column="Created">2020-04-02 19:26:28.411</Data>
+        <Data AD_Column_ID="58049" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58050" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58051" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58052" Column="Name">Allocated</Data>
+        <Data AD_Column_ID="58047" Column="AD_View_Column_ID">69396</Data>
+        <Data AD_Column_ID="58040" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58041" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58045" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58048" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58046" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84463" Column="UUID">f88cf1b0-edbe-4046-a6b8-7385d1d4102c</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="61335" Table="AD_Element">
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="4299" Column="PrintName">Drop Ship Allocated</Data>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="58589" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">61335</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84316" Column="UUID">0bd7aa03-60f8-4442-b351-a8184e1792e9</Data>
+        <Data AD_Column_ID="2600" Column="Updated">2020-04-02 19:27:28.515</Data>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2603" Column="Name">Drop Shipment Allocated</Data>
+        <Data AD_Column_ID="2604" Column="Description">Drop Shipments are sent from the Vendor directly to the Customer</Data>
+        <Data AD_Column_ID="2598" Column="Created">2020-04-02 19:27:28.515</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">IsDropShipAllocated</Data>
+        <Data AD_Column_ID="2605" Column="Help">Drop Shipments do not cause any Inventory reservations or movements as the Shipment is from the Vendor's inventory. The Shipment of the Vendor to the Customer must be confirmed.</Data>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2642" Column="Created">2020-04-02 19:27:29.257</Data>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2020-04-02 19:27:29.257</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help">Drop Shipments do not cause any Inventory reservations or movements as the Shipment is from the Vendor's inventory. The Shipment of the Vendor to the Customer must be confirmed.</Data>
+        <Data AD_Column_ID="2646" Column="Name">Drop Shipment Allocated</Data>
+        <Data AD_Column_ID="2647" Column="Description">Drop Shipments are sent from the Vendor directly to the Customer</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Drop Ship Allocated</Data>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">61335</Data>
+        <Data AD_Column_ID="84317" Column="UUID">474eac39-b313-43f4-9d05-860b1cdbeac5</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Drop Shipment Allocated">Entrega Directa Asignada</Data>
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Drop Ship Allocated">Entrega Directa Asignada</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="61335">61335</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2647" Column="Description" oldValue="Drop Shipments are sent from the Vendor directly to the Customer">Los envíos de la nota se envían del vendedor directamente al cliente</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="61335">61335</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2648" Column="Help" oldValue="Drop Shipments do not cause any Inventory reservations or movements as the Shipment is from the Vendor's inventory. The Shipment of the Vendor to the Customer must be confirmed.">Los envíos de la nota no causan ningunas reservaciones o movimientos del inventario mientras que el envío es del inventario del vendedor. El envío del vendedor al cliente debe ser confirmado.</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="61335">61335</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="53232" Action="U" Record_ID="69396" Table="AD_View_Column">
+        <Data AD_Column_ID="58104" Column="Help" isOldNull="true">Drop Shipments do not cause any Inventory reservations or movements as the Shipment is from the Vendor's inventory. The Shipment of the Vendor to the Customer must be confirmed.</Data>
+        <Data AD_Column_ID="58105" Column="Name" oldValue="Allocated">Drop Shipment Allocated</Data>
+        <Data AD_Column_ID="58107" Column="ColumnName" oldValue="PP_IsAllocated">PP_IsDropShipAllocated</Data>
+        <Data AD_Column_ID="58102" Column="Description" isOldNull="true">Drop Shipments are sent from the Vendor directly to the Customer</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="53223" Action="I" Record_ID="68136" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57964" Column="Created">2020-04-02 19:31:21.11</Data>
+        <Data AD_Column_ID="57963" Column="IsActive">true</Data>
+        <Data AD_Column_ID="57965" Column="Updated">2020-04-02 19:31:21.11</Data>
+        <Data AD_Column_ID="57980" Column="IsRange">false</Data>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria">true</Data>
+        <Data AD_Column_ID="57985" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="64354" Column="DefaultValue">N</Data>
+        <Data AD_Column_ID="64853" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57972" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="57974" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="57976" Column="IsDisplayed">false</Data>
+        <Data AD_Column_ID="57977" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="57978" Column="IsKey">false</Data>
+        <Data AD_Column_ID="57981" Column="Name">PP_IsDropShipAllocated</Data>
+        <Data AD_Column_ID="63579" Column="IsReadOnly">true</Data>
+        <Data AD_Column_ID="57975" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="64222" Column="IsOrderBy">false</Data>
+        <Data AD_Column_ID="64355" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="64356" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="64358" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="64359" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="64360" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="64361" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="67114" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="81229" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="57961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="57962" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="57973" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="57968" Column="AD_Browse_Field_ID">68136</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="57984" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="57967" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="57966" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="63218" Column="Axis_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="57969" Column="AD_Element_ID">61335</Data>
+        <Data AD_Column_ID="57971" Column="AD_View_Column_ID">69396</Data>
+        <Data AD_Column_ID="64353" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="57970" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="57983" Column="AD_Browse_ID">50211</Data>
+        <Data AD_Column_ID="63219" Column="Axis_Parent_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="64221" Column="SortNo">0</Data>
+        <Data AD_Column_ID="64357" Column="FieldLength">0</Data>
+        <Data AD_Column_ID="78559" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="84296" Column="UUID">cea69198-f63b-4034-a0b5-2037235c4aec</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="53227" Action="I" Record_ID="0" Table="AD_Browse_Field_Trl">
+        <Data AD_Column_ID="58038" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58039" Column="Name">PP_IsDropShipAllocated</Data>
+        <Data AD_Column_ID="84297" Column="UUID">8bad3aa1-2765-47db-9e5f-2dfe0b9c5df4</Data>
+        <Data AD_Column_ID="58029" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58030" Column="Created">2020-04-02 19:31:21.951</Data>
+        <Data AD_Column_ID="58031" Column="Updated">2020-04-02 19:31:21.951</Data>
+        <Data AD_Column_ID="58036" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58037" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58027" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58028" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58035" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58033" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="58034" Column="AD_Browse_Field_ID">68136</Data>
+        <Data AD_Column_ID="58032" Column="CreatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68136" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57972" Column="Description" isOldNull="true">Drop Shipments are sent from the Vendor directly to the Customer</Data>
+        <Data AD_Column_ID="57974" Column="Help" isOldNull="true">Drop Shipments do not cause any Inventory reservations or movements as the Shipment is from the Vendor's inventory. The Shipment of the Vendor to the Customer must be confirmed.</Data>
+        <Data AD_Column_ID="57981" Column="Name" oldValue="PP_IsDropShipAllocated">Drop Shipment Allocated</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="53227" Action="U" Record_ID="0" Table="AD_Browse_Field_Trl">
+        <Data AD_Column_ID="58036" Column="Description" isOldNull="true">Los envíos de la nota se envían del vendedor directamente al cliente</Data>
+        <Data AD_Column_ID="58037" Column="Help" isOldNull="true">Los envíos de la nota no causan ningunas reservaciones o movimientos del inventario mientras que el envío es del inventario del vendedor. El envío del vendedor al cliente debe ser confirmado.</Data>
+        <Data AD_Column_ID="58039" Column="Name" oldValue="PP_IsDropShipAllocated">Entrega Directa Asignada</Data>
+        <Data AD_Column_ID="58035" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="58034" Column="AD_Browse_Field_ID" oldValue="68136">68136</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="67963" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="110">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68136" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="0">40</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68061" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="40">50</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68047" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="50">60</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68024" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="60">70</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68043" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="70">80</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68080" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="80">90</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="67776" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="90">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="67935" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="100">110</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50211" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="i.IsSOTrx = 'Y'&#10;AND i.DocStatus IN('CO', 'CL')&#10;AND p.IsDropShip = 'Y'&#10;AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0)&#10;AND EXISTS(SELECT 1 FROM C_Order o WHERE o.C_Order_ID = pol.C_Order_ID AND o.DocStatus = 'CO')&#10;AND EXISTS(SELECT 1 FROM C_OrderLine ol WHERE ol.C_OrderLine_ID = il.C_OrderLine_ID AND ol.Link_OrderLine_ID IS NULL)">i.IsSOTrx = 'Y'
+AND i.DocStatus IN('CO', 'CL')
+AND p.IsDropShip = 'Y'
+AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0)
+AND EXISTS(SELECT 1 FROM C_Order o WHERE o.C_Order_ID = pol.C_Order_ID AND o.DocStatus = 'CO')
+AND (('@PP_IsDropShipAllocated@' = 'Y' AND EXISTS(SELECT 1 FROM C_OrderLine ol WHERE ol.C_OrderLine_ID = il.C_OrderLine_ID AND ol.Link_OrderLine_ID IS NULL)) OR '@PP_IsDropShipAllocated@' = 'N')</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50211" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="i.IsSOTrx = 'Y'&#10;AND i.DocStatus IN('CO', 'CL')&#10;AND p.IsDropShip = 'Y'&#10;AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0)&#10;AND EXISTS(SELECT 1 FROM C_Order o WHERE o.C_Order_ID = pol.C_Order_ID AND o.DocStatus = 'CO')&#10;AND (('@PP_IsDropShipAllocated@' = 'Y' AND EXISTS(SELECT 1 FROM C_OrderLine ol WHERE ol.C_OrderLine_ID = il.C_OrderLine_ID AND ol.Link_OrderLine_ID IS NULL)) OR '@PP_IsDropShipAllocated@' = 'N')">i.IsSOTrx = 'Y'
+AND i.DocStatus IN('CO', 'CL')
+AND p.IsDropShip = 'Y'
+AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0)
+AND EXISTS(SELECT 1 FROM C_Order o WHERE o.C_Order_ID = pol.C_Order_ID AND o.DocStatus = 'CO')</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="53232" Action="U" Record_ID="69396" Table="AD_View_Column">
+        <Data AD_Column_ID="58106" Column="ColumnSQL" oldValue="('N')">(CASE WHEN EXISTS(SELECT 1 FROM C_OrderLine ol WHERE ol.C_OrderLine_ID = il.C_OrderLine_ID AND ol.Link_OrderLine_ID IS NULL) THEN 'N' ELSE 'Y' END)</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

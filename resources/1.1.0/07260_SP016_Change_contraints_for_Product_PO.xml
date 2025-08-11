@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Change contraints for Product PO" ReleaseNo="1.0" SeqNo="7260">
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>ALTER TABLE M_Product_PO DROP CONSTRAINT M_Product_PO_PKey;
+DROP INDEX M_Product_PO_VendorProdNo;
+CREATE UNIQUE INDEX M_Product_PO_pkey ON M_Product_PO USING BTREE (M_Product_ID, C_BPartner_ID, C_Currency_ID);
+CREATE UNIQUE INDEX M_Product_PO_VendorProdNo ON M_Product_PO USING BTREE (C_BPartner_ID, VendorProductNo, C_Currency_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX M_Product_PO_PKey;
+DROP INDEX M_Product_PO_VendorProdNo;
+CREATE UNIQUE INDEX M_Product_PO_pkey ON M_Product_PO USING BTREE (M_Product_ID, C_BPartner_ID);
+CREATE UNIQUE INDEX M_Product_PO_VendorProdNo ON M_Product_PO USING BTREE (C_BPartner_ID, VendorProductNo);</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
