@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for M_Product_Category
  *  @author Adempiere (generated) 
@@ -56,7 +57,7 @@ public interface I_M_Product_Category
 	  */
 	public int getA_Asset_Group_ID();
 
-	public org.adempiere.core.domains.models.I_A_Asset_Group getA_Asset_Group() throws RuntimeException;
+	public I_A_Asset_Group getA_Asset_Group() throws RuntimeException;
 
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
@@ -92,7 +93,7 @@ public interface I_M_Product_Category
 	  */
 	public int getAD_PrintColor_ID();
 
-	public org.adempiere.core.domains.models.I_AD_PrintColor getAD_PrintColor() throws RuntimeException;
+	public I_AD_PrintColor getAD_PrintColor() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -149,6 +150,19 @@ public interface I_M_Product_Category
 	  */
 	public boolean isDefault();
 
+    /** Column name IsGenerateGiftCard */
+    public static final String COLUMNNAME_IsGenerateGiftCard = "IsGenerateGiftCard";
+
+	/** Set Generate Gift Card.
+	  * Generate gift card from POS
+	  */
+	public void setIsGenerateGiftCard (boolean IsGenerateGiftCard);
+
+	/** Get Generate Gift Card.
+	  * Generate gift card from POS
+	  */
+	public boolean isGenerateGiftCard();
+
     /** Column name IsSelfService */
     public static final String COLUMNNAME_IsSelfService = "IsSelfService";
 
@@ -161,6 +175,32 @@ public interface I_M_Product_Category
 	  * This is a Self-Service entry or this entry can be changed via Self-Service
 	  */
 	public boolean isSelfService();
+
+    /** Column name IsWithoutDiscount */
+    public static final String COLUMNNAME_IsWithoutDiscount = "IsWithoutDiscount";
+
+	/** Set Without Discount.
+	  * Product Without Discount
+	  */
+	public void setIsWithoutDiscount (boolean IsWithoutDiscount);
+
+	/** Get Without Discount.
+	  * Product Without Discount
+	  */
+	public boolean isWithoutDiscount();
+
+    /** Column name MMPolicy */
+    public static final String COLUMNNAME_MMPolicy = "MMPolicy";
+
+	/** Set Material Policy.
+	  * Material Movement Policy
+	  */
+	public void setMMPolicy (String MMPolicy);
+
+	/** Get Material Policy.
+	  * Material Movement Policy
+	  */
+	public String getMMPolicy();
 
     /** Column name M_Product_Category_ID */
     public static final String COLUMNNAME_M_Product_Category_ID = "M_Product_Category_ID";
@@ -184,20 +224,7 @@ public interface I_M_Product_Category
 	/** Get Parent Product Category	  */
 	public int getM_Product_Category_Parent_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category_Parent() throws RuntimeException;
-
-    /** Column name MMPolicy */
-    public static final String COLUMNNAME_MMPolicy = "MMPolicy";
-
-	/** Set Material Policy.
-	  * Material Movement Policy
-	  */
-	public void setMMPolicy (String MMPolicy);
-
-	/** Get Material Policy.
-	  * Material Movement Policy
-	  */
-	public String getMMPolicy();
+	public I_M_Product_Category getM_Product_Category_Parent() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";

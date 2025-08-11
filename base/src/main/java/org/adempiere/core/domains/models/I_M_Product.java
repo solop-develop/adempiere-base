@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for M_Product
  *  @author Adempiere (generated) 
@@ -132,7 +133,7 @@ public interface I_M_Product
 	  */
 	public int getC_RevenueRecognition_ID();
 
-	public org.adempiere.core.domains.models.I_C_RevenueRecognition getC_RevenueRecognition() throws RuntimeException;
+	public I_C_RevenueRecognition getC_RevenueRecognition() throws RuntimeException;
 
     /** Column name C_SubscriptionType_ID */
     public static final String COLUMNNAME_C_SubscriptionType_ID = "C_SubscriptionType_ID";
@@ -147,7 +148,7 @@ public interface I_M_Product
 	  */
 	public int getC_SubscriptionType_ID();
 
-	public org.adempiere.core.domains.models.I_C_SubscriptionType getC_SubscriptionType() throws RuntimeException;
+	public I_C_SubscriptionType getC_SubscriptionType() throws RuntimeException;
 
     /** Column name C_TaxCategory_ID */
     public static final String COLUMNNAME_C_TaxCategory_ID = "C_TaxCategory_ID";
@@ -162,7 +163,7 @@ public interface I_M_Product
 	  */
 	public int getC_TaxCategory_ID();
 
-	public org.adempiere.core.domains.models.I_C_TaxCategory getC_TaxCategory() throws RuntimeException;
+	public I_C_TaxCategory getC_TaxCategory() throws RuntimeException;
 
     /** Column name C_TaxType_ID */
     public static final String COLUMNNAME_C_TaxType_ID = "C_TaxType_ID";
@@ -177,7 +178,7 @@ public interface I_M_Product
 	  */
 	public int getC_TaxType_ID();
 
-	public org.adempiere.core.domains.models.I_C_TaxType getC_TaxType() throws RuntimeException;
+	public I_C_TaxType getC_TaxType() throws RuntimeException;
 
     /** Column name C_UOM_ID */
     public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
@@ -192,7 +193,18 @@ public interface I_M_Product
 	  */
 	public int getC_UOM_ID();
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM() throws RuntimeException;
+	public I_C_UOM getC_UOM() throws RuntimeException;
+
+    /** Column name DD_Vehicle_ID */
+    public static final String COLUMNNAME_DD_Vehicle_ID = "DD_Vehicle_ID";
+
+	/** Set Vehicle	  */
+	public void setDD_Vehicle_ID (int DD_Vehicle_ID);
+
+	/** Get Vehicle	  */
+	public int getDD_Vehicle_ID();
+
+	public I_DD_Vehicle getDD_Vehicle() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -407,6 +419,19 @@ public interface I_M_Product
 	  */
 	public boolean isExcludeAutoDelivery();
 
+    /** Column name IsGenerateGiftCard */
+    public static final String COLUMNNAME_IsGenerateGiftCard = "IsGenerateGiftCard";
+
+	/** Set Generate Gift Card.
+	  * Generate gift card from POS
+	  */
+	public void setIsGenerateGiftCard (boolean IsGenerateGiftCard);
+
+	/** Get Generate Gift Card.
+	  * Generate gift card from POS
+	  */
+	public boolean isGenerateGiftCard();
+
     /** Column name IsInvoicePrintDetails */
     public static final String COLUMNNAME_IsInvoicePrintDetails = "IsInvoicePrintDetails";
 
@@ -572,6 +597,19 @@ public interface I_M_Product
 	  */
 	public boolean isWebStoreFeatured();
 
+    /** Column name IsWithoutDiscount */
+    public static final String COLUMNNAME_IsWithoutDiscount = "IsWithoutDiscount";
+
+	/** Set Without Discount.
+	  * Product Without Discount
+	  */
+	public void setIsWithoutDiscount (boolean IsWithoutDiscount);
+
+	/** Get Without Discount.
+	  * Product Without Discount
+	  */
+	public boolean isWithoutDiscount();
+
     /** Column name LowLevel */
     public static final String COLUMNNAME_LowLevel = "LowLevel";
 
@@ -598,7 +636,7 @@ public interface I_M_Product
 	  */
 	public int getM_AttributeSet_ID();
 
-	public org.adempiere.core.domains.models.I_M_AttributeSet getM_AttributeSet() throws RuntimeException;
+	public I_M_AttributeSet getM_AttributeSet() throws RuntimeException;
 
     /** Column name M_AttributeSetInstance_ID */
     public static final String COLUMNNAME_M_AttributeSetInstance_ID = "M_AttributeSetInstance_ID";
@@ -624,7 +662,7 @@ public interface I_M_Product
 	/** Get Product Brand	  */
 	public int getM_Brand_ID();
 
-	public org.adempiere.core.domains.models.I_M_Brand getM_Brand() throws RuntimeException;
+	public I_M_Brand getM_Brand() throws RuntimeException;
 
     /** Column name M_FreightCategory_ID */
     public static final String COLUMNNAME_M_FreightCategory_ID = "M_FreightCategory_ID";
@@ -639,7 +677,7 @@ public interface I_M_Product
 	  */
 	public int getM_FreightCategory_ID();
 
-	public org.adempiere.core.domains.models.I_M_FreightCategory getM_FreightCategory() throws RuntimeException;
+	public I_M_FreightCategory getM_FreightCategory() throws RuntimeException;
 
     /** Column name M_Industry_Sector_ID */
     public static final String COLUMNNAME_M_Industry_Sector_ID = "M_Industry_Sector_ID";
@@ -650,7 +688,7 @@ public interface I_M_Product
 	/** Get Industry Sector	  */
 	public int getM_Industry_Sector_ID();
 
-	public org.adempiere.core.domains.models.I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException;
+	public I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException;
 
     /** Column name M_Locator_ID */
     public static final String COLUMNNAME_M_Locator_ID = "M_Locator_ID";
@@ -676,7 +714,7 @@ public interface I_M_Product
 	/** Get Material Group	  */
 	public int getM_Material_Group_ID();
 
-	public org.adempiere.core.domains.models.I_M_Material_Group getM_Material_Group() throws RuntimeException;
+	public I_M_Material_Group getM_Material_Group() throws RuntimeException;
 
     /** Column name M_Material_Type_ID */
     public static final String COLUMNNAME_M_Material_Type_ID = "M_Material_Type_ID";
@@ -687,7 +725,7 @@ public interface I_M_Product
 	/** Get Material Type	  */
 	public int getM_Material_Type_ID();
 
-	public org.adempiere.core.domains.models.I_M_Material_Type getM_Material_Type() throws RuntimeException;
+	public I_M_Material_Type getM_Material_Type() throws RuntimeException;
 
     /** Column name M_PartType_ID */
     public static final String COLUMNNAME_M_PartType_ID = "M_PartType_ID";
@@ -698,7 +736,7 @@ public interface I_M_Product
 	/** Get Part Type	  */
 	public int getM_PartType_ID();
 
-	public org.adempiere.core.domains.models.I_M_PartType getM_PartType() throws RuntimeException;
+	public I_M_PartType getM_PartType() throws RuntimeException;
 
     /** Column name M_Product_Category_ID */
     public static final String COLUMNNAME_M_Product_Category_ID = "M_Product_Category_ID";
@@ -713,7 +751,7 @@ public interface I_M_Product
 	  */
 	public int getM_Product_Category_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category() throws RuntimeException;
+	public I_M_Product_Category getM_Product_Category() throws RuntimeException;
 
     /** Column name M_Product_Class_ID */
     public static final String COLUMNNAME_M_Product_Class_ID = "M_Product_Class_ID";
@@ -728,7 +766,7 @@ public interface I_M_Product
 	  */
 	public int getM_Product_Class_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product_Class getM_Product_Class() throws RuntimeException;
+	public I_M_Product_Class getM_Product_Class() throws RuntimeException;
 
     /** Column name M_Product_Classification_ID */
     public static final String COLUMNNAME_M_Product_Classification_ID = "M_Product_Classification_ID";
@@ -743,7 +781,7 @@ public interface I_M_Product
 	  */
 	public int getM_Product_Classification_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product_Classification getM_Product_Classification() throws RuntimeException;
+	public I_M_Product_Classification getM_Product_Classification() throws RuntimeException;
 
     /** Column name M_Product_Group_ID */
     public static final String COLUMNNAME_M_Product_Group_ID = "M_Product_Group_ID";
@@ -758,7 +796,7 @@ public interface I_M_Product
 	  */
 	public int getM_Product_Group_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product_Group getM_Product_Group() throws RuntimeException;
+	public I_M_Product_Group getM_Product_Group() throws RuntimeException;
 
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
@@ -782,7 +820,7 @@ public interface I_M_Product
 	/** Get Purchase Group	  */
 	public int getM_Purchase_Group_ID();
 
-	public org.adempiere.core.domains.models.I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException;
+	public I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException;
 
     /** Column name M_Sales_Group_ID */
     public static final String COLUMNNAME_M_Sales_Group_ID = "M_Sales_Group_ID";
@@ -793,7 +831,7 @@ public interface I_M_Product
 	/** Get Sales Group	  */
 	public int getM_Sales_Group_ID();
 
-	public org.adempiere.core.domains.models.I_M_Sales_Group getM_Sales_Group() throws RuntimeException;
+	public I_M_Sales_Group getM_Sales_Group() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -821,7 +859,7 @@ public interface I_M_Product
 	  */
 	public int getParent_Product_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getParent_Product() throws RuntimeException;
+	public I_M_Product getParent_Product() throws RuntimeException;
 
     /** Column name Processing */
     public static final String COLUMNNAME_Processing = "Processing";
@@ -858,7 +896,7 @@ public interface I_M_Product
 	  */
 	public int getR_MailText_ID();
 
-	public org.adempiere.core.domains.models.I_R_MailText getR_MailText() throws RuntimeException;
+	public I_R_MailText getR_MailText() throws RuntimeException;
 
     /** Column name SalesRep_ID */
     public static final String COLUMNNAME_SalesRep_ID = "SalesRep_ID";
@@ -873,7 +911,7 @@ public interface I_M_Product
 	  */
 	public int getSalesRep_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+	public I_AD_User getSalesRep() throws RuntimeException;
 
     /** Column name S_ExpenseType_ID */
     public static final String COLUMNNAME_S_ExpenseType_ID = "S_ExpenseType_ID";
@@ -888,7 +926,7 @@ public interface I_M_Product
 	  */
 	public int getS_ExpenseType_ID();
 
-	public org.adempiere.core.domains.models.I_S_ExpenseType getS_ExpenseType() throws RuntimeException;
+	public I_S_ExpenseType getS_ExpenseType() throws RuntimeException;
 
     /** Column name ShelfDepth */
     public static final String COLUMNNAME_ShelfDepth = "ShelfDepth";
@@ -942,20 +980,20 @@ public interface I_M_Product
 	  */
 	public String getSKU();
 
-	/** Column name SourceCountry_ID */
-	public static final String COLUMNNAME_SourceCountry_ID = "SourceCountry_ID";
+    /** Column name SourceCountry_ID */
+    public static final String COLUMNNAME_SourceCountry_ID = "SourceCountry_ID";
 
 	/** Set Source Country.
-	 * Source Country for Product or reference
-	 */
+	  * Source Country for Product or reference
+	  */
 	public void setSourceCountry_ID (int SourceCountry_ID);
 
 	/** Get Source Country.
-	 * Source Country for Product or reference
-	 */
+	  * Source Country for Product or reference
+	  */
 	public int getSourceCountry_ID();
 
-	public org.adempiere.core.domains.models.I_C_Country getSourceCountry() throws RuntimeException;
+	public I_C_Country getSourceCountry() throws RuntimeException;
 
     /** Column name S_Resource_ID */
     public static final String COLUMNNAME_S_Resource_ID = "S_Resource_ID";
@@ -970,7 +1008,22 @@ public interface I_M_Product
 	  */
 	public int getS_Resource_ID();
 
-	public org.adempiere.core.domains.models.I_S_Resource getS_Resource() throws RuntimeException;
+	public I_S_Resource getS_Resource() throws RuntimeException;
+
+    /** Column name S_ServiceType_ID */
+    public static final String COLUMNNAME_S_ServiceType_ID = "S_ServiceType_ID";
+
+	/** Set Service Type.
+	  * Define a Service Type for a Contract
+	  */
+	public void setS_ServiceType_ID (int S_ServiceType_ID);
+
+	/** Get Service Type.
+	  * Define a Service Type for a Contract
+	  */
+	public int getS_ServiceType_ID();
+
+	public I_S_ServiceType getS_ServiceType() throws RuntimeException;
 
     /** Column name UnitsPerPack */
     public static final String COLUMNNAME_UnitsPerPack = "UnitsPerPack";
