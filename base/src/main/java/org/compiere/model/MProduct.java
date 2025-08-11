@@ -680,7 +680,9 @@ public class MProduct extends X_M_Product
 				return false;
 			}
 		}
-
+		if(newRecord || is_ValueChanged(COLUMNNAME_M_Product_Category_ID)) {
+			setIsWithoutDiscount(getM_Product_Category().isWithoutDiscount());
+		}
 		return true;
 	}	//	beforeSave
 
