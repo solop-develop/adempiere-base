@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Add Parent Link for column" ReleaseNo="1.0" SeqNo="7280">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="3910" Table="AD_Column">
+        <Data AD_Column_ID="120" Column="IsParent" oldValue="false">true</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable" oldValue="true">false</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">C_Currency_ID</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Add Setup for consigned Material" ReleaseNo="1.0" SeqNo="7120">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="54786" Action="I" Record_ID="50005" Table="AD_SetupDefinition">
+        <Data AD_Column_ID="97364" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="97365" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97366" Column="AD_SetupDefinition_ID">50005</Data>
+        <Data AD_Column_ID="97367" Column="Classname">org.solop.sp016.setup.Deploy</Data>
+        <Data AD_Column_ID="97368" Column="Created">2020-12-07 12:56:48.252</Data>
+        <Data AD_Column_ID="97369" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97370" Column="Description">Consigned Material Deployment Setup</Data>
+        <Data AD_Column_ID="97371" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="97372" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="97373" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97374" Column="Name">Deployment</Data>
+        <Data AD_Column_ID="97375" Column="Updated">2020-12-07 12:56:48.252</Data>
+        <Data AD_Column_ID="97376" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97377" Column="UUID">4c364ba9-d597-4dcd-9e51-6b419e8e7c30</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
