@@ -383,7 +383,7 @@ public class MPInstance extends X_AD_PInstance
 	}
 	
 	private String getDisplayParameterValue(MProcessPara parameter, Object value) {
-		if(value == null) {
+		if(value == null || parameter == null) {
 			return null;
 		}
 		String displayValue = null;
