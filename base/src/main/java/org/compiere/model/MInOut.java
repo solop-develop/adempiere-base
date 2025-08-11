@@ -16,37 +16,26 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.*;
+import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.exceptions.PeriodClosedException;
+import org.compiere.print.ReportEngine;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.process.DocumentReversalEnabled;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_C_Order;
-import org.adempiere.core.domains.models.I_C_OrderLine;
-import org.adempiere.core.domains.models.I_M_InOutConfirm;
-import org.adempiere.core.domains.models.I_M_InOutLine;
-import org.adempiere.core.domains.models.X_M_InOut;
-import org.adempiere.exceptions.AdempiereException;
-import org.adempiere.exceptions.PeriodClosedException;
-import org.compiere.print.ReportEngine;
-import org.compiere.process.DocAction;
-import org.compiere.process.DocumentReversalEnabled;
-import org.compiere.process.DocumentEngine;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
 
 /**
  *  Shipment Model
@@ -304,7 +293,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 	 *	@param inOutId
 	 *	@param trxName rx name
 	 */
-	public MInOut (Properties ctx, int inOutId, String trxName)
+	public MInOut(Properties ctx, int inOutId, String trxName)
 	{
 		super (ctx, inOutId, trxName);
 		if (inOutId == 0)
@@ -343,7 +332,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 	 *  @param rs result set record
 	 *	@param trxName transaction
 	 */
-	public MInOut (Properties ctx, ResultSet rs, String trxName)
+	public MInOut(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MInOut
@@ -354,7 +343,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 	 *	@param movementDate optional movement date (default today)
 	 *	@param docTypeShipmentId document type or 0
 	 */
-	public MInOut (MOrder order, int docTypeShipmentId, Timestamp movementDate)
+	public MInOut(MOrder order, int docTypeShipmentId, Timestamp movementDate)
 	{
 		this (order.getCtx(), 0, order.get_TrxName());
 		setClientOrg(order);
@@ -425,7 +414,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 	 *	@param movementDate optional movement date (default today)
 	 *	@param M_Warehouse_ID warehouse
 	 */
-	public MInOut (MInvoice invoice, int C_DocTypeShipment_ID, Timestamp movementDate, int M_Warehouse_ID)
+	public MInOut(MInvoice invoice, int C_DocTypeShipment_ID, Timestamp movementDate, int M_Warehouse_ID)
 	{
 		this (invoice.getCtx(), 0, invoice.get_TrxName());
 		setClientOrg(invoice);
@@ -494,7 +483,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 	 *	@param movementDate optional movement date (default today)
 	 *	@param C_DocTypeShipment_ID document type or 0
 	 */
-	public MInOut (MInOut original, int C_DocTypeShipment_ID, Timestamp movementDate)
+	public MInOut(MInOut original, int C_DocTypeShipment_ID, Timestamp movementDate)
 	{
 		this (original.getCtx(), 0, original.get_TrxName());
 		setClientOrg(original);
@@ -1978,7 +1967,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			processMsg = "Document Closed: " + getDocStatus();
 			return false;
 		}
-
+		clearInOutboundLines();
 		//	Not Processed
 		if (DOCSTATUS_Drafted.equals(getDocStatus())
 			|| DOCSTATUS_Invalid.equals(getDocStatus())
@@ -2037,6 +2026,21 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 		setDocAction(DOCACTION_None);
 		return true;
 	}	//	voidIt
+
+	private void clearInOutboundLines() {
+		List<Integer> inOutboundLinesIds = new Query(getCtx(), I_WM_InOutBoundLine.Table_Name, "EXISTS(SELECT 1 " +
+				"FROM M_InOutLine il " +
+				"WHERE il.M_InOut_ID = ? " +
+				"AND (il.M_InOutLine_ID = WM_InOutBoundLine.M_InOutLine_ID OR il.M_InOut_ID = WM_InOutBoundLine.M_InOut_ID))", get_TrxName())
+				.setParameters(getM_InOut_ID())
+				.getIDsAsList();
+		inOutboundLinesIds.forEach(inoutBoundLineId -> {
+			X_WM_InOutBoundLine inOutboundLine = new X_WM_InOutBoundLine(getCtx(), inoutBoundLineId, get_TrxName());
+			inOutboundLine.setM_InOutLine_ID(-1);
+			inOutboundLine.setM_InOut_ID(-1);
+			inOutboundLine.saveEx();
+		});
+	}
 
 	/**
 	 * 	Close Document.
@@ -2172,7 +2176,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 					}
 					order.saveEx(get_TrxName());
 				});
-
+		clearInOutboundLines();
 		return reversal;
 	}
 
