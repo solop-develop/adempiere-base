@@ -704,10 +704,12 @@ public final class MPayment extends X_C_Payment
 		}
 
 		//	Document Type/Receipt
-		if(newRecord || is_ValueChanged("C_DocType_ID") || is_ValueChanged("IsReceipt")) {
+		if(newRecord || is_ValueChanged("C_DocType_ID")) {
 			if (getC_DocType_ID() == 0) {
 				setC_DocType_ID();
 			}
+			MDocType documentType = MDocType.get(getCtx(), getC_DocType_ID());
+			setIsReceipt(documentType.getDocBaseType().equals(MDocType.DOCBASETYPE_ARReceipt));
 		}
 		setDocumentNo();
 		//
