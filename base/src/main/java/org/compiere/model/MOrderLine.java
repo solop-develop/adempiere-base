@@ -954,7 +954,15 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 					if(!getParent().isReturnOrder()) {
 						setPriceList(m_productPrice.getPriceList());
 						setPriceLimit(m_productPrice.getPriceLimit());
-						setDiscount(m_productPrice.getDiscount());
+						MProduct product = MProduct.get(getCtx(), getM_Product_ID());
+						if(product.isWithoutDiscount()) {
+							setDiscount(Env.ZERO);
+							BigDecimal priceEntered = MUOMConversion.convertProductFrom (getCtx(), getM_Product_ID(), getC_UOM_ID(), getPriceList());
+							setPriceEntered(priceEntered);
+							setPriceActual(getPriceList());
+						} else {
+							setDiscount(m_productPrice.getDiscount());
+						}
 					}
 				}
 			}

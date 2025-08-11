@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for M_Product_Category
  *  @author Adempiere (generated) 
@@ -37,7 +38,7 @@ public class X_M_Product_Category extends PO implements I_M_Product_Category, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250811L;
 
     /** Standard Constructor */
     public X_M_Product_Category (Properties ctx, int M_Product_Category_ID, String trxName)
@@ -48,9 +49,9 @@ public class X_M_Product_Category extends PO implements I_M_Product_Category, I_
 			setIsDefault (false);
 			setIsSelfService (true);
 // Y
-			setM_Product_Category_ID (0);
 			setMMPolicy (null);
 // F
+			setM_Product_Category_ID (0);
 			setName (null);
 			setPlannedMargin (Env.ZERO);
 			setValue (null);
@@ -85,9 +86,9 @@ public class X_M_Product_Category extends PO implements I_M_Product_Category, I_
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_A_Asset_Group getA_Asset_Group() throws RuntimeException
+	public I_A_Asset_Group getA_Asset_Group() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_A_Asset_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_A_Asset_Group.Table_Name)
+		return (I_A_Asset_Group)MTable.get(getCtx(), I_A_Asset_Group.Table_Name)
 			.getPO(getA_Asset_Group_ID(), get_TrxName());	}
 
 	/** Set Asset Group.
@@ -113,9 +114,9 @@ public class X_M_Product_Category extends PO implements I_M_Product_Category, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_PrintColor getAD_PrintColor() throws RuntimeException
+	public I_AD_PrintColor getAD_PrintColor() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_PrintColor)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_PrintColor.Table_Name)
+		return (I_AD_PrintColor)MTable.get(getCtx(), I_AD_PrintColor.Table_Name)
 			.getPO(getAD_PrintColor_ID(), get_TrxName());	}
 
 	/** Set Print Color.
@@ -182,6 +183,30 @@ public class X_M_Product_Category extends PO implements I_M_Product_Category, I_
 		return false;
 	}
 
+	/** Set Generate Gift Card.
+		@param IsGenerateGiftCard 
+		Generate gift card from POS
+	  */
+	public void setIsGenerateGiftCard (boolean IsGenerateGiftCard)
+	{
+		set_Value (COLUMNNAME_IsGenerateGiftCard, Boolean.valueOf(IsGenerateGiftCard));
+	}
+
+	/** Get Generate Gift Card.
+		@return Generate gift card from POS
+	  */
+	public boolean isGenerateGiftCard () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsGenerateGiftCard);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Self-Service.
 		@param IsSelfService 
 		This is a Self-Service entry or this entry can be changed via Self-Service
@@ -204,6 +229,54 @@ public class X_M_Product_Category extends PO implements I_M_Product_Category, I_
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Without Discount.
+		@param IsWithoutDiscount 
+		Product Without Discount
+	  */
+	public void setIsWithoutDiscount (boolean IsWithoutDiscount)
+	{
+		set_Value (COLUMNNAME_IsWithoutDiscount, Boolean.valueOf(IsWithoutDiscount));
+	}
+
+	/** Get Without Discount.
+		@return Product Without Discount
+	  */
+	public boolean isWithoutDiscount () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsWithoutDiscount);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** MMPolicy AD_Reference_ID=335 */
+	public static final int MMPOLICY_AD_Reference_ID=335;
+	/** LiFo = L */
+	public static final String MMPOLICY_LiFo = "L";
+	/** FiFo = F */
+	public static final String MMPOLICY_FiFo = "F";
+	/** Set Material Policy.
+		@param MMPolicy 
+		Material Movement Policy
+	  */
+	public void setMMPolicy (String MMPolicy)
+	{
+
+		set_Value (COLUMNNAME_MMPolicy, MMPolicy);
+	}
+
+	/** Get Material Policy.
+		@return Material Movement Policy
+	  */
+	public String getMMPolicy () 
+	{
+		return (String)get_Value(COLUMNNAME_MMPolicy);
 	}
 
 	/** Set Product Category.
@@ -229,9 +302,9 @@ public class X_M_Product_Category extends PO implements I_M_Product_Category, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category_Parent() throws RuntimeException
+	public I_M_Product_Category getM_Product_Category_Parent() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product_Category)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product_Category.Table_Name)
+		return (I_M_Product_Category)MTable.get(getCtx(), I_M_Product_Category.Table_Name)
 			.getPO(getM_Product_Category_Parent_ID(), get_TrxName());	}
 
 	/** Set Parent Product Category.
@@ -252,30 +325,6 @@ public class X_M_Product_Category extends PO implements I_M_Product_Category, I_
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** MMPolicy AD_Reference_ID=335 */
-	public static final int MMPOLICY_AD_Reference_ID=335;
-	/** LiFo = L */
-	public static final String MMPOLICY_LiFo = "L";
-	/** FiFo = F */
-	public static final String MMPOLICY_FiFo = "F";
-	/** Set Material Policy.
-		@param MMPolicy 
-		Material Movement Policy
-	  */
-	public void setMMPolicy (String MMPolicy)
-	{
-
-		set_Value (COLUMNNAME_MMPolicy, MMPolicy);
-	}
-
-	/** Get Material Policy.
-		@return Material Movement Policy
-	  */
-	public String getMMPolicy () 
-	{
-		return (String)get_Value(COLUMNNAME_MMPolicy);
 	}
 
 	/** Set Name.

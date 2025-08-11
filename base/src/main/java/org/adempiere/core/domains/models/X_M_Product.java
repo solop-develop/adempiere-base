@@ -18,16 +18,17 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for M_Product
  *  @author Adempiere (generated) 
@@ -38,7 +39,7 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250724L;
+	private static final long serialVersionUID = 20250811L;
 
     /** Standard Constructor */
     public X_M_Product (Properties ctx, int M_Product_ID, String trxName)
@@ -165,9 +166,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_C_RevenueRecognition getC_RevenueRecognition() throws RuntimeException
+	public I_C_RevenueRecognition getC_RevenueRecognition() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_RevenueRecognition)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_RevenueRecognition.Table_Name)
+		return (I_C_RevenueRecognition)MTable.get(getCtx(), I_C_RevenueRecognition.Table_Name)
 			.getPO(getC_RevenueRecognition_ID(), get_TrxName());	}
 
 	/** Set Revenue Recognition.
@@ -193,9 +194,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_SubscriptionType getC_SubscriptionType() throws RuntimeException
+	public I_C_SubscriptionType getC_SubscriptionType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_SubscriptionType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SubscriptionType.Table_Name)
+		return (I_C_SubscriptionType)MTable.get(getCtx(), I_C_SubscriptionType.Table_Name)
 			.getPO(getC_SubscriptionType_ID(), get_TrxName());	}
 
 	/** Set Subscription Type.
@@ -221,9 +222,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_TaxCategory getC_TaxCategory() throws RuntimeException
+	public I_C_TaxCategory getC_TaxCategory() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_TaxCategory)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_TaxCategory.Table_Name)
+		return (I_C_TaxCategory)MTable.get(getCtx(), I_C_TaxCategory.Table_Name)
 			.getPO(getC_TaxCategory_ID(), get_TrxName());	}
 
 	/** Set Tax Category.
@@ -249,9 +250,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_TaxType getC_TaxType() throws RuntimeException
+	public I_C_TaxType getC_TaxType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_TaxType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_TaxType.Table_Name)
+		return (I_C_TaxType)MTable.get(getCtx(), I_C_TaxType.Table_Name)
 			.getPO(getC_TaxType_ID(), get_TrxName());	}
 
 	/** Set Tax Type.
@@ -277,9 +278,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM() throws RuntimeException
+	public I_C_UOM getC_UOM() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_UOM)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_UOM.Table_Name)
+		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
 			.getPO(getC_UOM_ID(), get_TrxName());	}
 
 	/** Set UOM.
@@ -300,6 +301,31 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 	public int getC_UOM_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_UOM_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_DD_Vehicle getDD_Vehicle() throws RuntimeException
+    {
+		return (I_DD_Vehicle)MTable.get(getCtx(), I_DD_Vehicle.Table_Name)
+			.getPO(getDD_Vehicle_ID(), get_TrxName());	}
+
+	/** Set Vehicle.
+		@param DD_Vehicle_ID Vehicle	  */
+	public void setDD_Vehicle_ID (int DD_Vehicle_ID)
+	{
+		if (DD_Vehicle_ID < 1) 
+			set_Value (COLUMNNAME_DD_Vehicle_ID, null);
+		else 
+			set_Value (COLUMNNAME_DD_Vehicle_ID, Integer.valueOf(DD_Vehicle_ID));
+	}
+
+	/** Get Vehicle.
+		@return Vehicle	  */
+	public int getDD_Vehicle_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DD_Vehicle_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -596,6 +622,30 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 	public boolean isExcludeAutoDelivery () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsExcludeAutoDelivery);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Generate Gift Card.
+		@param IsGenerateGiftCard 
+		Generate gift card from POS
+	  */
+	public void setIsGenerateGiftCard (boolean IsGenerateGiftCard)
+	{
+		set_Value (COLUMNNAME_IsGenerateGiftCard, Boolean.valueOf(IsGenerateGiftCard));
+	}
+
+	/** Get Generate Gift Card.
+		@return Generate gift card from POS
+	  */
+	public boolean isGenerateGiftCard () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsGenerateGiftCard);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -914,6 +964,30 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return false;
 	}
 
+	/** Set Without Discount.
+		@param IsWithoutDiscount 
+		Product Without Discount
+	  */
+	public void setIsWithoutDiscount (boolean IsWithoutDiscount)
+	{
+		set_Value (COLUMNNAME_IsWithoutDiscount, Boolean.valueOf(IsWithoutDiscount));
+	}
+
+	/** Get Without Discount.
+		@return Product Without Discount
+	  */
+	public boolean isWithoutDiscount () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsWithoutDiscount);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Low Level.
 		@param LowLevel 
 		The Low Level is used to calculate the material plan and determines if a net requirement should be exploited
@@ -934,9 +1008,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_AttributeSet getM_AttributeSet() throws RuntimeException
+	public I_M_AttributeSet getM_AttributeSet() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_AttributeSet)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_AttributeSet.Table_Name)
+		return (I_M_AttributeSet)MTable.get(getCtx(), I_M_AttributeSet.Table_Name)
 			.getPO(getM_AttributeSet_ID(), get_TrxName());	}
 
 	/** Set Attribute Set.
@@ -990,9 +1064,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Brand getM_Brand() throws RuntimeException
+	public I_M_Brand getM_Brand() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Brand)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Brand.Table_Name)
+		return (I_M_Brand)MTable.get(getCtx(), I_M_Brand.Table_Name)
 			.getPO(getM_Brand_ID(), get_TrxName());	}
 
 	/** Set Product Brand.
@@ -1015,9 +1089,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_FreightCategory getM_FreightCategory() throws RuntimeException
+	public I_M_FreightCategory getM_FreightCategory() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_FreightCategory)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_FreightCategory.Table_Name)
+		return (I_M_FreightCategory)MTable.get(getCtx(), I_M_FreightCategory.Table_Name)
 			.getPO(getM_FreightCategory_ID(), get_TrxName());	}
 
 	/** Set Freight Category.
@@ -1043,9 +1117,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException
+	public I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Industry_Sector)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Industry_Sector.Table_Name)
+		return (I_M_Industry_Sector)MTable.get(getCtx(), I_M_Industry_Sector.Table_Name)
 			.getPO(getM_Industry_Sector_ID(), get_TrxName());	}
 
 	/** Set Industry Sector.
@@ -1096,9 +1170,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Material_Group getM_Material_Group() throws RuntimeException
+	public I_M_Material_Group getM_Material_Group() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Material_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Material_Group.Table_Name)
+		return (I_M_Material_Group)MTable.get(getCtx(), I_M_Material_Group.Table_Name)
 			.getPO(getM_Material_Group_ID(), get_TrxName());	}
 
 	/** Set Material Group.
@@ -1121,9 +1195,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Material_Type getM_Material_Type() throws RuntimeException
+	public I_M_Material_Type getM_Material_Type() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Material_Type)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Material_Type.Table_Name)
+		return (I_M_Material_Type)MTable.get(getCtx(), I_M_Material_Type.Table_Name)
 			.getPO(getM_Material_Type_ID(), get_TrxName());	}
 
 	/** Set Material Type.
@@ -1146,9 +1220,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_PartType getM_PartType() throws RuntimeException
+	public I_M_PartType getM_PartType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_PartType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_PartType.Table_Name)
+		return (I_M_PartType)MTable.get(getCtx(), I_M_PartType.Table_Name)
 			.getPO(getM_PartType_ID(), get_TrxName());	}
 
 	/** Set Part Type.
@@ -1171,9 +1245,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category() throws RuntimeException
+	public I_M_Product_Category getM_Product_Category() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product_Category)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product_Category.Table_Name)
+		return (I_M_Product_Category)MTable.get(getCtx(), I_M_Product_Category.Table_Name)
 			.getPO(getM_Product_Category_ID(), get_TrxName());	}
 
 	/** Set Product Category.
@@ -1199,9 +1273,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product_Class getM_Product_Class() throws RuntimeException
+	public I_M_Product_Class getM_Product_Class() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product_Class)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product_Class.Table_Name)
+		return (I_M_Product_Class)MTable.get(getCtx(), I_M_Product_Class.Table_Name)
 			.getPO(getM_Product_Class_ID(), get_TrxName());	}
 
 	/** Set Product Class.
@@ -1227,9 +1301,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product_Classification getM_Product_Classification() throws RuntimeException
+	public I_M_Product_Classification getM_Product_Classification() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product_Classification)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product_Classification.Table_Name)
+		return (I_M_Product_Classification)MTable.get(getCtx(), I_M_Product_Classification.Table_Name)
 			.getPO(getM_Product_Classification_ID(), get_TrxName());	}
 
 	/** Set Product Classification.
@@ -1255,9 +1329,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product_Group getM_Product_Group() throws RuntimeException
+	public I_M_Product_Group getM_Product_Group() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product_Group.Table_Name)
+		return (I_M_Product_Group)MTable.get(getCtx(), I_M_Product_Group.Table_Name)
 			.getPO(getM_Product_Group_ID(), get_TrxName());	}
 
 	/** Set Product Group.
@@ -1306,9 +1380,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException
+	public I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Purchase_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Purchase_Group.Table_Name)
+		return (I_M_Purchase_Group)MTable.get(getCtx(), I_M_Purchase_Group.Table_Name)
 			.getPO(getM_Purchase_Group_ID(), get_TrxName());	}
 
 	/** Set Purchase Group.
@@ -1331,9 +1405,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Sales_Group getM_Sales_Group() throws RuntimeException
+	public I_M_Sales_Group getM_Sales_Group() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Sales_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Sales_Group.Table_Name)
+		return (I_M_Sales_Group)MTable.get(getCtx(), I_M_Sales_Group.Table_Name)
 			.getPO(getM_Sales_Group_ID(), get_TrxName());	}
 
 	/** Set Sales Group.
@@ -1373,9 +1447,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return (String)get_Value(COLUMNNAME_Name);
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product getParent_Product() throws RuntimeException
+	public I_M_Product getParent_Product() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
 			.getPO(getParent_Product_ID(), get_TrxName());	}
 
 	/** Set Parent Product.
@@ -1452,9 +1526,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return (String)get_Value(COLUMNNAME_ProductType);
 	}
 
-	public org.adempiere.core.domains.models.I_R_MailText getR_MailText() throws RuntimeException
+	public I_R_MailText getR_MailText() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_R_MailText)MTable.get(getCtx(), org.adempiere.core.domains.models.I_R_MailText.Table_Name)
+		return (I_R_MailText)MTable.get(getCtx(), I_R_MailText.Table_Name)
 			.getPO(getR_MailText_ID(), get_TrxName());	}
 
 	/** Set Mail Template.
@@ -1480,9 +1554,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
+	public I_AD_User getSalesRep() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSalesRep_ID(), get_TrxName());	}
 
 	/** Set Sales Representative.
@@ -1508,9 +1582,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_S_ExpenseType getS_ExpenseType() throws RuntimeException
+	public I_S_ExpenseType getS_ExpenseType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_ExpenseType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ExpenseType.Table_Name)
+		return (I_S_ExpenseType)MTable.get(getCtx(), I_S_ExpenseType.Table_Name)
 			.getPO(getS_ExpenseType_ID(), get_TrxName());	}
 
 	/** Set Expense Type.
@@ -1613,9 +1687,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return (String)get_Value(COLUMNNAME_SKU);
 	}
 
-	public org.adempiere.core.domains.models.I_C_Country getSourceCountry() throws RuntimeException
+	public I_C_Country getSourceCountry() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Country)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Country.Table_Name)
+		return (I_C_Country)MTable.get(getCtx(), I_C_Country.Table_Name)
 			.getPO(getSourceCountry_ID(), get_TrxName());	}
 
 	/** Set Source Country.
@@ -1641,9 +1715,9 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_S_Resource getS_Resource() throws RuntimeException
+	public I_S_Resource getS_Resource() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_Resource)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Resource.Table_Name)
+		return (I_S_Resource)MTable.get(getCtx(), I_S_Resource.Table_Name)
 			.getPO(getS_Resource_ID(), get_TrxName());	}
 
 	/** Set Resource.
@@ -1664,6 +1738,34 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 	public int getS_Resource_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_S_Resource_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_S_ServiceType getS_ServiceType() throws RuntimeException
+    {
+		return (I_S_ServiceType)MTable.get(getCtx(), I_S_ServiceType.Table_Name)
+			.getPO(getS_ServiceType_ID(), get_TrxName());	}
+
+	/** Set Service Type.
+		@param S_ServiceType_ID 
+		Define a Service Type for a Contract
+	  */
+	public void setS_ServiceType_ID (int S_ServiceType_ID)
+	{
+		if (S_ServiceType_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_S_ServiceType_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_S_ServiceType_ID, Integer.valueOf(S_ServiceType_ID));
+	}
+
+	/** Get Service Type.
+		@return Define a Service Type for a Contract
+	  */
+	public int getS_ServiceType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ServiceType_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
