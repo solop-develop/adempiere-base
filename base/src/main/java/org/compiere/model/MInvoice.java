@@ -2331,7 +2331,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			setDocAction(DOCACTION_None);
 			return false;
 		}
-
+		clearInOutboundLines();
 		//	Not Processed
 		if (DOCSTATUS_Drafted.equals(getDocStatus())
 			|| DOCSTATUS_Invalid.equals(getDocStatus())
@@ -2394,6 +2394,21 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		setDocAction(DOCACTION_None);
 		return true;
 	}	//	voidIt
+
+	private void clearInOutboundLines() {
+		List<Integer> inOutboundLinesIds = new Query(getCtx(), I_WM_InOutBoundLine.Table_Name, "EXISTS(SELECT 1 " +
+				"FROM C_InvoiceLine il " +
+				"WHERE il.C_Invoice_ID = ? " +
+				"AND (il.C_InvoiceLine_ID = WM_InOutBoundLine.C_InvoiceLine_ID OR il.C_Invoice_ID = WM_InOutBoundLine.C_Invoice_ID))", get_TrxName())
+				.setParameters(getC_Invoice_ID())
+				.getIDsAsList();
+		inOutboundLinesIds.forEach(inoutBoundLineId -> {
+			X_WM_InOutBoundLine inOutboundLine = new X_WM_InOutBoundLine(getCtx(), inoutBoundLineId, get_TrxName());
+			inOutboundLine.setC_InvoiceLine_ID(-1);
+			inOutboundLine.setC_Invoice_ID(-1);
+			inOutboundLine.saveEx();
+		});
+	}
 
 	/**
 	 * 	Close Document.
@@ -2544,6 +2559,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		allocationHdr.saveEx();
 		//	Reverse all Recognitions
 		reverseAllRecognitionPlans();
+		clearInOutboundLines();
 		return  reversal;
 	}
 
@@ -2615,7 +2631,6 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		MInvoice reversal = reverseIt(false);
 		if (reversal == null)
 			return false;
-
 		// After reverse Correct
 		processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_REVERSECORRECT);
 		if (processMsg != null)
@@ -2640,7 +2655,6 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		MInvoice reversal = reverseIt(true);
 		if (reversal == null)
 			return false;
-
 		// After reverseAccrual
 		processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_REVERSEACCRUAL);
 		if (processMsg != null)
