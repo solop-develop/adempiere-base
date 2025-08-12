@@ -19,6 +19,8 @@ package org.compiere.model;
 import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
+import org.compiere.interfaces.PaymentProcessorReverse;
+import org.compiere.interfaces.PaymentProcessorStatus;
 import org.compiere.process.*;
 import org.compiere.util.*;
 

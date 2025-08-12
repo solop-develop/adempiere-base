@@ -16,6 +16,12 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_C_Payment;
+import org.adempiere.core.domains.models.I_C_PaymentProcessor;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.util.*;
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -29,13 +35,6 @@ import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-
-import javax.net.ssl.HttpsURLConnection;
-
-import org.adempiere.core.domains.models.I_C_Payment;
-import org.adempiere.core.domains.models.I_C_PaymentProcessor;
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.util.*;
 
 /**
  *  Payment Processor Abstract Class
@@ -77,6 +76,10 @@ public abstract class PaymentProcessor
 	public static final char	AMP = '&'; 
 	/** Equals					*/
 	public static final char	EQ = '='; 
+
+	public static PaymentProcessor create(MPaymentProcessor paymentProcessor) {
+		return create(paymentProcessor, null);
+	}
 
 	/**
 	 *  Factory
