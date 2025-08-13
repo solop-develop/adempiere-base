@@ -80,6 +80,13 @@ public abstract class PaymentProcessor
 	public static PaymentProcessor create(MPaymentProcessor paymentProcessor) {
 		return create(paymentProcessor, null);
 	}
+	public static PaymentProcessor create(MBankStatement newBankStatement, MPaymentProcessor paymentProcessor ) {
+		PaymentProcessor processor = create(paymentProcessor, null);
+		if (processor != null) {
+			processor.bankStatement = newBankStatement;
+		}
+		return processor;
+	}
 
 	/**
 	 *  Factory
@@ -191,10 +198,38 @@ public abstract class PaymentProcessor
 		});
 	}
 
+
+
 	/*************************************************************************/
 
-	public MPaymentProcessor p_mpp = null;
-	public MPayment			p_mp = null;
+	private MPaymentProcessor p_mpp = null;
+	private MPayment p_mp = null;
+	private MBankStatement bankStatement = null;
+
+	public MPaymentProcessor getPaymentProcessor() {
+		return p_mpp;
+	}
+
+	public void setPaymentProcessor(MPaymentProcessor p_mpp) {
+		this.p_mpp = p_mpp;
+	}
+
+	public MPayment getPayment() {
+		return p_mp;
+	}
+
+	public void setPayment(MPayment p_mp) {
+		this.p_mp = p_mp;
+	}
+
+	public MBankStatement getBankStatement() {
+		return bankStatement;
+	}
+
+	public void setBankStatement(MBankStatement bankStatement) {
+		this.bankStatement = bankStatement;
+	}
+
 	//
 	private int     m_timeout = 30;
 
