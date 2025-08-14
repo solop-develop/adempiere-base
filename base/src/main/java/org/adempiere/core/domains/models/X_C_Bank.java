@@ -18,13 +18,14 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_Bank
  *  @author Adempiere (generated) 
@@ -35,7 +36,7 @@ public class X_C_Bank extends PO implements I_C_Bank, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250814L;
 
     /** Standard Constructor */
     public X_C_Bank (Properties ctx, int C_Bank_ID, String trxName)
@@ -126,9 +127,9 @@ public class X_C_Bank extends PO implements I_C_Bank, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -177,6 +178,62 @@ public class X_C_Bank extends PO implements I_C_Bank, I_Persistent
 	public int getC_Location_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_Location_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DocType getDefaultCollectDocType() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getDefaultCollectDocType_ID(), get_TrxName());	}
+
+	/** Set Default Collect Document Type.
+		@param DefaultCollectDocType_ID 
+		Default Collect Document Type from this bank or account
+	  */
+	public void setDefaultCollectDocType_ID (int DefaultCollectDocType_ID)
+	{
+		if (DefaultCollectDocType_ID < 1) 
+			set_Value (COLUMNNAME_DefaultCollectDocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_DefaultCollectDocType_ID, Integer.valueOf(DefaultCollectDocType_ID));
+	}
+
+	/** Get Default Collect Document Type.
+		@return Default Collect Document Type from this bank or account
+	  */
+	public int getDefaultCollectDocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DefaultCollectDocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DocType getDefaultPaymentDocType() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getDefaultPaymentDocType_ID(), get_TrxName());	}
+
+	/** Set Default Payment Document Type.
+		@param DefaultPaymentDocType_ID 
+		Default Payment Document Type from this bank or account
+	  */
+	public void setDefaultPaymentDocType_ID (int DefaultPaymentDocType_ID)
+	{
+		if (DefaultPaymentDocType_ID < 1) 
+			set_Value (COLUMNNAME_DefaultPaymentDocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_DefaultPaymentDocType_ID, Integer.valueOf(DefaultPaymentDocType_ID));
+	}
+
+	/** Get Default Payment Document Type.
+		@return Default Payment Document Type from this bank or account
+	  */
+	public int getDefaultPaymentDocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DefaultPaymentDocType_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

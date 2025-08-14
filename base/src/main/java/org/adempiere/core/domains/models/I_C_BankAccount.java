@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_BankAccount
  *  @author Adempiere (generated) 
@@ -103,6 +104,19 @@ public interface I_C_BankAccount
 	  */
 	public String getBBAN();
 
+    /** Column name C_BankAccount_ID */
+    public static final String COLUMNNAME_C_BankAccount_ID = "C_BankAccount_ID";
+
+	/** Set Bank Account.
+	  * Account at the Bank
+	  */
+	public void setC_BankAccount_ID (int C_BankAccount_ID);
+
+	/** Get Bank Account.
+	  * Account at the Bank
+	  */
+	public int getC_BankAccount_ID();
+
     /** Column name C_Bank_ID */
     public static final String COLUMNNAME_C_Bank_ID = "C_Bank_ID";
 
@@ -116,20 +130,7 @@ public interface I_C_BankAccount
 	  */
 	public int getC_Bank_ID();
 
-	public org.adempiere.core.domains.models.I_C_Bank getC_Bank() throws RuntimeException;
-
-    /** Column name C_BankAccount_ID */
-    public static final String COLUMNNAME_C_BankAccount_ID = "C_BankAccount_ID";
-
-	/** Set Bank Account.
-	  * Account at the Bank
-	  */
-	public void setC_BankAccount_ID (int C_BankAccount_ID);
-
-	/** Get Bank Account.
-	  * Account at the Bank
-	  */
-	public int getC_BankAccount_ID();
+	public I_C_Bank getC_Bank() throws RuntimeException;
 
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
@@ -144,7 +145,7 @@ public interface I_C_BankAccount
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_Currency_ID */
     public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
@@ -159,7 +160,7 @@ public interface I_C_BankAccount
 	  */
 	public int getC_Currency_ID();
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException;
+	public I_C_Currency getC_Currency() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -202,6 +203,66 @@ public interface I_C_BankAccount
 	  * Current Balance
 	  */
 	public BigDecimal getCurrentBalance();
+
+    /** Column name DefaultCollectDocType_ID */
+    public static final String COLUMNNAME_DefaultCollectDocType_ID = "DefaultCollectDocType_ID";
+
+	/** Set Default Collect Document Type.
+	  * Default Collect Document Type from this bank or account
+	  */
+	public void setDefaultCollectDocType_ID (int DefaultCollectDocType_ID);
+
+	/** Get Default Collect Document Type.
+	  * Default Collect Document Type from this bank or account
+	  */
+	public int getDefaultCollectDocType_ID();
+
+	public I_C_DocType getDefaultCollectDocType() throws RuntimeException;
+
+    /** Column name DefaultOpeningCharge_ID */
+    public static final String COLUMNNAME_DefaultOpeningCharge_ID = "DefaultOpeningCharge_ID";
+
+	/** Set Default Opening Charge.
+	  * Default Opening Charge for POS
+	  */
+	public void setDefaultOpeningCharge_ID (int DefaultOpeningCharge_ID);
+
+	/** Get Default Opening Charge.
+	  * Default Opening Charge for POS
+	  */
+	public int getDefaultOpeningCharge_ID();
+
+	public I_C_Charge getDefaultOpeningCharge() throws RuntimeException;
+
+    /** Column name DefaultPaymentDocType_ID */
+    public static final String COLUMNNAME_DefaultPaymentDocType_ID = "DefaultPaymentDocType_ID";
+
+	/** Set Default Payment Document Type.
+	  * Default Payment Document Type from this bank or account
+	  */
+	public void setDefaultPaymentDocType_ID (int DefaultPaymentDocType_ID);
+
+	/** Get Default Payment Document Type.
+	  * Default Payment Document Type from this bank or account
+	  */
+	public int getDefaultPaymentDocType_ID();
+
+	public I_C_DocType getDefaultPaymentDocType() throws RuntimeException;
+
+    /** Column name DefaultWithdrawalCharge_ID */
+    public static final String COLUMNNAME_DefaultWithdrawalCharge_ID = "DefaultWithdrawalCharge_ID";
+
+	/** Set Default Withdrawal Charge.
+	  * Default Withdrawal Charge for POS
+	  */
+	public void setDefaultWithdrawalCharge_ID (int DefaultWithdrawalCharge_ID);
+
+	/** Get Default Withdrawal Charge.
+	  * Default Withdrawal Charge for POS
+	  */
+	public int getDefaultWithdrawalCharge_ID();
+
+	public I_C_Charge getDefaultWithdrawalCharge() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
