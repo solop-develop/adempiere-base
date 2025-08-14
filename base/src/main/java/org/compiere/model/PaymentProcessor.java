@@ -16,6 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_C_BankStatement;
 import org.adempiere.core.domains.models.I_C_Payment;
 import org.adempiere.core.domains.models.I_C_PaymentProcessor;
 import org.adempiere.exceptions.AdempiereException;
@@ -135,13 +136,28 @@ public abstract class PaymentProcessor
 	}   //  create
 
 	private PO getNewPaymentProcessorLogInstance(String transactionName) {
-        MTable table = MTable.get(p_mp.getCtx(), "C_PaymentProcessorLog");
+		Properties context = null;
+		int orgId = 0;
+		if (p_mp != null) {
+			context = p_mp.getCtx();
+			orgId = p_mp.getAD_Org_ID();
+		} else if (bankStatement != null) {
+			context = bankStatement.getCtx();
+			orgId = bankStatement.getAD_Org_ID();
+		}
+        MTable table = MTable.get(context, "C_PaymentProcessorLog");
 		if(table == null) {
 			throw new AdempiereException("@C_PaymentProcessorLog_ID@ @NotFound@");
 		}
 		PO paymentProcessorLog = table.getPO(0, transactionName);
-		paymentProcessorLog.setAD_Org_ID(p_mp.getAD_Org_ID());
-		paymentProcessorLog.set_ValueOfColumn(I_C_Payment.COLUMNNAME_C_Payment_ID, p_mp.getC_Payment_ID());
+
+		paymentProcessorLog.setAD_Org_ID(orgId);
+		if (p_mp != null) {
+			paymentProcessorLog.set_ValueOfColumn(I_C_Payment.COLUMNNAME_C_Payment_ID, p_mp.getC_Payment_ID());
+		}
+		if (bankStatement != null) {
+			paymentProcessorLog.set_ValueOfColumn(I_C_BankStatement.COLUMNNAME_C_BankStatement_ID, bankStatement.get_ID());
+		}
 		paymentProcessorLog.set_ValueOfColumn(I_C_PaymentProcessor.COLUMNNAME_C_PaymentProcessor_ID, p_mpp.getC_PaymentProcessor_ID());
 		return paymentProcessorLog;
 	}
