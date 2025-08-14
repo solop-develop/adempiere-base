@@ -162,6 +162,16 @@ public abstract class PaymentProcessor
 		return paymentProcessorLog;
 	}
 
+	/**
+	 * Validate if the PaymentProcessor is for Payment or for BankStatement
+	 * @return True if it is for Payment
+	 */
+	public boolean isPayment() {
+		return p_mp != null ;
+	}
+
+
+
 	public void addBooleanValue(String code, boolean value) {
 		if(Util.isEmpty(code, true)) {
 			return;
