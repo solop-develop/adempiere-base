@@ -81,10 +81,11 @@ public abstract class PaymentProcessor
 	public static PaymentProcessor create(MPaymentProcessor paymentProcessor) {
 		return create(paymentProcessor, null);
 	}
-	public static PaymentProcessor create(MBankStatement newBankStatement, MPaymentProcessor paymentProcessor ) {
+	public static PaymentProcessor create(MPaymentProcessor paymentProcessor, MBankStatement newBankStatement, int newPaymentMethodId ) {
 		PaymentProcessor processor = create(paymentProcessor, null);
 		if (processor != null) {
 			processor.bankStatement = newBankStatement;
+			processor.paymentMethodId = newPaymentMethodId;
 		}
 		return processor;
 	}
@@ -232,6 +233,10 @@ public abstract class PaymentProcessor
 	private MPayment payment = null;
 	private MBankStatement bankStatement = null;
 
+
+
+	private int paymentMethodId = -1;
+
 	public MPaymentProcessor getPaymentProcessor() {
 		return paymentProcessor;
 	}
@@ -254,6 +259,13 @@ public abstract class PaymentProcessor
 
 	public void setBankStatement(MBankStatement bankStatement) {
 		this.bankStatement = bankStatement;
+	}
+	public int getPaymentMethodId() {
+		return paymentMethodId;
+	}
+
+	public void setPaymentMethodId(int paymentMethodId) {
+		this.paymentMethodId = paymentMethodId;
 	}
 
 	//
