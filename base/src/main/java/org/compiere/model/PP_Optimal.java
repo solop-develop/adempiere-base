@@ -190,22 +190,22 @@ public class PP_Optimal extends PaymentProcessor
 	public boolean processCC ()
 		throws IllegalArgumentException
 	{
-		log.fine(p_mpp.getHostAddress() + ":" + p_mpp.getHostPort() + ", Timeout=" + getTimeout()
-			+ "; Proxy=" + p_mpp.getProxyAddress() + ":" + p_mpp.getProxyPort() + " " + p_mpp.getProxyLogon() + " " + p_mpp.getProxyPassword());
+		log.fine(getPaymentProcessor().getHostAddress() + ":" + getPaymentProcessor().getHostPort() + ", Timeout=" + getTimeout()
+			+ "; Proxy=" + getPaymentProcessor().getProxyAddress() + ":" + getPaymentProcessor().getProxyPort() + " " + getPaymentProcessor().getProxyLogon() + " " + getPaymentProcessor().getProxyPassword());
 		setEncoded(true);
 
-		String urlString = p_mpp.getHostAddress();
+		String urlString = getPaymentProcessor().getHostAddress();
 			//	"https://realtime.firepay.com/servlet/DPServlet";
 			//	"https://realtime.test.firepay.com/servlet/DPServlet";
-		if (p_mpp.getHostPort() != 0)
-			urlString += ":" + p_mpp.getHostPort();
+		if (getPaymentProcessor().getHostPort() != 0)
+			urlString += ":" + getPaymentProcessor().getHostPort();
 		
 		/** General Parameters			*/
 		StringBuffer param = new StringBuffer(200);
 		//	 Merchant username and password.
-		param.append(createPair(MERCHANT_ID, p_mpp.getUserID(), 80))
-			.append(AMP).append(createPair(MERCHANT_PWD, p_mpp.getPassword(), 20))
-			.append(AMP).append(createPair(ACCOUNT_ID, p_mpp.getPartnerID(), 10));
+		param.append(createPair(MERCHANT_ID, getPaymentProcessor().getUserID(), 80))
+			.append(AMP).append(createPair(MERCHANT_PWD, getPaymentProcessor().getPassword(), 20))
+			.append(AMP).append(createPair(ACCOUNT_ID, getPaymentProcessor().getPartnerID(), 10));
 	//	param.append(AMP).append(createPair(MERCHANT_DATA, "comment", 255));
 
 		/**	Cipher supported : 	SSL_RSA_WITH_RC4_128_MD5, SSL_RSA_WITH_RC4_128_SHA,	SSL_RSA_WITH_DES_CBC_SHA, SSL_RSA_WITH_3DES_EDE_CBC_SHA, SSL_RSA_EXPORT_WITH_RC4_40_MD5
@@ -216,20 +216,20 @@ public class PP_Optimal extends PaymentProcessor
 		**/
 
 		param.append(AMP).append(createPair(CARD_TYPE, "VI", 6));
-		param.append(AMP).append(createPair(CARD_NUMBER, p_mp.getCreditCardNumber(), 19));
-		param.append(AMP).append(createPair(CARD_EXPIRATION, p_mp.getCreditCardExp("/"), 5));
-		param.append(AMP).append(createPair(AMOUNT, p_mp.getPayAmtInCents(), 10));
+		param.append(AMP).append(createPair(CARD_NUMBER, getPayment().getCreditCardNumber(), 19));
+		param.append(AMP).append(createPair(CARD_EXPIRATION, getPayment().getCreditCardExp("/"), 5));
+		param.append(AMP).append(createPair(AMOUNT, getPayment().getPayAmtInCents(), 10));
 		param.append(AMP).append(createPair(OPERATION, OPERATION_Purchase, 1));
-		param.append(AMP).append(createPair(MERCHANT_TXN, p_mp.getC_Payment_ID(), 255));
+		param.append(AMP).append(createPair(MERCHANT_TXN, getPayment().getC_Payment_ID(), 255));
 		param.append(AMP).append(createPair(CLIENT_VERSION, _CLIENT_VERSION, 4));
-		param.append(AMP).append(createPair(CUST_NAME1, p_mp.getA_Name(), 255));
-		param.append(AMP).append(createPair(STREET, p_mp.getA_Street(), 255));
-		param.append(AMP).append(createPair(CITY, p_mp.getA_City(), 255));
-		param.append(AMP).append(createPair(PROVINCE, p_mp.getA_State(), 2));
-		param.append(AMP).append(createPair(ZIP, p_mp.getA_Zip(), 10));
-		param.append(AMP).append(createPair(COUNTRY, p_mp.getA_Country(), 2));
+		param.append(AMP).append(createPair(CUST_NAME1, getPayment().getA_Name(), 255));
+		param.append(AMP).append(createPair(STREET, getPayment().getA_Street(), 255));
+		param.append(AMP).append(createPair(CITY, getPayment().getA_City(), 255));
+		param.append(AMP).append(createPair(PROVINCE, getPayment().getA_State(), 2));
+		param.append(AMP).append(createPair(ZIP, getPayment().getA_Zip(), 10));
+		param.append(AMP).append(createPair(COUNTRY, getPayment().getA_Country(), 2));
 	//	param.append(AMP).append(createPair("&phone", p_mp.getA_Phone(), 40));
-		param.append(AMP).append(createPair("&email", p_mp.getA_EMail(), 40));
+		param.append(AMP).append(createPair("&email", getPayment().getA_EMail(), 40));
 		param.append(AMP).append(createPair(CVD_INDICATOR, CVD_INDICATOR_Provided, 1));
 		param.append(AMP).append(createPair(CVD_VALUE, "123", 4));
 		

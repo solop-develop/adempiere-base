@@ -16,6 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_C_BankStatement;
 import org.adempiere.core.domains.models.I_C_Payment;
 import org.adempiere.core.domains.models.I_C_PaymentProcessor;
 import org.adempiere.exceptions.AdempiereException;
@@ -80,6 +81,14 @@ public abstract class PaymentProcessor
 	public static PaymentProcessor create(MPaymentProcessor paymentProcessor) {
 		return create(paymentProcessor, null);
 	}
+	public static PaymentProcessor create(MPaymentProcessor paymentProcessor, MBankStatement newBankStatement, int newPaymentMethodId ) {
+		PaymentProcessor processor = create(paymentProcessor, null);
+		if (processor != null) {
+			processor.bankStatement = newBankStatement;
+			processor.paymentMethodId = newPaymentMethodId;
+		}
+		return processor;
+	}
 
 	/**
 	 *  Factory
@@ -121,23 +130,59 @@ public abstract class PaymentProcessor
 		}
 
 		//  Initialize
-		myProcessor.p_mpp = mpp;
-		myProcessor.p_mp = mp;
+		myProcessor.paymentProcessor = mpp;
+		myProcessor.payment = mp;
+		if (mp != null) {
+			MTable processorRunTable = MTable.get(mp.getCtx(), "C_PaymentProcessorRun");
+			if (processorRunTable != null && processorRunTable.get_ID() > 0){
+
+				PO paymentProcessorRun = processorRunTable.getPO(0, mp.get_TrxName());
+				paymentProcessorRun.set_ValueOfColumn(MPayment.COLUMNNAME_C_Payment_ID, mp.get_ID());
+				paymentProcessorRun.saveEx();
+				myProcessor.setPaymentProcessorRun(paymentProcessorRun);
+			}
+		}
 		//
 		return myProcessor;
 	}   //  create
 
 	private PO getNewPaymentProcessorLogInstance(String transactionName) {
-        MTable table = MTable.get(p_mp.getCtx(), "C_PaymentProcessorLog");
+		Properties context = null;
+		int orgId = 0;
+		if (payment != null) {
+			context = payment.getCtx();
+			orgId = payment.getAD_Org_ID();
+		} else if (bankStatement != null) {
+			context = bankStatement.getCtx();
+			orgId = bankStatement.getAD_Org_ID();
+		}
+        MTable table = MTable.get(context, "C_PaymentProcessorLog");
 		if(table == null) {
 			throw new AdempiereException("@C_PaymentProcessorLog_ID@ @NotFound@");
 		}
 		PO paymentProcessorLog = table.getPO(0, transactionName);
-		paymentProcessorLog.setAD_Org_ID(p_mp.getAD_Org_ID());
-		paymentProcessorLog.set_ValueOfColumn(I_C_Payment.COLUMNNAME_C_Payment_ID, p_mp.getC_Payment_ID());
-		paymentProcessorLog.set_ValueOfColumn(I_C_PaymentProcessor.COLUMNNAME_C_PaymentProcessor_ID, p_mpp.getC_PaymentProcessor_ID());
+
+		paymentProcessorLog.setAD_Org_ID(orgId);
+		if (payment != null) {
+			paymentProcessorLog.set_ValueOfColumn(I_C_Payment.COLUMNNAME_C_Payment_ID, payment.getC_Payment_ID());
+		}
+		if (bankStatement != null) {
+			paymentProcessorLog.set_ValueOfColumn(I_C_BankStatement.COLUMNNAME_C_BankStatement_ID, bankStatement.get_ID());
+		}
+		paymentProcessorLog.set_ValueOfColumn(I_C_PaymentProcessor.COLUMNNAME_C_PaymentProcessor_ID, paymentProcessor.getC_PaymentProcessor_ID());
+		paymentProcessorLog.set_ValueOfColumn("C_PaymentProcessorRun_ID", paymentProcessorRun.get_ID());
 		return paymentProcessorLog;
 	}
+
+	/**
+	 * Validate if the PaymentProcessor is for Payment or for BankStatement
+	 * @return True if it is for Payment
+	 */
+	public boolean isPayment() {
+		return payment != null ;
+	}
+
+
 
 	public void addBooleanValue(String code, boolean value) {
 		if(Util.isEmpty(code, true)) {
@@ -191,10 +236,57 @@ public abstract class PaymentProcessor
 		});
 	}
 
+
+
 	/*************************************************************************/
 
-	public MPaymentProcessor p_mpp = null;
-	public MPayment			p_mp = null;
+	private MPaymentProcessor paymentProcessor = null;
+	private MPayment payment = null;
+	private MBankStatement bankStatement = null;
+
+	private int paymentMethodId = -1;
+
+	public int getPaymentMethodId() {
+		return paymentMethodId;
+	}
+
+	public void setPaymentMethodId(int paymentMethodId) {
+		this.paymentMethodId = paymentMethodId;
+	}
+	private PO paymentProcessorRun = null;
+
+	public PO getPaymentProcessorRun() {
+		return paymentProcessorRun;
+	}
+
+	public void setPaymentProcessorRun(PO paymentProcessorRun) {
+		this.paymentProcessorRun = paymentProcessorRun;
+	}
+
+	public MPaymentProcessor getPaymentProcessor() {
+		return paymentProcessor;
+	}
+
+	public void setPaymentProcessor(MPaymentProcessor p_mpp) {
+		this.paymentProcessor = p_mpp;
+	}
+
+	public MPayment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(MPayment p_mp) {
+		this.payment = p_mp;
+	}
+
+	public MBankStatement getBankStatement() {
+		return bankStatement;
+	}
+
+	public void setBankStatement(MBankStatement bankStatement) {
+		this.bankStatement = bankStatement;
+	}
+
 	//
 	private int     m_timeout = 30;
 
@@ -223,11 +315,11 @@ public abstract class PaymentProcessor
 	 */
 	public String validate() throws IllegalArgumentException {
 		String msg = null;
-		if (MPayment.TENDERTYPE_CreditCard.equals(p_mp.getTenderType())) {
+		if (MPayment.TENDERTYPE_CreditCard.equals(payment.getTenderType())) {
 			msg = validateCreditCard();
-		} else if (MPayment.TENDERTYPE_Check.equals(p_mp.getTenderType())) {
+		} else if (MPayment.TENDERTYPE_Check.equals(payment.getTenderType())) {
 			msg = validateCheckNo();
-		} else if (MPayment.TENDERTYPE_Account.equals(p_mp.getTenderType())) {
+		} else if (MPayment.TENDERTYPE_Account.equals(payment.getTenderType())) {
 			msg = validateAccountNo();
 		}
 		return(msg);
@@ -238,23 +330,23 @@ public abstract class PaymentProcessor
 	 * @return
 	 */
 	public String validateAccountNo() {
-		return MPaymentValidate.validateAccountNo(p_mp.getAccountNo());
+		return MPaymentValidate.validateAccountNo(payment.getAccountNo());
 	}
 	
 	public String validateCheckNo() {
-		return MPaymentValidate.validateCheckNo(p_mp.getCheckNo());
+		return MPaymentValidate.validateCheckNo(payment.getCheckNo());
 	}
 	
 	public String validateCreditCard() throws IllegalArgumentException {
-		String msg = MPaymentValidate.validateCreditCardNumber(p_mp.getCreditCardNumber(), p_mp.getCreditCardType());
+		String msg = MPaymentValidate.validateCreditCardNumber(payment.getCreditCardNumber(), payment.getCreditCardType());
 		if (msg != null && msg.length() > 0)
 			throw new IllegalArgumentException(Msg.getMsg(Env.getCtx(), msg));
-		msg = MPaymentValidate.validateCreditCardExp(p_mp.getCreditCardExpMM(), p_mp.getCreditCardExpYY());
+		msg = MPaymentValidate.validateCreditCardExp(payment.getCreditCardExpMM(), payment.getCreditCardExpYY());
 		if (msg != null && msg.length() > 0)
 			throw new IllegalArgumentException(Msg.getMsg(Env.getCtx(), msg));
-		if (p_mp.getCreditCardVV() != null && p_mp.getCreditCardVV().length() > 0)
+		if (payment.getCreditCardVV() != null && payment.getCreditCardVV().length() > 0)
 		{
-			msg = MPaymentValidate.validateCreditCardVV(p_mp.getCreditCardVV(), p_mp.getCreditCardType());
+			msg = MPaymentValidate.validateCreditCardVV(payment.getCreditCardVV(), payment.getCreditCardType());
 			if (msg != null && msg.length() > 0)
 				throw new IllegalArgumentException(Msg.getMsg(Env.getCtx(), msg));
 		}
