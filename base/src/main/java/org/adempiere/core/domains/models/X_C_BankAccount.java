@@ -410,6 +410,130 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 		return ii.intValue();
 	}
 
+	public I_C_BankAccount getDepositBankAccount() throws RuntimeException
+    {
+		return (I_C_BankAccount)MTable.get(getCtx(), I_C_BankAccount.Table_Name)
+			.getPO(getDepositBankAccount_ID(), get_TrxName());	}
+
+	/** Set Deposit Bank Account.
+		@param DepositBankAccount_ID 
+		Bank Account used for deposit from cash by default
+	  */
+	public void setDepositBankAccount_ID (int DepositBankAccount_ID)
+	{
+		if (DepositBankAccount_ID < 1) 
+			set_Value (COLUMNNAME_DepositBankAccount_ID, null);
+		else 
+			set_Value (COLUMNNAME_DepositBankAccount_ID, Integer.valueOf(DepositBankAccount_ID));
+	}
+
+	/** Get Deposit Bank Account.
+		@return Bank Account used for deposit from cash by default
+	  */
+	public int getDepositBankAccount_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DepositBankAccount_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Charge getDepositCharge() throws RuntimeException
+    {
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
+			.getPO(getDepositCharge_ID(), get_TrxName());	}
+
+	/** Set Deposit Charge.
+		@param DepositCharge_ID 
+		Charge used for deposit from cash
+	  */
+	public void setDepositCharge_ID (int DepositCharge_ID)
+	{
+		if (DepositCharge_ID < 1) 
+			set_Value (COLUMNNAME_DepositCharge_ID, null);
+		else 
+			set_Value (COLUMNNAME_DepositCharge_ID, Integer.valueOf(DepositCharge_ID));
+	}
+
+	/** Get Deposit Charge.
+		@return Charge used for deposit from cash
+	  */
+	public int getDepositCharge_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DepositCharge_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DocType getDepositDocumentType() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getDepositDocumentType_ID(), get_TrxName());	}
+
+	/** Set Deposit Document Type.
+		@param DepositDocumentType_ID 
+		Deposit Document Type for Cash or bank
+	  */
+	public void setDepositDocumentType_ID (int DepositDocumentType_ID)
+	{
+		if (DepositDocumentType_ID < 1) 
+			set_Value (COLUMNNAME_DepositDocumentType_ID, null);
+		else 
+			set_Value (COLUMNNAME_DepositDocumentType_ID, Integer.valueOf(DepositDocumentType_ID));
+	}
+
+	/** Get Deposit Document Type.
+		@return Deposit Document Type for Cash or bank
+	  */
+	public int getDepositDocumentType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DepositDocumentType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** DepositTenderType AD_Reference_ID=214 */
+	public static final int DEPOSITTENDERTYPE_AD_Reference_ID=214;
+	/** Credit Card = C */
+	public static final String DEPOSITTENDERTYPE_CreditCard = "C";
+	/** Check = K */
+	public static final String DEPOSITTENDERTYPE_Check = "K";
+	/** Direct Deposit = A */
+	public static final String DEPOSITTENDERTYPE_DirectDeposit = "A";
+	/** Direct Debit = D */
+	public static final String DEPOSITTENDERTYPE_DirectDebit = "D";
+	/** Account = T */
+	public static final String DEPOSITTENDERTYPE_Account = "T";
+	/** Cash = X */
+	public static final String DEPOSITTENDERTYPE_Cash = "X";
+	/** Credit Memo = M */
+	public static final String DEPOSITTENDERTYPE_CreditMemo = "M";
+	/** Zelle = Z */
+	public static final String DEPOSITTENDERTYPE_Zelle = "Z";
+	/** Mobile Payment Interbank = P */
+	public static final String DEPOSITTENDERTYPE_MobilePaymentInterbank = "P";
+	/** Gift Card = G */
+	public static final String DEPOSITTENDERTYPE_GiftCard = "G";
+	/** Set Deposit Tender Type.
+		@param DepositTenderType 
+		Tender type used for Deposit from cash
+	  */
+	public void setDepositTenderType (String DepositTenderType)
+	{
+
+		set_Value (COLUMNNAME_DepositTenderType, DepositTenderType);
+	}
+
+	/** Get Deposit Tender Type.
+		@return Tender type used for Deposit from cash
+	  */
+	public String getDepositTenderType () 
+	{
+		return (String)get_Value(COLUMNNAME_DepositTenderType);
+	}
+
 	/** Set Description.
 		@param Description 
 		Optional short description of the record
@@ -442,6 +566,30 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	public String getIBAN () 
 	{
 		return (String)get_Value(COLUMNNAME_IBAN);
+	}
+
+	/** Set Deposit Automatically After Close Cash.
+		@param IsAutoDepositAfterClose 
+		Deposit automatically after close cash
+	  */
+	public void setIsAutoDepositAfterClose (boolean IsAutoDepositAfterClose)
+	{
+		set_Value (COLUMNNAME_IsAutoDepositAfterClose, Boolean.valueOf(IsAutoDepositAfterClose));
+	}
+
+	/** Get Deposit Automatically After Close Cash.
+		@return Deposit automatically after close cash
+	  */
+	public boolean isAutoDepositAfterClose () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsAutoDepositAfterClose);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Default.
@@ -483,6 +631,51 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	public boolean isSOTrx () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsSOTrx);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Split Deposits.
+		@param IsSplitDeposits Split Deposits	  */
+	public void setIsSplitDeposits (boolean IsSplitDeposits)
+	{
+		set_Value (COLUMNNAME_IsSplitDeposits, Boolean.valueOf(IsSplitDeposits));
+	}
+
+	/** Get Split Deposits.
+		@return Split Deposits	  */
+	public boolean isSplitDeposits () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsSplitDeposits);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Validate Cash Opening.
+		@param IsValidateCashOpening 
+		Validate Cash Opening for this bank account
+	  */
+	public void setIsValidateCashOpening (boolean IsValidateCashOpening)
+	{
+		set_Value (COLUMNNAME_IsValidateCashOpening, Boolean.valueOf(IsValidateCashOpening));
+	}
+
+	/** Get Validate Cash Opening.
+		@return Validate Cash Opening for this bank account
+	  */
+	public boolean isValidateCashOpening () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsValidateCashOpening);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -535,5 +728,33 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	public String getUUID () 
 	{
 		return (String)get_Value(COLUMNNAME_UUID);
+	}
+
+	public I_C_DocType getWithdrawalDocumentType() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getWithdrawalDocumentType_ID(), get_TrxName());	}
+
+	/** Set Withdrawal Document Type.
+		@param WithdrawalDocumentType_ID 
+		Withdrawal Document Type for Cash or bank
+	  */
+	public void setWithdrawalDocumentType_ID (int WithdrawalDocumentType_ID)
+	{
+		if (WithdrawalDocumentType_ID < 1) 
+			set_Value (COLUMNNAME_WithdrawalDocumentType_ID, null);
+		else 
+			set_Value (COLUMNNAME_WithdrawalDocumentType_ID, Integer.valueOf(WithdrawalDocumentType_ID));
+	}
+
+	/** Get Withdrawal Document Type.
+		@return Withdrawal Document Type for Cash or bank
+	  */
+	public int getWithdrawalDocumentType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_WithdrawalDocumentType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 }

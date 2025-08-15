@@ -18,16 +18,17 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for C_BankStatement
  *  @author Adempiere (generated) 
@@ -38,7 +39,7 @@ public class X_C_BankStatement extends PO implements I_C_BankStatement, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250814L;
 
     /** Standard Constructor */
     public X_C_BankStatement (Properties ctx, int C_BankStatement_ID, String trxName)
@@ -115,9 +116,9 @@ public class X_C_BankStatement extends PO implements I_C_BankStatement, I_Persis
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_C_BankAccount getC_BankAccount() throws RuntimeException
+	public I_C_BankAccount getC_BankAccount() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BankAccount)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BankAccount.Table_Name)
+		return (I_C_BankAccount)MTable.get(getCtx(), I_C_BankAccount.Table_Name)
 			.getPO(getC_BankAccount_ID(), get_TrxName());	}
 
 	/** Set Bank Account.
@@ -166,9 +167,9 @@ public class X_C_BankStatement extends PO implements I_C_BankStatement, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException
+	public I_C_DocType getC_DocType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocType_ID(), get_TrxName());	}
 
 	/** Set Document Type.
@@ -189,6 +190,34 @@ public class X_C_BankStatement extends PO implements I_C_BankStatement, I_Persis
 	public int getC_DocType_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_POS getC_POS() throws RuntimeException
+    {
+		return (I_C_POS)MTable.get(getCtx(), I_C_POS.Table_Name)
+			.getPO(getC_POS_ID(), get_TrxName());	}
+
+	/** Set POS Terminal.
+		@param C_POS_ID 
+		Point of Sales Terminal
+	  */
+	public void setC_POS_ID (int C_POS_ID)
+	{
+		if (C_POS_ID < 1) 
+			set_Value (COLUMNNAME_C_POS_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_POS_ID, Integer.valueOf(C_POS_ID));
+	}
+
+	/** Get POS Terminal.
+		@return Point of Sales Terminal
+	  */
+	public int getC_POS_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_POS_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
