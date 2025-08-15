@@ -16,7 +16,9 @@
 package org.spin.pos.util;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,7 +30,7 @@ import java.util.Map;
  * 	@author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
  */
 public class TicketResult {
-	
+
 	/**
 	 * Default instance or static constructor
 	 * @return
@@ -36,18 +38,21 @@ public class TicketResult {
 	public static TicketResult newInstance() {
 		return new TicketResult();
 	}
-	
+
 	private TicketResult() {
 		isError = false;
 		summary = null;
 		resultValues = new HashMap<>();
+		reportFilesList = new ArrayList<File>();
 		reportFile = null;
 	}
-	
+
 	private boolean isError;
 	private String summary;
 	private Map<String, Object> resultValues;
 	private File reportFile;
+	private List<File> reportFilesList;
+
 	public boolean isError() {
 		return isError;
 	}
@@ -83,4 +88,22 @@ public class TicketResult {
 		this.reportFile = reportFile;
 		return this;
 	}
+
+	public List<File> getReportFiles() {
+		return reportFilesList;
+	}
+
+	public TicketResult addReportFile(File reportFile) {
+		if (this.reportFilesList == null) {
+			this.reportFilesList = new ArrayList<File>();
+		}
+		this.reportFilesList.add(reportFile);
+		return this;
+	}
+
+	public TicketResult withReportFiles(List<File> reportFilesList) {
+		this.reportFilesList = reportFilesList;
+		return this;
+	}
+
 }
