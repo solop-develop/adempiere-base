@@ -15,16 +15,16 @@
  *************************************************************************************/
 package org.spin.cash.model;
 
+import org.adempiere.core.domains.models.X_C_BankAccountWithdrawal;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.MBankAccount;
+import org.compiere.model.Query;
+import org.spin.cash.util.PaymentWrapper;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MBankAccount;
-import org.compiere.model.Query;
-import org.spin.cash.util.CashManagementUtil;
-import org.spin.cash.util.PaymentWrapper;
 
 /**
  * Model class fcor apply match of payments
@@ -53,13 +53,13 @@ public class MCBankAccountWithdrawal extends X_C_BankAccountWithdrawal {
 			throw new AdempiereException("@C_BankAccount_ID@ @C_BPartner_ID@ @IsMandatory@");
 		}
 		//	Validate Charge
-		if(bankAccount.get_ValueAsInt(CashManagementUtil.COLUMNNAME_DepositCharge_ID) <= 0) {
-			throw new AdempiereException("@C_BankAccount_ID@ @" + CashManagementUtil.COLUMNNAME_DepositCharge_ID + "@ @IsMandatory@");
+		if(bankAccount.getDepositCharge_ID() <= 0) {
+			throw new AdempiereException("@C_BankAccount_ID@ @" + MBankAccount.COLUMNNAME_DepositCharge_ID + "@ @IsMandatory@");
 		}
 		//	Validate Charge
-		if(bankAccount.get_ValueAsInt(CashManagementUtil.COLUMNNAME_DepositBankAccount_ID) <= 0) {
+		if(bankAccount.getDepositBankAccount_ID() <= 0) {
 			if(getDepositBankAccount_ID() <= 0) {
-				throw new AdempiereException("@C_BankAccount_ID@ @" + CashManagementUtil.COLUMNNAME_DepositBankAccount_ID + "@ @IsMandatory@");
+				throw new AdempiereException("@C_BankAccount_ID@ @" + MBankAccount.COLUMNNAME_DepositBankAccount_ID + "@ @IsMandatory@");
 			}
 		}
 		return super.beforeSave(newRecord);
@@ -74,7 +74,7 @@ public class MCBankAccountWithdrawal extends X_C_BankAccountWithdrawal {
 		if(payment == null) {
 			return null;
 		}
-		StringBuffer whereClause = new StringBuffer();
+		StringBuilder whereClause = new StringBuilder();
 		List<Object> parameters = new ArrayList<>();
 		whereClause.append(COLUMNNAME_C_BankAccount_ID + " = ?");
 		parameters.add(payment.getBankAccountId());
@@ -97,12 +97,17 @@ public class MCBankAccountWithdrawal extends X_C_BankAccountWithdrawal {
 			whereClause.append(" AND (C_BPartner_ID = ? OR C_BPartner_ID IS NULL)");
 			parameters.add(payment.getBusinessPartnerId());
 		}
+		//	Payment Method
+		if(payment.getPaymentMethodId() > 0) {
+			whereClause.append(" AND (C_PaymentMethod_ID = ? OR C_PaymentMethod_ID IS NULL)");
+			parameters.add(payment.getPaymentMethodId());
+		}
 		//	Get Match
 		return new Query(context, Table_Name, whereClause.toString(), transactionName)
 				.setParameters(parameters)
 				.setOnlyActiveRecords(true)
 				.setClient_ID()
-				.setOrderBy("C_Currency_ID DESC NULLS LAST, TenderType DESC NULLS LAST, C_DocType_ID DESC NULLS LAST, C_Bank_ID DESC NULLS LAST, C_BPartner_ID DESC NULLS LAST")
+				.setOrderBy("C_Currency_ID DESC NULLS LAST, TenderType DESC NULLS LAST, C_PaymentMethod_ID DESC NULLS LAST, C_DocType_ID DESC NULLS LAST, C_Bank_ID DESC NULLS LAST, C_BPartner_ID DESC NULLS LAST")
 				.first();
 	}
 

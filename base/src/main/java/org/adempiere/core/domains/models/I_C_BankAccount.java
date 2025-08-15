@@ -264,6 +264,64 @@ public interface I_C_BankAccount
 
 	public I_C_Charge getDefaultWithdrawalCharge() throws RuntimeException;
 
+    /** Column name DepositBankAccount_ID */
+    public static final String COLUMNNAME_DepositBankAccount_ID = "DepositBankAccount_ID";
+
+	/** Set Deposit Bank Account.
+	  * Bank Account used for deposit from cash by default
+	  */
+	public void setDepositBankAccount_ID (int DepositBankAccount_ID);
+
+	/** Get Deposit Bank Account.
+	  * Bank Account used for deposit from cash by default
+	  */
+	public int getDepositBankAccount_ID();
+
+	public I_C_BankAccount getDepositBankAccount() throws RuntimeException;
+
+    /** Column name DepositCharge_ID */
+    public static final String COLUMNNAME_DepositCharge_ID = "DepositCharge_ID";
+
+	/** Set Deposit Charge.
+	  * Charge used for deposit from cash
+	  */
+	public void setDepositCharge_ID (int DepositCharge_ID);
+
+	/** Get Deposit Charge.
+	  * Charge used for deposit from cash
+	  */
+	public int getDepositCharge_ID();
+
+	public I_C_Charge getDepositCharge() throws RuntimeException;
+
+    /** Column name DepositDocumentType_ID */
+    public static final String COLUMNNAME_DepositDocumentType_ID = "DepositDocumentType_ID";
+
+	/** Set Deposit Document Type.
+	  * Deposit Document Type for Cash or bank
+	  */
+	public void setDepositDocumentType_ID (int DepositDocumentType_ID);
+
+	/** Get Deposit Document Type.
+	  * Deposit Document Type for Cash or bank
+	  */
+	public int getDepositDocumentType_ID();
+
+	public I_C_DocType getDepositDocumentType() throws RuntimeException;
+
+    /** Column name DepositTenderType */
+    public static final String COLUMNNAME_DepositTenderType = "DepositTenderType";
+
+	/** Set Deposit Tender Type.
+	  * Tender type used for Deposit from cash
+	  */
+	public void setDepositTenderType (String DepositTenderType);
+
+	/** Get Deposit Tender Type.
+	  * Tender type used for Deposit from cash
+	  */
+	public String getDepositTenderType();
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -303,6 +361,19 @@ public interface I_C_BankAccount
 	  */
 	public boolean isActive();
 
+    /** Column name IsAutoDepositAfterClose */
+    public static final String COLUMNNAME_IsAutoDepositAfterClose = "IsAutoDepositAfterClose";
+
+	/** Set Deposit Automatically After Close Cash.
+	  * Deposit automatically after close cash
+	  */
+	public void setIsAutoDepositAfterClose (boolean IsAutoDepositAfterClose);
+
+	/** Get Deposit Automatically After Close Cash.
+	  * Deposit automatically after close cash
+	  */
+	public boolean isAutoDepositAfterClose();
+
     /** Column name IsDefault */
     public static final String COLUMNNAME_IsDefault = "IsDefault";
 
@@ -328,6 +399,28 @@ public interface I_C_BankAccount
 	  * This is a Sales Transaction
 	  */
 	public boolean isSOTrx();
+
+    /** Column name IsSplitDeposits */
+    public static final String COLUMNNAME_IsSplitDeposits = "IsSplitDeposits";
+
+	/** Set Split Deposits	  */
+	public void setIsSplitDeposits (boolean IsSplitDeposits);
+
+	/** Get Split Deposits	  */
+	public boolean isSplitDeposits();
+
+    /** Column name IsValidateCashOpening */
+    public static final String COLUMNNAME_IsValidateCashOpening = "IsValidateCashOpening";
+
+	/** Set Validate Cash Opening.
+	  * Validate Cash Opening for this bank account
+	  */
+	public void setIsValidateCashOpening (boolean IsValidateCashOpening);
+
+	/** Get Validate Cash Opening.
+	  * Validate Cash Opening for this bank account
+	  */
+	public boolean isValidateCashOpening();
 
     /** Column name PaymentExportClass */
     public static final String COLUMNNAME_PaymentExportClass = "PaymentExportClass";
@@ -375,4 +468,19 @@ public interface I_C_BankAccount
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name WithdrawalDocumentType_ID */
+    public static final String COLUMNNAME_WithdrawalDocumentType_ID = "WithdrawalDocumentType_ID";
+
+	/** Set Withdrawal Document Type.
+	  * Withdrawal Document Type for Cash or bank
+	  */
+	public void setWithdrawalDocumentType_ID (int WithdrawalDocumentType_ID);
+
+	/** Get Withdrawal Document Type.
+	  * Withdrawal Document Type for Cash or bank
+	  */
+	public int getWithdrawalDocumentType_ID();
+
+	public I_C_DocType getWithdrawalDocumentType() throws RuntimeException;
 }

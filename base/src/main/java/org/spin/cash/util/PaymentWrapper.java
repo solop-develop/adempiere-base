@@ -43,6 +43,7 @@ public class PaymentWrapper {
 	private int conversionTypeId;
 	private BigDecimal amount;
 	private String documentNo;
+	private int paymentMethodId;
 	
 	public final BigDecimal getAmount() {
 		return amount;
@@ -131,6 +132,15 @@ public class PaymentWrapper {
 
 	public final PaymentWrapper withDocumentNo(String documentNo) {
 		this.documentNo = documentNo;
+		return this;
+	}
+
+	public int getPaymentMethodId() {
+		return paymentMethodId;
+	}
+
+	public PaymentWrapper withPaymentMethodId(int paymentMethodId) {
+		this.paymentMethodId = paymentMethodId;
 		return this;
 	}
 

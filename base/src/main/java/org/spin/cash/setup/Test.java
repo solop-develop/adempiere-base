@@ -29,7 +29,6 @@ import org.adempiere.core.domains.models.X_AD_ModelValidator;
 import org.compiere.util.Env;
 import org.spin.cash.model.MCBankAccountWithdrawal;
 import org.spin.cash.model.validator.CashManagement;
-import org.spin.cash.util.CashManagementUtil;
 import org.spin.util.ISetupDefinition;
 
 /**
@@ -118,8 +117,8 @@ public class Test implements ISetupDefinition {
 			cashAccount.setBankAccountType(MBankAccount.BANKACCOUNTTYPE_Checking);
 			cashAccount.setDescription(SETUP_DESCRIPTION);
 			cashAccount.setUUID(SETUP_UUID);
-			cashAccount.set_ValueOfColumn(CashManagementUtil.COLUMNNAME_DepositBankAccount_ID, accountId);
-			cashAccount.set_ValueOfColumn(CashManagementUtil.COLUMNNAME_DepositCharge_ID, charge.getC_Charge_ID());
+			cashAccount.setDepositBankAccount_ID(accountId);
+			cashAccount.setDepositCharge_ID(charge.getC_Charge_ID());
 			cashAccount.setC_BPartner_ID(businessPartner.getC_BPartner_ID());
 			cashAccount.setIsDirectLoad(true);
 			cashAccount.saveEx();

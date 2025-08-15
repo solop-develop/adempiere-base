@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_BankStatement
  *  @author Adempiere (generated) 
@@ -90,7 +91,7 @@ public interface I_C_BankStatement
 	  */
 	public int getC_BankAccount_ID();
 
-	public org.adempiere.core.domains.models.I_C_BankAccount getC_BankAccount() throws RuntimeException;
+	public I_C_BankAccount getC_BankAccount() throws RuntimeException;
 
     /** Column name C_BankStatement_ID */
     public static final String COLUMNNAME_C_BankStatement_ID = "C_BankStatement_ID";
@@ -118,7 +119,22 @@ public interface I_C_BankStatement
 	  */
 	public int getC_DocType_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException;
+	public I_C_DocType getC_DocType() throws RuntimeException;
+
+    /** Column name C_POS_ID */
+    public static final String COLUMNNAME_C_POS_ID = "C_POS_ID";
+
+	/** Set POS Terminal.
+	  * Point of Sales Terminal
+	  */
+	public void setC_POS_ID (int C_POS_ID);
+
+	/** Get POS Terminal.
+	  * Point of Sales Terminal
+	  */
+	public int getC_POS_ID();
+
+	public I_C_POS getC_POS() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";

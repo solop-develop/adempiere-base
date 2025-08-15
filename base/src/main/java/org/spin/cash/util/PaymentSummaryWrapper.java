@@ -17,10 +17,10 @@
  *****************************************************************************/
 package org.spin.cash.util;
 
+import org.compiere.util.Env;
+
 import java.math.BigDecimal;
 import java.util.Optional;
-
-import org.compiere.util.Env;
 
 /**
  * A wrapper with the need for find match with bank withdrawal
