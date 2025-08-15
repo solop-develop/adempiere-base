@@ -132,6 +132,16 @@ public abstract class PaymentProcessor
 		//  Initialize
 		myProcessor.paymentProcessor = mpp;
 		myProcessor.payment = mp;
+		if (mp != null) {
+			MTable processorRunTable = MTable.get(mp.getCtx(), "C_PaymentProcessorRun");
+			if (processorRunTable != null && processorRunTable.get_ID() > 0){
+
+				PO paymentProcessorRun = processorRunTable.getPO(0, mp.get_TrxName());
+				paymentProcessorRun.set_ValueOfColumn(MPayment.COLUMNNAME_C_Payment_ID, mp.get_ID());
+				paymentProcessorRun.saveEx();
+				myProcessor.setPaymentProcessorRun(paymentProcessorRun);
+			}
+		}
 		//
 		return myProcessor;
 	}   //  create
@@ -160,6 +170,7 @@ public abstract class PaymentProcessor
 			paymentProcessorLog.set_ValueOfColumn(I_C_BankStatement.COLUMNNAME_C_BankStatement_ID, bankStatement.get_ID());
 		}
 		paymentProcessorLog.set_ValueOfColumn(I_C_PaymentProcessor.COLUMNNAME_C_PaymentProcessor_ID, paymentProcessor.getC_PaymentProcessor_ID());
+		paymentProcessorLog.set_ValueOfColumn("C_PaymentProcessorRun_ID", paymentProcessorRun.get_ID());
 		return paymentProcessorLog;
 	}
 
@@ -233,9 +244,24 @@ public abstract class PaymentProcessor
 	private MPayment payment = null;
 	private MBankStatement bankStatement = null;
 
-
-
 	private int paymentMethodId = -1;
+
+	public int getPaymentMethodId() {
+		return paymentMethodId;
+	}
+
+	public void setPaymentMethodId(int paymentMethodId) {
+		this.paymentMethodId = paymentMethodId;
+	}
+	private PO paymentProcessorRun = null;
+
+	public PO getPaymentProcessorRun() {
+		return paymentProcessorRun;
+	}
+
+	public void setPaymentProcessorRun(PO paymentProcessorRun) {
+		this.paymentProcessorRun = paymentProcessorRun;
+	}
 
 	public MPaymentProcessor getPaymentProcessor() {
 		return paymentProcessor;
@@ -259,13 +285,6 @@ public abstract class PaymentProcessor
 
 	public void setBankStatement(MBankStatement bankStatement) {
 		this.bankStatement = bankStatement;
-	}
-	public int getPaymentMethodId() {
-		return paymentMethodId;
-	}
-
-	public void setPaymentMethodId(int paymentMethodId) {
-		this.paymentMethodId = paymentMethodId;
 	}
 
 	//
