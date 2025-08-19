@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_Project
  *  @author Adempiere (generated) 
@@ -64,7 +65,7 @@ public interface I_C_Project
 	  */
 	public int getAD_Color_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Color getAD_Color() throws RuntimeException;
+	public I_AD_Color getAD_Color() throws RuntimeException;
 
     /** Column name AD_Org_ID */
     public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";
@@ -92,7 +93,7 @@ public interface I_C_Project
 	  */
 	public int getAD_OrgTrx_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Org getAD_OrgTrx() throws RuntimeException;
+	public I_AD_Org getAD_OrgTrx() throws RuntimeException;
 
     /** Column name AD_User_ID */
     public static final String COLUMNNAME_AD_User_ID = "AD_User_ID";
@@ -107,7 +108,7 @@ public interface I_C_Project
 	  */
 	public int getAD_User_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getAD_User() throws RuntimeException;
+	public I_AD_User getAD_User() throws RuntimeException;
 
     /** Column name AlertMessage */
     public static final String COLUMNNAME_AlertMessage = "AlertMessage";
@@ -148,7 +149,7 @@ public interface I_C_Project
 	  */
 	public int getC_Activity_ID();
 
-	public org.adempiere.core.domains.models.I_C_Activity getC_Activity() throws RuntimeException;
+	public I_C_Activity getC_Activity() throws RuntimeException;
 
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
@@ -163,7 +164,7 @@ public interface I_C_Project
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_BPartner_Location_ID */
     public static final String COLUMNNAME_C_BPartner_Location_ID = "C_BPartner_Location_ID";
@@ -178,7 +179,7 @@ public interface I_C_Project
 	  */
 	public int getC_BPartner_Location_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
+	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
 
     /** Column name C_BPartnerSR_ID */
     public static final String COLUMNNAME_C_BPartnerSR_ID = "C_BPartnerSR_ID";
@@ -193,7 +194,7 @@ public interface I_C_Project
 	  */
 	public int getC_BPartnerSR_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartnerSR() throws RuntimeException;
+	public I_C_BPartner getC_BPartnerSR() throws RuntimeException;
 
     /** Column name C_Campaign_ID */
     public static final String COLUMNNAME_C_Campaign_ID = "C_Campaign_ID";
@@ -208,7 +209,7 @@ public interface I_C_Project
 	  */
 	public int getC_Campaign_ID();
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException;
+	public I_C_Campaign getC_Campaign() throws RuntimeException;
 
     /** Column name C_Currency_ID */
     public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
@@ -223,138 +224,7 @@ public interface I_C_Project
 	  */
 	public int getC_Currency_ID();
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException;
-
-    /** Column name C_PaymentTerm_ID */
-    public static final String COLUMNNAME_C_PaymentTerm_ID = "C_PaymentTerm_ID";
-
-	/** Set Payment Term.
-	  * The terms of Payment (timing, discount)
-	  */
-	public void setC_PaymentTerm_ID (int C_PaymentTerm_ID);
-
-	/** Get Payment Term.
-	  * The terms of Payment (timing, discount)
-	  */
-	public int getC_PaymentTerm_ID();
-
-	public org.adempiere.core.domains.models.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException;
-
-    /** Column name C_Phase_ID */
-    public static final String COLUMNNAME_C_Phase_ID = "C_Phase_ID";
-
-	/** Set Standard Phase.
-	  * Standard Phase of the Project Type
-	  */
-	public void setC_Phase_ID (int C_Phase_ID);
-
-	/** Get Standard Phase.
-	  * Standard Phase of the Project Type
-	  */
-	public int getC_Phase_ID();
-
-	public org.adempiere.core.domains.models.I_C_Phase getC_Phase() throws RuntimeException;
-
-    /** Column name C_Project_ID */
-    public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
-
-	/** Set Project.
-	  * Financial Project
-	  */
-	public void setC_Project_ID (int C_Project_ID);
-
-	/** Get Project.
-	  * Financial Project
-	  */
-	public int getC_Project_ID();
-
-    /** Column name C_ProjectCategory_ID */
-    public static final String COLUMNNAME_C_ProjectCategory_ID = "C_ProjectCategory_ID";
-
-	/** Set Project Category.
-	  * Project Category
-	  */
-	public void setC_ProjectCategory_ID (int C_ProjectCategory_ID);
-
-	/** Get Project Category.
-	  * Project Category
-	  */
-	public int getC_ProjectCategory_ID();
-
-	public org.adempiere.core.domains.models.I_C_ProjectCategory getC_ProjectCategory() throws RuntimeException;
-
-    /** Column name C_ProjectClass_ID */
-    public static final String COLUMNNAME_C_ProjectClass_ID = "C_ProjectClass_ID";
-
-	/** Set Project Class.
-	  * Project Class
-	  */
-	public void setC_ProjectClass_ID (int C_ProjectClass_ID);
-
-	/** Get Project Class.
-	  * Project Class
-	  */
-	public int getC_ProjectClass_ID();
-
-	public org.adempiere.core.domains.models.I_C_ProjectClass getC_ProjectClass() throws RuntimeException;
-
-    /** Column name C_ProjectGroup_ID */
-    public static final String COLUMNNAME_C_ProjectGroup_ID = "C_ProjectGroup_ID";
-
-	/** Set Project Group.
-	  * Project Group
-	  */
-	public void setC_ProjectGroup_ID (int C_ProjectGroup_ID);
-
-	/** Get Project Group.
-	  * Project Group
-	  */
-	public int getC_ProjectGroup_ID();
-
-	public org.adempiere.core.domains.models.I_C_ProjectGroup getC_ProjectGroup() throws RuntimeException;
-
-    /** Column name C_ProjectStatus_ID */
-    public static final String COLUMNNAME_C_ProjectStatus_ID = "C_ProjectStatus_ID";
-
-	/** Set Project Status.
-	  * Status for Project, Phase or Task
-	  */
-	public void setC_ProjectStatus_ID (int C_ProjectStatus_ID);
-
-	/** Get Project Status.
-	  * Status for Project, Phase or Task
-	  */
-	public int getC_ProjectStatus_ID();
-
-	public org.adempiere.core.domains.models.I_C_ProjectStatus getC_ProjectStatus() throws RuntimeException;
-
-    /** Column name C_ProjectType_ID */
-    public static final String COLUMNNAME_C_ProjectType_ID = "C_ProjectType_ID";
-
-	/** Set Project Type.
-	  * Type of the project
-	  */
-	public void setC_ProjectType_ID (String C_ProjectType_ID);
-
-	/** Get Project Type.
-	  * Type of the project
-	  */
-	public String getC_ProjectType_ID();
-
-    /** Column name C_SalesRegion_ID */
-    public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
-
-	/** Set Sales Region.
-	  * Sales coverage region
-	  */
-	public void setC_SalesRegion_ID (int C_SalesRegion_ID);
-
-	/** Get Sales Region.
-	  * Sales coverage region
-	  */
-	public int getC_SalesRegion_ID();
-
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
+	public I_C_Currency getC_Currency() throws RuntimeException;
 
     /** Column name CommittedAmt */
     public static final String COLUMNNAME_CommittedAmt = "CommittedAmt";
@@ -395,6 +265,122 @@ public interface I_C_Project
 	  */
 	public String getCopyFrom();
 
+    /** Column name C_PaymentTerm_ID */
+    public static final String COLUMNNAME_C_PaymentTerm_ID = "C_PaymentTerm_ID";
+
+	/** Set Payment Term.
+	  * The terms of Payment (timing, discount)
+	  */
+	public void setC_PaymentTerm_ID (int C_PaymentTerm_ID);
+
+	/** Get Payment Term.
+	  * The terms of Payment (timing, discount)
+	  */
+	public int getC_PaymentTerm_ID();
+
+	public I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException;
+
+    /** Column name C_Phase_ID */
+    public static final String COLUMNNAME_C_Phase_ID = "C_Phase_ID";
+
+	/** Set Standard Phase.
+	  * Standard Phase of the Project Type
+	  */
+	public void setC_Phase_ID (int C_Phase_ID);
+
+	/** Get Standard Phase.
+	  * Standard Phase of the Project Type
+	  */
+	public int getC_Phase_ID();
+
+	public I_C_Phase getC_Phase() throws RuntimeException;
+
+    /** Column name C_ProjectCategory_ID */
+    public static final String COLUMNNAME_C_ProjectCategory_ID = "C_ProjectCategory_ID";
+
+	/** Set Project Category.
+	  * Project Category
+	  */
+	public void setC_ProjectCategory_ID (int C_ProjectCategory_ID);
+
+	/** Get Project Category.
+	  * Project Category
+	  */
+	public int getC_ProjectCategory_ID();
+
+	public I_C_ProjectCategory getC_ProjectCategory() throws RuntimeException;
+
+    /** Column name C_ProjectClass_ID */
+    public static final String COLUMNNAME_C_ProjectClass_ID = "C_ProjectClass_ID";
+
+	/** Set Project Class.
+	  * Project Class
+	  */
+	public void setC_ProjectClass_ID (int C_ProjectClass_ID);
+
+	/** Get Project Class.
+	  * Project Class
+	  */
+	public int getC_ProjectClass_ID();
+
+	public I_C_ProjectClass getC_ProjectClass() throws RuntimeException;
+
+    /** Column name C_ProjectGroup_ID */
+    public static final String COLUMNNAME_C_ProjectGroup_ID = "C_ProjectGroup_ID";
+
+	/** Set Project Group.
+	  * Project Group
+	  */
+	public void setC_ProjectGroup_ID (int C_ProjectGroup_ID);
+
+	/** Get Project Group.
+	  * Project Group
+	  */
+	public int getC_ProjectGroup_ID();
+
+	public I_C_ProjectGroup getC_ProjectGroup() throws RuntimeException;
+
+    /** Column name C_Project_ID */
+    public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
+
+	/** Set Project.
+	  * Financial Project
+	  */
+	public void setC_Project_ID (int C_Project_ID);
+
+	/** Get Project.
+	  * Financial Project
+	  */
+	public int getC_Project_ID();
+
+    /** Column name C_ProjectStatus_ID */
+    public static final String COLUMNNAME_C_ProjectStatus_ID = "C_ProjectStatus_ID";
+
+	/** Set Project Status.
+	  * Status for Project, Phase or Task
+	  */
+	public void setC_ProjectStatus_ID (int C_ProjectStatus_ID);
+
+	/** Get Project Status.
+	  * Status for Project, Phase or Task
+	  */
+	public int getC_ProjectStatus_ID();
+
+	public I_C_ProjectStatus getC_ProjectStatus() throws RuntimeException;
+
+    /** Column name C_ProjectType_ID */
+    public static final String COLUMNNAME_C_ProjectType_ID = "C_ProjectType_ID";
+
+	/** Set Project Type.
+	  * Type of the project
+	  */
+	public void setC_ProjectType_ID (String C_ProjectType_ID);
+
+	/** Get Project Type.
+	  * Type of the project
+	  */
+	public String getC_ProjectType_ID();
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -423,6 +409,21 @@ public interface I_C_Project
 	  * Process which will generate a new document lines based on an existing document
 	  */
 	public String getCreateFrom();
+
+    /** Column name C_SalesRegion_ID */
+    public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
+
+	/** Set Sales Region.
+	  * Sales coverage region
+	  */
+	public void setC_SalesRegion_ID (int C_SalesRegion_ID);
+
+	/** Get Sales Region.
+	  * Sales coverage region
+	  */
+	public int getC_SalesRegion_ID();
+
+	public I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
 
     /** Column name DateContract */
     public static final String COLUMNNAME_DateContract = "DateContract";
@@ -567,6 +568,19 @@ public interface I_C_Project
 	  */
 	public String getDurationUnit();
 
+    /** Column name GenerateOrder */
+    public static final String COLUMNNAME_GenerateOrder = "GenerateOrder";
+
+	/** Set Generate Order.
+	  * Generate Order
+	  */
+	public void setGenerateOrder (String GenerateOrder);
+
+	/** Get Generate Order.
+	  * Generate Order
+	  */
+	public String getGenerateOrder();
+
     /** Column name GenerateTo */
     public static final String COLUMNNAME_GenerateTo = "GenerateTo";
 
@@ -684,7 +698,22 @@ public interface I_C_Project
 	  */
 	public int getM_PriceList_Version_ID();
 
-	public org.adempiere.core.domains.models.I_M_PriceList_Version getM_PriceList_Version() throws RuntimeException;
+	public I_M_PriceList_Version getM_PriceList_Version() throws RuntimeException;
+
+    /** Column name M_Product_ID */
+    public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
+
+	/** Set Product.
+	  * Product, Service, Item
+	  */
+	public void setM_Product_ID (int M_Product_ID);
+
+	/** Get Product.
+	  * Product, Service, Item
+	  */
+	public int getM_Product_ID();
+
+	public I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name M_Warehouse_ID */
     public static final String COLUMNNAME_M_Warehouse_ID = "M_Warehouse_ID";
@@ -699,7 +728,7 @@ public interface I_C_Project
 	  */
 	public int getM_Warehouse_ID();
 
-	public org.adempiere.core.domains.models.I_M_Warehouse getM_Warehouse() throws RuntimeException;
+	public I_M_Warehouse getM_Warehouse() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -740,7 +769,7 @@ public interface I_C_Project
 	  */
 	public int getParentProject_ID();
 
-	public org.adempiere.core.domains.models.I_C_Project getParentProject() throws RuntimeException;
+	public I_C_Project getParentProject() throws RuntimeException;
 
     /** Column name PlannedAmt */
     public static final String COLUMNNAME_PlannedAmt = "PlannedAmt";
@@ -842,6 +871,15 @@ public interface I_C_Project
 	  */
 	public BigDecimal getProjectBalanceAmt();
 
+    /** Column name ProjectBased */
+    public static final String COLUMNNAME_ProjectBased = "ProjectBased";
+
+	/** Set Project Based	  */
+	public void setProjectBased (String ProjectBased);
+
+	/** Get Project Based	  */
+	public String getProjectBased();
+
     /** Column name ProjectCategory */
     public static final String COLUMNNAME_ProjectCategory = "ProjectCategory";
 
@@ -881,7 +919,7 @@ public interface I_C_Project
 	  */
 	public int getProjectManager_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getProjectManager() throws RuntimeException;
+	public I_AD_User getProjectManager() throws RuntimeException;
 
     /** Column name ProjInvoiceRule */
     public static final String COLUMNNAME_ProjInvoiceRule = "ProjInvoiceRule";
@@ -909,7 +947,22 @@ public interface I_C_Project
 	  */
 	public int getSalesRep_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+	public I_AD_User getSalesRep() throws RuntimeException;
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -940,7 +993,7 @@ public interface I_C_Project
 	  */
 	public int getUser1_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser1() throws RuntimeException;
+	public I_C_ElementValue getUser1() throws RuntimeException;
 
     /** Column name User2_ID */
     public static final String COLUMNNAME_User2_ID = "User2_ID";
@@ -955,7 +1008,7 @@ public interface I_C_Project
 	  */
 	public int getUser2_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser2() throws RuntimeException;
+	public I_C_ElementValue getUser2() throws RuntimeException;
 
     /** Column name User3_ID */
     public static final String COLUMNNAME_User3_ID = "User3_ID";
@@ -970,7 +1023,7 @@ public interface I_C_Project
 	  */
 	public int getUser3_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser3() throws RuntimeException;
+	public I_C_ElementValue getUser3() throws RuntimeException;
 
     /** Column name User4_ID */
     public static final String COLUMNNAME_User4_ID = "User4_ID";
@@ -985,7 +1038,7 @@ public interface I_C_Project
 	  */
 	public int getUser4_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser4() throws RuntimeException;
+	public I_C_ElementValue getUser4() throws RuntimeException;
 
     /** Column name UUID */
     public static final String COLUMNNAME_UUID = "UUID";

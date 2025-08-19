@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,15 +12,11 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
@@ -29,16 +25,21 @@ import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
+
 /** Generated Model for C_Project
  *  @author Adempiere (generated) 
- *  @version Release 3.9.3 - $Id$ */
-public class X_C_Project extends PO implements I_C_Project, I_Persistent
+ *  @version Release 3.9.4 - $Id$ */
+public class X_C_Project extends PO implements I_C_Project, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20210707L;
+	private static final long serialVersionUID = 20250818L;
 
     /** Standard Constructor */
     public X_C_Project (Properties ctx, int C_Project_ID, String trxName)
@@ -97,9 +98,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_AD_Color getAD_Color() throws RuntimeException
+	public I_AD_Color getAD_Color() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Color) MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Color.Table_Name)
+		return (I_AD_Color)MTable.get(getCtx(), I_AD_Color.Table_Name)
 			.getPO(getAD_Color_ID(), get_TrxName());	}
 
 	/** Set System Color.
@@ -125,9 +126,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Org getAD_OrgTrx() throws RuntimeException
+	public I_AD_Org getAD_OrgTrx() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Org)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Org.Table_Name)
+		return (I_AD_Org)MTable.get(getCtx(), I_AD_Org.Table_Name)
 			.getPO(getAD_OrgTrx_ID(), get_TrxName());	}
 
 	/** Set Trx Organization.
@@ -153,9 +154,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getAD_User() throws RuntimeException
+	public I_AD_User getAD_User() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getAD_User_ID(), get_TrxName());	}
 
 	/** Set User/Contact.
@@ -215,9 +216,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return (String)get_Value(COLUMNNAME_BOMDrop);
 	}
 
-	public org.adempiere.core.domains.models.I_C_Activity getC_Activity() throws RuntimeException
+	public I_C_Activity getC_Activity() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Activity)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Activity.Table_Name)
+		return (I_C_Activity)MTable.get(getCtx(), I_C_Activity.Table_Name)
 			.getPO(getC_Activity_ID(), get_TrxName());	}
 
 	/** Set Activity.
@@ -243,9 +244,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -271,9 +272,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException
+	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner_Location)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner_Location.Table_Name)
+		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
 			.getPO(getC_BPartner_Location_ID(), get_TrxName());	}
 
 	/** Set Partner Location.
@@ -299,9 +300,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartnerSR() throws RuntimeException
+	public I_C_BPartner getC_BPartnerSR() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartnerSR_ID(), get_TrxName());	}
 
 	/** Set BPartner (Agent).
@@ -327,9 +328,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException
+	public I_C_Campaign getC_Campaign() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Campaign)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Campaign.Table_Name)
+		return (I_C_Campaign)MTable.get(getCtx(), I_C_Campaign.Table_Name)
 			.getPO(getC_Campaign_ID(), get_TrxName());	}
 
 	/** Set Campaign.
@@ -355,9 +356,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException
+	public I_C_Currency getC_Currency() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Currency)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Currency.Table_Name)
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
 			.getPO(getC_Currency_ID(), get_TrxName());	}
 
 	/** Set Currency.
@@ -440,9 +441,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return (String)get_Value(COLUMNNAME_CopyFrom);
 	}
 
-	public org.adempiere.core.domains.models.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException
+	public I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_PaymentTerm)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_PaymentTerm.Table_Name)
+		return (I_C_PaymentTerm)MTable.get(getCtx(), I_C_PaymentTerm.Table_Name)
 			.getPO(getC_PaymentTerm_ID(), get_TrxName());	}
 
 	/** Set Payment Term.
@@ -468,9 +469,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Phase getC_Phase() throws RuntimeException
+	public I_C_Phase getC_Phase() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Phase)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Phase.Table_Name)
+		return (I_C_Phase)MTable.get(getCtx(), I_C_Phase.Table_Name)
 			.getPO(getC_Phase_ID(), get_TrxName());	}
 
 	/** Set Standard Phase.
@@ -496,9 +497,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ProjectCategory getC_ProjectCategory() throws RuntimeException
+	public I_C_ProjectCategory getC_ProjectCategory() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ProjectCategory)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ProjectCategory.Table_Name)
+		return (I_C_ProjectCategory)MTable.get(getCtx(), I_C_ProjectCategory.Table_Name)
 			.getPO(getC_ProjectCategory_ID(), get_TrxName());	}
 
 	/** Set Project Category.
@@ -524,9 +525,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ProjectClass getC_ProjectClass() throws RuntimeException
+	public I_C_ProjectClass getC_ProjectClass() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ProjectClass)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ProjectClass.Table_Name)
+		return (I_C_ProjectClass)MTable.get(getCtx(), I_C_ProjectClass.Table_Name)
 			.getPO(getC_ProjectClass_ID(), get_TrxName());	}
 
 	/** Set Project Class.
@@ -552,9 +553,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ProjectGroup getC_ProjectGroup() throws RuntimeException
+	public I_C_ProjectGroup getC_ProjectGroup() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ProjectGroup)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ProjectGroup.Table_Name)
+		return (I_C_ProjectGroup)MTable.get(getCtx(), I_C_ProjectGroup.Table_Name)
 			.getPO(getC_ProjectGroup_ID(), get_TrxName());	}
 
 	/** Set Project Group.
@@ -603,9 +604,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ProjectStatus getC_ProjectStatus() throws RuntimeException
+	public I_C_ProjectStatus getC_ProjectStatus() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ProjectStatus)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ProjectStatus.Table_Name)
+		return (I_C_ProjectStatus)MTable.get(getCtx(), I_C_ProjectStatus.Table_Name)
 			.getPO(getC_ProjectStatus_ID(), get_TrxName());	}
 
 	/** Set Project Status.
@@ -665,9 +666,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return (String)get_Value(COLUMNNAME_CreateFrom);
 	}
 
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException
+	public I_C_SalesRegion getC_SalesRegion() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_SalesRegion)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SalesRegion.Table_Name)
+		return (I_C_SalesRegion)MTable.get(getCtx(), I_C_SalesRegion.Table_Name)
 			.getPO(getC_SalesRegion_ID(), get_TrxName());	}
 
 	/** Set Sales Region.
@@ -904,6 +905,23 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return (String)get_Value(COLUMNNAME_DurationUnit);
 	}
 
+	/** Set Generate Order.
+		@param GenerateOrder 
+		Generate Order
+	  */
+	public void setGenerateOrder (String GenerateOrder)
+	{
+		set_Value (COLUMNNAME_GenerateOrder, GenerateOrder);
+	}
+
+	/** Get Generate Order.
+		@return Generate Order
+	  */
+	public String getGenerateOrder () 
+	{
+		return (String)get_Value(COLUMNNAME_GenerateOrder);
+	}
+
 	/** Set Generate To.
 		@param GenerateTo 
 		Generate To
@@ -1057,9 +1075,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return false;
 	}
 
-	public org.adempiere.core.domains.models.I_M_PriceList_Version getM_PriceList_Version() throws RuntimeException
+	public I_M_PriceList_Version getM_PriceList_Version() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_PriceList_Version)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_PriceList_Version.Table_Name)
+		return (I_M_PriceList_Version)MTable.get(getCtx(), I_M_PriceList_Version.Table_Name)
 			.getPO(getM_PriceList_Version_ID(), get_TrxName());	}
 
 	/** Set Price List Version.
@@ -1085,9 +1103,37 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Warehouse getM_Warehouse() throws RuntimeException
+	public I_M_Product getM_Product() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Warehouse)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Warehouse.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
+			.getPO(getM_Product_ID(), get_TrxName());	}
+
+	/** Set Product.
+		@param M_Product_ID 
+		Product, Service, Item
+	  */
+	public void setM_Product_ID (int M_Product_ID)
+	{
+		if (M_Product_ID < 1) 
+			set_Value (COLUMNNAME_M_Product_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+	}
+
+	/** Get Product.
+		@return Product, Service, Item
+	  */
+	public int getM_Product_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Warehouse getM_Warehouse() throws RuntimeException
+    {
+		return (I_M_Warehouse)MTable.get(getCtx(), I_M_Warehouse.Table_Name)
 			.getPO(getM_Warehouse_ID(), get_TrxName());	}
 
 	/** Set Warehouse.
@@ -1147,9 +1193,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return (String)get_Value(COLUMNNAME_Note);
 	}
 
-	public org.adempiere.core.domains.models.I_C_Project getParentProject() throws RuntimeException
+	public I_C_Project getParentProject() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
+		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
 			.getPO(getParentProject_ID(), get_TrxName());	}
 
 	/** Set Parent Project.
@@ -1353,20 +1399,20 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 	public static final String PROJECTBASED_Lines = "L";
 	/** Phases / Tasks = PT */
 	public static final String PROJECTBASED_PhasesTasks = "PT";
-//	/** Set Project Based.
-//		@param ProjectBased Project Based	  */
-//	public void setProjectBased (String ProjectBased)
-//	{
-//
-//		set_Value (COLUMNNAME_ProjectBased, ProjectBased);
-//	}
-//
-//	/** Get Project Based.
-//		@return Project Based	  */
-//	public String getProjectBased ()
-//	{
-//		return (String)get_Value(COLUMNNAME_ProjectBased);
-//	}
+	/** Set Project Based.
+		@param ProjectBased Project Based	  */
+	public void setProjectBased (String ProjectBased)
+	{
+
+		set_Value (COLUMNNAME_ProjectBased, ProjectBased);
+	}
+
+	/** Get Project Based.
+		@return Project Based	  */
+	public String getProjectBased () 
+	{
+		return (String)get_Value(COLUMNNAME_ProjectBased);
+	}
 
 	/** ProjectCategory AD_Reference_ID=288 */
 	public static final int PROJECTCATEGORY_AD_Reference_ID=288;
@@ -1422,9 +1468,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return (String)get_Value(COLUMNNAME_ProjectLineLevel);
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getProjectManager() throws RuntimeException
+	public I_AD_User getProjectManager() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getProjectManager_ID(), get_TrxName());	}
 
 	/** Set Project Manager.
@@ -1480,9 +1526,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return (String)get_Value(COLUMNNAME_ProjInvoiceRule);
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
+	public I_AD_User getSalesRep() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSalesRep_ID(), get_TrxName());	}
 
 	/** Set Sales Representative.
@@ -1508,9 +1554,37 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser1() throws RuntimeException
+	public I_S_Contract getS_Contract() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ElementValue)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ElementValue.Table_Name)
+		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_ElementValue getUser1() throws RuntimeException
+    {
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser1_ID(), get_TrxName());	}
 
 	/** Set User List 1.
@@ -1536,9 +1610,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser2() throws RuntimeException
+	public I_C_ElementValue getUser2() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ElementValue)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser2_ID(), get_TrxName());	}
 
 	/** Set User List 2.
@@ -1564,9 +1638,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser3() throws RuntimeException
+	public I_C_ElementValue getUser3() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ElementValue)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser3_ID(), get_TrxName());	}
 
 	/** Set User List 3.
@@ -1592,9 +1666,9 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser4() throws RuntimeException
+	public I_C_ElementValue getUser4() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ElementValue)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser4_ID(), get_TrxName());	}
 
 	/** Set User List 4.
