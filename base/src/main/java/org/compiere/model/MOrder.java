@@ -1063,6 +1063,18 @@ public class MOrder extends X_C_Order implements DocAction
 					setC_PaymentTerm_ID (ii);
 			}
 		}
+		//	Set Default Drop Ship
+		if(newRecord || is_ValueChanged(COLUMNNAME_AD_Org_ID) || is_ValueChanged(COLUMNNAME_C_DocTypeTarget_ID)) {
+			MDropShipSetup dropShipSetup = MDropShipSetup.getSetupFromSalesOrder(this);
+			if(dropShipSetup != null) {
+				setDropShip_BPartner_ID(dropShipSetup.getDropShip_BPartner_ID());
+				setDropShip_Location_ID(dropShipSetup.getDropShip_Location_ID());
+				if(dropShipSetup.getDropShip_User_ID() > 0) {
+					setDropShip_User_ID(dropShipSetup.getDropShip_User_ID());
+				}
+				setIsDropShip(true);
+			}
+		}
 		return true;
 	}	//	beforeSave
 	
@@ -1977,7 +1989,7 @@ public class MOrder extends X_C_Order implements DocAction
 			m_processMsg = info.toString();
 			return DocAction.STATUS_Invalid;
 		}
-
+		createDropShipmentOrder();
 		processRecognitionPlans();
 
 		// Set the definite document number after completed (if needed)
@@ -1989,6 +2001,80 @@ public class MOrder extends X_C_Order implements DocAction
 		setDocAction(DOCACTION_Close);
 		return DocAction.STATUS_Completed;
 	}	//	completeIt
+
+	private void createDropShipmentOrder() {
+		if(!isSOTrx()) {
+			return;
+		}
+		MDropShipSetup dropShipSetup = MDropShipSetup.getSetupFromSalesOrder(this);
+		if(dropShipSetup == null || !dropShipSetup.isCreatePOAutomatically()) {
+			return;
+		}
+		MOrder purchaseOrder = new MOrder (getCtx(), 0, get_TrxName());
+		purchaseOrder.setClientOrg(getAD_Client_ID(), getAD_Org_ID());
+		purchaseOrder.setIsSOTrx(false);
+		purchaseOrder.setC_DocTypeTarget_ID(dropShipSetup.getC_DocType_PO());
+		//
+		purchaseOrder.setDescription(getDescription());
+		purchaseOrder.setPOReference(getDocumentNo());
+		purchaseOrder.setPriorityRule(getPriorityRule());
+		purchaseOrder.setSalesRep_ID(getSalesRep_ID());
+		purchaseOrder.setM_Warehouse_ID(getM_Warehouse_ID());
+		//	Set Vendor
+		MBPartner vendor = new MBPartner (getCtx(), dropShipSetup.getDropShip_BPartner_ID(), get_TrxName());
+		purchaseOrder.setBPartner(vendor);
+		purchaseOrder.setIsDropShip(true);
+		purchaseOrder.setDropShip_BPartner_ID(dropShipSetup.getDropShip_BPartner_ID());
+		purchaseOrder.setDropShip_Location_ID(dropShipSetup.getDropShip_Location_ID());
+		if(dropShipSetup.getDropShip_User_ID() > 0) {
+			purchaseOrder.setDropShip_User_ID(dropShipSetup.getDropShip_User_ID());
+		}
+		if(dropShipSetup.getDropShip_Warehouse_ID() > 0) {
+			purchaseOrder.setM_Warehouse_ID(dropShipSetup.getDropShip_Warehouse_ID());
+		} else {
+			MOrgInfo orginfo = MOrgInfo.get(getCtx(), purchaseOrder.getAD_Org_ID(), get_TrxName());
+			if (orginfo.getDropShip_Warehouse_ID() != 0 ) {
+				purchaseOrder.setM_Warehouse_ID(orginfo.getDropShip_Warehouse_ID());
+			} else {
+				throw new AdempiereException("@AD_Org_ID@ @DropShip_Warehouse_ID@ @NotFound@");
+			}
+		}
+		//	References
+		purchaseOrder.setC_Activity_ID(getC_Activity_ID());
+		purchaseOrder.setC_Campaign_ID(getC_Campaign_ID());
+		purchaseOrder.setC_Project_ID(getC_Project_ID());
+		purchaseOrder.setUser1_ID(getUser1_ID());
+		purchaseOrder.setUser2_ID(getUser2_ID());
+		purchaseOrder.setUser3_ID(getUser3_ID());
+		purchaseOrder.setUser4_ID(getUser4_ID());
+		purchaseOrder.setDocStatus(DOCSTATUS_Drafted);
+		purchaseOrder.setDocAction(DOCACTION_Complete);
+		//
+		purchaseOrder.saveEx();
+		for (MOrderLine line : getLines()) {
+			MOrderLine poLine = new MOrderLine (purchaseOrder);
+			poLine.setLink_OrderLine_ID(line.getC_OrderLine_ID());
+			poLine.setM_Product_ID(line.getM_Product_ID());
+			poLine.setC_Charge_ID(line.getC_Charge_ID());
+			poLine.setM_AttributeSetInstance_ID(line.getM_AttributeSetInstance_ID());
+			poLine.setC_UOM_ID(line.getC_UOM_ID());
+			poLine.setQtyEntered(line.getQtyEntered());
+			poLine.setQtyOrdered(line.getQtyOrdered());
+			poLine.setDescription(line.getDescription());
+			poLine.setDatePromised(line.getDatePromised());
+			poLine.setPrice();
+			poLine.saveEx();
+			//	Set link to source
+			line.setLink_OrderLine_ID(poLine.getC_OrderLine_ID());
+			line.saveEx();
+		}
+		setLink_Order_ID(purchaseOrder.getC_Order_ID());
+		saveEx();
+		if(!purchaseOrder.processIt(DOCACTION_Complete)) {
+			throw new AdempiereException("@ModePO@" + purchaseOrder.getProcessMsg());
+		}
+		purchaseOrder.saveEx();
+	}
 	
 	/**
 	 * 	Set the definite document number after completed
