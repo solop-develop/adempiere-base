@@ -20,7 +20,7 @@ import java.util.Properties;
 
 import org.compiere.model.Query;
 import org.adempiere.core.domains.models.X_AD_ModelValidator;
-import com.solop.sp016.model.validator.ConsignedMaterial;
+import org.solop.sp016.model.validator.ConsignedMaterial;
 import org.spin.util.ISetupDefinition;
 
 /**
