@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.compiere.model.MCurrency;
 import org.compiere.model.MProductPO;
 import org.compiere.util.Env;
-import com.solop.sp016.util.ConsignedMaterialUtil;
+import org.solop.sp016.util.ConsignedMaterialUtil;
 
 /** Generated Process for (Apply Landed Cost to Product POS)
  *  @author Yamel Senih, ysenih@erpya.com , http://www.erpya.com

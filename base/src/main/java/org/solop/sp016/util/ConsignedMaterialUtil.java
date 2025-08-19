@@ -15,7 +15,7 @@
  * All Rights Reserved.                                                       *
  * Contributor(s): Yamel Senih www.erpya.com                                  *
  *****************************************************************************/
-package com.solop.sp016.util;
+package org.solop.sp016.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
