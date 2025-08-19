@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.core.domains.models.I_C_Invoice;
 import org.compiere.model.MInvoice;
-import com.solop.sp016.util.ConsignedMaterialUtil;
+import org.solop.sp016.util.ConsignedMaterialUtil;
 
 /**
  * Generated Process for (Create AP Invoice From Sales)

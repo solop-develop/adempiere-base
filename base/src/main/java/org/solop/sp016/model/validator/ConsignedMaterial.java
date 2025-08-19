@@ -44,7 +44,7 @@ import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
-import com.solop.sp016.util.ConsignedMaterialUtil;
+import org.solop.sp016.util.ConsignedMaterialUtil;
 
 /**
  * Useful method for Consignment Material
