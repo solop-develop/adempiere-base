@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License                *
  * along with this program.	If not, see <https://www.gnu.org/licenses/>.            *
  ************************************************************************************/
-package com.solop.sp016.model.validator;
+package org.solop.sp016.model.validator;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Fix_Consignment_Process" ReleaseNo="1.2.7" SeqNo="50560">
+    <Comments>Fix package Name and show DropShipment field in product and purchase Order</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54378" Table="AD_Process">
+        <Data AD_Column_ID="4656" Column="Classname" oldValue="org.spin.consignment.process.CreateAPInvoiceFromSalesDropShipment">org.solop.sp016.process.CreateAPInvoiceFromSalesDropShipment</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="106268" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="810">330</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="10411" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="0">340</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="3425" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="200">210</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="6506" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="210">220</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="3432" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="220">230</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="9299" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="230">240</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="104836" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="530">250</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="10123" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="0">260</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
