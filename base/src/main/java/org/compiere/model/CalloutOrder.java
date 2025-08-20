@@ -1309,5 +1309,49 @@ public class CalloutOrder extends CalloutEngine
 		}
 		return "";
 	}	//	qty
+
+	public String setWarehouseFromProject (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value){
+
+		if (value == null)
+			return "";
+		//	No Callout Active to fire dependent values
+		if (isCalloutActive())	//	prevent recursive
+			return "";
+		String column = mField.getColumnName();
+		int doc_ID = 0, project_ID = 0;
+		MDocType doc;
+		if(column.equals("C_Project_ID")){
+			doc_ID = Env.getContextAsInt(ctx, WindowNo, WindowNo, "C_DocTypeTarget_ID");
+			if(doc_ID > 0){
+				doc = new MDocType(ctx, doc_ID, null);
+				if(doc.getDocBaseType().equalsIgnoreCase("POO")
+						|| doc.getDocBaseType().equalsIgnoreCase("SOO")){
+					int projectID = ((Integer)value).intValue();
+					MProject pr = new MProject(ctx, projectID, null);
+					if(pr.getM_Warehouse_ID() > 0){
+						mTab.setValue("M_Warehouse_ID", pr.getM_Warehouse_ID());
+					} else {
+						mTab.setValue("M_Warehouse_ID", 0);
+					}
+				}
+			}
+		} else if (column.equals("C_DocTypeTarget_ID")){
+			project_ID = Env.getContextAsInt(ctx, WindowNo, WindowNo, "C_Project_ID");
+			if(project_ID > 0){
+				doc_ID = ((Integer)value).intValue();
+				doc = new MDocType(ctx, doc_ID, null);
+				if(doc.getDocBaseType().equalsIgnoreCase("POO")
+						|| doc.getDocBaseType().equalsIgnoreCase("SOO")){
+					MProject pr = new MProject(ctx, project_ID, null);
+					if(pr.getM_Warehouse_ID() > 0){
+						mTab.setValue("M_Warehouse_ID", pr.getM_Warehouse_ID());
+					} else {
+						mTab.setValue("M_Warehouse_ID", 0);
+					}
+				}
+			}
+		}
+		return "";
+	}
 }	//	CalloutOrder
 
