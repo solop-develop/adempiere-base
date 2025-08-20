@@ -1193,7 +1193,7 @@ If you leave the search key empty, the system automatically creates a numeric nu
         <Data AD_Column_ID="118" Column="FieldLength">1</Data>
         <Data AD_Column_ID="6482" Column="EntityType">D</Data>
         <Data AD_Column_ID="112" Column="Description">Credit Card (Visa, MC, AmEx)</Data>
-        <Data AD_Column_ID="117" Column="DefaultValue">-1</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
         <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="549" Column="Created">2025-08-20 11:06:55.598</Data>
         <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
