@@ -39,7 +39,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250812L;
+	private static final long serialVersionUID = 20250820L;
 
     /** Standard Constructor */
     public X_C_Payment (Properties ctx, int C_Payment_ID, String trxName)
@@ -308,6 +308,34 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return (String)get_Value(COLUMNNAME_A_Zip);
 	}
 
+	public I_C_BPartner getBusinessPartnerForRefund() throws RuntimeException
+    {
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
+			.getPO(getBusinessPartnerForRefund_ID(), get_TrxName());	}
+
+	/** Set Business Partner for Refund.
+		@param BusinessPartnerForRefund_ID 
+		A Business Partner for Refund is used for related payments
+	  */
+	public void setBusinessPartnerForRefund_ID (int BusinessPartnerForRefund_ID)
+	{
+		if (BusinessPartnerForRefund_ID < 1) 
+			set_Value (COLUMNNAME_BusinessPartnerForRefund_ID, null);
+		else 
+			set_Value (COLUMNNAME_BusinessPartnerForRefund_ID, Integer.valueOf(BusinessPartnerForRefund_ID));
+	}
+
+	/** Get Business Partner for Refund.
+		@return A Business Partner for Refund is used for related payments
+	  */
+	public int getBusinessPartnerForRefund_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_BusinessPartnerForRefund_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public I_C_Activity getC_Activity() throws RuntimeException
     {
 		return (I_C_Activity)MTable.get(getCtx(), I_C_Activity.Table_Name)
@@ -471,6 +499,31 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public int getC_Campaign_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_Campaign_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Card getC_Card() throws RuntimeException
+    {
+		return (I_C_Card)MTable.get(getCtx(), I_C_Card.Table_Name)
+			.getPO(getC_Card_ID(), get_TrxName());	}
+
+	/** Set Card.
+		@param C_Card_ID Card	  */
+	public void setC_Card_ID (int C_Card_ID)
+	{
+		if (C_Card_ID < 1) 
+			set_Value (COLUMNNAME_C_Card_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Card_ID, Integer.valueOf(C_Card_ID));
+	}
+
+	/** Get Card.
+		@return Card	  */
+	public int getC_Card_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Card_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -1193,9 +1246,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
         return new KeyNamePair(get_ID(), getDocumentNo());
     }
 
-	public org.adempiere.core.domains.models.I_ECA14_GiftCard getECA14_GiftCard() throws RuntimeException
+	public I_ECA14_GiftCard getECA14_GiftCard() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_ECA14_GiftCard)MTable.get(getCtx(), org.adempiere.core.domains.models.I_ECA14_GiftCard.Table_Name)
+		return (I_ECA14_GiftCard)MTable.get(getCtx(), I_ECA14_GiftCard.Table_Name)
 			.getPO(getECA14_GiftCard_ID(), get_TrxName());	}
 
 	/** Set Gift Card.

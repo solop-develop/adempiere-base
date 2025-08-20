@@ -210,6 +210,21 @@ public interface I_C_Payment
 	  */
 	public String getA_Zip();
 
+    /** Column name BusinessPartnerForRefund_ID */
+    public static final String COLUMNNAME_BusinessPartnerForRefund_ID = "BusinessPartnerForRefund_ID";
+
+	/** Set Business Partner for Refund.
+	  * A Business Partner for Refund is used for related payments
+	  */
+	public void setBusinessPartnerForRefund_ID (int BusinessPartnerForRefund_ID);
+
+	/** Get Business Partner for Refund.
+	  * A Business Partner for Refund is used for related payments
+	  */
+	public int getBusinessPartnerForRefund_ID();
+
+	public I_C_BPartner getBusinessPartnerForRefund() throws RuntimeException;
+
     /** Column name C_Activity_ID */
     public static final String COLUMNNAME_C_Activity_ID = "C_Activity_ID";
 
@@ -299,6 +314,17 @@ public interface I_C_Payment
 	public int getC_Campaign_ID();
 
 	public I_C_Campaign getC_Campaign() throws RuntimeException;
+
+    /** Column name C_Card_ID */
+    public static final String COLUMNNAME_C_Card_ID = "C_Card_ID";
+
+	/** Set Card	  */
+	public void setC_Card_ID (int C_Card_ID);
+
+	/** Get Card	  */
+	public int getC_Card_ID();
+
+	public I_C_Card getC_Card() throws RuntimeException;
 
     /** Column name C_CardProvider_ID */
     public static final String COLUMNNAME_C_CardProvider_ID = "C_CardProvider_ID";
@@ -715,7 +741,7 @@ public interface I_C_Payment
 	  */
 	public int getECA14_GiftCard_ID();
 
-	public org.adempiere.core.domains.models.I_ECA14_GiftCard getECA14_GiftCard() throws RuntimeException;
+	public I_ECA14_GiftCard getECA14_GiftCard() throws RuntimeException;
 
     /** Column name ECA14_Invoice_Reference_ID */
     public static final String COLUMNNAME_ECA14_Invoice_Reference_ID = "ECA14_Invoice_Reference_ID";
