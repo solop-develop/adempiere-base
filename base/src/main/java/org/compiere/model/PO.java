@@ -16,39 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.math.BigDecimal;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Savepoint;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.adempiere.core.domains.models.I_AD_Element;
 import org.adempiere.core.domains.models.I_AD_Session;
 import org.adempiere.core.domains.models.X_C_ElementValue;
@@ -57,22 +24,28 @@ import org.adempiere.exceptions.DBException;
 import org.adempiere.model.GenericPO;
 import org.compiere.Adempiere;
 import org.compiere.acct.Doc;
-import org.compiere.util.CLogMgt;
-import org.compiere.util.CLogger;
-import org.compiere.util.CacheMgt;
-import org.compiere.util.DB;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
-import org.compiere.util.Evaluatee;
-import org.compiere.util.Ini;
-import org.compiere.util.Msg;
-import org.compiere.util.SecureEngine;
-import org.compiere.util.Trace;
-import org.compiere.util.Trx;
-import org.compiere.util.Util;
-import org.compiere.util.ValueNamePair;
+import org.compiere.util.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  *  Persistent Object.
@@ -174,7 +147,7 @@ public abstract class PO
 	 *  Create New Persistent Object
 	 *  @param ctx context
 	 */
-	public PO (Properties ctx)
+	public PO(Properties ctx)
 	{
 		this (ctx, 0, null, null);
 	}   //  PO
@@ -185,7 +158,7 @@ public abstract class PO
 	 *  @param ctx context
 	 *  @param trxName transaction name
 	 */
-	public PO (Properties ctx, int ID, String trxName)
+	public PO(Properties ctx, int ID, String trxName)
 	{
 		this (ctx, ID, trxName, null);
 	}   //  PO
@@ -197,7 +170,7 @@ public abstract class PO
 	 *  	if null, a new record is created.
 	 *  @param trxName transaction name
 	 */
-	public PO (Properties ctx, ResultSet rs, String trxName)
+	public PO(Properties ctx, ResultSet rs, String trxName)
 	{
 		this (ctx, 0, trxName, rs);
 	}	//	PO
@@ -220,7 +193,7 @@ public abstract class PO
 	 *  @param trxName transaction name
 	 *  @param rs optional - load from current result set position (no navigation, not closed)
 	 */
-	public PO (Properties ctx, int ID, String trxName, ResultSet rs)
+	public PO(Properties ctx, int ID, String trxName, ResultSet rs)
 	{
 		if (ctx == null)
 			throw new IllegalArgumentException ("No Context");
@@ -248,7 +221,7 @@ public abstract class PO
 	 * 	@param AD_Client_ID client
 	 * 	@param AD_Org_ID org
 	 */
-	public PO (Properties ctx, PO source, int AD_Client_ID, int AD_Org_ID)
+	public PO(Properties ctx, PO source, int AD_Client_ID, int AD_Org_ID)
 	{
 		this (ctx, 0, null, null);	//	create new
 		//
@@ -931,7 +904,7 @@ public abstract class PO
 	 *  @param value value
 	 *  @return true if value set
 	 */
-	protected final boolean set_ValueNoCheck (String ColumnName, Object value)
+	public final boolean set_ValueNoCheck (String ColumnName, Object value)
 	{
 		int index = get_ColumnIndex(ColumnName);
 		if (index < 0)
@@ -1012,7 +985,7 @@ public abstract class PO
 	 *  @param value value
 	 *  @return true if value set
 	 */
-	protected final boolean set_ValueNoCheckE (String ColumnName, Object value)
+	public final boolean set_ValueNoCheckE (String ColumnName, Object value)
 	{
 		return set_ValueNoCheck (ColumnName, value);
 	}	//	set_ValueNoCheckE
@@ -4433,4 +4406,28 @@ public abstract class PO
 		}
 		return parentID;
 	}
+	
+	public void beforeNew() {
+        beforeSave(true);
+    }
+
+    public void beforeUpdate() {
+        beforeSave(false);
+    }
+
+    public void afterNew() {
+        afterSave(true, true);
+    }
+
+    public void afterUpdate() {
+        afterSave(false, true);
+    }
+
+    public void beforeRemove() {
+        beforeDelete();
+    }
+
+    public void afterRemove() {
+        afterDelete(true);
+    }
 }   //  PO
