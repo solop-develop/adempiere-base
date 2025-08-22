@@ -149,8 +149,14 @@ public class CashManagementUtil {
 		paymentBankTo.setDescription(bankStatement.getDescription());
 		paymentBankTo.setC_BPartner_ID (businessPartnerId);
 		paymentBankTo.setC_Currency_ID(currencyId);
+		if(paymentBankFrom.getCreditCardType() != null) {
+			paymentBankTo.setCreditCardType(paymentBankFrom.getCreditCardType());
+		}
 		if(paymentBankFrom.getC_CardProvider_ID() > 0) {
 			paymentBankTo.setC_CardProvider_ID(paymentBankFrom.getC_CardProvider_ID());
+		}
+		if(paymentBankFrom.getC_Card_ID() > 0) {
+			paymentBankTo.setC_Card_ID(paymentBankFrom.getC_Card_ID());
 		}
 		if(conversionTypeId > 0) {
 			paymentBankTo.setC_ConversionType_ID(conversionTypeId);
