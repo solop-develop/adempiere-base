@@ -118,7 +118,7 @@ public class CashManagementUtil {
 		MPayment paymentBankFrom = new MPayment(bankStatement.getCtx(), 0 ,  bankStatement.get_TrxName());
 		if(paymentId > 0) {
 			MPayment originalPayment = new MPayment(bankStatement.getCtx(), paymentId, bankStatement.get_TrxName());
-			PO.copyValues(originalPayment, paymentBankFrom, true);
+			PO.copyValues(originalPayment, paymentBankFrom);
 		}
 		paymentBankFrom.setRelatedPayment_ID(-1);
 		paymentBankFrom.setC_BankAccount_ID(mBankFrom.getC_BankAccount_ID());
@@ -146,7 +146,7 @@ public class CashManagementUtil {
 		paymentBankFrom.saveEx();
 		//
 		MPayment paymentBankTo = new MPayment(bankStatement.getCtx(), 0 ,  bankStatement.get_TrxName());
-		PO.copyValues(paymentBankFrom, paymentBankTo, true);
+		PO.copyValues(paymentBankFrom, paymentBankTo);
 		paymentBankTo.setC_BankAccount_ID(mBankTo.getC_BankAccount_ID());
 		paymentBankTo.setDocumentNo(documentNo);
 		paymentBankTo.setDateAcct(dateAcct);
