@@ -601,7 +601,7 @@ public final class MPayment extends X_C_Payment
 			else
 			{
 				if (PaymentProcessorStatus.class.isAssignableFrom(pp.getClass())) {
-					result = ((PaymentProcessorStatus) pp).transactionStatus();
+					result = ((PaymentProcessorStatus) pp).transactionStatus(0);
 				}
 			}
 		}
