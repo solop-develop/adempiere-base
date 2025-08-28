@@ -1,4 +1,4 @@
-package org.adempiere.model;
+package org.compiere.model;
 import org.adempiere.core.domains.models.X_C_PPBatchLine;
 
 import java.sql.ResultSet;

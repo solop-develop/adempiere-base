@@ -19,6 +19,8 @@
 package org.solop.process;
 
 import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.MPPVendorTransaction;
+import org.compiere.model.MPaymentProcessorBatch;
 import org.compiere.model.MBankStatementLine;
 import org.compiere.model.MPayment;
 

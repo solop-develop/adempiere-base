@@ -1,10 +1,9 @@
-package org.adempiere.model;
+package org.compiere.model;
 import org.adempiere.core.domains.models.I_C_PPBatchLine;
 import org.adempiere.core.domains.models.I_C_PPVendorTransaction;
 import org.adempiere.core.domains.models.X_C_PaymentProcessorBatch;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
-import org.compiere.model.*;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocOptions;
 import org.compiere.process.DocumentEngine;

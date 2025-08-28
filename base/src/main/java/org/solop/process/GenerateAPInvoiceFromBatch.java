@@ -19,6 +19,7 @@
 package org.solop.process;
 
 import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.MPaymentProcessorBatch;
 import org.compiere.model.*;
 import org.compiere.util.Env;
 
