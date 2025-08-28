@@ -39,7 +39,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250820L;
+	private static final long serialVersionUID = 20250827L;
 
     /** Standard Constructor */
     public X_C_Payment (Properties ctx, int C_Payment_ID, String trxName)
@@ -1090,6 +1090,34 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public Timestamp getDateTrx () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_DateTrx);
+	}
+
+	public I_C_Payment getDeposit() throws RuntimeException
+    {
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
+			.getPO(getDeposit_ID(), get_TrxName());	}
+
+	/** Set Deposit Reference.
+		@param Deposit_ID 
+		Deposit Reference for payment
+	  */
+	public void setDeposit_ID (int Deposit_ID)
+	{
+		if (Deposit_ID < 1) 
+			set_Value (COLUMNNAME_Deposit_ID, null);
+		else 
+			set_Value (COLUMNNAME_Deposit_ID, Integer.valueOf(Deposit_ID));
+	}
+
+	/** Get Deposit Reference.
+		@return Deposit Reference for payment
+	  */
+	public int getDeposit_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Deposit_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Description.
@@ -2526,6 +2554,34 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public String getVoiceAuthCode () 
 	{
 		return (String)get_Value(COLUMNNAME_VoiceAuthCode);
+	}
+
+	public I_C_Payment getWithdrawal() throws RuntimeException
+    {
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
+			.getPO(getWithdrawal_ID(), get_TrxName());	}
+
+	/** Set Withdrawal.
+		@param Withdrawal_ID 
+		Withdrawal Payment
+	  */
+	public void setWithdrawal_ID (int Withdrawal_ID)
+	{
+		if (Withdrawal_ID < 1) 
+			set_Value (COLUMNNAME_Withdrawal_ID, null);
+		else 
+			set_Value (COLUMNNAME_Withdrawal_ID, Integer.valueOf(Withdrawal_ID));
+	}
+
+	/** Get Withdrawal.
+		@return Withdrawal Payment
+	  */
+	public int getWithdrawal_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Withdrawal_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Write-off Amount.

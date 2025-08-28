@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_Invoice
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_C_Invoice
 	  */
 	public int getAD_OrgTrx_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Org getAD_OrgTrx() throws RuntimeException;
+	public I_AD_Org getAD_OrgTrx() throws RuntimeException;
 
     /** Column name AD_User_ID */
     public static final String COLUMNNAME_AD_User_ID = "AD_User_ID";
@@ -92,7 +93,7 @@ public interface I_C_Invoice
 	  */
 	public int getAD_User_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getAD_User() throws RuntimeException;
+	public I_AD_User getAD_User() throws RuntimeException;
 
     /** Column name BOMDrop */
     public static final String COLUMNNAME_BOMDrop = "BOMDrop";
@@ -120,7 +121,7 @@ public interface I_C_Invoice
 	  */
 	public int getC_Activity_ID();
 
-	public org.adempiere.core.domains.models.I_C_Activity getC_Activity() throws RuntimeException;
+	public I_C_Activity getC_Activity() throws RuntimeException;
 
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
@@ -135,7 +136,7 @@ public interface I_C_Invoice
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_BPartner_Location_ID */
     public static final String COLUMNNAME_C_BPartner_Location_ID = "C_BPartner_Location_ID";
@@ -150,7 +151,7 @@ public interface I_C_Invoice
 	  */
 	public int getC_BPartner_Location_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
+	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
 
     /** Column name C_Campaign_ID */
     public static final String COLUMNNAME_C_Campaign_ID = "C_Campaign_ID";
@@ -165,7 +166,7 @@ public interface I_C_Invoice
 	  */
 	public int getC_Campaign_ID();
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException;
+	public I_C_Campaign getC_Campaign() throws RuntimeException;
 
     /** Column name C_CashLine_ID */
     public static final String COLUMNNAME_C_CashLine_ID = "C_CashLine_ID";
@@ -180,7 +181,7 @@ public interface I_C_Invoice
 	  */
 	public int getC_CashLine_ID();
 
-	public org.adempiere.core.domains.models.I_C_CashLine getC_CashLine() throws RuntimeException;
+	public I_C_CashLine getC_CashLine() throws RuntimeException;
 
     /** Column name C_Charge_ID */
     public static final String COLUMNNAME_C_Charge_ID = "C_Charge_ID";
@@ -195,7 +196,7 @@ public interface I_C_Invoice
 	  */
 	public int getC_Charge_ID();
 
-	public org.adempiere.core.domains.models.I_C_Charge getC_Charge() throws RuntimeException;
+	public I_C_Charge getC_Charge() throws RuntimeException;
 
     /** Column name C_ConversionType_ID */
     public static final String COLUMNNAME_C_ConversionType_ID = "C_ConversionType_ID";
@@ -210,7 +211,7 @@ public interface I_C_Invoice
 	  */
 	public int getC_ConversionType_ID();
 
-	public org.adempiere.core.domains.models.I_C_ConversionType getC_ConversionType() throws RuntimeException;
+	public I_C_ConversionType getC_ConversionType() throws RuntimeException;
 
     /** Column name C_Currency_ID */
     public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
@@ -225,7 +226,7 @@ public interface I_C_Invoice
 	  */
 	public int getC_Currency_ID();
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException;
+	public I_C_Currency getC_Currency() throws RuntimeException;
 
     /** Column name C_DocType_ID */
     public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
@@ -240,7 +241,7 @@ public interface I_C_Invoice
 	  */
 	public int getC_DocType_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException;
+	public I_C_DocType getC_DocType() throws RuntimeException;
 
     /** Column name C_DocTypeTarget_ID */
     public static final String COLUMNNAME_C_DocTypeTarget_ID = "C_DocTypeTarget_ID";
@@ -255,7 +256,7 @@ public interface I_C_Invoice
 	  */
 	public int getC_DocTypeTarget_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypeTarget() throws RuntimeException;
+	public I_C_DocType getC_DocTypeTarget() throws RuntimeException;
 
     /** Column name C_DunningLevel_ID */
     public static final String COLUMNNAME_C_DunningLevel_ID = "C_DunningLevel_ID";
@@ -266,110 +267,7 @@ public interface I_C_Invoice
 	/** Get Dunning Level	  */
 	public int getC_DunningLevel_ID();
 
-	public org.adempiere.core.domains.models.I_C_DunningLevel getC_DunningLevel() throws RuntimeException;
-
-    /** Column name C_Invoice_ID */
-    public static final String COLUMNNAME_C_Invoice_ID = "C_Invoice_ID";
-
-	/** Set Invoice.
-	  * Invoice Identifier
-	  */
-	public void setC_Invoice_ID (int C_Invoice_ID);
-
-	/** Get Invoice.
-	  * Invoice Identifier
-	  */
-	public int getC_Invoice_ID();
-
-    /** Column name C_Order_ID */
-    public static final String COLUMNNAME_C_Order_ID = "C_Order_ID";
-
-	/** Set Order.
-	  * Order
-	  */
-	public void setC_Order_ID (int C_Order_ID);
-
-	/** Get Order.
-	  * Order
-	  */
-	public int getC_Order_ID();
-
-	public org.adempiere.core.domains.models.I_C_Order getC_Order() throws RuntimeException;
-
-    /** Column name C_Payment_ID */
-    public static final String COLUMNNAME_C_Payment_ID = "C_Payment_ID";
-
-	/** Set Payment.
-	  * Payment identifier
-	  */
-	public void setC_Payment_ID (int C_Payment_ID);
-
-	/** Get Payment.
-	  * Payment identifier
-	  */
-	public int getC_Payment_ID();
-
-	public org.adempiere.core.domains.models.I_C_Payment getC_Payment() throws RuntimeException;
-
-    /** Column name C_PaymentTerm_ID */
-    public static final String COLUMNNAME_C_PaymentTerm_ID = "C_PaymentTerm_ID";
-
-	/** Set Payment Term.
-	  * The terms of Payment (timing, discount)
-	  */
-	public void setC_PaymentTerm_ID (int C_PaymentTerm_ID);
-
-	/** Get Payment Term.
-	  * The terms of Payment (timing, discount)
-	  */
-	public int getC_PaymentTerm_ID();
-
-	public org.adempiere.core.domains.models.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException;
-
-    /** Column name C_POS_ID */
-    public static final String COLUMNNAME_C_POS_ID = "C_POS_ID";
-
-	/** Set POS Terminal.
-	  * Point of Sales Terminal
-	  */
-	public void setC_POS_ID (int C_POS_ID);
-
-	/** Get POS Terminal.
-	  * Point of Sales Terminal
-	  */
-	public int getC_POS_ID();
-
-	public org.adempiere.core.domains.models.I_C_POS getC_POS() throws RuntimeException;
-
-    /** Column name C_Project_ID */
-    public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
-
-	/** Set Project.
-	  * Financial Project
-	  */
-	public void setC_Project_ID (int C_Project_ID);
-
-	/** Get Project.
-	  * Financial Project
-	  */
-	public int getC_Project_ID();
-
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
-
-    /** Column name C_SalesRegion_ID */
-    public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
-
-	/** Set Sales Region.
-	  * Sales coverage region
-	  */
-	public void setC_SalesRegion_ID (int C_SalesRegion_ID);
-
-	/** Get Sales Region.
-	  * Sales coverage region
-	  */
-	public int getC_SalesRegion_ID();
-
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
+	public I_C_DunningLevel getC_DunningLevel() throws RuntimeException;
 
     /** Column name ChargeAmt */
     public static final String COLUMNNAME_ChargeAmt = "ChargeAmt";
@@ -384,6 +282,19 @@ public interface I_C_Invoice
 	  */
 	public BigDecimal getChargeAmt();
 
+    /** Column name C_Invoice_ID */
+    public static final String COLUMNNAME_C_Invoice_ID = "C_Invoice_ID";
+
+	/** Set Invoice.
+	  * Invoice Identifier
+	  */
+	public void setC_Invoice_ID (int C_Invoice_ID);
+
+	/** Get Invoice.
+	  * Invoice Identifier
+	  */
+	public int getC_Invoice_ID();
+
     /** Column name CopyFrom */
     public static final String COLUMNNAME_CopyFrom = "CopyFrom";
 
@@ -396,6 +307,111 @@ public interface I_C_Invoice
 	  * Copy From Record
 	  */
 	public String getCopyFrom();
+
+    /** Column name C_Order_ID */
+    public static final String COLUMNNAME_C_Order_ID = "C_Order_ID";
+
+	/** Set Order.
+	  * Order
+	  */
+	public void setC_Order_ID (int C_Order_ID);
+
+	/** Get Order.
+	  * Order
+	  */
+	public int getC_Order_ID();
+
+	public I_C_Order getC_Order() throws RuntimeException;
+
+    /** Column name C_Payment_ID */
+    public static final String COLUMNNAME_C_Payment_ID = "C_Payment_ID";
+
+	/** Set Payment.
+	  * Payment identifier
+	  */
+	public void setC_Payment_ID (int C_Payment_ID);
+
+	/** Get Payment.
+	  * Payment identifier
+	  */
+	public int getC_Payment_ID();
+
+	public I_C_Payment getC_Payment() throws RuntimeException;
+
+    /** Column name C_PaymentProcessorBatch_ID */
+    public static final String COLUMNNAME_C_PaymentProcessorBatch_ID = "C_PaymentProcessorBatch_ID";
+
+	/** Set Payment Processor Batch.
+	  * Payment Processor Batch
+	  */
+	public void setC_PaymentProcessorBatch_ID (int C_PaymentProcessorBatch_ID);
+
+	/** Get Payment Processor Batch.
+	  * Payment Processor Batch
+	  */
+	public int getC_PaymentProcessorBatch_ID();
+
+	public I_C_PaymentProcessorBatch getC_PaymentProcessorBatch() throws RuntimeException;
+
+    /** Column name C_PaymentTerm_ID */
+    public static final String COLUMNNAME_C_PaymentTerm_ID = "C_PaymentTerm_ID";
+
+	/** Set Payment Term.
+	  * The terms of Payment (timing, discount)
+	  */
+	public void setC_PaymentTerm_ID (int C_PaymentTerm_ID);
+
+	/** Get Payment Term.
+	  * The terms of Payment (timing, discount)
+	  */
+	public int getC_PaymentTerm_ID();
+
+	public I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException;
+
+    /** Column name C_POS_ID */
+    public static final String COLUMNNAME_C_POS_ID = "C_POS_ID";
+
+	/** Set POS Terminal.
+	  * Point of Sales Terminal
+	  */
+	public void setC_POS_ID (int C_POS_ID);
+
+	/** Get POS Terminal.
+	  * Point of Sales Terminal
+	  */
+	public int getC_POS_ID();
+
+	public I_C_POS getC_POS() throws RuntimeException;
+
+    /** Column name C_Project_ID */
+    public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
+
+	/** Set Project.
+	  * Financial Project
+	  */
+	public void setC_Project_ID (int C_Project_ID);
+
+	/** Get Project.
+	  * Financial Project
+	  */
+	public int getC_Project_ID();
+
+	public I_C_Project getC_Project() throws RuntimeException;
+
+    /** Column name C_ProjectLine_ID */
+    public static final String COLUMNNAME_C_ProjectLine_ID = "C_ProjectLine_ID";
+
+	/** Set Project Line.
+	  * Task or step in a project
+	  */
+	public void setC_ProjectLine_ID (int C_ProjectLine_ID);
+
+	/** Get Project Line.
+	  * Task or step in a project
+	  */
+	public int getC_ProjectLine_ID();
+
+	public I_C_ProjectLine getC_ProjectLine() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -425,6 +441,21 @@ public interface I_C_Invoice
 	  * Process which will generate a new document lines based on an existing document
 	  */
 	public String getCreateFrom();
+
+    /** Column name C_SalesRegion_ID */
+    public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
+
+	/** Set Sales Region.
+	  * Sales coverage region
+	  */
+	public void setC_SalesRegion_ID (int C_SalesRegion_ID);
+
+	/** Get Sales Region.
+	  * Sales coverage region
+	  */
+	public int getC_SalesRegion_ID();
+
+	public I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
 
     /** Column name DateAcct */
     public static final String COLUMNNAME_DateAcct = "DateAcct";
@@ -548,7 +579,7 @@ public interface I_C_Invoice
 	/** Get Financial Account	  */
 	public int getFM_Account_ID();
 
-	public org.adempiere.core.domains.models.I_FM_Account getFM_Account() throws RuntimeException;
+	public I_FM_Account getFM_Account() throws RuntimeException;
 
     /** Column name FM_Agreement_ID */
     public static final String COLUMNNAME_FM_Agreement_ID = "FM_Agreement_ID";
@@ -559,7 +590,7 @@ public interface I_C_Invoice
 	/** Get Agreement	  */
 	public int getFM_Agreement_ID();
 
-	public org.adempiere.core.domains.models.I_FM_Agreement getFM_Agreement() throws RuntimeException;
+	public I_FM_Agreement getFM_Agreement() throws RuntimeException;
 
     /** Column name GenerateTo */
     public static final String COLUMNNAME_GenerateTo = "GenerateTo";
@@ -769,7 +800,7 @@ public interface I_C_Invoice
 	  */
 	public int getM_PriceList_ID();
 
-	public org.adempiere.core.domains.models.I_M_PriceList getM_PriceList() throws RuntimeException;
+	public I_M_PriceList getM_PriceList() throws RuntimeException;
 
     /** Column name M_RMA_ID */
     public static final String COLUMNNAME_M_RMA_ID = "M_RMA_ID";
@@ -784,7 +815,7 @@ public interface I_C_Invoice
 	  */
 	public int getM_RMA_ID();
 
-	public org.adempiere.core.domains.models.I_M_RMA getM_RMA() throws RuntimeException;
+	public I_M_RMA getM_RMA() throws RuntimeException;
 
     /** Column name PaymentRule */
     public static final String COLUMNNAME_PaymentRule = "PaymentRule";
@@ -860,6 +891,17 @@ public interface I_C_Invoice
 	/** Get Process Now	  */
 	public boolean isProcessing();
 
+    /** Column name ReferenceDocument_ID */
+    public static final String COLUMNNAME_ReferenceDocument_ID = "ReferenceDocument_ID";
+
+	/** Set Reference Document	  */
+	public void setReferenceDocument_ID (int ReferenceDocument_ID);
+
+	/** Get Reference Document	  */
+	public int getReferenceDocument_ID();
+
+	public I_C_Invoice getReferenceDocument() throws RuntimeException;
+
     /** Column name Ref_Invoice_ID */
     public static final String COLUMNNAME_Ref_Invoice_ID = "Ref_Invoice_ID";
 
@@ -882,7 +924,7 @@ public interface I_C_Invoice
 	  */
 	public int getReversal_ID();
 
-	public org.adempiere.core.domains.models.I_C_Invoice getReversal() throws RuntimeException;
+	public I_C_Invoice getReversal() throws RuntimeException;
 
     /** Column name SalesRep_ID */
     public static final String COLUMNNAME_SalesRep_ID = "SalesRep_ID";
@@ -897,7 +939,22 @@ public interface I_C_Invoice
 	  */
 	public int getSalesRep_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+	public I_AD_User getSalesRep() throws RuntimeException;
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name SendEMail */
     public static final String COLUMNNAME_SendEMail = "SendEMail";
@@ -954,7 +1011,7 @@ public interface I_C_Invoice
 	  */
 	public int getUser1_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser1() throws RuntimeException;
+	public I_C_ElementValue getUser1() throws RuntimeException;
 
     /** Column name User2_ID */
     public static final String COLUMNNAME_User2_ID = "User2_ID";
@@ -969,7 +1026,7 @@ public interface I_C_Invoice
 	  */
 	public int getUser2_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser2() throws RuntimeException;
+	public I_C_ElementValue getUser2() throws RuntimeException;
 
     /** Column name User3_ID */
     public static final String COLUMNNAME_User3_ID = "User3_ID";
@@ -984,7 +1041,7 @@ public interface I_C_Invoice
 	  */
 	public int getUser3_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser3() throws RuntimeException;
+	public I_C_ElementValue getUser3() throws RuntimeException;
 
     /** Column name User4_ID */
     public static final String COLUMNNAME_User4_ID = "User4_ID";
@@ -999,7 +1056,7 @@ public interface I_C_Invoice
 	  */
 	public int getUser4_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser4() throws RuntimeException;
+	public I_C_ElementValue getUser4() throws RuntimeException;
 
     /** Column name UUID */
     public static final String COLUMNNAME_UUID = "UUID";

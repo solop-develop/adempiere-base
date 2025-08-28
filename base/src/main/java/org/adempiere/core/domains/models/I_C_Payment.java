@@ -663,6 +663,21 @@ public interface I_C_Payment
 	  */
 	public Timestamp getDateTrx();
 
+    /** Column name Deposit_ID */
+    public static final String COLUMNNAME_Deposit_ID = "Deposit_ID";
+
+	/** Set Deposit Reference.
+	  * Deposit Reference for payment
+	  */
+	public void setDeposit_ID (int Deposit_ID);
+
+	/** Get Deposit Reference.
+	  * Deposit Reference for payment
+	  */
+	public int getDeposit_ID();
+
+	public I_C_Payment getDeposit() throws RuntimeException;
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -1487,6 +1502,21 @@ public interface I_C_Payment
 	  * Voice Authorization Code from credit card company
 	  */
 	public String getVoiceAuthCode();
+
+    /** Column name Withdrawal_ID */
+    public static final String COLUMNNAME_Withdrawal_ID = "Withdrawal_ID";
+
+	/** Set Withdrawal.
+	  * Withdrawal Payment
+	  */
+	public void setWithdrawal_ID (int Withdrawal_ID);
+
+	/** Get Withdrawal.
+	  * Withdrawal Payment
+	  */
+	public int getWithdrawal_ID();
+
+	public I_C_Payment getWithdrawal() throws RuntimeException;
 
     /** Column name WriteOffAmt */
     public static final String COLUMNNAME_WriteOffAmt = "WriteOffAmt";
