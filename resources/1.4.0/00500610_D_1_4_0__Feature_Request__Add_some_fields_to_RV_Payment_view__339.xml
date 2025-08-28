@@ -19,11 +19,13 @@
  DOCSTATUS, DOCACTION, ISPREPAYMENT, C_CHARGE_ID, ISRECONCILED, 
  ISALLOCATED, ISONLINE, PROCESSED, POSTED, C_CAMPAIGN_ID, 
  C_PROJECT_ID, C_ACTIVITY_ID, IsUnidentifiedPayment, Ref_Payment_ID, RelatedPayment_ID, Description, 
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, CollectingAgent_ID, C_Card_ID, C_CardProvider_ID, A_Country, AD_OrgTrx_ID, BusinessPartnerForRefund_ID, C_Bank_ID, C_CashBook_ID, ChargeAmt,
-                                                                                                                                       C_Order_ID, C_PaymentMethod_ID, C_POS_ID, DateAcct, ECA14_GiftCard_ID, ECA14_Invoice_Reference_ID, ECA14_Reference_Amount,
-                                                                                                                                       FM_Account_ID, FM_Agreement_ID, IsDelayedCapture, IsPaymentVerificationRequired, IsPaymentVerified, IsSelfService,
-                                                                                                                                       NextRequestTime, POSReferenceBankAccount_ID, ProcessedOn, R_AuthCode_DC, R_CVV2Match, ResponseCode, ResponseMessage,
-                                                                                                                                       ResponseStatus, Reversal_ID, R_PnRef_DC, S_Contract_ID, Swipe, User1_ID, User2_ID, User3_ID, User4_ID, UUID)
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, CollectingAgent_ID, C_Card_ID,
+ C_CardProvider_ID, A_Country, AD_OrgTrx_ID, BusinessPartnerForRefund_ID, C_Bank_ID, C_CashBook_ID, ChargeAmt,
+ C_Order_ID, C_PaymentMethod_ID, C_POS_ID, DateAcct, ECA14_GiftCard_ID, ECA14_Invoice_Reference_ID, ECA14_Reference_Amount,
+ FM_Account_ID, FM_Agreement_ID, IsDelayedCapture, IsPaymentVerificationRequired, IsPaymentVerified, IsSelfService,
+ NextRequestTime, POSReferenceBankAccount_ID, ProcessedOn, R_AuthCode_DC, R_CVV2Match, ResponseCode, ResponseMessage,
+ ResponseStatus, Reversal_ID, R_PnRef_DC, S_Contract_ID, Swipe, User1_ID, User2_ID, User3_ID, User4_ID, UUID,
+ Withdrawal_ID, Deposit_ID)
 AS 
 SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.CreatedBy, p.Updated, p.UpdatedBy,
     p.DocumentNo, p.DateTrx, p.IsReceipt, p.C_DocType_ID, p.TrxType,
@@ -53,7 +55,8 @@ SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.Cre
     p.C_Order_ID, p.C_PaymentMethod_ID, p.C_POS_ID, p.DateAcct, p.ECA14_GiftCard_ID, p.ECA14_Invoice_Reference_ID, p.ECA14_Reference_Amount,
     p.FM_Account_ID, p.FM_Agreement_ID, p.IsDelayedCapture, p.IsPaymentVerificationRequired, p.IsPaymentVerified, p.IsSelfService,
     p.NextRequestTime, p.POSReferenceBankAccount_ID, p.ProcessedOn, p.R_AuthCode_DC, p.R_CVV2Match, p.ResponseCode, p.ResponseMessage,
-    p.ResponseStatus, p.Reversal_ID, p.R_PnRef_DC, p.S_Contract_ID, p.Swipe, p.User1_ID, p.User2_ID, p.User3_ID, p.User4_ID, p.UUID
+    p.ResponseStatus, p.Reversal_ID, p.R_PnRef_DC, p.S_Contract_ID, p.Swipe, p.User1_ID, p.User2_ID, p.User3_ID, p.User4_ID, p.UUID,
+    p.Withdrawal_ID, p.Deposit_ID
 FROM C_Payment p
 LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = p.C_BPartner_ID);</SQLStatement>
       <RollbackStatement>DROP VIEW IF EXISTS RV_PAYMENT;
@@ -121,11 +124,13 @@ LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = p.C_BPartner_ID);</RollbackStateme
  DOCSTATUS, DOCACTION, ISPREPAYMENT, C_CHARGE_ID, ISRECONCILED, 
  ISALLOCATED, ISONLINE, PROCESSED, POSTED, C_CAMPAIGN_ID, 
  C_PROJECT_ID, C_ACTIVITY_ID, IsUnidentifiedPayment, Ref_Payment_ID, RelatedPayment_ID, Description, 
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, CollectingAgent_ID, C_Card_ID, C_CardProvider_ID, A_Country, AD_OrgTrx_ID, BusinessPartnerForRefund_ID, C_Bank_ID, C_CashBook_ID, ChargeAmt,
-                                                                                                                                       C_Order_ID, C_PaymentMethod_ID, C_POS_ID, DateAcct, ECA14_GiftCard_ID, ECA14_Invoice_Reference_ID, ECA14_Reference_Amount,
-                                                                                                                                       FM_Account_ID, FM_Agreement_ID, IsDelayedCapture, IsPaymentVerificationRequired, IsPaymentVerified, IsSelfService,
-                                                                                                                                       NextRequestTime, POSReferenceBankAccount_ID, ProcessedOn, R_AuthCode_DC, R_CVV2Match, ResponseCode, ResponseMessage,
-                                                                                                                                       ResponseStatus, Reversal_ID, R_PnRef_DC, S_Contract_ID, Swipe, User1_ID, User2_ID, User3_ID, User4_ID, UUID)
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, CollectingAgent_ID, C_Card_ID,
+ C_CardProvider_ID, A_Country, AD_OrgTrx_ID, BusinessPartnerForRefund_ID, C_Bank_ID, C_CashBook_ID, ChargeAmt,
+ C_Order_ID, C_PaymentMethod_ID, C_POS_ID, DateAcct, ECA14_GiftCard_ID, ECA14_Invoice_Reference_ID, ECA14_Reference_Amount,
+ FM_Account_ID, FM_Agreement_ID, IsDelayedCapture, IsPaymentVerificationRequired, IsPaymentVerified, IsSelfService,
+ NextRequestTime, POSReferenceBankAccount_ID, ProcessedOn, R_AuthCode_DC, R_CVV2Match, ResponseCode, ResponseMessage,
+ ResponseStatus, Reversal_ID, R_PnRef_DC, S_Contract_ID, Swipe, User1_ID, User2_ID, User3_ID, User4_ID, UUID,
+ Withdrawal_ID, Deposit_ID)
 AS 
 SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.CreatedBy, p.Updated, p.UpdatedBy,
     p.DocumentNo, p.DateTrx, p.IsReceipt, p.C_DocType_ID, p.TrxType,
@@ -152,10 +157,11 @@ SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.Cre
     p.Description, 
     bp.C_BP_AccountType_ID, bp.C_BP_SalesGroup_ID, bp.C_BP_Segment_ID, bp.C_BP_IndustryType_ID, p.CollectingAgent_ID,
     p.C_Card_ID, p.C_CardProvider_ID, p.A_Country, p.AD_OrgTrx_ID, p.BusinessPartnerForRefund_ID, p.C_Bank_ID, p.C_CashBook_ID, p.ChargeAmt,
-                                          p.C_Order_ID, p.C_PaymentMethod_ID, p.C_POS_ID, p.DateAcct, p.ECA14_GiftCard_ID, p.ECA14_Invoice_Reference_ID, p.ECA14_Reference_Amount,
-                                          p.FM_Account_ID, p.FM_Agreement_ID, p.IsDelayedCapture, p.IsPaymentVerificationRequired, p.IsPaymentVerified, p.IsSelfService,
-                                          p.NextRequestTime, p.POSReferenceBankAccount_ID, p.ProcessedOn, p.R_AuthCode_DC, p.R_CVV2Match, p.ResponseCode, p.ResponseMessage,
-                                          p.ResponseStatus, p.Reversal_ID, p.R_PnRef_DC, p.S_Contract_ID, p.Swipe, p.User1_ID, p.User2_ID, p.User3_ID, p.User4_ID, p.UUID
+    p.C_Order_ID, p.C_PaymentMethod_ID, p.C_POS_ID, p.DateAcct, p.ECA14_GiftCard_ID, p.ECA14_Invoice_Reference_ID, p.ECA14_Reference_Amount,
+    p.FM_Account_ID, p.FM_Agreement_ID, p.IsDelayedCapture, p.IsPaymentVerificationRequired, p.IsPaymentVerified, p.IsSelfService,
+    p.NextRequestTime, p.POSReferenceBankAccount_ID, p.ProcessedOn, p.R_AuthCode_DC, p.R_CVV2Match, p.ResponseCode, p.ResponseMessage,
+    p.ResponseStatus, p.Reversal_ID, p.R_PnRef_DC, p.S_Contract_ID, p.Swipe, p.User1_ID, p.User2_ID, p.User3_ID, p.User4_ID, p.UUID,
+    p.Withdrawal_ID, p.Deposit_ID
 FROM C_Payment p
 LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = p.C_BPartner_ID);</SQLStatement>
       <RollbackStatement>CREATE OR REPLACE VIEW RV_PAYMENT
@@ -2758,6 +2764,158 @@ LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = p.C_BPartner_ID);</RollbackStateme
         <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
         <Data AD_Column_ID="12955" Column="AD_Column_ID">104134</Data>
         <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="750" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="104145" Table="AD_Column">
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">09748762-6f25-44f4-abab-70038c297089</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="551" Column="Updated">2025-08-27 22:29:43.264</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Withdrawal</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">false</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true"/>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="112" Column="Description">Withdrawal Payment</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="549" Column="Created">2025-08-27 22:29:43.263</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">Withdrawal_ID</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">755</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">343</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">19</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">63027</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">104145</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="760" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="104145" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID">752f6b67-eb8e-4513-9bbf-abcbee1acbf3</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-08-27 22:29:44.556</Data>
+        <Data AD_Column_ID="12957" Column="Name">Withdrawal</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-08-27 22:29:44.556</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">104145</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="770" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="104146" Table="AD_Column">
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">f04fea6e-bf81-4564-85b7-761d0f705494</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="551" Column="Updated">2025-08-27 22:29:44.699</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Deposit Reference</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">false</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true"/>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="112" Column="Description">Deposit Reference for payment</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="549" Column="Created">2025-08-27 22:29:44.699</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">Deposit_ID</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">755</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">343</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">19</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">63024</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">104146</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="780" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="104146" Table="AD_Column_Trl">
+        <Data AD_Column_ID="84310" Column="UUID">7bb26dbe-bfb7-4fa0-937c-1c8a4e981727</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-08-27 22:29:45.825</Data>
+        <Data AD_Column_ID="12957" Column="Name">Deposit Reference</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-08-27 22:29:45.825</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">104146</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="790" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="104145" Table="AD_Column">
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" oldValue="19">30</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="800" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="104146" Table="AD_Column">
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" oldValue="19">30</Data>
       </PO>
     </Step>
   </Migration>
