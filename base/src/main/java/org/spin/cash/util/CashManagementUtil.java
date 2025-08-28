@@ -85,7 +85,7 @@ public class CashManagementUtil {
 				//	Split all deposits
 				if(splitDeposits.get()) {
 					paymentsByMatchedCombination.get(combinationId).forEach(paymentWrapper -> {
-						createWithdrawal(cashAccount, bankStatement, depositBankAccountId.get(), paymentWrapper.getCurrencyId(), paymentWrapper.getConversionTypeId(), paymentWrapper.getAmount(), reconcilePayments.get(), paymentWrapper.getDocumentNo(), paymentWrapper.getTenderType(), paymentWrapper.getPaymentMethodId(), paymentWrapper.getBusinessPartnerId(), paymentWrapper.getPaymentId());
+						createWithdrawal(cashAccount, bankStatement, depositBankAccountId.get(), paymentWrapper.getCurrencyId(), paymentWrapper.getConversionTypeId(), paymentWrapper.getAmount(), reconcilePayments.get(), paymentWrapper.getDocumentNo(), paymentWrapper.getTenderType(), paymentWrapper.getPaymentMethodId(), paymentWrapper.getBusinessPartnerId(), List.of(paymentWrapper.getPaymentId()));
 					});
 				} else {
 					Map<String, PaymentSummaryWrapper> paymentToWithdrawal = new HashMap<String, PaymentSummaryWrapper>();
@@ -94,12 +94,12 @@ public class CashManagementUtil {
 						if(summary == null) {
 							summary = PaymentSummaryWrapper.newInstance().withCurrencyId(paymentWrapper.getCurrencyId()).withConversionTypeId(paymentWrapper.getConversionTypeId());
 						}
-						summary.addAmount(paymentWrapper.getAmount());
+						summary.withAmount(paymentWrapper.getAmount()).withPaymentId(paymentWrapper.getPaymentId());
 						paymentToWithdrawal.put(paymentWrapper.getCurrencyId() + "|" + paymentWrapper.getConversionTypeId(), summary);
 					});
 					if(!paymentToWithdrawal.isEmpty()) {
 						paymentToWithdrawal.values().forEach(summaryWrapper -> {
-							createWithdrawal(cashAccount, bankStatement, depositBankAccountId.get(), summaryWrapper.getCurrencyId(), summaryWrapper.getConversionTypeId(), summaryWrapper.getAmount(), reconcilePayments.get(), bankStatement.getDocumentNo(), defaultTenderType.get(), 0, cashAccount.getC_BPartner_ID(), 0);
+							createWithdrawal(cashAccount, bankStatement, depositBankAccountId.get(), summaryWrapper.getCurrencyId(), summaryWrapper.getConversionTypeId(), summaryWrapper.getAmount(), reconcilePayments.get(), bankStatement.getDocumentNo(), defaultTenderType.get(), 0, cashAccount.getC_BPartner_ID(), summaryWrapper.getPaymentIds());
 						});
 					}
 				}
@@ -109,14 +109,15 @@ public class CashManagementUtil {
 		calculateBankStatementBalance(bankStatement);
 	}
 	
-	private static void createWithdrawal(MBankAccount cashAccount, MBankStatement bankStatement, int depositBankAccountId, int currencyId, int conversionTypeId, BigDecimal amount, boolean isReconciled, String documentNo, String tenderType, int paymentMethodId, int businessPartnerId, int paymentId) {
+	private static void createWithdrawal(MBankAccount cashAccount, MBankStatement bankStatement, int depositBankAccountId, int currencyId, int conversionTypeId, BigDecimal amount, boolean isReconciled, String documentNo, String tenderType, int paymentMethodId, int businessPartnerId, List<Integer> paymentIds) {
 		Timestamp statementDate = bankStatement.getStatementDate();
 		Timestamp dateAcct = bankStatement.getStatementDate();
 		MBankAccount mBankFrom = MBankAccount.get(bankStatement.getCtx(), bankStatement.getC_BankAccount_ID());
 		MBankAccount mBankTo = MBankAccount.get(bankStatement.getCtx(), depositBankAccountId);
 
 		MPayment paymentBankFrom = new MPayment(bankStatement.getCtx(), 0 ,  bankStatement.get_TrxName());
-		if(paymentId > 0) {
+		if(!paymentIds.isEmpty()) {
+			int paymentId = paymentIds.get(0);
 			MPayment originalPayment = new MPayment(bankStatement.getCtx(), paymentId, bankStatement.get_TrxName());
 			PO.copyValues(originalPayment, paymentBankFrom);
 			paymentBankFrom.setC_POS_ID(-1);
@@ -188,6 +189,7 @@ public class CashManagementUtil {
 		paymentBankTo.saveEx();
 
 		paymentBankFrom.setRelatedPayment_ID(paymentBankTo.getC_Payment_ID());
+		paymentBankFrom.setDocStatus(MPayment.DOCSTATUS_Drafted);
 		paymentBankFrom.saveEx();
 		paymentBankFrom.processIt(MPayment.DOCACTION_Complete);
 		paymentBankFrom.saveEx();
@@ -202,9 +204,18 @@ public class CashManagementUtil {
 			}
 		}
 		paymentBankTo.setRelatedPayment_ID(paymentBankFrom.getC_Payment_ID());
+		paymentBankTo.setDocStatus(MPayment.DOCSTATUS_Drafted);
 		paymentBankTo.saveEx();
 		paymentBankTo.processIt(MPayment.DOCACTION_Complete);
 		paymentBankTo.saveEx();
+		if(!paymentIds.isEmpty()) {
+			paymentIds.forEach(sourcePaymentId-> {
+				MPayment sourcePayment = new MPayment(bankStatement.getCtx(), sourcePaymentId, bankStatement.get_TrxName());
+				sourcePayment.setWithdrawal_ID(paymentBankFrom.getC_Payment_ID());
+				sourcePayment.setDeposit_ID(paymentBankTo.getC_Payment_ID());
+				sourcePayment.saveEx();
+			});
+		}
 		//	Add to current bank statement for account
 		if(isReconciled) {
 			MBankStatementLine bsl = MBankStatement.addPayment(paymentBankTo);

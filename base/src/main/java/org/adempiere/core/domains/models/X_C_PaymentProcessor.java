@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_PaymentProcessor
  *  @author Adempiere (generated) 
@@ -37,7 +38,7 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250827L;
 
     /** Standard Constructor */
     public X_C_PaymentProcessor (Properties ctx, int C_PaymentProcessor_ID, String trxName)
@@ -56,9 +57,9 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 			setAcceptMC (false);
 			setAcceptVisa (false);
 			setC_BankAccount_ID (0);
-			setC_PaymentProcessor_ID (0);
 			setCommission (Env.ZERO);
 			setCostPerTrx (Env.ZERO);
+			setC_PaymentProcessor_ID (0);
 			setHostAddress (null);
 			setHostPort (0);
 			setName (null);
@@ -336,9 +337,9 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return false;
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Sequence getAD_Sequence() throws RuntimeException
+	public I_AD_Sequence getAD_Sequence() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Sequence)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Sequence.Table_Name)
+		return (I_AD_Sequence)MTable.get(getCtx(), I_AD_Sequence.Table_Name)
 			.getPO(getAD_Sequence_ID(), get_TrxName());	}
 
 	/** Set Sequence.
@@ -364,9 +365,9 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BankAccount getC_BankAccount() throws RuntimeException
+	public I_C_BankAccount getC_BankAccount() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BankAccount)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BankAccount.Table_Name)
+		return (I_C_BankAccount)MTable.get(getCtx(), I_C_BankAccount.Table_Name)
 			.getPO(getC_BankAccount_ID(), get_TrxName());	}
 
 	/** Set Bank Account.
@@ -392,9 +393,37 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException
+	public I_C_Bank getC_Bank() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Currency)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Currency.Table_Name)
+		return (I_C_Bank)MTable.get(getCtx(), I_C_Bank.Table_Name)
+			.getPO(getC_Bank_ID(), get_TrxName());	}
+
+	/** Set Bank.
+		@param C_Bank_ID 
+		Bank
+	  */
+	public void setC_Bank_ID (int C_Bank_ID)
+	{
+		if (C_Bank_ID < 1) 
+			set_Value (COLUMNNAME_C_Bank_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Bank_ID, Integer.valueOf(C_Bank_ID));
+	}
+
+	/** Get Bank.
+		@return Bank
+	  */
+	public int getC_Bank_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Bank_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Currency getC_Currency() throws RuntimeException
+    {
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
 			.getPO(getC_Currency_ID(), get_TrxName());	}
 
 	/** Set Currency.
@@ -415,29 +444,6 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 	public int getC_Currency_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_Currency_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Payment Processor.
-		@param C_PaymentProcessor_ID 
-		Payment processor for electronic payments
-	  */
-	public void setC_PaymentProcessor_ID (int C_PaymentProcessor_ID)
-	{
-		if (C_PaymentProcessor_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_C_PaymentProcessor_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_C_PaymentProcessor_ID, Integer.valueOf(C_PaymentProcessor_ID));
-	}
-
-	/** Get Payment Processor.
-		@return Payment processor for electronic payments
-	  */
-	public int getC_PaymentProcessor_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_PaymentProcessor_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -483,6 +489,29 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return bd;
 	}
 
+	/** Set Payment Processor.
+		@param C_PaymentProcessor_ID 
+		Payment processor for electronic payments
+	  */
+	public void setC_PaymentProcessor_ID (int C_PaymentProcessor_ID)
+	{
+		if (C_PaymentProcessor_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_C_PaymentProcessor_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_C_PaymentProcessor_ID, Integer.valueOf(C_PaymentProcessor_ID));
+	}
+
+	/** Get Payment Processor.
+		@return Payment processor for electronic payments
+	  */
+	public int getC_PaymentProcessor_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_PaymentProcessor_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Description.
 		@param Description 
 		Optional short description of the record
@@ -498,6 +527,62 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	public I_C_Charge getFeeCharge() throws RuntimeException
+    {
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
+			.getPO(getFeeCharge_ID(), get_TrxName());	}
+
+	/** Set Charge for Fee.
+		@param FeeCharge_ID 
+		Charge for Fee
+	  */
+	public void setFeeCharge_ID (int FeeCharge_ID)
+	{
+		if (FeeCharge_ID < 1) 
+			set_Value (COLUMNNAME_FeeCharge_ID, null);
+		else 
+			set_Value (COLUMNNAME_FeeCharge_ID, Integer.valueOf(FeeCharge_ID));
+	}
+
+	/** Get Charge for Fee.
+		@return Charge for Fee
+	  */
+	public int getFeeCharge_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_FeeCharge_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Currency getFeeCurrency() throws RuntimeException
+    {
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
+			.getPO(getFeeCurrency_ID(), get_TrxName());	}
+
+	/** Set Currency for Fee.
+		@param FeeCurrency_ID 
+		Currency for Fee
+	  */
+	public void setFeeCurrency_ID (int FeeCurrency_ID)
+	{
+		if (FeeCurrency_ID < 1) 
+			set_Value (COLUMNNAME_FeeCurrency_ID, null);
+		else 
+			set_Value (COLUMNNAME_FeeCurrency_ID, Integer.valueOf(FeeCurrency_ID));
+	}
+
+	/** Get Currency for Fee.
+		@return Currency for Fee
+	  */
+	public int getFeeCurrency_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_FeeCurrency_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Host Address.
@@ -614,6 +699,34 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 	public String getPassword () 
 	{
 		return (String)get_Value(COLUMNNAME_Password);
+	}
+
+	public I_C_BPartner getPaymentProcessorVendor() throws RuntimeException
+    {
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
+			.getPO(getPaymentProcessorVendor_ID(), get_TrxName());	}
+
+	/** Set Processor Vendor.
+		@param PaymentProcessorVendor_ID 
+		Processor Vendor
+	  */
+	public void setPaymentProcessorVendor_ID (int PaymentProcessorVendor_ID)
+	{
+		if (PaymentProcessorVendor_ID < 1) 
+			set_Value (COLUMNNAME_PaymentProcessorVendor_ID, null);
+		else 
+			set_Value (COLUMNNAME_PaymentProcessorVendor_ID, Integer.valueOf(PaymentProcessorVendor_ID));
+	}
+
+	/** Get Processor Vendor.
+		@return Processor Vendor
+	  */
+	public int getPaymentProcessorVendor_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_PaymentProcessorVendor_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Payment Processor Class.
