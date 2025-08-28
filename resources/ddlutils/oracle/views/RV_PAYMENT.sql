@@ -14,7 +14,13 @@ CREATE OR REPLACE VIEW RV_PAYMENT
  DOCSTATUS, DOCACTION, ISPREPAYMENT, C_CHARGE_ID, ISRECONCILED, 
  ISALLOCATED, ISONLINE, PROCESSED, POSTED, C_CAMPAIGN_ID, 
  C_PROJECT_ID, C_ACTIVITY_ID, IsUnidentifiedPayment, Ref_Payment_ID, RelatedPayment_ID, Description, 
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, CollectingAgent_ID, C_Card_ID, C_CardProvider_ID)
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, CollectingAgent_ID, C_Card_ID,
+ C_CardProvider_ID, A_Country, AD_OrgTrx_ID, BusinessPartnerForRefund_ID, C_Bank_ID, C_CashBook_ID, ChargeAmt,
+ C_Order_ID, C_PaymentMethod_ID, C_POS_ID, DateAcct, ECA14_GiftCard_ID, ECA14_Invoice_Reference_ID, ECA14_Reference_Amount,
+ FM_Account_ID, FM_Agreement_ID, IsDelayedCapture, IsPaymentVerificationRequired, IsPaymentVerified, IsSelfService,
+ NextRequestTime, POSReferenceBankAccount_ID, ProcessedOn, R_AuthCode_DC, R_CVV2Match, ResponseCode, ResponseMessage,
+ ResponseStatus, Reversal_ID, R_PnRef_DC, S_Contract_ID, Swipe, User1_ID, User2_ID, User3_ID, User4_ID, UUID,
+ Withdrawal_ID, Deposit_ID)
 AS 
 SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.CreatedBy, p.Updated, p.UpdatedBy,
     p.DocumentNo, p.DateTrx, p.IsReceipt, p.C_DocType_ID, p.TrxType,
@@ -40,6 +46,11 @@ SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.Cre
     p.C_Campaign_ID, p.C_Project_ID, p.C_Activity_ID, p.IsUnidentifiedPayment, p.Ref_Payment_ID, p.RelatedPayment_ID,
     p.Description, 
     bp.C_BP_AccountType_ID, bp.C_BP_SalesGroup_ID, bp.C_BP_Segment_ID, bp.C_BP_IndustryType_ID, p.CollectingAgent_ID,
-    p.C_Card_ID, p.C_CardProvider_ID
+    p.C_Card_ID, p.C_CardProvider_ID, p.A_Country, p.AD_OrgTrx_ID, p.BusinessPartnerForRefund_ID, p.C_Bank_ID, p.C_CashBook_ID, p.ChargeAmt,
+    p.C_Order_ID, p.C_PaymentMethod_ID, p.C_POS_ID, p.DateAcct, p.ECA14_GiftCard_ID, p.ECA14_Invoice_Reference_ID, p.ECA14_Reference_Amount,
+    p.FM_Account_ID, p.FM_Agreement_ID, p.IsDelayedCapture, p.IsPaymentVerificationRequired, p.IsPaymentVerified, p.IsSelfService,
+    p.NextRequestTime, p.POSReferenceBankAccount_ID, p.ProcessedOn, p.R_AuthCode_DC, p.R_CVV2Match, p.ResponseCode, p.ResponseMessage,
+    p.ResponseStatus, p.Reversal_ID, p.R_PnRef_DC, p.S_Contract_ID, p.Swipe, p.User1_ID, p.User2_ID, p.User3_ID, p.User4_ID, p.UUID,
+    p.Withdrawal_ID, p.Deposit_ID
 FROM C_Payment p
 LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = p.C_BPartner_ID);
