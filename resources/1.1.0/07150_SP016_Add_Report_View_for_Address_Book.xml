@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Add Report View for Address Book" ReleaseNo="1.0" SeqNo="7150">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="361" Action="I" Record_ID="53337" Table="AD_ReportView">
+        <Data AD_Column_ID="78535" Column="IsCentrallyMaintained">false</Data>
+        <Data AD_Column_ID="4388" Column="Created">2020-12-11 13:07:53.847</Data>
+        <Data AD_Column_ID="85531" Column="Classname" isNewNull="true"/>
+        <Data AD_Column_ID="4387" Column="IsActive">true</Data>
+        <Data AD_Column_ID="4390" Column="Updated">2020-12-11 13:07:53.847</Data>
+        <Data AD_Column_ID="4384" Column="AD_ReportView_ID">53337</Data>
+        <Data AD_Column_ID="4395" Column="WhereClause">EXISTS(SELECT 1 FROM C_BPartner bp WHERE bp.C_BPartner_ID = RV_BPartner.C_BPartner_ID AND bp.IsVendor = 'Y' AND bp.IsDropShip = 'Y')</Data>
+        <Data AD_Column_ID="4396" Column="OrderByClause" isNewNull="true"/>
+        <Data AD_Column_ID="4393" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="4392" Column="Name">RV_BPartner Only Drop Ship</Data>
+        <Data AD_Column_ID="78517" Column="PrintName">Only Drop Ship</Data>
+        <Data AD_Column_ID="4385" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="10032" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="4386" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="4389" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4391" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="4394" Column="AD_Table_ID">520</Data>
+        <Data AD_Column_ID="84405" Column="UUID">b76f3a90-ddd0-4054-8356-437b96495738</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="54060" Action="I" Record_ID="0" Table="AD_ReportView_Trl">
+        <Data AD_Column_ID="78520" Column="IsActive">true</Data>
+        <Data AD_Column_ID="78521" Column="Created">2020-12-11 13:07:55.338</Data>
+        <Data AD_Column_ID="78522" Column="Updated">2020-12-11 13:07:55.338</Data>
+        <Data AD_Column_ID="78527" Column="PrintName">Only Drop Ship</Data>
+        <Data AD_Column_ID="78528" Column="Name">RV_BPartner Only Drop Ship</Data>
+        <Data AD_Column_ID="78529" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="78534" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="78518" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="78519" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="78523" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="78524" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="78526" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="78525" Column="AD_ReportView_ID">53337</Data>
+        <Data AD_Column_ID="84407" Column="UUID">1e02293b-d6cb-4980-bc1a-6989de015d1d</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="54060" Action="U" Record_ID="0" Table="AD_ReportView_Trl">
+        <Data AD_Column_ID="78527" Column="PrintName" oldValue="Only Drop Ship">Solo Proveedores (Consignación)</Data>
+        <Data AD_Column_ID="78526" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="78525" Column="AD_ReportView_ID" oldValue="53337">53337</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

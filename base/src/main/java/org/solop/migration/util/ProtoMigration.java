@@ -24,13 +24,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  *    @author Yamel Senih, yamel.senih@solopsoftware.com, Solop <a href="http://www.solopsoftware.com">solopsoftware.com</a>
@@ -113,18 +111,21 @@ public class ProtoMigration implements IMigrationManagement {
 		if(files == null || files.isEmpty()) {
 			return List.of();
 		}
-		List<Integer> migrationsToApply = new ArrayList<>();
+		Map<String, Integer> migrationsToApply = new HashMap<>();
 		files.parallelStream().forEach(file ->{
 			try {
 				int migrationId = loadFile(file, finder);
 				if(migrationId > 0) {
-					migrationsToApply.add(migrationId);
+					migrationsToApply.put(file.getName(), migrationId);
 				}
 			} catch (Exception e) {
 				log.log(Level.SEVERE, e.getLocalizedMessage());
 			}
 		});
-		return migrationsToApply;
+		return migrationsToApply.keySet().stream()
+				.sorted()
+				.map(migrationsToApply::get)
+				.collect(Collectors.toList());
 	}
 
 	private int loadFile(File file, MigrationFinder finder) {

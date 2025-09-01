@@ -25,10 +25,7 @@ import org.eevolution.wms.model.MWMInOutBound;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -66,7 +63,7 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 		//	Create
 		if(outBoundLines != null) {
 			outBoundLines.stream()
-					.filter(outBoundLine -> outBoundLine.getC_Invoice_ID() <= 0)
+					.filter(outBoundLine -> outBoundLine.getQtyToInvoice().signum() > 0 || isIncludeNotAvailable())
 					.forEach(this::groupOutBoundLine);
 			createAndProcessInvoices();
 			printDocument(invoicesToPrint, true);
@@ -93,7 +90,7 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 							invoice.saveEx(transactionName);
 							maybeInvoice.set(invoice);
 						}
-						BigDecimal qtyInvoiced = outboundLine.getPickedQty();
+						BigDecimal qtyInvoiced = getSalesOrderQtyToInvoice(outboundLine);
 						MInvoiceLine invoiceLine = new MInvoiceLine(outboundLine.getCtx(), 0 , transactionName);
 						invoiceLine.setOrderLine(orderLine);
 						// Set Shipment Line
@@ -107,12 +104,15 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 						invoiceLine.setQtyInvoiced(qtyInvoiced);
 						invoiceLine.setWM_InOutBoundLine_ID(outboundLine.get_ID());
 						invoiceLine.saveEx();
+						outboundLine.setC_InvoiceLine_ID(invoiceLine.getC_InvoiceLine_ID());
+						outboundLine.setC_Invoice_ID(invoiceLine.getC_Invoice_ID());
+						outboundLine.saveEx();
 					});
 					MInvoice invoice = maybeInvoice.get();
 					invoice.setDocAction(getDocAction());
 					if (!invoice.processIt(getDocAction())) {
-						addLog("@ProcessFailed@ : " + invoice.getDocumentInfo());
-						throw new AdempiereException("@ProcessFailed@ :" + invoice.getDocumentInfo());
+						addLog("@ProcessFailed@ : " + invoice.getProcessMsg());
+						throw new AdempiereException("@ProcessFailed@ :" + invoice.getProcessMsg());
 					}
 					invoice.saveEx();
 					created++;
@@ -129,15 +129,16 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 
 	}
 
+	private BigDecimal getSalesOrderQtyToInvoice(MWMInOutBoundLine outboundLine) {
+		return Optional.ofNullable(getSelectionAsBigDecimal(outboundLine.getWM_InOutBoundLine_ID(), "QtyToInvoice")).orElse(outboundLine.getQtyToInvoice());
+	}
+
 	private void groupOutBoundLine (MWMInOutBoundLine line) {
 		if (line.getC_OrderLine_ID() <= 0) {
 			return;
 		}
 		MOrderLine orderLine = line.getOrderLine();
 		MOrder order = orderLine.getParent();
-		if (orderLine.getQtyOrdered().subtract(orderLine.getQtyInvoiced()).subtract(line.getPickedQty()).signum() < 0 && !getParameterAsBoolean("IsIncludeNotAvailable")) {
-			return;
-		}
 		String keyString = grouping.getKey(order, getDocTypeTargetId(), isConsolidateDocument());
 		List<MWMInOutBoundLine> lines = groupedOutBoundLines.getOrDefault(keyString, new ArrayList<>());
 		lines.add(line);

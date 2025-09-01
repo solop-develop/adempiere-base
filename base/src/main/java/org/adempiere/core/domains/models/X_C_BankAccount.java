@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_BankAccount
  *  @author Adempiere (generated) 
@@ -37,7 +38,7 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250814L;
 
     /** Standard Constructor */
     public X_C_BankAccount (Properties ctx, int C_BankAccount_ID, String trxName)
@@ -47,8 +48,8 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
         {
 			setAccountNo (null);
 			setBankAccountType (null);
-			setC_Bank_ID (0);
 			setC_BankAccount_ID (0);
+			setC_Bank_ID (0);
 			setC_Currency_ID (0);
 			setCreditLimit (Env.ZERO);
 			setCurrentBalance (Env.ZERO);
@@ -142,9 +143,32 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 		return (String)get_Value(COLUMNNAME_BBAN);
 	}
 
-	public org.adempiere.core.domains.models.I_C_Bank getC_Bank() throws RuntimeException
+	/** Set Bank Account.
+		@param C_BankAccount_ID 
+		Account at the Bank
+	  */
+	public void setC_BankAccount_ID (int C_BankAccount_ID)
+	{
+		if (C_BankAccount_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_C_BankAccount_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
+	}
+
+	/** Get Bank Account.
+		@return Account at the Bank
+	  */
+	public int getC_BankAccount_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_BankAccount_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Bank getC_Bank() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Bank)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Bank.Table_Name)
+		return (I_C_Bank)MTable.get(getCtx(), I_C_Bank.Table_Name)
 			.getPO(getC_Bank_ID(), get_TrxName());	}
 
 	/** Set Bank.
@@ -178,32 +202,9 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
         return new KeyNamePair(get_ID(), String.valueOf(getC_Bank_ID()));
     }
 
-	/** Set Bank Account.
-		@param C_BankAccount_ID 
-		Account at the Bank
-	  */
-	public void setC_BankAccount_ID (int C_BankAccount_ID)
-	{
-		if (C_BankAccount_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_C_BankAccount_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
-	}
-
-	/** Get Bank Account.
-		@return Account at the Bank
-	  */
-	public int getC_BankAccount_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_BankAccount_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -229,9 +230,9 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException
+	public I_C_Currency getC_Currency() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Currency)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Currency.Table_Name)
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
 			.getPO(getC_Currency_ID(), get_TrxName());	}
 
 	/** Set Currency.
@@ -297,6 +298,242 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 		return bd;
 	}
 
+	public I_C_DocType getDefaultCollectDocType() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getDefaultCollectDocType_ID(), get_TrxName());	}
+
+	/** Set Default Collect Document Type.
+		@param DefaultCollectDocType_ID 
+		Default Collect Document Type from this bank or account
+	  */
+	public void setDefaultCollectDocType_ID (int DefaultCollectDocType_ID)
+	{
+		if (DefaultCollectDocType_ID < 1) 
+			set_Value (COLUMNNAME_DefaultCollectDocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_DefaultCollectDocType_ID, Integer.valueOf(DefaultCollectDocType_ID));
+	}
+
+	/** Get Default Collect Document Type.
+		@return Default Collect Document Type from this bank or account
+	  */
+	public int getDefaultCollectDocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DefaultCollectDocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Charge getDefaultOpeningCharge() throws RuntimeException
+    {
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
+			.getPO(getDefaultOpeningCharge_ID(), get_TrxName());	}
+
+	/** Set Default Opening Charge.
+		@param DefaultOpeningCharge_ID 
+		Default Opening Charge for POS
+	  */
+	public void setDefaultOpeningCharge_ID (int DefaultOpeningCharge_ID)
+	{
+		if (DefaultOpeningCharge_ID < 1) 
+			set_Value (COLUMNNAME_DefaultOpeningCharge_ID, null);
+		else 
+			set_Value (COLUMNNAME_DefaultOpeningCharge_ID, Integer.valueOf(DefaultOpeningCharge_ID));
+	}
+
+	/** Get Default Opening Charge.
+		@return Default Opening Charge for POS
+	  */
+	public int getDefaultOpeningCharge_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DefaultOpeningCharge_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DocType getDefaultPaymentDocType() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getDefaultPaymentDocType_ID(), get_TrxName());	}
+
+	/** Set Default Payment Document Type.
+		@param DefaultPaymentDocType_ID 
+		Default Payment Document Type from this bank or account
+	  */
+	public void setDefaultPaymentDocType_ID (int DefaultPaymentDocType_ID)
+	{
+		if (DefaultPaymentDocType_ID < 1) 
+			set_Value (COLUMNNAME_DefaultPaymentDocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_DefaultPaymentDocType_ID, Integer.valueOf(DefaultPaymentDocType_ID));
+	}
+
+	/** Get Default Payment Document Type.
+		@return Default Payment Document Type from this bank or account
+	  */
+	public int getDefaultPaymentDocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DefaultPaymentDocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Charge getDefaultWithdrawalCharge() throws RuntimeException
+    {
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
+			.getPO(getDefaultWithdrawalCharge_ID(), get_TrxName());	}
+
+	/** Set Default Withdrawal Charge.
+		@param DefaultWithdrawalCharge_ID 
+		Default Withdrawal Charge for POS
+	  */
+	public void setDefaultWithdrawalCharge_ID (int DefaultWithdrawalCharge_ID)
+	{
+		if (DefaultWithdrawalCharge_ID < 1) 
+			set_Value (COLUMNNAME_DefaultWithdrawalCharge_ID, null);
+		else 
+			set_Value (COLUMNNAME_DefaultWithdrawalCharge_ID, Integer.valueOf(DefaultWithdrawalCharge_ID));
+	}
+
+	/** Get Default Withdrawal Charge.
+		@return Default Withdrawal Charge for POS
+	  */
+	public int getDefaultWithdrawalCharge_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DefaultWithdrawalCharge_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_BankAccount getDepositBankAccount() throws RuntimeException
+    {
+		return (I_C_BankAccount)MTable.get(getCtx(), I_C_BankAccount.Table_Name)
+			.getPO(getDepositBankAccount_ID(), get_TrxName());	}
+
+	/** Set Deposit Bank Account.
+		@param DepositBankAccount_ID 
+		Bank Account used for deposit from cash by default
+	  */
+	public void setDepositBankAccount_ID (int DepositBankAccount_ID)
+	{
+		if (DepositBankAccount_ID < 1) 
+			set_Value (COLUMNNAME_DepositBankAccount_ID, null);
+		else 
+			set_Value (COLUMNNAME_DepositBankAccount_ID, Integer.valueOf(DepositBankAccount_ID));
+	}
+
+	/** Get Deposit Bank Account.
+		@return Bank Account used for deposit from cash by default
+	  */
+	public int getDepositBankAccount_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DepositBankAccount_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Charge getDepositCharge() throws RuntimeException
+    {
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
+			.getPO(getDepositCharge_ID(), get_TrxName());	}
+
+	/** Set Deposit Charge.
+		@param DepositCharge_ID 
+		Charge used for deposit from cash
+	  */
+	public void setDepositCharge_ID (int DepositCharge_ID)
+	{
+		if (DepositCharge_ID < 1) 
+			set_Value (COLUMNNAME_DepositCharge_ID, null);
+		else 
+			set_Value (COLUMNNAME_DepositCharge_ID, Integer.valueOf(DepositCharge_ID));
+	}
+
+	/** Get Deposit Charge.
+		@return Charge used for deposit from cash
+	  */
+	public int getDepositCharge_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DepositCharge_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DocType getDepositDocumentType() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getDepositDocumentType_ID(), get_TrxName());	}
+
+	/** Set Deposit Document Type.
+		@param DepositDocumentType_ID 
+		Deposit Document Type for Cash or bank
+	  */
+	public void setDepositDocumentType_ID (int DepositDocumentType_ID)
+	{
+		if (DepositDocumentType_ID < 1) 
+			set_Value (COLUMNNAME_DepositDocumentType_ID, null);
+		else 
+			set_Value (COLUMNNAME_DepositDocumentType_ID, Integer.valueOf(DepositDocumentType_ID));
+	}
+
+	/** Get Deposit Document Type.
+		@return Deposit Document Type for Cash or bank
+	  */
+	public int getDepositDocumentType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DepositDocumentType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** DepositTenderType AD_Reference_ID=214 */
+	public static final int DEPOSITTENDERTYPE_AD_Reference_ID=214;
+	/** Credit Card = C */
+	public static final String DEPOSITTENDERTYPE_CreditCard = "C";
+	/** Check = K */
+	public static final String DEPOSITTENDERTYPE_Check = "K";
+	/** Direct Deposit = A */
+	public static final String DEPOSITTENDERTYPE_DirectDeposit = "A";
+	/** Direct Debit = D */
+	public static final String DEPOSITTENDERTYPE_DirectDebit = "D";
+	/** Account = T */
+	public static final String DEPOSITTENDERTYPE_Account = "T";
+	/** Cash = X */
+	public static final String DEPOSITTENDERTYPE_Cash = "X";
+	/** Credit Memo = M */
+	public static final String DEPOSITTENDERTYPE_CreditMemo = "M";
+	/** Zelle = Z */
+	public static final String DEPOSITTENDERTYPE_Zelle = "Z";
+	/** Mobile Payment Interbank = P */
+	public static final String DEPOSITTENDERTYPE_MobilePaymentInterbank = "P";
+	/** Gift Card = G */
+	public static final String DEPOSITTENDERTYPE_GiftCard = "G";
+	/** Set Deposit Tender Type.
+		@param DepositTenderType 
+		Tender type used for Deposit from cash
+	  */
+	public void setDepositTenderType (String DepositTenderType)
+	{
+
+		set_Value (COLUMNNAME_DepositTenderType, DepositTenderType);
+	}
+
+	/** Get Deposit Tender Type.
+		@return Tender type used for Deposit from cash
+	  */
+	public String getDepositTenderType () 
+	{
+		return (String)get_Value(COLUMNNAME_DepositTenderType);
+	}
+
 	/** Set Description.
 		@param Description 
 		Optional short description of the record
@@ -329,6 +566,30 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	public String getIBAN () 
 	{
 		return (String)get_Value(COLUMNNAME_IBAN);
+	}
+
+	/** Set Deposit Automatically After Close Cash.
+		@param IsAutoDepositAfterClose 
+		Deposit automatically after close cash
+	  */
+	public void setIsAutoDepositAfterClose (boolean IsAutoDepositAfterClose)
+	{
+		set_Value (COLUMNNAME_IsAutoDepositAfterClose, Boolean.valueOf(IsAutoDepositAfterClose));
+	}
+
+	/** Get Deposit Automatically After Close Cash.
+		@return Deposit automatically after close cash
+	  */
+	public boolean isAutoDepositAfterClose () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsAutoDepositAfterClose);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Default.
@@ -370,6 +631,51 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	public boolean isSOTrx () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsSOTrx);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Split Deposits.
+		@param IsSplitDeposits Split Deposits	  */
+	public void setIsSplitDeposits (boolean IsSplitDeposits)
+	{
+		set_Value (COLUMNNAME_IsSplitDeposits, Boolean.valueOf(IsSplitDeposits));
+	}
+
+	/** Get Split Deposits.
+		@return Split Deposits	  */
+	public boolean isSplitDeposits () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsSplitDeposits);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Validate Cash Opening.
+		@param IsValidateCashOpening 
+		Validate Cash Opening for this bank account
+	  */
+	public void setIsValidateCashOpening (boolean IsValidateCashOpening)
+	{
+		set_Value (COLUMNNAME_IsValidateCashOpening, Boolean.valueOf(IsValidateCashOpening));
+	}
+
+	/** Get Validate Cash Opening.
+		@return Validate Cash Opening for this bank account
+	  */
+	public boolean isValidateCashOpening () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsValidateCashOpening);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -422,5 +728,33 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	public String getUUID () 
 	{
 		return (String)get_Value(COLUMNNAME_UUID);
+	}
+
+	public I_C_DocType getWithdrawalDocumentType() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getWithdrawalDocumentType_ID(), get_TrxName());	}
+
+	/** Set Withdrawal Document Type.
+		@param WithdrawalDocumentType_ID 
+		Withdrawal Document Type for Cash or bank
+	  */
+	public void setWithdrawalDocumentType_ID (int WithdrawalDocumentType_ID)
+	{
+		if (WithdrawalDocumentType_ID < 1) 
+			set_Value (COLUMNNAME_WithdrawalDocumentType_ID, null);
+		else 
+			set_Value (COLUMNNAME_WithdrawalDocumentType_ID, Integer.valueOf(WithdrawalDocumentType_ID));
+	}
+
+	/** Get Withdrawal Document Type.
+		@return Withdrawal Document Type for Cash or bank
+	  */
+	public int getWithdrawalDocumentType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_WithdrawalDocumentType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 }

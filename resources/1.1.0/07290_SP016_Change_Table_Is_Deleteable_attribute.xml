@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Change Table Is Deleteable attribute" ReleaseNo="1.0" SeqNo="7290">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="210" Table="AD_Table">
+        <Data AD_Column_ID="727" Column="IsDeleteable" oldValue="true">false</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

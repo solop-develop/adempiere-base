@@ -17,166 +17,220 @@
  *****************************************************************************/
 package org.spin.cash.util;
 
+import org.adempiere.core.domains.models.I_C_Payment;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.*;
+import org.compiere.util.*;
+import org.spin.cash.model.MCBankAccountWithdrawal;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.adempiere.exceptions.AdempiereException;
-import org.adempiere.core.domains.models.I_C_Payment;
-import org.compiere.model.MBank;
-import org.compiere.model.MBankAccount;
-import org.compiere.model.MBankStatement;
-import org.compiere.model.MBankStatementLine;
-import org.compiere.model.MOrder;
-import org.compiere.model.MPOS;
-import org.compiere.model.MPayment;
-import org.compiere.model.Query;
-import org.compiere.process.ProcessInfo;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Util;
-import org.eevolution.process.BankTransfer;
-import org.spin.cash.model.MCBankAccountWithdrawal;
 
 /**
  * Added for handle custom values for ADempiere core
  * @author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
  */
 public class CashManagementUtil {
-	/**	Withdrawal Document Type	*/
-	public static final String COLUMNNAME_WithdrawalDocumentType_ID = "WithdrawalDocumentType_ID";
-	/**	Deposit Bank Account	*/
-	public static final String COLUMNNAME_DepositBankAccount_ID = "DepositBankAccount_ID";
-	/**	Deposit Charge	*/
-	public static final String COLUMNNAME_DepositCharge_ID = "DepositCharge_ID";
-	/**	Deposit Document Type	*/
-	public static final String COLUMNNAME_DepositDocumentType_ID = "DepositDocumentType_ID";
-	/**	Deposit Tender Type	*/
-	public static final String COLUMNNAME_DepositTenderType = "DepositTenderType";
-	/**	Parameter Name for Reconcile Automatically	*/
-	public static final String COLUMNNAME_IsAutoReconciled = "IsAutoReconciled";
-	/**	Deposit Automatically After Close Cash	*/
-	public static final String COLUMNNAME_IsAutoDepositAfterClose = "IsAutoDepositAfterClose";
-	/**	Split Deposits	*/
-	public static final String COLUMNNAME_IsSplitDeposits = "IsSplitDeposits";
-	/**	Validate Cash Opening	*/
-	public static final String COLUMNNAME_IsValidateCashOpening = "IsValidateCashOpening";
-	/** Not exists a cash opening for current cash and day */
-	public static final String MESSAGE_CashOpeningValidationError = "CashOpeningValidationError";
-	
+
+	/**	Logger							*/
+	protected static CLogger log = CLogger.getCLogger (CashManagementUtil.class);
+
 	/**
 	 * Create withdrawal automatically after close cash
 	 * @param bankStatement
 	 */
 	public static void createWithdrawalFromBankStatement(MBankStatement bankStatement) {
 		MBankAccount cashAccount = MBankAccount.get(bankStatement.getCtx(), bankStatement.getC_BankAccount_ID());
-		MBank cashJournal = MBank.get(bankStatement.getCtx(), cashAccount.getC_Bank_ID());
-		if(!cashAccount.get_ValueAsBoolean(COLUMNNAME_IsAutoDepositAfterClose)) {
+		if(!cashAccount.isAutoDepositAfterClose()) {
 			return;
 		}
-		if(Optional.ofNullable(cashJournal.getBankType()).orElse(MBank.BANKTYPE_Bank).equals(MBank.BANKTYPE_CashJournal)) {
-			Map<Integer, List<PaymentWrapper>> paymentsByMatchedCombination = new HashMap<Integer, List<PaymentWrapper>>();
-			getColletsToDeposit(bankStatement)
-			.forEach(paymentWrapper -> {
-				AtomicInteger matchedCombinationId = new AtomicInteger(0);
-				Optional.ofNullable(MCBankAccountWithdrawal.findMatchFromPayment(bankStatement.getCtx(), paymentWrapper, bankStatement.get_TrxName()))
-					.ifPresent(matchedCombination -> matchedCombinationId.set(matchedCombination.getC_BankAccountWithdrawal_ID()));
-				List<PaymentWrapper> payments = paymentsByMatchedCombination.get(matchedCombinationId.get());
-				if(payments == null) {
-					payments = new ArrayList<PaymentWrapper>();
-				}
-				payments.add(paymentWrapper);
-				paymentsByMatchedCombination.put(matchedCombinationId.get(), payments);
-			});
-			//	Create deposits
-			if(paymentsByMatchedCombination.size() > 0) {
-				paymentsByMatchedCombination.keySet().forEach(combinationId -> {
-					//	Get default values
-					AtomicInteger depositBankAccountId = new AtomicInteger(cashAccount.get_ValueAsInt(CashManagementUtil.COLUMNNAME_DepositBankAccount_ID));
-					AtomicBoolean reconcilePayments = new AtomicBoolean(true);
-					AtomicBoolean splitDeposits = new AtomicBoolean(false);
-					AtomicReference<String> defaultTenderType = new AtomicReference<String>(cashAccount.get_ValueAsString(CashManagementUtil.COLUMNNAME_DepositTenderType));
-					if(combinationId > 0) {
-						MCBankAccountWithdrawal withdrawalConfiguration = new MCBankAccountWithdrawal(bankStatement.getCtx(), combinationId, bankStatement.get_TrxName());
-						if(withdrawalConfiguration.getDepositBankAccount_ID() > 0) {
-							depositBankAccountId.set(withdrawalConfiguration.getDepositBankAccount_ID());
-						}
-						reconcilePayments.set(withdrawalConfiguration.isAutoReconciled());
-						splitDeposits.set(withdrawalConfiguration.isSplitDeposits());
-						if(!Util.isEmpty(withdrawalConfiguration.getTenderType())) {
-							defaultTenderType.set(withdrawalConfiguration.getTenderType());
-						}
+		Map<Integer, List<PaymentWrapper>> paymentsByMatchedCombination = new HashMap<Integer, List<PaymentWrapper>>();
+		getCollectsToDeposit(bankStatement)
+				.forEach(paymentWrapper -> {
+					AtomicInteger matchedCombinationId = new AtomicInteger(0);
+					Optional.ofNullable(MCBankAccountWithdrawal.findMatchFromPayment(bankStatement.getCtx(), paymentWrapper, bankStatement.get_TrxName()))
+							.ifPresent(matchedCombination -> matchedCombinationId.set(matchedCombination.getC_BankAccountWithdrawal_ID()));
+					List<PaymentWrapper> payments = paymentsByMatchedCombination.get(matchedCombinationId.get());
+					if(payments == null) {
+						payments = new ArrayList<PaymentWrapper>();
 					}
-					//	Split all deposits
-					if(splitDeposits.get()) {
-						paymentsByMatchedCombination.get(combinationId).forEach(paymentWrapper -> {
-							createWithdrawal(cashAccount, bankStatement, depositBankAccountId.get(), paymentWrapper.getCurrencyId(), paymentWrapper.getConversionTypeId(), paymentWrapper.getAmount(), reconcilePayments.get(), paymentWrapper.getDocumentNo(), paymentWrapper.getTenderType(), paymentWrapper.getBusinessPartnerId());
-						});
-					} else {
-						Map<String, PaymentSummaryWrapper> paymentToWithdrawal = new HashMap<String, PaymentSummaryWrapper>();
-						paymentsByMatchedCombination.get(combinationId).forEach(paymentWrapper -> {
-							PaymentSummaryWrapper summary = paymentToWithdrawal.get(paymentWrapper.getCurrencyId() + "|" + paymentWrapper.getConversionTypeId());
-							if(summary == null) {
-								summary = PaymentSummaryWrapper.newInstance().withCurrencyId(paymentWrapper.getCurrencyId()).withConversionTypeId(paymentWrapper.getConversionTypeId());
-							}
-							summary.addAmount(paymentWrapper.getAmount());
-							paymentToWithdrawal.put(paymentWrapper.getCurrencyId() + "|" + paymentWrapper.getConversionTypeId(), summary);
-						});
-						if(paymentToWithdrawal.size() > 0) {
-							paymentToWithdrawal.values().forEach(summaryWrapper -> {
-								createWithdrawal(cashAccount, bankStatement, depositBankAccountId.get(), summaryWrapper.getCurrencyId(), summaryWrapper.getConversionTypeId(), summaryWrapper.getAmount(), reconcilePayments.get(), bankStatement.getDocumentNo(), defaultTenderType.get(), cashAccount.getC_BPartner_ID());
-							});
-						}
-					}
+					payments.add(paymentWrapper);
+					paymentsByMatchedCombination.put(matchedCombinationId.get(), payments);
 				});
-			}
-			//	Calculate balance
-			calculateBankStatementBalance(bankStatement);
+		//	Create deposits
+		if(!paymentsByMatchedCombination.isEmpty()) {
+			paymentsByMatchedCombination.keySet().forEach(combinationId -> {
+				//	Get default values
+				AtomicInteger depositBankAccountId = new AtomicInteger(cashAccount.getDepositBankAccount_ID());
+				AtomicBoolean reconcilePayments = new AtomicBoolean(true);
+				AtomicBoolean splitDeposits = new AtomicBoolean(false);
+				AtomicReference<String> defaultTenderType = new AtomicReference<String>(cashAccount.getDepositTenderType());
+				if(combinationId > 0) {
+					MCBankAccountWithdrawal withdrawalConfiguration = new MCBankAccountWithdrawal(bankStatement.getCtx(), combinationId, bankStatement.get_TrxName());
+					if(withdrawalConfiguration.getDepositBankAccount_ID() > 0) {
+						depositBankAccountId.set(withdrawalConfiguration.getDepositBankAccount_ID());
+					}
+					reconcilePayments.set(withdrawalConfiguration.isAutoReconciled());
+					splitDeposits.set(withdrawalConfiguration.isSplitDeposits());
+					if(!Util.isEmpty(withdrawalConfiguration.getTenderType())) {
+						defaultTenderType.set(withdrawalConfiguration.getTenderType());
+					}
+				}
+				//	Split all deposits
+				if(splitDeposits.get()) {
+					paymentsByMatchedCombination.get(combinationId).forEach(paymentWrapper -> {
+						createWithdrawal(cashAccount, bankStatement, depositBankAccountId.get(), paymentWrapper.getCurrencyId(), paymentWrapper.getConversionTypeId(), paymentWrapper.getAmount(), reconcilePayments.get(), paymentWrapper.getDocumentNo(), paymentWrapper.getTenderType(), paymentWrapper.getPaymentMethodId(), paymentWrapper.getBusinessPartnerId(), List.of(paymentWrapper.getPaymentId()));
+					});
+				} else {
+					Map<String, PaymentSummaryWrapper> paymentToWithdrawal = new HashMap<String, PaymentSummaryWrapper>();
+					paymentsByMatchedCombination.get(combinationId).forEach(paymentWrapper -> {
+						PaymentSummaryWrapper summary = paymentToWithdrawal.get(paymentWrapper.getCurrencyId() + "|" + paymentWrapper.getConversionTypeId());
+						if(summary == null) {
+							summary = PaymentSummaryWrapper.newInstance().withCurrencyId(paymentWrapper.getCurrencyId()).withConversionTypeId(paymentWrapper.getConversionTypeId());
+						}
+						summary.withAmount(paymentWrapper.getAmount()).withPaymentId(paymentWrapper.getPaymentId());
+						paymentToWithdrawal.put(paymentWrapper.getCurrencyId() + "|" + paymentWrapper.getConversionTypeId(), summary);
+					});
+					if(!paymentToWithdrawal.isEmpty()) {
+						paymentToWithdrawal.values().forEach(summaryWrapper -> {
+							createWithdrawal(cashAccount, bankStatement, depositBankAccountId.get(), summaryWrapper.getCurrencyId(), summaryWrapper.getConversionTypeId(), summaryWrapper.getAmount(), reconcilePayments.get(), bankStatement.getDocumentNo(), defaultTenderType.get(), 0, cashAccount.getC_BPartner_ID(), summaryWrapper.getPaymentIds());
+						});
+					}
+				}
+			});
 		}
+		//	Calculate balance
+		calculateBankStatementBalance(bankStatement);
 	}
 	
-	private static void createWithdrawal(MBankAccount cashAccount, MBankStatement bankStatement, int depositBankAccountId, int currencyId, int conversionTypeId, BigDecimal amount, boolean isReconciled, String documentNo, String tenderType, int businessPartnerId) {
-		ProcessInfo result = org.eevolution.services.dsl.ProcessBuilder
-				.create(bankStatement.getCtx())
-				.process(BankTransfer.getProcessId())
-				.withoutTransactionClose()
-				.withParameter(BankTransfer.WITHDRAWALDOCUMENTTYPE_ID, cashAccount.get_ValueAsInt(CashManagementUtil.COLUMNNAME_WithdrawalDocumentType_ID))
-				.withParameter(BankTransfer.DEPOSITDOCUMENTTYPE_ID, cashAccount.get_ValueAsInt(CashManagementUtil.COLUMNNAME_DepositDocumentType_ID))
-				.withParameter(BankTransfer.STATEMENTDATE, bankStatement.getStatementDate())
-				.withParameter(BankTransfer.DATEACCT, bankStatement.getStatementDate())
-				.withParameter(BankTransfer.C_BPARTNER_ID, businessPartnerId)
-				.withParameter(BankTransfer.C_CHARGE_ID, cashAccount.get_ValueAsInt(CashManagementUtil.COLUMNNAME_DepositCharge_ID))
-				.withParameter(BankTransfer.FROM_C_BANKACCOUNT_ID, bankStatement.getC_BankAccount_ID())
-				.withParameter(BankTransfer.C_BANKACCOUNTTO_ID, depositBankAccountId)
-				.withParameter(BankTransfer.TENDERTYPE, tenderType)
-				.withParameter(BankTransfer.DOCUMENTNO, documentNo)
-				.withParameter(BankTransfer.C_CURRENCY_ID, currencyId)
-				.withParameter(BankTransfer.C_CONVERSIONTYPE_ID, conversionTypeId)
-				.withParameter(BankTransfer.AMOUNT, amount)
-				.withParameter(BankTransfer.ISAUTORECONCILED, isReconciled)
-				.withParameter(BankTransfer.DESCRIPTION, bankStatement.getDescription())
-				.execute(bankStatement.get_TrxName());
-		//	
-		if(result.isError()) {
-			throw new AdempiereException(result.getSummary());
+	private static void createWithdrawal(MBankAccount cashAccount, MBankStatement bankStatement, int depositBankAccountId, int currencyId, int conversionTypeId, BigDecimal amount, boolean isReconciled, String documentNo, String tenderType, int paymentMethodId, int businessPartnerId, List<Integer> paymentIds) {
+		Timestamp statementDate = bankStatement.getStatementDate();
+		Timestamp dateAcct = bankStatement.getStatementDate();
+		MBankAccount mBankFrom = MBankAccount.get(bankStatement.getCtx(), bankStatement.getC_BankAccount_ID());
+		MBankAccount mBankTo = MBankAccount.get(bankStatement.getCtx(), depositBankAccountId);
+
+		MPayment paymentBankFrom = new MPayment(bankStatement.getCtx(), 0 ,  bankStatement.get_TrxName());
+		if(!paymentIds.isEmpty()) {
+			int paymentId = paymentIds.get(0);
+			MPayment originalPayment = new MPayment(bankStatement.getCtx(), paymentId, bankStatement.get_TrxName());
+			PO.copyValues(originalPayment, paymentBankFrom);
+			paymentBankFrom.setC_POS_ID(-1);
 		}
+		paymentBankFrom.setRelatedPayment_ID(-1);
+		paymentBankFrom.setC_BankAccount_ID(mBankFrom.getC_BankAccount_ID());
+		paymentBankFrom.setDocumentNo(documentNo);
+		paymentBankFrom.setDateAcct(dateAcct);
+		paymentBankFrom.setDateTrx(statementDate);
+		paymentBankFrom.setTenderType(tenderType);
+		paymentBankFrom.setDescription(bankStatement.getDescription());
+		paymentBankFrom.setC_BPartner_ID (businessPartnerId);
+		paymentBankFrom.setC_Currency_ID(currencyId);
+		if(conversionTypeId > 0) {
+			paymentBankFrom.setC_ConversionType_ID(conversionTypeId);
+		}
+		if(paymentMethodId > 0) {
+			paymentBankFrom.setC_PaymentMethod_ID(paymentMethodId);
+		}
+		paymentBankFrom.setPayAmt(amount);
+		paymentBankFrom.setOverUnderAmt(Env.ZERO);
+		if(cashAccount.getWithdrawalDocumentType_ID() != 0) {
+			paymentBankFrom.setC_DocType_ID(cashAccount.getWithdrawalDocumentType_ID());
+		} else {
+			paymentBankFrom.setC_DocType_ID(false);
+		}
+		paymentBankFrom.setC_Charge_ID(cashAccount.getDepositCharge_ID());
+		paymentBankFrom.saveEx();
+		//
+		MPayment paymentBankTo = new MPayment(bankStatement.getCtx(), 0 ,  bankStatement.get_TrxName());
+		PO.copyValues(paymentBankFrom, paymentBankTo);
+		paymentBankTo.setC_POS_ID(-1);
+		paymentBankTo.setC_BankAccount_ID(mBankTo.getC_BankAccount_ID());
+		paymentBankTo.setDocumentNo(documentNo);
+		paymentBankTo.setDateAcct(dateAcct);
+		paymentBankTo.setDateTrx(statementDate);
+		paymentBankTo.setTenderType(tenderType);
+		paymentBankTo.setDescription(bankStatement.getDescription());
+		paymentBankTo.setC_BPartner_ID (businessPartnerId);
+		paymentBankTo.setC_Currency_ID(currencyId);
+		if(paymentBankFrom.getCreditCardType() != null) {
+			paymentBankTo.setCreditCardType(paymentBankFrom.getCreditCardType());
+		}
+		if(paymentBankFrom.getC_CardProvider_ID() > 0) {
+			paymentBankTo.setC_CardProvider_ID(paymentBankFrom.getC_CardProvider_ID());
+		}
+		if(paymentBankFrom.getC_Card_ID() > 0) {
+			paymentBankTo.setC_Card_ID(paymentBankFrom.getC_Card_ID());
+		}
+		if(conversionTypeId > 0) {
+			paymentBankTo.setC_ConversionType_ID(conversionTypeId);
+		}
+		if(paymentMethodId > 0) {
+			paymentBankTo.setC_PaymentMethod_ID(paymentMethodId);
+		}
+		//	Support to cash opening
+		if(bankStatement.getC_POS_ID() > 0) {
+			paymentBankFrom.setC_POS_ID(bankStatement.getC_POS_ID());
+			paymentBankTo.setC_POS_ID(bankStatement.getC_POS_ID());
+		}
+		paymentBankTo.setPayAmt(amount);
+		paymentBankTo.setOverUnderAmt(Env.ZERO);
+		if(cashAccount.getDepositDocumentType_ID() != 0) {
+			paymentBankTo.setC_DocType_ID(cashAccount.getDepositDocumentType_ID());
+		} else {
+			paymentBankTo.setC_DocType_ID(true);
+		}
+		paymentBankTo.setC_Charge_ID(cashAccount.getDepositCharge_ID());
+		paymentBankTo.saveEx();
+
+		paymentBankFrom.setRelatedPayment_ID(paymentBankTo.getC_Payment_ID());
+		paymentBankFrom.setDocStatus(MPayment.DOCSTATUS_Drafted);
+		paymentBankFrom.saveEx();
+		paymentBankFrom.processIt(MPayment.DOCACTION_Complete);
+		paymentBankFrom.saveEx();
+		log.fine("@C_Payment_ID@ @IsReceipt@: ");
+		//	Add to current bank statement for account
+		if(isReconciled) {
+			MBankStatementLine bsl = MBankStatement.addPayment(paymentBankFrom);
+			if(bsl != null) {
+				log.fine("@C_Payment_ID@: " + paymentBankFrom.getDocumentNo()
+						+ " @Added@ @to@ [@AccountNo@ " + paymentBankFrom.getC_BankAccount().getAccountNo()
+						+ " @C_BankStatement_ID@ " + bsl.getC_BankStatement().getName() + "]");
+			}
+		}
+		paymentBankTo.setRelatedPayment_ID(paymentBankFrom.getC_Payment_ID());
+		paymentBankTo.setDocStatus(MPayment.DOCSTATUS_Drafted);
+		paymentBankTo.saveEx();
+		paymentBankTo.processIt(MPayment.DOCACTION_Complete);
+		paymentBankTo.saveEx();
+		if(!paymentIds.isEmpty()) {
+			paymentIds.forEach(sourcePaymentId-> {
+				MPayment sourcePayment = new MPayment(bankStatement.getCtx(), sourcePaymentId, bankStatement.get_TrxName());
+				sourcePayment.setWithdrawal_ID(paymentBankFrom.getC_Payment_ID());
+				sourcePayment.setDeposit_ID(paymentBankTo.getC_Payment_ID());
+				sourcePayment.saveEx();
+			});
+		}
+		//	Add to current bank statement for account
+		if(isReconciled) {
+			MBankStatementLine bsl = MBankStatement.addPayment(paymentBankTo);
+			if(bsl != null) {
+				log.fine("@C_Payment_ID@: " + paymentBankTo.getDocumentNo()
+						+ " @Added@ @to@ [@AccountNo@ " + paymentBankTo.getC_BankAccount().getAccountNo()
+						+ " @C_BankStatement_ID@ " + bsl.getC_BankStatement().getName() + "]");
+			}
+		}
+		//	Return
+		log.fine("@Created@ (1) @From@ " + mBankFrom.getAccountNo()+ " @To@ " + mBankTo.getAccountNo() + " @Amt@ " + DisplayType.getNumberFormat(DisplayType.Amount).format(amount));
 	}
 	
 	/**
 	 * Recalculate bank statement balance
-	 * @param bankStatement
 	 */
 	private static void calculateBankStatementBalance(MBankStatement bankStatement) {
 		List<MBankStatementLine> lines = Arrays.asList(bankStatement.getLines(true));
@@ -200,16 +254,13 @@ public class CashManagementUtil {
 	
 	/**
 	 * Validate that exists a cash opening
-	 * @param context
-	 * @param pointOfSalesId
-	 * @param transactionName
 	 */
 	public static void validateCashOpeningForPayment(MPayment payment) {
 		if(payment.getC_POS_ID() <= 0) {
 			return;
 		}
 		MBankAccount cashAccount = MBankAccount.get(payment.getCtx(), payment.getC_BankAccount_ID());
-		if(cashAccount.get_ValueAsBoolean(COLUMNNAME_IsValidateCashOpening)) {
+		if(cashAccount.isValidateCashOpening()) {
 			int paymentId = new Query(payment.getCtx(), I_C_Payment.Table_Name, "DocStatus IN('CO', 'CL') "
 					+ "AND IsReceipt = 'Y' "
 					+ "AND C_Charge_ID IS NOT NULL "
@@ -225,9 +276,6 @@ public class CashManagementUtil {
 	
 	/**
 	 * Validate that exists a cash opening
-	 * @param context
-	 * @param pointOfSalesId
-	 * @param transactionName
 	 */
 	public static void validateCashOpeningForOrder(MOrder order) {
 		if(order.getC_POS_ID() <= 0) {
@@ -235,7 +283,7 @@ public class CashManagementUtil {
 		}
 		MPOS pointOfSales = MPOS.get(order.getCtx(), order.getC_POS_ID());
 		MBankAccount cashAccount = MBankAccount.get(order.getCtx(), pointOfSales.getC_BankAccount_ID());
-		if(cashAccount.get_ValueAsBoolean(COLUMNNAME_IsValidateCashOpening)) {
+		if(cashAccount.isValidateCashOpening()) {
 			int paymentId = new Query(order.getCtx(), I_C_Payment.Table_Name, "DocStatus IN('CO', 'CL') "
 					+ "AND IsReceipt = 'Y' "
 					+ "AND C_Charge_ID IS NOT NULL "
@@ -252,15 +300,13 @@ public class CashManagementUtil {
 	
 	/**
 	 * Get List of payments for a bank statement
-	 * @param bankStatement
-	 * @return
 	 */
-	private static List<PaymentWrapper> getColletsToDeposit(MBankStatement bankStatement) {
+	private static List<PaymentWrapper> getCollectsToDeposit(MBankStatement bankStatement) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<PaymentWrapper> wrapperList = new ArrayList<PaymentWrapper>();
 		try {
-			String sql = "SELECT p.C_Payment_ID, p.DocumentNo, p.C_DocType_ID, p.C_BPartner_ID, p.C_Bank_ID, p.C_BankAccount_ID, p.TenderType, p.C_Currency_ID, p.C_ConversionType_ID, (p.PayAmt * CASE WHEN p.IsReceipt = 'Y' THEN 1 ELSE -1 END) AS PaymentAmount "
+			String sql = "SELECT p.C_Payment_ID, p.DocumentNo, p.C_DocType_ID, p.C_BPartner_ID, p.C_Bank_ID, p.C_BankAccount_ID, p.TenderType, p.C_Currency_ID, p.C_PaymentMethod_ID, p.C_ConversionType_ID, (p.PayAmt * CASE WHEN p.IsReceipt = 'Y' THEN 1 ELSE -1 END) AS PaymentAmount "
 					+ "FROM C_Payment p "
 					+ "WHERE p.DocStatus IN('CO', 'CL') "
 					+ "AND EXISTS(SELECT 1 FROM C_BankStatementLine bsl WHERE bsl.C_Payment_ID = p.C_Payment_ID AND bsl.C_BankStatement_ID = ?)";
@@ -278,7 +324,9 @@ public class CashManagementUtil {
 						.withTenderType(rs.getString("TenderType"))
 						.withCurrencyId(rs.getInt("C_Currency_ID"))
 						.withConversionTypeId(rs.getInt("C_ConversionType_ID"))
-						.withAmount(rs.getBigDecimal("PaymentAmount")));
+						.withAmount(rs.getBigDecimal("PaymentAmount"))
+						.withPaymentMethodId(rs.getInt("C_PaymentMethod_ID"))
+				);
 			}
 		} catch (Exception e) {
 			throw new AdempiereException(e);

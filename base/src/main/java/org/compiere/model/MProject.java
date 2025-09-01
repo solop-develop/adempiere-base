@@ -16,6 +16,12 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.*;
+import org.compiere.util.CCache;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.eevolution.model.MProjectMember;
+
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -26,12 +32,6 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-
-import org.adempiere.core.domains.models.*;
-import org.compiere.util.CCache;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.eevolution.model.MProjectMember;
 
 /**
  * 	Project Model
@@ -190,7 +190,7 @@ public class MProject extends X_C_Project
 	 *	@param C_Project_ID id
 	 *	@param trxName transaction
 	 */
-	public MProject (Properties ctx, int C_Project_ID, String trxName)
+	public MProject(Properties ctx, int C_Project_ID, String trxName)
 	{
 		super (ctx, C_Project_ID, trxName);
 		if (C_Project_ID == 0)
@@ -216,7 +216,7 @@ public class MProject extends X_C_Project
 		}
 	}	//	MProject
 
-	public MProject (X_I_Project projectImport)
+	public MProject(X_I_Project projectImport)
 	{
 		super(projectImport.getCtx() , 0 , projectImport.get_TrxName());
 		setAD_Org_ID(projectImport.getAD_Org_ID());
@@ -280,7 +280,7 @@ public class MProject extends X_C_Project
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MProject (Properties ctx, ResultSet rs, String trxName)
+	public MProject(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MProject
@@ -660,6 +660,18 @@ public class MProject extends X_C_Project
 		if (getAD_User_ID() > 0 && !MProjectMember.memberExists(this, getAD_User_ID()))
 			MProjectMember.addMember(this, getAD_User_ID());
 
+		if(newRecord || is_ValueChanged(COLUMNNAME_M_Product_ID)) {
+			MProjectProduct.getFromProject(this).forEach(productFromProjectId -> {
+				MProjectProduct projectProduct = new MProjectProduct(getCtx(), productFromProjectId, get_TrxName());
+				projectProduct.delete(true);
+			});
+			if(getM_Product_ID() > 0) {
+				MProjectProduct projectProduct = new MProjectProduct(getCtx(), 0, get_TrxName());
+				projectProduct.setC_Project_ID(getC_Project_ID());
+				projectProduct.setM_Product_ID(getM_Product_ID());
+				projectProduct.saveEx();
+			}
+		}
 		return success;
 	}	//	afterSave
 

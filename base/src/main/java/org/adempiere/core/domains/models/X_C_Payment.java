@@ -18,16 +18,17 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for C_Payment
  *  @author Adempiere (generated) 
@@ -38,7 +39,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250827L;
 
     /** Standard Constructor */
     public X_C_Payment (Properties ctx, int C_Payment_ID, String trxName)
@@ -109,6 +110,23 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
       return sb.toString();
     }
 
+	/** Set Account No.
+		@param AccountNo 
+		Account Number
+	  */
+	public void setAccountNo (String AccountNo)
+	{
+		set_Value (COLUMNNAME_AccountNo, AccountNo);
+	}
+
+	/** Get Account No.
+		@return Account Number
+	  */
+	public String getAccountNo () 
+	{
+		return (String)get_Value(COLUMNNAME_AccountNo);
+	}
+
 	/** Set Account City.
 		@param A_City 
 		City or the Credit Card or Account Holder
@@ -141,6 +159,34 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public String getA_Country () 
 	{
 		return (String)get_Value(COLUMNNAME_A_Country);
+	}
+
+	public I_AD_Org getAD_OrgTrx() throws RuntimeException
+    {
+		return (I_AD_Org)MTable.get(getCtx(), I_AD_Org.Table_Name)
+			.getPO(getAD_OrgTrx_ID(), get_TrxName());	}
+
+	/** Set Trx Organization.
+		@param AD_OrgTrx_ID 
+		Performing or initiating organization
+	  */
+	public void setAD_OrgTrx_ID (int AD_OrgTrx_ID)
+	{
+		if (AD_OrgTrx_ID < 1) 
+			set_Value (COLUMNNAME_AD_OrgTrx_ID, null);
+		else 
+			set_Value (COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
+	}
+
+	/** Get Trx Organization.
+		@return Performing or initiating organization
+	  */
+	public int getAD_OrgTrx_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_OrgTrx_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Account EMail.
@@ -262,54 +308,37 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return (String)get_Value(COLUMNNAME_A_Zip);
 	}
 
-	/** Set Account No.
-		@param AccountNo 
-		Account Number
-	  */
-	public void setAccountNo (String AccountNo)
-	{
-		set_Value (COLUMNNAME_AccountNo, AccountNo);
-	}
-
-	/** Get Account No.
-		@return Account Number
-	  */
-	public String getAccountNo () 
-	{
-		return (String)get_Value(COLUMNNAME_AccountNo);
-	}
-
-	public org.adempiere.core.domains.models.I_AD_Org getAD_OrgTrx() throws RuntimeException
+	public I_C_BPartner getBusinessPartnerForRefund() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Org)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Org.Table_Name)
-			.getPO(getAD_OrgTrx_ID(), get_TrxName());	}
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
+			.getPO(getBusinessPartnerForRefund_ID(), get_TrxName());	}
 
-	/** Set Trx Organization.
-		@param AD_OrgTrx_ID 
-		Performing or initiating organization
+	/** Set Business Partner for Refund.
+		@param BusinessPartnerForRefund_ID 
+		A Business Partner for Refund is used for related payments
 	  */
-	public void setAD_OrgTrx_ID (int AD_OrgTrx_ID)
+	public void setBusinessPartnerForRefund_ID (int BusinessPartnerForRefund_ID)
 	{
-		if (AD_OrgTrx_ID < 1) 
-			set_Value (COLUMNNAME_AD_OrgTrx_ID, null);
+		if (BusinessPartnerForRefund_ID < 1) 
+			set_Value (COLUMNNAME_BusinessPartnerForRefund_ID, null);
 		else 
-			set_Value (COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
+			set_Value (COLUMNNAME_BusinessPartnerForRefund_ID, Integer.valueOf(BusinessPartnerForRefund_ID));
 	}
 
-	/** Get Trx Organization.
-		@return Performing or initiating organization
+	/** Get Business Partner for Refund.
+		@return A Business Partner for Refund is used for related payments
 	  */
-	public int getAD_OrgTrx_ID () 
+	public int getBusinessPartnerForRefund_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AD_OrgTrx_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_BusinessPartnerForRefund_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Activity getC_Activity() throws RuntimeException
+	public I_C_Activity getC_Activity() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Activity)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Activity.Table_Name)
+		return (I_C_Activity)MTable.get(getCtx(), I_C_Activity.Table_Name)
 			.getPO(getC_Activity_ID(), get_TrxName());	}
 
 	/** Set Activity.
@@ -335,37 +364,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Bank getC_Bank() throws RuntimeException
+	public I_C_BankAccount getC_BankAccount() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Bank)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Bank.Table_Name)
-			.getPO(getC_Bank_ID(), get_TrxName());	}
-
-	/** Set Bank.
-		@param C_Bank_ID 
-		Bank
-	  */
-	public void setC_Bank_ID (int C_Bank_ID)
-	{
-		if (C_Bank_ID < 1) 
-			set_Value (COLUMNNAME_C_Bank_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_Bank_ID, Integer.valueOf(C_Bank_ID));
-	}
-
-	/** Get Bank.
-		@return Bank
-	  */
-	public int getC_Bank_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_Bank_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_BankAccount getC_BankAccount() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_BankAccount)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BankAccount.Table_Name)
+		return (I_C_BankAccount)MTable.get(getCtx(), I_C_BankAccount.Table_Name)
 			.getPO(getC_BankAccount_ID(), get_TrxName());	}
 
 	/** Set Bank Account.
@@ -391,37 +392,37 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BP_BankAccount getC_BP_BankAccount() throws RuntimeException
+	public I_C_Bank getC_Bank() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BP_BankAccount)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BP_BankAccount.Table_Name)
-			.getPO(getC_BP_BankAccount_ID(), get_TrxName());	}
+		return (I_C_Bank)MTable.get(getCtx(), I_C_Bank.Table_Name)
+			.getPO(getC_Bank_ID(), get_TrxName());	}
 
-	/** Set Partner Bank Account.
-		@param C_BP_BankAccount_ID 
-		Bank Account of the Business Partner
+	/** Set Bank.
+		@param C_Bank_ID 
+		Bank
 	  */
-	public void setC_BP_BankAccount_ID (int C_BP_BankAccount_ID)
+	public void setC_Bank_ID (int C_Bank_ID)
 	{
-		if (C_BP_BankAccount_ID < 1) 
-			set_Value (COLUMNNAME_C_BP_BankAccount_ID, null);
+		if (C_Bank_ID < 1) 
+			set_Value (COLUMNNAME_C_Bank_ID, null);
 		else 
-			set_Value (COLUMNNAME_C_BP_BankAccount_ID, Integer.valueOf(C_BP_BankAccount_ID));
+			set_Value (COLUMNNAME_C_Bank_ID, Integer.valueOf(C_Bank_ID));
 	}
 
-	/** Get Partner Bank Account.
-		@return Bank Account of the Business Partner
+	/** Get Bank.
+		@return Bank
 	  */
-	public int getC_BP_BankAccount_ID () 
+	public int getC_Bank_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_BankAccount_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Bank_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -447,9 +448,37 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException
+	public I_C_BP_BankAccount getC_BP_BankAccount() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Campaign)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Campaign.Table_Name)
+		return (I_C_BP_BankAccount)MTable.get(getCtx(), I_C_BP_BankAccount.Table_Name)
+			.getPO(getC_BP_BankAccount_ID(), get_TrxName());	}
+
+	/** Set Partner Bank Account.
+		@param C_BP_BankAccount_ID 
+		Bank Account of the Business Partner
+	  */
+	public void setC_BP_BankAccount_ID (int C_BP_BankAccount_ID)
+	{
+		if (C_BP_BankAccount_ID < 1) 
+			set_Value (COLUMNNAME_C_BP_BankAccount_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_BP_BankAccount_ID, Integer.valueOf(C_BP_BankAccount_ID));
+	}
+
+	/** Get Partner Bank Account.
+		@return Bank Account of the Business Partner
+	  */
+	public int getC_BP_BankAccount_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_BankAccount_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Campaign getC_Campaign() throws RuntimeException
+    {
+		return (I_C_Campaign)MTable.get(getCtx(), I_C_Campaign.Table_Name)
 			.getPO(getC_Campaign_ID(), get_TrxName());	}
 
 	/** Set Campaign.
@@ -475,9 +504,59 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_CashBook getC_CashBook() throws RuntimeException
+	public I_C_Card getC_Card() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_CashBook)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_CashBook.Table_Name)
+		return (I_C_Card)MTable.get(getCtx(), I_C_Card.Table_Name)
+			.getPO(getC_Card_ID(), get_TrxName());	}
+
+	/** Set Card.
+		@param C_Card_ID Card	  */
+	public void setC_Card_ID (int C_Card_ID)
+	{
+		if (C_Card_ID < 1) 
+			set_Value (COLUMNNAME_C_Card_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Card_ID, Integer.valueOf(C_Card_ID));
+	}
+
+	/** Get Card.
+		@return Card	  */
+	public int getC_Card_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Card_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_CardProvider getC_CardProvider() throws RuntimeException
+    {
+		return (I_C_CardProvider)MTable.get(getCtx(), I_C_CardProvider.Table_Name)
+			.getPO(getC_CardProvider_ID(), get_TrxName());	}
+
+	/** Set Card Provider.
+		@param C_CardProvider_ID Card Provider	  */
+	public void setC_CardProvider_ID (int C_CardProvider_ID)
+	{
+		if (C_CardProvider_ID < 1) 
+			set_Value (COLUMNNAME_C_CardProvider_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_CardProvider_ID, Integer.valueOf(C_CardProvider_ID));
+	}
+
+	/** Get Card Provider.
+		@return Card Provider	  */
+	public int getC_CardProvider_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_CardProvider_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_CashBook getC_CashBook() throws RuntimeException
+    {
+		return (I_C_CashBook)MTable.get(getCtx(), I_C_CashBook.Table_Name)
 			.getPO(getC_CashBook_ID(), get_TrxName());	}
 
 	/** Set Cash Book.
@@ -503,9 +582,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Charge getC_Charge() throws RuntimeException
+	public I_C_Charge getC_Charge() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Charge)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Charge.Table_Name)
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
 			.getPO(getC_Charge_ID(), get_TrxName());	}
 
 	/** Set Charge.
@@ -531,9 +610,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ConversionType getC_ConversionType() throws RuntimeException
+	public I_C_ConversionType getC_ConversionType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ConversionType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ConversionType.Table_Name)
+		return (I_C_ConversionType)MTable.get(getCtx(), I_C_ConversionType.Table_Name)
 			.getPO(getC_ConversionType_ID(), get_TrxName());	}
 
 	/** Set Currency Type.
@@ -559,9 +638,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException
+	public I_C_Currency getC_Currency() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Currency)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Currency.Table_Name)
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
 			.getPO(getC_Currency_ID(), get_TrxName());	}
 
 	/** Set Currency.
@@ -587,9 +666,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException
+	public I_C_DocType getC_DocType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocType_ID(), get_TrxName());	}
 
 	/** Set Document Type.
@@ -610,197 +689,6 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public int getC_DocType_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_Invoice getC_Invoice() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_Invoice)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Invoice.Table_Name)
-			.getPO(getC_Invoice_ID(), get_TrxName());	}
-
-	/** Set Invoice.
-		@param C_Invoice_ID 
-		Invoice Identifier
-	  */
-	public void setC_Invoice_ID (int C_Invoice_ID)
-	{
-		if (C_Invoice_ID < 1) 
-			set_Value (COLUMNNAME_C_Invoice_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
-	}
-
-	/** Get Invoice.
-		@return Invoice Identifier
-	  */
-	public int getC_Invoice_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_Invoice_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_Order getC_Order() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_Order)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Order.Table_Name)
-			.getPO(getC_Order_ID(), get_TrxName());	}
-
-	/** Set Order.
-		@param C_Order_ID 
-		Order
-	  */
-	public void setC_Order_ID (int C_Order_ID)
-	{
-		if (C_Order_ID < 1) 
-			set_Value (COLUMNNAME_C_Order_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
-	}
-
-	/** Get Order.
-		@return Order
-	  */
-	public int getC_Order_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_Order_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Payment.
-		@param C_Payment_ID 
-		Payment identifier
-	  */
-	public void setC_Payment_ID (int C_Payment_ID)
-	{
-		if (C_Payment_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_C_Payment_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
-	}
-
-	/** Get Payment.
-		@return Payment identifier
-	  */
-	public int getC_Payment_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_Payment_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_PaymentBatch getC_PaymentBatch() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_PaymentBatch)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_PaymentBatch.Table_Name)
-			.getPO(getC_PaymentBatch_ID(), get_TrxName());	}
-
-	/** Set Payment Batch.
-		@param C_PaymentBatch_ID 
-		Payment batch for EFT
-	  */
-	public void setC_PaymentBatch_ID (int C_PaymentBatch_ID)
-	{
-		if (C_PaymentBatch_ID < 1) 
-			set_Value (COLUMNNAME_C_PaymentBatch_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_PaymentBatch_ID, Integer.valueOf(C_PaymentBatch_ID));
-	}
-
-	/** Get Payment Batch.
-		@return Payment batch for EFT
-	  */
-	public int getC_PaymentBatch_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_PaymentBatch_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_PaymentMethod getC_PaymentMethod() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_PaymentMethod)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_PaymentMethod.Table_Name)
-			.getPO(getC_PaymentMethod_ID(), get_TrxName());	}
-
-	/** Set Store Payment Method.
-		@param C_PaymentMethod_ID 
-		Payment Methods allowed for Store
-	  */
-	public void setC_PaymentMethod_ID (int C_PaymentMethod_ID)
-	{
-		if (C_PaymentMethod_ID < 1) 
-			set_Value (COLUMNNAME_C_PaymentMethod_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_PaymentMethod_ID, Integer.valueOf(C_PaymentMethod_ID));
-	}
-
-	/** Get Store Payment Method.
-		@return Payment Methods allowed for Store
-	  */
-	public int getC_PaymentMethod_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_PaymentMethod_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_POS getC_POS() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_POS)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_POS.Table_Name)
-			.getPO(getC_POS_ID(), get_TrxName());	}
-
-	/** Set POS Terminal.
-		@param C_POS_ID 
-		Point of Sales Terminal
-	  */
-	public void setC_POS_ID (int C_POS_ID)
-	{
-		if (C_POS_ID < 1) 
-			set_Value (COLUMNNAME_C_POS_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_POS_ID, Integer.valueOf(C_POS_ID));
-	}
-
-	/** Get POS Terminal.
-		@return Point of Sales Terminal
-	  */
-	public int getC_POS_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_POS_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
-			.getPO(getC_Project_ID(), get_TrxName());	}
-
-	/** Set Project.
-		@param C_Project_ID 
-		Financial Project
-	  */
-	public void setC_Project_ID (int C_Project_ID)
-	{
-		if (C_Project_ID < 1) 
-			set_Value (COLUMNNAME_C_Project_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
-	}
-
-	/** Get Project.
-		@return Financial Project
-	  */
-	public int getC_Project_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_Project_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -843,9 +731,37 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return (String)get_Value(COLUMNNAME_CheckNo);
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getCollectingAgent() throws RuntimeException
+	public I_C_Invoice getC_Invoice() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_C_Invoice)MTable.get(getCtx(), I_C_Invoice.Table_Name)
+			.getPO(getC_Invoice_ID(), get_TrxName());	}
+
+	/** Set Invoice.
+		@param C_Invoice_ID 
+		Invoice Identifier
+	  */
+	public void setC_Invoice_ID (int C_Invoice_ID)
+	{
+		if (C_Invoice_ID < 1) 
+			set_Value (COLUMNNAME_C_Invoice_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+	}
+
+	/** Get Invoice.
+		@return Invoice Identifier
+	  */
+	public int getC_Invoice_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Invoice_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_AD_User getCollectingAgent() throws RuntimeException
+    {
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getCollectingAgent_ID(), get_TrxName());	}
 
 	/** Set Collecting Agent.
@@ -866,6 +782,169 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public int getCollectingAgent_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_CollectingAgent_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Order getC_Order() throws RuntimeException
+    {
+		return (I_C_Order)MTable.get(getCtx(), I_C_Order.Table_Name)
+			.getPO(getC_Order_ID(), get_TrxName());	}
+
+	/** Set Order.
+		@param C_Order_ID 
+		Order
+	  */
+	public void setC_Order_ID (int C_Order_ID)
+	{
+		if (C_Order_ID < 1) 
+			set_Value (COLUMNNAME_C_Order_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
+	}
+
+	/** Get Order.
+		@return Order
+	  */
+	public int getC_Order_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Order_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_PaymentBatch getC_PaymentBatch() throws RuntimeException
+    {
+		return (I_C_PaymentBatch)MTable.get(getCtx(), I_C_PaymentBatch.Table_Name)
+			.getPO(getC_PaymentBatch_ID(), get_TrxName());	}
+
+	/** Set Payment Batch.
+		@param C_PaymentBatch_ID 
+		Payment batch for EFT
+	  */
+	public void setC_PaymentBatch_ID (int C_PaymentBatch_ID)
+	{
+		if (C_PaymentBatch_ID < 1) 
+			set_Value (COLUMNNAME_C_PaymentBatch_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_PaymentBatch_ID, Integer.valueOf(C_PaymentBatch_ID));
+	}
+
+	/** Get Payment Batch.
+		@return Payment batch for EFT
+	  */
+	public int getC_PaymentBatch_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_PaymentBatch_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Payment.
+		@param C_Payment_ID 
+		Payment identifier
+	  */
+	public void setC_Payment_ID (int C_Payment_ID)
+	{
+		if (C_Payment_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_C_Payment_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+	}
+
+	/** Get Payment.
+		@return Payment identifier
+	  */
+	public int getC_Payment_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Payment_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_PaymentMethod getC_PaymentMethod() throws RuntimeException
+    {
+		return (I_C_PaymentMethod)MTable.get(getCtx(), I_C_PaymentMethod.Table_Name)
+			.getPO(getC_PaymentMethod_ID(), get_TrxName());	}
+
+	/** Set Store Payment Method.
+		@param C_PaymentMethod_ID 
+		Payment Methods allowed for Store
+	  */
+	public void setC_PaymentMethod_ID (int C_PaymentMethod_ID)
+	{
+		if (C_PaymentMethod_ID < 1) 
+			set_Value (COLUMNNAME_C_PaymentMethod_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_PaymentMethod_ID, Integer.valueOf(C_PaymentMethod_ID));
+	}
+
+	/** Get Store Payment Method.
+		@return Payment Methods allowed for Store
+	  */
+	public int getC_PaymentMethod_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_PaymentMethod_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_POS getC_POS() throws RuntimeException
+    {
+		return (I_C_POS)MTable.get(getCtx(), I_C_POS.Table_Name)
+			.getPO(getC_POS_ID(), get_TrxName());	}
+
+	/** Set POS Terminal.
+		@param C_POS_ID 
+		Point of Sales Terminal
+	  */
+	public void setC_POS_ID (int C_POS_ID)
+	{
+		if (C_POS_ID < 1) 
+			set_Value (COLUMNNAME_C_POS_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_POS_ID, Integer.valueOf(C_POS_ID));
+	}
+
+	/** Get POS Terminal.
+		@return Point of Sales Terminal
+	  */
+	public int getC_POS_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_POS_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Project getC_Project() throws RuntimeException
+    {
+		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
+			.getPO(getC_Project_ID(), get_TrxName());	}
+
+	/** Set Project.
+		@param C_Project_ID 
+		Financial Project
+	  */
+	public void setC_Project_ID (int C_Project_ID)
+	{
+		if (C_Project_ID < 1) 
+			set_Value (COLUMNNAME_C_Project_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+	}
+
+	/** Get Project.
+		@return Financial Project
+	  */
+	public int getC_Project_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Project_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -1011,6 +1090,34 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public Timestamp getDateTrx () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_DateTrx);
+	}
+
+	public I_C_Payment getDeposit() throws RuntimeException
+    {
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
+			.getPO(getDeposit_ID(), get_TrxName());	}
+
+	/** Set Deposit Reference.
+		@param Deposit_ID 
+		Deposit Reference for payment
+	  */
+	public void setDeposit_ID (int Deposit_ID)
+	{
+		if (Deposit_ID < 1) 
+			set_Value (COLUMNNAME_Deposit_ID, null);
+		else 
+			set_Value (COLUMNNAME_Deposit_ID, Integer.valueOf(Deposit_ID));
+	}
+
+	/** Get Deposit Reference.
+		@return Deposit Reference for payment
+	  */
+	public int getDeposit_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Deposit_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Description.
@@ -1167,9 +1274,85 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
         return new KeyNamePair(get_ID(), getDocumentNo());
     }
 
-	public org.adempiere.core.domains.models.I_FM_Account getFM_Account() throws RuntimeException
+	public I_ECA14_GiftCard getECA14_GiftCard() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_FM_Account)MTable.get(getCtx(), org.adempiere.core.domains.models.I_FM_Account.Table_Name)
+		return (I_ECA14_GiftCard)MTable.get(getCtx(), I_ECA14_GiftCard.Table_Name)
+			.getPO(getECA14_GiftCard_ID(), get_TrxName());	}
+
+	/** Set Gift Card.
+		@param ECA14_GiftCard_ID 
+		Gift Cards/Vouchers/Coupons
+	  */
+	public void setECA14_GiftCard_ID (int ECA14_GiftCard_ID)
+	{
+		if (ECA14_GiftCard_ID < 1) 
+			set_Value (COLUMNNAME_ECA14_GiftCard_ID, null);
+		else 
+			set_Value (COLUMNNAME_ECA14_GiftCard_ID, Integer.valueOf(ECA14_GiftCard_ID));
+	}
+
+	/** Get Gift Card.
+		@return Gift Cards/Vouchers/Coupons
+	  */
+	public int getECA14_GiftCard_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_ECA14_GiftCard_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Invoice getECA14_Invoice_Reference() throws RuntimeException
+    {
+		return (I_C_Invoice)MTable.get(getCtx(), I_C_Invoice.Table_Name)
+			.getPO(getECA14_Invoice_Reference_ID(), get_TrxName());	}
+
+	/** Set Invoice Reference for Document.
+		@param ECA14_Invoice_Reference_ID 
+		Invoice Reference for Payment and Payment Reference
+	  */
+	public void setECA14_Invoice_Reference_ID (int ECA14_Invoice_Reference_ID)
+	{
+		if (ECA14_Invoice_Reference_ID < 1) 
+			set_Value (COLUMNNAME_ECA14_Invoice_Reference_ID, null);
+		else 
+			set_Value (COLUMNNAME_ECA14_Invoice_Reference_ID, Integer.valueOf(ECA14_Invoice_Reference_ID));
+	}
+
+	/** Get Invoice Reference for Document.
+		@return Invoice Reference for Payment and Payment Reference
+	  */
+	public int getECA14_Invoice_Reference_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_ECA14_Invoice_Reference_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Invoice Reference Amount.
+		@param ECA14_Reference_Amount 
+		This field allows define the reference amount for allocate
+	  */
+	public void setECA14_Reference_Amount (BigDecimal ECA14_Reference_Amount)
+	{
+		set_Value (COLUMNNAME_ECA14_Reference_Amount, ECA14_Reference_Amount);
+	}
+
+	/** Get Invoice Reference Amount.
+		@return This field allows define the reference amount for allocate
+	  */
+	public BigDecimal getECA14_Reference_Amount () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ECA14_Reference_Amount);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public I_FM_Account getFM_Account() throws RuntimeException
+    {
+		return (I_FM_Account)MTable.get(getCtx(), I_FM_Account.Table_Name)
 			.getPO(getFM_Account_ID(), get_TrxName());	}
 
 	/** Set Financial Account.
@@ -1192,9 +1375,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_FM_Agreement getFM_Agreement() throws RuntimeException
+	public I_FM_Agreement getFM_Agreement() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_FM_Agreement)MTable.get(getCtx(), org.adempiere.core.domains.models.I_FM_Agreement.Table_Name)
+		return (I_FM_Agreement)MTable.get(getCtx(), I_FM_Agreement.Table_Name)
 			.getPO(getFM_Agreement_ID(), get_TrxName());	}
 
 	/** Set Agreement.
@@ -1328,6 +1511,54 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public boolean isOverUnderPayment () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsOverUnderPayment);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Require Payment Verification.
+		@param IsPaymentVerificationRequired 
+		This document require a verification
+	  */
+	public void setIsPaymentVerificationRequired (boolean IsPaymentVerificationRequired)
+	{
+		set_Value (COLUMNNAME_IsPaymentVerificationRequired, Boolean.valueOf(IsPaymentVerificationRequired));
+	}
+
+	/** Get Require Payment Verification.
+		@return This document require a verification
+	  */
+	public boolean isPaymentVerificationRequired () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsPaymentVerificationRequired);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Payment Verified.
+		@param IsPaymentVerified 
+		This document require a verification
+	  */
+	public void setIsPaymentVerified (boolean IsPaymentVerified)
+	{
+		set_Value (COLUMNNAME_IsPaymentVerified, Boolean.valueOf(IsPaymentVerified));
+	}
+
+	/** Get Payment Verified.
+		@return This document require a verification
+	  */
+	public boolean isPaymentVerified () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsPaymentVerified);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -1474,6 +1705,23 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return (String)get_Value(COLUMNNAME_Micr);
 	}
 
+	/** Set Next Request Time.
+		@param NextRequestTime Next Request Time	  */
+	public void setNextRequestTime (int NextRequestTime)
+	{
+		set_Value (COLUMNNAME_NextRequestTime, Integer.valueOf(NextRequestTime));
+	}
+
+	/** Get Next Request Time.
+		@return Next Request Time	  */
+	public int getNextRequestTime () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_NextRequestTime);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Online Processing.
 		@param OProcessing 
 		This payment can be processed online
@@ -1563,6 +1811,34 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public String getPONum () 
 	{
 		return (String)get_Value(COLUMNNAME_PONum);
+	}
+
+	public I_C_BankAccount getPOSReferenceBankAccount() throws RuntimeException
+    {
+		return (I_C_BankAccount)MTable.get(getCtx(), I_C_BankAccount.Table_Name)
+			.getPO(getPOSReferenceBankAccount_ID(), get_TrxName());	}
+
+	/** Set Reference Bank Account.
+		@param POSReferenceBankAccount_ID 
+		Reference Bank Account for Deposit or withdrawal
+	  */
+	public void setPOSReferenceBankAccount_ID (int POSReferenceBankAccount_ID)
+	{
+		if (POSReferenceBankAccount_ID < 1) 
+			set_Value (COLUMNNAME_POSReferenceBankAccount_ID, null);
+		else 
+			set_Value (COLUMNNAME_POSReferenceBankAccount_ID, Integer.valueOf(POSReferenceBankAccount_ID));
+	}
+
+	/** Get Reference Bank Account.
+		@return Reference Bank Account for Deposit or withdrawal
+	  */
+	public int getPOSReferenceBankAccount_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_POSReferenceBankAccount_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Posted.
@@ -1764,6 +2040,137 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return false;
 	}
 
+	public I_C_Payment getRef_Payment() throws RuntimeException
+    {
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
+			.getPO(getRef_Payment_ID(), get_TrxName());	}
+
+	/** Set Referenced Payment.
+		@param Ref_Payment_ID Referenced Payment	  */
+	public void setRef_Payment_ID (int Ref_Payment_ID)
+	{
+		if (Ref_Payment_ID < 1) 
+			set_Value (COLUMNNAME_Ref_Payment_ID, null);
+		else 
+			set_Value (COLUMNNAME_Ref_Payment_ID, Integer.valueOf(Ref_Payment_ID));
+	}
+
+	/** Get Referenced Payment.
+		@return Referenced Payment	  */
+	public int getRef_Payment_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Ref_Payment_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Payment getRelatedPayment() throws RuntimeException
+    {
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
+			.getPO(getRelatedPayment_ID(), get_TrxName());	}
+
+	/** Set Payment Related.
+		@param RelatedPayment_ID Payment Related	  */
+	public void setRelatedPayment_ID (int RelatedPayment_ID)
+	{
+		if (RelatedPayment_ID < 1) 
+			set_Value (COLUMNNAME_RelatedPayment_ID, null);
+		else 
+			set_Value (COLUMNNAME_RelatedPayment_ID, Integer.valueOf(RelatedPayment_ID));
+	}
+
+	/** Get Payment Related.
+		@return Payment Related	  */
+	public int getRelatedPayment_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_RelatedPayment_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Response Code.
+		@param ResponseCode Response Code	  */
+	public void setResponseCode (String ResponseCode)
+	{
+		set_Value (COLUMNNAME_ResponseCode, ResponseCode);
+	}
+
+	/** Get Response Code.
+		@return Response Code	  */
+	public String getResponseCode () 
+	{
+		return (String)get_Value(COLUMNNAME_ResponseCode);
+	}
+
+	/** Set Response Message.
+		@param ResponseMessage Response Message	  */
+	public void setResponseMessage (String ResponseMessage)
+	{
+		set_Value (COLUMNNAME_ResponseMessage, ResponseMessage);
+	}
+
+	/** Get Response Message.
+		@return Response Message	  */
+	public String getResponseMessage () 
+	{
+		return (String)get_Value(COLUMNNAME_ResponseMessage);
+	}
+
+	/** ResponseStatus AD_Reference_ID=54369 */
+	public static final int RESPONSESTATUS_AD_Reference_ID=54369;
+	/** Error = E */
+	public static final String RESPONSESTATUS_Error = "E";
+	/** Waiting = W */
+	public static final String RESPONSESTATUS_Waiting = "W";
+	/** Approved = A */
+	public static final String RESPONSESTATUS_Approved = "A";
+	/** Rejected = R */
+	public static final String RESPONSESTATUS_Rejected = "R";
+	/** Set Response Status.
+		@param ResponseStatus Response Status	  */
+	public void setResponseStatus (String ResponseStatus)
+	{
+
+		set_Value (COLUMNNAME_ResponseStatus, ResponseStatus);
+	}
+
+	/** Get Response Status.
+		@return Response Status	  */
+	public String getResponseStatus () 
+	{
+		return (String)get_Value(COLUMNNAME_ResponseStatus);
+	}
+
+	public I_C_Payment getReversal() throws RuntimeException
+    {
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
+			.getPO(getReversal_ID(), get_TrxName());	}
+
+	/** Set Reversal ID.
+		@param Reversal_ID 
+		ID of document reversal
+	  */
+	public void setReversal_ID (int Reversal_ID)
+	{
+		if (Reversal_ID < 1) 
+			set_Value (COLUMNNAME_Reversal_ID, null);
+		else 
+			set_Value (COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
+	}
+
+	/** Get Reversal ID.
+		@return ID of document reversal
+	  */
+	public int getReversal_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Reversal_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Info.
 		@param R_Info 
 		Response info
@@ -1779,6 +2186,23 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public String getR_Info () 
 	{
 		return (String)get_Value(COLUMNNAME_R_Info);
+	}
+
+	/** Set Routing No.
+		@param RoutingNo 
+		Bank Routing Number
+	  */
+	public void setRoutingNo (String RoutingNo)
+	{
+		set_Value (COLUMNNAME_RoutingNo, RoutingNo);
+	}
+
+	/** Get Routing No.
+		@return Bank Routing Number
+	  */
+	public String getRoutingNo () 
+	{
+		return (String)get_Value(COLUMNNAME_RoutingNo);
 	}
 
 	/** Set Reference.
@@ -1849,99 +2273,32 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return (String)get_Value(COLUMNNAME_R_Result);
 	}
 
-	public org.adempiere.core.domains.models.I_C_Payment getRef_Payment() throws RuntimeException
+	public I_S_Contract getS_Contract() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Payment)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Payment.Table_Name)
-			.getPO(getRef_Payment_ID(), get_TrxName());	}
+		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
 
-	/** Set Referenced Payment.
-		@param Ref_Payment_ID Referenced Payment	  */
-	public void setRef_Payment_ID (int Ref_Payment_ID)
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
 	{
-		if (Ref_Payment_ID < 1) 
-			set_Value (COLUMNNAME_Ref_Payment_ID, null);
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
 		else 
-			set_Value (COLUMNNAME_Ref_Payment_ID, Integer.valueOf(Ref_Payment_ID));
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
 	}
 
-	/** Get Referenced Payment.
-		@return Referenced Payment	  */
-	public int getRef_Payment_ID () 
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_Ref_Payment_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_Payment getRelatedPayment() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_Payment)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Payment.Table_Name)
-			.getPO(getRelatedPayment_ID(), get_TrxName());	}
-
-	/** Set Payment Related.
-		@param RelatedPayment_ID Payment Related	  */
-	public void setRelatedPayment_ID (int RelatedPayment_ID)
-	{
-		if (RelatedPayment_ID < 1) 
-			set_Value (COLUMNNAME_RelatedPayment_ID, null);
-		else 
-			set_Value (COLUMNNAME_RelatedPayment_ID, Integer.valueOf(RelatedPayment_ID));
-	}
-
-	/** Get Payment Related.
-		@return Payment Related	  */
-	public int getRelatedPayment_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_RelatedPayment_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_Payment getReversal() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_Payment)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Payment.Table_Name)
-			.getPO(getReversal_ID(), get_TrxName());	}
-
-	/** Set Reversal ID.
-		@param Reversal_ID 
-		ID of document reversal
-	  */
-	public void setReversal_ID (int Reversal_ID)
-	{
-		if (Reversal_ID < 1) 
-			set_Value (COLUMNNAME_Reversal_ID, null);
-		else 
-			set_Value (COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
-	}
-
-	/** Get Reversal ID.
-		@return ID of document reversal
-	  */
-	public int getReversal_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_Reversal_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Routing No.
-		@param RoutingNo 
-		Bank Routing Number
-	  */
-	public void setRoutingNo (String RoutingNo)
-	{
-		set_Value (COLUMNNAME_RoutingNo, RoutingNo);
-	}
-
-	/** Get Routing No.
-		@return Bank Routing Number
-	  */
-	public String getRoutingNo () 
-	{
-		return (String)get_Value(COLUMNNAME_RoutingNo);
 	}
 
 	/** Set Swipe.
@@ -2001,6 +2358,8 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public static final String TENDERTYPE_Zelle = "Z";
 	/** Mobile Payment Interbank = P */
 	public static final String TENDERTYPE_MobilePaymentInterbank = "P";
+	/** Gift Card = G */
+	public static final String TENDERTYPE_GiftCard = "G";
 	/** Set Tender type.
 		@param TenderType 
 		Method of Payment
@@ -2051,9 +2410,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return (String)get_Value(COLUMNNAME_TrxType);
 	}
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser1() throws RuntimeException
+	public I_C_ElementValue getUser1() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ElementValue)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser1_ID(), get_TrxName());	}
 
 	/** Set User List 1.
@@ -2079,9 +2438,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser2() throws RuntimeException
+	public I_C_ElementValue getUser2() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ElementValue)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser2_ID(), get_TrxName());	}
 
 	/** Set User List 2.
@@ -2107,9 +2466,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser3() throws RuntimeException
+	public I_C_ElementValue getUser3() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ElementValue)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser3_ID(), get_TrxName());	}
 
 	/** Set User List 3.
@@ -2135,9 +2494,9 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser4() throws RuntimeException
+	public I_C_ElementValue getUser4() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ElementValue)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser4_ID(), get_TrxName());	}
 
 	/** Set User List 4.
@@ -2195,6 +2554,34 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent
 	public String getVoiceAuthCode () 
 	{
 		return (String)get_Value(COLUMNNAME_VoiceAuthCode);
+	}
+
+	public I_C_Payment getWithdrawal() throws RuntimeException
+    {
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
+			.getPO(getWithdrawal_ID(), get_TrxName());	}
+
+	/** Set Withdrawal.
+		@param Withdrawal_ID 
+		Withdrawal Payment
+	  */
+	public void setWithdrawal_ID (int Withdrawal_ID)
+	{
+		if (Withdrawal_ID < 1) 
+			set_Value (COLUMNNAME_Withdrawal_ID, null);
+		else 
+			set_Value (COLUMNNAME_Withdrawal_ID, Integer.valueOf(Withdrawal_ID));
+	}
+
+	/** Get Withdrawal.
+		@return Withdrawal Payment
+	  */
+	public int getWithdrawal_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Withdrawal_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Write-off Amount.

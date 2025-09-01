@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_PaymentProcessor
  *  @author Adempiere (generated) 
@@ -207,7 +208,7 @@ public interface I_C_PaymentProcessor
 	  */
 	public int getAD_Sequence_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Sequence getAD_Sequence() throws RuntimeException;
+	public I_AD_Sequence getAD_Sequence() throws RuntimeException;
 
     /** Column name C_BankAccount_ID */
     public static final String COLUMNNAME_C_BankAccount_ID = "C_BankAccount_ID";
@@ -222,7 +223,22 @@ public interface I_C_PaymentProcessor
 	  */
 	public int getC_BankAccount_ID();
 
-	public org.adempiere.core.domains.models.I_C_BankAccount getC_BankAccount() throws RuntimeException;
+	public I_C_BankAccount getC_BankAccount() throws RuntimeException;
+
+    /** Column name C_Bank_ID */
+    public static final String COLUMNNAME_C_Bank_ID = "C_Bank_ID";
+
+	/** Set Bank.
+	  * Bank
+	  */
+	public void setC_Bank_ID (int C_Bank_ID);
+
+	/** Get Bank.
+	  * Bank
+	  */
+	public int getC_Bank_ID();
+
+	public I_C_Bank getC_Bank() throws RuntimeException;
 
     /** Column name C_Currency_ID */
     public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
@@ -237,20 +253,7 @@ public interface I_C_PaymentProcessor
 	  */
 	public int getC_Currency_ID();
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException;
-
-    /** Column name C_PaymentProcessor_ID */
-    public static final String COLUMNNAME_C_PaymentProcessor_ID = "C_PaymentProcessor_ID";
-
-	/** Set Payment Processor.
-	  * Payment processor for electronic payments
-	  */
-	public void setC_PaymentProcessor_ID (int C_PaymentProcessor_ID);
-
-	/** Get Payment Processor.
-	  * Payment processor for electronic payments
-	  */
-	public int getC_PaymentProcessor_ID();
+	public I_C_Currency getC_Currency() throws RuntimeException;
 
     /** Column name Commission */
     public static final String COLUMNNAME_Commission = "Commission";
@@ -277,6 +280,19 @@ public interface I_C_PaymentProcessor
 	  * Fixed cost per transaction
 	  */
 	public BigDecimal getCostPerTrx();
+
+    /** Column name C_PaymentProcessor_ID */
+    public static final String COLUMNNAME_C_PaymentProcessor_ID = "C_PaymentProcessor_ID";
+
+	/** Set Payment Processor.
+	  * Payment processor for electronic payments
+	  */
+	public void setC_PaymentProcessor_ID (int C_PaymentProcessor_ID);
+
+	/** Get Payment Processor.
+	  * Payment processor for electronic payments
+	  */
+	public int getC_PaymentProcessor_ID();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -306,6 +322,36 @@ public interface I_C_PaymentProcessor
 	  * Optional short description of the record
 	  */
 	public String getDescription();
+
+    /** Column name FeeCharge_ID */
+    public static final String COLUMNNAME_FeeCharge_ID = "FeeCharge_ID";
+
+	/** Set Charge for Fee.
+	  * Charge for Fee
+	  */
+	public void setFeeCharge_ID (int FeeCharge_ID);
+
+	/** Get Charge for Fee.
+	  * Charge for Fee
+	  */
+	public int getFeeCharge_ID();
+
+	public I_C_Charge getFeeCharge() throws RuntimeException;
+
+    /** Column name FeeCurrency_ID */
+    public static final String COLUMNNAME_FeeCurrency_ID = "FeeCurrency_ID";
+
+	/** Set Currency for Fee.
+	  * Currency for Fee
+	  */
+	public void setFeeCurrency_ID (int FeeCurrency_ID);
+
+	/** Get Currency for Fee.
+	  * Currency for Fee
+	  */
+	public int getFeeCurrency_ID();
+
+	public I_C_Currency getFeeCurrency() throws RuntimeException;
 
     /** Column name HostAddress */
     public static final String COLUMNNAME_HostAddress = "HostAddress";
@@ -397,6 +443,21 @@ public interface I_C_PaymentProcessor
 	  * Password of any length (case sensitive)
 	  */
 	public String getPassword();
+
+    /** Column name PaymentProcessorVendor_ID */
+    public static final String COLUMNNAME_PaymentProcessorVendor_ID = "PaymentProcessorVendor_ID";
+
+	/** Set Processor Vendor.
+	  * Processor Vendor
+	  */
+	public void setPaymentProcessorVendor_ID (int PaymentProcessorVendor_ID);
+
+	/** Get Processor Vendor.
+	  * Processor Vendor
+	  */
+	public int getPaymentProcessorVendor_ID();
+
+	public I_C_BPartner getPaymentProcessorVendor() throws RuntimeException;
 
     /** Column name PayProcessorClass */
     public static final String COLUMNNAME_PayProcessorClass = "PayProcessorClass";

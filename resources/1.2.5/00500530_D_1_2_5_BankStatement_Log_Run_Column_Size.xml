@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="BankStatement_Log_Run_Column_Size" ReleaseNo="1.2.5" SeqNo="500530">
+    <Comments>Resize R_AuthCode_DC to 80000 and change reference to Text</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="103880" Table="AD_Column">
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" oldValue="10">14</Data>
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="20">80000</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true" oldValue="R_AuthCode_DC"/>
+      </PO>
+    </Step>
+    <Step DBType="Postgres" Parse="N" SeqNo="20" StepType="SQL">
+      <SQLStatement>
+        ALTER TABLE adempiere.c_paymentprocessorrun ALTER COLUMN r_authcode_dc TYPE text USING r_authcode_dc::text
+        ;</SQLStatement>
+      <RollbackStatement>
+        ALTER TABLE adempiere.c_paymentprocessorrun ALTER COLUMN r_authcode_dc TYPE varchar(20) USING r_authcode_dc::varchar(20)
+        ;</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>

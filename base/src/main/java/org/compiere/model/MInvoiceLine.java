@@ -16,16 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_C_InvoiceLine;
 import org.adempiere.core.domains.models.I_M_InOutLine;
 import org.adempiere.core.domains.models.X_C_InvoiceLine;
@@ -35,6 +25,16 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 
 /**
@@ -96,7 +96,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 	 * 	@param C_InvoiceLine_ID invoice line or 0
 	 * 	@param trxName transaction name
 	 */
-	public MInvoiceLine (Properties ctx, int C_InvoiceLine_ID, String trxName)
+	public MInvoiceLine(Properties ctx, int C_InvoiceLine_ID, String trxName)
 	{
 		super (ctx, C_InvoiceLine_ID, trxName);
 		if (C_InvoiceLine_ID == 0)
@@ -120,7 +120,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 	 * 	Parent Constructor
 	 * 	@param invoice parent
 	 */
-	public MInvoiceLine (MInvoice invoice)
+	public MInvoiceLine(MInvoice invoice)
 	{
 		this (invoice.getCtx(), 0, invoice.get_TrxName());
 		if (invoice.get_ID() == 0)
@@ -137,7 +137,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MInvoiceLine (Properties ctx, ResultSet rs, String trxName)
+	public MInvoiceLine(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MInvoiceLine

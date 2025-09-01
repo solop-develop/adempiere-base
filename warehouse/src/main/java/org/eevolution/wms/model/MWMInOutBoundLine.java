@@ -28,18 +28,8 @@
  **********************************************************************/
 package org.eevolution.wms.model;
 
-import org.adempiere.core.domains.models.I_C_OrderLine;
-import org.adempiere.core.domains.models.I_M_InOutLine;
-import org.adempiere.core.domains.models.I_M_MovementLine;
-import org.adempiere.core.domains.models.I_PP_Cost_Collector;
-import org.adempiere.core.domains.models.X_WM_InOutBoundLine;
-import org.compiere.model.MBPartner;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MProduct;
-import org.compiere.model.MUOMConversion;
-import org.compiere.model.Query;
+import org.adempiere.core.domains.models.*;
+import org.compiere.model.*;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.eevolution.distribution.model.MDDOrderLine;
@@ -87,6 +77,14 @@ public class MWMInOutBoundLine extends X_WM_InOutBoundLine
 				.sum(MInOutLine.COLUMNNAME_MovementQty);
 	}
 
+	public BigDecimal getInvoiceQtyInvoiced() {
+		return new Query(getCtx(), I_C_InvoiceLine.Table_Name,
+				I_C_InvoiceLine.COLUMNNAME_WM_InOutBoundLine_ID + "=?" , get_TrxName())
+				.setClient_ID()
+				.setParameters(getWM_InOutBoundLine_ID())
+				.sum(MInvoiceLine.COLUMNNAME_QtyInvoiced);
+	}
+
 	public BigDecimal getManufacturingOrderQtyDelivered() {
 		return new Query(getCtx(), I_PP_Cost_Collector.Table_Name,
 				I_PP_Cost_Collector.COLUMNNAME_WM_InOutBoundLine_ID + "=?" , get_TrxName())
@@ -130,7 +128,7 @@ public class MWMInOutBoundLine extends X_WM_InOutBoundLine
 	 *	@param M_InOutBoundLine_ID In Out Bound Line ID
 	 *	@param trxName transaction name 
 	 */
-	public MWMInOutBoundLine (Properties ctx, int M_InOutBoundLine_ID, String trxName)
+	public MWMInOutBoundLine(Properties ctx, int M_InOutBoundLine_ID, String trxName)
 	{
 		super (ctx, M_InOutBoundLine_ID, trxName);
 		if (M_InOutBoundLine_ID == 0)
@@ -144,7 +142,7 @@ public class MWMInOutBoundLine extends X_WM_InOutBoundLine
 	 *	@param ctx context
 	 *	@param M_InOutBoundLine_ID  In Out Bound Line ID
 	 */
-	public MWMInOutBoundLine (Properties ctx, int M_InOutBoundLine_ID)
+	public MWMInOutBoundLine(Properties ctx, int M_InOutBoundLine_ID)
 	{
 		this (ctx, M_InOutBoundLine_ID, null);
 	}
@@ -155,7 +153,7 @@ public class MWMInOutBoundLine extends X_WM_InOutBoundLine
 	 *  @param rs result set record
 	 *	@param trxName transaction
 	 */
-	public MWMInOutBoundLine (Properties ctx, ResultSet rs, String trxName)
+	public MWMInOutBoundLine(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MAsset
@@ -164,13 +162,13 @@ public class MWMInOutBoundLine extends X_WM_InOutBoundLine
 	 * Constructor
 	 * @param inOutBound
 	 */
-	public MWMInOutBoundLine (MWMInOutBound inOutBound)
+	public MWMInOutBoundLine(MWMInOutBound inOutBound)
 	{
 		this (inOutBound.getCtx(), 0, inOutBound.get_TrxName());
 		this.setWM_InOutBound_ID(inOutBound.getWM_InOutBound_ID());
 	}
 
-	public MWMInOutBoundLine (MWMInOutBound inOutBound , MInvoiceLine invoiceLine)
+	public MWMInOutBoundLine(MWMInOutBound inOutBound , MInvoiceLine invoiceLine)
 	{
 		this (inOutBound.getCtx(), 0, inOutBound.get_TrxName());
 		setWM_InOutBound_ID(inOutBound.get_ID());
@@ -183,7 +181,7 @@ public class MWMInOutBoundLine extends X_WM_InOutBoundLine
 		setDescription(invoiceLine.getDescription());
 	}
 
-	public MWMInOutBoundLine (MWMInOutBound inOutBound , MOrderLine orderLine)
+	public MWMInOutBoundLine(MWMInOutBound inOutBound , MOrderLine orderLine)
 	{
 		this (inOutBound.getCtx(), 0, inOutBound.get_TrxName());
 		setWM_InOutBound_ID(inOutBound.get_ID());
@@ -286,6 +284,10 @@ public class MWMInOutBoundLine extends X_WM_InOutBoundLine
 		}
 		//	Return
 		return Env.ZERO;
+	}
+
+	public BigDecimal getQtyToInvoice() {
+		return Optional.ofNullable(getPickedQty()).orElse(Env.ZERO).subtract(Optional.ofNullable(getInvoiceQtyInvoiced()).orElse(Env.ZERO));
 	}
 
 	/**

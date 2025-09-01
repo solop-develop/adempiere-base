@@ -19,6 +19,8 @@ package org.compiere.model;
 import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
+import org.compiere.interfaces.PaymentProcessorReverse;
+import org.compiere.interfaces.PaymentProcessorStatus;
 import org.compiere.process.*;
 import org.compiere.util.*;
 
@@ -599,7 +601,7 @@ public final class MPayment extends X_C_Payment
 			else
 			{
 				if (PaymentProcessorStatus.class.isAssignableFrom(pp.getClass())) {
-					result = ((PaymentProcessorStatus) pp).transactionStatus();
+					result = ((PaymentProcessorStatus) pp).transactionStatus(0);
 				}
 			}
 		}
@@ -704,10 +706,12 @@ public final class MPayment extends X_C_Payment
 		}
 
 		//	Document Type/Receipt
-		if(newRecord || is_ValueChanged("C_DocType_ID") || is_ValueChanged("IsReceipt")) {
+		if(newRecord || is_ValueChanged("C_DocType_ID")) {
 			if (getC_DocType_ID() == 0) {
 				setC_DocType_ID();
 			}
+			MDocType documentType = MDocType.get(getCtx(), getC_DocType_ID());
+			setIsReceipt(documentType.getDocBaseType().equals(MDocType.DOCBASETYPE_ARReceipt));
 		}
 		setDocumentNo();
 		//
@@ -1352,6 +1356,21 @@ public final class MPayment extends X_C_Payment
 		setC_DocType_ID(isReceipt());
 	}	//	setC_DocType_ID
 
+	private int getDocumentTypeId(boolean isReceipt) {
+		if(getC_BankAccount_ID() <= 0) {
+			return 0;
+		}
+		MBankAccount bankAccount = MBankAccount.get(getCtx(), getC_BankAccount_ID());
+		int documentTypeId = 0;
+		String columnName = isReceipt? MBankAccount.COLUMNNAME_DefaultCollectDocType_ID: MBankAccount.COLUMNNAME_DefaultPaymentDocType_ID;
+		documentTypeId = bankAccount.get_ValueAsInt(columnName);
+		if(documentTypeId == 0) {
+			MBank bank = MBank.get(getCtx(), bankAccount.getC_Bank_ID());
+			documentTypeId = bank.get_ValueAsInt(columnName);
+		}
+		return documentTypeId;
+	}
+
 	/**
 	 * 	Set Doc Type
 	 * 	@param isReceipt is receipt
@@ -1359,35 +1378,16 @@ public final class MPayment extends X_C_Payment
 	public void setC_DocType_ID (boolean isReceipt)
 	{
 		setIsReceipt(isReceipt);
-		String sql = "SELECT C_DocType_ID FROM C_DocType WHERE IsActive='Y' AND AD_Client_ID=? AND DocBaseType=? ORDER BY IsDefault DESC";
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement(sql, get_TrxName());
-			pstmt.setInt(1, getAD_Client_ID());
-			if (isReceipt)
-				pstmt.setString(2, X_C_DocType.DOCBASETYPE_ARReceipt);
-			else
-				pstmt.setString(2, X_C_DocType.DOCBASETYPE_APPayment);
-			rs = pstmt.executeQuery();
-			if (rs.next())
-				setC_DocType_ID(rs.getInt(1));
-			else
-				log.warning ("setDocType - NOT found - isReceipt=" + isReceipt);
+		int defaultDocumentTypeId = getDocumentTypeId(isReceipt);
+		if(defaultDocumentTypeId <= 0) {
+			defaultDocumentTypeId = MDocType.getDocType(isReceipt? X_C_DocType.DOCBASETYPE_ARReceipt: X_C_DocType.DOCBASETYPE_APPayment);
 		}
-		catch (SQLException e)
-		{
-			log.log(Level.SEVERE, sql, e);
-		}
-		finally
-		{
-			DB.close(rs, pstmt);
-			rs = null;
-			pstmt = null;
+		if(defaultDocumentTypeId > 0) {
+			setC_DocType_ID(defaultDocumentTypeId);
+		} else {
+			log.warning ("setDocType - NOT found - isReceipt=" + isReceipt);
 		}
 	}	//	setC_DocType_ID
-
 	
 	/**
 	 * 	Set Document Type

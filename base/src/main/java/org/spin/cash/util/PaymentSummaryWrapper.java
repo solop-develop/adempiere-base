@@ -17,10 +17,12 @@
  *****************************************************************************/
 package org.spin.cash.util;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * A wrapper with the need for find match with bank withdrawal
@@ -39,14 +41,26 @@ public class PaymentSummaryWrapper {
 	private int currencyId;
 	private int conversionTypeId;
 	private BigDecimal amount;
+	private List<Integer> paymentIds = new ArrayList<>();
 	
 	public final BigDecimal getAmount() {
 		return amount;
 	}
 
-	public final PaymentSummaryWrapper addAmount(BigDecimal amount) {
+	public final PaymentSummaryWrapper withAmount(BigDecimal amount) {
 		this.amount = Optional.ofNullable(this.amount).orElse(Env.ZERO).add(Optional.ofNullable(amount).orElse(Env.ZERO));
 		return this;
+	}
+
+	public final PaymentSummaryWrapper withPaymentId(int paymentId) {
+		if(!paymentIds.contains(paymentId)) {
+			paymentIds.add(paymentId);
+		}
+		return this;
+	}
+
+	public final List<Integer> getPaymentIds() {
+		return paymentIds;
 	}
 
 	public final int getConversionTypeId() {

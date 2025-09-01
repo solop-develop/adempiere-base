@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_BankAccount
  *  @author Adempiere (generated) 
@@ -103,6 +104,19 @@ public interface I_C_BankAccount
 	  */
 	public String getBBAN();
 
+    /** Column name C_BankAccount_ID */
+    public static final String COLUMNNAME_C_BankAccount_ID = "C_BankAccount_ID";
+
+	/** Set Bank Account.
+	  * Account at the Bank
+	  */
+	public void setC_BankAccount_ID (int C_BankAccount_ID);
+
+	/** Get Bank Account.
+	  * Account at the Bank
+	  */
+	public int getC_BankAccount_ID();
+
     /** Column name C_Bank_ID */
     public static final String COLUMNNAME_C_Bank_ID = "C_Bank_ID";
 
@@ -116,20 +130,7 @@ public interface I_C_BankAccount
 	  */
 	public int getC_Bank_ID();
 
-	public org.adempiere.core.domains.models.I_C_Bank getC_Bank() throws RuntimeException;
-
-    /** Column name C_BankAccount_ID */
-    public static final String COLUMNNAME_C_BankAccount_ID = "C_BankAccount_ID";
-
-	/** Set Bank Account.
-	  * Account at the Bank
-	  */
-	public void setC_BankAccount_ID (int C_BankAccount_ID);
-
-	/** Get Bank Account.
-	  * Account at the Bank
-	  */
-	public int getC_BankAccount_ID();
+	public I_C_Bank getC_Bank() throws RuntimeException;
 
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
@@ -144,7 +145,7 @@ public interface I_C_BankAccount
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_Currency_ID */
     public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
@@ -159,7 +160,7 @@ public interface I_C_BankAccount
 	  */
 	public int getC_Currency_ID();
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException;
+	public I_C_Currency getC_Currency() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -203,6 +204,124 @@ public interface I_C_BankAccount
 	  */
 	public BigDecimal getCurrentBalance();
 
+    /** Column name DefaultCollectDocType_ID */
+    public static final String COLUMNNAME_DefaultCollectDocType_ID = "DefaultCollectDocType_ID";
+
+	/** Set Default Collect Document Type.
+	  * Default Collect Document Type from this bank or account
+	  */
+	public void setDefaultCollectDocType_ID (int DefaultCollectDocType_ID);
+
+	/** Get Default Collect Document Type.
+	  * Default Collect Document Type from this bank or account
+	  */
+	public int getDefaultCollectDocType_ID();
+
+	public I_C_DocType getDefaultCollectDocType() throws RuntimeException;
+
+    /** Column name DefaultOpeningCharge_ID */
+    public static final String COLUMNNAME_DefaultOpeningCharge_ID = "DefaultOpeningCharge_ID";
+
+	/** Set Default Opening Charge.
+	  * Default Opening Charge for POS
+	  */
+	public void setDefaultOpeningCharge_ID (int DefaultOpeningCharge_ID);
+
+	/** Get Default Opening Charge.
+	  * Default Opening Charge for POS
+	  */
+	public int getDefaultOpeningCharge_ID();
+
+	public I_C_Charge getDefaultOpeningCharge() throws RuntimeException;
+
+    /** Column name DefaultPaymentDocType_ID */
+    public static final String COLUMNNAME_DefaultPaymentDocType_ID = "DefaultPaymentDocType_ID";
+
+	/** Set Default Payment Document Type.
+	  * Default Payment Document Type from this bank or account
+	  */
+	public void setDefaultPaymentDocType_ID (int DefaultPaymentDocType_ID);
+
+	/** Get Default Payment Document Type.
+	  * Default Payment Document Type from this bank or account
+	  */
+	public int getDefaultPaymentDocType_ID();
+
+	public I_C_DocType getDefaultPaymentDocType() throws RuntimeException;
+
+    /** Column name DefaultWithdrawalCharge_ID */
+    public static final String COLUMNNAME_DefaultWithdrawalCharge_ID = "DefaultWithdrawalCharge_ID";
+
+	/** Set Default Withdrawal Charge.
+	  * Default Withdrawal Charge for POS
+	  */
+	public void setDefaultWithdrawalCharge_ID (int DefaultWithdrawalCharge_ID);
+
+	/** Get Default Withdrawal Charge.
+	  * Default Withdrawal Charge for POS
+	  */
+	public int getDefaultWithdrawalCharge_ID();
+
+	public I_C_Charge getDefaultWithdrawalCharge() throws RuntimeException;
+
+    /** Column name DepositBankAccount_ID */
+    public static final String COLUMNNAME_DepositBankAccount_ID = "DepositBankAccount_ID";
+
+	/** Set Deposit Bank Account.
+	  * Bank Account used for deposit from cash by default
+	  */
+	public void setDepositBankAccount_ID (int DepositBankAccount_ID);
+
+	/** Get Deposit Bank Account.
+	  * Bank Account used for deposit from cash by default
+	  */
+	public int getDepositBankAccount_ID();
+
+	public I_C_BankAccount getDepositBankAccount() throws RuntimeException;
+
+    /** Column name DepositCharge_ID */
+    public static final String COLUMNNAME_DepositCharge_ID = "DepositCharge_ID";
+
+	/** Set Deposit Charge.
+	  * Charge used for deposit from cash
+	  */
+	public void setDepositCharge_ID (int DepositCharge_ID);
+
+	/** Get Deposit Charge.
+	  * Charge used for deposit from cash
+	  */
+	public int getDepositCharge_ID();
+
+	public I_C_Charge getDepositCharge() throws RuntimeException;
+
+    /** Column name DepositDocumentType_ID */
+    public static final String COLUMNNAME_DepositDocumentType_ID = "DepositDocumentType_ID";
+
+	/** Set Deposit Document Type.
+	  * Deposit Document Type for Cash or bank
+	  */
+	public void setDepositDocumentType_ID (int DepositDocumentType_ID);
+
+	/** Get Deposit Document Type.
+	  * Deposit Document Type for Cash or bank
+	  */
+	public int getDepositDocumentType_ID();
+
+	public I_C_DocType getDepositDocumentType() throws RuntimeException;
+
+    /** Column name DepositTenderType */
+    public static final String COLUMNNAME_DepositTenderType = "DepositTenderType";
+
+	/** Set Deposit Tender Type.
+	  * Tender type used for Deposit from cash
+	  */
+	public void setDepositTenderType (String DepositTenderType);
+
+	/** Get Deposit Tender Type.
+	  * Tender type used for Deposit from cash
+	  */
+	public String getDepositTenderType();
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -242,6 +361,19 @@ public interface I_C_BankAccount
 	  */
 	public boolean isActive();
 
+    /** Column name IsAutoDepositAfterClose */
+    public static final String COLUMNNAME_IsAutoDepositAfterClose = "IsAutoDepositAfterClose";
+
+	/** Set Deposit Automatically After Close Cash.
+	  * Deposit automatically after close cash
+	  */
+	public void setIsAutoDepositAfterClose (boolean IsAutoDepositAfterClose);
+
+	/** Get Deposit Automatically After Close Cash.
+	  * Deposit automatically after close cash
+	  */
+	public boolean isAutoDepositAfterClose();
+
     /** Column name IsDefault */
     public static final String COLUMNNAME_IsDefault = "IsDefault";
 
@@ -267,6 +399,28 @@ public interface I_C_BankAccount
 	  * This is a Sales Transaction
 	  */
 	public boolean isSOTrx();
+
+    /** Column name IsSplitDeposits */
+    public static final String COLUMNNAME_IsSplitDeposits = "IsSplitDeposits";
+
+	/** Set Split Deposits	  */
+	public void setIsSplitDeposits (boolean IsSplitDeposits);
+
+	/** Get Split Deposits	  */
+	public boolean isSplitDeposits();
+
+    /** Column name IsValidateCashOpening */
+    public static final String COLUMNNAME_IsValidateCashOpening = "IsValidateCashOpening";
+
+	/** Set Validate Cash Opening.
+	  * Validate Cash Opening for this bank account
+	  */
+	public void setIsValidateCashOpening (boolean IsValidateCashOpening);
+
+	/** Get Validate Cash Opening.
+	  * Validate Cash Opening for this bank account
+	  */
+	public boolean isValidateCashOpening();
 
     /** Column name PaymentExportClass */
     public static final String COLUMNNAME_PaymentExportClass = "PaymentExportClass";
@@ -314,4 +468,19 @@ public interface I_C_BankAccount
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name WithdrawalDocumentType_ID */
+    public static final String COLUMNNAME_WithdrawalDocumentType_ID = "WithdrawalDocumentType_ID";
+
+	/** Set Withdrawal Document Type.
+	  * Withdrawal Document Type for Cash or bank
+	  */
+	public void setWithdrawalDocumentType_ID (int WithdrawalDocumentType_ID);
+
+	/** Get Withdrawal Document Type.
+	  * Withdrawal Document Type for Cash or bank
+	  */
+	public int getWithdrawalDocumentType_ID();
+
+	public I_C_DocType getWithdrawalDocumentType() throws RuntimeException;
 }

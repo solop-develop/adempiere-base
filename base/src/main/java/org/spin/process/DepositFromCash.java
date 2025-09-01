@@ -16,18 +16,18 @@
  *****************************************************************************/
 package org.spin.process;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MBankStatement;
 import org.compiere.model.MPayment;
 import org.compiere.process.DocAction;
 import org.compiere.util.Util;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Yamel Senih, ysenih@erpcya.com, ERPCyA http://www.erpcya.com
@@ -87,37 +87,38 @@ public class DepositFromCash extends DepositFromCashAbstract {
   	  	});
   	  	//	
   	  	StringBuffer msg = new StringBuffer();
-  	  	payments.entrySet().forEach(entry -> {
-  	  		MPayment payment = entry.getValue();
-  	  		//	Link to Withdrawal
-  	  		Integer referenceId = withdrawalLinkPayments.get(payment.getC_Payment_ID());
-	  	  	Optional.ofNullable(referenceId).ifPresent(theReferenceId -> {
-	            payment.setRef_Payment_ID(theReferenceId);
-	            payment.saveEx();               
-	        });
-  	  		//	Link to deposit
-  	  		Integer relatedId = depositLinkPayments.get(payment.getC_Payment_ID());
-	  	  	Optional.ofNullable(relatedId).ifPresent(theRelatedId -> {
-	  	  	payment.setRelatedPayment_ID(theRelatedId);
-  			payment.saveEx();
-	        });
-  	  		//	Complete
-  	  		if(payment.getDocStatus().equals(MPayment.DOCSTATUS_Drafted)) {
-	  	  		payment.processIt(DocAction.ACTION_Complete);
-				payment.saveEx();
-				if(msg.length() > 0) {
-					msg.append(", ");
-				}
-				//	
-				msg.append("[" + payment.getDocumentNo() + "]");
-				//	Count it
-				created.addAndGet(1);
-  	  		}
-  	  		//	Auto Reconcile
-  	  		if(isAutoReconciled()) {
-  	  			MBankStatement.addPayment(payment);
-  	  		}
-  	  	});
+  	  	payments.forEach((key, payment) -> {
+            //	Link to Withdrawal
+            Integer referenceId = withdrawalLinkPayments.get(payment.getC_Payment_ID());
+            Optional.ofNullable(referenceId).ifPresent(theReferenceId -> {
+                payment.setRef_Payment_ID(theReferenceId);
+                payment.setWithdrawal_ID(referenceId);
+                payment.saveEx();
+            });
+            //	Link to deposit
+            Integer relatedId = depositLinkPayments.get(payment.getC_Payment_ID());
+            Optional.ofNullable(relatedId).ifPresent(theRelatedId -> {
+                payment.setRelatedPayment_ID(theRelatedId);
+                payment.setDeposit_ID(theRelatedId);
+                payment.saveEx();
+            });
+            //	Complete
+            if (payment.getDocStatus().equals(MPayment.DOCSTATUS_Drafted)) {
+                payment.processIt(DocAction.ACTION_Complete);
+                payment.saveEx();
+                if (msg.length() > 0) {
+                    msg.append(", ");
+                }
+                //
+                msg.append("[" + payment.getDocumentNo() + "]");
+                //	Count it
+                created.addAndGet(1);
+            }
+            //	Auto Reconcile
+            if (isAutoReconciled()) {
+                MBankStatement.addPayment(payment);
+            }
+        });
   	  	//	
   	  	return "@Created@: (" + created.get() + ") " + msg.toString();
 	}

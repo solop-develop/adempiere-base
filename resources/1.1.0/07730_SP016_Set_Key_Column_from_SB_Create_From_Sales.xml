@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Set Key Column from SB Create From Sales" ReleaseNo="1.0" SeqNo="7730">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71540" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="0">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71534" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="10">20</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71539" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="20">30</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71538" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="30">40</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71543" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="40">50</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71525" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="50">60</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71546" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="60">70</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71547" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="70">80</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71552" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="80">90</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71534" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57977" Column="IsIdentifier" oldValue="false">true</Data>
+        <Data AD_Column_ID="57978" Column="IsKey" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71534" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="71540" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57978" Column="IsKey" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50211" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="cd.IsAllocated = 'N'&#10;AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0)">cd.IsAllocated = 'N'
+AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0)
+AND cd.C_InvoiceLine_ID IS NOT NULL</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

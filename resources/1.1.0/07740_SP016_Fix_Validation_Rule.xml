@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Fix Validation Rule" ReleaseNo="1.0" SeqNo="7740">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="108" Action="U" Record_ID="52872" Table="AD_Val_Rule">
+        <Data AD_Column_ID="193" Column="Code" oldValue="C_Order.C_BPartner_ID = @C_BPartner_ID@&#10;AND C_Order.DocStatus IN('CO')&#10;AND EXISTS(SELECT 1 FROM C_OrderLine pol WHERE po.C_Order_ID = C_Order.C_Order_ID AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0))">C_Order.C_BPartner_ID = @C_BPartner_ID@
+AND C_Order.IsSOTrx= 'N'
+AND C_Order.DocStatus IN('CO')
+AND EXISTS(SELECT 1 FROM C_OrderLine pol WHERE pol.C_Order_ID = C_Order.C_Order_ID AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0))</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="108" Action="U" Record_ID="52872" Table="AD_Val_Rule">
+        <Data AD_Column_ID="193" Column="Code" oldValue="C_Order.C_BPartner_ID = @C_BPartner_ID@&#10;AND C_Order.IsSOTrx= 'N'&#10;AND C_Order.DocStatus IN('CO')&#10;AND EXISTS(SELECT 1 FROM C_OrderLine pol WHERE pol.C_Order_ID = C_Order.C_Order_ID AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0))">C_Order.C_BPartner_ID = @C_BPartner_ID@
+AND C_Order.IsSOTrx= 'N'
+AND C_Order.IsDropShip = 'Y'
+AND C_Order.DocStatus IN('CO')
+AND EXISTS(SELECT 1 FROM C_OrderLine pol WHERE pol.C_Order_ID = C_Order.C_Order_ID AND COALESCE(pol.QtyInvoiced, 0) &lt; COALESCE(pol.QtyOrdered, 0))</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

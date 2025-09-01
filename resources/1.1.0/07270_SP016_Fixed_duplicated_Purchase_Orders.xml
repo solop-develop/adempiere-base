@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Fixed duplicated Purchase Orders" ReleaseNo="1.0" SeqNo="7270">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="67837" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="0">160</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53223" Action="D" Record_ID="67837" Table="AD_Browse_Field">
+        <Data AD_Column_ID="84296" Column="UUID" isNewNull="true" oldValue="610682ba-f859-4c2d-a640-70dbeea8c4a0"/>
+        <Data AD_Column_ID="57964" Column="Created" isNewNull="true" oldValue="2020-04-02 16:04:06.0"/>
+        <Data AD_Column_ID="57963" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="57965" Column="Updated" isNewNull="true" oldValue="2020-12-28 18:20:44.0"/>
+        <Data AD_Column_ID="57980" Column="IsRange" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="57985" Column="IsMandatory" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="64354" Column="DefaultValue" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="64853" Column="InfoFactoryClass" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57972" Column="Description" isNewNull="true" oldValue="Logical type of document"/>
+        <Data AD_Column_ID="57974" Column="Help" isNewNull="true" oldValue="The Document Base Type identifies the base or starting point for a document.  Multiple document types may share a single document base type."/>
+        <Data AD_Column_ID="57976" Column="IsDisplayed" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="57977" Column="IsIdentifier" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="57978" Column="IsKey" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="57981" Column="Name" isNewNull="true" oldValue="Document BaseType"/>
+        <Data AD_Column_ID="63579" Column="IsReadOnly" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="57975" Column="IsCentrallyMaintained" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="64222" Column="IsOrderBy" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="64355" Column="DefaultValue2" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="64356" Column="DisplayLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="64358" Column="ReadOnlyLogic" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="64359" Column="VFormat" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="64360" Column="ValueMax" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="64361" Column="ValueMin" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="67114" Column="Callout" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="81229" Column="IsInfoOnly" isNewNull="true" oldValue="false"/>
+        <Data AD_Column_ID="57961" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="57962" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="57973" Column="EntityType" isNewNull="true" oldValue="SP016"/>
+        <Data AD_Column_ID="57968" Column="AD_Browse_Field_ID" isNewNull="true" oldValue="67837"/>
+        <Data AD_Column_ID="57982" Column="SeqNo" isNewNull="true" oldValue="160"/>
+        <Data AD_Column_ID="57984" Column="AD_Reference_Value_ID" isNewNull="true" oldValue="183"/>
+        <Data AD_Column_ID="57967" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="57966" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="63218" Column="Axis_Column_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57969" Column="AD_Element_ID" isNewNull="true" oldValue="865"/>
+        <Data AD_Column_ID="57983" Column="AD_Browse_ID" isNewNull="true" oldValue="50211"/>
+        <Data AD_Column_ID="57971" Column="AD_View_Column_ID" isNewNull="true" oldValue="69084"/>
+        <Data AD_Column_ID="64353" Column="AD_Val_Rule_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="57970" Column="AD_Reference_ID" isNewNull="true" oldValue="17"/>
+        <Data AD_Column_ID="63219" Column="Axis_Parent_Column_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="64221" Column="SortNo" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="64357" Column="FieldLength" isNewNull="true" oldValue="3"/>
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="53232" Action="D" Record_ID="69084" Table="AD_View_Column">
+        <Data AD_Column_ID="84462" Column="UUID" isNewNull="true" oldValue="436b5090-9ffd-4313-b775-12c089e25e86"/>
+        <Data AD_Column_ID="58095" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="58096" Column="Created" isNewNull="true" oldValue="2020-04-02 15:48:38.0"/>
+        <Data AD_Column_ID="58097" Column="Updated" isNewNull="true" oldValue="2020-04-02 15:48:38.0"/>
+        <Data AD_Column_ID="58101" Column="AD_View_Definition_ID" isNewNull="true" oldValue="50482"/>
+        <Data AD_Column_ID="58104" Column="Help" isNewNull="true" oldValue="The Document Base Type identifies the base or starting point for a document.  Multiple document types may share a single document base type."/>
+        <Data AD_Column_ID="58106" Column="ColumnSQL" isNewNull="true" oldValue="i.DocBaseType"/>
+        <Data AD_Column_ID="58105" Column="Name" isNewNull="true" oldValue="Document BaseType"/>
+        <Data AD_Column_ID="58107" Column="ColumnName" isNewNull="true" oldValue="I_DocBaseType"/>
+        <Data AD_Column_ID="58102" Column="Description" isNewNull="true" oldValue="Logical type of document"/>
+        <Data AD_Column_ID="58100" Column="AD_View_Column_ID" isNewNull="true" oldValue="69084"/>
+        <Data AD_Column_ID="58093" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="58094" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="58103" Column="EntityType" isNewNull="true" oldValue="SP016"/>
+        <Data AD_Column_ID="58099" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="58108" Column="AD_View_ID" isNewNull="true" oldValue="50179"/>
+        <Data AD_Column_ID="58109" Column="AD_Column_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="58098" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="53232" Action="D" Record_ID="69083" Table="AD_View_Column">
+        <Data AD_Column_ID="84462" Column="UUID" isNewNull="true" oldValue="cd634a4e-b0e1-440a-9a29-8de4a7ad4a9a"/>
+        <Data AD_Column_ID="58095" Column="IsActive" isNewNull="true" oldValue="true"/>
+        <Data AD_Column_ID="58096" Column="Created" isNewNull="true" oldValue="2020-04-02 15:48:37.0"/>
+        <Data AD_Column_ID="58097" Column="Updated" isNewNull="true" oldValue="2020-04-02 15:48:37.0"/>
+        <Data AD_Column_ID="58101" Column="AD_View_Definition_ID" isNewNull="true" oldValue="50482"/>
+        <Data AD_Column_ID="58104" Column="Help" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="58106" Column="ColumnSQL" isNewNull="true" oldValue="i.ControlNo"/>
+        <Data AD_Column_ID="58105" Column="Name" isNewNull="true" oldValue="Control No"/>
+        <Data AD_Column_ID="58107" Column="ColumnName" isNewNull="true" oldValue="I_ControlNo"/>
+        <Data AD_Column_ID="58102" Column="Description" isNewNull="true" oldValue="Control No for Invoice"/>
+        <Data AD_Column_ID="58100" Column="AD_View_Column_ID" isNewNull="true" oldValue="69083"/>
+        <Data AD_Column_ID="58093" Column="AD_Client_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="58094" Column="AD_Org_ID" isNewNull="true" oldValue="0"/>
+        <Data AD_Column_ID="58103" Column="EntityType" isNewNull="true" oldValue="SP016"/>
+        <Data AD_Column_ID="58099" Column="UpdatedBy" isNewNull="true" oldValue="100"/>
+        <Data AD_Column_ID="58108" Column="AD_View_ID" isNewNull="true" oldValue="50179"/>
+        <Data AD_Column_ID="58109" Column="AD_Column_ID" isNewNull="true" isOldNull="true"/>
+        <Data AD_Column_ID="58098" Column="CreatedBy" isNewNull="true" oldValue="100"/>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="53232" Action="I" Record_ID="70893" Table="AD_View_Column">
+        <Data AD_Column_ID="84462" Column="UUID">17eb389d-692d-4b62-bf9b-db0bae0f1263</Data>
+        <Data AD_Column_ID="58094" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58103" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="58099" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="58108" Column="AD_View_ID">50179</Data>
+        <Data AD_Column_ID="58109" Column="AD_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="58098" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58095" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58096" Column="Created">2020-12-28 18:25:51.654</Data>
+        <Data AD_Column_ID="58097" Column="Updated">2020-12-28 18:25:51.654</Data>
+        <Data AD_Column_ID="58101" Column="AD_View_Definition_ID">50482</Data>
+        <Data AD_Column_ID="58104" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58106" Column="ColumnSQL">(SELECT MIN(ppol.C_OrderLine_ID) FROM C_OrderLine ppol WHERE ppol.M_Product_ID = il.M_Product_ID AND ppol.C_BPartner_ID = pp.C_BPartner_ID AND COALESCE(ppol.QtyInvoiced, 0) &lt; COALESCE(ppol.QtyOrdered, 0) AND EXISTS(SELECT 1 FROM C_Order o WHERE o.C_Order_ID = ppol.C_Order_ID AND o.DocStatus = 'CO'))</Data>
+        <Data AD_Column_ID="58105" Column="Name">Purchase Order Line</Data>
+        <Data AD_Column_ID="58107" Column="ColumnName">I_C_OrderLine_ID</Data>
+        <Data AD_Column_ID="58102" Column="Description">Purchase Order Line</Data>
+        <Data AD_Column_ID="58100" Column="AD_View_Column_ID">70893</Data>
+        <Data AD_Column_ID="58093" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="53228" Action="I" Record_ID="70893" Table="AD_View_Column_Trl">
+        <Data AD_Column_ID="58044" Column="Updated">2020-12-28 18:25:52.601</Data>
+        <Data AD_Column_ID="58042" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58043" Column="Created">2020-12-28 18:25:52.601</Data>
+        <Data AD_Column_ID="58049" Column="Description">Purchase Order Line</Data>
+        <Data AD_Column_ID="58050" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58051" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58052" Column="Name">Purchase Order Line</Data>
+        <Data AD_Column_ID="58047" Column="AD_View_Column_ID">70893</Data>
+        <Data AD_Column_ID="58040" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58041" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58045" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58048" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58046" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84463" Column="UUID">a466ecb4-2118-4eac-ae3e-893c1901d37a</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="53228" Action="U" Record_ID="70893" Table="AD_View_Column_Trl">
+        <Data AD_Column_ID="58049" Column="Description" oldValue="Purchase Order Line">Linea de Orden de Compra</Data>
+        <Data AD_Column_ID="58052" Column="Name" oldValue="Purchase Order Line">Linea de Orden de Compra</Data>
+        <Data AD_Column_ID="58047" Column="AD_View_Column_ID" oldValue="70893">70893</Data>
+        <Data AD_Column_ID="58048" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="67963" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57971" Column="AD_View_Column_ID" oldValue="69292">70893</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68075" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" oldValue="true">false</Data>
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="20">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="67935" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" oldValue="true">false</Data>
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="110">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="67816" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="30">20</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68136" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="40">30</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68061" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="50">40</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68047" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="60">50</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68024" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="70">60</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68043" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="80">70</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68080" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="90">80</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="67776" Table="AD_Browse_Field">
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="100">90</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68075" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="140">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="67956" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="150">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="68075" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" oldValue="false">true</Data>
+        <Data AD_Column_ID="78559" Column="SeqNoGrid" oldValue="0">100</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
