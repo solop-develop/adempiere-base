@@ -19,15 +19,33 @@ package org.spin.cash.util;
 
 import org.adempiere.core.domains.models.I_C_Payment;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
-import org.compiere.util.*;
+import org.compiere.model.MBankAccount;
+import org.compiere.model.MBankStatement;
+import org.compiere.model.MBankStatementLine;
+import org.compiere.model.MOrder;
+import org.compiere.model.MPOS;
+import org.compiere.model.MPayment;
+import org.compiere.model.PO;
+import org.compiere.model.Query;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.DisplayType;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.compiere.util.TimeUtil;
+import org.compiere.util.Util;
 import org.spin.cash.model.MCBankAccountWithdrawal;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -108,7 +126,7 @@ public class CashManagementUtil {
 		//	Calculate balance
 		calculateBankStatementBalance(bankStatement);
 	}
-	
+
 	private static void createWithdrawal(MBankAccount cashAccount, MBankStatement bankStatement, int depositBankAccountId, int currencyId, int conversionTypeId, BigDecimal amount, boolean isReconciled, String documentNo, String tenderType, int paymentMethodId, int businessPartnerId, List<Integer> paymentIds) {
 		Timestamp statementDate = bankStatement.getStatementDate();
 		Timestamp dateAcct = bankStatement.getStatementDate();
@@ -228,7 +246,7 @@ public class CashManagementUtil {
 		//	Return
 		log.fine("@Created@ (1) @From@ " + mBankFrom.getAccountNo()+ " @To@ " + mBankTo.getAccountNo() + " @Amt@ " + DisplayType.getNumberFormat(DisplayType.Amount).format(amount));
 	}
-	
+
 	/**
 	 * Recalculate bank statement balance
 	 */
@@ -241,7 +259,7 @@ public class CashManagementUtil {
 		lines.forEach(statementLine -> {
 			total.updateAndGet(totalAmount -> totalAmount.add(statementLine.getStmtAmt()));
 			if (statementLine.getDateAcct().before(minimumDate.get())) {
-				minimumDate.set(statementLine.getDateAcct()); 
+				minimumDate.set(statementLine.getDateAcct());
 			}
 			if (statementLine.getDateAcct().after(maximumDate.get())) {
 				maximumDate.set(statementLine.getDateAcct());
@@ -251,7 +269,7 @@ public class CashManagementUtil {
 		bankStatement.setEndingBalance(bankStatement.getBeginningBalance().add(total.get()));
 		bankStatement.saveEx();
 	}
-	
+
 	/**
 	 * Validate that exists a cash opening
 	 */
@@ -273,7 +291,7 @@ public class CashManagementUtil {
 			}
 		}
 	}
-	
+
 	/**
 	 * Validate that exists a cash opening
 	 */
@@ -297,7 +315,7 @@ public class CashManagementUtil {
 			}
 		}
 	}
-	
+
 	/**
 	 * Get List of payments for a bank statement
 	 */

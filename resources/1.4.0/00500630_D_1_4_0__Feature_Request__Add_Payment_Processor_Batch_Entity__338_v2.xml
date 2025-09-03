@@ -11978,69 +11978,6 @@ AND p.RelatedPayment_ID IS NULL</Data>
         <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
       </PO>
     </Step>
-    <Step SeqNo="4010" StepType="AD">
-      <PO AD_Table_ID="276" Action="I" Record_ID="63027" Table="AD_Element">
-        <Data AD_Column_ID="84316" Column="UUID">ad31bdf8-d096-4335-aeb8-5aa97167e5eb</Data>
-        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="2600" Column="Updated">2025-08-27 20:58:03.512</Data>
-        <Data AD_Column_ID="4299" Column="PrintName">Withdrawal</Data>
-        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
-        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
-        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
-        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
-        <Data AD_Column_ID="2603" Column="Name">Withdrawal</Data>
-        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
-        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="58589" Column="FieldLength">10</Data>
-        <Data AD_Column_ID="6484" Column="EntityType">D</Data>
-        <Data AD_Column_ID="2604" Column="Description">Withdrawal Payment</Data>
-        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="2598" Column="Created">2025-08-27 20:58:03.512</Data>
-        <Data AD_Column_ID="2602" Column="ColumnName">Withdrawal_ID</Data>
-        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
-        <Data AD_Column_ID="58588" Column="AD_Reference_ID">30</Data>
-        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="2594" Column="AD_Element_ID">63027</Data>
-        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="4020" StepType="AD">
-      <PO AD_Table_ID="277" Action="I" Record_ID="63027" Table="AD_Element_Trl">
-        <Data AD_Column_ID="84317" Column="UUID">5f6c5242-a22d-435f-9e16-90fb7c11ac81</Data>
-        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="2644" Column="Updated">2025-08-27 20:58:04.372</Data>
-        <Data AD_Column_ID="4300" Column="PrintName">Withdrawal</Data>
-        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
-        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
-        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
-        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
-        <Data AD_Column_ID="2646" Column="Name">Withdrawal</Data>
-        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
-        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="2647" Column="Description">Withdrawal Payment</Data>
-        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="2642" Column="Created">2025-08-27 20:58:04.372</Data>
-        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="2637" Column="AD_Element_ID">63027</Data>
-        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="4030" StepType="AD">
-      <PO AD_Table_ID="277" Action="U" Record_ID="63027" Table="AD_Element_Trl">
-        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Withdrawal">Retiro</Data>
-        <Data AD_Column_ID="2646" Column="Name" oldValue="Withdrawal">Retiro</Data>
-        <Data AD_Column_ID="2647" Column="Description" oldValue="Withdrawal Payment">Pago o egreso de banco</Data>
-        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
-        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="63027">63027</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="4040" StepType="AD">
-      <PO AD_Table_ID="276" Action="U" Record_ID="63027" Table="AD_Element">
-        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isOldNull="true">343</Data>
-      </PO>
-    </Step>
     <Step SeqNo="4050" StepType="AD">
       <PO AD_Table_ID="101" Action="I" Record_ID="104141" Table="AD_Column">
         <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>

@@ -1,215 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
   <Migration EntityType="D" Name="[Feature Request] Add some fields to RV_Payment view #339" ReleaseNo="1.4.0" SeqNo="500610">
-    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
-      <Comments>RV_PAYMENT</Comments>
-      <SQLStatement>CREATE OR REPLACE VIEW RV_PAYMENT
-(C_PAYMENT_ID, AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, 
- CREATEDBY, UPDATED, UPDATEDBY, DOCUMENTNO, DATETRX, 
- ISRECEIPT, C_DOCTYPE_ID, TRXTYPE, C_BANKACCOUNT_ID, C_BPARTNER_ID, 
- C_INVOICE_ID, C_BP_BANKACCOUNT_ID, C_PAYMENTBATCH_ID, TENDERTYPE, CREDITCARDTYPE, 
- CREDITCARDNUMBER, CREDITCARDVV, CREDITCARDEXPMM, CREDITCARDEXPYY, MICR, 
- ROUTINGNO, ACCOUNTNO, CHECKNO, A_NAME, A_STREET, 
- A_CITY, A_STATE, A_ZIP, A_IDENT_DL, A_IDENT_SSN, 
- A_EMAIL, VOICEAUTHCODE, ORIG_TRXID, PONUM, C_CURRENCY_ID, 
- C_CONVERSIONTYPE_ID, PAYAMT, DISCOUNTAMT, WRITEOFFAMT, TAXAMT, 
- OVERUNDERAMT, MULTIPLIERAP, ALLOCATEDAMT, AVAILABLEAMT, ISOVERUNDERPAYMENT, 
- ISAPPROVED, R_PNREF, R_RESULT, R_RESPMSG, R_AUTHCODE, 
- R_AVSADDR, R_AVSZIP, R_INFO, PROCESSING, OPROCESSING, 
- DOCSTATUS, DOCACTION, ISPREPAYMENT, C_CHARGE_ID, ISRECONCILED, 
- ISALLOCATED, ISONLINE, PROCESSED, POSTED, C_CAMPAIGN_ID, 
- C_PROJECT_ID, C_ACTIVITY_ID, IsUnidentifiedPayment, Ref_Payment_ID, RelatedPayment_ID, Description, 
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, CollectingAgent_ID, C_Card_ID,
- C_CardProvider_ID, A_Country, AD_OrgTrx_ID, BusinessPartnerForRefund_ID, C_Bank_ID, C_CashBook_ID, ChargeAmt,
- C_Order_ID, C_PaymentMethod_ID, C_POS_ID, DateAcct, ECA14_GiftCard_ID, ECA14_Invoice_Reference_ID, ECA14_Reference_Amount,
- FM_Account_ID, FM_Agreement_ID, IsDelayedCapture, IsPaymentVerificationRequired, IsPaymentVerified, IsSelfService,
- NextRequestTime, POSReferenceBankAccount_ID, ProcessedOn, R_AuthCode_DC, R_CVV2Match, ResponseCode, ResponseMessage,
- ResponseStatus, Reversal_ID, R_PnRef_DC, S_Contract_ID, Swipe, User1_ID, User2_ID, User3_ID, User4_ID, UUID,
- Withdrawal_ID, Deposit_ID)
-AS 
-SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.CreatedBy, p.Updated, p.UpdatedBy,
-    p.DocumentNo, p.DateTrx, p.IsReceipt, p.C_DocType_ID, p.TrxType,
-    p.C_BankAccount_ID, p.C_BPartner_ID, p.C_Invoice_ID, p.C_BP_BankAccount_ID, p.C_PaymentBatch_ID,
-    p.TenderType, p.CreditCardType, p.CreditCardNumber, p.CreditCardVV, p.CreditCardExpMM, p.CreditCardExpYY,
-    p.Micr, p.RoutingNo, p.AccountNo, p.CheckNo,
-    p.A_Name, p.A_Street, p.A_City, p.A_State, p.A_Zip, p.A_Ident_DL, p.A_Ident_SSN, p.A_EMail,
-    p.VoiceAuthCode, p.Orig_TrxID, p.PONum,
-    p.C_Currency_ID, p.C_ConversionType_ID,
-    CASE p.IsReceipt WHEN 'Y' THEN p.PayAmt ELSE p.PayAmt*-1 END AS PayAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN p.DiscountAmt ELSE p.DiscountAmt*-1 END AS DiscountAmt, 
-    CASE p.IsReceipt WHEN 'Y' THEN p.WriteOffAmt ELSE p.WriteOffAmt*-1 END AS WriteOffAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN p.TaxAmt ELSE p.TaxAmt*-1 END AS TaxAmt, 
-    CASE p.IsReceipt WHEN 'Y' THEN p.OverUnderAmt ELSE p.OverUnderAmt*-1 END AS OverUnderAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN 1 ELSE -1 END AS MultiplierAP,
-    paymentAllocated(p.C_Payment_ID, p.C_Currency_ID) AS AllocatedAmt,
-    paymentAvailable(p.C_Payment_ID) AS AvailableAmt,
-    p.IsOverUnderPayment, p.IsApproved,
-    p.R_PnRef, p.R_Result, p.R_RespMsg, p.R_AuthCode, p.R_AvsAddr, p.R_AvsZip, p.R_Info,
-    p.Processing, p.OProcessing, p.DocStatus, p.DocAction,
-    p.IsPrepayment, p.C_Charge_ID,
-    p.IsReconciled, p.IsAllocated, p.IsOnline, p.Processed, p.Posted,
-    p.C_Campaign_ID, p.C_Project_ID, p.C_Activity_ID, p.IsUnidentifiedPayment, p.Ref_Payment_ID, p.RelatedPayment_ID,
-    p.Description, 
-    bp.C_BP_AccountType_ID, bp.C_BP_SalesGroup_ID, bp.C_BP_Segment_ID, bp.C_BP_IndustryType_ID, p.CollectingAgent_ID,
-    p.C_Card_ID, p.C_CardProvider_ID, p.A_Country, p.AD_OrgTrx_ID, p.BusinessPartnerForRefund_ID, p.C_Bank_ID, p.C_CashBook_ID, p.ChargeAmt,
-    p.C_Order_ID, p.C_PaymentMethod_ID, p.C_POS_ID, p.DateAcct, p.ECA14_GiftCard_ID, p.ECA14_Invoice_Reference_ID, p.ECA14_Reference_Amount,
-    p.FM_Account_ID, p.FM_Agreement_ID, p.IsDelayedCapture, p.IsPaymentVerificationRequired, p.IsPaymentVerified, p.IsSelfService,
-    p.NextRequestTime, p.POSReferenceBankAccount_ID, p.ProcessedOn, p.R_AuthCode_DC, p.R_CVV2Match, p.ResponseCode, p.ResponseMessage,
-    p.ResponseStatus, p.Reversal_ID, p.R_PnRef_DC, p.S_Contract_ID, p.Swipe, p.User1_ID, p.User2_ID, p.User3_ID, p.User4_ID, p.UUID,
-    p.Withdrawal_ID, p.Deposit_ID
-FROM C_Payment p
-LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = p.C_BPartner_ID);</SQLStatement>
-      <RollbackStatement>DROP VIEW IF EXISTS RV_PAYMENT;
-CREATE OR REPLACE VIEW RV_PAYMENT
-(C_PAYMENT_ID, AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, 
- CREATEDBY, UPDATED, UPDATEDBY, DOCUMENTNO, DATETRX, 
- ISRECEIPT, C_DOCTYPE_ID, TRXTYPE, C_BANKACCOUNT_ID, C_BPARTNER_ID, 
- C_INVOICE_ID, C_BP_BANKACCOUNT_ID, C_PAYMENTBATCH_ID, TENDERTYPE, CREDITCARDTYPE, 
- CREDITCARDNUMBER, CREDITCARDVV, CREDITCARDEXPMM, CREDITCARDEXPYY, MICR, 
- ROUTINGNO, ACCOUNTNO, CHECKNO, A_NAME, A_STREET, 
- A_CITY, A_STATE, A_ZIP, A_IDENT_DL, A_IDENT_SSN, 
- A_EMAIL, VOICEAUTHCODE, ORIG_TRXID, PONUM, C_CURRENCY_ID, 
- C_CONVERSIONTYPE_ID, PAYAMT, DISCOUNTAMT, WRITEOFFAMT, TAXAMT, 
- OVERUNDERAMT, MULTIPLIERAP, ALLOCATEDAMT, AVAILABLEAMT, ISOVERUNDERPAYMENT, 
- ISAPPROVED, R_PNREF, R_RESULT, R_RESPMSG, R_AUTHCODE, 
- R_AVSADDR, R_AVSZIP, R_INFO, PROCESSING, OPROCESSING, 
- DOCSTATUS, DOCACTION, ISPREPAYMENT, C_CHARGE_ID, ISRECONCILED, 
- ISALLOCATED, ISONLINE, PROCESSED, POSTED, C_CAMPAIGN_ID, 
- C_PROJECT_ID, C_ACTIVITY_ID, IsUnidentifiedPayment, Ref_Payment_ID, RelatedPayment_ID, Description, 
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, CollectingAgent_ID, C_Card_ID, C_CardProvider_ID)
-AS 
-SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.CreatedBy, p.Updated, p.UpdatedBy,
-    p.DocumentNo, p.DateTrx, p.IsReceipt, p.C_DocType_ID, p.TrxType,
-    p.C_BankAccount_ID, p.C_BPartner_ID, p.C_Invoice_ID, p.C_BP_BankAccount_ID, p.C_PaymentBatch_ID,
-    p.TenderType, p.CreditCardType, p.CreditCardNumber, p.CreditCardVV, p.CreditCardExpMM, p.CreditCardExpYY,
-    p.Micr, p.RoutingNo, p.AccountNo, p.CheckNo,
-    p.A_Name, p.A_Street, p.A_City, p.A_State, p.A_Zip, p.A_Ident_DL, p.A_Ident_SSN, p.A_EMail,
-    p.VoiceAuthCode, p.Orig_TrxID, p.PONum,
-    p.C_Currency_ID, p.C_ConversionType_ID,
-    CASE p.IsReceipt WHEN 'Y' THEN p.PayAmt ELSE p.PayAmt*-1 END AS PayAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN p.DiscountAmt ELSE p.DiscountAmt*-1 END AS DiscountAmt, 
-    CASE p.IsReceipt WHEN 'Y' THEN p.WriteOffAmt ELSE p.WriteOffAmt*-1 END AS WriteOffAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN p.TaxAmt ELSE p.TaxAmt*-1 END AS TaxAmt, 
-    CASE p.IsReceipt WHEN 'Y' THEN p.OverUnderAmt ELSE p.OverUnderAmt*-1 END AS OverUnderAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN 1 ELSE -1 END AS MultiplierAP,
-    paymentAllocated(p.C_Payment_ID, p.C_Currency_ID) AS AllocatedAmt,
-    paymentAvailable(p.C_Payment_ID) AS AvailableAmt,
-    p.IsOverUnderPayment, p.IsApproved,
-    p.R_PnRef, p.R_Result, p.R_RespMsg, p.R_AuthCode, p.R_AvsAddr, p.R_AvsZip, p.R_Info,
-    p.Processing, p.OProcessing, p.DocStatus, p.DocAction,
-    p.IsPrepayment, p.C_Charge_ID,
-    p.IsReconciled, p.IsAllocated, p.IsOnline, p.Processed, p.Posted,
-    p.C_Campaign_ID, p.C_Project_ID, p.C_Activity_ID, p.IsUnidentifiedPayment, p.Ref_Payment_ID, p.RelatedPayment_ID,
-    p.Description, 
-    bp.C_BP_AccountType_ID, bp.C_BP_SalesGroup_ID, bp.C_BP_Segment_ID, bp.C_BP_IndustryType_ID, p.CollectingAgent_ID,
-    p.C_Card_ID, p.C_CardProvider_ID
-FROM C_Payment p
-LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = p.C_BPartner_ID);</RollbackStatement>
-    </Step>
-    <Step DBType="Oracle" Parse="Y" SeqNo="20" StepType="SQL">
-      <Comments>RV_PAYMENT</Comments>
-      <SQLStatement>CREATE OR REPLACE VIEW RV_PAYMENT
-(C_PAYMENT_ID, AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, 
- CREATEDBY, UPDATED, UPDATEDBY, DOCUMENTNO, DATETRX, 
- ISRECEIPT, C_DOCTYPE_ID, TRXTYPE, C_BANKACCOUNT_ID, C_BPARTNER_ID, 
- C_INVOICE_ID, C_BP_BANKACCOUNT_ID, C_PAYMENTBATCH_ID, TENDERTYPE, CREDITCARDTYPE, 
- CREDITCARDNUMBER, CREDITCARDVV, CREDITCARDEXPMM, CREDITCARDEXPYY, MICR, 
- ROUTINGNO, ACCOUNTNO, CHECKNO, A_NAME, A_STREET, 
- A_CITY, A_STATE, A_ZIP, A_IDENT_DL, A_IDENT_SSN, 
- A_EMAIL, VOICEAUTHCODE, ORIG_TRXID, PONUM, C_CURRENCY_ID, 
- C_CONVERSIONTYPE_ID, PAYAMT, DISCOUNTAMT, WRITEOFFAMT, TAXAMT, 
- OVERUNDERAMT, MULTIPLIERAP, ALLOCATEDAMT, AVAILABLEAMT, ISOVERUNDERPAYMENT, 
- ISAPPROVED, R_PNREF, R_RESULT, R_RESPMSG, R_AUTHCODE, 
- R_AVSADDR, R_AVSZIP, R_INFO, PROCESSING, OPROCESSING, 
- DOCSTATUS, DOCACTION, ISPREPAYMENT, C_CHARGE_ID, ISRECONCILED, 
- ISALLOCATED, ISONLINE, PROCESSED, POSTED, C_CAMPAIGN_ID, 
- C_PROJECT_ID, C_ACTIVITY_ID, IsUnidentifiedPayment, Ref_Payment_ID, RelatedPayment_ID, Description, 
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, CollectingAgent_ID, C_Card_ID,
- C_CardProvider_ID, A_Country, AD_OrgTrx_ID, BusinessPartnerForRefund_ID, C_Bank_ID, C_CashBook_ID, ChargeAmt,
- C_Order_ID, C_PaymentMethod_ID, C_POS_ID, DateAcct, ECA14_GiftCard_ID, ECA14_Invoice_Reference_ID, ECA14_Reference_Amount,
- FM_Account_ID, FM_Agreement_ID, IsDelayedCapture, IsPaymentVerificationRequired, IsPaymentVerified, IsSelfService,
- NextRequestTime, POSReferenceBankAccount_ID, ProcessedOn, R_AuthCode_DC, R_CVV2Match, ResponseCode, ResponseMessage,
- ResponseStatus, Reversal_ID, R_PnRef_DC, S_Contract_ID, Swipe, User1_ID, User2_ID, User3_ID, User4_ID, UUID,
- Withdrawal_ID, Deposit_ID)
-AS 
-SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.CreatedBy, p.Updated, p.UpdatedBy,
-    p.DocumentNo, p.DateTrx, p.IsReceipt, p.C_DocType_ID, p.TrxType,
-    p.C_BankAccount_ID, p.C_BPartner_ID, p.C_Invoice_ID, p.C_BP_BankAccount_ID, p.C_PaymentBatch_ID,
-    p.TenderType, p.CreditCardType, p.CreditCardNumber, p.CreditCardVV, p.CreditCardExpMM, p.CreditCardExpYY,
-    p.Micr, p.RoutingNo, p.AccountNo, p.CheckNo,
-    p.A_Name, p.A_Street, p.A_City, p.A_State, p.A_Zip, p.A_Ident_DL, p.A_Ident_SSN, p.A_EMail,
-    p.VoiceAuthCode, p.Orig_TrxID, p.PONum,
-    p.C_Currency_ID, p.C_ConversionType_ID,
-    CASE p.IsReceipt WHEN 'Y' THEN p.PayAmt ELSE p.PayAmt*-1 END AS PayAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN p.DiscountAmt ELSE p.DiscountAmt*-1 END AS DiscountAmt, 
-    CASE p.IsReceipt WHEN 'Y' THEN p.WriteOffAmt ELSE p.WriteOffAmt*-1 END AS WriteOffAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN p.TaxAmt ELSE p.TaxAmt*-1 END AS TaxAmt, 
-    CASE p.IsReceipt WHEN 'Y' THEN p.OverUnderAmt ELSE p.OverUnderAmt*-1 END AS OverUnderAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN 1 ELSE -1 END AS MultiplierAP,
-    paymentAllocated(p.C_Payment_ID, p.C_Currency_ID) AS AllocatedAmt,
-    paymentAvailable(p.C_Payment_ID) AS AvailableAmt,
-    p.IsOverUnderPayment, p.IsApproved,
-    p.R_PnRef, p.R_Result, p.R_RespMsg, p.R_AuthCode, p.R_AvsAddr, p.R_AvsZip, p.R_Info,
-    p.Processing, p.OProcessing, p.DocStatus, p.DocAction,
-    p.IsPrepayment, p.C_Charge_ID,
-    p.IsReconciled, p.IsAllocated, p.IsOnline, p.Processed, p.Posted,
-    p.C_Campaign_ID, p.C_Project_ID, p.C_Activity_ID, p.IsUnidentifiedPayment, p.Ref_Payment_ID, p.RelatedPayment_ID,
-    p.Description, 
-    bp.C_BP_AccountType_ID, bp.C_BP_SalesGroup_ID, bp.C_BP_Segment_ID, bp.C_BP_IndustryType_ID, p.CollectingAgent_ID,
-    p.C_Card_ID, p.C_CardProvider_ID, p.A_Country, p.AD_OrgTrx_ID, p.BusinessPartnerForRefund_ID, p.C_Bank_ID, p.C_CashBook_ID, p.ChargeAmt,
-    p.C_Order_ID, p.C_PaymentMethod_ID, p.C_POS_ID, p.DateAcct, p.ECA14_GiftCard_ID, p.ECA14_Invoice_Reference_ID, p.ECA14_Reference_Amount,
-    p.FM_Account_ID, p.FM_Agreement_ID, p.IsDelayedCapture, p.IsPaymentVerificationRequired, p.IsPaymentVerified, p.IsSelfService,
-    p.NextRequestTime, p.POSReferenceBankAccount_ID, p.ProcessedOn, p.R_AuthCode_DC, p.R_CVV2Match, p.ResponseCode, p.ResponseMessage,
-    p.ResponseStatus, p.Reversal_ID, p.R_PnRef_DC, p.S_Contract_ID, p.Swipe, p.User1_ID, p.User2_ID, p.User3_ID, p.User4_ID, p.UUID,
-    p.Withdrawal_ID, p.Deposit_ID
-FROM C_Payment p
-LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = p.C_BPartner_ID);</SQLStatement>
-      <RollbackStatement>CREATE OR REPLACE VIEW RV_PAYMENT
-(C_PAYMENT_ID, AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, 
- CREATEDBY, UPDATED, UPDATEDBY, DOCUMENTNO, DATETRX, 
- ISRECEIPT, C_DOCTYPE_ID, TRXTYPE, C_BANKACCOUNT_ID, C_BPARTNER_ID, 
- C_INVOICE_ID, C_BP_BANKACCOUNT_ID, C_PAYMENTBATCH_ID, TENDERTYPE, CREDITCARDTYPE, 
- CREDITCARDNUMBER, CREDITCARDVV, CREDITCARDEXPMM, CREDITCARDEXPYY, MICR, 
- ROUTINGNO, ACCOUNTNO, CHECKNO, A_NAME, A_STREET, 
- A_CITY, A_STATE, A_ZIP, A_IDENT_DL, A_IDENT_SSN, 
- A_EMAIL, VOICEAUTHCODE, ORIG_TRXID, PONUM, C_CURRENCY_ID, 
- C_CONVERSIONTYPE_ID, PAYAMT, DISCOUNTAMT, WRITEOFFAMT, TAXAMT, 
- OVERUNDERAMT, MULTIPLIERAP, ALLOCATEDAMT, AVAILABLEAMT, ISOVERUNDERPAYMENT, 
- ISAPPROVED, R_PNREF, R_RESULT, R_RESPMSG, R_AUTHCODE, 
- R_AVSADDR, R_AVSZIP, R_INFO, PROCESSING, OPROCESSING, 
- DOCSTATUS, DOCACTION, ISPREPAYMENT, C_CHARGE_ID, ISRECONCILED, 
- ISALLOCATED, ISONLINE, PROCESSED, POSTED, C_CAMPAIGN_ID, 
- C_PROJECT_ID, C_ACTIVITY_ID, IsUnidentifiedPayment, Ref_Payment_ID, RelatedPayment_ID, Description, 
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, CollectingAgent_ID, C_Card_ID, C_CardProvider_ID)
-AS 
-SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.CreatedBy, p.Updated, p.UpdatedBy,
-    p.DocumentNo, p.DateTrx, p.IsReceipt, p.C_DocType_ID, p.TrxType,
-    p.C_BankAccount_ID, p.C_BPartner_ID, p.C_Invoice_ID, p.C_BP_BankAccount_ID, p.C_PaymentBatch_ID,
-    p.TenderType, p.CreditCardType, p.CreditCardNumber, p.CreditCardVV, p.CreditCardExpMM, p.CreditCardExpYY,
-    p.Micr, p.RoutingNo, p.AccountNo, p.CheckNo,
-    p.A_Name, p.A_Street, p.A_City, p.A_State, p.A_Zip, p.A_Ident_DL, p.A_Ident_SSN, p.A_EMail,
-    p.VoiceAuthCode, p.Orig_TrxID, p.PONum,
-    p.C_Currency_ID, p.C_ConversionType_ID,
-    CASE p.IsReceipt WHEN 'Y' THEN p.PayAmt ELSE p.PayAmt*-1 END AS PayAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN p.DiscountAmt ELSE p.DiscountAmt*-1 END AS DiscountAmt, 
-    CASE p.IsReceipt WHEN 'Y' THEN p.WriteOffAmt ELSE p.WriteOffAmt*-1 END AS WriteOffAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN p.TaxAmt ELSE p.TaxAmt*-1 END AS TaxAmt, 
-    CASE p.IsReceipt WHEN 'Y' THEN p.OverUnderAmt ELSE p.OverUnderAmt*-1 END AS OverUnderAmt,
-    CASE p.IsReceipt WHEN 'Y' THEN 1 ELSE -1 END AS MultiplierAP,
-    paymentAllocated(p.C_Payment_ID, p.C_Currency_ID) AS AllocatedAmt,
-    paymentAvailable(p.C_Payment_ID) AS AvailableAmt,
-    p.IsOverUnderPayment, p.IsApproved,
-    p.R_PnRef, p.R_Result, p.R_RespMsg, p.R_AuthCode, p.R_AvsAddr, p.R_AvsZip, p.R_Info,
-    p.Processing, p.OProcessing, p.DocStatus, p.DocAction,
-    p.IsPrepayment, p.C_Charge_ID,
-    p.IsReconciled, p.IsAllocated, p.IsOnline, p.Processed, p.Posted,
-    p.C_Campaign_ID, p.C_Project_ID, p.C_Activity_ID, p.IsUnidentifiedPayment, p.Ref_Payment_ID, p.RelatedPayment_ID,
-    p.Description, 
-    bp.C_BP_AccountType_ID, bp.C_BP_SalesGroup_ID, bp.C_BP_Segment_ID, bp.C_BP_IndustryType_ID, p.CollectingAgent_ID,
-    p.C_Card_ID, p.C_CardProvider_ID
-FROM C_Payment p
-LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = p.C_BPartner_ID);</RollbackStatement>
-    </Step>
     <Step SeqNo="30" StepType="AD">
       <PO AD_Table_ID="101" Action="I" Record_ID="104099" Table="AD_Column">
         <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
@@ -2764,6 +2555,69 @@ LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = p.C_BPartner_ID);</RollbackStateme
         <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
         <Data AD_Column_ID="12955" Column="AD_Column_ID">104134</Data>
         <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="741" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="63027" Table="AD_Element">
+          <Data AD_Column_ID="84316" Column="UUID">ad31bdf8-d096-4335-aeb8-5aa97167e5eb</Data>
+          <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+          <Data AD_Column_ID="2600" Column="Updated">2025-08-27 20:58:03.512</Data>
+          <Data AD_Column_ID="4299" Column="PrintName">Withdrawal</Data>
+          <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+          <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+          <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+          <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+          <Data AD_Column_ID="2603" Column="Name">Withdrawal</Data>
+          <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+          <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+          <Data AD_Column_ID="58589" Column="FieldLength">10</Data>
+          <Data AD_Column_ID="6484" Column="EntityType">D</Data>
+          <Data AD_Column_ID="2604" Column="Description">Withdrawal Payment</Data>
+          <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+          <Data AD_Column_ID="2598" Column="Created">2025-08-27 20:58:03.512</Data>
+          <Data AD_Column_ID="2602" Column="ColumnName">Withdrawal_ID</Data>
+          <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+          <Data AD_Column_ID="58588" Column="AD_Reference_ID">30</Data>
+          <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+          <Data AD_Column_ID="2594" Column="AD_Element_ID">63027</Data>
+          <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="742" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="63027" Table="AD_Element_Trl">
+          <Data AD_Column_ID="84317" Column="UUID">5f6c5242-a22d-435f-9e16-90fb7c11ac81</Data>
+          <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+          <Data AD_Column_ID="2644" Column="Updated">2025-08-27 20:58:04.372</Data>
+          <Data AD_Column_ID="4300" Column="PrintName">Withdrawal</Data>
+          <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+          <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+          <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+          <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+          <Data AD_Column_ID="2646" Column="Name">Withdrawal</Data>
+          <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+          <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+          <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+          <Data AD_Column_ID="2647" Column="Description">Withdrawal Payment</Data>
+          <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+          <Data AD_Column_ID="2642" Column="Created">2025-08-27 20:58:04.372</Data>
+          <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+          <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+          <Data AD_Column_ID="2637" Column="AD_Element_ID">63027</Data>
+          <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="743" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="63027" Table="AD_Element_Trl">
+          <Data AD_Column_ID="4300" Column="PrintName" oldValue="Withdrawal">Retiro</Data>
+          <Data AD_Column_ID="2646" Column="Name" oldValue="Withdrawal">Retiro</Data>
+          <Data AD_Column_ID="2647" Column="Description" oldValue="Withdrawal Payment">Pago o egreso de banco</Data>
+          <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+          <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="63027">63027</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="744" StepType="AD">
+      <PO AD_Table_ID="276" Action="U" Record_ID="63027" Table="AD_Element">
+          <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isOldNull="true">343</Data>
       </PO>
     </Step>
     <Step SeqNo="750" StepType="AD">
