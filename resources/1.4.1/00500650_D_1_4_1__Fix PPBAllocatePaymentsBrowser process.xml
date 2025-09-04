@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix PPBAllocatePaymentsBrowser process" ReleaseNo="1.4.1" SeqNo="500650">
+    <Comments>Fix PPBAllocatePaymentsBrowser process</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50308" Table="AD_Browse">
+        <Data AD_Column_ID="58002" Column="AD_Process_ID" oldValue="54883">54885</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -189,21 +189,34 @@ public class MPaymentProcessorBatch extends X_C_PaymentProcessorBatch implements
     }
 
     public void updateTotals() {
-        setPayAmt(Env.ZERO);
-        setFeeAmt(Env.ZERO);
-        setDiscountAmt(Env.ZERO);
-        setWithholdingAmt(Env.ZERO);
-        setTaxAmt(Env.ZERO);
-        setGrandTotal(Env.ZERO);
-        getLines().forEach(lineId -> {
+        BigDecimal payAmount = Env.ZERO;
+        BigDecimal feeAmount = Env.ZERO;
+        BigDecimal discountAmount = Env.ZERO;
+        BigDecimal withholdingAmount = Env.ZERO;
+        BigDecimal taxAmount = Env.ZERO;
+        BigDecimal grandTotalAmount = Env.ZERO;
+
+        for (Integer lineId : getLines()) {
             MPPBatchLine ppbLine = new MPPBatchLine(getCtx(), lineId, get_TrxName());
-            setPayAmt(getPayAmt().add(ppbLine.getPayAmt()));
-            setFeeAmt(getFeeAmt().add(ppbLine.getFeeAmt()));
-            setDiscountAmt(getDiscountAmt().add(ppbLine.getDiscountAmt()));
-            setWithholdingAmt(getWithholdingAmt().add(ppbLine.getWithholdingAmt()));
-            setTaxAmt(getTaxAmt().add(ppbLine.getTaxAmt()));
-            setGrandTotal(getGrandTotal().add(ppbLine.getTotalAmt()));
-        });
+            payAmount = payAmount.add(ppbLine.getPayAmt());
+            feeAmount = feeAmount.add(ppbLine.getFeeAmt());
+            discountAmount = discountAmount.add(ppbLine.getDiscountAmt());
+            withholdingAmount = withholdingAmount.add(ppbLine.getWithholdingAmt());
+            taxAmount = taxAmount.add(ppbLine.getTaxAmt());
+            grandTotalAmount = grandTotalAmount.add(ppbLine.getTotalAmt());
+        }
+        setPayAmt(payAmount);
+        setFeeAmt(feeAmount);
+        setDiscountAmt(discountAmount);
+        setWithholdingAmt(withholdingAmount);
+        setTaxAmt(taxAmount);
+        setGrandTotal(grandTotalAmount);
+        BigDecimal openAmount = grandTotalAmount
+            .subtract(feeAmount)
+            .subtract(discountAmount)
+            .subtract(withholdingAmount)
+            .subtract(taxAmount);
+        setOpenAmt(openAmount);
         saveEx();
     }
 
