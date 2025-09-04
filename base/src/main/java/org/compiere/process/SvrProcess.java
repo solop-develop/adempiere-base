@@ -101,6 +101,7 @@ public abstract class SvrProcess implements ProcessCall
 	protected static String 	MESSAGE_InvalidArguments = "@InvalidArguments@";
 	protected static String 	MESSAGE_FillMandatory = "@FillMandatory@";
 
+	private static IPrintDocument printDocumentProvider = null;
 
 	/**
 	 *  Start the process.
@@ -797,12 +798,13 @@ public abstract class SvrProcess implements ProcessCall
 		try
 		{
 			Class<?> clazz = Class.forName(className);
-			Object object = clazz.newInstance();
+			Constructor<?> constructor = clazz.getDeclaredConstructor();
+			Object object = constructor.newInstance();
 			Method[] methods = clazz.getMethods();
-			for (int i = 0; i < methods.length; i++)
-			{
-				if (methods[i].getName().equals(methodName))
+			for (int i = 0; i < methods.length; i++) {
+				if (methods[i].getName().equals(methodName)) {
 					return methods[i].invoke(object, args);
+				}
 			}
 		}
 		catch (Exception ex)
@@ -979,20 +981,45 @@ public abstract class SvrProcess implements ProcessCall
 	public void printDocument(List<PO> documentList, int printFormatId, boolean askPrint) {
 		getPrintDocumentImplementation().print(documentList, printFormatId, getProcessInfo().getWindowNo(), askPrint);
 	}
-	
+
+
+	public static void setPrintDocumentProvider(String providerClassName) {
+		IPrintDocument printDocument;
+		if (Util.isEmpty(providerClassName, true)) {
+			throw new IllegalArgumentException("Class name cannot be null or empty");
+		}
+		try {
+			Class<?> clazz = Class.forName(providerClassName);
+			Constructor<?> constructor = clazz.getDeclaredConstructor();
+			printDocument = (IPrintDocument) constructor.newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		setPrintDocumentProvider(printDocument);
+	}
+	public static void setPrintDocumentProvider(IPrintDocument provider) {
+		if (provider == null) {
+			throw new IllegalArgumentException("Cannot set print document provider to null");
+		}
+		printDocumentProvider = provider;
+	}
+
 	/**
 	 * Get print document implementation
 	 * @return
 	 */
 	private IPrintDocument getPrintDocumentImplementation() {
 		IPrintDocument printDocument;
+		if (printDocumentProvider != null) {
+			printDocument = printDocumentProvider;
+			return printDocument;
+		}
+		Class<?> clazz;
 		//	OK to print shipments
 		if (Ini.isClient()) {
-			Class<?> clazz;
 			try {
 				clazz = Class.forName("org.eevolution.form.VPrintDocument");
-				Constructor<?> constructor = null;
-				constructor = clazz.getDeclaredConstructor();
+				Constructor<?> constructor = clazz.getDeclaredConstructor();
 				printDocument = (IPrintDocument) constructor.newInstance();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -1000,11 +1027,11 @@ public abstract class SvrProcess implements ProcessCall
 		} else {
 			try {
 				ClassLoader loader = Thread.currentThread().getContextClassLoader();
-				if (loader == null)
+				if (loader == null) {
 					loader = GardenWorldCleanup.class.getClassLoader();
-				Class<?> clazz = loader.loadClass("org.eevolution.form.WPrintDocument");
-				Constructor<?> constructor = null;
-				constructor = clazz.getDeclaredConstructor();
+				}
+				clazz = loader.loadClass("org.eevolution.form.WPrintDocument");
+				Constructor<?> constructor = clazz.getDeclaredConstructor();
 				printDocument = (IPrintDocument) constructor.newInstance();
 			} catch (Exception e) {
 				throw new AdempiereException(e);
