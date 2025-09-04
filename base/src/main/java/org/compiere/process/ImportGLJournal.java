@@ -494,6 +494,22 @@ public class ImportGLJournal extends SvrProcess implements ImportProcess
 							if (no != 0)
 								log.warning("Invalid OrgTrx=" + no);
 
+							//Set Activity
+							sql = new StringBuilder("UPDATE I_GLJournal i "
+									+ "SET C_Activity_ID=(SELECT a.C_Activity_ID FROM C_Activity a"
+									+ " WHERE a.Value=i.D_ActivityValue AND i.AD_Client_ID=a.AD_Client_ID) "
+									+ "WHERE C_Activity_ID IS NULL AND D_ActivityValue IS NOT NULL"
+									+ " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'").append(clientCheck);
+							no = DB.executeUpdate(sql.toString(), trxName);
+							log.fine("Set Activity from Value=" + no);
+							sql = new StringBuilder("UPDATE I_GLJournal i "
+									+ "SET I_IsImported='E', I_ErrorMsg=COALESCE(I_ErrorMsg,'')	||' ERR=Invalid Activity, '"
+									+ "WHERE C_Activity_ID IS NULL AND D_ActivityValue IS NOT NULL"
+									+ " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'").append(clientCheck);
+							no = DB.executeUpdate(sql.toString(), trxName);
+							if (no != 0)
+								log.warning("Invalid Activity=" + no);
+
 							//	Source Amounts
 							sql = new StringBuilder("UPDATE I_GLJournal "
 									+ "SET AmtSourceDr = 0 "
