@@ -720,33 +720,32 @@ public final class FactLine extends X_Fact_Acct
 			setAmtAcctCr (getAmtSourceCr());
 			return true;
 		}
-		//	Get Conversion Type from Line or Header
-		int C_ConversionType_ID = 0;
+		
 		int AD_Org_ID = 0;
-		if (m_docLine != null)			//	get from line
-		{
-			C_ConversionType_ID = m_docLine.getC_ConversionType_ID();
+		if (m_docLine != null)		//	get from line
 			AD_Org_ID = m_docLine.getAD_Org_ID();
-		}
-		if (C_ConversionType_ID == 0)	//	get from header
+
+		if (m_doc == null)
 		{
-			if (m_doc == null)
-			{
-				log.severe ("No Document VO");
-				return false;
-			}
-			C_ConversionType_ID = m_doc.getC_ConversionType_ID();
-			if (AD_Org_ID == 0)
-				AD_Org_ID = m_doc.getAD_Org_ID();
+			log.severe ("No Document VO");
+			return false;
 		}
+
+		if (AD_Org_ID == 0)
+			AD_Org_ID = m_doc.getAD_Org_ID();
+
+		int C_ConversionType_ID = MConversionType.getDefault(m_doc.getAD_Client_ID());
+		if(C_ConversionType_ID == 0)
+			C_ConversionType_ID = MConversionType.TYPE_SPOT;
+		
 		setAmtAcctDr (MConversionRate.convert (getCtx(),
 			getAmtSourceDr(), getC_Currency_ID(), m_acctSchema.getC_Currency_ID(),
-			getDateAcct(), C_ConversionType_ID, m_doc.getAD_Client_ID(), AD_Org_ID));
+			getDateTrx(), C_ConversionType_ID, m_doc.getAD_Client_ID(), AD_Org_ID));
 		if (getAmtAcctDr() == null)
 			return false;
 		setAmtAcctCr (MConversionRate.convert (getCtx(),
 			getAmtSourceCr(), getC_Currency_ID(), m_acctSchema.getC_Currency_ID(),
-			getDateAcct(), C_ConversionType_ID, m_doc.getAD_Client_ID(), AD_Org_ID));
+			getDateTrx(), C_ConversionType_ID, m_doc.getAD_Client_ID(), AD_Org_ID));
 		return true;
 	}	//	convert
 
