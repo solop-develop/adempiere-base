@@ -97,9 +97,9 @@ public class X_C_PaymentProcessorSchedule extends PO implements I_C_PaymentProce
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_C_PaymentProcessorBatch getC_PaymentProcessorBatch() throws RuntimeException
+	public I_C_PaymentProcessorBatch getC_PaymentProcessorBatch() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_PaymentProcessorBatch)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_PaymentProcessorBatch.Table_Name)
+		return (I_C_PaymentProcessorBatch)MTable.get(getCtx(), I_C_PaymentProcessorBatch.Table_Name)
 			.getPO(getC_PaymentProcessorBatch_ID(), get_TrxName());	}
 
 	/** Set Payment Processor Batch.
