@@ -97,7 +97,7 @@ public class GeneratePaymentsForProcessorBatchInvoice extends GeneratePaymentsFo
 
 		});
 
-		return "";
+		return "@Created@ " + created.get();
 	}
 	private MPayment getPayment(MInvoice invoice, MPaymentProcessorBatch batch) {
 		MPayment payment = new MPayment(getCtx(), 0, get_TrxName());
