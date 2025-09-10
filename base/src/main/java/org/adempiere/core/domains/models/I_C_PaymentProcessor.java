@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for C_PaymentProcessor
  *  @author Adempiere (generated) 
@@ -524,6 +523,17 @@ public interface I_C_PaymentProcessor
 	  */
 	public int getProxyPort();
 
+    /** Column name PurchaseInvoiceDocType_ID */
+    public static final String COLUMNNAME_PurchaseInvoiceDocType_ID = "PurchaseInvoiceDocType_ID";
+
+	/** Set Purchase Invoice Document Type	  */
+	public void setPurchaseInvoiceDocType_ID (int PurchaseInvoiceDocType_ID);
+
+	/** Get Purchase Invoice Document Type	  */
+	public int getPurchaseInvoiceDocType_ID();
+
+	public I_C_DocType getPurchaseInvoiceDocType() throws RuntimeException;
+
     /** Column name RequireVV */
     public static final String COLUMNNAME_RequireVV = "RequireVV";
 
@@ -536,6 +546,17 @@ public interface I_C_PaymentProcessor
 	  * Require 3/4 digit Credit Verification Code
 	  */
 	public boolean isRequireVV();
+
+    /** Column name SalesInvoiceDocType_ID */
+    public static final String COLUMNNAME_SalesInvoiceDocType_ID = "SalesInvoiceDocType_ID";
+
+	/** Set Sales Invoice Document Type	  */
+	public void setSalesInvoiceDocType_ID (int SalesInvoiceDocType_ID);
+
+	/** Get Sales Invoice Document Type	  */
+	public int getSalesInvoiceDocType_ID();
+
+	public I_C_DocType getSalesInvoiceDocType() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -591,4 +612,26 @@ public interface I_C_PaymentProcessor
 	  * Vendor ID for the Payment Processor
 	  */
 	public String getVendorID();
+
+    /** Column name WithholdingCharge_ID */
+    public static final String COLUMNNAME_WithholdingCharge_ID = "WithholdingCharge_ID";
+
+	/** Set Withholding Charge	  */
+	public void setWithholdingCharge_ID (int WithholdingCharge_ID);
+
+	/** Get Withholding Charge	  */
+	public int getWithholdingCharge_ID();
+
+	public I_C_Charge getWithholdingCharge() throws RuntimeException;
+
+    /** Column name WithholdingDocType_ID */
+    public static final String COLUMNNAME_WithholdingDocType_ID = "WithholdingDocType_ID";
+
+	/** Set Withholding Document Type	  */
+	public void setWithholdingDocType_ID (int WithholdingDocType_ID);
+
+	/** Get Withholding Document Type	  */
+	public int getWithholdingDocType_ID();
+
+	public I_C_DocType getWithholdingDocType() throws RuntimeException;
 }

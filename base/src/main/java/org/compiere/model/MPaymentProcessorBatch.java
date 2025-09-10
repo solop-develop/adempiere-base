@@ -143,6 +143,7 @@ public class MPaymentProcessorBatch extends X_C_PaymentProcessorBatch implements
                 throw new AdempiereException("@C_DocType_ID@ @FillMandatory@");
 
         }
+        updateOpenAmount();
         return super.beforeSave(newRecord);
     }
 
@@ -189,35 +190,58 @@ public class MPaymentProcessorBatch extends X_C_PaymentProcessorBatch implements
     }
 
     public void updateTotals() {
+        boolean isManualFee = get_ValueAsBoolean("IsManualFee");
         BigDecimal payAmount = Env.ZERO;
-        BigDecimal feeAmount = Env.ZERO;
-        BigDecimal discountAmount = Env.ZERO;
-        BigDecimal withholdingAmount = Env.ZERO;
-        BigDecimal taxAmount = Env.ZERO;
+        BigDecimal feeAmount = getFeeAmt();
+        BigDecimal discountAmount = getDiscountAmt();
+        BigDecimal withholdingAmount = getWithholdingAmt();
+        BigDecimal taxAmount = getTaxAmt();
         BigDecimal grandTotalAmount = Env.ZERO;
-
+        BigDecimal paidAmount = Env.ZERO;
         for (Integer lineId : getLines()) {
             MPPBatchLine ppbLine = new MPPBatchLine(getCtx(), lineId, get_TrxName());
             payAmount = payAmount.add(ppbLine.getPayAmt());
-            feeAmount = feeAmount.add(ppbLine.getFeeAmt());
-            discountAmount = discountAmount.add(ppbLine.getDiscountAmt());
-            withholdingAmount = withholdingAmount.add(ppbLine.getWithholdingAmt());
-            taxAmount = taxAmount.add(ppbLine.getTaxAmt());
             grandTotalAmount = grandTotalAmount.add(ppbLine.getTotalAmt());
+            if (!isManualFee) {
+                feeAmount = feeAmount.add(ppbLine.getFeeAmt());
+                discountAmount = discountAmount.add(ppbLine.getDiscountAmt());
+                withholdingAmount = withholdingAmount.add(ppbLine.getWithholdingAmt());
+                taxAmount = taxAmount.add(ppbLine.getTaxAmt());
+            }
+
         }
-        setPayAmt(payAmount);
         setFeeAmt(feeAmount);
         setDiscountAmt(discountAmount);
         setWithholdingAmt(withholdingAmount);
         setTaxAmt(taxAmount);
-        setGrandTotal(grandTotalAmount);
-        BigDecimal openAmount = grandTotalAmount
-            .subtract(feeAmount)
-            .subtract(discountAmount)
-            .subtract(withholdingAmount)
-            .subtract(taxAmount);
+        setPayAmt(payAmount);
+        setGrandTotal(payAmount);
+
+        for (Integer transactionId : getTransactions()) {
+            MPPVendorTransaction transaction = new MPPVendorTransaction(getCtx(), transactionId, get_TrxName());
+            paidAmount = paidAmount.add(transaction.getPayAmt());
+        }
+        set_ValueOfColumn("PaidAmt", paidAmount);
+        BigDecimal openAmount = payAmount
+                .subtract(feeAmount)
+                .subtract(discountAmount)
+                .subtract(withholdingAmount)
+                .subtract(taxAmount)
+                .subtract(paidAmount);
         setOpenAmt(openAmount);
         saveEx();
+    }
+
+    private void updateOpenAmount(){
+
+        BigDecimal paidAmount = Optional.ofNullable((BigDecimal) get_Value("PaidAmt")).orElse(BigDecimal.ZERO);
+        BigDecimal openAmount = getPayAmt()
+                .subtract(getFeeAmt())
+                .subtract(getDiscountAmt())
+                .subtract(getWithholdingAmt())
+                .subtract(getTaxAmt())
+                .subtract(paidAmount);
+        setOpenAmt(openAmount);
     }
 
     /**

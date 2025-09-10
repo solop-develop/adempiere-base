@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="[Feature Request] Add some fields to RV_Payment view #339" ReleaseNo="1.4.0" SeqNo="500640">
+  <Migration EntityType="D" Name="[Feature Request] Add some fields to RV_Payment view #339" ReleaseNo="1.4.0" SeqNo="500645">
     <Step DBType="Postgres" Parse="Y" SeqNo="810" StepType="SQL">
       <Comments>RV_PAYMENT</Comments>
       <SQLStatement>CREATE OR REPLACE VIEW RV_PAYMENT

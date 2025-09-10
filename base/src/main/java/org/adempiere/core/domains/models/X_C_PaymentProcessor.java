@@ -18,16 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 
 /** Generated Model for C_PaymentProcessor
  *  @author Adempiere (generated) 
@@ -38,7 +37,7 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250827L;
+	private static final long serialVersionUID = 20250910L;
 
     /** Standard Constructor */
     public X_C_PaymentProcessor (Properties ctx, int C_PaymentProcessor_ID, String trxName)
@@ -337,9 +336,9 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return false;
 	}
 
-	public I_AD_Sequence getAD_Sequence() throws RuntimeException
+	public org.adempiere.core.domains.models.I_AD_Sequence getAD_Sequence() throws RuntimeException
     {
-		return (I_AD_Sequence)MTable.get(getCtx(), I_AD_Sequence.Table_Name)
+		return (org.adempiere.core.domains.models.I_AD_Sequence)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Sequence.Table_Name)
 			.getPO(getAD_Sequence_ID(), get_TrxName());	}
 
 	/** Set Sequence.
@@ -365,9 +364,9 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return ii.intValue();
 	}
 
-	public I_C_BankAccount getC_BankAccount() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_BankAccount getC_BankAccount() throws RuntimeException
     {
-		return (I_C_BankAccount)MTable.get(getCtx(), I_C_BankAccount.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_BankAccount)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BankAccount.Table_Name)
 			.getPO(getC_BankAccount_ID(), get_TrxName());	}
 
 	/** Set Bank Account.
@@ -393,9 +392,9 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return ii.intValue();
 	}
 
-	public I_C_Bank getC_Bank() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_Bank getC_Bank() throws RuntimeException
     {
-		return (I_C_Bank)MTable.get(getCtx(), I_C_Bank.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_Bank)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Bank.Table_Name)
 			.getPO(getC_Bank_ID(), get_TrxName());	}
 
 	/** Set Bank.
@@ -421,9 +420,9 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return ii.intValue();
 	}
 
-	public I_C_Currency getC_Currency() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException
     {
-		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_Currency)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Currency.Table_Name)
 			.getPO(getC_Currency_ID(), get_TrxName());	}
 
 	/** Set Currency.
@@ -529,9 +528,9 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
-	public I_C_Charge getFeeCharge() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_Charge getFeeCharge() throws RuntimeException
     {
-		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_Charge)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Charge.Table_Name)
 			.getPO(getFeeCharge_ID(), get_TrxName());	}
 
 	/** Set Charge for Fee.
@@ -557,9 +556,9 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return ii.intValue();
 	}
 
-	public I_C_Currency getFeeCurrency() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_Currency getFeeCurrency() throws RuntimeException
     {
-		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_Currency)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Currency.Table_Name)
 			.getPO(getFeeCurrency_ID(), get_TrxName());	}
 
 	/** Set Currency for Fee.
@@ -701,9 +700,9 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return (String)get_Value(COLUMNNAME_Password);
 	}
 
-	public I_C_BPartner getPaymentProcessorVendor() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_BPartner getPaymentProcessorVendor() throws RuntimeException
     {
-		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
 			.getPO(getPaymentProcessorVendor_ID(), get_TrxName());	}
 
 	/** Set Processor Vendor.
@@ -817,6 +816,31 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 		return ii.intValue();
 	}
 
+	public org.adempiere.core.domains.models.I_C_DocType getPurchaseInvoiceDocType() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+			.getPO(getPurchaseInvoiceDocType_ID(), get_TrxName());	}
+
+	/** Set Purchase Invoice Document Type.
+		@param PurchaseInvoiceDocType_ID Purchase Invoice Document Type	  */
+	public void setPurchaseInvoiceDocType_ID (int PurchaseInvoiceDocType_ID)
+	{
+		if (PurchaseInvoiceDocType_ID < 1) 
+			set_Value (COLUMNNAME_PurchaseInvoiceDocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_PurchaseInvoiceDocType_ID, Integer.valueOf(PurchaseInvoiceDocType_ID));
+	}
+
+	/** Get Purchase Invoice Document Type.
+		@return Purchase Invoice Document Type	  */
+	public int getPurchaseInvoiceDocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_PurchaseInvoiceDocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Require CreditCard Verification Code.
 		@param RequireVV 
 		Require 3/4 digit Credit Verification Code
@@ -839,6 +863,31 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	public org.adempiere.core.domains.models.I_C_DocType getSalesInvoiceDocType() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+			.getPO(getSalesInvoiceDocType_ID(), get_TrxName());	}
+
+	/** Set Sales Invoice Document Type.
+		@param SalesInvoiceDocType_ID Sales Invoice Document Type	  */
+	public void setSalesInvoiceDocType_ID (int SalesInvoiceDocType_ID)
+	{
+		if (SalesInvoiceDocType_ID < 1) 
+			set_Value (COLUMNNAME_SalesInvoiceDocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_SalesInvoiceDocType_ID, Integer.valueOf(SalesInvoiceDocType_ID));
+	}
+
+	/** Get Sales Invoice Document Type.
+		@return Sales Invoice Document Type	  */
+	public int getSalesInvoiceDocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SalesInvoiceDocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set User ID.
@@ -890,5 +939,55 @@ public class X_C_PaymentProcessor extends PO implements I_C_PaymentProcessor, I_
 	public String getVendorID () 
 	{
 		return (String)get_Value(COLUMNNAME_VendorID);
+	}
+
+	public org.adempiere.core.domains.models.I_C_Charge getWithholdingCharge() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_C_Charge)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Charge.Table_Name)
+			.getPO(getWithholdingCharge_ID(), get_TrxName());	}
+
+	/** Set Withholding Charge.
+		@param WithholdingCharge_ID Withholding Charge	  */
+	public void setWithholdingCharge_ID (int WithholdingCharge_ID)
+	{
+		if (WithholdingCharge_ID < 1) 
+			set_Value (COLUMNNAME_WithholdingCharge_ID, null);
+		else 
+			set_Value (COLUMNNAME_WithholdingCharge_ID, Integer.valueOf(WithholdingCharge_ID));
+	}
+
+	/** Get Withholding Charge.
+		@return Withholding Charge	  */
+	public int getWithholdingCharge_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_WithholdingCharge_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_C_DocType getWithholdingDocType() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+			.getPO(getWithholdingDocType_ID(), get_TrxName());	}
+
+	/** Set Withholding Document Type.
+		@param WithholdingDocType_ID Withholding Document Type	  */
+	public void setWithholdingDocType_ID (int WithholdingDocType_ID)
+	{
+		if (WithholdingDocType_ID < 1) 
+			set_Value (COLUMNNAME_WithholdingDocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_WithholdingDocType_ID, Integer.valueOf(WithholdingDocType_ID));
+	}
+
+	/** Get Withholding Document Type.
+		@return Withholding Document Type	  */
+	public int getWithholdingDocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_WithholdingDocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 }
