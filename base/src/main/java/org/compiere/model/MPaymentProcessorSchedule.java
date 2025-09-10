@@ -1,5 +1,4 @@
 package org.compiere.model;
-import org.adempiere.core.domains.models.X_C_PPBatchLine;
 import org.adempiere.core.domains.models.X_C_PaymentProcessorSchedule;
 import org.adempiere.exceptions.AdempiereException;
 
@@ -26,11 +25,11 @@ public class MPaymentProcessorSchedule extends X_C_PaymentProcessorSchedule {
         MPaymentProcessorBatch batch = (MPaymentProcessorBatch) getC_PaymentProcessorBatch();
         String whereClause = "C_PaymentProcessorBatch_ID = ? AND C_PaymentProcessorSchedule_ID <> ?";
         BigDecimal scheduleAmount = new Query(getCtx(), Table_Name, whereClause, get_TrxName())
-            .setParameters(getC_PaymentProcessorBatch_ID(), getC_PaymentProcessorSchedule_ID())
-            .sum(COLUMNNAME_Amount);
+                .setParameters(getC_PaymentProcessorBatch_ID(), getC_PaymentProcessorSchedule_ID())
+                .sum(COLUMNNAME_Amount);
         scheduleAmount = scheduleAmount.add(getAmount());
-        if (scheduleAmount.compareTo(batch.getApprovalAmt()) > 0) {
-            throw new AdempiereException("@Amount@ (" + scheduleAmount +") > @ApprovalAmt@ " + batch.getApprovalAmt() +")");
+        if (scheduleAmount.compareTo(batch.getOpenAmt()) > 0) {
+            throw new AdempiereException("@Amount@ (" + scheduleAmount +") > @OpenAmt@ " + batch.getOpenAmt() +")");
         }
         return super.beforeSave(newRecord);
     }
