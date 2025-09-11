@@ -18,17 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 
 /** Generated Model for C_PaymentProcessorBatch
  *  @author Adempiere (generated) 
@@ -39,7 +38,7 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250827L;
+	private static final long serialVersionUID = 20250910L;
 
     /** Standard Constructor */
     public X_C_PaymentProcessorBatch (Properties ctx, int C_PaymentProcessorBatch_ID, String trxName)
@@ -52,6 +51,7 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
 			setC_BPartner_Location_ID (0);
 			setC_DocType_ID (0);
 			setC_PaymentProcessorBatch_ID (0);
+			setC_PaymentProcessor_ID (0);
 			setDateDoc (new Timestamp( System.currentTimeMillis() ));
 // @#Date@
 			setDocAction (null);
@@ -59,6 +59,7 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
 			setDocStatus (null);
 // DR
 			setDocumentNo (null);
+			setFinalAccount_ID (0);
 			setIsApproved (false);
 // N
 			setProcessed (false);
@@ -485,6 +486,31 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
 		return bd;
 	}
 
+	public I_C_BankAccount getFinalAccount() throws RuntimeException
+    {
+		return (I_C_BankAccount)MTable.get(getCtx(), I_C_BankAccount.Table_Name)
+			.getPO(getFinalAccount_ID(), get_TrxName());	}
+
+	/** Set Final Account.
+		@param FinalAccount_ID Final Account	  */
+	public void setFinalAccount_ID (int FinalAccount_ID)
+	{
+		if (FinalAccount_ID < 1) 
+			set_Value (COLUMNNAME_FinalAccount_ID, null);
+		else 
+			set_Value (COLUMNNAME_FinalAccount_ID, Integer.valueOf(FinalAccount_ID));
+	}
+
+	/** Get Final Account.
+		@return Final Account	  */
+	public int getFinalAccount_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_FinalAccount_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Generate AP Invoice.
 		@param GenerateAPInvoice 
 		Generate AP Invoice from Document
@@ -500,6 +526,23 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
 	public String getGenerateAPInvoice () 
 	{
 		return (String)get_Value(COLUMNNAME_GenerateAPInvoice);
+	}
+
+	/** Set Generate AR Invoice.
+		@param GenerateARInvoice 
+		Generate AR Invoice from Document
+	  */
+	public void setGenerateARInvoice (String GenerateARInvoice)
+	{
+		set_Value (COLUMNNAME_GenerateARInvoice, GenerateARInvoice);
+	}
+
+	/** Get Generate AR Invoice.
+		@return Generate AR Invoice from Document
+	  */
+	public String getGenerateARInvoice () 
+	{
+		return (String)get_Value(COLUMNNAME_GenerateARInvoice);
 	}
 
 	/** Set Grand Total.
@@ -546,6 +589,48 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
 		return false;
 	}
 
+	/** Set Automatic Receipt.
+		@param IsAutomaticReceipt Automatic Receipt	  */
+	public void setIsAutomaticReceipt (boolean IsAutomaticReceipt)
+	{
+		set_Value (COLUMNNAME_IsAutomaticReceipt, Boolean.valueOf(IsAutomaticReceipt));
+	}
+
+	/** Get Automatic Receipt.
+		@return Automatic Receipt	  */
+	public boolean isAutomaticReceipt () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsAutomaticReceipt);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Manual Fee Calculation.
+		@param IsManualFee Manual Fee Calculation	  */
+	public void setIsManualFee (boolean IsManualFee)
+	{
+		set_Value (COLUMNNAME_IsManualFee, Boolean.valueOf(IsManualFee));
+	}
+
+	/** Get Manual Fee Calculation.
+		@return Manual Fee Calculation	  */
+	public boolean isManualFee () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsManualFee);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Open Amount.
 		@param OpenAmt 
 		Open item amount
@@ -561,6 +646,23 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
 	public BigDecimal getOpenAmt () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_OpenAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Paid Amount.
+		@param PaidAmt Paid Amount	  */
+	public void setPaidAmt (BigDecimal PaidAmt)
+	{
+		set_Value (COLUMNNAME_PaidAmt, PaidAmt);
+	}
+
+	/** Get Paid Amount.
+		@return Paid Amount	  */
+	public BigDecimal getPaidAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PaidAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
