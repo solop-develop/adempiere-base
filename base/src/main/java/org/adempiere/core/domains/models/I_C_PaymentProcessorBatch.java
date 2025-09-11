@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for C_PaymentProcessorBatch
  *  @author Adempiere (generated) 
@@ -286,6 +285,17 @@ public interface I_C_PaymentProcessorBatch
 	  */
 	public BigDecimal getFeeAmt();
 
+    /** Column name FinalAccount_ID */
+    public static final String COLUMNNAME_FinalAccount_ID = "FinalAccount_ID";
+
+	/** Set Final Account	  */
+	public void setFinalAccount_ID (int FinalAccount_ID);
+
+	/** Get Final Account	  */
+	public int getFinalAccount_ID();
+
+	public I_C_BankAccount getFinalAccount() throws RuntimeException;
+
     /** Column name GenerateAPInvoice */
     public static final String COLUMNNAME_GenerateAPInvoice = "GenerateAPInvoice";
 
@@ -298,6 +308,19 @@ public interface I_C_PaymentProcessorBatch
 	  * Generate AP Invoice from Document
 	  */
 	public String getGenerateAPInvoice();
+
+    /** Column name GenerateARInvoice */
+    public static final String COLUMNNAME_GenerateARInvoice = "GenerateARInvoice";
+
+	/** Set Generate AR Invoice.
+	  * Generate AR Invoice from Document
+	  */
+	public void setGenerateARInvoice (String GenerateARInvoice);
+
+	/** Get Generate AR Invoice.
+	  * Generate AR Invoice from Document
+	  */
+	public String getGenerateARInvoice();
 
     /** Column name GrandTotal */
     public static final String COLUMNNAME_GrandTotal = "GrandTotal";
@@ -338,6 +361,24 @@ public interface I_C_PaymentProcessorBatch
 	  */
 	public boolean isApproved();
 
+    /** Column name IsAutomaticReceipt */
+    public static final String COLUMNNAME_IsAutomaticReceipt = "IsAutomaticReceipt";
+
+	/** Set Automatic Receipt	  */
+	public void setIsAutomaticReceipt (boolean IsAutomaticReceipt);
+
+	/** Get Automatic Receipt	  */
+	public boolean isAutomaticReceipt();
+
+    /** Column name IsManualFee */
+    public static final String COLUMNNAME_IsManualFee = "IsManualFee";
+
+	/** Set Manual Fee Calculation	  */
+	public void setIsManualFee (boolean IsManualFee);
+
+	/** Get Manual Fee Calculation	  */
+	public boolean isManualFee();
+
     /** Column name OpenAmt */
     public static final String COLUMNNAME_OpenAmt = "OpenAmt";
 
@@ -350,6 +391,15 @@ public interface I_C_PaymentProcessorBatch
 	  * Open item amount
 	  */
 	public BigDecimal getOpenAmt();
+
+    /** Column name PaidAmt */
+    public static final String COLUMNNAME_PaidAmt = "PaidAmt";
+
+	/** Set Paid Amount	  */
+	public void setPaidAmt (BigDecimal PaidAmt);
+
+	/** Get Paid Amount	  */
+	public BigDecimal getPaidAmt();
 
     /** Column name PayAmt */
     public static final String COLUMNNAME_PayAmt = "PayAmt";

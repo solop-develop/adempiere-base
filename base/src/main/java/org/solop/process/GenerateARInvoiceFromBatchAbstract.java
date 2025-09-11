@@ -18,29 +18,24 @@
 
 package org.solop.process;
 
+import java.sql.Timestamp;
 import org.compiere.process.SvrProcess;
 
-import java.sql.Timestamp;
-
-/** Generated Process for (Generate AP Invoice)
+/** Generated Process for (Generate AR Invoice)
  *  @author ADempiere (generated) 
  *  @version Release 3.9.4
  */
 public abstract class GenerateARInvoiceFromBatchAbstract extends SvrProcess {
 	/** Process Value 	*/
-	private static final String VALUE_FOR_PROCESS = "PPBGenerateAPInvoice";
+	private static final String VALUE_FOR_PROCESS = "PPBGenerateARInvoice";
 	/** Process Name 	*/
-	private static final String NAME_FOR_PROCESS = "Generate AP Invoice";
+	private static final String NAME_FOR_PROCESS = "Generate AR Invoice";
 	/** Process Id 	*/
-	private static final int ID_FOR_PROCESS = 54886;
-	/**	Parameter Name for Target Document Type	*/
-	public static final String C_DOCTYPETARGET_ID = "C_DocTypeTarget_ID";
+	private static final int ID_FOR_PROCESS = 54892;
 	/**	Parameter Name for Document Date	*/
 	public static final String DATEDOC = "DateDoc";
 	/**	Parameter Name for Document Action	*/
 	public static final String DOCACTION = "DocAction";
-	/**	Parameter Value for Target Document Type	*/
-	private int docTypeTargetId;
 	/**	Parameter Value for Document Date	*/
 	private Timestamp dateDoc;
 	/**	Parameter Value for Document Action	*/
@@ -48,19 +43,8 @@ public abstract class GenerateARInvoiceFromBatchAbstract extends SvrProcess {
 
 	@Override
 	protected void prepare() {
-		docTypeTargetId = getParameterAsInt(C_DOCTYPETARGET_ID);
 		dateDoc = getParameterAsTimestamp(DATEDOC);
 		docAction = getParameterAsString(DOCACTION);
-	}
-
-	/**	 Getter Parameter Value for Target Document Type	*/
-	protected int getDocTypeTargetId() {
-		return docTypeTargetId;
-	}
-
-	/**	 Setter Parameter Value for Target Document Type	*/
-	protected void setDocTypeTargetId(int docTypeTargetId) {
-		this.docTypeTargetId = docTypeTargetId;
 	}
 
 	/**	 Getter Parameter Value for Document Date	*/

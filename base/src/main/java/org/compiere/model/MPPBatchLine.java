@@ -20,7 +20,7 @@ public class MPPBatchLine extends X_C_PPBatchLine {
 
     @Override
     protected boolean beforeSave(boolean newRecord) {
-        setTotalAmt(getPayAmt().subtract(getDiscountAmt()).add(getTaxAmt()).add(getFeeAmt()));
+        setTotalAmt(getPayAmt().subtract(getDiscountAmt().add(getTaxAmt()).add(getFeeAmt())));
         return super.beforeSave(newRecord);
     }
 

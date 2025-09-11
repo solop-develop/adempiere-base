@@ -21,31 +21,11 @@ import io.vavr.Tuple;
 import io.vavr.Tuple3;
 import io.vavr.collection.List;
 import io.vavr.control.Try;
-import org.compiere.model.MAccount;
-import org.compiere.model.MAcctSchemaElement;
-import org.compiere.model.MAttachment;
-import org.compiere.model.MBPartner;
-import org.compiere.model.MClient;
-import org.compiere.model.MClientInfo;
-import org.compiere.model.MImage;
-import org.compiere.model.MLocation;
-import org.compiere.model.MOrg;
-import org.compiere.model.MOrgInfo;
-import org.compiere.model.MPeriod;
-import org.compiere.model.MReportCube;
+import org.compiere.model.*;
 import org.compiere.print.MPrintFormat;
 import org.compiere.print.MPrintFormatItem;
 import org.compiere.process.ProcessInfoParameter;
-import org.compiere.util.AdempiereUserError;
-import org.compiere.util.CLogMgt;
-import org.compiere.util.CacheMgt;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Ini;
-import org.compiere.util.ResultSetIterable;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Trx;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -1331,10 +1311,10 @@ public class FinReport extends FinReportAbstract {
             //	SELECT SUM()
             StringBuilder select = new StringBuilder("SELECT ");
             if (reportLine.getPAAmountType() != null) {    //	line amount type overwrites column
-                select.append(reportLine.getSelectClause(true));
+                select.append(getRounding(reportLine.getSelectClause(true)));
                 info.append(": LineAmtType=").append(reportLine.getPAAmountType());
             } else if (reportColumns[col].getPAAmountType() != null) {
-                select.append(reportColumns[col].getSelectClause(true));
+                select.append(getRounding(reportColumns[col].getSelectClause(true)));
                 info.append(": ColumnAmtType=").append(reportColumns[col].getPAAmountType());
             }
 
@@ -1474,6 +1454,11 @@ public class FinReport extends FinReportAbstract {
             log.finest(info.toString());
         }
         return sqlStatement.toString();
+    }
+
+    private String getRounding(String statement) {
+        int precision = MCurrency.getStdPrecision(getCtx(), finReport.getC_AcctSchema().getC_Currency_ID());
+        return "ROUND(" + statement + "," + precision + ")";
     }
 
     /**************************************************************************
@@ -1724,7 +1709,7 @@ public class FinReport extends FinReportAbstract {
 
             finReportPeriods.filter(finReportPeriod -> finReportPeriod.getC_Period_ID() == getPeriodId())
                     .forEach(finReportPeriod -> {
-                        org.compiere.model.MYear year = (org.compiere.model.MYear)MPeriod.get(getCtx(),finReportPeriod.getC_Period_ID()).getC_Year();
+                        MYear year = (MYear)MPeriod.get(getCtx(),finReportPeriod.getC_Period_ID()).getC_Year();
                         yearName.set(year.getYY());
                         yearFiscal.set(year.getFiscalYear());
                         currentPeriodName.set(finReportPeriod.getName());
