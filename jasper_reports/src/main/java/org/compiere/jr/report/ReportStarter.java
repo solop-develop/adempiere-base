@@ -13,35 +13,11 @@
  *****************************************************************************/
 package org.compiere.jr.report;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.PropertyResourceBundle;
-import java.util.logging.Level;
-import java.awt.print.PrinterJob;
-
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
 import org.adempiere.core.domains.models.X_AD_PInstance_Para;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.DBException;
@@ -50,38 +26,29 @@ import org.compiere.model.MAttachmentEntry;
 import org.compiere.model.MProcess;
 import org.compiere.model.PrintInfo;
 import org.compiere.print.MPrintFormat;
-import org.compiere.print.ServerReportCtl; //360-->ReportCtl; 370, trunk-->ServerReportCtl
+import org.compiere.print.PrintUtil;
+import org.compiere.print.ServerReportCtl;
 import org.compiere.process.ClientProcess;
 import org.compiere.process.ProcessCall;
 import org.compiere.process.ProcessInfo;
 import org.compiere.process.ProcessInfoParameter;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.DigestOfFile;
-import org.compiere.util.Env;
-import org.compiere.util.Ini;
-import org.compiere.util.Language;
-import org.compiere.util.Trx;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 import org.spin.util.PrinterUtil;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.JobName;
-import org.compiere.print.PrintUtil;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRParameter;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRPrintServiceExporter;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimplePrintServiceExporterConfiguration;
-import net.sf.jasperreports.engine.JasperPrintManager;
+import java.awt.print.PrinterJob;
+import java.io.*;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.sql.*;
+import java.util.*;
+import java.util.logging.Level;
 
 /**
  * @author rlemeill
@@ -336,7 +303,7 @@ public class ReportStarter implements ProcessCall, ClientProcess
            	// Add reportDir to class path
     		ClassLoader scl = ClassLoader.getSystemClassLoader();
     		try {
-    			java.net.URLClassLoader ucl = new java.net.URLClassLoader(new java.net.URL[]{reportDir.toURI().toURL()}, scl);
+    			java.net.URLClassLoader ucl = new java.net.URLClassLoader(new URL[]{reportDir.toURI().toURL()}, scl);
     			net.sf.jasperreports.engine.util.JRResourcesUtil.setThreadClassLoader(ucl);
     		} catch (MalformedURLException me) {
     			log.warning("Could not add report directory to classpath: "+ me.getMessage());
@@ -545,7 +512,6 @@ public class ReportStarter implements ProcessCall, ClientProcess
 						File PDF = File.createTempFile("mail", ".pdf");
 						JasperExportManager.exportReportToPdfFile(jasperPrint, PDF.getAbsolutePath());
 						processInfo.setPDFReport(PDF);
-						processInfo.setPrintPreview(true);
 						if (processInfo.isPrintPreview()) {
 							log.info("ReportStarter.startProcess run report -" + jasperPrint.getName());
 							JRViewerProvider viewerLauncher = getReportViewerProvider();
