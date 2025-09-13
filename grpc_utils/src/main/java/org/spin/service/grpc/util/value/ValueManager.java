@@ -39,6 +39,7 @@ import org.compiere.util.Language;
 import org.compiere.util.NamePair;
 import org.compiere.util.TimeUtil;
 import org.compiere.util.Util;
+import org.spin.service.grpc.util.base.RecordUtil;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -959,19 +960,14 @@ public class ValueManager {
 
 	/**
 	 * Get translation if is necessary
+	 * @deprecated Use {@link RecordUtil#getTranslation(PO, String)} instead.
 	 * @param object
 	 * @param columnName
 	 * @return
 	 */
+	@Deprecated
 	public static String getTranslation(PO object, String columnName) {
-		if(object == null) {
-			return null;
-		}
-		if(Language.isBaseLanguage(Env.getAD_Language(Env.getCtx()))) {
-			return object.get_ValueAsString(columnName);
-		}
-		//	
-		return object.get_Translation(columnName);
+		return RecordUtil.getTranslation(object, columnName);
 	}
 
 }
