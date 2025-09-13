@@ -33,6 +33,7 @@ import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
+import org.compiere.util.Language;
 import org.compiere.util.Util;
 
 /**
@@ -314,6 +315,25 @@ public class RecordUtil {
 			}
 		}
 		return -1;
+	}
+
+
+
+	/**
+	 * Get translation if is necessary
+	 * @param object
+	 * @param columnName
+	 * @return
+	 */
+	public static String getTranslation(PO object, String columnName) {
+		if(object == null) {
+			return null;
+		}
+		if(Language.isBaseLanguage(Env.getAD_Language(Env.getCtx()))) {
+			return object.get_ValueAsString(columnName);
+		}
+		//	
+		return object.get_Translation(columnName);
 	}
 
 }
