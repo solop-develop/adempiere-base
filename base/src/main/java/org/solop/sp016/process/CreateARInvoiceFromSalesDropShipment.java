@@ -48,7 +48,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Yamel Senih, ysenih@erpya.com , http://www.erpya.com
  */
 public class CreateARInvoiceFromSalesDropShipment extends CreateARInvoiceFromSalesDropShipmentAbstract {
-	
+
 	/**	Counter for created	*/
 	private AtomicInteger created = new AtomicInteger();
 	/**	Lines	*/
@@ -108,6 +108,7 @@ public class CreateARInvoiceFromSalesDropShipment extends CreateARInvoiceFromSal
 					invoice.setDocStatus(DocAction.STATUS_Drafted);
 					//TODO: Set data
 					invoice.saveEx();
+					maybeInvoice.set(invoice);
 				}
 				MInvoiceLine invoiceLine = new MInvoiceLine(invoice);
 
@@ -133,17 +134,18 @@ public class CreateARInvoiceFromSalesDropShipment extends CreateARInvoiceFromSal
 				invoiceLine.setC_UOM_ID(uOMId);
 				//	Save
 				invoiceLine.saveEx();
-				created.getAndIncrement();
-				addLog("@DocumentNo@ " + invoice.getDocumentNo());
+
 				assignOrderLines(invoiceLine.getM_Product_ID(), consolidate.get_ValueAsInt("C_Order_ID"), consolidate.get_ID());
-				if (!Util.isEmpty(getDocAction(), true)){
-					if (!invoice.processIt(getDocAction())){
-						throw new AdempiereException(invoice.getProcessMsg());
-					}
-				}
+
 			});
-
-
+			if (!Util.isEmpty(getDocAction(), true)){
+				if (!maybeInvoice.get().processIt(getDocAction())){
+					throw new AdempiereException(maybeInvoice.get().getProcessMsg());
+				}
+			}
+			maybeInvoice.get().load(get_TrxName());
+			addLog("@DocumentNo@ " + maybeInvoice.get().getDocumentNo());
+			created.getAndIncrement();
 
 		});
 	}
