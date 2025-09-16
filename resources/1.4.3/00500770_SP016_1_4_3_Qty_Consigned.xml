@@ -1,0 +1,683 @@
+00500780_SP016_1_4_3_Add_Qty_Consigned.xml<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Qty_Consigned" ReleaseNo="1.4.3" SeqNo="500770">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="63051" Table="AD_Element">
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">63051</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">29</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2602" Column="ColumnName">QtyConsigned</Data>
+        <Data AD_Column_ID="2598" Column="Created">2025-09-15 19:36:38.623</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2604" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="6484" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="58589" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2603" Column="Name">Quantity Consigned</Data>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="4299" Column="PrintName">Quantity Consigned</Data>
+        <Data AD_Column_ID="2600" Column="Updated">2025-09-15 19:36:38.623</Data>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84316" Column="UUID">4dfb0343-51e9-4a80-bae1-e59af013195a</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="63051" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">63051</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2642" Column="Created">2025-09-15 19:36:41.172</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2647" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="2646" Column="Name">Cantidad Consignada</Data>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="4300" Column="PrintName">Cantidad Consignada</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2025-09-15 19:36:41.172</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84317" Column="UUID">bdc9e274-0224-4a45-8100-416a790f4019</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="63052" Table="AD_Element">
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">63052</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">29</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2602" Column="ColumnName">QtyPending</Data>
+        <Data AD_Column_ID="2598" Column="Created">2025-09-15 19:36:41.837</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2604" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="6484" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="58589" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2603" Column="Name">Quantity Pending</Data>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="4299" Column="PrintName">Quantity Pending</Data>
+        <Data AD_Column_ID="2600" Column="Updated">2025-09-15 19:36:41.837</Data>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84316" Column="UUID">332b0e66-d805-4305-a515-6b2bd33319a4</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="63052" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">63052</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2642" Column="Created">2025-09-15 19:36:43.097</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2647" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="2646" Column="Name">Cantidad Pendiente</Data>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="4300" Column="PrintName">Cantidad Pendiente</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2025-09-15 19:36:43.097</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84317" Column="UUID">4388716f-638b-4bef-b363-0081583a0c39</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="63053" Table="AD_Element">
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">63053</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">29</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2602" Column="ColumnName">QtySold</Data>
+        <Data AD_Column_ID="2598" Column="Created">2025-09-15 19:36:43.718</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2604" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="6484" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="58589" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2603" Column="Name">Quantity Sold</Data>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="4299" Column="PrintName">Quantity Sold</Data>
+        <Data AD_Column_ID="2600" Column="Updated">2025-09-15 19:36:43.718</Data>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84316" Column="UUID">7c084552-397c-41c9-aaf0-4a11cc3018db</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="63053" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">63053</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2642" Column="Created">2025-09-15 19:36:45.048</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2647" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="2646" Column="Name">Cantidad Vendida</Data>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="4300" Column="PrintName">Cantidad Vendida</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2025-09-15 19:36:45.048</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84317" Column="UUID">2697dd9a-f0c4-4437-924d-abc5d0f628bd</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="53232" Action="I" Record_ID="75035" Table="AD_View_Column">
+        <Data AD_Column_ID="58093" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58109" Column="AD_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="58094" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58100" Column="AD_View_Column_ID">75035</Data>
+        <Data AD_Column_ID="58101" Column="AD_View_Definition_ID">50644</Data>
+        <Data AD_Column_ID="58108" Column="AD_View_ID">50249</Data>
+        <Data AD_Column_ID="58107" Column="ColumnName">C_QtySold</Data>
+        <Data AD_Column_ID="58106" Column="ColumnSQL">c.QtySold</Data>
+        <Data AD_Column_ID="58096" Column="Created">2025-09-15 19:36:46.474</Data>
+        <Data AD_Column_ID="58098" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58102" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58103" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="58104" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58095" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58105" Column="Name">Quantity Sold</Data>
+        <Data AD_Column_ID="58097" Column="Updated">2025-09-15 19:36:46.474</Data>
+        <Data AD_Column_ID="58099" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84462" Column="UUID">e15ced2b-b213-432b-9055-f3f5e29be258</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="53228" Action="I" Record_ID="0" Table="AD_View_Column_Trl">
+        <Data AD_Column_ID="58040" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58048" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58041" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58047" Column="AD_View_Column_ID">75035</Data>
+        <Data AD_Column_ID="58043" Column="Created">2025-09-15 19:36:49.666</Data>
+        <Data AD_Column_ID="58045" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58049" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58050" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58042" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58051" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58052" Column="Name">Quantity Sold</Data>
+        <Data AD_Column_ID="58044" Column="Updated">2025-09-15 19:36:49.666</Data>
+        <Data AD_Column_ID="58046" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84463" Column="UUID">de20a754-fe4a-46cf-b0b3-ab1b1ac26716</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="53232" Action="I" Record_ID="75036" Table="AD_View_Column">
+        <Data AD_Column_ID="58093" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58109" Column="AD_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="58094" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58100" Column="AD_View_Column_ID">75036</Data>
+        <Data AD_Column_ID="58101" Column="AD_View_Definition_ID">50644</Data>
+        <Data AD_Column_ID="58108" Column="AD_View_ID">50249</Data>
+        <Data AD_Column_ID="58107" Column="ColumnName">C_QtyPending</Data>
+        <Data AD_Column_ID="58106" Column="ColumnSQL">c.QtyPending</Data>
+        <Data AD_Column_ID="58096" Column="Created">2025-09-15 19:36:50.162</Data>
+        <Data AD_Column_ID="58098" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58102" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58103" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="58104" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58095" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58105" Column="Name">Quantity Pending</Data>
+        <Data AD_Column_ID="58097" Column="Updated">2025-09-15 19:36:50.162</Data>
+        <Data AD_Column_ID="58099" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84462" Column="UUID">8e59f975-05b9-4e4c-bd1c-b9013427fa45</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="53228" Action="I" Record_ID="0" Table="AD_View_Column_Trl">
+        <Data AD_Column_ID="58040" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58048" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58041" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58047" Column="AD_View_Column_ID">75036</Data>
+        <Data AD_Column_ID="58043" Column="Created">2025-09-15 19:36:51.357</Data>
+        <Data AD_Column_ID="58045" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58049" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58050" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58042" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58051" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58052" Column="Name">Quantity Pending</Data>
+        <Data AD_Column_ID="58044" Column="Updated">2025-09-15 19:36:51.357</Data>
+        <Data AD_Column_ID="58046" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84463" Column="UUID">deab8c8d-a3d2-4bc3-b5ea-027767f90747</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="53232" Action="I" Record_ID="75037" Table="AD_View_Column">
+        <Data AD_Column_ID="58093" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58109" Column="AD_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="58094" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58100" Column="AD_View_Column_ID">75037</Data>
+        <Data AD_Column_ID="58101" Column="AD_View_Definition_ID">50644</Data>
+        <Data AD_Column_ID="58108" Column="AD_View_ID">50249</Data>
+        <Data AD_Column_ID="58107" Column="ColumnName">C_QtyConsigned</Data>
+        <Data AD_Column_ID="58106" Column="ColumnSQL">c.QtyConsigned</Data>
+        <Data AD_Column_ID="58096" Column="Created">2025-09-15 19:36:51.837</Data>
+        <Data AD_Column_ID="58098" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58102" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58103" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="58104" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58095" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58105" Column="Name">Quantity Consigned</Data>
+        <Data AD_Column_ID="58097" Column="Updated">2025-09-15 19:36:51.837</Data>
+        <Data AD_Column_ID="58099" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84462" Column="UUID">ddd5b729-6fdb-4331-bfbc-af6b6e817dd2</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="53228" Action="I" Record_ID="0" Table="AD_View_Column_Trl">
+        <Data AD_Column_ID="58040" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58048" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58041" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58047" Column="AD_View_Column_ID">75037</Data>
+        <Data AD_Column_ID="58043" Column="Created">2025-09-15 19:36:53.005</Data>
+        <Data AD_Column_ID="58045" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58049" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58050" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58042" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58051" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58052" Column="Name">Quantity Consigned</Data>
+        <Data AD_Column_ID="58044" Column="Updated">2025-09-15 19:36:53.005</Data>
+        <Data AD_Column_ID="58046" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84463" Column="UUID">9ae6639e-a355-4016-949c-7f63c769c82e</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="53223" Action="I" Record_ID="77006" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57968" Column="AD_Browse_Field_ID">77006</Data>
+        <Data AD_Column_ID="57983" Column="AD_Browse_ID">50309</Data>
+        <Data AD_Column_ID="57961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="57969" Column="AD_Element_ID">63053</Data>
+        <Data AD_Column_ID="57962" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="57970" Column="AD_Reference_ID">29</Data>
+        <Data AD_Column_ID="57984" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="64353" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="57971" Column="AD_View_Column_ID">75035</Data>
+        <Data AD_Column_ID="63218" Column="Axis_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="63219" Column="Axis_Parent_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="67114" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="57964" Column="Created">2025-09-15 19:36:54.206</Data>
+        <Data AD_Column_ID="57966" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="64354" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="64355" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="57972" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="64356" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="57973" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="64357" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="57974" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="64853" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57963" Column="IsActive">true</Data>
+        <Data AD_Column_ID="57975" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="57976" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="57977" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="81229" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="57978" Column="IsKey">false</Data>
+        <Data AD_Column_ID="57985" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="64222" Column="IsOrderBy">false</Data>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria">false</Data>
+        <Data AD_Column_ID="57980" Column="IsRange">false</Data>
+        <Data AD_Column_ID="63579" Column="IsReadOnly">true</Data>
+        <Data AD_Column_ID="57981" Column="Name">Quantity Sold</Data>
+        <Data AD_Column_ID="64358" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="57982" Column="SeqNo">90</Data>
+        <Data AD_Column_ID="78559" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="64221" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="57965" Column="Updated">2025-09-15 19:36:54.206</Data>
+        <Data AD_Column_ID="57967" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84296" Column="UUID">d90b71aa-ff34-493c-a57c-584d1c8da26e</Data>
+        <Data AD_Column_ID="64360" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="64361" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="64359" Column="VFormat" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="53227" Action="I" Record_ID="77006" Table="AD_Browse_Field_Trl">
+        <Data AD_Column_ID="58034" Column="AD_Browse_Field_ID">77006</Data>
+        <Data AD_Column_ID="58027" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58035" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58028" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58030" Column="Created">2025-09-15 19:36:56.507</Data>
+        <Data AD_Column_ID="58032" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58036" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58037" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58029" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58038" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58039" Column="Name">Quantity Sold</Data>
+        <Data AD_Column_ID="58031" Column="Updated">2025-09-15 19:36:56.507</Data>
+        <Data AD_Column_ID="58033" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84297" Column="UUID">67a6d210-ff50-47cd-a364-3f91568f2b0c</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="53223" Action="I" Record_ID="77007" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57968" Column="AD_Browse_Field_ID">77007</Data>
+        <Data AD_Column_ID="57983" Column="AD_Browse_ID">50309</Data>
+        <Data AD_Column_ID="57961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="57969" Column="AD_Element_ID">63052</Data>
+        <Data AD_Column_ID="57962" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="57970" Column="AD_Reference_ID">29</Data>
+        <Data AD_Column_ID="57984" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="64353" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="57971" Column="AD_View_Column_ID">75036</Data>
+        <Data AD_Column_ID="63218" Column="Axis_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="63219" Column="Axis_Parent_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="67114" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="57964" Column="Created">2025-09-15 19:36:56.987</Data>
+        <Data AD_Column_ID="57966" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="64354" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="64355" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="57972" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="64356" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="57973" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="64357" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="57974" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="64853" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57963" Column="IsActive">true</Data>
+        <Data AD_Column_ID="57975" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="57976" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="57977" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="81229" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="57978" Column="IsKey">false</Data>
+        <Data AD_Column_ID="57985" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="64222" Column="IsOrderBy">false</Data>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria">false</Data>
+        <Data AD_Column_ID="57980" Column="IsRange">false</Data>
+        <Data AD_Column_ID="63579" Column="IsReadOnly">true</Data>
+        <Data AD_Column_ID="57981" Column="Name">Quantity Pending</Data>
+        <Data AD_Column_ID="64358" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="57982" Column="SeqNo">80</Data>
+        <Data AD_Column_ID="78559" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="64221" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="57965" Column="Updated">2025-09-15 19:36:56.987</Data>
+        <Data AD_Column_ID="57967" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84296" Column="UUID">f8b01e4e-2aa1-4350-bc97-ed4055c55dc7</Data>
+        <Data AD_Column_ID="64360" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="64361" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="64359" Column="VFormat" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="53227" Action="I" Record_ID="77007" Table="AD_Browse_Field_Trl">
+        <Data AD_Column_ID="58034" Column="AD_Browse_Field_ID">77007</Data>
+        <Data AD_Column_ID="58027" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58035" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58028" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58030" Column="Created">2025-09-15 19:36:58.831</Data>
+        <Data AD_Column_ID="58032" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58036" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58037" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58029" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58038" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58039" Column="Name">Quantity Pending</Data>
+        <Data AD_Column_ID="58031" Column="Updated">2025-09-15 19:36:58.831</Data>
+        <Data AD_Column_ID="58033" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84297" Column="UUID">ddb48a17-3137-44ca-861b-6b88f8301555</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="53223" Action="I" Record_ID="77008" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57968" Column="AD_Browse_Field_ID">77008</Data>
+        <Data AD_Column_ID="57983" Column="AD_Browse_ID">50309</Data>
+        <Data AD_Column_ID="57961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="57969" Column="AD_Element_ID">63051</Data>
+        <Data AD_Column_ID="57962" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="57970" Column="AD_Reference_ID">29</Data>
+        <Data AD_Column_ID="57984" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="64353" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="57971" Column="AD_View_Column_ID">75037</Data>
+        <Data AD_Column_ID="63218" Column="Axis_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="63219" Column="Axis_Parent_Column_ID" isNewNull="true"/>
+        <Data AD_Column_ID="67114" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="57964" Column="Created">2025-09-15 19:36:59.326</Data>
+        <Data AD_Column_ID="57966" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="64354" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="64355" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="57972" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="64356" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="57973" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="64357" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="57974" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="64853" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="57963" Column="IsActive">true</Data>
+        <Data AD_Column_ID="57975" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="57976" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="57977" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="81229" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="57978" Column="IsKey">false</Data>
+        <Data AD_Column_ID="57985" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="64222" Column="IsOrderBy">false</Data>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria">false</Data>
+        <Data AD_Column_ID="57980" Column="IsRange">false</Data>
+        <Data AD_Column_ID="63579" Column="IsReadOnly">true</Data>
+        <Data AD_Column_ID="57981" Column="Name">Quantity Consigned</Data>
+        <Data AD_Column_ID="64358" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="57982" Column="SeqNo">70</Data>
+        <Data AD_Column_ID="78559" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="64221" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="57965" Column="Updated">2025-09-15 19:36:59.326</Data>
+        <Data AD_Column_ID="57967" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84296" Column="UUID">39a63c50-719e-46a4-913f-593249cc37c1</Data>
+        <Data AD_Column_ID="64360" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="64361" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="64359" Column="VFormat" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="53227" Action="I" Record_ID="77008" Table="AD_Browse_Field_Trl">
+        <Data AD_Column_ID="58034" Column="AD_Browse_Field_ID">77008</Data>
+        <Data AD_Column_ID="58027" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="58035" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="58028" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="58030" Column="Created">2025-09-15 19:37:01.186</Data>
+        <Data AD_Column_ID="58032" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58036" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="58037" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="58029" Column="IsActive">true</Data>
+        <Data AD_Column_ID="58038" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="58039" Column="Name">Quantity Consigned</Data>
+        <Data AD_Column_ID="58031" Column="Updated">2025-09-15 19:37:01.186</Data>
+        <Data AD_Column_ID="58033" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84297" Column="UUID">80555b70-49e2-4a81-88b4-8aa77f67f490</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="104216" Table="AD_Column">
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">104216</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">63051</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">29</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">55038</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">QtyConsigned</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2025-09-15 19:37:01.668</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="6482" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Quantity Consigned</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="551" Column="Updated">2025-09-15 19:37:01.668</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">9f1b2cf5-9191-442b-b5a4-8fdfa5b32b1d</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="104216" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">104216</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-09-15 19:37:05.411</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Quantity Consigned</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-09-15 19:37:05.411</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">21db43e0-4390-4ecd-b87c-d5186b709d9e</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="104217" Table="AD_Column">
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">104217</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">63052</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">29</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">55038</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">QtyPending</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2025-09-15 19:37:05.927</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="6482" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Quantity Pending</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="551" Column="Updated">2025-09-15 19:37:05.928</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">12220060-dae4-4006-9390-b67a2f03ccac</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="104217" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">104217</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-09-15 19:37:08.113</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Quantity Pending</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-09-15 19:37:08.113</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">5574f00c-ce6b-46eb-a81a-21b0c8fc291d</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="104218" Table="AD_Column">
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">104218</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">63053</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">29</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">55038</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">QtySold</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2025-09-15 19:37:08.54</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="6482" Column="EntityType">SP016</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">22</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Quantity Sold</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="551" Column="Updated">2025-09-15 19:37:08.54</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">13834567-e1d7-4c6a-891e-002eb9386c44</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="104218" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">104218</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-09-15 19:37:10.541</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Quantity Sold</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-09-15 19:37:10.541</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">1130d3ee-0fcb-458b-8b76-281f78c903a1</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
