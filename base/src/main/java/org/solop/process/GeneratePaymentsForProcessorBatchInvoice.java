@@ -18,11 +18,11 @@
 
 package org.solop.process;
 
+import org.adempiere.core.domains.models.X_C_PPBatchConfiguration;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MPPVendorTransaction;
 import org.compiere.model.MPayment;
-import org.compiere.model.MPaymentProcessor;
 import org.compiere.model.MPaymentProcessorBatch;
 import org.compiere.model.MPaymentProcessorSchedule;
 import org.compiere.model.Query;
@@ -58,11 +58,14 @@ public class GeneratePaymentsForProcessorBatchInvoice extends GeneratePaymentsFo
 
 			MPaymentProcessorSchedule batchSchedule = new MPaymentProcessorSchedule(getCtx(), batchScheduleId, get_TrxName());
 			MPaymentProcessorBatch batch = (MPaymentProcessorBatch) batchSchedule.getC_PaymentProcessorBatch();
-			MPaymentProcessor paymentProcessor = new MPaymentProcessor(getCtx(), batch.getC_PaymentProcessor_ID(), get_TrxName());
-			if(paymentProcessor.getFeeCurrency_ID() <= 0) {
-				throw new AdempiereException("@FeeCurrency_ID@ @NotFound@");
+			if (batch.getC_PPBatchConfiguration_ID() <= 0) {
+				return;
 			}
-			int documentTypeId = paymentProcessor.getSalesInvoiceDocType_ID();
+			X_C_PPBatchConfiguration batchConfiguration = new X_C_PPBatchConfiguration(getCtx(), batch.getC_PPBatchConfiguration_ID(), get_TrxName());
+			if(batch.getC_Currency_ID() <= 0) {
+				throw new AdempiereException("@C_Currency_ID@ @NotFound@");
+			}
+			int documentTypeId = batchConfiguration.getSalesInvoiceDocType_ID();
 			if (documentTypeId <= 0) {
 				throw new AdempiereException("@SalesInvoiceDocType_ID@ @NotFound@");
 			}

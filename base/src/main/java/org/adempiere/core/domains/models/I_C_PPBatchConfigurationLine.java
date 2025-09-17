@@ -17,22 +17,23 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for C_PaymentProcessorSchedule
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+/** Generated Interface for C_PPBatchConfigurationLine
  *  @author Adempiere (generated) 
  *  @version Release 3.9.4
  */
-public interface I_C_PaymentProcessorSchedule 
+public interface I_C_PPBatchConfigurationLine 
 {
 
-    /** TableName=C_PaymentProcessorSchedule */
-    public static final String Table_Name = "C_PaymentProcessorSchedule";
+    /** TableName=C_PPBatchConfigurationLine */
+    public static final String Table_Name = "C_PPBatchConfigurationLine";
 
-    /** AD_Table_ID=55030 */
+    /** AD_Table_ID=55041 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -64,42 +65,40 @@ public interface I_C_PaymentProcessorSchedule
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name Amount */
-    public static final String COLUMNNAME_Amount = "Amount";
+    /** Column name C_BankAccount_ID */
+    public static final String COLUMNNAME_C_BankAccount_ID = "C_BankAccount_ID";
 
-	/** Set Amount.
-	  * Amount in a defined currency
+	/** Set Bank Account.
+	  * Account at the Bank
 	  */
-	public void setAmount (BigDecimal Amount);
+	public void setC_BankAccount_ID (int C_BankAccount_ID);
 
-	/** Get Amount.
-	  * Amount in a defined currency
+	/** Get Bank Account.
+	  * Account at the Bank
 	  */
-	public BigDecimal getAmount();
+	public int getC_BankAccount_ID();
 
-    /** Column name C_PaymentProcessorBatch_ID */
-    public static final String COLUMNNAME_C_PaymentProcessorBatch_ID = "C_PaymentProcessorBatch_ID";
+	public I_C_BankAccount getC_BankAccount() throws RuntimeException;
 
-	/** Set Payment Processor Batch.
-	  * Payment Processor Batch
-	  */
-	public void setC_PaymentProcessorBatch_ID (int C_PaymentProcessorBatch_ID);
+    /** Column name C_PPBatchConfiguration_ID */
+    public static final String COLUMNNAME_C_PPBatchConfiguration_ID = "C_PPBatchConfiguration_ID";
 
-	/** Get Payment Processor Batch.
-	  * Payment Processor Batch
-	  */
-	public int getC_PaymentProcessorBatch_ID();
+	/** Set Payment Processor Batch Configuration	  */
+	public void setC_PPBatchConfiguration_ID (int C_PPBatchConfiguration_ID);
 
-	public I_C_PaymentProcessorBatch getC_PaymentProcessorBatch() throws RuntimeException;
+	/** Get Payment Processor Batch Configuration	  */
+	public int getC_PPBatchConfiguration_ID();
 
-    /** Column name C_PaymentProcessorSchedule_ID */
-    public static final String COLUMNNAME_C_PaymentProcessorSchedule_ID = "C_PaymentProcessorSchedule_ID";
+	public I_C_PPBatchConfiguration getC_PPBatchConfiguration() throws RuntimeException;
 
-	/** Set Payment Processor Batch Schedule	  */
-	public void setC_PaymentProcessorSchedule_ID (int C_PaymentProcessorSchedule_ID);
+    /** Column name C_PPBatchConfigurationLine_ID */
+    public static final String COLUMNNAME_C_PPBatchConfigurationLine_ID = "C_PPBatchConfigurationLine_ID";
 
-	/** Get Payment Processor Batch Schedule	  */
-	public int getC_PaymentProcessorSchedule_ID();
+	/** Set Payment Processor Batch Configuration Line	  */
+	public void setC_PPBatchConfigurationLine_ID (int C_PPBatchConfigurationLine_ID);
+
+	/** Get Payment Processor Batch Configuration Line	  */
+	public int getC_PPBatchConfigurationLine_ID();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -117,19 +116,6 @@ public interface I_C_PaymentProcessorSchedule
 	  */
 	public int getCreatedBy();
 
-    /** Column name DateDoc */
-    public static final String COLUMNNAME_DateDoc = "DateDoc";
-
-	/** Set Document Date.
-	  * Date of the Document
-	  */
-	public void setDateDoc (Timestamp DateDoc);
-
-	/** Get Document Date.
-	  * Date of the Document
-	  */
-	public Timestamp getDateDoc();
-
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -142,19 +128,6 @@ public interface I_C_PaymentProcessorSchedule
 	  * The record is active in the system
 	  */
 	public boolean isActive();
-
-    /** Column name ReferenceNo */
-    public static final String COLUMNNAME_ReferenceNo = "ReferenceNo";
-
-	/** Set Reference No.
-	  * Your customer or vendor number at the Business Partner's site
-	  */
-	public void setReferenceNo (String ReferenceNo);
-
-	/** Get Reference No.
-	  * Your customer or vendor number at the Business Partner's site
-	  */
-	public String getReferenceNo();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
