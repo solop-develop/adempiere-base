@@ -1,4 +1,4 @@
-00500780_SP016_1_4_3_Add_Qty_Consigned.xml<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
   <Migration EntityType="SP016" Name="Qty_Consigned" ReleaseNo="1.4.3" SeqNo="500770">
     <Step SeqNo="10" StepType="AD">
