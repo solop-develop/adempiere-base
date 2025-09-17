@@ -58,13 +58,13 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 		productToOrderGroup = new HashMap<>();
 		orderLineToConsignedConsolidate = new HashMap<>();
 		consolidateQty = new HashMap<>();
-		consignmentConsolidateTable = MTable.get(getCtx(), "T_ConsigmentSales");
-		consignmentDetailTable = MTable.get(getCtx(), "T_ConsigmentSalesDetail");
+		consignmentConsolidateTable = MTable.get(getCtx(), "T_ConsignmentSales");
+		consignmentDetailTable = MTable.get(getCtx(), "T_ConsignmentSalesDetail");
 		if (consignmentConsolidateTable == null || consignmentConsolidateTable.get_ID() <= 0) {
-			throw new AdempiereException("@AD_Table_ID@ T_ConsigmentSales @NotFound@");
+			throw new AdempiereException("@AD_Table_ID@ T_ConsignmentSales @NotFound@");
 		}
 		if (consignmentDetailTable == null || consignmentDetailTable.get_ID() <= 0) {
-			throw new AdempiereException("@AD_Table_ID@ T_ConsigmentSalesDetail @NotFound@");
+			throw new AdempiereException("@AD_Table_ID@ T_ConsignmentSalesDetail @NotFound@");
 		}
 		consolidateByInvoice();
 		consolidateByInventory();
@@ -203,7 +203,7 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 				consignmentDetail.set_ValueOfColumn("M_InventoryLine_ID", inventoryLineId);
 			}
 			consignmentDetail.set_ValueOfColumn("Qty", qtyToUse);
-			consignmentDetail.set_ValueOfColumn("T_ConsigmentSales_ID", consolidateId);
+			consignmentDetail.set_ValueOfColumn("T_ConsignmentSales_ID", consolidateId);
 			consignmentDetail.saveEx();
 			if (invoiceQty.signum() <= 0) {
 
