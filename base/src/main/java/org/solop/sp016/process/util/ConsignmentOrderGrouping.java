@@ -5,13 +5,15 @@ import java.math.BigDecimal;
 public class ConsignmentOrderGrouping {
     BigDecimal maxAmount;
     BigDecimal usedAmount;
+    BigDecimal deliveredAmount;
     int orderLineId;
     int orderId;
 
-    public ConsignmentOrderGrouping(BigDecimal maxAmount, int orderLineId) {
+    public ConsignmentOrderGrouping(BigDecimal maxAmount, int orderLineId, BigDecimal deliveredAmount) {
         this.maxAmount = maxAmount;
         this.orderLineId = orderLineId;
         this.usedAmount = BigDecimal.ZERO;
+        this.deliveredAmount = deliveredAmount;
     }
 
     public BigDecimal getMaxAmount() {
@@ -45,4 +47,7 @@ public class ConsignmentOrderGrouping {
     public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
+    public BigDecimal getDeliveredAmount() { return deliveredAmount; }
+
+    public void setDeliveredAmount(BigDecimal deliveredAmount) { this.deliveredAmount = deliveredAmount; }
 }
