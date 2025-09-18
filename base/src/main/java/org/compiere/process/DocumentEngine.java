@@ -16,7 +16,13 @@
  *****************************************************************************/
 package org.compiere.process;
 
-import static java.util.Objects.requireNonNull;
+import org.adempiere.core.domains.models.*;
+import org.compiere.acct.Doc;
+import org.compiere.model.*;
+import org.compiere.util.AdempiereUserError;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -28,35 +34,7 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempiere.core.domains.models.I_C_Order;
-import org.adempiere.core.domains.models.I_DD_Order;
-import org.adempiere.core.domains.models.I_HR_Process;
-import org.adempiere.core.domains.models.I_PP_Cost_Collector;
-import org.adempiere.core.domains.models.I_PP_Order;
-import org.compiere.acct.Doc;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MAllocationHdr;
-import org.compiere.model.MBankStatement;
-import org.compiere.model.MCash;
-import org.compiere.model.MClient;
-import org.compiere.model.MColumn;
-import org.compiere.model.MInOut;
-import org.compiere.model.MInventory;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MJournal;
-import org.compiere.model.MJournalBatch;
-import org.compiere.model.MMovement;
-import org.compiere.model.MPayment;
-import org.compiere.model.MProduction;
-import org.compiere.model.MProductionBatch;
-import org.compiere.model.MRequisition;
-import org.compiere.model.MRole;
-import org.compiere.model.MTable;
-import org.compiere.model.PO;
-import org.compiere.util.AdempiereUserError;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
+import static java.util.Objects.requireNonNull;
 
 /**
  *	Document Action Engine
@@ -72,7 +50,7 @@ public class DocumentEngine implements DocAction
     /**
      *  Doc Engine - basic constructor
      */
-    public DocumentEngine ()
+    public DocumentEngine()
     {
         document = null;
         docStatus = null;
@@ -82,7 +60,7 @@ public class DocumentEngine implements DocAction
 	 * 	Doc Engine (Drafted)
 	 * 	@param po document
 	 */
-	public DocumentEngine (DocAction po)
+	public DocumentEngine(DocAction po)
 	{
 		this (po, null);
 	}
@@ -92,7 +70,7 @@ public class DocumentEngine implements DocAction
 	 * 	@param po document
 	 * 	@param status initial document status
 	 */
-	public DocumentEngine (DocAction po, String status)
+	public DocumentEngine(DocAction po, String status)
 	{
 		document = requireNonNull(po);
 		docStatus = Optional.ofNullable(status).orElse(STATUS_Drafted);
@@ -139,7 +117,7 @@ public class DocumentEngine implements DocAction
 	/**
 	 * 	Set Doc Status - Ignored
 	 *	@param ignored Status is not set directly
-	 * @see org.compiere.process.DocAction#setDocStatus(String)
+	 * @see DocAction#setDocStatus(String)
 	 */
 	public void setDocStatus(String ignored)
 	{
@@ -414,6 +392,9 @@ public class DocumentEngine implements DocAction
     	if (document instanceof MInOut) {
     		docsPostProcess  = ((MInOut) document).getDocsPostProcess();
     	}
+		if (document instanceof MPayment) {
+			docsPostProcess  = ((MPayment) document).getDocsPostProcess();
+		}
         if (!docsPostProcess.isEmpty()) {
         	// Process (this is to update the ProcessedOn flag with 
             // a timestamp after the original document to ensure
@@ -431,7 +412,7 @@ public class DocumentEngine implements DocAction
 	 * 	Unlock Document.
 	 * 	Status: Drafted
 	 * 	@return true if success 
-	 * 	@see org.compiere.process.DocAction#unlockIt()
+	 * 	@see DocAction#unlockIt()
 	 */
 	public boolean unlockIt()
 	{
@@ -455,7 +436,7 @@ public class DocumentEngine implements DocAction
 	 * 	Invalidate Document.
 	 * 	Status: Invalid
 	 * 	@return true if success 
-	 * 	@see org.compiere.process.DocAction#invalidateIt()
+	 * 	@see DocAction#invalidateIt()
 	 */
 	public boolean invalidateIt()
 	{
@@ -479,7 +460,7 @@ public class DocumentEngine implements DocAction
 	 *	Process Document.
 	 * 	Status is set by process
 	 * 	@return new status (In Progress or Invalid) 
-	 * 	@see org.compiere.process.DocAction#prepareIt()
+	 * 	@see DocAction#prepareIt()
 	 */
 	public String prepareIt()
 	{
@@ -497,7 +478,7 @@ public class DocumentEngine implements DocAction
 	 * 	Approve Document.
 	 * 	Status: Approved
 	 * 	@return true if success 
-	 * 	@see org.compiere.process.DocAction#approveIt()
+	 * 	@see DocAction#approveIt()
 	 */
 	public boolean  approveIt()
 	{
@@ -521,7 +502,7 @@ public class DocumentEngine implements DocAction
 	 * 	Reject Approval.
 	 * 	Status: Not Approved
 	 * 	@return true if success 
-	 * 	@see org.compiere.process.DocAction#rejectIt()
+	 * 	@see DocAction#rejectIt()
 	 */
 	public boolean rejectIt()
 	{
@@ -545,7 +526,7 @@ public class DocumentEngine implements DocAction
 	 * 	Complete Document.
 	 * 	Status is set by process
 	 * 	@return new document status (Complete, In Progress, Invalid, Waiting ..)
-	 * 	@see org.compiere.process.DocAction#completeIt()
+	 * 	@see DocAction#completeIt()
 	 */
 	public String completeIt()
 	{
@@ -578,7 +559,7 @@ public class DocumentEngine implements DocAction
 	 * 	Void Document.
 	 * 	Status: Voided
 	 * 	@return true if success 
-	 * 	@see org.compiere.process.DocAction#voidIt()
+	 * 	@see DocAction#voidIt()
 	 */
 	public boolean voidIt()
 	{
@@ -602,7 +583,7 @@ public class DocumentEngine implements DocAction
 	 * 	Close Document.
 	 * 	Status: Closed
 	 * 	@return true if success 
-	 * 	@see org.compiere.process.DocAction#closeIt()
+	 * 	@see DocAction#closeIt()
 	 */
 	public boolean closeIt()
 	{
@@ -629,7 +610,7 @@ public class DocumentEngine implements DocAction
 	 * 	Reverse Correct Document.
 	 * 	Status: Reversed
 	 * 	@return true if success 
-	 * 	@see org.compiere.process.DocAction#reverseCorrectIt()
+	 * 	@see DocAction#reverseCorrectIt()
 	 */
 	public boolean reverseCorrectIt()
 	{
@@ -653,7 +634,7 @@ public class DocumentEngine implements DocAction
 	 * 	Reverse Accrual Document.
 	 * 	Status: Reversed
 	 * 	@return true if success 
-	 * 	@see org.compiere.process.DocAction#reverseAccrualIt()
+	 * 	@see DocAction#reverseAccrualIt()
 	 */
 	public boolean reverseAccrualIt()
 	{
@@ -677,7 +658,7 @@ public class DocumentEngine implements DocAction
 	 * 	Re-activate Document.
 	 * 	Status: In Progress
 	 * 	@return true if success 
-	 * 	@see org.compiere.process.DocAction#reActivateIt()
+	 * 	@see DocAction#reActivateIt()
 	 */
 	public boolean reActivateIt()
 	{

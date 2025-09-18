@@ -1983,6 +1983,9 @@ public final class MPayment extends X_C_Payment
 		//	Should start WF
 		alloc.processIt(DocAction.ACTION_Complete);
 		alloc.saveEx(get_TrxName());
+		if (!alloc.isPosted()) {
+			addDocsPostProcess(alloc);
+		}
 		processMsg = "@C_AllocationHdr_ID@: " + alloc.getDocumentNo();
 			
 		//	Get Project from Invoice
@@ -1995,6 +1998,17 @@ public final class MPayment extends X_C_Payment
 				+ " <> Payment C_Project_ID=" + getC_Project_ID());
 		return true;
 	}	//	allocateInvoice
+
+	/* Save array of documents to process AFTER completing this one */
+	ArrayList<PO> docsPostProcess = new ArrayList<PO>();
+
+	private void addDocsPostProcess(PO doc) {
+		docsPostProcess.add(doc);
+	}
+
+	public ArrayList<PO> getDocsPostProcess() {
+		return docsPostProcess;
+	}
 	
 	/**
 	 * 	Allocate Payment Selection
