@@ -34,7 +34,7 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250919L;
 
     /** Standard Constructor */
     public X_AD_OrgInfo (Properties ctx, int AD_OrgInfo_ID, String trxName)
@@ -301,6 +301,34 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 	public String getFax () 
 	{
 		return (String)get_Value(COLUMNNAME_Fax);
+	}
+
+	public I_C_Currency getFiscalCurrency() throws RuntimeException
+    {
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
+			.getPO(getFiscalCurrency_ID(), get_TrxName());	}
+
+	/** Set Fiscal Currency.
+		@param FiscalCurrency_ID 
+		Fiscal Currency for this client
+	  */
+	public void setFiscalCurrency_ID (int FiscalCurrency_ID)
+	{
+		if (FiscalCurrency_ID < 1) 
+			set_Value (COLUMNNAME_FiscalCurrency_ID, null);
+		else 
+			set_Value (COLUMNNAME_FiscalCurrency_ID, Integer.valueOf(FiscalCurrency_ID));
+	}
+
+	/** Get Fiscal Currency.
+		@return Fiscal Currency for this client
+	  */
+	public int getFiscalCurrency_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_FiscalCurrency_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Logo.
