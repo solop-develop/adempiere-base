@@ -2,10 +2,37 @@
 <Migrations>
   <Migration EntityType="D" Name="GenerateShipment_View_Allow_Withholding" ReleaseNo="1.4.4" SeqNo="500820">
     <Step DBType="ALL" Parse="N" SeqNo="10" StepType="SQL">
-      <SQLStatement>-- adempiere.m_inout_candidatedetail_v source
-
-          CREATE OR REPLACE VIEW adempiere.m_inout_candidatedetail_v
-          AS SELECT o.ad_client_id,
+      <SQLStatement> DROP VIEW M_InOut_CandidateDetail_v;
+          CREATE OR REPLACE VIEW M_InOut_CandidateDetail_v (
+          ad_client_id,
+          ad_org_id,
+          c_bpartner_id,
+          c_order_id,
+          documentno,
+          dateordered,
+          c_doctype_id,
+          poreference,
+          description,
+          salesrep_id,
+          m_warehouse_id,
+          totallines,
+          qtytodeliver,
+          c_orderline_id,
+          datepromised,
+          m_product_id,
+          M_Product_Group_ID,
+          M_Product_Class_ID,
+          M_Product_Classification_ID,
+          c_charge_id,
+          qtyordered,
+          isunconfirmedinout,
+          unconfirmedLinesNoToShip,
+          deliveryrule,
+          qtyavailable,
+          DropShip_BPartner_ID
+          )
+          AS
+          SELECT o.ad_client_id,
           o.ad_org_id,
           o.c_bpartner_id,
           o.c_order_id,
@@ -21,43 +48,68 @@
           l.c_orderline_id,
           l.datepromised,
           l.m_product_id,
-          prod.m_product_group_id,
-          prod.m_product_class_id,
-          prod.m_product_classification_id,
+          prod.M_Product_Group_ID,
+          prod.M_Product_Class_ID,
+          prod.M_Product_Classification_ID,
           l.c_charge_id,
           l.qtyordered,
           CASE
-          WHEN iol.unconfirmedlinesnotoship IS NULL THEN 'N'::text
-          ELSE 'Y'::text
+          WHEN iol.unconfirmedLinesNoToShip IS NULL THEN 'N'
+          ELSE 'Y'
           END AS isunconfirmedinout,
-          iol.unconfirmedlinesnotoship,
+          iol.unconfirmedLinesNoToShip,
           o.deliveryrule,
           storage.qtyavailable - l.qtyreserved AS qtyavailable,
-          o.dropship_bpartner_id
-          FROM adempiere.c_order o
-          JOIN adempiere.c_orderline l ON o.c_order_id = l.c_order_id
-          JOIN adempiere.m_product prod ON l.m_product_id = prod.m_product_id
-          LEFT JOIN ( SELECT count(iol_1.m_inoutline_id) AS unconfirmedlinesnotoship,
+          o.DropShip_BPartner_ID
+          FROM c_order o
+          JOIN c_orderline l ON o.c_order_id = l.c_order_id
+          JOIN M_Product prod ON l.M_Product_ID = prod.M_Product_ID
+          LEFT JOIN ( SELECT count(iol_1.m_inoutline_id) AS unconfirmedLinesNoToShip,
           iol_1.c_orderline_id
-          FROM adempiere.m_inoutline iol_1
-          JOIN adempiere.m_inout io ON iol_1.m_inout_id = io.m_inout_id
-          WHERE io.docstatus::bpchar = ANY (ARRAY['IP'::bpchar, 'WC'::bpchar])
+          FROM m_inoutline iol_1
+          JOIN m_inout io ON iol_1.m_inout_id = io.m_inout_id
+          WHERE io.docstatus IN('IP','WC')
           GROUP BY iol_1.c_orderline_id) iol ON iol.c_orderline_id = l.c_orderline_id
           LEFT JOIN ( SELECT sum(rv_storage_per_product.sumqtyonhand - rv_storage_per_product.sumqtyreserved) AS qtyavailable,
           rv_storage_per_product.m_product_id,
           rv_storage_per_product.m_warehouse_id
-          FROM adempiere.rv_storage_per_product
+          FROM rv_storage_per_product
           GROUP BY rv_storage_per_product.m_product_id, rv_storage_per_product.m_warehouse_id) storage ON storage.m_product_id = l.m_product_id AND storage.m_warehouse_id = o.m_warehouse_id
-          WHERE o.docstatus::bpchar = 'CO'::bpchar AND o.isdelivered = 'N'::bpchar AND (o.c_doctype_id IN ( SELECT c_doctype.c_doctype_id
-          FROM adempiere.c_doctype
-          WHERE c_doctype.docbasetype = 'SOO'::bpchar AND (c_doctype.docsubtypeso &lt;&gt; ALL (ARRAY['ON'::bpchar, 'OB'::bpchar, 'WR'::bpchar])))) AND o.deliveryrule &lt;&gt; 'M'::bpchar AND (l.m_product_id IS NULL OR (EXISTS ( SELECT p.value
-          FROM adempiere.m_product p
-          WHERE l.m_product_id = p.m_product_id AND p.isexcludeautodelivery = 'N'::bpchar))) AND l.qtyordered &lt;&gt; l.qtydelivered AND (l.m_product_id IS NOT NULL OR l.c_charge_id IS NOT NULL) AND NOT (EXISTS ( SELECT iol_1.m_inoutline_id
-          FROM adempiere.m_inoutline iol_1
-          JOIN adempiere.m_inout io ON iol_1.m_inout_id = io.m_inout_id
-          WHERE iol_1.c_orderline_id = l.c_orderline_id AND (io.docstatus::bpchar = ANY (ARRAY['IP'::bpchar, 'WC'::bpchar]))));</SQLStatement>
-      <RollbackStatement>CREATE OR REPLACE VIEW adempiere.m_inout_candidatedetail_v
-          AS SELECT o.ad_client_id,
+          WHERE o.docstatus = 'CO' AND o.isdelivered = 'N' AND (o.c_doctype_id IN ( SELECT c_doctype.c_doctype_id
+          FROM c_doctype
+          WHERE c_doctype.docbasetype = 'SOO' AND (c_doctype.docsubtypeso not in ('ON','OB' ,'WR')  ))) AND o.deliveryrule &lt;&gt; 'M' AND (l.m_product_id IS NULL OR (EXISTS ( SELECT p.value
+          FROM m_product p
+          WHERE l.m_product_id = p.m_product_id AND p.isexcludeautodelivery = 'N'))) AND l.qtyordered &lt;&gt; l.qtydelivered AND (l.m_product_id IS NOT NULL OR l.c_charge_id IS NOT NULL) AND NOT (EXISTS ( SELECT iol_1.m_inoutline_id
+          FROM m_inoutline iol_1
+          JOIN m_inout io ON iol_1.m_inout_id = io.m_inout_id
+          WHERE iol_1.c_orderline_id = l.c_orderline_id AND (io.docstatus  in ('IP','WC' ))));</SQLStatement>
+      <RollbackStatement>DROP VIEW M_InOut_CandidateDetail_v;
+          CREATE OR REPLACE VIEW M_InOut_CandidateDetail_v (
+          ad_client_id,
+          ad_org_id,
+          c_bpartner_id,
+          c_order_id,
+          documentno,
+          dateordered,
+          c_doctype_id,
+          poreference,
+          description,
+          salesrep_id,
+          m_warehouse_id,
+          totallines,
+          qtytodeliver,
+          c_orderline_id,
+          datepromised,
+          m_product_id,
+          c_charge_id,
+          qtyordered,
+          isunconfirmedinout,
+          unconfirmedLinesNoToShip,
+          deliveryrule,
+          qtyavailable
+          )
+          AS
+          SELECT o.ad_client_id,
           o.ad_org_id,
           o.c_bpartner_id,
           o.c_order_id,
@@ -73,41 +125,36 @@
           l.c_orderline_id,
           l.datepromised,
           l.m_product_id,
-          prod.m_product_group_id,
-          prod.m_product_class_id,
-          prod.m_product_classification_id,
           l.c_charge_id,
           l.qtyordered,
           CASE
-          WHEN iol.unconfirmedlinesnotoship IS NULL THEN 'N'::text
-          ELSE 'Y'::text
+          WHEN iol.unconfirmedLinesNoToShip IS NULL THEN 'N'
+          ELSE 'Y'
           END AS isunconfirmedinout,
-          iol.unconfirmedlinesnotoship,
+          iol.unconfirmedLinesNoToShip,
           o.deliveryrule,
-          storage.qtyavailable - l.qtyreserved AS qtyavailable,
-          o.dropship_bpartner_id
-          FROM adempiere.c_order o
-          JOIN adempiere.c_orderline l ON o.c_order_id = l.c_order_id
-          JOIN adempiere.m_product prod ON l.m_product_id = prod.m_product_id
-          LEFT JOIN ( SELECT count(iol_1.m_inoutline_id) AS unconfirmedlinesnotoship,
+          storage.qtyavailable - l.qtyreserved AS qtyavailable
+          FROM c_order o
+          JOIN c_orderline l ON o.c_order_id = l.c_order_id
+          LEFT JOIN ( SELECT count(iol_1.m_inoutline_id) AS unconfirmedLinesNoToShip,
           iol_1.c_orderline_id
-          FROM adempiere.m_inoutline iol_1
-          JOIN adempiere.m_inout io ON iol_1.m_inout_id = io.m_inout_id
-          WHERE io.docstatus::bpchar = ANY (ARRAY['IP'::bpchar, 'WC'::bpchar])
+          FROM m_inoutline iol_1
+          JOIN m_inout io ON iol_1.m_inout_id = io.m_inout_id
+          WHERE io.docstatus IN('IP','WC')
           GROUP BY iol_1.c_orderline_id) iol ON iol.c_orderline_id = l.c_orderline_id
           LEFT JOIN ( SELECT sum(rv_storage_per_product.sumqtyonhand - rv_storage_per_product.sumqtyreserved) AS qtyavailable,
           rv_storage_per_product.m_product_id,
           rv_storage_per_product.m_warehouse_id
-          FROM adempiere.rv_storage_per_product
+          FROM rv_storage_per_product
           GROUP BY rv_storage_per_product.m_product_id, rv_storage_per_product.m_warehouse_id) storage ON storage.m_product_id = l.m_product_id AND storage.m_warehouse_id = o.m_warehouse_id
-          WHERE o.docstatus::bpchar = 'CO'::bpchar AND o.isdelivered = 'N'::bpchar AND (o.c_doctype_id IN ( SELECT c_doctype.c_doctype_id
-          FROM adempiere.c_doctype
-          WHERE c_doctype.docbasetype = 'SOO'::bpchar AND (c_doctype.docsubtypeso &lt;&gt; ALL (ARRAY['ON'::bpchar, 'OB'::bpchar, 'WR'::bpchar])))) AND o.deliveryrule &lt;&gt; 'M'::bpchar AND (l.m_product_id IS NULL OR (EXISTS ( SELECT p.value
-          FROM adempiere.m_product p
-          WHERE l.m_product_id = p.m_product_id AND p.isexcludeautodelivery = 'N'::bpchar))) AND l.qtyordered &lt;&gt; l.qtydelivered AND o.isdropship = 'N'::bpchar AND (l.m_product_id IS NOT NULL OR l.c_charge_id IS NOT NULL) AND NOT (EXISTS ( SELECT iol_1.m_inoutline_id
-          FROM adempiere.m_inoutline iol_1
-          JOIN adempiere.m_inout io ON iol_1.m_inout_id = io.m_inout_id
-          WHERE iol_1.c_orderline_id = l.c_orderline_id AND (io.docstatus::bpchar = ANY (ARRAY['IP'::bpchar, 'WC'::bpchar]))));</RollbackStatement>
+          WHERE o.docstatus = 'CO' AND o.isdelivered = 'N' AND (o.c_doctype_id IN ( SELECT c_doctype.c_doctype_id
+          FROM c_doctype
+          WHERE c_doctype.docbasetype = 'SOO' AND (c_doctype.docsubtypeso not in ('ON','OB' ,'WR')  ))) AND o.deliveryrule &lt;&gt; 'M' AND (l.m_product_id IS NULL OR (EXISTS ( SELECT p.value
+          FROM m_product p
+          WHERE l.m_product_id = p.m_product_id AND p.isexcludeautodelivery = 'N'))) AND l.qtyordered &lt;&gt; l.qtydelivered AND o.isdropship = 'N' AND (l.m_product_id IS NOT NULL OR l.c_charge_id IS NOT NULL) AND NOT (EXISTS ( SELECT iol_1.m_inoutline_id
+          FROM m_inoutline iol_1
+          JOIN m_inout io ON iol_1.m_inout_id = io.m_inout_id
+          WHERE iol_1.c_orderline_id = l.c_orderline_id AND (io.docstatus  in ('IP','WC' ))));</RollbackStatement>
     </Step>
   </Migration>
 </Migrations>
