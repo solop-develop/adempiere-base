@@ -2,7 +2,7 @@
 <Migrations>
   <Migration EntityType="D" Name="GenerateShipment_View_Allow_Withholding" ReleaseNo="1.4.4" SeqNo="500820">
     <Step DBType="ALL" Parse="N" SeqNo="10" StepType="SQL">
-      <SQLStatement> DROP VIEW M_InOut_CandidateDetail_v;
+      <SQLStatement> DROP VIEW IF EXISTS M_InOut_CandidateDetail_v;
           CREATE OR REPLACE VIEW M_InOut_CandidateDetail_v (
           ad_client_id,
           ad_org_id,
@@ -83,7 +83,7 @@
           FROM m_inoutline iol_1
           JOIN m_inout io ON iol_1.m_inout_id = io.m_inout_id
           WHERE iol_1.c_orderline_id = l.c_orderline_id AND (io.docstatus  in ('IP','WC' ))));</SQLStatement>
-      <RollbackStatement>DROP VIEW M_InOut_CandidateDetail_v;
+      <RollbackStatement>DROP VIEW IF EXISTS M_InOut_CandidateDetail_v;
           CREATE OR REPLACE VIEW M_InOut_CandidateDetail_v (
           ad_client_id,
           ad_org_id,
