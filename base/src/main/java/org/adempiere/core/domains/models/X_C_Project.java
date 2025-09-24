@@ -1027,6 +1027,27 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return false;
 	}
 
+	/** Set Cost Based.
+		@param IsCostBased Cost Based	  */
+	public void setIsCostBased (boolean IsCostBased)
+	{
+		set_Value (COLUMNNAME_IsCostBased, Boolean.valueOf(IsCostBased));
+	}
+
+	/** Get Cost Based.
+		@return Cost Based	  */
+	public boolean isCostBased () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsCostBased);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Indefinite.
 		@param IsIndefinite 
 		Indefinite

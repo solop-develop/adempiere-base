@@ -141,7 +141,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 			orderLine.setPrice();
 			orderLine.setC_Project_ID(project.getC_Project_ID());
 			if (mainLine.getPlannedAmt()!= null && mainLine.getPlannedAmt().compareTo(Env.ZERO) != 0) {
-				orderLine.setPrice(mainLine.getPlannedAmt());
+				orderLine.setPrice(mainLine.getPlannedPrice());
 			}
 			orderLine.setTax();
 			orderLine.saveEx(transactionName);

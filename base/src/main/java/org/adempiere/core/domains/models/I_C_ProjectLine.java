@@ -135,6 +135,19 @@ public interface I_C_ProjectLine
 
 	public org.adempiere.core.domains.models.I_C_Order getC_OrderPO() throws RuntimeException;
 
+    /** Column name Cost */
+    public static final String COLUMNNAME_Cost = "Cost";
+
+	/** Set Cost.
+	  * Cost information
+	  */
+	public void setCost (BigDecimal Cost);
+
+	/** Get Cost.
+	  * Cost information
+	  */
+	public BigDecimal getCost();
+
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
 
@@ -515,6 +528,15 @@ public interface I_C_ProjectLine
 	  */
 	public boolean isComplete();
 
+    /** Column name IsCostBased */
+    public static final String COLUMNNAME_IsCostBased = "IsCostBased";
+
+	/** Set Cost Based	  */
+	public void setIsCostBased (boolean IsCostBased);
+
+	/** Get Cost Based	  */
+	public boolean isCostBased();
+
     /** Column name IsIndefinite */
     public static final String COLUMNNAME_IsIndefinite = "IsIndefinite";
 
@@ -601,6 +623,19 @@ public interface I_C_ProjectLine
 	  * Unique line for this document
 	  */
 	public int getLine();
+
+    /** Column name Margin */
+    public static final String COLUMNNAME_Margin = "Margin";
+
+	/** Set Margin %.
+	  * Margin for a product as a percentage
+	  */
+	public void setMargin (BigDecimal Margin);
+
+	/** Get Margin %.
+	  * Margin for a product as a percentage
+	  */
+	public BigDecimal getMargin();
 
     /** Column name M_Product_Category_ID */
     public static final String COLUMNNAME_M_Product_Category_ID = "M_Product_Category_ID";

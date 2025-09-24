@@ -659,6 +659,15 @@ public interface I_C_Project
 	  */
 	public boolean isCommitment();
 
+    /** Column name IsCostBased */
+    public static final String COLUMNNAME_IsCostBased = "IsCostBased";
+
+	/** Set Cost Based	  */
+	public void setIsCostBased (boolean IsCostBased);
+
+	/** Get Cost Based	  */
+	public boolean isCostBased();
+
     /** Column name IsIndefinite */
     public static final String COLUMNNAME_IsIndefinite = "IsIndefinite";
 

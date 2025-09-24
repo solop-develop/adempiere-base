@@ -214,6 +214,26 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Cost.
+		@param Cost 
+		Cost information
+	  */
+	public void setCost (BigDecimal Cost)
+	{
+		set_Value (COLUMNNAME_Cost, Cost);
+	}
+
+	/** Get Cost.
+		@return Cost information
+	  */
+	public BigDecimal getCost () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Cost);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
@@ -821,6 +841,27 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 		return false;
 	}
 
+	/** Set Cost Based.
+		@param IsCostBased Cost Based	  */
+	public void setIsCostBased (boolean IsCostBased)
+	{
+		set_Value (COLUMNNAME_IsCostBased, Boolean.valueOf(IsCostBased));
+	}
+
+	/** Get Cost Based.
+		@return Cost Based	  */
+	public boolean isCostBased () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsCostBased);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Indefinite.
 		@param IsIndefinite 
 		Indefinite
@@ -988,6 +1029,26 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     {
         return new KeyNamePair(get_ID(), String.valueOf(getLine()));
     }
+
+	/** Set Margin %.
+	 @param Margin
+	 Margin for a product as a percentage
+	 */
+	public void setMargin (BigDecimal Margin)
+	{
+		set_Value (COLUMNNAME_Margin, Margin);
+	}
+
+	/** Get Margin %.
+	 @return Margin for a product as a percentage
+	 */
+	public BigDecimal getMargin ()
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Margin);
+		if (bd == null)
+			return Env.ZERO;
+		return bd;
+	}
 
 	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category() throws RuntimeException
     {

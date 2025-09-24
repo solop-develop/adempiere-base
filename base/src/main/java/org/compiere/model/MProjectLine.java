@@ -16,12 +16,17 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_ProjectLine;
+import org.adempiere.core.domains.models.I_C_ProjectPhase;
+import org.adempiere.core.domains.models.I_C_ProjectTask;
+import org.adempiere.core.domains.models.X_C_ProjectLine;
+import org.adempiere.core.domains.models.X_C_ProjectLineType;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.TimeUtil;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
@@ -246,6 +251,7 @@ public class MProjectLine extends X_C_ProjectLine
 		MProject project = MProject.getById(getCtx(), getC_Project_ID(), get_TrxName());
 		if(newRecord) {
 			if(project != null) {
+				setIsCostBased(project.isCostBased());
 				if(getStartDate() == null) {
 					setStartDate(project.getDateStart());
 				}
@@ -273,7 +279,18 @@ public class MProjectLine extends X_C_ProjectLine
 			}
 		}
 		//	Planned Amount
-		setPlannedAmt(getPlannedQty().multiply(getPlannedPrice()));
+		if (isCostBased()) {
+			if(!isSummary()){
+				BigDecimal calculatedAmt = BigDecimal.ZERO;
+				if (getCost().signum() > 0) {
+					calculatedAmt = (BigDecimal.valueOf(1+(getMargin().doubleValue()/100))).multiply(getCost());
+				}
+				setPlannedPrice(calculatedAmt);
+				setPlannedAmt(getPlannedQty().multiply(calculatedAmt));
+			}
+		} else {
+			setPlannedAmt(getPlannedQty().multiply(getPlannedPrice()));
+		}
 		
 		//	Planned Margin
 		if (is_ValueChanged("M_Product_ID") || is_ValueChanged("M_Product_Category_ID")
@@ -328,6 +345,9 @@ public class MProjectLine extends X_C_ProjectLine
 	 */
 	protected boolean afterSave (boolean newRecord, boolean success)
 	{
+		if (getParent_ID() > 0) {
+			updateSummaryLine();
+		}
 		updateHeader();
 		return success;
 	}	//	afterSave
@@ -340,6 +360,9 @@ public class MProjectLine extends X_C_ProjectLine
 	 */
 	protected boolean afterDelete (boolean success)
 	{
+		if (getParent_ID() > 0) {
+			updateSummaryLine();
+		}
 		updateHeader();
 		return success;
 	}	//	afterDelete
@@ -357,7 +380,7 @@ public class MProjectLine extends X_C_ProjectLine
 				+ " COALESCE(SUM(pl.CommittedAmt),0),COALESCE(SUM(pl.CommittedQty),0),"
 				+ " COALESCE(SUM(pl.InvoicedAmt),0), COALESCE(SUM(pl.InvoicedQty),0) "
 				+ "FROM C_ProjectLine pl "
-				+ "WHERE pl.C_Project_ID=p.C_Project_ID AND pl.IsActive='Y') "
+				+ "WHERE pl.C_Project_ID=p.C_Project_ID AND pl.IsActive='Y' AND pl.Parent_ID IS NULL) "
 			+ "WHERE C_Project_ID=" + getC_Project_ID();
 		int no = DB.executeUpdate(sql, get_TrxName());
 		if (no != 1)
@@ -397,6 +420,38 @@ public class MProjectLine extends X_C_ProjectLine
 		}
 		/*onhate + globalqss BF 3060367*/		
 	} // updateHeader
+
+
+	private void updateSummaryLine() {
+		MProjectLine summaryLine = (MProjectLine) getParent();
+		BigDecimal plannedAmt = BigDecimal.ZERO,
+				plannedQty = BigDecimal.ZERO,
+				plannedMarginAmt = BigDecimal.ZERO,
+				committedAmt = BigDecimal.ZERO,
+				committedQty = BigDecimal.ZERO,
+				invoicedAmt = BigDecimal.ZERO,
+				invoicedQty = BigDecimal.ZERO;
+
+		for (Integer childId : summaryLine.getChildrenIds()) {
+			MProjectLine child = new MProjectLine(getCtx(), childId, get_TrxName());
+			plannedAmt = plannedAmt.add(child.getPlannedAmt());
+			plannedQty = plannedQty.add(child.getPlannedQty());
+			plannedMarginAmt = plannedMarginAmt.add(child.getPlannedMarginAmt());
+			committedAmt = committedAmt.add(child.getCommittedAmt());
+			committedQty = committedQty.add(child.getCommittedQty());
+			invoicedAmt = invoicedAmt.add(child.getInvoicedAmt());
+			invoicedQty = invoicedQty.add(child.getInvoicedQty());
+		}
+		summaryLine.setPlannedPrice(plannedAmt.divide(plannedQty, RoundingMode.HALF_UP));
+		summaryLine.setPlannedAmt(plannedAmt);
+		summaryLine.setPlannedQty(plannedQty);
+		summaryLine.setPlannedMarginAmt(plannedMarginAmt);
+		summaryLine.setCommittedAmt(committedAmt);
+		summaryLine.setCommittedQty(committedQty);
+		summaryLine.setInvoicedAmt(invoicedAmt);
+		summaryLine.setInvoicedQty(invoicedQty);
+		summaryLine.saveEx();
+	}
 
 	protected Optional<I_C_ProjectTask> projectTask = Optional.empty();
 	protected Optional<I_C_ProjectPhase> projectPhase = Optional.empty();
@@ -464,5 +519,14 @@ public class MProjectLine extends X_C_ProjectLine
 				.setParameters(getC_Project_ID(), getC_ProjectLine_ID())
 				.setOrderBy("Line")
 				.list();
+	}
+	public List<Integer> getChildrenIds() {
+		final String whereClause = "C_Project_ID = ? AND Parent_ID=?";
+		return new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause, get_TrxName())
+				.setClient_ID()
+				.setParameters(getC_Project_ID(), getC_ProjectLine_ID())
+				.setOnlyActiveRecords(true)
+				.setOrderBy("Line")
+				.getIDsAsList();
 	}
 } // MProjectLine
