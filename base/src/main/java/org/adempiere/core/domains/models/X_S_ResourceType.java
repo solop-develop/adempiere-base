@@ -18,14 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for S_ResourceType
  *  @author Adempiere (generated) 
@@ -39,7 +40,7 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	private static final long serialVersionUID = 20230102L;
 
     /** Standard Constructor */
-    public X_S_ResourceType (Properties ctx, int S_ResourceType_ID, String trxName)
+    public X_S_ResourceType(Properties ctx, int S_ResourceType_ID, String trxName)
     {
       super (ctx, S_ResourceType_ID, trxName);
       /** if (S_ResourceType_ID == 0)
@@ -71,7 +72,7 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
     }
 
     /** Load Constructor */
-    public X_S_ResourceType (Properties ctx, ResultSet rs, String trxName)
+    public X_S_ResourceType(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -122,27 +123,27 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 		return false;
 	}
 
-	public org.adempiere.core.domains.models.I_C_TaxCategory getC_TaxCategory() throws RuntimeException
+	public I_C_TaxCategory getC_TaxCategory() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_TaxCategory)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_TaxCategory.Table_Name)
+		return (I_C_TaxCategory)MTable.get(getCtx(), I_C_TaxCategory.Table_Name)
 			.getPO(getC_TaxCategory_ID(), get_TrxName());	}
 
 	/** Set Tax Category.
-		@param C_TaxCategory_ID 
+		@param C_TaxCategory_ID
 		Tax Category
 	  */
 	public void setC_TaxCategory_ID (int C_TaxCategory_ID)
 	{
-		if (C_TaxCategory_ID < 1) 
+		if (C_TaxCategory_ID < 1)
 			set_Value (COLUMNNAME_C_TaxCategory_ID, null);
-		else 
+		else
 			set_Value (COLUMNNAME_C_TaxCategory_ID, Integer.valueOf(C_TaxCategory_ID));
 	}
 
 	/** Get Tax Category.
 		@return Tax Category
 	  */
-	public int getC_TaxCategory_ID () 
+	public int getC_TaxCategory_ID ()
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_TaxCategory_ID);
 		if (ii == null)
@@ -150,27 +151,27 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_TaxType getC_TaxType() throws RuntimeException
+	public I_C_TaxType getC_TaxType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_TaxType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_TaxType.Table_Name)
+		return (I_C_TaxType)MTable.get(getCtx(), I_C_TaxType.Table_Name)
 			.getPO(getC_TaxType_ID(), get_TrxName());	}
 
 	/** Set Tax Type.
-		@param C_TaxType_ID 
+		@param C_TaxType_ID
 		Tax Type
 	  */
 	public void setC_TaxType_ID (int C_TaxType_ID)
 	{
-		if (C_TaxType_ID < 1) 
+		if (C_TaxType_ID < 1)
 			set_Value (COLUMNNAME_C_TaxType_ID, null);
-		else 
+		else
 			set_Value (COLUMNNAME_C_TaxType_ID, Integer.valueOf(C_TaxType_ID));
 	}
 
 	/** Get Tax Type.
 		@return Tax Type
 	  */
-	public int getC_TaxType_ID () 
+	public int getC_TaxType_ID ()
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_TaxType_ID);
 		if (ii == null)
@@ -178,27 +179,27 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM() throws RuntimeException
+	public I_C_UOM getC_UOM() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_UOM)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_UOM.Table_Name)
+		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
 			.getPO(getC_UOM_ID(), get_TrxName());	}
 
 	/** Set UOM.
-		@param C_UOM_ID 
+		@param C_UOM_ID
 		Unit of Measure
 	  */
 	public void setC_UOM_ID (int C_UOM_ID)
 	{
-		if (C_UOM_ID < 1) 
+		if (C_UOM_ID < 1)
 			set_Value (COLUMNNAME_C_UOM_ID, null);
-		else 
+		else
 			set_Value (COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
 	}
 
 	/** Get UOM.
 		@return Unit of Measure
 	  */
-	public int getC_UOM_ID () 
+	public int getC_UOM_ID ()
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_UOM_ID);
 		if (ii == null)
@@ -215,7 +216,7 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 
 	/** Get Chargeable Quantity.
 		@return Chargeable Quantity	  */
-	public int getChargeableQty () 
+	public int getChargeableQty ()
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_ChargeableQty);
 		if (ii == null)
@@ -224,7 +225,7 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	}
 
 	/** Set Description.
-		@param Description 
+		@param Description
 		Optional short description of the record
 	  */
 	public void setDescription (String Description)
@@ -235,13 +236,13 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Description.
 		@return Optional short description of the record
 	  */
-	public String getDescription () 
+	public String getDescription ()
 	{
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
 	/** Set Day Slot.
-		@param IsDateSlot 
+		@param IsDateSlot
 		Resource has day slot availability
 	  */
 	public void setIsDateSlot (boolean IsDateSlot)
@@ -252,20 +253,20 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Day Slot.
 		@return Resource has day slot availability
 	  */
-	public boolean isDateSlot () 
+	public boolean isDateSlot ()
 	{
 		Object oo = get_Value(COLUMNNAME_IsDateSlot);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
 	}
 
 	/** Set Single Assignment only.
-		@param IsSingleAssignment 
+		@param IsSingleAssignment
 		Only one assignment at a time (no double-booking or overlapping)
 	  */
 	public void setIsSingleAssignment (boolean IsSingleAssignment)
@@ -276,20 +277,20 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Single Assignment only.
 		@return Only one assignment at a time (no double-booking or overlapping)
 	  */
-	public boolean isSingleAssignment () 
+	public boolean isSingleAssignment ()
 	{
 		Object oo = get_Value(COLUMNNAME_IsSingleAssignment);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
 	}
 
 	/** Set Time Slot.
-		@param IsTimeSlot 
+		@param IsTimeSlot
 		Resource has time slot availability
 	  */
 	public void setIsTimeSlot (boolean IsTimeSlot)
@@ -300,39 +301,39 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Time Slot.
 		@return Resource has time slot availability
 	  */
-	public boolean isTimeSlot () 
+	public boolean isTimeSlot ()
 	{
 		Object oo = get_Value(COLUMNNAME_IsTimeSlot);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category() throws RuntimeException
+	public I_M_Product_Category getM_Product_Category() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product_Category)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product_Category.Table_Name)
+		return (I_M_Product_Category)MTable.get(getCtx(), I_M_Product_Category.Table_Name)
 			.getPO(getM_Product_Category_ID(), get_TrxName());	}
 
 	/** Set Product Category.
-		@param M_Product_Category_ID 
+		@param M_Product_Category_ID
 		Category of a Product
 	  */
 	public void setM_Product_Category_ID (int M_Product_Category_ID)
 	{
-		if (M_Product_Category_ID < 1) 
+		if (M_Product_Category_ID < 1)
 			set_Value (COLUMNNAME_M_Product_Category_ID, null);
-		else 
+		else
 			set_Value (COLUMNNAME_M_Product_Category_ID, Integer.valueOf(M_Product_Category_ID));
 	}
 
 	/** Get Product Category.
 		@return Category of a Product
 	  */
-	public int getM_Product_Category_ID () 
+	public int getM_Product_Category_ID ()
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_Category_ID);
 		if (ii == null)
@@ -341,7 +342,7 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	}
 
 	/** Set Name.
-		@param Name 
+		@param Name
 		Alphanumeric identifier of the entity
 	  */
 	public void setName (String Name)
@@ -352,7 +353,7 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Name.
 		@return Alphanumeric identifier of the entity
 	  */
-	public String getName () 
+	public String getName ()
 	{
 		return (String)get_Value(COLUMNNAME_Name);
 	}
@@ -360,13 +361,13 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
     /** Get Record ID/ColumnName
         @return ID/ColumnName pair
       */
-    public KeyNamePair getKeyNamePair() 
+    public KeyNamePair getKeyNamePair()
     {
         return new KeyNamePair(get_ID(), getName());
     }
 
 	/** Set Friday.
-		@param OnFriday 
+		@param OnFriday
 		Available on Fridays
 	  */
 	public void setOnFriday (boolean OnFriday)
@@ -377,20 +378,20 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Friday.
 		@return Available on Fridays
 	  */
-	public boolean isOnFriday () 
+	public boolean isOnFriday ()
 	{
 		Object oo = get_Value(COLUMNNAME_OnFriday);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
 	}
 
 	/** Set Monday.
-		@param OnMonday 
+		@param OnMonday
 		Available on Mondays
 	  */
 	public void setOnMonday (boolean OnMonday)
@@ -401,20 +402,20 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Monday.
 		@return Available on Mondays
 	  */
-	public boolean isOnMonday () 
+	public boolean isOnMonday ()
 	{
 		Object oo = get_Value(COLUMNNAME_OnMonday);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
 	}
 
 	/** Set Saturday.
-		@param OnSaturday 
+		@param OnSaturday
 		Available on Saturday
 	  */
 	public void setOnSaturday (boolean OnSaturday)
@@ -425,20 +426,20 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Saturday.
 		@return Available on Saturday
 	  */
-	public boolean isOnSaturday () 
+	public boolean isOnSaturday ()
 	{
 		Object oo = get_Value(COLUMNNAME_OnSaturday);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
 	}
 
 	/** Set Sunday.
-		@param OnSunday 
+		@param OnSunday
 		Available on Sundays
 	  */
 	public void setOnSunday (boolean OnSunday)
@@ -449,20 +450,20 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Sunday.
 		@return Available on Sundays
 	  */
-	public boolean isOnSunday () 
+	public boolean isOnSunday ()
 	{
 		Object oo = get_Value(COLUMNNAME_OnSunday);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
 	}
 
 	/** Set Thursday.
-		@param OnThursday 
+		@param OnThursday
 		Available on Thursdays
 	  */
 	public void setOnThursday (boolean OnThursday)
@@ -473,20 +474,20 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Thursday.
 		@return Available on Thursdays
 	  */
-	public boolean isOnThursday () 
+	public boolean isOnThursday ()
 	{
 		Object oo = get_Value(COLUMNNAME_OnThursday);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
 	}
 
 	/** Set Tuesday.
-		@param OnTuesday 
+		@param OnTuesday
 		Available on Tuesdays
 	  */
 	public void setOnTuesday (boolean OnTuesday)
@@ -497,20 +498,20 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Tuesday.
 		@return Available on Tuesdays
 	  */
-	public boolean isOnTuesday () 
+	public boolean isOnTuesday ()
 	{
 		Object oo = get_Value(COLUMNNAME_OnTuesday);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
 	}
 
 	/** Set Wednesday.
-		@param OnWednesday 
+		@param OnWednesday
 		Available on Wednesdays
 	  */
 	public void setOnWednesday (boolean OnWednesday)
@@ -521,16 +522,72 @@ public class X_S_ResourceType extends PO implements I_S_ResourceType, I_Persiste
 	/** Get Wednesday.
 		@return Available on Wednesdays
 	  */
-	public boolean isOnWednesday () 
+	public boolean isOnWednesday ()
 	{
 		Object oo = get_Value(COLUMNNAME_OnWednesday);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	public I_M_PriceList getPO_PriceList() throws RuntimeException
+    {
+		return (I_M_PriceList)MTable.get(getCtx(), I_M_PriceList.Table_Name)
+			.getPO(getPO_PriceList_ID(), get_TrxName());	}
+
+	/** Set Purchase Pricelist.
+		@param PO_PriceList_ID
+		Price List used by this Business Partner
+	  */
+	public void setPO_PriceList_ID (int PO_PriceList_ID)
+	{
+		if (PO_PriceList_ID < 1)
+			set_Value (COLUMNNAME_PO_PriceList_ID, null);
+		else
+			set_Value (COLUMNNAME_PO_PriceList_ID, Integer.valueOf(PO_PriceList_ID));
+	}
+
+	/** Get Purchase Pricelist.
+		@return Price List used by this Business Partner
+	  */
+	public int getPO_PriceList_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_PO_PriceList_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Product getS_DefaultProduct() throws RuntimeException
+    {
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
+			.getPO(getS_DefaultProduct_ID(), get_TrxName());	}
+
+	/** Set Default Product (For Resource).
+		@param S_DefaultProduct_ID
+		Default Product (For Resource)
+	  */
+	public void setS_DefaultProduct_ID (int S_DefaultProduct_ID)
+	{
+		if (S_DefaultProduct_ID < 1)
+			set_Value (COLUMNNAME_S_DefaultProduct_ID, null);
+		else
+			set_Value (COLUMNNAME_S_DefaultProduct_ID, Integer.valueOf(S_DefaultProduct_ID));
+	}
+
+	/** Get Default Product (For Resource).
+		@return Default Product (For Resource)
+	  */
+	public int getS_DefaultProduct_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_DefaultProduct_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Resource Type.
