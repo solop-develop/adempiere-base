@@ -16,11 +16,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_ProjectLine
  *  @author Adempiere (generated) 
@@ -77,7 +77,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getAD_Workflow_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Workflow getAD_Workflow() throws RuntimeException;
+	public I_AD_Workflow getAD_Workflow() throws RuntimeException;
 
     /** Column name CommittedAmt */
     public static final String COLUMNNAME_CommittedAmt = "CommittedAmt";
@@ -118,7 +118,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getC_Order_ID();
 
-	public org.adempiere.core.domains.models.I_C_Order getC_Order() throws RuntimeException;
+	public I_C_Order getC_Order() throws RuntimeException;
 
     /** Column name C_OrderPO_ID */
     public static final String COLUMNNAME_C_OrderPO_ID = "C_OrderPO_ID";
@@ -133,7 +133,20 @@ public interface I_C_ProjectLine
 	  */
 	public int getC_OrderPO_ID();
 
-	public org.adempiere.core.domains.models.I_C_Order getC_OrderPO() throws RuntimeException;
+	public I_C_Order getC_OrderPO() throws RuntimeException;
+
+    /** Column name Cost */
+    public static final String COLUMNNAME_Cost = "Cost";
+
+	/** Set Cost.
+	  * Cost information
+	  */
+	public void setCost (BigDecimal Cost);
+
+	/** Get Cost.
+	  * Cost information
+	  */
+	public BigDecimal getCost();
 
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
@@ -148,7 +161,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getC_Project_ID();
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
+	public I_C_Project getC_Project() throws RuntimeException;
 
     /** Column name C_ProjectIssue_ID */
     public static final String COLUMNNAME_C_ProjectIssue_ID = "C_ProjectIssue_ID";
@@ -163,7 +176,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getC_ProjectIssue_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectIssue getC_ProjectIssue() throws RuntimeException;
+	public I_C_ProjectIssue getC_ProjectIssue() throws RuntimeException;
 
     /** Column name C_ProjectLine_ID */
     public static final String COLUMNNAME_C_ProjectLine_ID = "C_ProjectLine_ID";
@@ -187,7 +200,7 @@ public interface I_C_ProjectLine
 	/** Get Project Line Type	  */
 	public int getC_ProjectLineType_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectLineType getC_ProjectLineType() throws RuntimeException;
+	public I_C_ProjectLineType getC_ProjectLineType() throws RuntimeException;
 
     /** Column name C_ProjectPhase_ID */
     public static final String COLUMNNAME_C_ProjectPhase_ID = "C_ProjectPhase_ID";
@@ -202,7 +215,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getC_ProjectPhase_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException;
+	public I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException;
 
     /** Column name C_ProjectStatus_ID */
     public static final String COLUMNNAME_C_ProjectStatus_ID = "C_ProjectStatus_ID";
@@ -217,7 +230,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getC_ProjectStatus_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectStatus getC_ProjectStatus() throws RuntimeException;
+	public I_C_ProjectStatus getC_ProjectStatus() throws RuntimeException;
 
     /** Column name C_ProjectTaskCategory_ID */
     public static final String COLUMNNAME_C_ProjectTaskCategory_ID = "C_ProjectTaskCategory_ID";
@@ -232,7 +245,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getC_ProjectTaskCategory_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectTaskCategory getC_ProjectTaskCategory() throws RuntimeException;
+	public I_C_ProjectTaskCategory getC_ProjectTaskCategory() throws RuntimeException;
 
     /** Column name C_ProjectTask_ID */
     public static final String COLUMNNAME_C_ProjectTask_ID = "C_ProjectTask_ID";
@@ -247,7 +260,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getC_ProjectTask_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
+	public I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -274,7 +287,7 @@ public interface I_C_ProjectLine
 	/** Get Standard Project Line	  */
 	public int getC_StandardProjectLine_ID();
 
-	public org.adempiere.core.domains.models.I_C_StandardProjectLine getC_StandardProjectLine() throws RuntimeException;
+	public I_C_StandardProjectLine getC_StandardProjectLine() throws RuntimeException;
 
     /** Column name DateDeadline */
     public static final String COLUMNNAME_DateDeadline = "DateDeadline";
@@ -515,6 +528,15 @@ public interface I_C_ProjectLine
 	  */
 	public boolean isComplete();
 
+    /** Column name IsCostBased */
+    public static final String COLUMNNAME_IsCostBased = "IsCostBased";
+
+	/** Set Cost Based	  */
+	public void setIsCostBased (boolean IsCostBased);
+
+	/** Get Cost Based	  */
+	public boolean isCostBased();
+
     /** Column name IsIndefinite */
     public static final String COLUMNNAME_IsIndefinite = "IsIndefinite";
 
@@ -602,6 +624,19 @@ public interface I_C_ProjectLine
 	  */
 	public int getLine();
 
+    /** Column name Margin */
+    public static final String COLUMNNAME_Margin = "Margin";
+
+	/** Set Margin %.
+	  * Margin for a product as a percentage
+	  */
+	public void setMargin (BigDecimal Margin);
+
+	/** Get Margin %.
+	  * Margin for a product as a percentage
+	  */
+	public BigDecimal getMargin();
+
     /** Column name M_Product_Category_ID */
     public static final String COLUMNNAME_M_Product_Category_ID = "M_Product_Category_ID";
 
@@ -615,7 +650,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getM_Product_Category_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category() throws RuntimeException;
+	public I_M_Product_Category getM_Product_Category() throws RuntimeException;
 
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
@@ -630,7 +665,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getM_Product_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
+	public I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -658,7 +693,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getParent_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectLine getParent() throws RuntimeException;
+	public I_C_ProjectLine getParent() throws RuntimeException;
 
     /** Column name PercentageCompleted */
     public static final String COLUMNNAME_PercentageCompleted = "PercentageCompleted";
@@ -673,7 +708,50 @@ public interface I_C_ProjectLine
 	  */
 	public BigDecimal getPercentageCompleted();
 
-    /** Column name PlannedAmt */
+	/** Column name Ref_BPartner_ID */
+	public static final String COLUMNNAME_Ref_BPartner_ID = "Ref_BPartner_ID";
+
+	/** Set Employee Reference.
+	 * Employee Reference
+	 */
+	public void setRef_BPartner_ID (int Ref_BPartner_ID);
+
+	/** Get Employee Reference.
+	 * Employee Reference
+	 */
+	public int getRef_BPartner_ID();
+
+	public I_C_BPartner getRef_BPartner() throws RuntimeException;
+
+
+	/** Column name S_ResourceType_ID */
+	public static final String COLUMNNAME_S_ResourceType_ID = "S_ResourceType_ID";
+
+	/** Set Resource Type	  */
+	public void setS_ResourceType_ID (int S_ResourceType_ID);
+
+	/** Get Resource Type	  */
+	public int getS_ResourceType_ID();
+
+	public I_S_ResourceType getS_ResourceType() throws RuntimeException;
+
+	/** Column name C_UOM_ID */
+	public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
+
+	/** Set UOM.
+	 * Unit of Measure
+	 */
+	public void setC_UOM_ID (int C_UOM_ID);
+
+	/** Get UOM.
+	 * Unit of Measure
+	 */
+	public int getC_UOM_ID();
+
+	public I_C_UOM getC_UOM() throws RuntimeException;
+
+
+	/** Column name PlannedAmt */
     public static final String COLUMNNAME_PlannedAmt = "PlannedAmt";
 
 	/** Set Planned Amount.
@@ -738,7 +816,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getPP_Order_ID();
 
-	public org.adempiere.core.domains.models.I_PP_Order getPP_Order() throws RuntimeException;
+	public I_PP_Order getPP_Order() throws RuntimeException;
 
     /** Column name PP_Product_BOM_ID */
     public static final String COLUMNNAME_PP_Product_BOM_ID = "PP_Product_BOM_ID";
@@ -753,7 +831,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getPP_Product_BOM_ID();
 
-	public org.adempiere.core.domains.models.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException;
+	public I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException;
 
     /** Column name PriorityRule */
     public static final String COLUMNNAME_PriorityRule = "PriorityRule";
@@ -807,7 +885,7 @@ public interface I_C_ProjectLine
 	  */
 	public int getResponsible_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getResponsible() throws RuntimeException;
+	public I_AD_User getResponsible() throws RuntimeException;
 
     /** Column name RunsMax */
     public static final String COLUMNNAME_RunsMax = "RunsMax";
@@ -903,5 +981,5 @@ public interface I_C_ProjectLine
 	  */
 	public int getVendor_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getVendor() throws RuntimeException;
+	public I_C_BPartner getVendor() throws RuntimeException;
 }
