@@ -229,6 +229,45 @@ public interface I_R_Request
 
 	public org.adempiere.core.domains.models.I_C_Invoice getC_InvoiceRequest() throws RuntimeException;
 
+    /** Column name CloseDate */
+    public static final String COLUMNNAME_CloseDate = "CloseDate";
+
+	/** Set Close Date.
+	  * Close Date
+	  */
+	public void setCloseDate (Timestamp CloseDate);
+
+	/** Get Close Date.
+	  * Close Date
+	  */
+	public Timestamp getCloseDate();
+
+    /** Column name ConfidentialType */
+    public static final String COLUMNNAME_ConfidentialType = "ConfidentialType";
+
+	/** Set Confidentiality.
+	  * Type of Confidentiality
+	  */
+	public void setConfidentialType (String ConfidentialType);
+
+	/** Get Confidentiality.
+	  * Type of Confidentiality
+	  */
+	public String getConfidentialType();
+
+    /** Column name ConfidentialTypeEntry */
+    public static final String COLUMNNAME_ConfidentialTypeEntry = "ConfidentialTypeEntry";
+
+	/** Set Entry Confidentiality.
+	  * Confidentiality of the individual entry
+	  */
+	public void setConfidentialTypeEntry (String ConfidentialTypeEntry);
+
+	/** Get Entry Confidentiality.
+	  * Confidentiality of the individual entry
+	  */
+	public String getConfidentialTypeEntry();
+
     /** Column name C_Order_ID */
     public static final String COLUMNNAME_C_Order_ID = "C_Order_ID";
 
@@ -289,6 +328,21 @@ public interface I_R_Request
 
 	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
 
+    /** Column name C_ProjectLine_ID */
+    public static final String COLUMNNAME_C_ProjectLine_ID = "C_ProjectLine_ID";
+
+	/** Set Project Line.
+	  * Task or step in a project
+	  */
+	public void setC_ProjectLine_ID (int C_ProjectLine_ID);
+
+	/** Get Project Line.
+	  * Task or step in a project
+	  */
+	public int getC_ProjectLine_ID();
+
+	public I_C_ProjectLine getC_ProjectLine() throws RuntimeException;
+
     /** Column name C_ProjectPhase_ID */
     public static final String COLUMNNAME_C_ProjectPhase_ID = "C_ProjectPhase_ID";
 
@@ -318,45 +372,6 @@ public interface I_R_Request
 	public int getC_ProjectTask_ID();
 
 	public org.adempiere.core.domains.models.I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
-
-    /** Column name CloseDate */
-    public static final String COLUMNNAME_CloseDate = "CloseDate";
-
-	/** Set Close Date.
-	  * Close Date
-	  */
-	public void setCloseDate (Timestamp CloseDate);
-
-	/** Get Close Date.
-	  * Close Date
-	  */
-	public Timestamp getCloseDate();
-
-    /** Column name ConfidentialType */
-    public static final String COLUMNNAME_ConfidentialType = "ConfidentialType";
-
-	/** Set Confidentiality.
-	  * Type of Confidentiality
-	  */
-	public void setConfidentialType (String ConfidentialType);
-
-	/** Get Confidentiality.
-	  * Type of Confidentiality
-	  */
-	public String getConfidentialType();
-
-    /** Column name ConfidentialTypeEntry */
-    public static final String COLUMNNAME_ConfidentialTypeEntry = "ConfidentialTypeEntry";
-
-	/** Set Entry Confidentiality.
-	  * Confidentiality of the individual entry
-	  */
-	public void setConfidentialTypeEntry (String ConfidentialTypeEntry);
-
-	/** Get Entry Confidentiality.
-	  * Confidentiality of the individual entry
-	  */
-	public String getConfidentialTypeEntry();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -564,6 +579,21 @@ public interface I_R_Request
 	  * Result of last contact
 	  */
 	public String getLastResult();
+
+    /** Column name M_ChangeNotice_ID */
+    public static final String COLUMNNAME_M_ChangeNotice_ID = "M_ChangeNotice_ID";
+
+	/** Set Change Notice.
+	  * Bill of Materials (Engineering) Change Notice (Version)
+	  */
+	public void setM_ChangeNotice_ID (int M_ChangeNotice_ID);
+
+	/** Get Change Notice.
+	  * Bill of Materials (Engineering) Change Notice (Version)
+	  */
+	public int getM_ChangeNotice_ID();
+
+	public I_M_ChangeNotice getM_ChangeNotice() throws RuntimeException;
 
     /** Column name M_ChangeRequest_ID */
     public static final String COLUMNNAME_M_ChangeRequest_ID = "M_ChangeRequest_ID";
@@ -847,6 +877,58 @@ public interface I_R_Request
 
 	public org.adempiere.core.domains.models.I_R_Category getR_Category() throws RuntimeException;
 
+    /** Column name Record_ID */
+    public static final String COLUMNNAME_Record_ID = "Record_ID";
+
+	/** Set Record ID.
+	  * Direct internal record ID
+	  */
+	public void setRecord_ID (int Record_ID);
+
+	/** Get Record ID.
+	  * Direct internal record ID
+	  */
+	public int getRecord_ID();
+
+    /** Column name RequestAmt */
+    public static final String COLUMNNAME_RequestAmt = "RequestAmt";
+
+	/** Set Request Amount.
+	  * Amount associated with this request
+	  */
+	public void setRequestAmt (BigDecimal RequestAmt);
+
+	/** Get Request Amount.
+	  * Amount associated with this request
+	  */
+	public BigDecimal getRequestAmt();
+
+    /** Column name RequestInfoType */
+    public static final String COLUMNNAME_RequestInfoType = "RequestInfoType";
+
+	/** Set Request Info Type.
+	  * Types of Information for Requests or Tickets
+	  */
+	public void setRequestInfoType (String RequestInfoType);
+
+	/** Get Request Info Type.
+	  * Types of Information for Requests or Tickets
+	  */
+	public String getRequestInfoType();
+
+    /** Column name Result */
+    public static final String COLUMNNAME_Result = "Result";
+
+	/** Set Result.
+	  * Result of the action taken
+	  */
+	public void setResult (String Result);
+
+	/** Get Result.
+	  * Result of the action taken
+	  */
+	public String getResult();
+
     /** Column name R_Group_ID */
     public static final String COLUMNNAME_R_Group_ID = "R_Group_ID";
 
@@ -965,45 +1047,6 @@ public interface I_R_Request
 
 	public org.adempiere.core.domains.models.I_R_Status getR_Status() throws RuntimeException;
 
-    /** Column name Record_ID */
-    public static final String COLUMNNAME_Record_ID = "Record_ID";
-
-	/** Set Record ID.
-	  * Direct internal record ID
-	  */
-	public void setRecord_ID (int Record_ID);
-
-	/** Get Record ID.
-	  * Direct internal record ID
-	  */
-	public int getRecord_ID();
-
-    /** Column name RequestAmt */
-    public static final String COLUMNNAME_RequestAmt = "RequestAmt";
-
-	/** Set Request Amount.
-	  * Amount associated with this request
-	  */
-	public void setRequestAmt (BigDecimal RequestAmt);
-
-	/** Get Request Amount.
-	  * Amount associated with this request
-	  */
-	public BigDecimal getRequestAmt();
-
-    /** Column name Result */
-    public static final String COLUMNNAME_Result = "Result";
-
-	/** Set Result.
-	  * Result of the action taken
-	  */
-	public void setResult (String Result);
-
-	/** Get Result.
-	  * Result of the action taken
-	  */
-	public String getResult();
-
     /** Column name SalesRep_ID */
     public static final String COLUMNNAME_SalesRep_ID = "SalesRep_ID";
 
@@ -1018,6 +1061,36 @@ public interface I_R_Request
 	public int getSalesRep_ID();
 
 	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public I_S_Contract getS_Contract() throws RuntimeException;
+
+    /** Column name S_ContractLine_ID */
+    public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
+
+	/** Set ContractLine.
+	  * ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID);
+
+	/** Get ContractLine.
+	  * ContractLine
+	  */
+	public int getS_ContractLine_ID();
+
+	public I_S_ContractLine getS_ContractLine() throws RuntimeException;
 
     /** Column name StartDate */
     public static final String COLUMNNAME_StartDate = "StartDate";
