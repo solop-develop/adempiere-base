@@ -563,6 +563,15 @@ public interface I_C_Order
 	  */
 	public String getDescription();
 
+	/** Column name IsAutoDiscountApplied */
+	public static final String COLUMNNAME_IsAutoDiscountApplied = "IsAutoDiscountApplied";
+
+	/** Set Automatic Discount Applied	  */
+	public void setIsAutoDiscountApplied (boolean IsAutoDiscountApplied);
+
+	/** Get Automatic Discount Applied	  */
+	public boolean isAutoDiscountApplied();
+
     /** Column name DocAction */
     public static final String COLUMNNAME_DocAction = "DocAction";
 
