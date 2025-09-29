@@ -317,6 +317,16 @@ public class MProcess extends X_AD_Process
 		return sb.toString ();
 	}	//	toString
 
+	@Override
+	protected boolean beforeSave(boolean newRecord) {
+		if (getClassname() != null) {
+			setClassname(getClassname().strip());
+		}
+		if (getJasperReport() != null) {
+			setJasperReport(getJasperReport().strip());
+		}
+		return super.beforeSave(newRecord);
+	}
 	
 	/**************************************************************************
 	 * 	Process w/o parameter
