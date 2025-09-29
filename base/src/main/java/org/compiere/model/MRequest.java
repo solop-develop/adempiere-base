@@ -755,8 +755,8 @@ public class MRequest extends X_R_Request
 					setR_Status_ID();	//	set to default
 			}
 		}
-		if (newRecord && get_ValueAsInt("C_ProjectLine_ID") > 0) {
-			MProjectLine projectLine = new MProjectLine(getCtx(), get_ValueAsInt("C_ProjectLine_ID"), get_TrxName());
+		if (newRecord && getC_ProjectLine_ID() > 0) {
+			MProjectLine projectLine = new MProjectLine(getCtx(), getC_ProjectLine_ID(), get_TrxName());
 			String subject = Env.parseVariable(getSubject(), projectLine, get_TrxName(), true);
 			String summary = Env.parseVariable(getSummary(), projectLine, get_TrxName(), true);
 			setSubject(subject);

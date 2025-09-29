@@ -38,7 +38,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20250929L;
 
     /** Standard Constructor */
     public X_R_Request (Properties ctx, int R_Request_ID, String trxName)
@@ -60,9 +60,9 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 			setPriority (null);
 // 5
 			setProcessed (false);
+			setRequestAmt (Env.ZERO);
 			setR_Request_ID (0);
 			setR_RequestType_ID (0);
-			setRequestAmt (Env.ZERO);
 			setSummary (null);
         } */
     }
@@ -403,6 +403,79 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Close Date.
+		@param CloseDate 
+		Close Date
+	  */
+	public void setCloseDate (Timestamp CloseDate)
+	{
+		set_Value (COLUMNNAME_CloseDate, CloseDate);
+	}
+
+	/** Get Close Date.
+		@return Close Date
+	  */
+	public Timestamp getCloseDate () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_CloseDate);
+	}
+
+	/** ConfidentialType AD_Reference_ID=340 */
+	public static final int CONFIDENTIALTYPE_AD_Reference_ID=340;
+	/** Public Information = A */
+	public static final String CONFIDENTIALTYPE_PublicInformation = "A";
+	/** Partner Confidential = C */
+	public static final String CONFIDENTIALTYPE_PartnerConfidential = "C";
+	/** Internal = I */
+	public static final String CONFIDENTIALTYPE_Internal = "I";
+	/** Private Information = P */
+	public static final String CONFIDENTIALTYPE_PrivateInformation = "P";
+	/** Set Confidentiality.
+		@param ConfidentialType 
+		Type of Confidentiality
+	  */
+	public void setConfidentialType (String ConfidentialType)
+	{
+
+		set_Value (COLUMNNAME_ConfidentialType, ConfidentialType);
+	}
+
+	/** Get Confidentiality.
+		@return Type of Confidentiality
+	  */
+	public String getConfidentialType () 
+	{
+		return (String)get_Value(COLUMNNAME_ConfidentialType);
+	}
+
+	/** ConfidentialTypeEntry AD_Reference_ID=340 */
+	public static final int CONFIDENTIALTYPEENTRY_AD_Reference_ID=340;
+	/** Public Information = A */
+	public static final String CONFIDENTIALTYPEENTRY_PublicInformation = "A";
+	/** Partner Confidential = C */
+	public static final String CONFIDENTIALTYPEENTRY_PartnerConfidential = "C";
+	/** Internal = I */
+	public static final String CONFIDENTIALTYPEENTRY_Internal = "I";
+	/** Private Information = P */
+	public static final String CONFIDENTIALTYPEENTRY_PrivateInformation = "P";
+	/** Set Entry Confidentiality.
+		@param ConfidentialTypeEntry 
+		Confidentiality of the individual entry
+	  */
+	public void setConfidentialTypeEntry (String ConfidentialTypeEntry)
+	{
+
+		set_Value (COLUMNNAME_ConfidentialTypeEntry, ConfidentialTypeEntry);
+	}
+
+	/** Get Entry Confidentiality.
+		@return Confidentiality of the individual entry
+	  */
+	public String getConfidentialTypeEntry () 
+	{
+		return (String)get_Value(COLUMNNAME_ConfidentialTypeEntry);
+	}
+
 	public org.adempiere.core.domains.models.I_C_Order getC_Order() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_Order)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Order.Table_Name)
@@ -515,6 +588,34 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		return ii.intValue();
 	}
 
+	public I_C_ProjectLine getC_ProjectLine() throws RuntimeException
+    {
+		return (I_C_ProjectLine)MTable.get(getCtx(), I_C_ProjectLine.Table_Name)
+			.getPO(getC_ProjectLine_ID(), get_TrxName());	}
+
+	/** Set Project Line.
+		@param C_ProjectLine_ID 
+		Task or step in a project
+	  */
+	public void setC_ProjectLine_ID (int C_ProjectLine_ID)
+	{
+		if (C_ProjectLine_ID < 1) 
+			set_Value (COLUMNNAME_C_ProjectLine_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_ProjectLine_ID, Integer.valueOf(C_ProjectLine_ID));
+	}
+
+	/** Get Project Line.
+		@return Task or step in a project
+	  */
+	public int getC_ProjectLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_ProjectLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.adempiere.core.domains.models.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_ProjectPhase)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ProjectPhase.Table_Name)
@@ -569,79 +670,6 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Close Date.
-		@param CloseDate 
-		Close Date
-	  */
-	public void setCloseDate (Timestamp CloseDate)
-	{
-		set_Value (COLUMNNAME_CloseDate, CloseDate);
-	}
-
-	/** Get Close Date.
-		@return Close Date
-	  */
-	public Timestamp getCloseDate () 
-	{
-		return (Timestamp)get_Value(COLUMNNAME_CloseDate);
-	}
-
-	/** ConfidentialType AD_Reference_ID=340 */
-	public static final int CONFIDENTIALTYPE_AD_Reference_ID=340;
-	/** Public Information = A */
-	public static final String CONFIDENTIALTYPE_PublicInformation = "A";
-	/** Partner Confidential = C */
-	public static final String CONFIDENTIALTYPE_PartnerConfidential = "C";
-	/** Internal = I */
-	public static final String CONFIDENTIALTYPE_Internal = "I";
-	/** Private Information = P */
-	public static final String CONFIDENTIALTYPE_PrivateInformation = "P";
-	/** Set Confidentiality.
-		@param ConfidentialType 
-		Type of Confidentiality
-	  */
-	public void setConfidentialType (String ConfidentialType)
-	{
-
-		set_Value (COLUMNNAME_ConfidentialType, ConfidentialType);
-	}
-
-	/** Get Confidentiality.
-		@return Type of Confidentiality
-	  */
-	public String getConfidentialType () 
-	{
-		return (String)get_Value(COLUMNNAME_ConfidentialType);
-	}
-
-	/** ConfidentialTypeEntry AD_Reference_ID=340 */
-	public static final int CONFIDENTIALTYPEENTRY_AD_Reference_ID=340;
-	/** Public Information = A */
-	public static final String CONFIDENTIALTYPEENTRY_PublicInformation = "A";
-	/** Partner Confidential = C */
-	public static final String CONFIDENTIALTYPEENTRY_PartnerConfidential = "C";
-	/** Internal = I */
-	public static final String CONFIDENTIALTYPEENTRY_Internal = "I";
-	/** Private Information = P */
-	public static final String CONFIDENTIALTYPEENTRY_PrivateInformation = "P";
-	/** Set Entry Confidentiality.
-		@param ConfidentialTypeEntry 
-		Confidentiality of the individual entry
-	  */
-	public void setConfidentialTypeEntry (String ConfidentialTypeEntry)
-	{
-
-		set_Value (COLUMNNAME_ConfidentialTypeEntry, ConfidentialTypeEntry);
-	}
-
-	/** Get Entry Confidentiality.
-		@return Confidentiality of the individual entry
-	  */
-	public String getConfidentialTypeEntry () 
-	{
-		return (String)get_Value(COLUMNNAME_ConfidentialTypeEntry);
 	}
 
 	/** Set Complete Plan.
@@ -934,6 +962,34 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 	public String getLastResult () 
 	{
 		return (String)get_Value(COLUMNNAME_LastResult);
+	}
+
+	public I_M_ChangeNotice getM_ChangeNotice() throws RuntimeException
+    {
+		return (I_M_ChangeNotice)MTable.get(getCtx(), I_M_ChangeNotice.Table_Name)
+			.getPO(getM_ChangeNotice_ID(), get_TrxName());	}
+
+	/** Set Change Notice.
+		@param M_ChangeNotice_ID 
+		Bill of Materials (Engineering) Change Notice (Version)
+	  */
+	public void setM_ChangeNotice_ID (int M_ChangeNotice_ID)
+	{
+		if (M_ChangeNotice_ID < 1) 
+			set_Value (COLUMNNAME_M_ChangeNotice_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_ChangeNotice_ID, Integer.valueOf(M_ChangeNotice_ID));
+	}
+
+	/** Get Change Notice.
+		@return Bill of Materials (Engineering) Change Notice (Version)
+	  */
+	public int getM_ChangeNotice_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_ChangeNotice_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	public org.adempiere.core.domains.models.I_M_ChangeRequest getM_ChangeRequest() throws RuntimeException
@@ -1465,6 +1521,96 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Record ID.
+		@param Record_ID 
+		Direct internal record ID
+	  */
+	public void setRecord_ID (int Record_ID)
+	{
+		if (Record_ID < 0) 
+			set_ValueNoCheck (COLUMNNAME_Record_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
+	}
+
+	/** Get Record ID.
+		@return Direct internal record ID
+	  */
+	public int getRecord_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Record_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Request Amount.
+		@param RequestAmt 
+		Amount associated with this request
+	  */
+	public void setRequestAmt (BigDecimal RequestAmt)
+	{
+		set_Value (COLUMNNAME_RequestAmt, RequestAmt);
+	}
+
+	/** Get Request Amount.
+		@return Amount associated with this request
+	  */
+	public BigDecimal getRequestAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_RequestAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** RequestInfoType AD_Reference_ID=54356 */
+	public static final int REQUESTINFOTYPE_AD_Reference_ID=54356;
+	/** Note = NT */
+	public static final String REQUESTINFOTYPE_Note = "NT";
+	/** Mail = ML */
+	public static final String REQUESTINFOTYPE_Mail = "ML";
+	/** Call = CL */
+	public static final String REQUESTINFOTYPE_Call = "CL";
+	/** Task = TK */
+	public static final String REQUESTINFOTYPE_Task = "TK";
+	/** Meet = MT */
+	public static final String REQUESTINFOTYPE_Meet = "MT";
+	/** Set Request Info Type.
+		@param RequestInfoType 
+		Types of Information for Requests or Tickets
+	  */
+	public void setRequestInfoType (String RequestInfoType)
+	{
+
+		set_Value (COLUMNNAME_RequestInfoType, RequestInfoType);
+	}
+
+	/** Get Request Info Type.
+		@return Types of Information for Requests or Tickets
+	  */
+	public String getRequestInfoType () 
+	{
+		return (String)get_Value(COLUMNNAME_RequestInfoType);
+	}
+
+	/** Set Result.
+		@param Result 
+		Result of the action taken
+	  */
+	public void setResult (String Result)
+	{
+		set_Value (COLUMNNAME_Result, Result);
+	}
+
+	/** Get Result.
+		@return Result of the action taken
+	  */
+	public String getResult () 
+	{
+		return (String)get_Value(COLUMNNAME_Result);
+	}
+
 	public org.adempiere.core.domains.models.I_R_Group getR_Group() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_R_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_R_Group.Table_Name)
@@ -1684,66 +1830,6 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set Record ID.
-		@param Record_ID 
-		Direct internal record ID
-	  */
-	public void setRecord_ID (int Record_ID)
-	{
-		if (Record_ID < 0) 
-			set_ValueNoCheck (COLUMNNAME_Record_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
-	}
-
-	/** Get Record ID.
-		@return Direct internal record ID
-	  */
-	public int getRecord_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_Record_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Request Amount.
-		@param RequestAmt 
-		Amount associated with this request
-	  */
-	public void setRequestAmt (BigDecimal RequestAmt)
-	{
-		set_Value (COLUMNNAME_RequestAmt, RequestAmt);
-	}
-
-	/** Get Request Amount.
-		@return Amount associated with this request
-	  */
-	public BigDecimal getRequestAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_RequestAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Result.
-		@param Result 
-		Result of the action taken
-	  */
-	public void setResult (String Result)
-	{
-		set_Value (COLUMNNAME_Result, Result);
-	}
-
-	/** Get Result.
-		@return Result of the action taken
-	  */
-	public String getResult () 
-	{
-		return (String)get_Value(COLUMNNAME_Result);
-	}
-
 	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
@@ -1767,6 +1853,62 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 	public int getSalesRep_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_SalesRep_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_S_Contract getS_Contract() throws RuntimeException
+    {
+		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_S_ContractLine getS_ContractLine() throws RuntimeException
+    {
+		return (I_S_ContractLine)MTable.get(getCtx(), I_S_ContractLine.Table_Name)
+			.getPO(getS_ContractLine_ID(), get_TrxName());	}
+
+	/** Set ContractLine.
+		@param S_ContractLine_ID 
+		ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID)
+	{
+		if (S_ContractLine_ID < 1) 
+			set_Value (COLUMNNAME_S_ContractLine_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ContractLine_ID, Integer.valueOf(S_ContractLine_ID));
+	}
+
+	/** Get ContractLine.
+		@return ContractLine
+	  */
+	public int getS_ContractLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ContractLine_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
