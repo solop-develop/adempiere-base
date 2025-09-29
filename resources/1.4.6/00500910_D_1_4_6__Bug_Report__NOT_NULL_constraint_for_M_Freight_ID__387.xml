@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="[Bug Report] NOT NULL constraint for M_Freight_ID #387" ReleaseNo="1.4.6" SeqNo="500910">
+    <Comments>https://github.com/solop-develop/adempiere-base/issues/387</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54430" Table="AD_Process">
+        <Data AD_Column_ID="4656" Column="Classname" oldValue="org.spin.process.CreateFreightOrderFromPackage">org.spin.freight.process.CreateFreightOrderFromPackage</Data>
+      </PO>
+    </Step>
+    <Step DBType="Postgres" Parse="N" SeqNo="20" StepType="SQL">
+      <SQLStatement>ALTER TABLE DD_FreightLine ALTER COLUMN M_Freight_ID DROP NOT NULL;</SQLStatement>
+    </Step>
+  </Migration>
+</Migrations>

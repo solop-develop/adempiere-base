@@ -71,6 +71,9 @@ public class CreateFreightOrderFromPackage extends CreateFreightOrderFromPackage
 		freightOrder.setDocAction(getDocAction());
 		if(isOverwriteFreightCostRule()) {
 			freightOrder.setFreightCostRule(getFreightCostRule());
+			if(getFreightCategoryId() > 0) {
+				freightOrder.setM_FreightCategory_ID(getFreightCategoryId());
+			}
 		}
 		freightOrder.setFreightAmt(getFreightAmt());
 		freightOrder.saveEx();
@@ -117,10 +120,17 @@ public class CreateFreightOrderFromPackage extends CreateFreightOrderFromPackage
 				freightLine.setC_BPartner_ID(selectedPackage.getC_BPartner_ID());
 			}
 			freightLine.setIsInvoiced(selectedPackage.isInvoiced());
-			if(selectedPackage.getM_FreightCategory_ID() <= 0) {
-				throw new AdempiereException("@M_FreightCategory_ID@ @NotFound@");
+			if(isOverwriteFreightCostRule()) {
+				if(getFreightCategoryId() > 0) {
+					freightLine.setM_FreightCategory_ID(getFreightCategoryId());
+				}
+			} else {
+				if(selectedPackage.getM_FreightCategory_ID() <= 0) {
+					throw new AdempiereException("@M_FreightCategory_ID@ @NotFound@");
+				}
+				freightLine.setM_FreightCategory_ID(selectedPackage.getM_FreightCategory_ID());
 			}
-			MFreightCategory freightCategory = MFreightCategory.getById(getCtx(), selectedPackage.getM_FreightCategory_ID(), get_TrxName());
+			MFreightCategory freightCategory = MFreightCategory.getById(getCtx(), freightLine.getM_FreightCategory_ID(), get_TrxName());
 			if(selectedPackage.isInvoiced()) {
 				if(freightCategory.getM_Product_ID() <= 0
 						&& freightCategory.getC_Charge_ID() <= 0) {
