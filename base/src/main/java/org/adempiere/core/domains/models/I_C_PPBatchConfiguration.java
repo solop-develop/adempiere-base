@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for C_PPBatchConfiguration
  *  @author Adempiere (generated) 
@@ -173,6 +172,17 @@ public interface I_C_PPBatchConfiguration
 	public int getPurchaseInvoiceDocType_ID();
 
 	public I_C_DocType getPurchaseInvoiceDocType() throws RuntimeException;
+
+    /** Column name SalesInvoiceCharge_ID */
+    public static final String COLUMNNAME_SalesInvoiceCharge_ID = "SalesInvoiceCharge_ID";
+
+	/** Set Sales Invoice Charge	  */
+	public void setSalesInvoiceCharge_ID (int SalesInvoiceCharge_ID);
+
+	/** Get Sales Invoice Charge	  */
+	public int getSalesInvoiceCharge_ID();
+
+	public I_C_Charge getSalesInvoiceCharge() throws RuntimeException;
 
     /** Column name SalesInvoiceDocType_ID */
     public static final String COLUMNNAME_SalesInvoiceDocType_ID = "SalesInvoiceDocType_ID";

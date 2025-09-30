@@ -98,11 +98,7 @@ public class GenerateARInvoiceFromBatch extends GenerateARInvoiceFromBatchAbstra
 			invoice.setSalesRep_ID(getAD_User_ID());	//	caller
 			invoice.setDateInvoiced(batch.getDateDoc());
 			String currencyIsoCode = MCurrency.get(getCtx(), batch.getC_Currency_ID()).getISO_Code();
-			MPriceList priceList = (MPriceList) businessPartner.getM_PriceList();
-			if (priceList == null) {
-				priceList = MPriceList.getDefault(getCtx(), true, currencyIsoCode);
-			}
-
+			MPriceList priceList = MPriceList.getDefault(getCtx(), true, currencyIsoCode);
 			if(priceList == null || priceList.get_ID() <= 0) {
 				throw new IllegalArgumentException("@M_PriceList_ID@ @NotFound@ (@C_Currency_ID@ " + currencyIsoCode + ")");
 			}
@@ -116,7 +112,7 @@ public class GenerateARInvoiceFromBatch extends GenerateARInvoiceFromBatchAbstra
 
 			//	Create Invoice Line
 			MInvoiceLine invoiceLine = new MInvoiceLine(invoice);
-			invoiceLine.setC_Charge_ID(batchConfiguration.getFeeCharge_ID());
+			invoiceLine.setC_Charge_ID(batchConfiguration.getSalesInvoiceCharge_ID());
 			invoiceLine.setQty(1);
 			invoiceLine.setPrice(batchSchedule.getAmount());
 			invoiceLine.setTax();
@@ -163,7 +159,7 @@ public class GenerateARInvoiceFromBatch extends GenerateARInvoiceFromBatchAbstra
 		withdrawal.setDocStatus(MPayment.DOCSTATUS_Drafted);
 		withdrawal.setDocAction(MPayment.DOCACTION_Complete);
 
-		withdrawal.setC_Charge_ID(batchConfiguration.getFeeCharge_ID());
+		withdrawal.setC_Charge_ID(batchConfiguration.getSalesInvoiceCharge_ID());
 		withdrawal.setPayAmt(amount);
 		withdrawal.setC_BPartner_ID(batchConfiguration.getC_BPartner_ID());
 

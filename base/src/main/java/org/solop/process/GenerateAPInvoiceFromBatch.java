@@ -21,16 +21,20 @@ package org.solop.process;
 import org.adempiere.core.domains.models.X_C_PPBatchConfiguration;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MCharge;
 import org.compiere.model.MCurrency;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MPayment;
 import org.compiere.model.MPaymentProcessorBatch;
 import org.compiere.model.MPriceList;
+import org.compiere.model.MTax;
+import org.compiere.model.MTaxCategory;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 /**
@@ -91,6 +95,9 @@ public class GenerateAPInvoiceFromBatch extends GenerateAPInvoiceFromBatchAbstra
 		if (exists) {
 			throw new AdempiereException("@C_PaymentProcessorBatch_ID@ @Invalid@");
 		}
+
+
+
 		MBPartner businessPartner = MBPartner.get(getCtx(), batch.getC_BPartner_ID());
 		//	Create Invoice
 		MInvoice invoice = new MInvoice (getCtx(), 0, get_TrxName());
@@ -104,6 +111,15 @@ public class GenerateAPInvoiceFromBatch extends GenerateAPInvoiceFromBatchAbstra
 		MPriceList priceList = MPriceList.getDefault(getCtx(), true, currencyIsoCode);
 		if(priceList == null) {
 			throw new IllegalArgumentException("@M_PriceList_ID@ @NotFound@ (@C_Currency_ID@ " + currencyIsoCode + ")");
+		}
+		MCharge charge = new MCharge(getCtx(), chargeId, get_TrxName());
+		MTaxCategory taxCategory = (MTaxCategory) charge.getC_TaxCategory();
+		MTax tax = taxCategory.getDefaultTax();
+		if (tax != null) {
+			BigDecimal taxRate = tax.getRate();
+			int precision = priceList.getStandardPrecision();
+			BigDecimal multiplier = BigDecimal.ONE.add(taxRate.divide(Env.ONEHUNDRED, precision, RoundingMode.HALF_UP));
+			invoiceAmount = invoiceAmount.divide(multiplier, precision, RoundingMode.HALF_UP);
 		}
 		invoice.setM_PriceList_ID(priceList.getM_PriceList_ID());
 		invoice.setC_PaymentProcessorBatch_ID(batch.getC_PaymentProcessorBatch_ID());
