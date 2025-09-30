@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="SOLOP Add Message" ReleaseNo="1.0" SeqNo="10550">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53783" Table="AD_Message">
+        <Data AD_Column_ID="6766" Column="Value">FreightDetailForAP</Data>
+        <Data AD_Column_ID="84346" Column="UUID">08df9b5d-b3c6-4457-8d13-ec2b85ac8b3d</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="591" Column="Updated">2024-03-15 17:49:55.594</Data>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="198" Column="MsgText">Freight Order #: {0}
+Lines: {1}
+Total Weight: {2,number,#,##0.00}
+Total Volume: {3,number,#,##0.00}
+Freight Amount: {4,number,#,##0.00}</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">D</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="589" Column="Created">2024-03-15 17:49:55.594</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53783</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="84347" Column="UUID">1b2b78b4-9a1e-471b-bb63-1ad391cd1219</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="611" Column="Updated">2024-03-15 17:49:56.755</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Freight Order #: {0}
+Lines: {1}
+Total Weight: {2,number,#,##0.00}
+Total Volume: {3,number,#,##0.00}
+Freight Amount: {4,number,#,##0.00}</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="609" Column="Created">2024-03-15 17:49:56.755</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53783</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Freight Order #: {0}&#10;Lines: {1}&#10;Total Weight: {2,number,#,##0.00}&#10;Total Volume: {3,number,#,##0.00}&#10;Freight Amount: {5,number,#,##0.00}">Orden de Flete #: {0}
+Lineas: {1}
+Peso Total: {2,number,#,##0.00}
+Volumen Total: {3,number,#,##0.00}
+Monto de Flete: {4,number,#,##0.00}</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53783">53783</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
