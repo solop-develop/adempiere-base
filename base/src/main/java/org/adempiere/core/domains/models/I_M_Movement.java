@@ -447,7 +447,16 @@ public interface I_M_Movement
 	  */
 	public int getM_Movement_ID();
 
-    /** Column name M_ProductionBatch_ID */
+	/** Column name IsManualDocument */
+	public static final String COLUMNNAME_IsManualDocument = "IsManualDocument";
+
+	/** Set Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument);
+
+	/** Get Manual Document	  */
+	public boolean isManualDocument();
+
+	/** Column name M_ProductionBatch_ID */
     public static final String COLUMNNAME_M_ProductionBatch_ID = "M_ProductionBatch_ID";
 
 	/** Set Production Batch	  */

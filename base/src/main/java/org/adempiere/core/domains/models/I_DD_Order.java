@@ -576,7 +576,25 @@ public interface I_DD_Order
 	  */
 	public boolean isSOTrx();
 
-    /** Column name M_FreightCategory_ID */
+	/** Column name IsManualDocument */
+	public static final String COLUMNNAME_IsManualDocument = "IsManualDocument";
+
+	/** Set Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument);
+
+	/** Get Manual Document	  */
+	public boolean isManualDocument();
+
+	/** Column name ManualMovementDocumentNo */
+	public static final String COLUMNNAME_ManualMovementDocumentNo = "ManualMovementDocumentNo";
+
+	/** Set Manual Movement Document No	  */
+	public void setManualMovementDocumentNo (String ManualMovementDocumentNo);
+
+	/** Get Manual Movement Document No	  */
+	public String getManualMovementDocumentNo();
+
+	/** Column name M_FreightCategory_ID */
     public static final String COLUMNNAME_M_FreightCategory_ID = "M_FreightCategory_ID";
 
 	/** Set Freight Category.

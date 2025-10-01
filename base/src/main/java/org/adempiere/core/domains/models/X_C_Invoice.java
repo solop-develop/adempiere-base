@@ -1127,6 +1127,27 @@ public class X_C_Invoice extends PO implements I_C_Invoice, I_Persistent
 	{
 		return (String)get_Value(COLUMNNAME_InvoiceCollectionType);
 	}
+	/** Set Manual Document.
+	 @param IsManualDocument Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument)
+	{
+		set_Value (COLUMNNAME_IsManualDocument, Boolean.valueOf(IsManualDocument));
+	}
+
+	/** Get Manual Document.
+	 @return Manual Document	  */
+	public boolean isManualDocument ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsManualDocument);
+		if (oo != null)
+		{
+			if (oo instanceof Boolean)
+				return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 
 	/** Set Approved.
 		@param IsApproved 

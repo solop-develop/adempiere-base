@@ -1001,6 +1001,54 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 	{
 		return (String)get_Value(COLUMNNAME_DeliveryViaRule);
 	}
+	/** Set Manual Document.
+	 @param IsManualDocument Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument)
+	{
+		set_Value (COLUMNNAME_IsManualDocument, Boolean.valueOf(IsManualDocument));
+	}
+
+	/** Get Manual Document.
+	 @return Manual Document	  */
+	public boolean isManualDocument ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsManualDocument);
+		if (oo != null)
+		{
+			if (oo instanceof Boolean)
+				return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Manual Invoice Document No.
+	 @param ManualInvoiceDocumentNo Manual Invoice Document No	  */
+	public void setManualInvoiceDocumentNo (String ManualInvoiceDocumentNo)
+	{
+		set_Value (COLUMNNAME_ManualInvoiceDocumentNo, ManualInvoiceDocumentNo);
+	}
+
+	/** Get Manual Invoice Document No.
+	 @return Manual Invoice Document No	  */
+	public String getManualInvoiceDocumentNo ()
+	{
+		return (String)get_Value(COLUMNNAME_ManualInvoiceDocumentNo);
+	}
+
+	/** Set Manual Shipment Document No.
+	 @param ManualShipmentDocumentNo Manual Shipment Document No	  */
+	public void setManualShipmentDocumentNo (String ManualShipmentDocumentNo)
+	{
+		set_Value (COLUMNNAME_ManualShipmentDocumentNo, ManualShipmentDocumentNo);
+	}
+
+	/** Get Manual Shipment Document No.
+	 @return Manual Shipment Document No	  */
+	public String getManualShipmentDocumentNo ()
+	{
+		return (String)get_Value(COLUMNNAME_ManualShipmentDocumentNo);
+	}
 
 	/** Set Description.
 		@param Description 

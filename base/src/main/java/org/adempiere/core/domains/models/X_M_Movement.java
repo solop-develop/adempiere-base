@@ -697,6 +697,27 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent
 	{
 		return (String)get_Value(COLUMNNAME_FreightCostRule);
 	}
+	/** Set Manual Document.
+	 @param IsManualDocument Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument)
+	{
+		set_Value (COLUMNNAME_IsManualDocument, Boolean.valueOf(IsManualDocument));
+	}
+
+	/** Get Manual Document.
+	 @return Manual Document	  */
+	public boolean isManualDocument ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsManualDocument);
+		if (oo != null)
+		{
+			if (oo instanceof Boolean)
+				return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 
 	/** Set Approved.
 		@param IsApproved 

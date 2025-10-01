@@ -622,6 +622,15 @@ public interface I_C_POS
     /** Column name IsDisplayDiscount */
     public static final String COLUMNNAME_IsDisplayDiscount = "IsDisplayDiscount";
 
+	/** Column name IsGenerateManualDocument */
+	public static final String COLUMNNAME_IsGenerateManualDocument = "IsGenerateManualDocument";
+
+	/** Set Generate Manual Document	  */
+	public void setIsGenerateManualDocument (boolean IsGenerateManualDocument);
+
+	/** Get Generate Manual Document	  */
+	public boolean isGenerateManualDocument();
+
 	/** Set Display Discount.
 	  * Display Discount on POS window
 	  */
