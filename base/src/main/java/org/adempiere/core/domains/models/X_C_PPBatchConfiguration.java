@@ -18,13 +18,12 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
+import java.sql.ResultSet;
+import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
-
-import java.sql.ResultSet;
-import java.util.Properties;
 
 /** Generated Model for C_PPBatchConfiguration
  *  @author Adempiere (generated) 
@@ -35,7 +34,7 @@ public class X_C_PPBatchConfiguration extends PO implements I_C_PPBatchConfigura
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250916L;
+	private static final long serialVersionUID = 20250929L;
 
     /** Standard Constructor */
     public X_C_PPBatchConfiguration (Properties ctx, int C_PPBatchConfiguration_ID, String trxName)
@@ -227,6 +226,31 @@ public class X_C_PPBatchConfiguration extends PO implements I_C_PPBatchConfigura
 	public int getPurchaseInvoiceDocType_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_PurchaseInvoiceDocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Charge getSalesInvoiceCharge() throws RuntimeException
+    {
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
+			.getPO(getSalesInvoiceCharge_ID(), get_TrxName());	}
+
+	/** Set Sales Invoice Charge.
+		@param SalesInvoiceCharge_ID Sales Invoice Charge	  */
+	public void setSalesInvoiceCharge_ID (int SalesInvoiceCharge_ID)
+	{
+		if (SalesInvoiceCharge_ID < 1) 
+			set_Value (COLUMNNAME_SalesInvoiceCharge_ID, null);
+		else 
+			set_Value (COLUMNNAME_SalesInvoiceCharge_ID, Integer.valueOf(SalesInvoiceCharge_ID));
+	}
+
+	/** Get Sales Invoice Charge.
+		@return Sales Invoice Charge	  */
+	public int getSalesInvoiceCharge_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SalesInvoiceCharge_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
