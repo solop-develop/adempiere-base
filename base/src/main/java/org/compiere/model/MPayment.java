@@ -508,32 +508,27 @@ public final class MPayment extends X_C_Payment
 		}
 
 		boolean approved = false;
-
-		try
-		{
+		try {
 			PaymentProcessor pp = PaymentProcessor.create(currentPaymentProcessor, this);
-			if (pp == null)
-				setErrorMessage("@C_PaymentProcessor_ID@ @NotFound@");
-			else
-			{
-				// Validate before trying to process
-				String msg = pp.validate();
-				if (msg != null && !msg.trim().isEmpty()) {
-					setErrorMessage(Msg.getMsg(getCtx(), msg));
-				} else {
-					// Process if validation succeeds
-					approved = pp.processCC ();
-					if (approved)
-						setErrorMessage(null);
-					else
-						setErrorMessage(getR_RespMsg());
-				}
-			}
-		}
+            // Validate before trying to process
+            String msg = pp.validate();
+            if (msg != null && !msg.trim().isEmpty()) {
+                setErrorMessage(Msg.getMsg(getCtx(), msg));
+            } else {
+                // Process if validation succeeds
+                approved = pp.processCC ();
+                if (approved)
+                    setErrorMessage(null);
+                else
+                    setErrorMessage(getR_RespMsg());
+            }
+        }
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, "processOnline", e);
 			setErrorMessage(e.getMessage());
+			setResponseMessage(e.getMessage());
+			setResponseStatus(MPayment.RESPONSESTATUS_Error);
 		}
 		setIsApproved(approved);
 		return approved;
@@ -557,22 +552,19 @@ public final class MPayment extends X_C_Payment
 			return false;
 		}
 		boolean result = true;
-		try
-		{
+		try {
 			PaymentProcessor pp = PaymentProcessor.create(currentPaymentProcessor, this);
-			if (pp == null) {
-				result = false;
-			}
-			else
-			{
-				if (PaymentProcessorReverse.class.isAssignableFrom(pp.getClass())) {
-					result = ((PaymentProcessorReverse) pp).transactionReverse();
-				}
-			}
-		}
+            if (PaymentProcessorReverse.class.isAssignableFrom(pp.getClass())) {
+                result = ((PaymentProcessorReverse) pp).transactionReverse();
+            }
+        }
 		catch (Exception e)
 		{
 			result = false;
+			log.log(Level.SEVERE, "reverseOnlineTransaction", e);
+			setErrorMessage(e.getMessage());
+			setResponseMessage(e.getMessage());
+			setResponseStatus(MPayment.RESPONSESTATUS_Error);
 		}
 		return result;
 	}   //  reverseOnlineTransaction
@@ -593,20 +585,16 @@ public final class MPayment extends X_C_Payment
 			return false;
 		}
 		boolean result = true;
-		try
-		{
+		try {
 			PaymentProcessor pp = PaymentProcessor.create(currentPaymentProcessor, this);
-			if (pp == null)
-				return false;
-			else
-			{
-				if (PaymentProcessorStatus.class.isAssignableFrom(pp.getClass())) {
-					result = ((PaymentProcessorStatus) pp).transactionStatus(0);
-				}
-			}
-		}
-		catch (Exception e)
-		{
+            if (PaymentProcessorStatus.class.isAssignableFrom(pp.getClass())) {
+                result = ((PaymentProcessorStatus) pp).transactionStatus(0);
+            }
+        } catch (Exception e) {
+			log.log(Level.SEVERE, "getOnlineStatus", e);
+			setErrorMessage(e.getMessage());
+			setResponseMessage(e.getMessage());
+			setResponseStatus(MPayment.RESPONSESTATUS_Error);
 			return false;
 		}
 		return result;
@@ -931,11 +919,19 @@ public final class MPayment extends X_C_Payment
 		if (paymentProcessors == null || paymentProcessors.isEmpty()) {
 			return;
 		}
-		Optional<MPaymentProcessor> maybeProcessor = paymentProcessors.stream().filter(processor -> processor.accepts(getTenderType(), getCreditCardType())).findFirst();
-		if(maybeProcessor.isPresent()) {
-			currentPaymentProcessor = maybeProcessor.get();
-			if (getC_BankAccount_ID() == 0) {
-				setC_BankAccount_ID (currentPaymentProcessor.getC_BankAccount_ID());
+		//	Find Processor that matches Bank Account and Tender/CreditCard
+		if(getC_BankAccount_ID() > 0) {
+			Optional<MPaymentProcessor> maybeProcessor = paymentProcessors.stream().filter(processor -> {
+				return processor.getC_BankAccount_ID() == getC_BankAccount_ID() && processor.accepts(getTenderType(), getCreditCardType());
+			}).findFirst();
+            maybeProcessor.ifPresent(paymentProcessor -> currentPaymentProcessor = paymentProcessor);
+		} else {
+			Optional<MPaymentProcessor> maybeProcessor = paymentProcessors.stream().filter(processor -> processor.accepts(getTenderType(), getCreditCardType())).findFirst();
+			if(maybeProcessor.isPresent()) {
+				currentPaymentProcessor = maybeProcessor.get();
+				if (getC_BankAccount_ID() == 0) {
+					setC_BankAccount_ID (currentPaymentProcessor.getC_BankAccount_ID());
+				}
 			}
 		}
 	}   //  setPaymentProcessor
