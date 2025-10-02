@@ -596,6 +596,15 @@ public interface I_M_InOut
 	  */
 	public boolean isInTransit();
 
+	/** Column name IsManualDocument */
+	public static final String COLUMNNAME_IsManualDocument = "IsManualDocument";
+
+	/** Set Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument);
+
+	/** Get Manual Document	  */
+	public boolean isManualDocument();
+
     /** Column name IsPrinted */
     public static final String COLUMNNAME_IsPrinted = "IsPrinted";
 

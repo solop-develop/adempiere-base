@@ -1041,26 +1041,6 @@ public class X_C_POS extends PO implements I_C_POS, I_Persistent
 		return false;
 	}
 
-	/** Set Generate Manual Document.
-	 @param IsGenerateManualDocument Generate Manual Document	  */
-	public void setIsGenerateManualDocument (boolean IsGenerateManualDocument)
-	{
-		set_Value (COLUMNNAME_IsGenerateManualDocument, Boolean.valueOf(IsGenerateManualDocument));
-	}
-
-	/** Get Generate Manual Document.
-	 @return Generate Manual Document	  */
-	public boolean isGenerateManualDocument ()
-	{
-		Object oo = get_Value(COLUMNNAME_IsGenerateManualDocument);
-		if (oo != null)
-		{
-			if (oo instanceof Boolean)
-				return ((Boolean)oo).booleanValue();
-			return "Y".equals(oo);
-		}
-		return false;
-	}
 	/** Set Display Discount.
 		@param IsDisplayDiscount 
 		Display Discount on POS window

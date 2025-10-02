@@ -1032,6 +1032,27 @@ public class X_M_InOut extends PO implements I_M_InOut, I_Persistent
 		return false;
 	}
 
+	/** Set Manual Document.
+	 @param IsManualDocument Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument)
+	{
+		set_Value (COLUMNNAME_IsManualDocument, Boolean.valueOf(IsManualDocument));
+	}
+
+	/** Get Manual Document.
+	 @return Manual Document	  */
+	public boolean isManualDocument ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsManualDocument);
+		if (oo != null)
+		{
+			if (oo instanceof Boolean)
+				return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Printed.
 		@param IsPrinted 
 		Indicates if this document / line is printed

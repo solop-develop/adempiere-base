@@ -26,6 +26,7 @@ import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.eevolution.distribution.model.MDDOrder;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -211,6 +212,19 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 				return false;
 			}
 		}
+
+		if (newRecord || is_ValueChanged(COLUMNNAME_DD_Order_ID)) {
+			MDDOrder order = (MDDOrder) getDD_Order();
+			boolean isManualDocument = false;
+			if (order != null && order.get_ID() > 0) {
+				isManualDocument = order.isManualDocument();
+			}
+			setIsManualDocument(isManualDocument);
+			if (isManualDocument) {
+				setDocumentNo(order.getManualMovementDocumentNo());
+			}
+		}
+
 		return true;
 	}	//	beforeSave
 	
@@ -531,6 +545,9 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 	 * 	Set the definite document number after completed
 	 */
 	private void setDefiniteDocumentNo() {
+		if (isManualDocument()) {
+			return;
+		}
 		MDocType docType = MDocType.get(getCtx(), getC_DocType_ID());
 		if (docType.isOverwriteDateOnComplete()) {
 			setMovementDate(new Timestamp (System.currentTimeMillis()));

@@ -984,6 +984,16 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					setC_PaymentTerm_ID (ii);
 			}
 		}
+		if (newRecord || is_ValueChanged(COLUMNNAME_C_Order_ID)) {
+			MOrder order = (MOrder) getC_Order();
+			if (order != null && order.get_ID() > 0) {
+				setIsManualDocument(order.isManualDocument());
+				if (isManualDocument()){
+					setDocumentNo(order.getManualInvoiceDocumentNo());
+				}
+			}
+		}
+
 		return true;
 	}	//	beforeSave
 
@@ -2214,6 +2224,9 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	 * 	Set the definite document number after completed
 	 */
 	private void setDefiniteDocumentNo() {
+		if (isManualDocument()) {
+			return;
+		}
 		MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
 		if (dt.isOverwriteDateOnComplete()) {
 			setDateInvoiced(new Timestamp (System.currentTimeMillis()));

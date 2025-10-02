@@ -470,6 +470,16 @@ public interface I_C_DocType
 	/** Get Overwrite Sequence on Complete	  */
 	public boolean isOverwriteSeqOnComplete();
 
+	/** Column name IsGenerateManualDocument */
+	public static final String COLUMNNAME_IsGenerateManualDocument = "IsGenerateManualDocument";
+
+	/** Set Generate Manual Document	  */
+	public void setIsGenerateManualDocument (boolean IsGenerateManualDocument);
+
+	/** Get Generate Manual Document	  */
+	public boolean isGenerateManualDocument();
+
+
     /** Column name IsPayrollPayment */
     public static final String COLUMNNAME_IsPayrollPayment = "IsPayrollPayment";
 
