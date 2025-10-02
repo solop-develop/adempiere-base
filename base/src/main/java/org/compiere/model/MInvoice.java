@@ -988,7 +988,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			MOrder order = (MOrder) getC_Order();
 			if (order != null && order.get_ID() > 0) {
 				setIsManualDocument(order.isManualDocument());
-				if (isManualDocument()){
+				if (isManualDocument() && !Util.isEmpty(order.getManualInvoiceDocumentNo(), true)){
 					setDocumentNo(order.getManualInvoiceDocumentNo());
 				}
 			}

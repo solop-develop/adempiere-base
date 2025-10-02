@@ -26,6 +26,7 @@ import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Util;
 import org.eevolution.distribution.model.MDDOrder;
 
 import java.io.File;
@@ -220,7 +221,7 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 				isManualDocument = order.isManualDocument();
 			}
 			setIsManualDocument(isManualDocument);
-			if (isManualDocument) {
+			if (isManualDocument && !Util.isEmpty(order.getManualMovementDocumentNo(), true)) {
 				setDocumentNo(order.getManualMovementDocumentNo());
 			}
 		}
