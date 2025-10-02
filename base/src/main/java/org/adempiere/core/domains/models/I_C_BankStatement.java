@@ -295,7 +295,16 @@ public interface I_C_BankStatement
 	  */
 	public boolean isManual();
 
-    /** Column name MatchStatement */
+	/** Column name IsOnlineClosingApproved */
+	public static final String COLUMNNAME_IsOnlineClosingApproved = "IsOnlineClosingApproved";
+
+	/** Set Online Closing Approved	  */
+	public void setIsOnlineClosingApproved (boolean IsOnlineClosingApproved);
+
+	/** Get Online Closing Approved	  */
+	public boolean isOnlineClosingApproved();
+
+	/** Column name MatchStatement */
     public static final String COLUMNNAME_MatchStatement = "MatchStatement";
 
 	/** Set Match Statement	  */

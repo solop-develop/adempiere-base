@@ -420,6 +420,27 @@ public class X_C_BankStatement extends PO implements I_C_BankStatement, I_Persis
 		return bd;
 	}
 
+	/** Set Online Closing Approved.
+	 @param IsOnlineClosingApproved Online Closing Approved	  */
+	public void setIsOnlineClosingApproved (boolean IsOnlineClosingApproved)
+	{
+		set_Value (COLUMNNAME_IsOnlineClosingApproved, Boolean.valueOf(IsOnlineClosingApproved));
+	}
+
+	/** Get Online Closing Approved.
+	 @return Online Closing Approved	  */
+	public boolean isOnlineClosingApproved ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsOnlineClosingApproved);
+		if (oo != null)
+		{
+			if (oo instanceof Boolean)
+				return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Approved.
 		@param IsApproved 
 		Indicates if this document requires approval
