@@ -41,7 +41,7 @@ public class X_C_POS extends PO implements I_C_POS, I_Persistent
 	private static final long serialVersionUID = 20250811L;
 
     /** Standard Constructor */
-    public X_C_POS (Properties ctx, int C_POS_ID, String trxName)
+    public X_C_POS(Properties ctx, int C_POS_ID, String trxName)
     {
       super (ctx, C_POS_ID, trxName);
       /** if (C_POS_ID == 0)
@@ -58,7 +58,7 @@ public class X_C_POS extends PO implements I_C_POS, I_Persistent
     }
 
     /** Load Constructor */
-    public X_C_POS (Properties ctx, ResultSet rs, String trxName)
+    public X_C_POS(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -1108,6 +1108,27 @@ public class X_C_POS extends PO implements I_C_POS, I_Persistent
 		{
 			 if (oo instanceof Boolean) 
 				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Validate Online Closing.
+	 @param IsValidateOnlineClosing Validate Online Closing	  */
+	public void setIsValidateOnlineClosing (boolean IsValidateOnlineClosing)
+	{
+		set_Value (COLUMNNAME_IsValidateOnlineClosing, Boolean.valueOf(IsValidateOnlineClosing));
+	}
+
+	/** Get Validate Online Closing.
+	 @return Validate Online Closing	  */
+	public boolean isValidateOnlineClosing ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsValidateOnlineClosing);
+		if (oo != null)
+		{
+			if (oo instanceof Boolean)
+				return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
