@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Group_Columns_To_RV_FO_Products_Table" ReleaseNo="1.4.9" SeqNo="501010">
+    <Comments>Add columns Group1, Group2, Classification from M_Product to RV_FO_Products Table</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="104303" Table="AD_Column">
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">104303</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">52018</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">10</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">55013</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">Group1</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2025-10-08 17:19:42.096</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">255</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true"/>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">false</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Group1</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated">2025-10-08 17:19:42.096</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">3d5d74c6-69cb-4f81-b2b1-6a96f2026a02</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="104303" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">104303</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-10-08 17:19:44.442</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Group1</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-10-08 17:19:44.442</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">e679660f-3c73-4d57-b2dc-5948c9c0a406</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="104304" Table="AD_Column">
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">104304</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">52019</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">10</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">55013</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">Group2</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2025-10-08 17:19:44.571</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="112" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">255</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true"/>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">false</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Group2</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated">2025-10-08 17:19:44.571</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">9ca9a830-be84-4651-b987-6c588b7de523</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="104304" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">104304</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-10-08 17:19:45.582</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Group2</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-10-08 17:19:45.582</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">e4a34efd-968e-46db-9dd2-e418dd93b835</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="104305" Table="AD_Column">
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">104305</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">852</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">10</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">55013</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">Classification</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2025-10-08 17:19:45.704</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="112" Column="Description">Classification for grouping</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">12</Data>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="113" Column="Help">The Classification can be used to optionally group products.</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase" isNewNull="true"/>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">false</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="111" Column="Name">Classification</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated">2025-10-08 17:19:45.704</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">cb8315f5-8fa8-4ab9-83c7-ddc5c6e633eb</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="104305" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">104305</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2025-10-08 17:19:46.674</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Classification</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2025-10-08 17:19:46.674</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">3eb35fbd-2bfe-4974-b414-4d4d44c921b3</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
