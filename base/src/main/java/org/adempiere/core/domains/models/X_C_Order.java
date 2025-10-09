@@ -409,6 +409,27 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Automatic Discount Applied.
+	 @param IsAutoDiscountApplied Automatic Discount Applied	  */
+	public void setIsAutoDiscountApplied (boolean IsAutoDiscountApplied)
+	{
+		set_Value (COLUMNNAME_IsAutoDiscountApplied, Boolean.valueOf(IsAutoDiscountApplied));
+	}
+
+	/** Get Automatic Discount Applied.
+	 @return Automatic Discount Applied	  */
+	public boolean isAutoDiscountApplied ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsAutoDiscountApplied);
+		if (oo != null)
+		{
+			if (oo instanceof Boolean)
+				return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_Campaign)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Campaign.Table_Name)

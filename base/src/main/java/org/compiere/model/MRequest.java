@@ -755,6 +755,23 @@ public class MRequest extends X_R_Request
 					setR_Status_ID();	//	set to default
 			}
 		}
+		if (newRecord && getC_ProjectLine_ID() > 0) {
+			MProjectLine projectLine = new MProjectLine(getCtx(), getC_ProjectLine_ID(), get_TrxName());
+			String subject = Env.parseVariable(getSubject(), projectLine, get_TrxName(), true);
+			String summary = Env.parseVariable(getSummary(), projectLine, get_TrxName(), true);
+			setSubject(subject);
+			setSummary(summary);
+			if(projectLine.getDateStartSchedule() != null) {
+				setDateNextAction(projectLine.getDateStartSchedule());
+			}
+			if(projectLine.getDateFinishSchedule() != null) {
+				setDateCompletePlan(projectLine.getDateFinishSchedule());
+			}
+			if(projectLine.getResponsible_ID() > 0) {
+				setSalesRep_ID(projectLine.getResponsible_ID());
+			}
+		}
+
 		if (isInvoiced()) {
 			Optional.ofNullable(getResult()).ifPresent(result -> {
 				Optional<BigDecimal> maybeQuantityToInvoice = Optional.ofNullable(getQtyInvoiced());

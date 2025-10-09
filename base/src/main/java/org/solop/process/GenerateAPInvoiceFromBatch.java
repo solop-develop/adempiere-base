@@ -18,19 +18,23 @@
 
 package org.solop.process;
 
+import org.adempiere.core.domains.models.X_C_PPBatchConfiguration;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MCharge;
 import org.compiere.model.MCurrency;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MPayment;
-import org.compiere.model.MPaymentProcessor;
 import org.compiere.model.MPaymentProcessorBatch;
 import org.compiere.model.MPriceList;
+import org.compiere.model.MTax;
+import org.compiere.model.MTaxCategory;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 /**
@@ -52,27 +56,27 @@ public class GenerateAPInvoiceFromBatch extends GenerateAPInvoiceFromBatchAbstra
 		if(!batch.isProcessed() || (!batch.getDocStatus().equals(MPaymentProcessorBatch.DOCSTATUS_Completed) && !batch.getDocStatus().equals(MPaymentProcessorBatch.DOCSTATUS_Closed))) {
 			throw new AdempiereException("@C_PaymentProcessorBatch_ID@ @Unprocessed@");
 		}
-		if(batch.getC_PaymentProcessor_ID() <= 0) {
-			throw new AdempiereException("@C_PaymentProcessor_ID@ @NotFound@");
+		if(batch.getC_PPBatchConfiguration_ID() <= 0) {
+			throw new AdempiereException("@C_PPBatchConfiguration_ID@ @NotFound@");
 		}
 		if(Optional.ofNullable(batch.getFeeAmt()).orElse(Env.ZERO).signum() == 0) {
 			throw new AdempiereException("@FeeAmt@ = 0");
 		}
-		MPaymentProcessor paymentProcessor = new MPaymentProcessor(getCtx(), batch.getC_PaymentProcessor_ID(), get_TrxName());
-		if(paymentProcessor.getFeeCurrency_ID() <= 0) {
-			throw new AdempiereException("@FeeCurrency_ID@ @NotFound@");
+		X_C_PPBatchConfiguration batchConfiguration = new X_C_PPBatchConfiguration(getCtx(), batch.getC_PPBatchConfiguration_ID(), get_TrxName());
+		if(batch.getC_Currency_ID() <= 0) {
+			throw new AdempiereException("@C_Currency_ID@ @NotFound@");
 		}
 		int documentTypeId= 0;
 		BigDecimal invoiceAmount = BigDecimal.ZERO;
 		int chargeId = 0;
 		if ("FEE".equals(getVendorDocumentType())) {
-			documentTypeId = paymentProcessor.getPurchaseInvoiceDocType_ID();
+			documentTypeId = batchConfiguration.getPurchaseInvoiceDocType_ID();
 			invoiceAmount = batch.getFeeAmt();
-			chargeId = paymentProcessor.getFeeCharge_ID();
+			chargeId = batchConfiguration.getFeeCharge_ID();
 		} else if ("WTH".equals(getVendorDocumentType())) {
-			documentTypeId = paymentProcessor.getWithholdingDocType_ID();
+			documentTypeId = batchConfiguration.getWithholdingDocType_ID();
 			invoiceAmount = batch.getWithholdingAmt();
-			chargeId = paymentProcessor.getWithholdingCharge_ID();
+			chargeId = batchConfiguration.getWithholdingCharge_ID();
 		}
 		if (documentTypeId <= 0) {
 			throw new AdempiereException("@C_DocTypeTarget_ID@ @NotFound@");
@@ -91,6 +95,9 @@ public class GenerateAPInvoiceFromBatch extends GenerateAPInvoiceFromBatchAbstra
 		if (exists) {
 			throw new AdempiereException("@C_PaymentProcessorBatch_ID@ @Invalid@");
 		}
+
+
+
 		MBPartner businessPartner = MBPartner.get(getCtx(), batch.getC_BPartner_ID());
 		//	Create Invoice
 		MInvoice invoice = new MInvoice (getCtx(), 0, get_TrxName());
@@ -100,10 +107,19 @@ public class GenerateAPInvoiceFromBatch extends GenerateAPInvoiceFromBatchAbstra
 		invoice.setBPartner(businessPartner);
 		invoice.setSalesRep_ID(getAD_User_ID());	//	caller
 		invoice.setDateInvoiced(getDateDoc());
-		String currencyIsoCode = MCurrency.get(getCtx(), paymentProcessor.getFeeCurrency_ID()).getISO_Code();
+		String currencyIsoCode = MCurrency.get(getCtx(), batch.getC_Currency_ID()).getISO_Code();
 		MPriceList priceList = MPriceList.getDefault(getCtx(), true, currencyIsoCode);
 		if(priceList == null) {
 			throw new IllegalArgumentException("@M_PriceList_ID@ @NotFound@ (@C_Currency_ID@ " + currencyIsoCode + ")");
+		}
+		MCharge charge = new MCharge(getCtx(), chargeId, get_TrxName());
+		MTaxCategory taxCategory = (MTaxCategory) charge.getC_TaxCategory();
+		MTax tax = taxCategory.getDefaultTax();
+		if (tax != null) {
+			BigDecimal taxRate = tax.getRate();
+			int precision = priceList.getStandardPrecision();
+			BigDecimal multiplier = BigDecimal.ONE.add(taxRate.divide(Env.ONEHUNDRED, precision, RoundingMode.HALF_UP));
+			invoiceAmount = invoiceAmount.divide(multiplier, precision, RoundingMode.HALF_UP);
 		}
 		invoice.setM_PriceList_ID(priceList.getM_PriceList_ID());
 		invoice.setC_PaymentProcessorBatch_ID(batch.getC_PaymentProcessorBatch_ID());

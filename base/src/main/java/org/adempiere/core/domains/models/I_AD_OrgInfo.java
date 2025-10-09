@@ -216,6 +216,21 @@ public interface I_AD_OrgInfo
 	  */
 	public String getFax();
 
+    /** Column name FiscalCurrency_ID */
+    public static final String COLUMNNAME_FiscalCurrency_ID = "FiscalCurrency_ID";
+
+	/** Set Fiscal Currency.
+	  * Fiscal Currency for this client
+	  */
+	public void setFiscalCurrency_ID (int FiscalCurrency_ID);
+
+	/** Get Fiscal Currency.
+	  * Fiscal Currency for this client
+	  */
+	public int getFiscalCurrency_ID();
+
+	public I_C_Currency getFiscalCurrency() throws RuntimeException;
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 

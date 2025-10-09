@@ -1,6 +1,7 @@
 package org.compiere.model;
 import org.adempiere.core.domains.models.I_C_PPBatchLine;
 import org.adempiere.core.domains.models.I_C_PPVendorTransaction;
+import org.adempiere.core.domains.models.X_C_PPBatchConfiguration;
 import org.adempiere.core.domains.models.X_C_PaymentProcessorBatch;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
@@ -143,6 +144,15 @@ public class MPaymentProcessorBatch extends X_C_PaymentProcessorBatch implements
                 throw new AdempiereException("@C_DocType_ID@ @FillMandatory@");
 
         }
+
+        X_C_PPBatchConfiguration batchConfiguration = (X_C_PPBatchConfiguration) getC_PPBatchConfiguration();
+        if (batchConfiguration == null) {
+            throw new AdempiereException("@C_PPBatchConfiguration_ID@ @FillMandatory@");
+        }
+        int partnerId = batchConfiguration.getC_BPartner_ID();
+        setC_BPartner_ID(partnerId);
+        setC_BPartner_Location_ID(batchConfiguration.getC_BPartner_Location_ID());
+
         updateOpenAmount();
         return super.beforeSave(newRecord);
     }
@@ -618,14 +628,6 @@ public class MPaymentProcessorBatch extends X_C_PaymentProcessorBatch implements
     {
         return getGrandTotal();
     }	//	getApprovalAmt
-
-    /**
-     * 	Get Document Currency
-     *	@return C_Currency_ID
-     */
-    public int getC_Currency_ID() {
-        return MBankAccount.get(getCtx(), getC_BankAccount_ID()).getC_Currency_ID();
-    }	//	getC_Currency_ID
 
     @Override
     public String toString()

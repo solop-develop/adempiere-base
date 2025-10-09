@@ -16,16 +16,13 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Properties;
-import java.util.logging.Level;
-
+import org.adempiere.core.domains.models.I_M_Locator;
 import org.adempiere.core.domains.models.X_M_Locator;
 import org.compiere.util.CCache;
 import org.compiere.util.CLogger;
-import org.compiere.util.DB;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  *	Warehouse Locator Object
@@ -46,39 +43,16 @@ public class MLocator extends X_M_Locator
 	/**
 	 * 	Get oldest Default Locator of warehouse with locator
 	 *	@param ctx context
-	 *	@param M_Locator_ID locator
+	 *	@param locatorId locator
 	 *	@return locator or null
 	 */
-	public static MLocator getDefault (Properties ctx, int M_Locator_ID)
-	{
-		String trxName = null;
-		MLocator retValue = null;
-		String sql = "SELECT * FROM M_Locator l "
-			+ "WHERE IsActive = 'Y' AND  IsDefault='Y'"
-			+ " AND EXISTS (SELECT * FROM M_Locator lx "
-				+ "WHERE l.M_Warehouse_ID=lx.M_Warehouse_ID AND lx.M_Locator_ID=?) "
-			+ "ORDER BY Created";
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trxName);
-			pstmt.setInt (1, M_Locator_ID);
-			rs = pstmt.executeQuery ();
-			while (rs.next ())
-				retValue = new MLocator (ctx, rs, trxName);
-		}
-		catch (Exception e)
-		{
-			s_log.log (Level.SEVERE, sql, e);
-		}
-		finally
-		{
-			DB.close(rs, pstmt);
-			rs = null; pstmt = null;
-		}
-		
-		return retValue;
+	public static MLocator getDefault (Properties ctx, int locatorId) {
+		return new Query(ctx, I_M_Locator.Table_Name, "IsDefault = 'Y' " +
+				"AND EXISTS (SELECT 1 FROM M_Locator lx WHERE M_Warehouse_ID = M_Warehouse_ID AND lx.M_Locator_ID = ?)", null)
+				.setOnlyActiveRecords(true)
+				.setParameters(locatorId)
+				.setOrderBy("Created")
+				.first();
 	}	//	getDefault
 	
 	/**
@@ -88,34 +62,12 @@ public class MLocator extends X_M_Locator
 	 *	@param M_Locator_ID locator
 	 *	@return locator or null
 	 */
-	public static MLocator getDefault (MWarehouse warehouse)
-	{
-		String trxName = null;
-		MLocator retValue = null;
-		String sql = "SELECT * FROM M_Locator l "
-			+ "WHERE IsActive = 'Y' AND IsDefault='Y' AND l.M_Warehouse_ID=? "
-			+ "ORDER BY PriorityNo";
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trxName);
-			pstmt.setInt (1, warehouse.getM_Warehouse_ID());
-			rs = pstmt.executeQuery ();
-			while (rs.next ())
-				retValue = new MLocator (warehouse.getCtx(), rs, trxName);
-		}
-		catch (Exception e)
-		{
-			s_log.log (Level.SEVERE, sql, e);
-		}
-		finally
-		{
-			DB.close(rs, pstmt);
-			rs = null; pstmt = null;
-		}
-		
-		return retValue;
+	public static MLocator getDefault (MWarehouse warehouse) {
+		return new Query(warehouse.getCtx(), I_M_Locator.Table_Name, "IsDefault='Y' AND l.M_Warehouse_ID=?", null)
+				.setOnlyActiveRecords(true)
+				.setParameters(warehouse.getM_Warehouse_ID())
+				.setOrderBy("PriorityNo")
+				.first();
 	}	//	getDefault
 	
 	
@@ -130,34 +82,13 @@ public class MLocator extends X_M_Locator
 	 * 	@return locator
 	 */
 	 public static MLocator get (Properties ctx, int M_Warehouse_ID, String Value,
-		 String X, String Y, String Z)
-	 {
-		MLocator retValue = null;
-		String sql = "SELECT * FROM M_Locator WHERE IsActive = 'Y' AND M_Warehouse_ID=? AND X=? AND Y=? AND Z=?";
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement(sql, null);
-			pstmt.setInt(1, M_Warehouse_ID);
-			pstmt.setString(2, X);
-			pstmt.setString(3, Y);
-			pstmt.setString(4, Z);
-			rs = pstmt.executeQuery();
-			if (rs.next())
-				retValue = new MLocator (ctx, rs, null);
-		}
-		catch (SQLException ex)
-		{
-			s_log.log(Level.SEVERE, "get", ex);
-		}
-		finally {
-			DB.close(rs, pstmt);
-			rs = null; pstmt = null;
-		}
-		//
-		if (retValue == null)
-		{
+		 String X, String Y, String Z) {
+
+		MLocator retValue = new Query(ctx, I_M_Locator.Table_Name, "M_Warehouse_ID = ? AND X = ? AND Y = ? AND Z = ?", null)
+				.setOnlyActiveRecords(true)
+				.setParameters(M_Warehouse_ID, X, Y, Z)
+				.first();
+		if (retValue == null) {
 			MWarehouse wh = MWarehouse.get (ctx, M_Warehouse_ID);
 			retValue = new MLocator (wh, Value);
 			retValue.setXYZ(X, Y, Z);
@@ -199,7 +130,7 @@ public class MLocator extends X_M_Locator
 	 *	@param M_Locator_ID id
 	 *	@param trxName transaction
 	 */
-	public MLocator (Properties ctx, int M_Locator_ID, String trxName)
+	public MLocator(Properties ctx, int M_Locator_ID, String trxName)
 	{
 		super (ctx, M_Locator_ID, trxName);
 		if (M_Locator_ID == 0)
@@ -220,7 +151,7 @@ public class MLocator extends X_M_Locator
 	 *	@param warehouse parent
 	 *	@param Value value
 	 */
-	public MLocator (MWarehouse warehouse, String Value)
+	public MLocator(MWarehouse warehouse, String Value)
 	{
 		this (warehouse.getCtx(), 0, warehouse.get_TrxName());
 		setClientOrg(warehouse);
@@ -235,7 +166,7 @@ public class MLocator extends X_M_Locator
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MLocator (Properties ctx, ResultSet rs, String trxName)
+	public MLocator(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MLocator
@@ -351,5 +282,13 @@ public class MLocator extends X_M_Locator
 		return count != 0;
 		*/
 	}	//	isCanStoreProduct
-	
+
+	@Override
+	protected boolean beforeSave(boolean newRecord) {
+		if(newRecord) {
+			MWarehouse warehouse = new MWarehouse(getCtx(), getM_Warehouse_ID(), get_TrxName());
+			setClientOrg(warehouse);
+		}
+		return super.beforeSave(newRecord);
+	}
 }	//	MLocator

@@ -18,22 +18,15 @@
 
 package org.solop.process;
 
+import org.adempiere.core.domains.models.X_C_PPBatchConfiguration;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MAllocationHdr;
-import org.compiere.model.MAllocationLine;
 import org.compiere.model.MBankStatementLine;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MPPVendorTransaction;
 import org.compiere.model.MPayment;
-import org.compiere.model.MPaymentProcessor;
 import org.compiere.model.MPaymentProcessorBatch;
 import org.compiere.model.Query;
-import org.compiere.process.DocAction;
-import org.compiere.util.Env;
-import org.compiere.util.Util;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -67,7 +60,7 @@ public class AllocatePaymentsFromBankStatement extends AllocatePaymentsFromBankS
 		if (vendorFeesInvoice == null){
 			throw new AdempiereException("@C_Invoice@ @NotFound@");
 		}
-		MPaymentProcessor paymentProcessor = new MPaymentProcessor(getCtx(), batch.getC_PaymentProcessor_ID(), get_TrxName());
+		X_C_PPBatchConfiguration batchConfiguration = new X_C_PPBatchConfiguration(getCtx(), batch.getC_PPBatchConfiguration_ID(), get_TrxName());
 		if(!getSelectionKeys().isEmpty()) {
 			getSelectionKeys().forEach(key -> {
 				MPayment payment = new MPayment(getCtx(), key, get_TrxName());
@@ -85,15 +78,15 @@ public class AllocatePaymentsFromBankStatement extends AllocatePaymentsFromBankS
 				withdrawal.setDocStatus(MPayment.DOCSTATUS_Drafted);
 				withdrawal.setDocAction(MPayment.DOCACTION_Complete);
 
-				withdrawal.setC_Charge_ID(paymentProcessor.getFeeCharge_ID());
+				withdrawal.setC_Charge_ID(batchConfiguration.getFeeCharge_ID());
 				withdrawal.setPayAmt(vendorTransaction.getPayAmt());
-				withdrawal.setC_BPartner_ID(paymentProcessor.getPaymentProcessorVendor_ID());
+				withdrawal.setC_BPartner_ID(batchConfiguration.getC_BPartner_ID());
 
 				withdrawal.setC_DocType_ID(false);
 				withdrawal.setTenderType(MPayment.TENDERTYPE_Account);
 				withdrawal.setC_BankAccount_ID(batch.getTransitBankAccount_ID());
 				withdrawal.setIsReceipt(false);
-				withdrawal.setC_Currency_ID(paymentProcessor.getFeeCurrency_ID());
+				withdrawal.setC_Currency_ID(batch.getC_Currency_ID());
 				withdrawal.set_ValueOfColumn("C_PaymentProcessorBatch_ID", getRecord_ID());
 				withdrawal.saveEx();
 

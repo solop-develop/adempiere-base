@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Change Locator Reference on Create From OutOrderLine Browse" ReleaseNo="1.0" SeqNo="10640">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="74793" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57970" Column="AD_Reference_ID" oldValue="31">30</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="74794" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57984" Column="AD_Reference_Value_ID" isOldNull="true">191</Data>
+        <Data AD_Column_ID="57970" Column="AD_Reference_ID" oldValue="31">30</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

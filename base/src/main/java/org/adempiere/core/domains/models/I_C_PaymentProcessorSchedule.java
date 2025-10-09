@@ -90,7 +90,7 @@ public interface I_C_PaymentProcessorSchedule
 	  */
 	public int getC_PaymentProcessorBatch_ID();
 
-	public org.adempiere.core.domains.models.I_C_PaymentProcessorBatch getC_PaymentProcessorBatch() throws RuntimeException;
+	public I_C_PaymentProcessorBatch getC_PaymentProcessorBatch() throws RuntimeException;
 
     /** Column name C_PaymentProcessorSchedule_ID */
     public static final String COLUMNNAME_C_PaymentProcessorSchedule_ID = "C_PaymentProcessorSchedule_ID";

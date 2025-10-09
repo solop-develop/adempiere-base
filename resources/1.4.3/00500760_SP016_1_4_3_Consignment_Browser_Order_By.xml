@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="SP016" Name="Consignment_Browser_Order_By" ReleaseNo="1.4.3" SeqNo="500760">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="76994" Table="AD_Browse_Field">
+        <Data AD_Column_ID="64222" Column="IsOrderBy" oldValue="true">false</Data>
+        <Data AD_Column_ID="64221" Column="SortNo" isOldNull="true">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="76993" Table="AD_Browse_Field">
+        <Data AD_Column_ID="64222" Column="IsOrderBy" oldValue="false">true</Data>
+        <Data AD_Column_ID="64221" Column="SortNo" isOldNull="true">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="76984" Table="AD_Browse_Field">
+        <Data AD_Column_ID="64222" Column="IsOrderBy" oldValue="false">true</Data>
+        <Data AD_Column_ID="64221" Column="SortNo" isOldNull="true">20</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

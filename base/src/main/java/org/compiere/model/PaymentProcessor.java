@@ -83,11 +83,9 @@ public abstract class PaymentProcessor
 	}
 	public static PaymentProcessor create(MPaymentProcessor paymentProcessor, MBankStatement newBankStatement, int newPaymentMethodId ) {
 		PaymentProcessor processor = create(paymentProcessor, null);
-		if (processor != null) {
-			processor.bankStatement = newBankStatement;
-			processor.paymentMethodId = newPaymentMethodId;
-		}
-		return processor;
+        processor.bankStatement = newBankStatement;
+        processor.paymentMethodId = newPaymentMethodId;
+        return processor;
 	}
 
 	/**
@@ -100,36 +98,20 @@ public abstract class PaymentProcessor
 	{
 		s_log.info("create for " + mpp);
 		String className = mpp.getPayProcessorClass();
-		if (className == null || className.length() == 0)
-		{
+		if (className == null || className.isEmpty()) {
 			s_log.log(Level.SEVERE, "No PaymentProcessor class name in " + mpp);
-			return null;
+			throw new AdempiereException("@C_PaymentProcessor_ID@ @ClassName@ @NotFound@");
 		}
 		//
 		PaymentProcessor myProcessor = null;
-		try
-		{
-			Class<?> ppClass = Class.forName(className);
-			if (ppClass != null)
-				myProcessor = (PaymentProcessor)ppClass.newInstance();
+		try {
+			Class<?> paymentProcessorClass = Class.forName(className);
+			myProcessor = (PaymentProcessor) paymentProcessorClass.getDeclaredConstructor().newInstance();
+		} catch (Exception e) {
+			s_log.log(Level.SEVERE, className, e);
+			throw new AdempiereException(e);
 		}
-		catch (Error e1)    //  NoClassDefFound
-		{
-			s_log.log(Level.SEVERE, className + " - Error=" + e1.getMessage());
-			return null;
-		}
-		catch (Exception e2)
-		{
-			s_log.log(Level.SEVERE, className, e2);
-			return null;
-		}
-		if (myProcessor == null)
-		{
-			s_log.log(Level.SEVERE, "no class");
-			return null;
-		}
-
-		//  Initialize
+        //  Initialize
 		myProcessor.paymentProcessor = mpp;
 		myProcessor.payment = mp;
 		if (mp != null) {

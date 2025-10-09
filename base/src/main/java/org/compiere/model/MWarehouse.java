@@ -16,13 +16,15 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.I_M_Locator;
 import org.adempiere.core.domains.models.X_M_Warehouse;
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.util.CCache;
+
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 
 /**
  *	Warehouse Model
@@ -113,7 +115,7 @@ public class MWarehouse extends X_M_Warehouse
 	 *	@param M_Warehouse_ID id
 	 *	@param trxName transaction
 	 */
-	public MWarehouse (Properties ctx, int M_Warehouse_ID, String trxName)
+	public MWarehouse(Properties ctx, int M_Warehouse_ID, String trxName)
 	{
 		super(ctx, M_Warehouse_ID, trxName);
 		if (M_Warehouse_ID == 0)
@@ -131,7 +133,7 @@ public class MWarehouse extends X_M_Warehouse
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MWarehouse (Properties ctx, ResultSet rs, String trxName)
+	public MWarehouse(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MWarehouse
@@ -140,7 +142,7 @@ public class MWarehouse extends X_M_Warehouse
 	 * 	Organization Constructor
 	 *	@param org parent
 	 */
-	public MWarehouse (MOrg org)
+	public MWarehouse(MOrg org)
 	{
 		this (org.getCtx(), 0, org.get_TrxName());
 		setClientOrg(org);
@@ -151,52 +153,45 @@ public class MWarehouse extends X_M_Warehouse
 	}	//	MWarehouse
 
 	/**	Warehouse Locators				*/
-	private MLocator[]	m_locators = null;
+	private List<MLocator> locators = null;
 	
 	/**
 	 * 	Get Locators
 	 *	@param reload if true reload
 	 *	@return array of locators
 	 */
-	public MLocator[] getLocators(boolean reload)
-	{
-		if (!reload && m_locators != null)
-			return m_locators;
+	public MLocator[] getLocators(boolean reload) {
+		getLocatorsAsList(reload);
+		return locators.toArray(new MLocator[locators.size()]);
+	}	//	getLocators
+
+	public List<MLocator> getLocatorsAsList(boolean reload) {
+		if (!reload && locators != null) {
+			return locators;
+		}
 		//
 		final String whereClause = "M_Warehouse_ID=?";
-		List<MLocator> list = new Query(getCtx(), I_M_Locator.Table_Name, whereClause, null)
+		locators = new Query(getCtx(), I_M_Locator.Table_Name, whereClause, null)
 										.setParameters(getM_Warehouse_ID())
 										.setOnlyActiveRecords(true)
 										.setOrderBy("X,Y,Z")
 										.list();
-		m_locators = list.toArray(new MLocator[list.size()]);
-		return m_locators;
-	}	//	getLocators
+		return locators;
+	}	//	getLocatorsAsList
 	
 	/**
 	 * 	Get Default Locator
 	 *	@return (first) default locator
 	 */
-	public MLocator getDefaultLocator()
-	{
-		MLocator[] locators = getLocators(false);
-		for (int i = 0; i < locators.length; i++)
-		{
-			if (locators[i].isDefault() && locators[i].isActive())
-				return locators[i];
+	public MLocator getDefaultLocator() {
+		List<MLocator> locatorToFind = getLocatorsAsList(false);
+		Optional<MLocator> maybeLocator = locatorToFind.stream().filter(locator -> {
+			return locator.isDefault() && locator.isActive();
+		}).findFirst();
+		if(maybeLocator.isPresent()) {
+			return maybeLocator.get();
 		}
-		//	No Default - first one
-		if (locators.length > 0)
-		{
-			log.warning("No default locator for " + getName());
-			return locators[0];
-		}
-		//	No Locator - create one
-		MLocator loc = new MLocator (this, "Standard");
-		loc.setIsDefault(true);
-		loc.saveEx();
-		log.info("Created default locator for " + getName());
-		return loc;
+		throw new AdempiereException("@M_Locator_ID@ @IsDefault@ @NotFound@");
 	}	//	getLocators
 	
 	/**
@@ -205,11 +200,16 @@ public class MWarehouse extends X_M_Warehouse
 	 *	@param success success
 	 *	@return success
 	 */
-	protected boolean afterSave (boolean newRecord, boolean success)
-	{
-		if (newRecord && success)
+	protected boolean afterSave (boolean newRecord, boolean success) {
+		if (newRecord && success) {
 			insert_Accounting("M_Warehouse_Acct", "C_AcctSchema_Default", null);
-		
+		}
+		if(newRecord) {
+			//	No Locator - create one
+			MLocator location = new MLocator(this, getValue());
+			location.setIsDefault(true);
+			location.saveEx();
+		}
 		return success;
 	}	//	afterSave
 

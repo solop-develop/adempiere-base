@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="SOLOP Create From inside Freight" ReleaseNo="1.0" SeqNo="10570">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50279" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="o.DocStatus = 'CO'&#10;AND NOT EXISTS(SELECT 1 FROM DD_Freight f INNER JOIN DD_FreightLine fl ON(fl.DD_Freight_ID = f.DD_Freight_ID) WHERE fl.C_Order_ID = o.C_Order_ID AND f.DocStatus IN('CO', 'CL'))">o.DocStatus = 'CO'
+AND NOT EXISTS(SELECT 1 FROM DD_Freight f INNER JOIN DD_FreightLine fl ON(fl.DD_Freight_ID = f.DD_Freight_ID) WHERE fl.C_Order_ID = o.C_Order_ID AND f.DocStatus NOT IN('VO', 'RE'))</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50280" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="d.DocStatus = 'CO'&#10;AND NOT EXISTS(SELECT 1 FROM DD_Freight f INNER JOIN DD_FreightLine fl ON(fl.DD_Freight_ID = f.DD_Freight_ID) WHERE fl.DD_Order_ID = d.DD_Order_ID AND f.DocStatus IN('CO', 'CL'))">d.DocStatus = 'CO'
+AND NOT EXISTS(SELECT 1 FROM DD_Freight f INNER JOIN DD_FreightLine fl ON(fl.DD_Freight_ID = f.DD_Freight_ID) WHERE fl.DD_Order_ID = d.DD_Order_ID AND f.DocStatus NOT IN('VO', 'RE'))</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50281" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="o.DocStatus = 'CO'&#10;AND NOT EXISTS(SELECT 1 FROM DD_Freight f INNER JOIN DD_FreightLine fl ON(fl.DD_Freight_ID = f.DD_Freight_ID) WHERE fl.WM_InOutBound_ID = o.WM_InOutBound_ID AND f.DocStatus IN('CO', 'CL'))">o.DocStatus = 'CO'
+AND NOT EXISTS(SELECT 1 FROM DD_Freight f INNER JOIN DD_FreightLine fl ON(fl.DD_Freight_ID = f.DD_Freight_ID) WHERE fl.WM_InOutBound_ID = o.WM_InOutBound_ID AND f.DocStatus NOT IN('VO', 'RE'))</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="284" Action="I" Record_ID="54713" Table="AD_Process">
+        <Data AD_Column_ID="11563" Column="WorkflowValue" isNewNull="true"/>
+        <Data AD_Column_ID="4023" Column="Value">CreateFreightOrderFromOrder</Data>
+        <Data AD_Column_ID="84383" Column="UUID">75b2a8a7-d705-4df5-998e-424bdd6316ad</Data>
+        <Data AD_Column_ID="2808" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2807" Column="Updated">2024-03-15 18:40:25.014</Data>
+        <Data AD_Column_ID="6653" Column="Statistic_Seconds">0</Data>
+        <Data AD_Column_ID="6652" Column="Statistic_Count">0</Data>
+        <Data AD_Column_ID="50181" Column="ShowHelp">Y</Data>
+        <Data AD_Column_ID="2813" Column="ProcedureName" isNewNull="true"/>
+        <Data AD_Column_ID="2809" Column="Name">Create Freight Order From Order</Data>
+        <Data AD_Column_ID="50182" Column="JasperReport" isNewNull="true"/>
+        <Data AD_Column_ID="14084" Column="IsServerProcess">false</Data>
+        <Data AD_Column_ID="3371" Column="IsReport">false</Data>
+        <Data AD_Column_ID="4214" Column="IsDirectPrint">false</Data>
+        <Data AD_Column_ID="12458" Column="IsBetaFunctionality">false</Data>
+        <Data AD_Column_ID="2804" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2811" Column="Help">If a Order not exists then is possible that it is not completed or already exists in a Freight Order</Data>
+        <Data AD_Column_ID="78843" Column="GenerateClass">N</Data>
+        <Data AD_Column_ID="6485" Column="EntityType">D</Data>
+        <Data AD_Column_ID="2810" Column="Description">This Smart Browse allow select Sales to ship or allocate to Freight Order</Data>
+        <Data AD_Column_ID="2806" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2805" Column="Created">2024-03-15 18:40:25.014</Data>
+        <Data AD_Column_ID="57920" Column="CopyFromProcess">N</Data>
+        <Data AD_Column_ID="4656" Column="Classname" isNewNull="true"/>
+        <Data AD_Column_ID="11834" Column="AD_Workflow_ID" isNewNull="true"/>
+        <Data AD_Column_ID="4374" Column="AD_ReportView_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2801" Column="AD_Process_ID">54713</Data>
+        <Data AD_Column_ID="7752" Column="AD_PrintFormat_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2803" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="56515" Column="AD_Form_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2802" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="63488" Column="AD_Browse_ID">50279</Data>
+        <Data AD_Column_ID="5790" Column="AccessLevel">3</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="287" Action="I" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="84387" Column="UUID">17e2de6c-301b-401d-a04b-71f7ba5b69a1</Data>
+        <Data AD_Column_ID="2851" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2850" Column="Updated">2024-03-15 18:40:26.387</Data>
+        <Data AD_Column_ID="2852" Column="Name">Create Freight Order From Order</Data>
+        <Data AD_Column_ID="2855" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2847" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2854" Column="Help">If a Order not exists then is possible that it is not completed or already exists in a Freight Order</Data>
+        <Data AD_Column_ID="2853" Column="Description">This Smart Browse allow select Sales to ship or allocate to Freight Order</Data>
+        <Data AD_Column_ID="2849" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2848" Column="Created">2024-03-15 18:40:26.387</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID">54713</Data>
+        <Data AD_Column_ID="2846" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2845" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="287" Action="U" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="2852" Column="Name" oldValue="Create Freight Order From Order">Crear Orden de Flete desde Orden</Data>
+        <Data AD_Column_ID="2854" Column="Help" oldValue="If a Order not exists then is possible that it is not completed or already exists in a Freight Order">Si una Orden no se encuentra en la lista es probable que no esté completo o ya exista en una Orden de Flete</Data>
+        <Data AD_Column_ID="2853" Column="Description" oldValue="This Smart Browse allow select Sales to ship or allocate to Freight Order">Esta consulta permite seleccionar las Órdenes para Generar una Orden de Flete</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID" oldValue="54713">54713</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="53660" Action="I" Record_ID="54713" Table="AD_Table_Process">
+        <Data AD_Column_ID="84427" Column="UUID">dc03890e-b67e-4c6b-a8e6-7caa02097f87</Data>
+        <Data AD_Column_ID="69645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="69643" Column="Updated">2024-03-15 18:41:19.047</Data>
+        <Data AD_Column_ID="69641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="69649" Column="EntityType">D</Data>
+        <Data AD_Column_ID="69644" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="69642" Column="Created">2024-03-15 18:41:19.047</Data>
+        <Data AD_Column_ID="69648" Column="AD_Table_ID">54258</Data>
+        <Data AD_Column_ID="69647" Column="AD_Process_ID">54713</Data>
+        <Data AD_Column_ID="69640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="69639" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="284" Action="I" Record_ID="54714" Table="AD_Process">
+        <Data AD_Column_ID="11563" Column="WorkflowValue" isNewNull="true"/>
+        <Data AD_Column_ID="4023" Column="Value">CreateFreightOrderFromDDOrder</Data>
+        <Data AD_Column_ID="84383" Column="UUID">10535949-9fdc-4fec-b40d-3594c393eaf1</Data>
+        <Data AD_Column_ID="2808" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2807" Column="Updated">2024-03-15 18:42:04.693</Data>
+        <Data AD_Column_ID="6653" Column="Statistic_Seconds">0</Data>
+        <Data AD_Column_ID="6652" Column="Statistic_Count">0</Data>
+        <Data AD_Column_ID="50181" Column="ShowHelp">Y</Data>
+        <Data AD_Column_ID="2813" Column="ProcedureName" isNewNull="true"/>
+        <Data AD_Column_ID="2809" Column="Name">Create Freight Order From Distribution Order</Data>
+        <Data AD_Column_ID="50182" Column="JasperReport" isNewNull="true"/>
+        <Data AD_Column_ID="14084" Column="IsServerProcess">false</Data>
+        <Data AD_Column_ID="3371" Column="IsReport">false</Data>
+        <Data AD_Column_ID="4214" Column="IsDirectPrint">false</Data>
+        <Data AD_Column_ID="12458" Column="IsBetaFunctionality">false</Data>
+        <Data AD_Column_ID="2804" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2811" Column="Help">If a Order not exists then is possible that it is not completed or already exists in a Freight Order</Data>
+        <Data AD_Column_ID="78843" Column="GenerateClass">N</Data>
+        <Data AD_Column_ID="6485" Column="EntityType">D</Data>
+        <Data AD_Column_ID="2810" Column="Description">This Smart Browse allow select Distribution Orders to ship or allocate to Freight Order</Data>
+        <Data AD_Column_ID="2806" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2805" Column="Created">2024-03-15 18:42:04.693</Data>
+        <Data AD_Column_ID="57920" Column="CopyFromProcess">N</Data>
+        <Data AD_Column_ID="4656" Column="Classname" isNewNull="true"/>
+        <Data AD_Column_ID="11834" Column="AD_Workflow_ID" isNewNull="true"/>
+        <Data AD_Column_ID="4374" Column="AD_ReportView_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2801" Column="AD_Process_ID">54714</Data>
+        <Data AD_Column_ID="7752" Column="AD_PrintFormat_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2803" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="56515" Column="AD_Form_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2802" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="63488" Column="AD_Browse_ID">50280</Data>
+        <Data AD_Column_ID="5790" Column="AccessLevel">3</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="287" Action="I" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="84387" Column="UUID">727f68fe-6077-4f52-90a1-eb0a53bff0ea</Data>
+        <Data AD_Column_ID="2851" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2850" Column="Updated">2024-03-15 18:42:06.013</Data>
+        <Data AD_Column_ID="2852" Column="Name">Create Freight Order From Distribution Order</Data>
+        <Data AD_Column_ID="2855" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2847" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2854" Column="Help">If a Order not exists then is possible that it is not completed or already exists in a Freight Order</Data>
+        <Data AD_Column_ID="2853" Column="Description">This Smart Browse allow select Distribution Orders to ship or allocate to Freight Order</Data>
+        <Data AD_Column_ID="2849" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2848" Column="Created">2024-03-15 18:42:06.013</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID">54714</Data>
+        <Data AD_Column_ID="2846" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2845" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="53660" Action="I" Record_ID="54714" Table="AD_Table_Process">
+        <Data AD_Column_ID="84427" Column="UUID">2c005487-4416-49c7-af1f-8572598f3859</Data>
+        <Data AD_Column_ID="69645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="69643" Column="Updated">2024-03-15 18:42:18.203</Data>
+        <Data AD_Column_ID="69641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="69649" Column="EntityType">D</Data>
+        <Data AD_Column_ID="69644" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="69642" Column="Created">2024-03-15 18:42:18.203</Data>
+        <Data AD_Column_ID="69648" Column="AD_Table_ID">54258</Data>
+        <Data AD_Column_ID="69647" Column="AD_Process_ID">54714</Data>
+        <Data AD_Column_ID="69640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="69639" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="287" Action="U" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="2852" Column="Name" oldValue="Create Freight Order From Distribution Order">Crear desde Orden de Distribución</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID" oldValue="54714">54714</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="287" Action="U" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="2854" Column="Help" oldValue="If a Order not exists then is possible that it is not completed or already exists in a Freight Order">Si una Orden no se encuentra en la lista es probable que no esté completo o ya exista en una Orden de Flete</Data>
+        <Data AD_Column_ID="2853" Column="Description" oldValue="This Smart Browse allow select Distribution Orders to ship or allocate to Freight Order">Esta consulta permite seleccionar las Órdenes de Distribución para Generar una Orden de Flete</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID" oldValue="54714">54714</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54714" Table="AD_Process">
+        <Data AD_Column_ID="2809" Column="Name" oldValue="Create Freight Order From Distribution Order">Create From Distribution Order</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54713" Table="AD_Process">
+        <Data AD_Column_ID="2809" Column="Name" oldValue="Create Freight Order From Order">Create From Order</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="287" Action="U" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="2852" Column="Name" oldValue="Crear Orden de Flete desde Orden">Crear desde Orden</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID" oldValue="54713">54713</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="284" Action="I" Record_ID="54715" Table="AD_Process">
+        <Data AD_Column_ID="11563" Column="WorkflowValue" isNewNull="true"/>
+        <Data AD_Column_ID="4023" Column="Value">CreateFreightOrderFromOBOrder</Data>
+        <Data AD_Column_ID="84383" Column="UUID">4ecb426d-d552-4c7b-8790-2dc416040ec5</Data>
+        <Data AD_Column_ID="2808" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2807" Column="Updated">2024-03-15 18:43:49.27</Data>
+        <Data AD_Column_ID="6653" Column="Statistic_Seconds">0</Data>
+        <Data AD_Column_ID="6652" Column="Statistic_Count">0</Data>
+        <Data AD_Column_ID="50181" Column="ShowHelp">Y</Data>
+        <Data AD_Column_ID="2813" Column="ProcedureName" isNewNull="true"/>
+        <Data AD_Column_ID="2809" Column="Name">Create Freight Order From Outbound Order</Data>
+        <Data AD_Column_ID="50182" Column="JasperReport" isNewNull="true"/>
+        <Data AD_Column_ID="14084" Column="IsServerProcess">false</Data>
+        <Data AD_Column_ID="3371" Column="IsReport">false</Data>
+        <Data AD_Column_ID="4214" Column="IsDirectPrint">false</Data>
+        <Data AD_Column_ID="12458" Column="IsBetaFunctionality">false</Data>
+        <Data AD_Column_ID="2804" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2811" Column="Help">If a Order not exists then is possible that it is not completed or already exists in a Freight Order</Data>
+        <Data AD_Column_ID="78843" Column="GenerateClass">N</Data>
+        <Data AD_Column_ID="6485" Column="EntityType">D</Data>
+        <Data AD_Column_ID="2810" Column="Description">This Smart Browse allow select Sales to ship or allocate to Freight Order</Data>
+        <Data AD_Column_ID="2806" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2805" Column="Created">2024-03-15 18:43:49.27</Data>
+        <Data AD_Column_ID="57920" Column="CopyFromProcess">N</Data>
+        <Data AD_Column_ID="4656" Column="Classname" isNewNull="true"/>
+        <Data AD_Column_ID="11834" Column="AD_Workflow_ID" isNewNull="true"/>
+        <Data AD_Column_ID="4374" Column="AD_ReportView_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2801" Column="AD_Process_ID">54715</Data>
+        <Data AD_Column_ID="7752" Column="AD_PrintFormat_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2803" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="56515" Column="AD_Form_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2802" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="63488" Column="AD_Browse_ID">50281</Data>
+        <Data AD_Column_ID="5790" Column="AccessLevel">3</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="287" Action="I" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="84387" Column="UUID">3fee9ad5-41bc-4492-a845-436602401e87</Data>
+        <Data AD_Column_ID="2851" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2850" Column="Updated">2024-03-15 18:43:50.544</Data>
+        <Data AD_Column_ID="2852" Column="Name">Create Freight Order From Outbound Order</Data>
+        <Data AD_Column_ID="2855" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2847" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2854" Column="Help">If a Order not exists then is possible that it is not completed or already exists in a Freight Order</Data>
+        <Data AD_Column_ID="2853" Column="Description">This Smart Browse allow select Sales to ship or allocate to Freight Order</Data>
+        <Data AD_Column_ID="2849" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2848" Column="Created">2024-03-15 18:43:50.544</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID">54715</Data>
+        <Data AD_Column_ID="2846" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2845" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="53660" Action="I" Record_ID="54715" Table="AD_Table_Process">
+        <Data AD_Column_ID="84427" Column="UUID">5f5f2264-feb9-4d0d-95c7-f8890c5711eb</Data>
+        <Data AD_Column_ID="69645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="69643" Column="Updated">2024-03-15 18:43:59.659</Data>
+        <Data AD_Column_ID="69641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="69649" Column="EntityType">D</Data>
+        <Data AD_Column_ID="69644" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="69642" Column="Created">2024-03-15 18:43:59.659</Data>
+        <Data AD_Column_ID="69648" Column="AD_Table_ID">54258</Data>
+        <Data AD_Column_ID="69647" Column="AD_Process_ID">54715</Data>
+        <Data AD_Column_ID="69640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="69639" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54715" Table="AD_Process">
+        <Data AD_Column_ID="2809" Column="Name" oldValue="Create Freight Order From Outbound Order">Create From Outbound Order</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="287" Action="U" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="2852" Column="Name" oldValue="Create Freight Order From Outbound Order">Crear desde Órdenes de Salida</Data>
+        <Data AD_Column_ID="2854" Column="Help" oldValue="If a Order not exists then is possible that it is not completed or already exists in a Freight Order">Si una Orden no se encuentra en la lista es probable que no esté completo o ya exista en una Orden de Flete</Data>
+        <Data AD_Column_ID="2853" Column="Description" oldValue="This Smart Browse allow select Sales to ship or allocate to Freight Order">Esta consulta permite seleccionar las Órdenes para Generar una Orden de Flete</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID" oldValue="54715">54715</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="SOLOP Improve SB Distribution" ReleaseNo="1.0" SeqNo="10610">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50288" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue=".DocStatus = 'CO'&#10;AND NOT EXISTS(SELECT 1 FROM DD_Freight f INNER JOIN DD_FreightLine fl ON(fl.DD_Freight_ID = f.DD_Freight_ID) WHERE fl.WM_InOutBound_ID = o.WM_InOutBound_ID AND f.DocStatus NOT IN('VO', 'RE'))">o.DocStatus = 'CO'
+AND NOT EXISTS(SELECT 1 FROM DD_Freight f INNER JOIN DD_FreightLine fl ON(fl.DD_Freight_ID = f.DD_Freight_ID) WHERE fl.WM_InOutBound_ID = o.WM_InOutBound_ID AND f.DocStatus NOT IN('VO', 'RE'))</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="102" Action="I" Record_ID="54331" Table="AD_Reference">
+        <Data AD_Column_ID="1180" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="139" Column="ValidationType">T</Data>
+        <Data AD_Column_ID="84393" Column="UUID">2a3cd2ae-b240-417a-b1b6-6de767b1e39f</Data>
+        <Data AD_Column_ID="557" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="556" Column="Updated">2024-04-09 17:25:28.471</Data>
+        <Data AD_Column_ID="130" Column="Name">SOLOP M_FreightCategory_ID reference</Data>
+        <Data AD_Column_ID="54355" Column="IsOrderByValue">false</Data>
+        <Data AD_Column_ID="553" Column="IsActive">true</Data>
+        <Data AD_Column_ID="132" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="6486" Column="EntityType">D</Data>
+        <Data AD_Column_ID="131" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="555" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="554" Column="Created">2024-04-09 17:25:28.471</Data>
+        <Data AD_Column_ID="129" Column="AD_Reference_ID">54331</Data>
+        <Data AD_Column_ID="364" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="363" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="126" Action="I" Record_ID="0" Table="AD_Reference_Trl">
+        <Data AD_Column_ID="84394" Column="UUID">7c50882d-9b87-409d-bf55-edc5b0a7c8e1</Data>
+        <Data AD_Column_ID="670" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="669" Column="Updated">2024-04-09 17:25:29.505</Data>
+        <Data AD_Column_ID="280" Column="Name">SOLOP M_FreightCategory_ID reference</Data>
+        <Data AD_Column_ID="283" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="666" Column="IsActive">true</Data>
+        <Data AD_Column_ID="282" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="281" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="668" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="667" Column="Created">2024-04-09 17:25:29.505</Data>
+        <Data AD_Column_ID="278" Column="AD_Reference_ID">54331</Data>
+        <Data AD_Column_ID="1203" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="279" Column="AD_Language">es_VE</Data>
+        <Data AD_Column_ID="1202" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="103" Action="I" Record_ID="54331" Table="AD_Ref_Table">
+        <Data AD_Column_ID="146" Column="WhereClause" isNewNull="true"/>
+        <Data AD_Column_ID="84392" Column="UUID">76c02abd-eec9-4927-8be4-2135cfdb7997</Data>
+        <Data AD_Column_ID="562" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="561" Column="Updated">2024-04-09 17:25:46.952</Data>
+        <Data AD_Column_ID="147" Column="OrderByClause" isNewNull="true"/>
+        <Data AD_Column_ID="2377" Column="IsValueDisplayed">true</Data>
+        <Data AD_Column_ID="62122" Column="IsDisplayIdentifier">false</Data>
+        <Data AD_Column_ID="62120" Column="IsAlert">false</Data>
+        <Data AD_Column_ID="558" Column="IsActive">true</Data>
+        <Data AD_Column_ID="7711" Column="EntityType">D</Data>
+        <Data AD_Column_ID="62121" Column="DisplaySQL" isNewNull="true"/>
+        <Data AD_Column_ID="560" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="559" Column="Created">2024-04-09 17:25:46.952</Data>
+        <Data AD_Column_ID="57270" Column="AD_Window_ID" isNewNull="true"/>
+        <Data AD_Column_ID="143" Column="AD_Table_ID">595</Data>
+        <Data AD_Column_ID="142" Column="AD_Reference_ID">54331</Data>
+        <Data AD_Column_ID="368" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="144" Column="AD_Key">9093</Data>
+        <Data AD_Column_ID="145" Column="AD_Display">9087</Data>
+        <Data AD_Column_ID="367" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="74819" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57981" Column="Name" oldValue="Delivery Via Rule">Freight Category</Data>
+        <Data AD_Column_ID="57984" Column="AD_Reference_Value_ID" isOldNull="true">54331</Data>
+        <Data AD_Column_ID="57970" Column="AD_Reference_ID" oldValue="19">30</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

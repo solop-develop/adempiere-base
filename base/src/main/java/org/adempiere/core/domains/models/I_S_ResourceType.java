@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for S_ResourceType
  *  @author Adempiere (generated) 
@@ -90,7 +91,7 @@ public interface I_S_ResourceType
 	  */
 	public int getC_TaxCategory_ID();
 
-	public org.adempiere.core.domains.models.I_C_TaxCategory getC_TaxCategory() throws RuntimeException;
+	public I_C_TaxCategory getC_TaxCategory() throws RuntimeException;
 
     /** Column name C_TaxType_ID */
     public static final String COLUMNNAME_C_TaxType_ID = "C_TaxType_ID";
@@ -105,7 +106,7 @@ public interface I_S_ResourceType
 	  */
 	public int getC_TaxType_ID();
 
-	public org.adempiere.core.domains.models.I_C_TaxType getC_TaxType() throws RuntimeException;
+	public I_C_TaxType getC_TaxType() throws RuntimeException;
 
     /** Column name C_UOM_ID */
     public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
@@ -120,7 +121,7 @@ public interface I_S_ResourceType
 	  */
 	public int getC_UOM_ID();
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM() throws RuntimeException;
+	public I_C_UOM getC_UOM() throws RuntimeException;
 
     /** Column name ChargeableQty */
     public static final String COLUMNNAME_ChargeableQty = "ChargeableQty";
@@ -225,7 +226,7 @@ public interface I_S_ResourceType
 	  */
 	public int getM_Product_Category_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category() throws RuntimeException;
+	public I_M_Product_Category getM_Product_Category() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -330,6 +331,39 @@ public interface I_S_ResourceType
 	  * Available on Wednesdays
 	  */
 	public boolean isOnWednesday();
+
+    /** Column name PO_PriceList_ID */
+    public static final String COLUMNNAME_PO_PriceList_ID = "PO_PriceList_ID";
+
+	/** Set Purchase Pricelist.
+	  * Price List used by this Business Partner
+	  */
+	public void setPO_PriceList_ID (int PO_PriceList_ID);
+
+	/** Get Purchase Pricelist.
+	  * Price List used by this Business Partner
+	  */
+	public int getPO_PriceList_ID();
+
+	public I_M_PriceList getPO_PriceList() throws RuntimeException;
+
+    /** Column name S_DefaultProduct_ID */
+    public static final String COLUMNNAME_S_DefaultProduct_ID = "S_DefaultProduct_ID";
+
+	/** Set Default Product (For Resource).
+	  * Default Product (For Resource)
+	  */
+	public void setS_DefaultProduct_ID (int S_DefaultProduct_ID);
+
+	/** Get Default Product (For Resource).
+	  * Default Product (For Resource)
+	  */
+	public int getS_DefaultProduct_ID();
+
+	public I_M_Product getS_DefaultProduct() throws RuntimeException;
+
+    /** Column name SP007_MinimumAmount */
+    public static final String COLUMNNAME_SP007_MinimumAmount = "SP007_MinimumAmount";
 
     /** Column name S_ResourceType_ID */
     public static final String COLUMNNAME_S_ResourceType_ID = "S_ResourceType_ID";
