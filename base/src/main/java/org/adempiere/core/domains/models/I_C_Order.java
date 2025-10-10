@@ -563,6 +563,33 @@ public interface I_C_Order
 	  */
 	public String getDescription();
 
+	/** Column name IsManualDocument */
+	public static final String COLUMNNAME_IsManualDocument = "IsManualDocument";
+
+	/** Set Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument);
+
+	/** Get Manual Document	  */
+	public boolean isManualDocument();
+
+	/** Column name ManualInvoiceDocumentNo */
+	public static final String COLUMNNAME_ManualInvoiceDocumentNo = "ManualInvoiceDocumentNo";
+
+	/** Set Manual Invoice Document No	  */
+	public void setManualInvoiceDocumentNo (String ManualInvoiceDocumentNo);
+
+	/** Get Manual Invoice Document No	  */
+	public String getManualInvoiceDocumentNo();
+
+	/** Column name ManualShipmentDocumentNo */
+	public static final String COLUMNNAME_ManualShipmentDocumentNo = "ManualShipmentDocumentNo";
+
+	/** Set Manual Shipment Document No	  */
+	public void setManualShipmentDocumentNo (String ManualShipmentDocumentNo);
+
+	/** Get Manual Shipment Document No	  */
+	public String getManualShipmentDocumentNo();
+
 	/** Column name IsAutoDiscountApplied */
 	public static final String COLUMNNAME_IsAutoDiscountApplied = "IsAutoDiscountApplied";
 

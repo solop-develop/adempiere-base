@@ -1073,6 +1073,42 @@ public class X_DD_Order extends PO implements I_DD_Order, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Manual Document.
+	 @param IsManualDocument Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument)
+	{
+		set_Value (COLUMNNAME_IsManualDocument, Boolean.valueOf(IsManualDocument));
+	}
+
+	/** Get Manual Document.
+	 @return Manual Document	  */
+	public boolean isManualDocument ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsManualDocument);
+		if (oo != null)
+		{
+			if (oo instanceof Boolean)
+				return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Manual Movement Document No.
+	 @param ManualMovementDocumentNo Manual Movement Document No	  */
+	public void setManualMovementDocumentNo (String ManualMovementDocumentNo)
+	{
+		set_Value (COLUMNNAME_ManualMovementDocumentNo, ManualMovementDocumentNo);
+	}
+
+	/** Get Manual Movement Document No.
+	 @return Manual Movement Document No	  */
+	public String getManualMovementDocumentNo ()
+	{
+		return (String)get_Value(COLUMNNAME_ManualMovementDocumentNo);
+	}
+
+
 	public org.adempiere.core.domains.models.I_M_Warehouse getM_Warehouse() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_M_Warehouse)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Warehouse.Table_Name)

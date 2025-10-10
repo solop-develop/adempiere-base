@@ -911,6 +911,15 @@ public interface I_C_Invoice
 	/** Get Referenced Invoice	  */
 	public int getRef_Invoice_ID();
 
+	/** Column name IsManualDocument */
+	public static final String COLUMNNAME_IsManualDocument = "IsManualDocument";
+
+	/** Set Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument);
+
+	/** Get Manual Document	  */
+	public boolean isManualDocument();
+
     /** Column name Reversal_ID */
     public static final String COLUMNNAME_Reversal_ID = "Reversal_ID";
 

@@ -630,7 +630,11 @@ public class MDDOrder extends X_DD_Order implements DocAction
 			if (userId != 0)
 				setSalesRep_ID (userId);
 		}
-		
+
+		if (newRecord || is_ValueChanged(COLUMNNAME_C_DocType_ID)) {
+			setIsManualDocument(getC_DocType().isGenerateManualDocument());
+		}
+
 		return true;
 	}	//	beforeSave
 	

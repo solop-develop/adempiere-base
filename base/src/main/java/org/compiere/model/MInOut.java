@@ -27,6 +27,7 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Util;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -1010,6 +1011,26 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
             setC_DocType_ID(docType.getC_DocTypeShipment_ID());
         }
 
+		if (newRecord || is_ValueChanged(COLUMNNAME_C_Order_ID) || is_ValueChanged(COLUMNNAME_C_Invoice_ID)) {
+			MOrder order = (MOrder) getC_Order();
+			boolean isManualDocument = false;
+			if (order == null || order.get_ID() <= 0) {
+				MInvoice invoice = (MInvoice) getC_Invoice();
+				if (invoice != null && invoice.get_ID() > 0) {
+					order = (MOrder) invoice.getC_Order();
+				}
+			}
+			if (order != null && order.get_ID() > 0) {
+				isManualDocument = order.isManualDocument();
+			}
+			setIsManualDocument(isManualDocument);
+			if (isManualDocument) {
+				if (!Util.isEmpty(order.getManualShipmentDocumentNo(), true)){
+					setDocumentNo(order.getManualShipmentDocumentNo());
+				}
+			}
+		}
+
 		return true;
 	}	//	beforeSave
 
@@ -1730,6 +1751,9 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 	 * 	Set the definite document number after completed
 	 */
 	private void setDefiniteDocumentNo() {
+		if (isManualDocument()) {
+			return;
+		}
 		MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
 		if (dt.isOverwriteDateOnComplete()) {
 			setMovementDate(new Timestamp (System.currentTimeMillis()));
