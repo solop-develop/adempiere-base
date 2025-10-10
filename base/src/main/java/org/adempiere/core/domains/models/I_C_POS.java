@@ -666,6 +666,15 @@ public interface I_C_POS
 	  */
 	public void setIsKeepPriceFromCustomer (boolean IsKeepPriceFromCustomer);
 
+	/** Column name IsValidateOnlineClosing */
+	public static final String COLUMNNAME_IsValidateOnlineClosing = "IsValidateOnlineClosing";
+
+	/** Set Validate Online Closing	  */
+	public void setIsValidateOnlineClosing (boolean IsValidateOnlineClosing);
+
+	/** Get Validate Online Closing	  */
+	public boolean isValidateOnlineClosing();
+
 	/** Get Keep Price from Customer.
 	  * Keep Price from Customer when ia create a sales order from POS
 	  */
