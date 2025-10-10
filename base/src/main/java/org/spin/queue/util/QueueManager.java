@@ -16,16 +16,17 @@
  *****************************************************************************/
 package org.spin.queue.util;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Properties;
-import java.util.logging.Logger;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.util.Util;
 import org.spin.queue.model.MADQueue;
+import org.spin.queue.model.MADQueueType;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * @author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
@@ -246,6 +247,10 @@ public abstract class QueueManager {
 		if(queueToProcess == null) {
 			throw new AdempiereException("Queue is mandatory");
 		}
+		MADQueueType queueType = MADQueueType.getById(queueToProcess.getCtx(), queueToProcess.getAD_QueueType_ID(), null);
+		if(queueType == null) {
+			throw new AdempiereException("Queue Type is mandatory");
+		}
 		if(context == null) {
 			throw new AdempiereException("Context is mandatory");
 		}
@@ -253,13 +258,13 @@ public abstract class QueueManager {
 			throw new AdempiereException("Transaction is mandatory");
 		}
 		//	Call abstract implementation
-		boolean processed = true;
+		boolean isError = false;
 		String error = null;
 		try {
 			process(queueToProcess.getAD_Queue_ID());
 		} catch (Exception e) {
 			logger.severe(e.getLocalizedMessage());
-			processed = false;
+			isError = true;
 			error = e.getLocalizedMessage();
 		}
 		//	
@@ -267,15 +272,18 @@ public abstract class QueueManager {
 			queueToProcess.delete(true);
 		} else {
 			Timestamp ts = new Timestamp(System.currentTimeMillis());
-			long mili = ts.getTime();
+			long millis = ts.getTime();
 			int nano = ts.getNanos();
-			double doublets = Double.parseDouble(Long.toString(mili) + "." + Integer.toString(nano));
-			BigDecimal bdtimestamp = new BigDecimal(doublets);
-			queueToProcess.setProcessedOn(bdtimestamp);
-			queueToProcess.setProcessed(processed);
+			double doublets = Double.parseDouble(Long.toString(millis) + "." + Integer.toString(nano));
+			BigDecimal timestampAsBigDecimal = new BigDecimal(doublets);
+			queueToProcess.setProcessedOn(timestampAsBigDecimal);
+			if(isError) {
+				queueToProcess.setErrorMsg(error);
+			}
+			queueToProcess.setProcessed(!isError || queueType.isIgnoreError());
 			queueToProcess.saveEx();
 		}
-		if(!processed) {
+		if(isError && !queueType.isIgnoreError()) {
 			throw new AdempiereException(error);
 		}
 	}

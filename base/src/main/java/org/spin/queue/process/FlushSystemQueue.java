@@ -17,24 +17,22 @@
 
 package org.spin.queue.process;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.IntStream;
-
 import org.adempiere.core.domains.models.I_AD_Queue;
 import org.compiere.model.Query;
-import org.compiere.util.TimeUtil;
 import org.compiere.util.Trx;
 import org.compiere.util.Util;
 import org.spin.queue.model.MADQueue;
 import org.spin.queue.model.MADQueueType;
 import org.spin.queue.util.QueueLoader;
 import org.spin.queue.util.QueueManager;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 /** Generated Process for (Flush System Queue)
  *  @author ADempiere (generated) 
@@ -62,7 +60,7 @@ public class FlushSystemQueue extends FlushSystemQueueAbstract {
 			parameters.add(now);
 			//	For batch
 			MADQueueType queueType = MADQueueType.getById(getCtx(), getQueueTypeId(), null);
-			if(queueType.get_ValueAsBoolean("IsParallelProcessing")) {
+			if(queueType.isParallelProcessing()) {
 				IntStream.range(0, getBatchsToProcess()).forEach(page -> {
 					getQueuesToProcess(whereClause.toString(), parameters, get_TrxName())
 							.parallelStream()
