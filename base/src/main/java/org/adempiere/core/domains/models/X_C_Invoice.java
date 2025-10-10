@@ -42,7 +42,7 @@ public class X_C_Invoice extends PO implements I_C_Invoice, I_Persistent
 	private static final long serialVersionUID = 20250827L;
 
     /** Standard Constructor */
-    public X_C_Invoice (Properties ctx, int C_Invoice_ID, String trxName)
+    public X_C_Invoice(Properties ctx, int C_Invoice_ID, String trxName)
     {
       super (ctx, C_Invoice_ID, trxName);
       /** if (C_Invoice_ID == 0)
@@ -91,7 +91,7 @@ public class X_C_Invoice extends PO implements I_C_Invoice, I_Persistent
     }
 
     /** Load Constructor */
-    public X_C_Invoice (Properties ctx, ResultSet rs, String trxName)
+    public X_C_Invoice(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }

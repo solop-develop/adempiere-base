@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for AD_QueueType
  *  @author Adempiere (generated) 
@@ -140,6 +141,28 @@ public interface I_AD_QueueType
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name IsIgnoreError */
+    public static final String COLUMNNAME_IsIgnoreError = "IsIgnoreError";
+
+	/** Set IsIgnoreError	  */
+	public void setIsIgnoreError (boolean IsIgnoreError);
+
+	/** Get IsIgnoreError	  */
+	public boolean isIgnoreError();
+
+    /** Column name IsParallelProcessing */
+    public static final String COLUMNNAME_IsParallelProcessing = "IsParallelProcessing";
+
+	/** Set Parallel Processing.
+	  * Allows Parallel Processing
+	  */
+	public void setIsParallelProcessing (boolean IsParallelProcessing);
+
+	/** Get Parallel Processing.
+	  * Allows Parallel Processing
+	  */
+	public boolean isParallelProcessing();
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";

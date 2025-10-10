@@ -18,14 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for AD_Queue
  *  @author Adempiere (generated) 
@@ -36,7 +37,7 @@ public class X_AD_Queue extends PO implements I_AD_Queue, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20251010L;
 
     /** Standard Constructor */
     public X_AD_Queue (Properties ctx, int AD_Queue_ID, String trxName)
@@ -97,9 +98,9 @@ public class X_AD_Queue extends PO implements I_AD_Queue, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_QueueType getAD_QueueType() throws RuntimeException
+	public I_AD_QueueType getAD_QueueType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_QueueType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_QueueType.Table_Name)
+		return (I_AD_QueueType)MTable.get(getCtx(), I_AD_QueueType.Table_Name)
 			.getPO(getAD_QueueType_ID(), get_TrxName());	}
 
 	/** Set Queue Type.
@@ -122,9 +123,9 @@ public class X_AD_Queue extends PO implements I_AD_Queue, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Table getAD_Table() throws RuntimeException
+	public I_AD_Table getAD_Table() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Table)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Table.Table_Name)
+		return (I_AD_Table)MTable.get(getCtx(), I_AD_Table.Table_Name)
 			.getPO(getAD_Table_ID(), get_TrxName());	}
 
 	/** Set Table.
@@ -165,6 +166,44 @@ public class X_AD_Queue extends PO implements I_AD_Queue, I_Persistent
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	/** Set Error Msg.
+		@param ErrorMsg Error Msg	  */
+	public void setErrorMsg (String ErrorMsg)
+	{
+		set_Value (COLUMNNAME_ErrorMsg, ErrorMsg);
+	}
+
+	/** Get Error Msg.
+		@return Error Msg	  */
+	public String getErrorMsg () 
+	{
+		return (String)get_Value(COLUMNNAME_ErrorMsg);
+	}
+
+	/** Set Error.
+		@param IsError 
+		An Error occurred in the execution
+	  */
+	public void setIsError (boolean IsError)
+	{
+		set_Value (COLUMNNAME_IsError, Boolean.valueOf(IsError));
+	}
+
+	/** Get Error.
+		@return An Error occurred in the execution
+	  */
+	public boolean isError () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsError);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Processed.

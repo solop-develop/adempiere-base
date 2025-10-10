@@ -24,12 +24,14 @@ import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.ReplenishInterface;
+import org.compiere.util.Trx;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
 /**
@@ -39,7 +41,7 @@ import java.util.logging.Level;
  */
 public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstract {
 
-	private Map<String, ReplenishInterface> replenishmentResolver = new HashMap<>();
+	private final Map<String, ReplenishInterface> replenishmentResolver = new HashMap<>();
 
 	@Override
 	protected void prepare() {
@@ -48,10 +50,13 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 
 	@Override
 	protected String doIt() throws Exception {
-		prepareTable();
-		String result = insertReplenish();
-		runRules();
-		return result;
+		Trx.run(this::prepareTable);
+		AtomicReference<String> result = new AtomicReference<>();
+		Trx.run(transactionName -> {
+			result.set(insertReplenish(transactionName));
+		});
+		Trx.run(this::runRules);
+		return result.get();
 	}
 
 	private ReplenishInterface getResolver(String className) {
@@ -74,9 +79,11 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 		return resolver;
 	}
 
-	private void runRules() {
+	private void runRules(String transactionName) {
 		//	Custom Replenishment
-		getCustomReplenish().forEach(replenish -> {
+		getCustomReplenish()
+				.parallelStream()
+				.forEach(replenish -> {
 			if(replenish.get_ValueAsString("ReplenishmentClass") != null) {
 				ReplenishInterface custom = getResolver(replenish.get_ValueAsString("ReplenishmentClass"));
 				if(custom != null) {
@@ -99,13 +106,13 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 		String sql = "DELETE FROM T_Replenish "
 				+ "WHERE QtyToOrder < 1"
 				+ " AND AD_PInstance_ID=" + getAD_PInstance_ID();
-		int no = DB.executeUpdateEx(sql, get_TrxName());
+		int no = DB.executeUpdateEx(sql, transactionName);
 		if (no != 0) {
 			log.fine("Delete No QtyToOrder=" + no);
 		}
 	}
 
-	private String insertReplenish() {
+	private String insertReplenish(String transactionName) {
 		List<Object> parameters = new ArrayList<>();
 		StringBuilder insertSql = new StringBuilder("INSERT INTO T_Replenish (AD_PInstance_ID, " +
 				"AD_Client_ID, " +
@@ -280,7 +287,7 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 			insertSql.append(" AND r.ReplenishType = ?");
 			parameters.add(getReplenishType());
 		}
-		int inserted = DB.executeUpdateEx(insertSql.toString(), parameters.toArray(), get_TrxName());
+		int inserted = DB.executeUpdateEx(insertSql.toString(), parameters.toArray(), transactionName);
 		if (inserted != 0) {
 			log.fine("Filled Replenishments = " + inserted);
 		}
@@ -292,18 +299,18 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				+ " WHERE rr.M_Product_ID=r.M_Product_ID AND rr.IsActive='N'"
 				+ " AND rr.M_Warehouse_ID=" + getWarehouseId() + " ))"
 				+ " AND AD_PInstance_ID=" + getAD_PInstance_ID();
-		int no = DB.executeUpdateEx(sql, get_TrxName());
+		int no = DB.executeUpdateEx(sql, transactionName);
 		if (no != 0) {
 			log.fine("Delete Inactive=" + no);
 		}
 
 		//	Ensure Data consistency
 		sql = "UPDATE T_Replenish SET QtyOnHand = 0 WHERE QtyOnHand IS NULL";
-		no = DB.executeUpdateEx(sql, get_TrxName());
+		no = DB.executeUpdateEx(sql, transactionName);
 		sql = "UPDATE T_Replenish SET QtyReserved = 0 WHERE QtyReserved IS NULL";
-		no = DB.executeUpdateEx(sql, get_TrxName());
+		no = DB.executeUpdateEx(sql, transactionName);
 		sql = "UPDATE T_Replenish SET QtyOrdered = 0 WHERE QtyOrdered IS NULL";
-		no = DB.executeUpdateEx(sql, get_TrxName());
+		no = DB.executeUpdateEx(sql, transactionName);
 
 		//	Set Minimum / Maximum Maintain Level
 		//	X_M_Replenish.REPLENISHTYPE_ReorderBelowMinimumLevel
@@ -313,7 +320,7 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				+ " ELSE 0 END "
 				+ "WHERE ReplenishType='1'"
 				+ " AND AD_PInstance_ID=" + getAD_PInstance_ID();
-		no = DB.executeUpdateEx(sql, get_TrxName());
+		no = DB.executeUpdateEx(sql, transactionName);
 		if (no != 0) {
 			log.fine("Update Type-1=" + no);
 		}
@@ -323,7 +330,7 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				+ " SET QtyToOrder = Level_Max - QtyOnHand + QtyReserved - QtyOrdered "
 				+ "WHERE ReplenishType='2'"
 				+ " AND AD_PInstance_ID=" + getAD_PInstance_ID();
-		no = DB.executeUpdateEx(sql, get_TrxName());
+		no = DB.executeUpdateEx(sql, transactionName);
 		if (no != 0) {
 			log.fine("Update Type-2=" + no);
 		}
@@ -333,7 +340,7 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				+ "WHERE QtyToOrder < Order_Min"
 				+ " AND QtyToOrder > 0"
 				+ " AND AD_PInstance_ID=" + getAD_PInstance_ID();
-		no = DB.executeUpdateEx(sql, get_TrxName());
+		no = DB.executeUpdateEx(sql, transactionName);
 		if (no != 0) {
 			log.fine("Set MinOrderQty=" + no);
 		}
@@ -343,7 +350,7 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				+ "WHERE MOD(QtyToOrder, CASE WHEN COALESCE(Order_Pack, 0) > 0 THEN Order_Pack ELSE 1 END) <> 0"
 				+ " AND QtyToOrder > 0"
 				+ " AND AD_PInstance_ID=" + getAD_PInstance_ID();
-		no = DB.executeUpdateEx(sql, get_TrxName());
+		no = DB.executeUpdateEx(sql, transactionName);
 		if (no != 0) {
 			log.fine("Set OrderPackQty=" + no);
 		}
@@ -352,7 +359,7 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				+ " SET M_WarehouseSource_ID = NULL "
 				+ "WHERE M_Warehouse_ID=M_WarehouseSource_ID"
 				+ " AND AD_PInstance_ID=" + getAD_PInstance_ID();
-		no = DB.executeUpdateEx(sql, get_TrxName());
+		no = DB.executeUpdateEx(sql, transactionName);
 		if (no != 0) {
 			log.fine("Set same Source Warehouse=" + no);
 		}
@@ -362,63 +369,19 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 	/**
 	 * 	Prepare/Check Replenishment Table
 	 */
-	private void prepareTable() {
+	private void prepareTable(String transactionName) {
 		//	Level_Max must be >= Level_Max
 		String sql = "UPDATE M_Replenish"
 				+ " SET Level_Max = Level_Min "
 				+ "WHERE Level_Max < Level_Min";
-		int no = DB.executeUpdateEx(sql, get_TrxName());
+		int no = DB.executeUpdateEx(sql, transactionName);
 		if (no != 0) {
 			log.fine("Corrected Max_Level=" + no);
 		}
 
-		//	Minimum Order should be 1
-		sql = "UPDATE M_Product_PO"
-				+ " SET Order_Min = 1 "
-				+ "WHERE Order_Min IS NULL OR Order_Min < 1";
-		no = DB.executeUpdateEx(sql, get_TrxName());
-		if (no != 0) {
-			log.fine("Corrected Order Min=" + no);
-		}
-
-		//	Pack should be 1
-		sql = "UPDATE M_Product_PO"
-				+ " SET Order_Pack = 1 "
-				+ "WHERE Order_Pack IS NULL OR Order_Pack < 1";
-		no = DB.executeUpdateEx(sql, get_TrxName());
-		if (no != 0) {
-			log.fine("Corrected Order Pack=" + no);
-		}
-
-		//	Set Current Vendor where only one vendor
-		sql = "UPDATE M_Product_PO p"
-				+ " SET IsCurrentVendor='Y' "
-				+ "WHERE IsCurrentVendor<>'Y'"
-				+ " AND EXISTS (SELECT pp.M_Product_ID FROM M_Product_PO pp "
-				+ "WHERE p.M_Product_ID=pp.M_Product_ID "
-				+ "GROUP BY pp.M_Product_ID "
-				+ "HAVING COUNT(*) = 1)";
-		no = DB.executeUpdateEx(sql, get_TrxName());
-		if (no != 0) {
-			log.fine("Corrected CurrentVendor(Y)=" + no);
-		}
-
-		//	More then one current vendor
-		sql = "UPDATE M_Product_PO p"
-				+ " SET IsCurrentVendor='N' "
-				+ "WHERE IsCurrentVendor = 'Y'"
-				+ " AND EXISTS (SELECT pp.M_Product_ID FROM M_Product_PO pp "
-				+ "WHERE p.M_Product_ID=pp.M_Product_ID AND pp.IsCurrentVendor='Y' "
-				+ "GROUP BY pp.M_Product_ID "
-				+ "HAVING COUNT(*) > 1)";
-		no = DB.executeUpdateEx(sql, get_TrxName());
-		if (no != 0) {
-			log.fine("Corrected CurrentVendor(N)=" + no);
-		}
-
 		//	Just to be sure
 		sql = "DELETE T_Replenish WHERE AD_PInstance_ID=" + getAD_PInstance_ID();
-		no = DB.executeUpdateEx(sql, get_TrxName());
+		no = DB.executeUpdateEx(sql, transactionName);
 		if (no != 0) {
 			log.fine("Delete Existing Temp=" + no);
 		}
@@ -430,7 +393,7 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 	 */
 	private List<X_T_Replenish> getCustomReplenish() {
 		return new Query(getCtx(), X_T_Replenish.Table_Name,
-				"AD_PInstance_ID = ?" + " AND " + "ReplenishType='9'", get_TrxName())
+				"AD_PInstance_ID = ?" + " AND " + "ReplenishType='9'", null)
                 .setParameters(getAD_PInstance_ID())
                 .setOrderBy("M_Warehouse_ID, M_WarehouseSource_ID, C_BPartner_ID")
                 .list();

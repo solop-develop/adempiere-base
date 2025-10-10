@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_POSSellerAllocation
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_C_POSSellerAllocation
 	  */
 	public int getC_POS_ID();
 
-	public org.adempiere.core.domains.models.I_C_POS getC_POS() throws RuntimeException;
+	public I_C_POS getC_POS() throws RuntimeException;
 
     /** Column name C_POSSellerAllocation_ID */
     public static final String COLUMNNAME_C_POSSellerAllocation_ID = "C_POSSellerAllocation_ID";
@@ -512,7 +513,7 @@ public interface I_C_POSSellerAllocation
 	  */
 	public int getSalesRep_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+	public I_AD_User getSalesRep() throws RuntimeException;
 
     /** Column name SeqNo */
     public static final String COLUMNNAME_SeqNo = "SeqNo";
@@ -571,7 +572,7 @@ public interface I_C_POSSellerAllocation
 	  */
 	public int getWriteOffAmtCurrency_ID();
 
-	public org.adempiere.core.domains.models.I_C_Currency getWriteOffAmtCurrency() throws RuntimeException;
+	public I_C_Currency getWriteOffAmtCurrency() throws RuntimeException;
 
     /** Column name WriteOffAmtTolerance */
     public static final String COLUMNNAME_WriteOffAmtTolerance = "WriteOffAmtTolerance";

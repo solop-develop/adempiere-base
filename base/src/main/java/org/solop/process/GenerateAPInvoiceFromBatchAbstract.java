@@ -18,8 +18,10 @@
 
 package org.solop.process;
 
-import java.sql.Timestamp;
 import org.compiere.process.SvrProcess;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Process for (Generate AP Invoice)
  *  @author ADempiere (generated) 
@@ -38,18 +40,33 @@ public abstract class GenerateAPInvoiceFromBatchAbstract extends SvrProcess {
 	public static final String DOCACTION = "DocAction";
 	/**	Parameter Name for Vendor Document Type	*/
 	public static final String VENDORDOCUMENTTYPE = "VendorDocumentType";
+	/**	Parameter Name for Overwrite Amount and Charge	*/
+	public static final String OVERWRITEAMTANDCHARGE = "OverwriteAmtAndCharge";
+	/**	Parameter Name for Amount	*/
+	public static final String AMOUNT = "Amount";
+	/**	Parameter Name for Charge	*/
+	public static final String C_CHARGE_ID = "C_Charge_ID";
 	/**	Parameter Value for Document Date	*/
 	private Timestamp dateDoc;
 	/**	Parameter Value for Document Action	*/
 	private String docAction;
 	/**	Parameter Value for Vendor Document Type	*/
 	private String vendorDocumentType;
+	/**	Parameter Value for Overwrite Amount and Charge	*/
+	private boolean isOverwriteAmtAndCharge;
+	/**	Parameter Value for Amount	*/
+	private BigDecimal amount;
+	/**	Parameter Value for Charge	*/
+	private int chargeId;
 
 	@Override
 	protected void prepare() {
 		dateDoc = getParameterAsTimestamp(DATEDOC);
 		docAction = getParameterAsString(DOCACTION);
 		vendorDocumentType = getParameterAsString(VENDORDOCUMENTTYPE);
+		isOverwriteAmtAndCharge = getParameterAsBoolean(OVERWRITEAMTANDCHARGE);
+		amount = getParameterAsBigDecimal(AMOUNT);
+		chargeId = getParameterAsInt(C_CHARGE_ID);
 	}
 
 	/**	 Getter Parameter Value for Document Date	*/
@@ -80,6 +97,36 @@ public abstract class GenerateAPInvoiceFromBatchAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Vendor Document Type	*/
 	protected void setVendorDocumentType(String vendorDocumentType) {
 		this.vendorDocumentType = vendorDocumentType;
+	}
+
+	/**	 Getter Parameter Value for Overwrite Amount and Charge	*/
+	protected boolean isOverwriteAmtAndCharge() {
+		return isOverwriteAmtAndCharge;
+	}
+
+	/**	 Setter Parameter Value for Overwrite Amount and Charge	*/
+	protected void setOverwriteAmtAndCharge(boolean isOverwriteAmtAndCharge) {
+		this.isOverwriteAmtAndCharge = isOverwriteAmtAndCharge;
+	}
+
+	/**	 Getter Parameter Value for Amount	*/
+	protected BigDecimal getAmount() {
+		return amount;
+	}
+
+	/**	 Setter Parameter Value for Amount	*/
+	protected void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
+	/**	 Getter Parameter Value for Charge	*/
+	protected int getChargeId() {
+		return chargeId;
+	}
+
+	/**	 Setter Parameter Value for Charge	*/
+	protected void setChargeId(int chargeId) {
+		this.chargeId = chargeId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

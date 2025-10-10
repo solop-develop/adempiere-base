@@ -42,7 +42,7 @@ public class X_C_BankStatement extends PO implements I_C_BankStatement, I_Persis
 	private static final long serialVersionUID = 20250814L;
 
     /** Standard Constructor */
-    public X_C_BankStatement (Properties ctx, int C_BankStatement_ID, String trxName)
+    public X_C_BankStatement(Properties ctx, int C_BankStatement_ID, String trxName)
     {
       super (ctx, C_BankStatement_ID, trxName);
       /** if (C_BankStatement_ID == 0)
@@ -69,7 +69,7 @@ public class X_C_BankStatement extends PO implements I_C_BankStatement, I_Persis
     }
 
     /** Load Constructor */
-    public X_C_BankStatement (Properties ctx, ResultSet rs, String trxName)
+    public X_C_BankStatement(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }

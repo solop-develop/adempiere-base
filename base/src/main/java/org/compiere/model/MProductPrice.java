@@ -16,15 +16,15 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.ResultSet;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.I_M_ProductPrice;
 import org.adempiere.core.domains.models.X_M_ProductPrice;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  *	Product Price
@@ -66,7 +66,7 @@ public class MProductPrice extends X_M_ProductPrice
 	 *	@param ignored ignored
 	 *	@param trxName transaction
 	 */
-	public MProductPrice (Properties ctx, int productPriceId, String trxName)
+	public MProductPrice(Properties ctx, int productPriceId, String trxName)
 	{
 		super(ctx, productPriceId, trxName);
 		if(productPriceId <= 0) {
@@ -82,7 +82,7 @@ public class MProductPrice extends X_M_ProductPrice
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MProductPrice (Properties ctx, ResultSet rs, String trxName)
+	public MProductPrice(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MProductPrice
@@ -94,7 +94,7 @@ public class MProductPrice extends X_M_ProductPrice
 	 *	@param M_Product_ID product
 	 *	@param trxName transaction
 	 */
-	public MProductPrice (Properties ctx, int M_PriceList_Version_ID, int M_Product_ID, String trxName)
+	public MProductPrice(Properties ctx, int M_PriceList_Version_ID, int M_Product_ID, String trxName)
 	{
 		this (ctx, 0, trxName);
 		setM_PriceList_Version_ID (M_PriceList_Version_ID);	//	FK
@@ -111,8 +111,8 @@ public class MProductPrice extends X_M_ProductPrice
 	 *	@param PriceLimit limit price
 	 *	@param trxName transaction
 	 */
-	public MProductPrice (Properties ctx, int M_PriceList_Version_ID, int M_Product_ID,
-		BigDecimal PriceList, BigDecimal PriceStd, BigDecimal PriceLimit, String trxName)
+	public MProductPrice(Properties ctx, int M_PriceList_Version_ID, int M_Product_ID,
+                         BigDecimal PriceList, BigDecimal PriceStd, BigDecimal PriceLimit, String trxName)
 	{
 		this (ctx, M_PriceList_Version_ID, M_Product_ID, trxName);
 		setPrices (PriceList, PriceStd, PriceLimit);
@@ -126,8 +126,8 @@ public class MProductPrice extends X_M_ProductPrice
 	 *	@param PriceStd standard price
 	 *	@param PriceLimit limit price
 	 */
-	public MProductPrice (MPriceListVersion plv, int M_Product_ID,
-		BigDecimal PriceList, BigDecimal PriceStd, BigDecimal PriceLimit)
+	public MProductPrice(MPriceListVersion plv, int M_Product_ID,
+                         BigDecimal PriceList, BigDecimal PriceStd, BigDecimal PriceLimit)
 	{
 		this (plv.getCtx(), 0, plv.get_TrxName());
 		setClientOrg(plv);
@@ -148,6 +148,14 @@ public class MProductPrice extends X_M_ProductPrice
 		setPriceList (PriceList.setScale(this.getM_PriceList_Version().getM_PriceList().getPricePrecision(), RoundingMode.HALF_UP)); 
 		setPriceStd (PriceStd.setScale(this.getM_PriceList_Version().getM_PriceList().getPricePrecision(), RoundingMode.HALF_UP));
 	}	//	setPrice
+
+	@Override
+	protected boolean beforeSave(boolean newRecord) {
+		if(getM_PriceList_ID() <= 0) {
+			setM_PriceList_ID(getM_PriceList_Version().getM_PriceList_ID());
+		}
+		return super.beforeSave(newRecord);
+	}
 
 	/**
 	 * 	String Representation

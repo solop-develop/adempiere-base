@@ -50,15 +50,15 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 		invoicesToPrint = new ArrayList<PO>();
 		List<MWMInOutBoundLine> outBoundLines = null;
 		//	Get from record
-		if(getRecord_ID() > 0) {
+		if(isSelection()) {
+			// Overwrite table RV_WM_InOutBoundLine by WM_InOutBoundLine
+			getProcessInfo().setTableSelectionId(MWMInOutBoundLine.Table_ID);
+			outBoundLines = (List<MWMInOutBoundLine>) getInstancesForSelection(get_TrxName());
+		} else if(getRecord_ID() > 0) {
 			outBoundLines = new Query(getCtx(), MWMInOutBoundLine.Table_Name, MWMInOutBound.COLUMNNAME_WM_InOutBound_ID + "=?", get_TrxName())
 					.setParameters(getRecord_ID())
 					.setOrderBy(MWMInOutBoundLine.COLUMNNAME_C_Order_ID + ", " + MWMInOutBoundLine.COLUMNNAME_DD_Order_ID)
 					.list();
-		} else if(isSelection()) {
-			// Overwrite table RV_WM_InOutBoundLine by WM_InOutBoundLine
-			getProcessInfo().setTableSelectionId(MWMInOutBoundLine.Table_ID);
-			outBoundLines = (List<MWMInOutBoundLine>) getInstancesForSelection(get_TrxName());
 		}
 		//	Create
 		if(outBoundLines != null) {

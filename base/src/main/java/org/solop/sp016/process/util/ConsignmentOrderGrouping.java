@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 public class ConsignmentOrderGrouping {
     BigDecimal maxAmount;
     BigDecimal usedAmount;
+
+
+
     BigDecimal deliveredAmount;
     int orderLineId;
     int orderId;
