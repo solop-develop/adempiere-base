@@ -16,11 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.I_C_BankAccount;
 import org.adempiere.core.domains.models.X_C_BankAccount;
 import org.adempiere.core.domains.models.X_C_BankAccountDoc;
@@ -29,6 +24,11 @@ import org.apache.commons.validator.routines.IBANValidator;
 import org.compiere.util.CCache;
 import org.compiere.util.Env;
 import org.compiere.util.Util;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Properties;
 
 
 /**
@@ -72,7 +72,7 @@ public class MBankAccount extends X_C_BankAccount
 	 *	@param C_BankAccount_ID bank account
 	 *	@param trxName transaction
 	 */
-	public MBankAccount (Properties ctx, int C_BankAccount_ID, String trxName)
+	public MBankAccount(Properties ctx, int C_BankAccount_ID, String trxName)
 	{
 		super (ctx, C_BankAccount_ID, trxName);
 		if (C_BankAccount_ID == 0)
@@ -92,7 +92,7 @@ public class MBankAccount extends X_C_BankAccount
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MBankAccount (Properties ctx, ResultSet rs, String trxName)
+	public MBankAccount(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MBankAccount
@@ -168,16 +168,34 @@ public class MBankAccount extends X_C_BankAccount
 	{
 		return delete_Accounting("C_BankAccount_Acct");
 	}	//	beforeDelete
-	
-	public static MBankAccount getDefault (Properties ctx, int AD_Org_ID, String BankType)
-	{
+
+	public static MBankAccount getDefault (Properties ctx, int organizationId, String bankType, boolean isSOTrx) {
+		ArrayList<Object> paramenters =  new ArrayList<>();
+		paramenters.add(organizationId);
+		paramenters.add(bankType);
+		paramenters.add(isSOTrx);
+		String whereClause = " isDefault = 'Y' " +
+				"AND AD_Org_ID = ? " +
+				"AND EXISTS(SELECT 1 FROM C_Bank b where b.BankType = ? AND b.c_Bank_ID = C_BankAccount.C_Bank_ID) " +
+				"AND IsSOTrx = ?";
+		return new Query(ctx, Table_Name, whereClause, null)
+				.setParameters(paramenters)
+				.setOnlyActiveRecords(true)
+				.setOrderBy(I_C_BankAccount.COLUMNNAME_AccountNo)
+				.first();
+	}
+
+	public static MBankAccount getDefault (Properties ctx, int organizationId, String bankType) {
 
         ArrayList<Object> paramenters =  new ArrayList<>();
-        paramenters.add(AD_Org_ID);
-        paramenters.add(BankType);
-		String whereClause = " isDefault = 'Y'  AND AD_Org_ID=? AND Exists (select 1 from C_Bank b where b.banktype =? and b.c_Bank_ID=C_BankAccount.C_Bank_ID)";
-		return new Query(ctx, Table_Name, whereClause.toString(), null)
+        paramenters.add(organizationId);
+        paramenters.add(bankType);
+		String whereClause = " isDefault = 'Y' " +
+				"AND AD_Org_ID = ? " +
+				"AND EXISTS(SELECT 1 from C_Bank b where b.BankType = ? AND b.c_Bank_ID=C_BankAccount.C_Bank_ID)";
+		return new Query(ctx, Table_Name, whereClause, null)
                 .setParameters(paramenters)
+				.setOnlyActiveRecords(true)
                 .setOrderBy(I_C_BankAccount.COLUMNNAME_AccountNo)
                 .first();
 	} //	getDefault

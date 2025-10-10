@@ -18,13 +18,14 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_DocType
  *  @author Adempiere (generated) 
@@ -38,7 +39,7 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 	private static final long serialVersionUID = 20230102L;
 
     /** Standard Constructor */
-    public X_C_DocType (Properties ctx, int C_DocType_ID, String trxName)
+    public X_C_DocType(Properties ctx, int C_DocType_ID, String trxName)
     {
       super (ctx, C_DocType_ID, trxName);
       /** if (C_DocType_ID == 0)
@@ -71,7 +72,7 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
     }
 
     /** Load Constructor */
-    public X_C_DocType (Properties ctx, ResultSet rs, String trxName)
+    public X_C_DocType(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -98,9 +99,9 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_AD_PrintFormat getAD_PrintFormat() throws RuntimeException
+	public I_AD_PrintFormat getAD_PrintFormat() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_PrintFormat)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_PrintFormat.Table_Name)
+		return (I_AD_PrintFormat)MTable.get(getCtx(), I_AD_PrintFormat.Table_Name)
 			.getPO(getAD_PrintFormat_ID(), get_TrxName());	}
 
 	/** Set Print Format.
@@ -126,9 +127,9 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocBaseType getC_DocBaseType() throws RuntimeException
+	public I_C_DocBaseType getC_DocBaseType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocBaseType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocBaseType.Table_Name)
+		return (I_C_DocBaseType)MTable.get(getCtx(), I_C_DocBaseType.Table_Name)
 			.getPO(getC_DocBaseType_ID(), get_TrxName());	}
 
 	/** Set Document Base Type.
@@ -174,9 +175,9 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypeDifference() throws RuntimeException
+	public I_C_DocType getC_DocTypeDifference() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocTypeDifference_ID(), get_TrxName());	}
 
 	/** Set Difference Document.
@@ -202,9 +203,9 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypeInvoice() throws RuntimeException
+	public I_C_DocType getC_DocTypeInvoice() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocTypeInvoice_ID(), get_TrxName());	}
 
 	/** Set Document Type for Invoice.
@@ -230,9 +231,9 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypePayment() throws RuntimeException
+	public I_C_DocType getC_DocTypePayment() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocTypePayment_ID(), get_TrxName());	}
 
 	/** Set Document Type for Payment.
@@ -258,9 +259,9 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypeProforma() throws RuntimeException
+	public I_C_DocType getC_DocTypeProforma() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocTypeProforma_ID(), get_TrxName());	}
 
 	/** Set Document Type for ProForma.
@@ -286,9 +287,9 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypeShipment() throws RuntimeException
+	public I_C_DocType getC_DocTypeShipment() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocTypeShipment_ID(), get_TrxName());	}
 
 	/** Set Document Type for Shipment.
@@ -314,9 +315,9 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Sequence getDefiniteSequence() throws RuntimeException
+	public I_AD_Sequence getDefiniteSequence() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Sequence)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Sequence.Table_Name)
+		return (I_AD_Sequence)MTable.get(getCtx(), I_AD_Sequence.Table_Name)
 			.getPO(getDefiniteSequence_ID(), get_TrxName());	}
 
 	/** Set Definite Sequence.
@@ -464,9 +465,9 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return (String)get_Value(COLUMNNAME_DocBaseType);
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Sequence getDocNoSequence() throws RuntimeException
+	public I_AD_Sequence getDocNoSequence() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Sequence)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Sequence.Table_Name)
+		return (I_AD_Sequence)MTable.get(getCtx(), I_AD_Sequence.Table_Name)
 			.getPO(getDocNoSequence_ID(), get_TrxName());	}
 
 	/** Set Document Sequence.
@@ -567,9 +568,9 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return (String)get_Value(COLUMNNAME_DocumentNote);
 	}
 
-	public org.adempiere.core.domains.models.I_GL_Category getGL_Category() throws RuntimeException
+	public I_GL_Category getGL_Category() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_GL_Category)MTable.get(getCtx(), org.adempiere.core.domains.models.I_GL_Category.Table_Name)
+		return (I_GL_Category)MTable.get(getCtx(), I_GL_Category.Table_Name)
 			.getPO(getGL_Category_ID(), get_TrxName());	}
 
 	/** Set GL Category.

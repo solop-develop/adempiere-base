@@ -16,13 +16,14 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_M_Product_PO;
+import org.compiere.util.Env;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.X_M_Product_PO;
 
 /**
  *	Product PO Model
@@ -96,7 +97,7 @@ public class MProductPO extends X_M_Product_PO
 	 *	@param ignored ignored
 	 *	@param trxName transaction
 	 */
-	public MProductPO (Properties ctx, int ignored, String trxName)
+	public MProductPO(Properties ctx, int ignored, String trxName)
 	{
 		super(ctx, 0, trxName);
 		if (ignored != 0)
@@ -117,7 +118,7 @@ public class MProductPO extends X_M_Product_PO
 	 * @param partnerId
 	 * @param trxName
 	 */
-	public MProductPO (Properties ctx , int productId , int partnerId , int currencyId , String trxName)
+	public MProductPO(Properties ctx , int productId , int partnerId , int currencyId , String trxName)
 	{
 		super(ctx, 0 , trxName);
 		setM_Product_ID(productId);
@@ -138,4 +139,32 @@ public class MProductPO extends X_M_Product_PO
 		super(ctx, rs, trxName);
 	}	//	MProductPO
 
+	@Override
+	protected boolean beforeSave(boolean newRecord) {
+		if(Optional.ofNullable(getOrder_Min()).orElse(Env.ZERO).compareTo(Env.ZERO) <= 0) {
+			setOrder_Min(Env.ONE);
+		}
+		if(Optional.ofNullable(getOrder_Pack()).orElse(Env.ZERO).compareTo(Env.ZERO) <= 0) {
+			setOrder_Pack(Env.ONE);
+		}
+		if(is_ValueChanged(COLUMNNAME_IsCurrentVendor)) {
+			if(isCurrentVendor()) {
+				getByProductWithCurrentVendor(getCtx(), getM_Product_ID(), get_TrxName())
+						.parallelStream()
+						.forEach(po -> {
+							po.setIsCurrentVendor(false);
+							po.saveEx(get_TrxName());
+						});
+			}
+		}
+		return super.beforeSave(newRecord);
+	}
+
+	public static List<MProductPO> getByProductWithCurrentVendor(Properties ctx, int productId, String trxName) {
+		return new Query(ctx, MProductPO.Table_Name, "M_Product_ID = ? " +
+				"AND IsCurrentVendor = 'Y'" , trxName)
+				.setClient_ID()
+				.setParameters(productId)
+				.list();
+	}
 }	//	MProductPO

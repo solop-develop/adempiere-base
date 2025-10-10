@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for AD_Queue
  *  @author Adempiere (generated) 
@@ -82,7 +83,7 @@ public interface I_AD_Queue
 	/** Get Queue Type	  */
 	public int getAD_QueueType_ID();
 
-	public org.adempiere.core.domains.models.I_AD_QueueType getAD_QueueType() throws RuntimeException;
+	public I_AD_QueueType getAD_QueueType() throws RuntimeException;
 
     /** Column name AD_Table_ID */
     public static final String COLUMNNAME_AD_Table_ID = "AD_Table_ID";
@@ -97,7 +98,7 @@ public interface I_AD_Queue
 	  */
 	public int getAD_Table_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Table getAD_Table() throws RuntimeException;
+	public I_AD_Table getAD_Table() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -128,6 +129,15 @@ public interface I_AD_Queue
 	  */
 	public String getDescription();
 
+    /** Column name ErrorMsg */
+    public static final String COLUMNNAME_ErrorMsg = "ErrorMsg";
+
+	/** Set Error Msg	  */
+	public void setErrorMsg (String ErrorMsg);
+
+	/** Get Error Msg	  */
+	public String getErrorMsg();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -140,6 +150,19 @@ public interface I_AD_Queue
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name IsError */
+    public static final String COLUMNNAME_IsError = "IsError";
+
+	/** Set Error.
+	  * An Error occurred in the execution
+	  */
+	public void setIsError (boolean IsError);
+
+	/** Get Error.
+	  * An Error occurred in the execution
+	  */
+	public boolean isError();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";

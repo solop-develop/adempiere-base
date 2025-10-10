@@ -16,38 +16,12 @@
  
 package org.eevolution.distribution.model;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_C_DocType;
 import org.adempiere.core.domains.models.I_DD_Order;
 import org.adempiere.core.domains.models.I_DD_OrderLine;
 import org.adempiere.core.domains.models.X_DD_Order;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MBPartner;
-import org.compiere.model.MBPartnerLocation;
-import org.compiere.model.MDocType;
-import org.compiere.model.MMovement;
-import org.compiere.model.MPeriod;
-import org.compiere.model.MProject;
-import org.compiere.model.MRefList;
-import org.compiere.model.ModelValidationEngine;
-import org.compiere.model.ModelValidator;
-import org.compiere.model.PO;
-import org.compiere.model.Query;
+import org.compiere.model.*;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
@@ -59,6 +33,16 @@ import org.compiere.util.Util;
 import org.eevolution.distribution.process.GenerateMovement;
 import org.eevolution.distribution.process.GenerateMovementMaterial;
 import org.eevolution.services.dsl.ProcessBuilder;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 
 /**
  *  Order Distribution Model.
@@ -181,7 +165,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 	 *  @param IsSOTrx sales order
 	 * 	@param	DocSubTypeSO if SO DocType Target (default DocSubTypeSO_OnCredit)
 	 */
-	public MDDOrder (MProject project, boolean IsSOTrx, String DocSubTypeSO)
+	public MDDOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO)
 	{
 		this (project.getCtx(), 0, project.get_TrxName());
 		setAD_Client_ID(project.getAD_Client_ID());
@@ -213,13 +197,13 @@ public class MDDOrder extends X_DD_Order implements DocAction
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MDDOrder (Properties ctx, ResultSet rs, String trxName)
+	public MDDOrder(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MDDOrder
 
 	/**	Order Lines					*/
-	private List<org.eevolution.distribution.model.MDDOrderLine> orderLines = null;
+	private List<MDDOrderLine> orderLines = null;
 	
 	/** Force Creation of order		*/
 	private boolean			m_forceCreation = false;
@@ -364,9 +348,9 @@ public class MDDOrder extends X_DD_Order implements DocAction
 	{
 		if (isProcessed() || isPosted() || otherOrder == null)
 			return 0;
-		List<org.eevolution.distribution.model.MDDOrderLine> otherOrderLines = otherOrder.getLines(false, null);
+		List<MDDOrderLine> otherOrderLines = otherOrder.getLines(false, null);
 		otherOrderLines.stream().forEach( otherOrderLine -> {
-			org.eevolution.distribution.model.MDDOrderLine orderLine = new org.eevolution.distribution.model.MDDOrderLine(this);
+			MDDOrderLine orderLine = new MDDOrderLine(this);
 			PO.copyValues(otherOrderLine, orderLine, getAD_Client_ID(), getAD_Org_ID());
 			orderLine.setDD_Order_ID(getDD_Order_ID());
 			orderLine.setOrder(this);
@@ -452,9 +436,9 @@ public class MDDOrder extends X_DD_Order implements DocAction
 	 * 	@param orderClause order clause
 	 * 	@return lines
 	 */
-	public List<org.eevolution.distribution.model.MDDOrderLine> getLines (String whereClause, String orderClause)
+	public List<MDDOrderLine> getLines (String whereClause, String orderClause)
 	{
-		StringBuffer whereClauseFinal = new StringBuffer(org.eevolution.distribution.model.MDDOrderLine.COLUMNNAME_DD_Order_ID).append("=?");
+		StringBuffer whereClauseFinal = new StringBuffer(MDDOrderLine.COLUMNNAME_DD_Order_ID).append("=?");
 		if (!Util.isEmpty(whereClause, true))
 			whereClauseFinal.append(" AND (").append(whereClause).append(")");
 
@@ -470,7 +454,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 	 * 	@param orderBy optional order by column
 	 * 	@return lines
 	 */
-	public List<org.eevolution.distribution.model.MDDOrderLine> getLines (boolean reQuery, String orderBy)
+	public List<MDDOrderLine> getLines (boolean reQuery, String orderBy)
 	{
 		if (orderLines != null && !reQuery) {
 			orderLines.stream().forEach(orderLine -> orderLine.set_TrxName(get_TrxName()));
@@ -491,7 +475,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 	 * 	(useb by web store)
 	 * 	@return lines
 	 */
-	public List<org.eevolution.distribution.model.MDDOrderLine> getLines()
+	public List<MDDOrderLine> getLines()
 	{
 		return getLines(false, null);
 	}	//	getLines
@@ -680,7 +664,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 		if (is_ValueChanged(columnName))
 		{
 		    	final String whereClause = I_DD_Order.COLUMNNAME_DD_Order_ID + "=?";
-		    	List<org.eevolution.distribution.model.MDDOrderLine> orderLines = new Query (getCtx(), I_DD_OrderLine.Table_Name, whereClause, get_TrxName())
+		    	List<MDDOrderLine> orderLines = new Query (getCtx(), I_DD_OrderLine.Table_Name, whereClause, get_TrxName())
 		    	.setParameters(getDD_Order_ID())
 		    	.list();
 
@@ -778,7 +762,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 			return DocAction.STATUS_Invalid;
 		}
 
-		List<org.eevolution.distribution.model.MDDOrderLine> orderLines= getLines(true, "M_Product_ID");
+		List<MDDOrderLine> orderLines= getLines(true, "M_Product_ID");
 		if (orderLines.isEmpty())
 		{
 			processMessage = "@NoLines@";
@@ -835,7 +819,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 	 * 	@param orderLines distribution order lines (ordered by M_Product_ID for deadlock prevention)
 	 * 	@return true if (un) reserved
 	 */
-	public void reserveStock (List<org.eevolution.distribution.model.MDDOrderLine> orderLines)
+	public void reserveStock (List<MDDOrderLine> orderLines)
 	{
 		//	Always check and (un) Reserve Inventory		
 		orderLines.stream()
@@ -855,7 +839,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 		BigDecimal weight = getLines()
 				.stream()
 				.filter(orderLine -> orderLine.getProduct() != null && orderLine.getProduct().isStocked())
-				.map(org.eevolution.distribution.model.MDDOrderLine::getWeight)
+				.map(MDDOrderLine::getWeight)
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 		setWeight(weight);
 		saveEx();
@@ -867,7 +851,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 		BigDecimal volume = getLines()
 				.stream()
 				.filter(orderLine -> orderLine.getProduct() != null && orderLine.getProduct().isStocked())
-				.map(org.eevolution.distribution.model.MDDOrderLine::getVolume)
+				.map(MDDOrderLine::getVolume)
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 		setVolume(volume);
 		saveEx();
@@ -958,7 +942,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 		Timestamp today = new Timestamp(date.getTime());
 		List<Integer> recordIds = new ArrayList<>();
 		recordIds.add(getDD_Order_ID());
-		ProcessInfo processInfo = ProcessBuilder.create(getCtx()).process(org.eevolution.distribution.process.GenerateMovement.getProcessId())
+		ProcessInfo processInfo = ProcessBuilder.create(getCtx()).process(GenerateMovement.getProcessId())
 				.withTitle(GenerateMovement.getProcessName())
 				.withRecordId(MDDOrder.Table_ID, 0)
 				.withSelectedRecordsIds(MDDOrder.Table_ID , recordIds)
@@ -976,14 +960,14 @@ public class MDDOrder extends X_DD_Order implements DocAction
 		getLines().stream().filter(orderLine -> orderLine != null).forEach(orderLine -> {
 			orderLinesIds.add(orderLine.get_ID());
 			LinkedHashMap<String, Object> values = new LinkedHashMap<String, Object>();
-			values.put("LINE_"+ org.eevolution.distribution.model.MDDOrderLine.COLUMNNAME_QtyInTransit , orderLine.getQtyInTransit());
+			values.put("LINE_"+ MDDOrderLine.COLUMNNAME_QtyInTransit , orderLine.getQtyInTransit());
 			selection.put(orderLine.get_ID(), values);
 		});
 
-		processInfo = ProcessBuilder.create(getCtx()).process(org.eevolution.distribution.process.GenerateMovementMaterial.getProcessId())
+		processInfo = ProcessBuilder.create(getCtx()).process(GenerateMovementMaterial.getProcessId())
 				.withTitle(GenerateMovementMaterial.getProcessName())
-				.withRecordId(org.eevolution.distribution.model.MDDOrderLine.Table_ID, 0)
-				.withSelectedRecordsIds(org.eevolution.distribution.model.MDDOrderLine.Table_ID , orderLinesIds , selection)
+				.withRecordId(MDDOrderLine.Table_ID, 0)
+				.withSelectedRecordsIds(MDDOrderLine.Table_ID , orderLinesIds , selection)
 				.withParameter(MMovement.COLUMNNAME_MovementDate , today)
 				.withoutTransactionClose()
 				.execute(get_TrxName());
@@ -1005,7 +989,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 		if (processMessage != null)
 			return false;
 
-		List<org.eevolution.distribution.model.MDDOrderLine> lines = getLines(true, "M_Product_ID");
+		List<MDDOrderLine> lines = getLines(true, "M_Product_ID");
 		lines.stream()
 				.filter(orderLine -> orderLine.getQtyOrdered().signum() != 0)
 				.forEach(orderLine -> {

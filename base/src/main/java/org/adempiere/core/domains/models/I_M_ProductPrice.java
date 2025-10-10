@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for M_ProductPrice
  *  @author Adempiere (generated) 
@@ -93,6 +94,21 @@ public interface I_M_ProductPrice
 	  */
 	public boolean isActive();
 
+    /** Column name M_PriceList_ID */
+    public static final String COLUMNNAME_M_PriceList_ID = "M_PriceList_ID";
+
+	/** Set Price List.
+	  * Unique identifier of a Price List
+	  */
+	public void setM_PriceList_ID (int M_PriceList_ID);
+
+	/** Get Price List.
+	  * Unique identifier of a Price List
+	  */
+	public int getM_PriceList_ID();
+
+	public I_M_PriceList getM_PriceList() throws RuntimeException;
+
     /** Column name M_PriceList_Version_ID */
     public static final String COLUMNNAME_M_PriceList_Version_ID = "M_PriceList_Version_ID";
 
@@ -106,7 +122,7 @@ public interface I_M_ProductPrice
 	  */
 	public int getM_PriceList_Version_ID();
 
-	public org.adempiere.core.domains.models.I_M_PriceList_Version getM_PriceList_Version() throws RuntimeException;
+	public I_M_PriceList_Version getM_PriceList_Version() throws RuntimeException;
 
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
@@ -121,7 +137,7 @@ public interface I_M_ProductPrice
 	  */
 	public int getM_Product_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
+	public I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name M_ProductPrice_ID */
     public static final String COLUMNNAME_M_ProductPrice_ID = "M_ProductPrice_ID";
@@ -170,6 +186,36 @@ public interface I_M_ProductPrice
 	  * Standard Price
 	  */
 	public BigDecimal getPriceStd();
+
+    /** Column name S_ExpenseType_ID */
+    public static final String COLUMNNAME_S_ExpenseType_ID = "S_ExpenseType_ID";
+
+	/** Set Expense Type.
+	  * Expense report type
+	  */
+	public void setS_ExpenseType_ID (int S_ExpenseType_ID);
+
+	/** Get Expense Type.
+	  * Expense report type
+	  */
+	public int getS_ExpenseType_ID();
+
+	public I_S_ExpenseType getS_ExpenseType() throws RuntimeException;
+
+    /** Column name S_Resource_ID */
+    public static final String COLUMNNAME_S_Resource_ID = "S_Resource_ID";
+
+	/** Set Resource.
+	  * Resource
+	  */
+	public void setS_Resource_ID (int S_Resource_ID);
+
+	/** Get Resource.
+	  * Resource
+	  */
+	public int getS_Resource_ID();
+
+	public I_S_Resource getS_Resource() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

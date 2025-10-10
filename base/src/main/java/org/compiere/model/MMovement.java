@@ -21,8 +21,8 @@ import org.adempiere.core.domains.models.I_M_MovementLine;
 import org.adempiere.core.domains.models.X_M_Movement;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.process.DocAction;
-import org.compiere.process.DocumentReversalEnabled;
 import org.compiere.process.DocumentEngine;
+import org.compiere.process.DocumentReversalEnabled;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -69,7 +69,7 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 	 *	@param movementId id
 	 *	@param trxName transaction
 	 */
-	public MMovement (Properties ctx, int movementId, String trxName)
+	public MMovement(Properties ctx, int movementId, String trxName)
 	{
 		super (ctx, movementId, trxName);
 		if (movementId == 0)
@@ -91,7 +91,7 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MMovement (Properties ctx, ResultSet rs, String trxName)
+	public MMovement(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MMovement

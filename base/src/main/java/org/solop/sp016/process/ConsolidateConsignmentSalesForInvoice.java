@@ -16,15 +16,7 @@
 package org.solop.sp016.process;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MInventory;
-import org.compiere.model.MInventoryLine;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MTable;
-import org.compiere.model.PO;
-import org.compiere.model.Query;
+import org.compiere.model.*;
 import org.solop.sp016.process.util.ConsignmentOrderGrouping;
 
 import java.math.BigDecimal;
@@ -39,7 +31,7 @@ import java.util.Map;
  * @author Yamel Senih, ysenih@erpya.com , http://www.erpya.com
  */
 public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmentSalesForInvoiceAbstract {
-
+	
 	/**	Counter for created	*/
 	/**	Lines	*/
 	private Map<String, List<ConsignmentOrderGrouping>> productToOrderGroup;
@@ -98,8 +90,8 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 			MInventoryLine inventoryLine = new MInventoryLine(getCtx(), inventoryLineId, get_TrxName());
 			MInventory inventory = inventoryLine.getParent();
 			BigDecimal qtyUsed = new Query(getCtx(), "C_ConsignmentDetail", whereClause, get_TrxName())
-					.setParameters(inventoryLine.get_ID())
-					.sum("Qty");
+				.setParameters(inventoryLine.get_ID())
+				.sum("Qty");
 			consolidateData(inventoryLine.getM_Product_ID(), inventory.getAD_Org_ID(), inventoryLine.getMovementQty().subtract(qtyUsed), qtyUsed, 0,inventoryLineId, inventory.getMovementDate());
 
 		});
@@ -122,15 +114,15 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 				"      WHERE pp.m_product_id = ol2.m_product_id AND o2.c_bpartner_id = pp.c_bpartner_id AND pp.isactive = 'Y'::bpchar AND pp.discontinued = 'N'::bpchar)) " +
 				")";
 		List<Integer> salesInvoiceLineIds = new Query(getCtx(), MInvoiceLine.Table_Name, whereClauseInvoiceLine, get_TrxName())
-				.setClient_ID()
-				.getIDsAsList();
+			.setClient_ID()
+			.getIDsAsList();
 		String whereClause = "C_OrderLine_ID = ?";
 		salesInvoiceLineIds.forEach(salesInvoiceLineId -> {
 
 			MInvoiceLine invoiceLine = new MInvoiceLine(getCtx(), salesInvoiceLineId, get_TrxName());
 			BigDecimal qtyUsed = new Query(getCtx(), "C_ConsignmentDetail", whereClause, get_TrxName())
-					.setParameters(invoiceLine.getC_OrderLine_ID())
-					.sum("Qty");
+				.setParameters(invoiceLine.getC_OrderLine_ID())
+				.sum("Qty");
 			MInvoice invoice = invoiceLine.getParent();
 			consolidateData(invoiceLine.getM_Product_ID(), invoice.getAD_Org_ID(), invoiceLine.getQtyInvoiced().subtract(qtyUsed), qtyUsed, invoiceLine.getC_OrderLine_ID(),0, invoice.getDateInvoiced());
 

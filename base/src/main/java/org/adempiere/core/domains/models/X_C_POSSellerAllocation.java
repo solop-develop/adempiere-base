@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_POSSellerAllocation
  *  @author Adempiere (generated) 
@@ -40,7 +41,7 @@ public class X_C_POSSellerAllocation extends PO implements I_C_POSSellerAllocati
 	private static final long serialVersionUID = 20251002L;
 
     /** Standard Constructor */
-    public X_C_POSSellerAllocation (Properties ctx, int C_POSSellerAllocation_ID, String trxName)
+    public X_C_POSSellerAllocation(Properties ctx, int C_POSSellerAllocation_ID, String trxName)
     {
       super (ctx, C_POSSellerAllocation_ID, trxName);
       /** if (C_POSSellerAllocation_ID == 0)
@@ -55,7 +56,7 @@ public class X_C_POSSellerAllocation extends PO implements I_C_POSSellerAllocati
     }
 
     /** Load Constructor */
-    public X_C_POSSellerAllocation (Properties ctx, ResultSet rs, String trxName)
+    public X_C_POSSellerAllocation(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -82,9 +83,9 @@ public class X_C_POSSellerAllocation extends PO implements I_C_POSSellerAllocati
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_POS getC_POS() throws RuntimeException
+	public I_C_POS getC_POS() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_POS)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_POS.Table_Name)
+		return (I_C_POS)MTable.get(getCtx(), I_C_POS.Table_Name)
 			.getPO(getC_POS_ID(), get_TrxName());	}
 
 	/** Set POS Terminal.
@@ -824,9 +825,9 @@ public class X_C_POSSellerAllocation extends PO implements I_C_POSSellerAllocati
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
+	public I_AD_User getSalesRep() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSalesRep_ID(), get_TrxName());	}
 
 	/** Set Sales Representative.
@@ -897,9 +898,9 @@ public class X_C_POSSellerAllocation extends PO implements I_C_POSSellerAllocati
 		return (String)get_Value(COLUMNNAME_UUID);
 	}
 
-	public org.adempiere.core.domains.models.I_C_Currency getWriteOffAmtCurrency() throws RuntimeException
+	public I_C_Currency getWriteOffAmtCurrency() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Currency)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Currency.Table_Name)
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
 			.getPO(getWriteOffAmtCurrency_ID(), get_TrxName());	}
 
 	/** Set Currency for write-off per Document.

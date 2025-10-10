@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_DocType
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_C_DocType
 	  */
 	public int getAD_PrintFormat_ID();
 
-	public org.adempiere.core.domains.models.I_AD_PrintFormat getAD_PrintFormat() throws RuntimeException;
+	public I_AD_PrintFormat getAD_PrintFormat() throws RuntimeException;
 
     /** Column name C_DocBaseType_ID */
     public static final String COLUMNNAME_C_DocBaseType_ID = "C_DocBaseType_ID";
@@ -88,7 +89,7 @@ public interface I_C_DocType
 	/** Get Document Base Type	  */
 	public int getC_DocBaseType_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocBaseType getC_DocBaseType() throws RuntimeException;
+	public I_C_DocBaseType getC_DocBaseType() throws RuntimeException;
 
     /** Column name C_DocType_ID */
     public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
@@ -116,7 +117,7 @@ public interface I_C_DocType
 	  */
 	public int getC_DocTypeDifference_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypeDifference() throws RuntimeException;
+	public I_C_DocType getC_DocTypeDifference() throws RuntimeException;
 
     /** Column name C_DocTypeInvoice_ID */
     public static final String COLUMNNAME_C_DocTypeInvoice_ID = "C_DocTypeInvoice_ID";
@@ -131,7 +132,7 @@ public interface I_C_DocType
 	  */
 	public int getC_DocTypeInvoice_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypeInvoice() throws RuntimeException;
+	public I_C_DocType getC_DocTypeInvoice() throws RuntimeException;
 
     /** Column name C_DocTypePayment_ID */
     public static final String COLUMNNAME_C_DocTypePayment_ID = "C_DocTypePayment_ID";
@@ -146,7 +147,7 @@ public interface I_C_DocType
 	  */
 	public int getC_DocTypePayment_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypePayment() throws RuntimeException;
+	public I_C_DocType getC_DocTypePayment() throws RuntimeException;
 
     /** Column name C_DocTypeProforma_ID */
     public static final String COLUMNNAME_C_DocTypeProforma_ID = "C_DocTypeProforma_ID";
@@ -161,7 +162,7 @@ public interface I_C_DocType
 	  */
 	public int getC_DocTypeProforma_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypeProforma() throws RuntimeException;
+	public I_C_DocType getC_DocTypeProforma() throws RuntimeException;
 
     /** Column name C_DocTypeShipment_ID */
     public static final String COLUMNNAME_C_DocTypeShipment_ID = "C_DocTypeShipment_ID";
@@ -176,7 +177,7 @@ public interface I_C_DocType
 	  */
 	public int getC_DocTypeShipment_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocTypeShipment() throws RuntimeException;
+	public I_C_DocType getC_DocTypeShipment() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -203,7 +204,7 @@ public interface I_C_DocType
 	/** Get Definite Sequence	  */
 	public int getDefiniteSequence_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Sequence getDefiniteSequence() throws RuntimeException;
+	public I_AD_Sequence getDefiniteSequence() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -244,7 +245,7 @@ public interface I_C_DocType
 	  */
 	public int getDocNoSequence_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Sequence getDocNoSequence() throws RuntimeException;
+	public I_AD_Sequence getDocNoSequence() throws RuntimeException;
 
     /** Column name DocSubTypeSO */
     public static final String COLUMNNAME_DocSubTypeSO = "DocSubTypeSO";
@@ -298,7 +299,7 @@ public interface I_C_DocType
 	  */
 	public int getGL_Category_ID();
 
-	public org.adempiere.core.domains.models.I_GL_Category getGL_Category() throws RuntimeException;
+	public I_GL_Category getGL_Category() throws RuntimeException;
 
     /** Column name HasCharges */
     public static final String COLUMNNAME_HasCharges = "HasCharges";

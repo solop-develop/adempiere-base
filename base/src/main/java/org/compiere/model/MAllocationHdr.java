@@ -16,11 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_AllocationHdr;
-import org.adempiere.core.domains.models.I_C_Invoice;
-import org.adempiere.core.domains.models.I_C_Payment;
-import org.adempiere.core.domains.models.X_C_AllocationHdr;
-import org.adempiere.core.domains.models.X_C_Invoice;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.process.DocAction;
@@ -37,13 +33,7 @@ import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -183,7 +173,7 @@ public final class MAllocationHdr extends X_C_AllocationHdr implements DocAction
 	 *	@param C_AllocationHdr_ID id
 	 *	@param trxName transaction
 	 */
-	public MAllocationHdr (Properties ctx, int C_AllocationHdr_ID, String trxName)
+	public MAllocationHdr(Properties ctx, int C_AllocationHdr_ID, String trxName)
 	{
 		super (ctx, C_AllocationHdr_ID, trxName);
 		if (C_AllocationHdr_ID == 0)
@@ -213,8 +203,8 @@ public final class MAllocationHdr extends X_C_AllocationHdr implements DocAction
 	 *	@param description description
 	 *	@param trxName transaction
 	 */
-	public MAllocationHdr (Properties ctx, boolean IsManual, Timestamp DateTrx, 
-		int C_Currency_ID, String description, String trxName)
+	public MAllocationHdr(Properties ctx, boolean IsManual, Timestamp DateTrx,
+                          int C_Currency_ID, String description, String trxName)
 	{
 		this (ctx, 0, trxName);
 		setIsManual(IsManual);
@@ -234,7 +224,7 @@ public final class MAllocationHdr extends X_C_AllocationHdr implements DocAction
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MAllocationHdr (Properties ctx, ResultSet rs, String trxName)
+	public MAllocationHdr(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MAllocation
@@ -471,7 +461,7 @@ public final class MAllocationHdr extends X_C_AllocationHdr implements DocAction
 									I_C_Payment payment = allocationLine.getC_Payment();
 									if (payment.getDateAcct().after(getDateAcct())) {
 										processMsg = Msg.parseTranslation(getCtx(), "@ValidationError@ "
-												+ " @C_Payment_ID@ " + payment.getDocumentNo() + " @DateAcct@" + payment.getDateAcct()
+												+ " @C_Payment_ID@ " + payment.getDocumentNo() + " @DateAcct@ " + payment.getDateAcct()
 												+ " @C_AllocationHdr_ID@ " + getDocumentInfo() + " @DateAcct@ " + getDateAcct());
 										throw new AdempiereException(processMsg);
 									}

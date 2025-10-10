@@ -18,14 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for M_ProductPrice
  *  @author Adempiere (generated) 
@@ -36,7 +37,7 @@ public class X_M_ProductPrice extends PO implements I_M_ProductPrice, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20251008L;
 
     /** Standard Constructor */
     public X_M_ProductPrice (Properties ctx, int M_ProductPrice_ID, String trxName)
@@ -81,9 +82,37 @@ public class X_M_ProductPrice extends PO implements I_M_ProductPrice, I_Persiste
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_M_PriceList_Version getM_PriceList_Version() throws RuntimeException
+	public I_M_PriceList getM_PriceList() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_PriceList_Version)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_PriceList_Version.Table_Name)
+		return (I_M_PriceList)MTable.get(getCtx(), I_M_PriceList.Table_Name)
+			.getPO(getM_PriceList_ID(), get_TrxName());	}
+
+	/** Set Price List.
+		@param M_PriceList_ID 
+		Unique identifier of a Price List
+	  */
+	public void setM_PriceList_ID (int M_PriceList_ID)
+	{
+		if (M_PriceList_ID < 1) 
+			set_Value (COLUMNNAME_M_PriceList_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_PriceList_ID, Integer.valueOf(M_PriceList_ID));
+	}
+
+	/** Get Price List.
+		@return Unique identifier of a Price List
+	  */
+	public int getM_PriceList_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_PriceList_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_PriceList_Version getM_PriceList_Version() throws RuntimeException
+    {
+		return (I_M_PriceList_Version)MTable.get(getCtx(), I_M_PriceList_Version.Table_Name)
 			.getPO(getM_PriceList_Version_ID(), get_TrxName());	}
 
 	/** Set Price List Version.
@@ -109,9 +138,9 @@ public class X_M_ProductPrice extends PO implements I_M_ProductPrice, I_Persiste
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException
+	public I_M_Product getM_Product() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
 			.getPO(getM_Product_ID(), get_TrxName());	}
 
 	/** Set Product.
@@ -215,6 +244,62 @@ public class X_M_ProductPrice extends PO implements I_M_ProductPrice, I_Persiste
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	public I_S_ExpenseType getS_ExpenseType() throws RuntimeException
+    {
+		return (I_S_ExpenseType)MTable.get(getCtx(), I_S_ExpenseType.Table_Name)
+			.getPO(getS_ExpenseType_ID(), get_TrxName());	}
+
+	/** Set Expense Type.
+		@param S_ExpenseType_ID 
+		Expense report type
+	  */
+	public void setS_ExpenseType_ID (int S_ExpenseType_ID)
+	{
+		if (S_ExpenseType_ID < 1) 
+			set_Value (COLUMNNAME_S_ExpenseType_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ExpenseType_ID, Integer.valueOf(S_ExpenseType_ID));
+	}
+
+	/** Get Expense Type.
+		@return Expense report type
+	  */
+	public int getS_ExpenseType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ExpenseType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_S_Resource getS_Resource() throws RuntimeException
+    {
+		return (I_S_Resource)MTable.get(getCtx(), I_S_Resource.Table_Name)
+			.getPO(getS_Resource_ID(), get_TrxName());	}
+
+	/** Set Resource.
+		@param S_Resource_ID 
+		Resource
+	  */
+	public void setS_Resource_ID (int S_Resource_ID)
+	{
+		if (S_Resource_ID < 1) 
+			set_Value (COLUMNNAME_S_Resource_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Resource_ID, Integer.valueOf(S_Resource_ID));
+	}
+
+	/** Get Resource.
+		@return Resource
+	  */
+	public int getS_Resource_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Resource_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Immutable Universally Unique Identifier.

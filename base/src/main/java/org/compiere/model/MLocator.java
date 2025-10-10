@@ -63,7 +63,7 @@ public class MLocator extends X_M_Locator
 	 *	@return locator or null
 	 */
 	public static MLocator getDefault (MWarehouse warehouse) {
-		return new Query(warehouse.getCtx(), I_M_Locator.Table_Name, "IsDefault='Y' AND l.M_Warehouse_ID=?", null)
+		return new Query(warehouse.getCtx(), I_M_Locator.Table_Name, "IsDefault='Y' AND M_Warehouse_ID=?", null)
 				.setOnlyActiveRecords(true)
 				.setParameters(warehouse.getM_Warehouse_ID())
 				.setOrderBy("PriorityNo")

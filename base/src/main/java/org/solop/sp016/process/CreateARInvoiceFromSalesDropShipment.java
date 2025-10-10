@@ -17,18 +17,7 @@ package org.solop.sp016.process;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.process.util.InvoiceGrouping;
-import org.compiere.model.MDocType;
-import org.compiere.model.MInventoryLine;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MProduct;
-import org.compiere.model.MTable;
-import org.compiere.model.MUOM;
-import org.compiere.model.MUOMConversion;
-import org.compiere.model.PO;
-import org.compiere.model.Query;
+import org.compiere.model.*;
 import org.compiere.process.DocAction;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -48,7 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Yamel Senih, ysenih@erpya.com , http://www.erpya.com
  */
 public class CreateARInvoiceFromSalesDropShipment extends CreateARInvoiceFromSalesDropShipmentAbstract {
-
+	
 	/**	Counter for created	*/
 	private AtomicInteger created = new AtomicInteger();
 	/**	Lines	*/
