@@ -128,6 +128,15 @@ public interface I_AD_Queue
 	  */
 	public String getDescription();
 
+    /** Column name ErrorMsg */
+    public static final String COLUMNNAME_ErrorMsg = "ErrorMsg";
+
+	/** Set Error Msg	  */
+	public void setErrorMsg (String ErrorMsg);
+
+	/** Get Error Msg	  */
+	public String getErrorMsg();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -140,6 +149,19 @@ public interface I_AD_Queue
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name IsError */
+    public static final String COLUMNNAME_IsError = "IsError";
+
+	/** Set Error.
+	  * An Error occurred in the execution
+	  */
+	public void setIsError (boolean IsError);
+
+	/** Get Error.
+	  * An Error occurred in the execution
+	  */
+	public boolean isError();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";

@@ -36,7 +36,7 @@ public class X_AD_Queue extends PO implements I_AD_Queue, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20251010L;
 
     /** Standard Constructor */
     public X_AD_Queue (Properties ctx, int AD_Queue_ID, String trxName)
@@ -165,6 +165,44 @@ public class X_AD_Queue extends PO implements I_AD_Queue, I_Persistent
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	/** Set Error Msg.
+		@param ErrorMsg Error Msg	  */
+	public void setErrorMsg (String ErrorMsg)
+	{
+		set_Value (COLUMNNAME_ErrorMsg, ErrorMsg);
+	}
+
+	/** Get Error Msg.
+		@return Error Msg	  */
+	public String getErrorMsg () 
+	{
+		return (String)get_Value(COLUMNNAME_ErrorMsg);
+	}
+
+	/** Set Error.
+		@param IsError 
+		An Error occurred in the execution
+	  */
+	public void setIsError (boolean IsError)
+	{
+		set_Value (COLUMNNAME_IsError, Boolean.valueOf(IsError));
+	}
+
+	/** Get Error.
+		@return An Error occurred in the execution
+	  */
+	public boolean isError () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsError);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Processed.

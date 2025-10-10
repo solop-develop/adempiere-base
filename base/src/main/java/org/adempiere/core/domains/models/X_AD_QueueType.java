@@ -35,7 +35,7 @@ public class X_AD_QueueType extends PO implements I_AD_QueueType, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20251010L;
 
     /** Standard Constructor */
     public X_AD_QueueType (Properties ctx, int AD_QueueType_ID, String trxName)
@@ -148,6 +148,51 @@ public class X_AD_QueueType extends PO implements I_AD_QueueType, I_Persistent
 	public String getHelp () 
 	{
 		return (String)get_Value(COLUMNNAME_Help);
+	}
+
+	/** Set IsIgnoreError.
+		@param IsIgnoreError IsIgnoreError	  */
+	public void setIsIgnoreError (boolean IsIgnoreError)
+	{
+		set_Value (COLUMNNAME_IsIgnoreError, Boolean.valueOf(IsIgnoreError));
+	}
+
+	/** Get IsIgnoreError.
+		@return IsIgnoreError	  */
+	public boolean isIgnoreError () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsIgnoreError);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Parallel Processing.
+		@param IsParallelProcessing 
+		Allows Parallel Processing
+	  */
+	public void setIsParallelProcessing (boolean IsParallelProcessing)
+	{
+		set_Value (COLUMNNAME_IsParallelProcessing, Boolean.valueOf(IsParallelProcessing));
+	}
+
+	/** Get Parallel Processing.
+		@return Allows Parallel Processing
+	  */
+	public boolean isParallelProcessing () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsParallelProcessing);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Name.
