@@ -260,14 +260,14 @@ public interface I_C_POSSellerAllocation
 	  */
 	public boolean isAllowsCreateCustomer();
 
-    /** Column name IsAllowsCreateManualDocuments */
-    public static final String COLUMNNAME_IsAllowsCreateManualDocuments = "IsAllowsCreateManualDocuments";
+    /** Column name IsAllowsCreateManualDocument */
+    public static final String COLUMNNAME_IsAllowsCreateManualDocument = "IsAllowsCreateManualDocument";
 
 	/** Set Allows Create Manual Document	  */
-	public void setIsAllowsCreateManualDocuments (boolean IsAllowsCreateManualDocuments);
+	public void setIsAllowsCreateManualDocument (boolean IsAllowsCreateManualDocument);
 
 	/** Get Allows Create Manual Document	  */
-	public boolean isAllowsCreateManualDocuments();
+	public boolean isAllowsCreateManualDocument();
 
     /** Column name IsAllowsCreateOrder */
     public static final String COLUMNNAME_IsAllowsCreateOrder = "IsAllowsCreateOrder";

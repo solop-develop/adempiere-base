@@ -395,17 +395,17 @@ public class X_C_POSSellerAllocation extends PO implements I_C_POSSellerAllocati
 	}
 
 	/** Set Allows Create Manual Document.
-		@param IsAllowsCreateManualDocuments Allows Create Manual Document	  */
-	public void setIsAllowsCreateManualDocuments (boolean IsAllowsCreateManualDocuments)
+		@param IsAllowsCreateManualDocument Allows Create Manual Document	  */
+	public void setIsAllowsCreateManualDocument (boolean IsAllowsCreateManualDocument)
 	{
-		set_Value (COLUMNNAME_IsAllowsCreateManualDocuments, Boolean.valueOf(IsAllowsCreateManualDocuments));
+		set_Value (COLUMNNAME_IsAllowsCreateManualDocument, Boolean.valueOf(IsAllowsCreateManualDocument));
 	}
 
 	/** Get Allows Create Manual Document.
 		@return Allows Create Manual Document	  */
-	public boolean isAllowsCreateManualDocuments () 
+	public boolean isAllowsCreateManualDocument ()
 	{
-		Object oo = get_Value(COLUMNNAME_IsAllowsCreateManualDocuments);
+		Object oo = get_Value(COLUMNNAME_IsAllowsCreateManualDocument);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
