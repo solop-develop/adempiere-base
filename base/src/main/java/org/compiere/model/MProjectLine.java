@@ -481,7 +481,11 @@ public class MProjectLine extends X_C_ProjectLine
 			invoicedAmt = invoicedAmt.add(child.getInvoicedAmt());
 			invoicedQty = invoicedQty.add(child.getInvoicedQty());
 		}
-		summaryLine.setPlannedPrice(plannedAmt.divide(plannedQty, RoundingMode.HALF_UP));
+		BigDecimal plannedPrice = Env.ZERO;
+		if(plannedQty.signum() != 0 && plannedAmt.signum() != 0) {
+			plannedPrice = plannedAmt.divide(plannedQty, RoundingMode.HALF_UP);
+		}
+		summaryLine.setPlannedPrice(plannedPrice);
 		summaryLine.setPlannedAmt(plannedAmt);
 		summaryLine.setPlannedQty(plannedQty);
 		summaryLine.setPlannedMarginAmt(plannedMarginAmt);
