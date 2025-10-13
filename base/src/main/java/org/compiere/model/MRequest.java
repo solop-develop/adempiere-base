@@ -770,6 +770,11 @@ public class MRequest extends X_R_Request
 			if(projectLine.getResponsible_ID() > 0) {
 				setSalesRep_ID(projectLine.getResponsible_ID());
 			}
+			MProject project = projectLine.getProject();
+			setAD_Table_ID(MProject.Table_ID);
+			setRecord_ID(project.get_ID());
+			setC_BPartner_ID(project.getC_BPartner_ID());
+			setS_Contract_ID(project.getS_Contract_ID());
 		}
 
 		if (isInvoiced()) {
