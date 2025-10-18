@@ -463,36 +463,13 @@ public class MProjectLine extends X_C_ProjectLine
 
 	private void updateSummaryLine() {
 		MProjectLine summaryLine = (MProjectLine) getParent();
-		BigDecimal plannedAmt = BigDecimal.ZERO,
-				plannedQty = BigDecimal.ZERO,
-				plannedMarginAmt = BigDecimal.ZERO,
-				committedAmt = BigDecimal.ZERO,
-				committedQty = BigDecimal.ZERO,
-				invoicedAmt = BigDecimal.ZERO,
-				invoicedQty = BigDecimal.ZERO;
+		BigDecimal plannedAmt = BigDecimal.ZERO;
 
 		for (Integer childId : summaryLine.getChildrenIds()) {
 			MProjectLine child = new MProjectLine(getCtx(), childId, get_TrxName());
 			plannedAmt = plannedAmt.add(child.getPlannedAmt());
-			plannedQty = plannedQty.add(child.getPlannedQty());
-			plannedMarginAmt = plannedMarginAmt.add(child.getPlannedMarginAmt());
-			committedAmt = committedAmt.add(child.getCommittedAmt());
-			committedQty = committedQty.add(child.getCommittedQty());
-			invoicedAmt = invoicedAmt.add(child.getInvoicedAmt());
-			invoicedQty = invoicedQty.add(child.getInvoicedQty());
 		}
-		BigDecimal plannedPrice = Env.ZERO;
-		if(plannedQty.signum() != 0 && plannedAmt.signum() != 0) {
-			plannedPrice = plannedAmt.divide(plannedQty, RoundingMode.HALF_UP);
-		}
-		summaryLine.setPlannedPrice(plannedPrice);
 		summaryLine.setPlannedAmt(plannedAmt);
-		summaryLine.setPlannedQty(plannedQty);
-		summaryLine.setPlannedMarginAmt(plannedMarginAmt);
-		summaryLine.setCommittedAmt(committedAmt);
-		summaryLine.setCommittedQty(committedQty);
-		summaryLine.setInvoicedAmt(invoicedAmt);
-		summaryLine.setInvoicedQty(invoicedQty);
 		summaryLine.saveEx();
 	}
 
