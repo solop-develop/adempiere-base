@@ -14,37 +14,17 @@
  ************************************************************************************/
 package org.solop.sp016.model.validator;
 
+import org.adempiere.core.domains.models.*;
+import org.compiere.acct.Fact;
+import org.compiere.model.*;
+import org.compiere.util.CLogger;
+import org.compiere.util.Env;
+import org.solop.sp016.util.ConsignedMaterialUtil;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import org.compiere.acct.Fact;
-import org.compiere.model.FactsValidator;
-import org.adempiere.core.domains.models.I_C_Invoice;
-import org.adempiere.core.domains.models.I_C_InvoiceLine;
-import org.adempiere.core.domains.models.I_C_Order;
-import org.adempiere.core.domains.models.I_M_InOut;
-import org.adempiere.core.domains.models.I_M_Inventory;
-import org.adempiere.core.domains.models.I_M_Product_PO;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MClient;
-import org.compiere.model.MDocType;
-import org.compiere.model.MInOut;
-import org.compiere.model.MInventory;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MMatchInv;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MProduct;
-import org.compiere.model.MProductPO;
-import org.compiere.model.ModelValidationEngine;
-import org.compiere.model.ModelValidator;
-import org.compiere.model.PO;
-import org.compiere.util.CLogger;
-import org.compiere.util.Env;
-import org.solop.sp016.util.ConsignedMaterialUtil;
 
 /**
  * Useful method for Consignment Material
@@ -75,7 +55,7 @@ public class ConsignedMaterial implements ModelValidator, FactsValidator {
 		engine.addModelChange(I_C_Order.Table_Name, this);
 		engine.addModelChange(I_M_Inventory.Table_Name, this);
 		engine.addModelChange(I_M_Product_PO.Table_Name, this);
-		engine.addModelChange(I_M_InOut.Table_Name, this);
+//		engine.addModelChange(I_M_InOut.Table_Name, this);
 		
 
 		//Support Currency Convert on Fact
@@ -154,17 +134,17 @@ public class ConsignedMaterial implements ModelValidator, FactsValidator {
 				}
 			} else if(entity.get_TableName().equals(I_M_InOut.Table_Name)
 					&& type == TYPE_BEFORE_CHANGE) {
-				MInOut inOut = (MInOut) entity;
-				if(inOut.getC_Order_ID() > 0
-						&& inOut.is_ValueChanged(I_M_InOut.COLUMNNAME_M_Warehouse_ID)
-						&& !inOut.isSOTrx()) {
-					MOrder order = (MOrder) inOut.getC_Order();
-					if(order.getM_Warehouse_ID() == inOut.getM_Warehouse_ID()
-							&& order.getAD_Org_ID() != inOut.get_ValueOldAsInt(I_M_InOut.COLUMNNAME_AD_Org_ID)) {
-						inOut.setM_Warehouse_ID(inOut.get_ValueOldAsInt(I_M_InOut.COLUMNNAME_M_Warehouse_ID));
-						inOut.setAD_Org_ID(inOut.get_ValueOldAsInt(I_M_InOut.COLUMNNAME_AD_Org_ID));
-					}
-				}
+//				MInOut inOut = (MInOut) entity;
+//				if(inOut.getC_Order_ID() > 0
+//						&& inOut.is_ValueChanged(I_M_InOut.COLUMNNAME_M_Warehouse_ID)
+//						&& !inOut.isSOTrx()) {
+//					MOrder order = (MOrder) inOut.getC_Order();
+//					if(order.getM_Warehouse_ID() == inOut.getM_Warehouse_ID()
+//							&& order.getAD_Org_ID() != inOut.get_ValueOldAsInt(I_M_InOut.COLUMNNAME_AD_Org_ID)) {
+//						inOut.setM_Warehouse_ID(inOut.get_ValueOldAsInt(I_M_InOut.COLUMNNAME_M_Warehouse_ID));
+//						inOut.setAD_Org_ID(inOut.get_ValueOldAsInt(I_M_InOut.COLUMNNAME_AD_Org_ID));
+//					}
+//				}
 			}
 		}
 		return null;
