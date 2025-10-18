@@ -33,7 +33,6 @@ import org.adempiere.core.domains.models.X_C_Order;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.process.ProcessInfo;
-import org.compiere.util.Env;
 import org.compiere.util.Trx;
 import org.eevolution.distribution.model.MDDOrder;
 import org.eevolution.distribution.model.MDDOrderLine;
@@ -153,10 +152,6 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                         shipmentLine.setM_AttributeSetInstance_ID(outboundLine.getM_AttributeSetInstance_ID());
                         shipmentLine.setWM_InOutBoundLine_ID(outboundLine.getWM_InOutBoundLine_ID());
                         shipmentLine.saveEx();
-                        outboundLine.setPickedQty(Optional.ofNullable(outboundLine.getShipmentQtyDelivered()).orElse(Env.ZERO).add(qtyToDelivery));
-                        outboundLine.setM_InOutLine_ID(shipmentLine.getM_InOutLine_ID());
-                        outboundLine.setM_InOut_ID(shipmentLine.getM_InOut_ID());
-                        outboundLine.saveEx();
                     });
                     MInOut shipment = maybeShipment.get();
                     if (!shipment.processIt(getDocAction())) {

@@ -71,7 +71,7 @@ public class MWMInOutBoundLine extends X_WM_InOutBoundLine
 
 	public BigDecimal getShipmentQtyDelivered() {
 		return new Query(getCtx(), I_M_InOutLine.Table_Name,
-				I_M_InOutLine.COLUMNNAME_WM_InOutBoundLine_ID + "=?" , get_TrxName())
+				I_M_InOutLine.COLUMNNAME_WM_InOutBoundLine_ID + "=? AND EXISTS(SELECT 1 FROM M_InOut io WHERE io.M_InOut_ID = M_InOutLine.M_InOut_ID AND io.DocStatus IN('CO', 'CL'))" , get_TrxName())
 				.setClient_ID()
 				.setParameters(getWM_InOutBoundLine_ID())
 				.sum(MInOutLine.COLUMNNAME_MovementQty);
@@ -79,7 +79,7 @@ public class MWMInOutBoundLine extends X_WM_InOutBoundLine
 
 	public BigDecimal getInvoiceQtyInvoiced() {
 		return new Query(getCtx(), I_C_InvoiceLine.Table_Name,
-				I_C_InvoiceLine.COLUMNNAME_WM_InOutBoundLine_ID + "=?" , get_TrxName())
+				I_C_InvoiceLine.COLUMNNAME_WM_InOutBoundLine_ID + "=? AND EXISTS(SELECT 1 FROM C_Invoice i WHERE i.C_Invoice_ID = C_InvoiceLine.C_Invoice_ID AND i.DocStatus IN('CO', 'CL'))" , get_TrxName())
 				.setClient_ID()
 				.setParameters(getWM_InOutBoundLine_ID())
 				.sum(MInvoiceLine.COLUMNNAME_QtyInvoiced);
