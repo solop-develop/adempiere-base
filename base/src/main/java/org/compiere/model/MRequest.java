@@ -16,20 +16,10 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_ProjectPhase;
-import org.adempiere.core.domains.models.I_C_ProjectTask;
-import org.adempiere.core.domains.models.I_R_RequestAction;
-import org.adempiere.core.domains.models.I_R_RequestUpdate;
-import org.adempiere.core.domains.models.X_C_BP_Group;
-import org.adempiere.core.domains.models.X_R_Request;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.DBException;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 import org.spin.model.MRNoticeTemplate;
 import org.spin.model.MRNoticeTemplateEvent;
 import org.spin.queue.notification.DefaultNotifier;
@@ -133,8 +123,8 @@ public class MRequest extends X_R_Request
 	 * 	@param isSelfService self service
 	 *	@param trxName transaction
 	 */
-	public MRequest (Properties ctx, int SalesRep_ID,
-		int R_RequestType_ID, String Summary, boolean isSelfService, String trxName)
+	public MRequest(Properties ctx, int SalesRep_ID,
+                    int R_RequestType_ID, String Summary, boolean isSelfService, String trxName)
 	{
 		this(ctx, 0, trxName);
 		set_Value("SalesRep_ID", Integer.valueOf(SalesRep_ID));	//	could be 0
@@ -158,7 +148,7 @@ public class MRequest extends X_R_Request
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MRequest (Properties ctx, ResultSet rs, String trxName)
+	public MRequest(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MRequest

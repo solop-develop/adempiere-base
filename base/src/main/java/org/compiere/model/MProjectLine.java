@@ -16,11 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_ProjectLine;
-import org.adempiere.core.domains.models.I_C_ProjectPhase;
-import org.adempiere.core.domains.models.I_C_ProjectTask;
-import org.adempiere.core.domains.models.X_C_ProjectLine;
-import org.adempiere.core.domains.models.X_C_ProjectLineType;
+import org.adempiere.core.domains.models.*;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.TimeUtil;

@@ -27,6 +27,7 @@ import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
 import org.compiere.process.DocumentReversalEnabled;
 import org.compiere.util.*;
+import org.eevolution.wms.model.MWMInOutBoundLine;
 import org.solop.util.AllocationManager;
 
 import java.io.File;
@@ -2014,6 +2015,18 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					rmaLine.setQtyInvoiced(invoiceLine.getQtyInvoiced());
 
 				rmaLine.saveEx();
+			}
+			//	For Inbound Order
+			if(invoiceLine.getWM_InOutBoundLine_ID() > 0) {
+				MWMInOutBoundLine outboundLine = new MWMInOutBoundLine(invoiceLine.getCtx(), invoiceLine.getWM_InOutBoundLine_ID(), invoiceLine.get_TrxName());
+				if(!isReversal()) {
+					outboundLine.setC_InvoiceLine_ID(invoiceLine.getC_InvoiceLine_ID());
+					outboundLine.setC_Invoice_ID(invoiceLine.getC_Invoice_ID());
+				} else {
+					outboundLine.setC_InvoiceLine_ID(-1);
+					outboundLine.setC_Invoice_ID(-1);
+				}
+				outboundLine.saveEx();
 			}
 		});	//	for all lines
 
