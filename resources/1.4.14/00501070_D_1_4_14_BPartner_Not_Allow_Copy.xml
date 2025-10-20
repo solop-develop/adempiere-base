@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="BPartner_Not_Allow_Copy" ReleaseNo="1.4.14" SeqNo="501070">
+    <Comments>Change BPartner Allow Copy columns</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="2922" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="2925" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="10927" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="2923" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="2904" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="2926" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="2920" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="2921" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="12533" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
