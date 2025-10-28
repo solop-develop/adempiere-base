@@ -572,6 +572,15 @@ public interface I_C_DocType
 	  */
 	public boolean isSplitWhenDifference();
 
+	/** Column name IsValidateAllocations */
+	public static final String COLUMNNAME_IsValidateAllocations = "IsValidateAllocations";
+
+	/** Set Validate Allocations	  */
+	public void setIsValidateAllocations (boolean IsValidateAllocations);
+
+	/** Get Validate Allocations	  */
+	public boolean isValidateAllocations();
+
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
 
