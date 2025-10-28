@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="BPartner_Fields_Not_Allow_Copy" ReleaseNo="1.4.14" SeqNo="501080">
+    <Step DBType="ALL" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>
+        UPDATE AD_Field SET IsAllowCopy = 'N' WHERE AD_Column_ID IN (2922, 2925, 10927, 2923, 2904, 2926, 2920, 2921, 12533);
+      </SQLStatement>
+      <RollbackStatement>
+        UPDATE AD_Field SET IsAllowCopy = 'Y' WHERE AD_Column_ID IN (2922, 2925, 10927, 2923, 2904, 2926, 2920, 2921, 12533);
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
