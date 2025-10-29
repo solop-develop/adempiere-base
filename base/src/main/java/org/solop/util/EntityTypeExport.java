@@ -3,10 +3,42 @@
  */
 package org.solop.util;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_AD_Browse;
+import org.adempiere.core.domains.models.I_AD_Browse_Field;
+import org.adempiere.core.domains.models.I_AD_Column;
+import org.adempiere.core.domains.models.I_AD_Element;
+import org.adempiere.core.domains.models.I_AD_EntityType;
+import org.adempiere.core.domains.models.I_AD_Field;
+import org.adempiere.core.domains.models.I_AD_Menu;
+import org.adempiere.core.domains.models.I_AD_Message;
+import org.adempiere.core.domains.models.I_AD_Process;
+import org.adempiere.core.domains.models.I_AD_Process_Para;
+import org.adempiere.core.domains.models.I_AD_Ref_List;
+import org.adempiere.core.domains.models.I_AD_Ref_Table;
+import org.adempiere.core.domains.models.I_AD_Reference;
+import org.adempiere.core.domains.models.I_AD_ReportView;
+import org.adempiere.core.domains.models.I_AD_Rule;
+import org.adempiere.core.domains.models.I_AD_Tab;
+import org.adempiere.core.domains.models.I_AD_Table;
+import org.adempiere.core.domains.models.I_AD_Table_Process;
+import org.adempiere.core.domains.models.I_AD_Table_ScriptValidator;
+import org.adempiere.core.domains.models.I_AD_Val_Rule;
+import org.adempiere.core.domains.models.I_AD_View;
+import org.adempiere.core.domains.models.I_AD_View_Column;
+import org.adempiere.core.domains.models.I_AD_View_Definition;
+import org.adempiere.core.domains.models.I_AD_Window;
+import org.adempiere.core.domains.models.X_AD_Package_Exp_Detail;
+import org.adempiere.core.domains.models.X_AD_Ref_List;
+import org.adempiere.core.domains.models.X_AD_Ref_Table;
+import org.adempiere.core.domains.models.X_AD_Reference;
 import org.adempiere.pipo.PackOut;
 import org.adempiere.pipo.handler.GenericPOHandler;
-import org.compiere.model.*;
+import org.compiere.model.MEntityType;
+import org.compiere.model.MMenu;
+import org.compiere.model.MTable;
+import org.compiere.model.MTree;
+import org.compiere.model.PO;
+import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.xml.sax.SAXException;
@@ -30,6 +62,8 @@ public class EntityTypeExport extends GenericPOHandler {
 		MEntityType entityType = new MEntityType(Env.getCtx(), entityTypeId, null);
 		//	Entity Type
 		packOut.createGenericPO(document, I_AD_EntityType.Table_ID, entityTypeId, false, null);
+		//	Messages
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Message.Table_Name, false, null);
 		//	Windows
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Window.Table_Name, false, null);
 		//	Tables
