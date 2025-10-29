@@ -881,6 +881,10 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 			setOrder (getParent());
 		if (m_M_PriceList_ID == 0)
 			setHeaderInfo(getParent());
+		if (getDateOrdered() == null)
+			setDateOrdered(getParent().getDateOrdered());
+		if (getDatePromised() == null)
+			setDatePromised(getParent().getDatePromised());
 		//Project
 		if (getC_Project_ID() <= 0) {
 			if (get_ValueAsInt("C_ProjectLine_ID") > 0) {
@@ -923,13 +927,22 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 			//	Validate Quantity Ordered
 			BigDecimal quantityEntered = getQtyEntered();
 			BigDecimal quantityOrdered = getQtyOrdered();
-			if(Optional.ofNullable(quantityEntered).orElse(Env.ZERO).compareTo(Env.ZERO) > 0 && Optional.ofNullable(quantityOrdered).orElse(Env.ZERO).compareTo(Env.ZERO) == 0) {
+			if(newRecord) {
+				quantityOrdered = Env.ZERO;
+			}
+			if(newRecord || is_ValueChanged(COLUMNNAME_QtyEntered)) {
 				quantityOrdered = MUOMConversion.convertProductFrom (getCtx(), getM_Product_ID(), getC_UOM_ID(), quantityEntered);
 				if (quantityOrdered == null) {
 					throw new AdempiereException("@NoUOMConversion@");
 				}
-				setQtyOrdered(quantityOrdered);
+			} else if(is_ValueChanged(COLUMNNAME_QtyOrdered)) {
+				quantityEntered = MUOMConversion.convertProductTo (getCtx(), getM_Product_ID(), getC_UOM_ID(), quantityOrdered);
+				if (quantityEntered == null) {
+					throw new AdempiereException("@NoUOMConversion@");
+				}
 			}
+			setQtyEntered(quantityEntered);
+			setQtyOrdered(quantityOrdered);
 			//	Check if on Price list
 			if (m_productPrice == null) {
 				getProductPricing(m_M_PriceList_ID);
@@ -959,6 +972,9 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 						}
 					}
 					BigDecimal priceActual = m_productPrice.getPriceStd();
+					if(newRecord) {
+						setPriceActual(priceActual);
+					}
 					if(is_ValueChanged(COLUMNNAME_PriceActual)) {
 						priceActual = getPriceActual();
 					} else if(is_ValueChanged(COLUMNNAME_Discount)) {

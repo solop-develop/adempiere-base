@@ -41,6 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 
 /**
@@ -2458,9 +2459,9 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		return true;
 	}	//	closeIt
 
-	private void reverseAllocations (boolean isAccrual, MInvoice invoice)
-	{
-		Arrays.stream(MAllocationHdr.getOfInvoice(getCtx(), invoice.getC_Invoice_ID(), invoice.get_TrxName()))
+	private void reverseAllocations (boolean isAccrual) {
+		validateAllocations();
+		Arrays.stream(MAllocationHdr.getOfInvoice(getCtx(), getC_Invoice_ID(), get_TrxName()))
 				.forEach(allocationHdr -> {
 					if (isAccrual) {
 						allocationHdr.setDocAction(DocAction.ACTION_Reverse_Accrual);
@@ -2471,6 +2472,29 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					}
 					allocationHdr.saveEx(get_TrxName());
 				});
+	}
+
+	private void validateAllocations() {
+		int documentTypeId = getC_DocTypeTarget_ID();
+		MDocType documentType = MDocType.get(getCtx(), documentTypeId);
+		if (!documentType.isValidateAllocations()) {
+			return;
+		}
+		List<MAllocationHdr> allocations = Arrays.stream(MAllocationHdr.getOfInvoice(getCtx(), getC_Invoice_ID(), get_TrxName()))
+				.filter(allocation -> allocation.getDocStatus().equals(MAllocationHdr.DOCSTATUS_Completed) ||
+                        allocation.getDocStatus().equals(MAllocationHdr.DOCSTATUS_Closed))
+				.collect(Collectors.toList());
+		if(!allocations.isEmpty()) {
+			StringBuilder message = new StringBuilder();
+			allocations.forEach(allocation -> {
+				if(message.length() > 0) {
+					message.append(", ");
+				}
+				message.append(allocation.getDocumentNo());
+			});
+			throw new AdempiereException(getDocumentNo() + Env.NL +
+					"@DocumentAlreadyHasAllocations@ [" + message.toString() + "]");
+		}
 	}
 
 	/**
@@ -2486,7 +2510,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		Timestamp reversalDateInvoice = isAccrual ? reversalDate : getDateInvoiced();
 		MPeriod.testPeriodOpen(getCtx(), reversalDate , getC_DocType_ID(), getAD_Org_ID());
 		// reverse allocations
-		reverseAllocations(isAccrual, this);
+		reverseAllocations(isAccrual);
 
 		// Reload invoice from DB
 		load(get_TrxName());	//	reload allocation reversal info

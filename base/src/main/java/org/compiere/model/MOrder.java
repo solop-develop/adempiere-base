@@ -1164,7 +1164,7 @@ public class MOrder extends X_C_Order implements DocAction
 					line.setM_Shipper_ID(getM_Shipper_ID());
 				if (is_ValueChanged(MOrder.COLUMNNAME_C_Currency_ID))
 					line.setC_Currency_ID(getC_Currency_ID());
-				if (is_ValueChanged(MOrder.COLUMNNAME_C_Project_ID) && line.get_ValueAsInt("C_ProjectLine_ID") <= 0)
+				if (is_ValueChanged(MOrder.COLUMNNAME_C_Project_ID))
 					line.setC_Project_ID(getC_Project_ID());
 				line.saveEx();
 			}

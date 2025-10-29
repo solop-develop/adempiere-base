@@ -114,7 +114,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                     List<MWMInOutBoundLine> lines = entry.getValue();
                     AtomicReference<MInOut> maybeShipment = new AtomicReference<>();
                     lines.forEach(outboundLine -> {
-                        MOrderLine orderLine = outboundLine.getOrderLine();
+                        MOrderLine orderLine = new MOrderLine(getCtx(), outboundLine.getC_OrderLine_ID(), transactionName);
                         MInOut shipment = maybeShipment.get();
                         if (shipment == null) {
                             MOrder order = orderLine.getParent();
@@ -125,6 +125,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                             }
                             MWMInOutBound outbound = outboundLine.getParent();
                             shipment = new MInOut(order, docTypeId, getMovementDate());
+                            shipment.set_TrxName(transactionName);
                             shipment.setIsSOTrx(true);
                             shipment.setM_Shipper_ID(outbound.getM_Shipper_ID());
                             shipment.setDescription(outbound.getDescription());
@@ -133,11 +134,12 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                             shipment.setFreightAmt(outbound.getFreightAmt());
                             shipment.setDocAction(MInOut.DOCACTION_Complete);
                             shipment.setDocStatus(MInOut.DOCSTATUS_Drafted);
-                            shipment.saveEx(transactionName);
+                            shipment.saveEx();
                             maybeShipment.set(shipment);
                         }
                         BigDecimal qtyToDelivery = getSalesOrderQtyToDelivery(outboundLine);
                         MInOutLine shipmentLine = new MInOutLine(outboundLine.getCtx(), 0, transactionName);
+                        shipmentLine.setAD_Org_ID(shipment.getAD_Org_ID());
                         shipmentLine.setM_InOut_ID(shipment.getM_InOut_ID());
                         shipmentLine.setM_Locator_ID(outboundLine.getM_LocatorTo_ID());
                         shipmentLine.setM_Product_ID(outboundLine.getM_Product_ID());
@@ -154,6 +156,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                         shipmentLine.saveEx();
                     });
                     MInOut shipment = maybeShipment.get();
+                    shipment.set_TrxName(transactionName);
                     if (!shipment.processIt(getDocAction())) {
                         addLog("@ProcessFailed@ : " + shipment.getProcessMsg());
                         throw new AdempiereException("@ProcessFailed@ :" + shipment.getProcessMsg());
@@ -181,6 +184,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
                     MDDOrder distributionOrder = new MDDOrder(getCtx(), entry.getKey(), transactionName);
                     lines.forEach(outboundLine -> {
                         MDDOrderLine distributionOrderLine = new MDDOrderLine(outboundLine.getCtx(), outboundLine.getDD_OrderLine_ID(), transactionName);
+                        distributionOrderLine.setAD_Org_ID(outboundLine.getAD_Org_ID());
                         distributionOrderLine.setDescription(outboundLine.getDescription());
                         distributionOrderLine.setConfirmedQty(getDistributionOrderQtyToDelivery(outboundLine, distributionOrderLine));
                         distributionOrderLine.saveEx();

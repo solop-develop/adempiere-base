@@ -16,16 +16,15 @@
  *****************************************************************************/
 package org.spin.util.support;
 
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-
 import org.compiere.util.CLogger;
+import org.compiere.util.Env;
 import org.compiere.util.Util;
 import org.spin.model.MADAppRegistration;
 import org.spin.model.MADAppSupport;
-import org.compiere.util.Env;
+
+import java.lang.reflect.Constructor;
+import java.util.logging.Level;
+
 /**
  * @author Yamel Senih, ySenih@erpya.com, ERPCyA http://www.erpya.com
  *		<a href="https://github.com/adempiere/adempiere/issues/2109">
@@ -35,10 +34,7 @@ public class AppSupportHandler {
 	
     private static AppSupportHandler appSupportHandler = null;
     
-    /**	Token Generator	*/
-    private Map<Integer, IAppSupport> appSupportGeneratorMap = null;
-    
-	private static final CLogger logger = CLogger.getCLogger(AppSupportHandler.class);
+    private static final CLogger logger = CLogger.getCLogger(AppSupportHandler.class);
 	
 	/**
 	 * Singleton
@@ -55,7 +51,7 @@ public class AppSupportHandler {
      * Instance hash map
      */
     private AppSupportHandler() {
-    	appSupportGeneratorMap = new HashMap<Integer, IAppSupport>();
+
     }
 
     /**
@@ -67,14 +63,7 @@ public class AppSupportHandler {
     	if(registration == null) {
     		return null;
     	}
-        if(!appSupportGeneratorMap.containsKey(registration.getAD_AppSupport_ID())) {
-            loadClass(registration.getAD_AppRegistration_ID(), registration.getAD_AppSupport_ID());
-            return appSupportGeneratorMap.get(registration.getAD_AppSupport_ID());
-        }
-        //  Default return
-        IAppSupport supportedApplication = appSupportGeneratorMap.get(registration.getAD_AppSupport_ID());
-        supportedApplication.setAppRegistrationId(registration.getAD_AppRegistration_ID());
-        return supportedApplication;
+        return loadClass(registration.getAD_AppRegistration_ID(), registration.getAD_AppSupport_ID());
     }
     
     /**
@@ -133,7 +122,7 @@ public class AppSupportHandler {
      * @param appSupportId
      * @throws Exception
      */
-    private void loadClass(int appRegistrationId, int appSupportId) throws Exception {
+    private IAppSupport loadClass(int appRegistrationId, int appSupportId) throws Exception {
         //	Load it
         //	Get class from parent
         Class<?> clazz = getHandlerClass(appSupportId);
@@ -149,6 +138,6 @@ public class AppSupportHandler {
         //	new instance
         generator = (IAppSupport) constructor.newInstance();
         generator.setAppRegistrationId(appRegistrationId);
-        appSupportGeneratorMap.put(appSupportId, generator);
+        return generator;
     }
 }
