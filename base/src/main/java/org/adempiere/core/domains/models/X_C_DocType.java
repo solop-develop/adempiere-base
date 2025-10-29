@@ -1088,6 +1088,27 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return false;
 	}
 
+	/** Set Validate Allocations.
+	 @param IsValidateAllocations Validate Allocations	  */
+	public void setIsValidateAllocations (boolean IsValidateAllocations)
+	{
+		set_Value (COLUMNNAME_IsValidateAllocations, Boolean.valueOf(IsValidateAllocations));
+	}
+
+	/** Get Validate Allocations.
+	 @return Validate Allocations	  */
+	public boolean isValidateAllocations ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsValidateAllocations);
+		if (oo != null)
+		{
+			if (oo instanceof Boolean)
+				return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Name.
 		@param Name 
 		Alphanumeric identifier of the entity
