@@ -166,6 +166,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 		sql = new StringBuffer ("UPDATE I_Product i "
 			+ "SET M_Product_ID=(SELECT M_Product_ID FROM M_Product_po p"
 			+ " WHERE i.C_BPartner_ID=p.C_BPartner_ID"
+			+ " AND p.IsCurrentVendor='Y'"
 			+ " AND i.VendorProductNo=p.VendorProductNo AND p.AD_Client_ID=").append(m_AD_Client_ID).append(") "
 			+ "WHERE M_Product_ID IS NULL"
 			+ " AND I_IsImported='N'").append(clientCheck);
@@ -350,8 +351,9 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 			sql = new StringBuffer ("UPDATE I_PRODUCT i "
 				+ "SET ").append(strFieldsPO[i]).append(" = (SELECT ").append(strFieldsPO[i])
 				.append(" FROM M_Product_PO p"
-				+ " WHERE i.M_Product_ID=p.M_Product_ID AND i.C_BPartner_ID=p.C_BPartner_ID AND p.AD_Client_ID=").append(m_AD_Client_ID).append(") "
-				+ "WHERE M_Product_ID IS NOT NULL AND C_BPartner_ID IS NOT NULL"
+				+ " WHERE i.M_Product_ID=p.M_Product_ID AND i.C_BPartner_ID=p.C_BPartner_ID"
+				+ " AND p.IsCurrentVendor='Y' AND p.AD_Client_ID=").append(m_AD_Client_ID).append(")"
+				+ " WHERE M_Product_ID IS NOT NULL AND C_BPartner_ID IS NOT NULL"
 				+ " AND ").append(strFieldsPO[i]).append(" IS NULL"
 				+ " AND I_IsImported='N'").append(clientCheck);
 			no = DB.executeUpdate(sql.toString(), get_TrxName());
@@ -366,8 +368,9 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 			sql = new StringBuffer ("UPDATE I_PRODUCT i "
 				+ "SET ").append(numFieldsPO[i]).append(" = (SELECT ").append(numFieldsPO[i])
 				.append(" FROM M_Product_PO p"
-				+ " WHERE i.M_Product_ID=p.M_Product_ID AND i.C_BPartner_ID=p.C_BPartner_ID AND i.AD_Client_ID=p.AD_Client_ID) "
-				+ "WHERE M_Product_ID IS NOT NULL AND C_BPartner_ID IS NOT NULL"
+				+ " WHERE i.M_Product_ID=p.M_Product_ID AND i.C_BPartner_ID=p.C_BPartner_ID"
+				+ " AND p.IsCurrentVendor='Y' AND i.AD_Client_ID=p.AD_Client_ID)"
+				+ " WHERE M_Product_ID IS NOT NULL AND C_BPartner_ID IS NOT NULL"
 				+ " AND (").append(numFieldsPO[i]).append(" IS NULL OR ").append(numFieldsPO[i]).append("=0)"
 				+ " AND I_IsImported='N'").append(clientCheck);
 			no = DB.executeUpdate(sql.toString(), get_TrxName());
