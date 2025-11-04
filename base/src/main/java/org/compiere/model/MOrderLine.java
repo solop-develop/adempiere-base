@@ -973,7 +973,9 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 					}
 					BigDecimal priceActual = m_productPrice.getPriceStd();
 					if(newRecord) {
-						setPriceActual(priceActual);
+						if (getPriceActual() == null || getPriceActual().signum()== 0) {
+							setPriceActual(priceActual);
+						}
 					}
 					if(is_ValueChanged(COLUMNNAME_PriceActual)) {
 						priceActual = getPriceActual();
