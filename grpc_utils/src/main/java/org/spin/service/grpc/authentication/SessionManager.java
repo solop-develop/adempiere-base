@@ -266,7 +266,7 @@ public class SessionManager {
 		}
 		//	Get Values from role
 		if(SessionManager.roleId < 0) {
-			throw new AdempiereException("@AD_User_ID@ / @AD_Role_ID@ / @AD_Org_ID@ @NotFound@");
+			throw new AdempiereException("@AD_Role_ID@ @NotFound@");
 		}
 		//	
 		if(SessionManager.organizationId < 0) {
@@ -572,10 +572,13 @@ public class SessionManager {
 	 */
 	public static MADToken createSessionFromToken(String tokenValue) {
 		if(Util.isEmpty(tokenValue, true)) {
-			throw new AdempiereException("@AD_Token_ID@ @NotFound@");
+			throw new AdempiereException("@FillMandatory@ @AD_Token_ID@");
 		}
 		// Remove `Bearer` word from token
 		tokenValue = TokenManager.getTokenWithoutType(tokenValue);
+		if(Util.isEmpty(tokenValue, true)) {
+			throw new AdempiereException("@AD_Token_ID@ @NotFound@");
+		}
 		//	
 		try {
 			ITokenGenerator generator = TokenGeneratorHandler.getInstance()
