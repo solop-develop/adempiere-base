@@ -157,6 +157,9 @@ public class MProductPO extends X_M_Product_PO
 						});
 			}
 		}
+		if(is_new()){
+			setAD_Org_ID(((MProduct) getM_Product()).getAD_Org_ID());
+		}
 		return super.beforeSave(newRecord);
 	}
 
