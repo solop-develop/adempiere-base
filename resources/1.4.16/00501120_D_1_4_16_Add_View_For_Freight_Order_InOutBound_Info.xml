@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_View_For_Freight_Order_InOutBound_Info" ReleaseNo="1.4.9" SeqNo="501120">
+    <Comments>Add view RV_FO_Freight_Order for Freight Order InOutBound Info</Comments>
+    <Step DBType="ALL" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_FO_Freight_Order
+        AS SELECT
+        f.DD_Freight_ID AS RV_FO_Freight_Order_ID,
+        f.M_Shipper_ID,
+        f.DD_Driver_ID,
+        f.DD_Vehicle_ID,
+        f.DateDoc,
+        f.WM_InOutBound_ID,
+        f.AD_Client_ID,
+        f.AD_Org_ID,
+        f.DocumentNo
+        FROM DD_Freight f
+        INNER JOIN WM_InOutBound io ON (io.WM_InOutBound_ID = f.WM_InOutBound_ID);
+      </SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS RV_FO_Freight_Order;
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
