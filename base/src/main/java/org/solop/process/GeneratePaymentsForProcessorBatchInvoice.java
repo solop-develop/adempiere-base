@@ -109,7 +109,8 @@ public class GeneratePaymentsForProcessorBatchInvoice extends GeneratePaymentsFo
 		payment.setC_BPartner_ID(invoice.getC_BPartner_ID());
 		payment.setIsReceipt(true);
 		payment.setC_BankAccount_ID(batch.getFinalAccount_ID());
-		payment.setDateAcct(invoice.getDateInvoiced());
+		payment.setDateAcct(getDateDoc());
+		payment.setDateTrx(getDateDoc());
 		payment.setTenderType(MPayment.TENDERTYPE_Account);
 		payment.setPayAmt(invoice.getGrandTotal());
 		payment.setC_DocType_ID(true);
