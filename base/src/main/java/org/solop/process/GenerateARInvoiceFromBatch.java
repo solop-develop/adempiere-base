@@ -20,7 +20,18 @@ package org.solop.process;
 
 import org.adempiere.core.domains.models.X_C_PPBatchConfiguration;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
+import org.compiere.model.MBPartner;
+import org.compiere.model.MCharge;
+import org.compiere.model.MCurrency;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MInvoicePaySchedule;
+import org.compiere.model.MPayment;
+import org.compiere.model.MPaymentProcessorBatch;
+import org.compiere.model.MPaymentProcessorSchedule;
+import org.compiere.model.MPriceList;
+import org.compiere.model.MTax;
+import org.compiere.model.Query;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Util;
@@ -93,6 +104,7 @@ public class GenerateARInvoiceFromBatch extends GenerateARInvoiceFromBatchAbstra
 			invoice.setBPartner(businessPartner);
 			invoice.setSalesRep_ID(getAD_User_ID());	//	caller
 			invoice.setDateInvoiced(batch.getDateDoc());
+			invoice.setDateAcct(batch.getDateDoc());
 			String currencyIsoCode = MCurrency.get(getCtx(), batch.getC_Currency_ID()).getISO_Code();
 			MPriceList priceList = MPriceList.getDefault(getCtx(), true, currencyIsoCode);
 			if(priceList == null || priceList.get_ID() <= 0) {
@@ -173,7 +185,8 @@ public class GenerateARInvoiceFromBatch extends GenerateARInvoiceFromBatchAbstra
 		MPayment withdrawal = new MPayment(getCtx(), 0, get_TrxName());
 		withdrawal.setDocStatus(MPayment.DOCSTATUS_Drafted);
 		withdrawal.setDocAction(MPayment.DOCACTION_Complete);
-
+		withdrawal.setDateAcct(batch.getDateDoc());
+		withdrawal.setDateTrx(batch.getDateDoc());
 		withdrawal.setC_Charge_ID(batchConfiguration.getSalesInvoiceCharge_ID());
 		withdrawal.setPayAmt(amount);
 		withdrawal.setC_BPartner_ID(batchConfiguration.getC_BPartner_ID());

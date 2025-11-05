@@ -20,7 +20,16 @@ package org.solop.process;
 
 import org.adempiere.core.domains.models.X_C_PPBatchConfiguration;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
+import org.compiere.model.MBPartner;
+import org.compiere.model.MCharge;
+import org.compiere.model.MCurrency;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MPayment;
+import org.compiere.model.MPaymentProcessorBatch;
+import org.compiere.model.MPriceList;
+import org.compiere.model.MTax;
+import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Util;
 
@@ -119,6 +128,7 @@ public class GenerateAPInvoiceFromBatch extends GenerateAPInvoiceFromBatchAbstra
 		invoice.setBPartner(businessPartner);
 		invoice.setSalesRep_ID(getAD_User_ID());	//	caller
 		invoice.setDateInvoiced(getDateDoc());
+		invoice.setDateAcct(getDateDoc());
 		String currencyIsoCode = MCurrency.get(getCtx(), batch.getC_Currency_ID()).getISO_Code();
 		MPriceList priceList = MPriceList.getDefault(getCtx(), false, currencyIsoCode);
 		if(priceList == null) {
@@ -178,7 +188,8 @@ public class GenerateAPInvoiceFromBatch extends GenerateAPInvoiceFromBatchAbstra
 		payment.setC_BPartner_ID(invoice.getC_BPartner_ID());
 		payment.setIsReceipt(false);
 		payment.setC_BankAccount_ID(batch.getTransitBankAccount_ID());
-		payment.setDateAcct(invoice.getDateInvoiced());
+		payment.setDateAcct(getDateDoc());
+		payment.setDateTrx(getDateDoc());
 		payment.setTenderType(MPayment.TENDERTYPE_Account);
 		payment.setPayAmt(invoice.getGrandTotal());
 		payment.setC_DocType_ID(false);
