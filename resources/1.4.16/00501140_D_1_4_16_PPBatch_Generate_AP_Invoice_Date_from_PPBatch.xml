@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="PPBatch_Generate_AP_Invoice_Date_from_PPBatch" ReleaseNo="1.4.16" SeqNo="501140">
+    <Comments>Use PPBatch DateDoc as Default for Generate AP Invoice Process Date Parameter</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59662" Table="AD_Process_Para">
+        <Data AD_Column_ID="3739" Column="DefaultValue" oldValue="@#Date@">@DateDoc@</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
