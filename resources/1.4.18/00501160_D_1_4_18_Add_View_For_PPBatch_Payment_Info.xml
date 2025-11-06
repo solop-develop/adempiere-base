@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_View_For_PPBatch_Payment_Info" ReleaseNo="1.4.9" SeqNo="501160">
+    <Comments>Add view RV_FO_Freight_Order for Freight Order InOutBound Info</Comments>
+    <Step DBType="ALL" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_PPBatch_Payment
+        AS SELECT pb.AD_Client_ID,
+        p.AD_Org_ID,
+        pb.AllocatePayments,
+        pb.C_BankAccount_ID,
+        pb.C_PaymentProcessor_ID,
+        pb.C_PPBatchConfiguration_ID,
+        pb.DateDoc,
+        pb.Description,
+        pb.DocumentNo,
+        pb.FeeAmt,
+        pb.FinalAccount_ID,
+        pb.GrandTotal,
+        pb.IsAutomaticReceipt,
+        pb.IsManualFee,
+        pb.OpenAmt,
+        pb.PaidAmt,
+        pb.TransitBankAccount_ID,
+        pb.WithholdingAmt,
+        pbl.C_BankStatement_ID,
+        pbl.Deposit_ID,
+        pbl.Withdrawal_ID,
+        p.C_Activity_ID,
+        p.C_Bank_ID,
+        p.C_BPartner_ID,
+        p.C_Campaign_ID,
+        p.C_Card_ID,
+        p.C_CardProvider_ID,
+        p.C_Charge_ID,
+        p.C_ConversionType_ID,
+        p.C_Currency_ID,
+        p.C_DocType_ID,
+        p.ChargeAmt,
+        p.C_Invoice_ID,
+        p.CollectingAgent_ID,
+        p.C_Order_ID,
+        p.C_Payment_ID,
+        p.C_PaymentMethod_ID,
+        p.C_POS_ID,
+        p.C_Project_ID,
+        p.CreditCardNumber,
+        p.CreditCardType,
+        p.DateAcct,
+        p.DateTrx,
+        p.DiscountAmt,
+        p.OverUnderAmt,
+        p.PayAmt,
+        p.S_Contract_ID,
+        p.TaxAmt,
+        p.TenderType,
+        p.User1_ID,
+        p.User2_ID,
+        p.User3_ID,
+        p.User4_ID,
+        p.WriteOffAmt,
+        pb.C_PaymentProcessorBatch_ID AS RV_PPBatch_Payment_ID
+        FROM C_PaymentProcessorBatch pb
+        INNER JOIN C_PPBatchLine pbl ON (pbl.C_PaymentProcessorBatch_ID = pb.C_PaymentProcessorBatch_ID)
+        INNER JOIN C_Payment p ON (p.C_Payment_ID = pbl.C_Payment_ID);
+      </SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS RV_PPBatch_Payment;
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
