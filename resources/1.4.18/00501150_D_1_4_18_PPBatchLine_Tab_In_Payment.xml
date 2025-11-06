@@ -1277,5 +1277,13 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="84323" Column="UUID">7bd941d4-71ff-4105-b1c3-b3caf35c4b86</Data>
       </PO>
     </Step>
+    <Step SeqNo="390" StepType="AD">
+      <PO AD_Table_ID="123" Action="U" Record_ID="0" Table="AD_Tab_Trl">
+        <Data AD_Column_ID="265" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="264" Column="AD_Tab_ID" oldValue="55334">55334</Data>
+        <Data AD_Column_ID="269" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="266" Column="Name" oldValue="Payment Procesor Batch Line">Lote de Procesador de Pagos</Data>
+      </PO>
+    </Step>
   </Migration>
 </Migrations>
