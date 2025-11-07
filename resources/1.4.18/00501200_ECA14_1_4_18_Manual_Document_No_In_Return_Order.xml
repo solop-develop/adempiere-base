@@ -202,5 +202,15 @@
         <Data AD_Column_ID="84323" Column="UUID">fddb2161-e373-488a-bda6-4f766e1383fd</Data>
       </PO>
     </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="106805" Table="AD_Field">
+        <Data AD_Column_ID="177" Column="DisplayLogic" isOldNull="true">@IsManualDocument@=Y</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="106804" Table="AD_Field">
+        <Data AD_Column_ID="177" Column="DisplayLogic" isOldNull="true">@IsManualDocument@=Y</Data>
+      </PO>
+    </Step>
   </Migration>
 </Migrations>
