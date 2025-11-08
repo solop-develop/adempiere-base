@@ -441,85 +441,50 @@ public class SynchronizeTerminology extends SynchronizeTerminologyAbstract
 			runUpdate(sql);
 			//  Need centrally maintained flag here!
 			log.info("Synchronize PrintFormatItem Name from Element");
-			sql="UPDATE AD_PRINTFORMATITEM pfi"
-				+" SET Name = (SELECT e.Name "
-				+" FROM AD_ELEMENT e, AD_COLUMN c"
-				+" WHERE e.AD_Element_ID=c.AD_Element_ID"
-				+" AND c.AD_Column_ID=pfi.AD_Column_ID)"
-				+" WHERE pfi.IsCentrallyMaintained='Y'"
-				+" AND EXISTS (SELECT 1 "
-				+" FROM AD_ELEMENT e, AD_COLUMN c"
-				+" WHERE e.AD_Element_ID=c.AD_Element_ID"
-				+" AND c.AD_Column_ID=pfi.AD_Column_ID"
-				+" AND e.Name<>pfi.Name)"
-				+" AND EXISTS (SELECT 1 FROM AD_CLIENT" 
-				+" WHERE AD_Client_ID=pfi.AD_Client_ID AND IsMultiLingualDocument='Y')";
+			sql="UPDATE AD_PrintFormatItem " +
+					"SET Name = e.Name " +
+					"FROM (SELECT e.Name, c.AD_Column_ID  " +
+					"FROM AD_Element e " +
+					"JOIN AD_Column c ON e.AD_Element_ID = c.AD_Element_ID) AS e " +
+					"WHERE AD_PrintFormatItem.AD_Column_ID = e.AD_Column_ID " +
+					"AND AD_PrintFormatItem.Name <> e.Name " +
+					"AND AD_PrintFormatItem.IsCentrallyMaintained = 'Y'";
 			runUpdate(sql);
 			log.info("Synchronize PrintFormatItem PrintName from Element");
-			sql="UPDATE AD_PRINTFORMATITEM pfi"
-				+" SET PrintName = (SELECT e.PrintName "
-				+" FROM AD_ELEMENT e, AD_COLUMN c"
-				+" WHERE e.AD_Element_ID=c.AD_Element_ID"
-				+" AND c.AD_Column_ID=pfi.AD_Column_ID)"
-				+" WHERE pfi.IsCentrallyMaintained='Y'"
-				+" AND EXISTS (SELECT 1 "
-				+" FROM AD_ELEMENT e, AD_COLUMN c, AD_PRINTFORMAT pf"
-				+" WHERE e.AD_Element_ID=c.AD_Element_ID"
-				+" AND c.AD_Column_ID=pfi.AD_Column_ID"
-				+" AND LENGTH(pfi.PrintName) > 0"
-				+" AND e.PrintName<>pfi.PrintName"
-				+" AND pf.AD_PrintFormat_ID=pfi.AD_PrintFormat_ID"
-				+" AND pf.IsForm='N' AND IsTableBased='Y')"
-				+" AND EXISTS (SELECT 1 FROM AD_CLIENT "
-				+" WHERE AD_Client_ID=pfi.AD_Client_ID AND IsMultiLingualDocument='Y')";
+			sql="UPDATE AD_PrintFormatItem " +
+					"SET PrintName = e.PrintName " +
+					"FROM (SELECT e.PrintName, c.AD_Column_ID " +
+					"FROM AD_Element e " +
+					"JOIN AD_Column c ON(c.AD_Element_ID = e.AD_Element_ID)) AS e " +
+					"WHERE AD_PrintFormatItem.IsCentrallyMaintained = 'Y' " +
+					"AND LENGTH(AD_PrintFormatItem.PrintName) > 0 " +
+					"AND e.PrintName <> AD_PrintFormatItem.PrintName " +
+					"AND AD_PrintFormatItem.AD_Column_ID = e.AD_Column_ID " +
+					"AND EXISTS(SELECT 1 FROM AD_PrintFormat pf WHERE pf.AD_PrintFormat_ID = AD_PrintFormatItem.AD_PrintFormat_ID AND pf.IsForm = 'N' AND pf.IsTableBased = 'Y')";
 			runUpdate(sql);
 			log.info("Synchronize PrintFormatItem Trl from Element Trl (Multi-Lingual)");
-			sql="UPDATE AD_PRINTFORMATITEM_TRL trl"
-				+" SET PrintName = (SELECT e.PrintName" 
-				+" FROM AD_ELEMENT_TRL e, AD_COLUMN c, AD_PRINTFORMATITEM pfi"
-				+" WHERE e.AD_LANGUAGE=trl.AD_LANGUAGE"
-				+" AND e.AD_Element_ID=c.AD_Element_ID"
-				+" AND c.AD_Column_ID=pfi.AD_Column_ID"
-				+" AND pfi.AD_PrintFormatItem_ID=trl.AD_PrintFormatItem_ID)"
-				+" WHERE EXISTS (SELECT 1 "
-				+" FROM AD_ELEMENT_TRL e, AD_COLUMN c, AD_PRINTFORMATITEM pfi, AD_PRINTFORMAT pf"
-				+" WHERE e.AD_LANGUAGE=trl.AD_LANGUAGE"
-				+" AND e.AD_Element_ID=c.AD_Element_ID"
-				+" AND c.AD_Column_ID=pfi.AD_Column_ID"
-				+" AND pfi.AD_PrintFormatItem_ID=trl.AD_PrintFormatItem_ID"
-				+" AND pfi.IsCentrallyMaintained='Y'"
-				+" AND LENGTH(pfi.PrintName) > 0"
-				+" AND (e.PrintName<>trl.PrintName OR trl.PrintName IS NULL)"
-				+" AND pf.AD_PrintFormat_ID=pfi.AD_PrintFormat_ID "
-				+" AND pf.IsForm='N' AND IsTableBased='Y')"
-				+" AND EXISTS (SELECT 1 FROM AD_CLIENT "
-				+" WHERE AD_Client_ID=trl.AD_Client_ID AND IsMultiLingualDocument='Y')";
-			runUpdate(sql);
-			log.info("Synchronize PrintFormatItem Trl (Not Multi-Lingual)");
-			sql="UPDATE AD_PRINTFORMATITEM_TRL trl"
-				+" SET PrintName = (SELECT pfi.PrintName" 
-				+" FROM AD_PRINTFORMATITEM pfi"
-				+" WHERE pfi.AD_PrintFormatItem_ID=trl.AD_PrintFormatItem_ID)"
-				+" WHERE EXISTS (SELECT 1 "
-				+" FROM AD_PRINTFORMATITEM pfi, AD_PRINTFORMAT pf"
-				+" WHERE pfi.AD_PrintFormatItem_ID=trl.AD_PrintFormatItem_ID"
-				+" AND pfi.IsCentrallyMaintained='Y'"
-				+" AND LENGTH(pfi.PrintName) > 0"
-				+" AND pfi.PrintName<>trl.PrintName"
-				+" AND pf.AD_PrintFormat_ID=pfi.AD_PrintFormat_ID "
-				+" AND pf.IsForm='N' AND pf.IsTableBased='Y')"
-				+" AND EXISTS (SELECT 1 FROM AD_CLIENT "
-				+" WHERE AD_Client_ID=trl.AD_Client_ID AND IsMultiLingualDocument='N')";
+			sql="UPDATE AD_PrintFormatItem_Trl " +
+					"SET PrintName = e.PrintName " +
+					"FROM (SELECT e.PrintName, c.AD_Column_ID, e.AD_Language, pfi.AD_PrintFormatItem_ID " +
+					"FROM AD_Element_Trl e " +
+					"JOIN AD_Column c ON(c.AD_Element_ID = e.AD_Element_ID) " +
+					"JOIN AD_PrintFormatItem pfi ON(pfi.AD_Column_ID = c.AD_Column_ID) " +
+					"WHERE pfi.IsCentrallyMaintained = 'Y' " +
+					"AND LENGTH(pfi.PrintName) > 0 " +
+					"AND EXISTS(SELECT 1 FROM AD_PrintFormat pf WHERE pf.AD_PrintFormat_ID = pfi.AD_PrintFormat_ID AND pf.IsForm = 'N' AND pf.IsTableBased = 'Y')) AS e " +
+					"WHERE e.AD_PrintFormatItem_ID = AD_PrintFormatItem_Trl.AD_PrintFormatItem_ID " +
+					"AND e.AD_Language = AD_PrintFormatItem_Trl.AD_Language " +
+					"AND (e.PrintName <> AD_PrintFormatItem_Trl.PrintName OR AD_PrintFormatItem_Trl.PrintName IS NULL)";
 			runUpdate(sql);
 			log.info("Reset PrintFormatItem Trl where not used in base table");
-			sql="UPDATE AD_PRINTFORMATITEM_TRL trl"
-				+" SET PrintName = NULL"
-				+" WHERE PrintName IS NOT NULL"
-				+" AND EXISTS (SELECT 1"
-				+" FROM AD_PRINTFORMATITEM pfi"
-				+" WHERE pfi.AD_PrintFormatItem_ID=trl.AD_PrintFormatItem_ID" 
-				+" AND pfi.IsCentrallyMaintained='Y'"
-				+" AND (LENGTH (pfi.PrintName) = 0 OR pfi.PrintName IS NULL))";
+			sql="UPDATE AD_PrintFormatItem_Trl " +
+					"SET PrintName = NULL " +
+					"FROM (SELECT pfi.AD_PrintFormatItem_ID " +
+					"FROM AD_PrintFormatItem pfi " +
+					"WHERE pfi.IsCentrallyMaintained = 'Y' " +
+					"AND (LENGTH(pfi.PrintName) = 0 OR pfi.PrintName IS NULL)) AS e " +
+					"WHERE AD_PrintFormatItem_Trl.AD_PrintFormatItem_ID = e.AD_PrintFormatItem_ID " +
+					"AND AD_PrintFormatItem_Trl.PrintName IS NOT NULL;";
 			runUpdate(sql);
 			//	Sync Names - Window
 			log.info("Synchronizing Menu with Window");
