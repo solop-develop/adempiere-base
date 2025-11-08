@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="ManualDocumentNo_Not_Allow_Copy" ReleaseNo="1.4.18" SeqNo="501210">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="106805" Table="AD_Field">
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="106804" Table="AD_Field">
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="106803" Table="AD_Field">
+        <Data AD_Column_ID="74868" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="104279" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="104280" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="104281" Table="AD_Column">
+        <Data AD_Column_ID="62199" Column="IsAllowCopy" oldValue="true">false</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
