@@ -446,10 +446,12 @@ public class ValueManager {
 		return TimeManager.getProtoTimestampFromTimestamp(value);
 	}
 	/**
+	 * @deprecated Use {@link TimeManager#getProtoTimestampFromTimestamp(Value)} instead.
 	 * Get google.protobuf.Timestamp from Timestamp
 	 * @param dateValue
 	 * @return com.google.protobuf.Timestamp
 	 */
+	@Deprecated
 	public static com.google.protobuf.Timestamp getProtoTimestampFromTimestamp(Timestamp dateValue) {
 		return TimeManager.getProtoTimestampFromTimestamp(dateValue);
 	}
