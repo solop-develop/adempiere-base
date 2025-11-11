@@ -120,6 +120,21 @@ public interface I_C_AllocationHdr
 
 	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException;
 
+    /** Column name C_PaySelection_ID */
+    public static final String COLUMNNAME_C_PaySelection_ID = "C_PaySelection_ID";
+
+	/** Set Payment Selection.
+	  * Payment Selection
+	  */
+	public void setC_PaySelection_ID (int C_PaySelection_ID);
+
+	/** Get Payment Selection.
+	  * Payment Selection
+	  */
+	public int getC_PaySelection_ID();
+
+	public I_C_PaySelection getC_PaySelection() throws RuntimeException;
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
