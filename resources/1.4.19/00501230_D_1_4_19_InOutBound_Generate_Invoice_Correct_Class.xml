@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="InOutBound_Generate_Invoice_Correct_Class" ReleaseNo="1.4.19" SeqNo="501230">
+    <Comments>Change class package to correct one</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="54277" Table="AD_Process">
+        <Data AD_Column_ID="4656" Column="Classname" oldValue="org.spin.process.GenerateInvoiceInOutBound">org.spin.wms.process.GenerateInvoiceInOutBound</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
