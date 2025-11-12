@@ -117,6 +117,7 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 						if (outboundLine.getM_InOutLine_ID() > 0) {
 							invoiceLine.setM_InOutLine_ID(outboundLine.getM_InOutLine_ID());
 						}
+						invoiceLine.setAD_Org_ID(invoice.getAD_Org_ID());
 						invoiceLine.setC_Invoice_ID(invoice.get_ID());
 						invoiceLine.setC_UOM_ID(outboundLine.getC_UOM_ID());
 						invoiceLine.setPrice(MUOMConversion.convertProductTo(getCtx(), outboundLine.getM_Product_ID(), outboundLine.getC_UOM_ID(), orderLine.getPriceActual()));
