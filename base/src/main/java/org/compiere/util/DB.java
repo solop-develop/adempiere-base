@@ -25,35 +25,19 @@ import org.compiere.db.AdempiereDatabase;
 import org.compiere.db.CConnection;
 import org.compiere.db.Database;
 import org.compiere.db.ProxyFactory;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MLanguage;
-import org.compiere.model.MRole;
-import org.compiere.model.MSequence;
-import org.compiere.model.MSysConfig;
-import org.compiere.model.MSystem;
-import org.compiere.model.MTable;
-import org.compiere.model.PO;
-import org.compiere.model.POResultSet;
+import org.compiere.model.*;
 import org.compiere.process.SequenceCheck;
 
 import javax.sql.RowSet;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.Date;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -607,7 +591,7 @@ public final class DB
             return true;
 
         String AD_Message = "DatabaseVersionError";
-        String title = org.compiere.Adempiere.getName() + " " +  Msg.getMsg(ctx, AD_Message, true);
+        String title = Adempiere.getName() + " " +  Msg.getMsg(ctx, AD_Message, true);
         //  Code assumes Database version {0}, but Database has Version {1}.
         String msg = Msg.getMsg(ctx, AD_Message);   //  complete message
         msg = MessageFormat.format(msg, new Object[] {Adempiere.DB_VERSION, version});
@@ -665,7 +649,7 @@ public final class DB
             return true;
 
         String AD_Message = "BuildVersionError";
-        String title = org.compiere.Adempiere.getName() + " " +  Msg.getMsg(ctx, AD_Message, true);
+        String title = Adempiere.getName() + " " +  Msg.getMsg(ctx, AD_Message, true);
         // The program assumes build version {0}, but database has build Version {1}.
         String msg = Msg.getMsg(ctx, AD_Message);   //  complete message
         msg = MessageFormat.format(msg, new Object[] {buildClient, buildDatabase});
@@ -1033,7 +1017,8 @@ public final class DB
 			else
 			{
 				log.log(Level.SEVERE, cs.getSql() + " [" + trxName + "]", e);
-				log.saveError ("DBExecuteError", e);
+				throw new DBException(e);
+//				log.saveError ("DBExecuteError", e);
 			}
 		//	throw new DBException(e);
 		}
@@ -2059,8 +2044,8 @@ public final class DB
 	 *
 	 *  @return TRIM(TO_CHAR(columnName,'999G999G999G990D00','NLS_NUMERIC_CHARACTERS='',.'''))
 	 *      or TRIM(TO_CHAR(columnName,'TM9')) depending on DisplayType and Language
-	 *  @see org.compiere.util.DisplayType
-	 *  @see org.compiere.util.Env
+	 *  @see DisplayType
+	 *  @see Env
 	 *
 	 *   */
 	public static String TO_CHAR (String columnName, int displayType, String AD_Language)
@@ -2595,7 +2580,7 @@ public final class DB
 	 * @param resultSet ResultSet
 	 * @return
 	 */
-	public static Try<Void> runResultSet(String trxName , String sql , java.util.List<Object> parameters , ResultSetRunnable<ResultSet> resultSet) {
+	public static Try<Void> runResultSet(String trxName , String sql , List<Object> parameters , ResultSetRunnable<ResultSet> resultSet) {
 		return runResultSetFunction.apply(trxName , sql ,  io.vavr.collection.List.ofAll(Optional.ofNullable(parameters).orElse(List.of())) , resultSet);
 	}
 }	//	DB

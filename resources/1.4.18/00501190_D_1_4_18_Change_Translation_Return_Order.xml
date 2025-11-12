@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Change_Translation_Return_Order" ReleaseNo="1.4.18" SeqNo="501190">
+    <Comments>Change translation of  Customer and Vendor Return Windows for Return Order Field</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="57711" Table="AD_Field">
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="127" Action="U" Record_ID="57711" Table="AD_Field_Trl">
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="57711">57711</Data>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="287" Column="Description" oldValue="Orden de Venta">Orden de Devolución</Data>
+        <Data AD_Column_ID="288" Column="Help" oldValue="La ID de la orden de ventas es un identificador único de la orden de ventas; Ésta es controlada por la secuencia del documento para este tipo de documento.">La ID de la orden de devolución es un identificador único de la orden de devolución Ésta es controlada por la secuencia del documento para este tipo de documento.</Data>
+        <Data AD_Column_ID="286" Column="Name" oldValue="Orden de Venta">Orden de Devolución</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isOldNull="true">ff0f26a4-596b-4aed-ae0e-4945d4bec029</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="57845" Table="AD_Field">
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="127" Action="U" Record_ID="57845" Table="AD_Field_Trl">
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="57845">57845</Data>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="287" Column="Description" oldValue="Orden de compra">Orden de Devolución</Data>
+        <Data AD_Column_ID="288" Column="Help" oldValue="La compra es Identificada con un ID único de orden de compra. Esta controlado por la secuencia de este tipo de documento.">La devolución es Identificada con un ID único de orden de devolución. Esta controlado por la secuencia de este tipo de documento.</Data>
+        <Data AD_Column_ID="286" Column="Name" oldValue="Orden de compra">Orden de Devolución</Data>
+        <Data AD_Column_ID="84323" Column="UUID" isOldNull="true">8df52d8e-866e-4bc4-a5be-6991cee6a942</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="57845" Table="AD_Field">
+        <Data AD_Column_ID="169" Column="Description" oldValue="Purchase Order">Return Order</Data>
+        <Data AD_Column_ID="170" Column="Help" oldValue="The Purchase Order is a control document.  The Purchase Order is complete when the quantity ordered is the same as the quantity shipped and invoiced.  When you close an order, unshipped (backordered) quantities are cancelled.">The Return Order is a control document.  The Return Order is complete when the quantity ordered is the same as the quantity shipped and invoiced.  When you close an order, unshipped (backordered) quantities are cancelled.</Data>
+        <Data AD_Column_ID="168" Column="Name" oldValue="Purchase Order">Return Order</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="127" Action="U" Record_ID="57845" Table="AD_Field_Trl">
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="57845">57845</Data>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="57711" Table="AD_Field">
+        <Data AD_Column_ID="169" Column="Description" oldValue="Order">Return Order</Data>
+        <Data AD_Column_ID="170" Column="Help" oldValue="The Order is a control document.  The  Order is complete when the quantity ordered is the same as the quantity shipped and invoiced.  When you close an order, unshipped (backordered) quantities are cancelled.">The Return Order is a control document.  The  Order is complete when the quantity ordered is the same as the quantity shipped and invoiced.  When you close an order, unshipped (backordered) quantities are cancelled.</Data>
+        <Data AD_Column_ID="168" Column="Name" oldValue="Order">Return Order</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="127" Action="U" Record_ID="57711" Table="AD_Field_Trl">
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="57711">57711</Data>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated" oldValue="true">false</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

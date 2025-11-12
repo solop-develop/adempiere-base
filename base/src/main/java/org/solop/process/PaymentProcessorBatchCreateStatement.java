@@ -20,10 +20,12 @@ package org.solop.process;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBankStatementLine;
+import org.compiere.model.MConversionRate;
 import org.compiere.model.MPPBatchLine;
 import org.compiere.model.MPayment;
 import org.compiere.model.MPaymentProcessorBatch;
 
+import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -46,13 +48,20 @@ public class PaymentProcessorBatchCreateStatement extends PaymentProcessorBatchC
 			getSelectionKeys().forEach(key -> {
 				MPayment payment = new MPayment(getCtx(), key, get_TrxName());
 				MPPBatchLine paymentProcessorLine = new MPPBatchLine(getCtx(), 0, get_TrxName());
+				MPaymentProcessorBatch batch = (MPaymentProcessorBatch) paymentProcessorLine.getC_PaymentProcessorBatch();
 				paymentProcessorLine.setC_PaymentProcessorBatch_ID(getRecord_ID());
 				paymentProcessorLine.setC_Payment_ID(payment.getC_Payment_ID());
 				int bankStatementLineId = getSelectionAsInt(key, "BSL_C_BankStatementLine_ID");
 				MBankStatementLine bankStatementLine = new MBankStatementLine(getCtx(), bankStatementLineId, get_TrxName());
-				paymentProcessorLine.setPayAmt(bankStatementLine.getStmtAmt());
+				BigDecimal feeAmt = bankStatementLine.getChargeAmt();
+				if (bankStatementLine.getC_Currency_ID() != batch.getC_Currency_ID()) {
+					feeAmt = MConversionRate.convert(getCtx(), feeAmt, bankStatementLine.getC_Currency_ID(),
+							batch.getC_Currency_ID(), bankStatementLine.getStatementLineDate(), 0, getAD_Client_ID(), batch.getAD_Org_ID());
+				}
+
+				paymentProcessorLine.setPayAmt(payment.getPayAmt());
 				paymentProcessorLine.setTaxAmt(payment.getTaxAmt());
-				paymentProcessorLine.setFeeAmt(bankStatementLine.getChargeAmt());
+				paymentProcessorLine.setFeeAmt(feeAmt);
 				paymentProcessorLine.setDiscountAmt(payment.getDiscountAmt());
 				if(payment.getWithdrawal_ID() > 0) {
 					paymentProcessorLine.setWithdrawal_ID(payment.getWithdrawal_ID());
