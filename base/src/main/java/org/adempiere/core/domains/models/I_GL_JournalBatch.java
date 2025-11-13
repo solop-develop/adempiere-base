@@ -77,7 +77,7 @@ public interface I_GL_JournalBatch
 	  */
 	public int getC_Currency_ID();
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException;
+	public I_C_Currency getC_Currency() throws RuntimeException;
 
     /** Column name C_DocType_ID */
     public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
@@ -92,22 +92,7 @@ public interface I_GL_JournalBatch
 	  */
 	public int getC_DocType_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException;
-
-    /** Column name C_Period_ID */
-    public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
-
-	/** Set Period.
-	  * Period of the Calendar
-	  */
-	public void setC_Period_ID (int C_Period_ID);
-
-	/** Get Period.
-	  * Period of the Calendar
-	  */
-	public int getC_Period_ID();
-
-	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException;
+	public I_C_DocType getC_DocType() throws RuntimeException;
 
     /** Column name ControlAmt */
     public static final String COLUMNNAME_ControlAmt = "ControlAmt";
@@ -134,6 +119,21 @@ public interface I_GL_JournalBatch
 	  * Copy From Record
 	  */
 	public String getCopyFrom();
+
+    /** Column name C_Period_ID */
+    public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
+
+	/** Set Period.
+	  * Period of the Calendar
+	  */
+	public void setC_Period_ID (int C_Period_ID);
+
+	/** Get Period.
+	  * Period of the Calendar
+	  */
+	public int getC_Period_ID();
+
+	public I_C_Period getC_Period() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -242,7 +242,7 @@ public interface I_GL_JournalBatch
 	  */
 	public int getGL_Category_ID();
 
-	public org.adempiere.core.domains.models.I_GL_Category getGL_Category() throws RuntimeException;
+	public I_GL_Category getGL_Category() throws RuntimeException;
 
     /** Column name GL_JournalBatch_ID */
     public static final String COLUMNNAME_GL_JournalBatch_ID = "GL_JournalBatch_ID";
@@ -282,6 +282,15 @@ public interface I_GL_JournalBatch
 	  * Indicates if this document requires approval
 	  */
 	public boolean isApproved();
+
+    /** Column name IsFiscalYearClosing */
+    public static final String COLUMNNAME_IsFiscalYearClosing = "IsFiscalYearClosing";
+
+	/** Set Is Fiscal Year End Closing	  */
+	public void setIsFiscalYearClosing (boolean IsFiscalYearClosing);
+
+	/** Get Is Fiscal Year End Closing	  */
+	public boolean isFiscalYearClosing();
 
     /** Column name PostingType */
     public static final String COLUMNNAME_PostingType = "PostingType";
@@ -331,7 +340,7 @@ public interface I_GL_JournalBatch
 	  */
 	public int getReversal_ID();
 
-	public org.adempiere.core.domains.models.I_GL_JournalBatch getReversal() throws RuntimeException;
+	public I_GL_JournalBatch getReversal() throws RuntimeException;
 
     /** Column name TotalCr */
     public static final String COLUMNNAME_TotalCr = "TotalCr";

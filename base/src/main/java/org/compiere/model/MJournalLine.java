@@ -282,6 +282,12 @@ public class MJournalLine extends X_GL_JournalLine implements DocumentReversalLi
 			log.warning ("Account not found for C_ValidCombination_ID=" + getC_ValidCombination_ID());
 			return false;
 		}
+		MJournal journal = (MJournal) getGL_Journal();
+		if (journal.getGL_JournalBatch_ID() > 0 ){
+			MJournalBatch batch = (MJournalBatch) journal.getGL_JournalBatch();
+			if(batch.isFiscalYearClosing())
+				return false;
+		}
 		return accountElementValue.isDocControlled();
 	}	//	isDocControlled
 	
