@@ -569,6 +569,8 @@ public final class DB
         try
         {
             pstmt = prepareStatement(sql, null);
+			// Pefromance: Set the Maximum Rows to fetch to one.
+			pstmt.setMaxRows(1);
             rs = pstmt.executeQuery();
             if (rs.next())
                 version = rs.getString(1);
@@ -624,6 +626,8 @@ public final class DB
         try
         {
             pstmt = prepareStatement(sql, null);
+			// Pefromance: Set the Maximum Rows to fetch to one.
+			pstmt.setMaxRows(1);
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 buildDatabase = rs.getString(1);
@@ -1268,6 +1272,8 @@ public final class DB
     	{
     		pstmt = prepareStatement(sql, trxName);
     		setParameters(pstmt, params);
+			// Pefromance: Set the Maximum Rows to fetch to one.
+			pstmt.setMaxRows(1);
     		rs = pstmt.executeQuery();
     		if (rs.next())
     			retValue = rs.getInt(1);
@@ -1349,6 +1355,8 @@ public final class DB
     	{
     		pstmt = prepareStatement(sql, trxName);
     		setParameters(pstmt, params);
+			// Pefromance: Set the Maximum Rows to fetch to one.
+			pstmt.setMaxRows(1);
     		rs = pstmt.executeQuery();
     		if (rs.next())
     			retValue = rs.getString(1);
@@ -1476,6 +1484,8 @@ public final class DB
     	{
     		pstmt = prepareStatement(sql, trxName);
     		setParameters(pstmt, params);
+			// Pefromance: Set the Maximum Rows to fetch to one.
+			pstmt.setMaxRows(1);
     		rs = pstmt.executeQuery();
     		if (rs.next())
     			retValue = rs.getBigDecimal(1);
@@ -1559,6 +1569,8 @@ public final class DB
     	{
     		pstmt = prepareStatement(sql, trxName);
     		setParameters(pstmt, params);
+			// Pefromance: Set the Maximum Rows to fetch to one.
+			pstmt.setMaxRows(1);
     		rs = pstmt.executeQuery();
     		if (rs.next())
     			retValue = rs.getTimestamp(1);
@@ -1762,6 +1774,8 @@ public final class DB
         	try
         	{
         		pstmt = DB.prepareStatement (sql, null);
+				// Pefromance: Set the Maximum Rows to fetch to one.
+				pstmt.setMaxRows(1);
         		rs = pstmt.executeQuery ();
         		if (rs.next ())
         			isSOTrx = "Y".equals(rs.getString(1));
@@ -1792,6 +1806,8 @@ public final class DB
         		try
         		{
         			pstmt2 = DB.prepareStatement (sql, null);
+					// Pefromance: Set the Maximum Rows to fetch to one.
+					pstmt2.setMaxRows(1);
         			rs2 = pstmt2.executeQuery ();
         			if (rs2.next ())
         				isSOTrx = "Y".equals(rs2.getString(1));
