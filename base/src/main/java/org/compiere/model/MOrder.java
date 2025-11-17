@@ -1064,7 +1064,7 @@ public class MOrder extends X_C_Order implements DocAction
 			}
 		}
 		//	Set Default Drop Ship
-		if(newRecord || is_ValueChanged(COLUMNNAME_AD_Org_ID) || is_ValueChanged(COLUMNNAME_C_DocTypeTarget_ID)) {
+		if(newRecord || is_ValueChanged(COLUMNNAME_AD_Org_ID) || is_ValueChanged(COLUMNNAME_C_DocTypeTarget_ID) || is_ValueChanged(MProjectLine.COLUMNNAME_C_ProjectLine_ID)) {
 			MDropShipSetup dropShipSetup = MDropShipSetup.getSetupFromSalesOrder(this);
 			if(dropShipSetup != null) {
 				setDropShip_BPartner_ID(dropShipSetup.getDropShip_BPartner_ID());
@@ -1074,7 +1074,16 @@ public class MOrder extends X_C_Order implements DocAction
 				}
 				setIsDropShip(true);
 			}
+			if(get_ValueAsInt(MProjectLine.COLUMNNAME_C_ProjectLine_ID) > 0){
+				MProjectLine projectLine = new MProjectLine(getCtx(), get_ValueAsInt(MProjectLine.COLUMNNAME_C_ProjectLine_ID), get_TrxName());
+				if(projectLine.get_ValueAsBoolean(MOrder.COLUMNNAME_IsDropShip)){
+					setDropShip_BPartner_ID(projectLine.get_ValueAsInt(MOrder.COLUMNNAME_DropShip_BPartner_ID));
+					setDropShip_Location_ID(projectLine.get_ValueAsInt(MOrder.COLUMNNAME_DropShip_Location_ID));
+					setIsDropShip(true);
+				}
+			}
 		}
+
 
 		if (newRecord || is_ValueChanged(COLUMNNAME_C_DocTypeTarget_ID)) {
 			setIsManualDocument(getC_DocTypeTarget().isGenerateManualDocument());
@@ -2028,11 +2037,11 @@ public class MOrder extends X_C_Order implements DocAction
 		purchaseOrder.setSalesRep_ID(getSalesRep_ID());
 		purchaseOrder.setM_Warehouse_ID(getM_Warehouse_ID());
 		//	Set Vendor
-		MBPartner vendor = new MBPartner (getCtx(), dropShipSetup.getDropShip_BPartner_ID(), get_TrxName());
+		MBPartner vendor = new MBPartner (getCtx(), getDropShip_BPartner_ID(), get_TrxName());
 		purchaseOrder.setBPartner(vendor);
 		purchaseOrder.setIsDropShip(true);
-		purchaseOrder.setDropShip_BPartner_ID(dropShipSetup.getDropShip_BPartner_ID());
-		purchaseOrder.setDropShip_Location_ID(dropShipSetup.getDropShip_Location_ID());
+		purchaseOrder.setDropShip_BPartner_ID(getDropShip_BPartner_ID());
+		purchaseOrder.setDropShip_Location_ID(getDropShip_Location_ID());
 		if(dropShipSetup.getDropShip_User_ID() > 0) {
 			purchaseOrder.setDropShip_User_ID(dropShipSetup.getDropShip_User_ID());
 		}
