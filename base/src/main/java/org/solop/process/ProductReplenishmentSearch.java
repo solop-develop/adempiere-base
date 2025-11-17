@@ -24,6 +24,7 @@ import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.ReplenishInterface;
+import org.compiere.util.ReplenishInterface_V2;
 import org.compiere.util.Trx;
 
 import java.math.BigDecimal;
@@ -90,7 +91,11 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 					BigDecimal qto = null;
 					try {
 						MWarehouse warehouse = MWarehouse.get(getCtx(), replenish.getM_Warehouse_ID());
-						qto = custom.getQtyToOrder(warehouse, replenish);
+						if (ReplenishInterface_V2.class.isAssignableFrom(custom.getClass())){
+							qto = ((ReplenishInterface_V2)custom).getQtyToOrder(warehouse, replenish, this);
+						} else {
+							qto = custom.getQtyToOrder(warehouse, replenish);
+						}
 					} catch (Exception e) {
 						log.log(Level.SEVERE, custom.toString(), e);
 					}
@@ -131,7 +136,8 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				"C_BPartner_ID, " +
 				"Order_Min, " +
 				"Order_Pack, " +
-				"ReplenishmentClass) ");
+				"ReplenishmentClass," +
+				"DateTrx) ");
 
 		insertSql.append("SELECT " + getAD_PInstance_ID() + ", r.AD_Client_ID," +
 				"    r.AD_Org_ID," +
@@ -165,7 +171,8 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				"    r.C_BPartner_ID," +
 				"    r.Order_Min," +
 				"    r.Order_Pack, " +
-				"    r.ReplenishmentClass" +
+				"    r.ReplenishmentClass, " +
+				"    ?" +
 				" FROM (SELECT r.AD_Client_ID," +
 				"        r.AD_Org_ID," +
 				"        r.M_Product_ID," +
@@ -206,6 +213,8 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				"INNER JOIN M_Product p ON(p.M_Product_ID = r.M_Product_ID)");
 		//	Add Where Clause
 		insertSql.append(" WHERE r.M_Warehouse_ID = ?");
+
+		parameters.add(getDateTrx());
 		parameters.add(getWarehouseId());
 		//	Organization
 		if(getOrgId() > 0) {
