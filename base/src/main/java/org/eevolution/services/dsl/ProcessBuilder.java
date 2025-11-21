@@ -27,6 +27,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MPInstance;
 import org.compiere.model.MProcess;
+import org.compiere.print.MPrintFormat;
 import org.compiere.process.ProcessInfo;
 import org.compiere.process.ProcessInfoUtil;
 import org.compiere.util.ASyncProcess;
@@ -60,6 +61,7 @@ public class ProcessBuilder {
     private Integer seqNo;
     private Integer clientId;
     private Integer userId;
+    private Integer printFormatId;
     private MPInstance instance;
     private MProcess process;
     private ASyncProcess parent;
@@ -197,7 +199,10 @@ public class ProcessBuilder {
             processInfo.setAD_Client_ID(instance.getAD_Client_ID());
             processInfo.setAD_User_ID(instance.getAD_User_ID());
         }
-
+        if (printFormatId > 0) {
+            MPrintFormat printFormat = new MPrintFormat(Env.getCtx(), printFormatId, trxName);
+            processInfo.setTransientObject(printFormat);
+        }
         ProcessInfoUtil.setParameterFromDB(processInfo);
 
         //	FR [ 352 ]
@@ -365,6 +370,15 @@ public class ProcessBuilder {
         return this;
     }
 
+    /**
+     * Define Print Format for Report
+     * @param printFormatId
+     * @return
+     */
+    public ProcessBuilder withPrintFormatId(Integer printFormatId) {
+        this.printFormatId = printFormatId;
+        return this;
+    }
     /**
      * Define mutiples select record ids to be processed
      * @param selectedRecordsIds
