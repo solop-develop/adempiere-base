@@ -208,6 +208,15 @@ public interface I_C_DropShipSetup
 	/** Get Create PO Automatically	  */
 	public boolean isCreatePOAutomatically();
 
+    /** Column name IsDocumentBasedBPartner */
+    public static final String COLUMNNAME_IsDocumentBasedBPartner = "IsDocumentBasedBPartner";
+
+	/** Set Document Based Business Partner	  */
+	public void setIsDocumentBasedBPartner (boolean IsDocumentBasedBPartner);
+
+	/** Get Document Based Business Partner	  */
+	public boolean isDocumentBasedBPartner();
+
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
 
