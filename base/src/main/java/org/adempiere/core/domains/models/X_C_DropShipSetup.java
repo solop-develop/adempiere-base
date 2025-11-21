@@ -36,7 +36,7 @@ public class X_C_DropShipSetup extends PO implements I_C_DropShipSetup, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250818L;
+	private static final long serialVersionUID = 20251121L;
 
     /** Standard Constructor */
     public X_C_DropShipSetup (Properties ctx, int C_DropShipSetup_ID, String trxName)
@@ -289,6 +289,27 @@ public class X_C_DropShipSetup extends PO implements I_C_DropShipSetup, I_Persis
 	public boolean isCreatePOAutomatically () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsCreatePOAutomatically);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Document Based Business Partner.
+		@param IsDocumentBasedBPartner Document Based Business Partner	  */
+	public void setIsDocumentBasedBPartner (boolean IsDocumentBasedBPartner)
+	{
+		set_Value (COLUMNNAME_IsDocumentBasedBPartner, Boolean.valueOf(IsDocumentBasedBPartner));
+	}
+
+	/** Get Document Based Business Partner.
+		@return Document Based Business Partner	  */
+	public boolean isDocumentBasedBPartner () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsDocumentBasedBPartner);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
