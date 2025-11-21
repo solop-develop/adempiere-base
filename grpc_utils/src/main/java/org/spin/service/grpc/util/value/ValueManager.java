@@ -446,10 +446,12 @@ public class ValueManager {
 		return TimeManager.getProtoTimestampFromTimestamp(value);
 	}
 	/**
+	 * @deprecated Use {@link TimeManager#getProtoTimestampFromTimestamp(Value)} instead.
 	 * Get google.protobuf.Timestamp from Timestamp
 	 * @param dateValue
 	 * @return com.google.protobuf.Timestamp
 	 */
+	@Deprecated
 	public static com.google.protobuf.Timestamp getProtoTimestampFromTimestamp(Timestamp dateValue) {
 		return TimeManager.getProtoTimestampFromTimestamp(dateValue);
 	}
@@ -461,6 +463,16 @@ public class ValueManager {
 	@Deprecated
 	public static Timestamp getTimestampFromProtoTimestamp(com.google.protobuf.Timestamp dateValue) {
 		return TimeManager.getTimestampFromProtoTimestamp(dateValue);
+	}
+	/**
+	 * Get google.protobuf.Timestamp from Timestamp
+	 * @deprecated Use {@link TimeManager#getProtoTimestampFromTimestamp(Timestamp)} instead.
+	 * @param dateValue
+	 * @return com.google.protobuf.Timestamp
+	 */
+	@Deprecated
+	public static com.google.protobuf.Timestamp getTimestampFromDate(Timestamp dateValue) {
+		return TimeManager.getProtoTimestampFromTimestamp(dateValue);
 	}
 
 
