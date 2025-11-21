@@ -90,6 +90,7 @@ public class ProcessBuilder {
         this.parent = null;
         this.selectedRecordsIds = new ArrayList<>();
         this.tableSelectionId = 0;
+        this.printFormatId = 0;
         this.thisBuilder = this;
     }
 
