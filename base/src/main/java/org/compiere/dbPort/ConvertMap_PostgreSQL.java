@@ -20,19 +20,19 @@ import java.util.TreeMap;
  * 		Add support to ROWNUM as LIMIT and OFFSET
  */
 public final class ConvertMap_PostgreSQL {
-	private static TreeMap<String,String>  s_pg = new TreeMap<String,String>();
-	
+	private static TreeMap<String, String> s_pg = new TreeMap<String,String>();
+
 	/**
 	 *  Return Map for PostgreSQL
 	 *  @return TreeMap with pattern as key and the replacement as value
 	 */
-	public static TreeMap getConvertMap()
+	public static TreeMap<String, String> getConvertMap()
 	{
 		if (s_pg.size() == 0)
 			initConvertMap();
 		return s_pg;
 	}   //  getConvertMap
-	
+
 	/**
 	 *  PostgreSQL Init
 	 */
@@ -107,5 +107,5 @@ public final class ConvertMap_PostgreSQL {
 		s_pg.put("\\bINCREMENT BY\\b",          "INCREMENT");
 
 	}   //  initPostgreSQL
-	
+
 }

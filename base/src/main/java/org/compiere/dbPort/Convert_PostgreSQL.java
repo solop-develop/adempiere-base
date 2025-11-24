@@ -53,7 +53,7 @@ public class Convert_PostgreSQL extends Convert_SQL92 {
 	/** RegEx: insensitive and dot to include line end characters */
 	public static final int REGEX_FLAGS = Pattern.CASE_INSENSITIVE | Pattern.DOTALL;
 
-	private TreeMap m_map;
+	private TreeMap<String, String> m_map;
 
 	/** Logger */
 	private static CLogger log = CLogger.getCLogger(Convert_PostgreSQL.class);
@@ -70,7 +70,7 @@ public class Convert_PostgreSQL extends Convert_SQL92 {
 	} // isOracle
 	
 	@Override
-	protected Map getConvertMap() {
+	protected Map<String, String> getConvertMap() {
 		return m_map;
 	}
 
@@ -149,10 +149,10 @@ public class Convert_PostgreSQL extends Convert_SQL92 {
 		}
 		if (retVars.size() > 0) {
 			statement = recoverQuotedStrings(statement, retVars);
-			// recoverQuotedStrings add "limit" on column name and reserved word on pagination
-			if (cmpString.indexOf("LIMIT") != -1) {
-				statement = convertLimit(statement);
-			}
+		}
+		// recoverQuotedStrings add "limit" on column name and reserved word on pagination
+		if (cmpString.indexOf("LIMIT") != -1) {
+			statement = convertLimit(statement);
 		}
 		result.add(statement);
 		
@@ -198,7 +198,6 @@ public class Convert_PostgreSQL extends Convert_SQL92 {
 	 */
 	protected String convertComplexStatement(String sqlStatement) {
 		String retValue = sqlStatement;
-		StringBuffer sb = null;
 
 		// Convert all decode parts
 		int found = retValue.toUpperCase().indexOf("DECODE"); 
