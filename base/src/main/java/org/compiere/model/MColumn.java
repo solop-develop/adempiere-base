@@ -581,13 +581,10 @@ public class MColumn extends X_AD_Column
 					sql.append(" CHECK (").append(getColumnName()).append(" IN ('Y','N'))");
 			sql.append(DB.SQLSTATEMENT_SEPARATOR);
 			boolean isOracle = DB.isOracle();
-			String alterColumn= isOracle?" MODIFY " : " ALTER COLUMN ";
-			String setColumnData = isOracle? "": " SET";
-			String setColumnDataType = isOracle?"":" TYPE ";
-			String setUsing = isOracle?"": " USING " + getColumnName()+"::" + getSQLDataType();
+			String alterColumn= isOracle ? " MODIFY " : " ALTER COLUMN ";
+			String setColumnData = isOracle ?  "": " SET";
 			//  Set the default value for new records
 			String defaultValue = getDefaultValueSQL();
-			//TODO: Add Alter Column for Data Type
 			sql.append("ALTER TABLE ")
 			.append(table.getTableName())
 			.append(alterColumn).append(getColumnName())
@@ -711,7 +708,9 @@ public class MColumn extends X_AD_Column
 	 */
 	public String getSQLModify (MTable table, String oldColumnName, boolean setNullOption)
 	{
-
+		if (getColumnName().equals("A_Depreciation_Calc_Type")){
+			System.out.println("TEST");
+		}
 		StringBuffer sql = new StringBuffer();
 		if (oldColumnName != null) {
 			// Rename the column in the database
