@@ -16,7 +16,18 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_InvoiceLine;
+import org.adempiere.core.domains.models.I_C_InvoiceTax;
+import org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan;
+import org.adempiere.core.domains.models.I_PP_Product_Planning;
+import org.adempiere.core.domains.models.I_WM_InOutBoundLine;
+import org.adempiere.core.domains.models.X_C_Bank;
+import org.adempiere.core.domains.models.X_C_Invoice;
+import org.adempiere.core.domains.models.X_C_Payment;
+import org.adempiere.core.domains.models.X_PP_Product_BOM;
+import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
+import org.adempiere.core.domains.models.X_PP_Product_Planning;
+import org.adempiere.core.domains.models.X_WM_InOutBoundLine;
 import org.adempiere.engine.CostEngineFactory;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoAddressException;
@@ -26,7 +37,13 @@ import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
 import org.compiere.process.DocumentReversalEnabled;
-import org.compiere.util.*;
+import org.compiere.util.CCache;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.compiere.util.TimeUtil;
+import org.compiere.util.Util;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 import org.solop.util.AllocationManager;
 
@@ -36,7 +53,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -994,6 +1016,11 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					setDocumentNo(order.getManualInvoiceDocumentNo());
 				}
 			}
+		}
+
+		if(newRecord || is_ValueChanged(COLUMNNAME_M_PriceList_ID)) {
+			MPriceList priceList = (MPriceList) getM_PriceList();
+			setIsTaxIncluded(priceList.isTaxIncluded());
 		}
 
 		return true;

@@ -20,6 +20,8 @@ package org.solop.process;
 
 import org.compiere.process.SvrProcess;
 
+import java.sql.Timestamp;
+
 /** Generated Process for (Product Replenishment Search)
  *  @author ADempiere (generated) 
  *  @version Release 3.9.4
@@ -65,6 +67,8 @@ public abstract class ProductReplenishmentSearchAbstract extends SvrProcess {
 	public static final String M_PURCHASE_GROUP_ID = "M_Purchase_Group_ID";
 	/**	Parameter Name for Sales Group	*/
 	public static final String M_SALES_GROUP_ID = "M_Sales_Group_ID";
+	/**	Parameter Name for Transaction Date	*/
+	public static final String DATETRX = "DateTrx";
 	/**	Parameter Value for Organization	*/
 	private int orgId;
 	/**	Parameter Value for Warehouse	*/
@@ -99,6 +103,10 @@ public abstract class ProductReplenishmentSearchAbstract extends SvrProcess {
 	private int purchaseGroupId;
 	/**	Parameter Value for Sales Group	*/
 	private int salesGroupId;
+	/**	Parameter Value for Transaction Date	*/
+	private Timestamp dateTrx;
+	/**	Parameter Value for Transaction Date(To)	*/
+	private Timestamp dateTrxTo;
 
 	@Override
 	protected void prepare() {
@@ -119,6 +127,8 @@ public abstract class ProductReplenishmentSearchAbstract extends SvrProcess {
 		productGroupId = getParameterAsInt(M_PRODUCT_GROUP_ID);
 		purchaseGroupId = getParameterAsInt(M_PURCHASE_GROUP_ID);
 		salesGroupId = getParameterAsInt(M_SALES_GROUP_ID);
+		dateTrx = getParameterAsTimestamp(DATETRX);
+		dateTrxTo = getParameterToAsTimestamp(DATETRX);
 	}
 
 	/**	 Getter Parameter Value for Organization	*/
@@ -289,6 +299,26 @@ public abstract class ProductReplenishmentSearchAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Sales Group	*/
 	protected void setSalesGroupId(int salesGroupId) {
 		this.salesGroupId = salesGroupId;
+	}
+
+	/**	 Getter Parameter Value for Transaction Date	*/
+	protected Timestamp getDateTrx() {
+		return dateTrx;
+	}
+
+	/**	 Setter Parameter Value for Transaction Date	*/
+	protected void setDateTrx(Timestamp dateTrx) {
+		this.dateTrx = dateTrx;
+	}
+
+	/**	 Getter Parameter Value for Transaction Date(To)	*/
+	protected Timestamp getDateTrxTo() {
+		return dateTrxTo;
+	}
+
+	/**	 Setter Parameter Value for Transaction Date(To)	*/
+	protected void setDateTrxTo(Timestamp dateTrxTo) {
+		this.dateTrxTo = dateTrxTo;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

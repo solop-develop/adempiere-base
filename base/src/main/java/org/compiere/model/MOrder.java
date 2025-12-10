@@ -16,7 +16,17 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_Invoice;
+import org.adempiere.core.domains.models.I_C_OrderLine;
+import org.adempiere.core.domains.models.I_C_OrderTax;
+import org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan;
+import org.adempiere.core.domains.models.I_M_InOut;
+import org.adempiere.core.domains.models.I_M_RMA;
+import org.adempiere.core.domains.models.I_PP_Product_Planning;
+import org.adempiere.core.domains.models.X_C_Order;
+import org.adempiere.core.domains.models.X_PP_Product_BOM;
+import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
+import org.adempiere.core.domains.models.X_PP_Product_Planning;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoBillToAddressException;
 import org.adempiere.exceptions.BPartnerNoShipToAddressException;
@@ -24,7 +34,11 @@ import org.adempiere.exceptions.FillMandatoryException;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
-import org.compiere.util.*;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.compiere.util.TimeUtil;
+import org.compiere.util.Util;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -33,7 +47,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -1064,17 +1082,29 @@ public class MOrder extends X_C_Order implements DocAction
 			}
 		}
 		//	Set Default Drop Ship
-		if(newRecord || is_ValueChanged(COLUMNNAME_AD_Org_ID) || is_ValueChanged(COLUMNNAME_C_DocTypeTarget_ID)) {
+		if(newRecord || is_ValueChanged(COLUMNNAME_AD_Org_ID) || is_ValueChanged(COLUMNNAME_C_DocTypeTarget_ID)
+			|| is_ValueChanged(MProjectLine.COLUMNNAME_C_ProjectLine_ID)) {
 			MDropShipSetup dropShipSetup = MDropShipSetup.getSetupFromSalesOrder(this);
 			if(dropShipSetup != null) {
-				setDropShip_BPartner_ID(dropShipSetup.getDropShip_BPartner_ID());
-				setDropShip_Location_ID(dropShipSetup.getDropShip_Location_ID());
+				setIsDropShip(true);
 				if(dropShipSetup.getDropShip_User_ID() > 0) {
 					setDropShip_User_ID(dropShipSetup.getDropShip_User_ID());
 				}
-				setIsDropShip(true);
+				if (dropShipSetup.isDocumentBasedBPartner()){
+					if(get_ValueAsInt(MProjectLine.COLUMNNAME_C_ProjectLine_ID) > 0){
+						MProjectLine projectLine = new MProjectLine(getCtx(), get_ValueAsInt(MProjectLine.COLUMNNAME_C_ProjectLine_ID), get_TrxName());
+						if(projectLine.get_ValueAsBoolean(MOrder.COLUMNNAME_IsDropShip)){
+							setDropShip_BPartner_ID(projectLine.get_ValueAsInt(MOrder.COLUMNNAME_DropShip_BPartner_ID));
+							setDropShip_Location_ID(projectLine.get_ValueAsInt(MOrder.COLUMNNAME_DropShip_Location_ID));
+						}
+					}
+				} else {
+					setDropShip_BPartner_ID(dropShipSetup.getDropShip_BPartner_ID());
+					setDropShip_Location_ID(dropShipSetup.getDropShip_Location_ID());
+				}
 			}
 		}
+
 
 		if (newRecord || is_ValueChanged(COLUMNNAME_C_DocTypeTarget_ID)) {
 			setIsManualDocument(getC_DocTypeTarget().isGenerateManualDocument());
@@ -2017,6 +2047,9 @@ public class MOrder extends X_C_Order implements DocAction
 		if(dropShipSetup == null || !dropShipSetup.isCreatePOAutomatically()) {
 			return;
 		}
+		if (getDropShip_BPartner_ID() <= 0) {
+			throw new AdempiereException("@DropShip_BPartner_ID@ @NotFound@");
+		}
 		MOrder purchaseOrder = new MOrder (getCtx(), 0, get_TrxName());
 		purchaseOrder.setClientOrg(getAD_Client_ID(), getAD_Org_ID());
 		purchaseOrder.setIsSOTrx(false);
@@ -2028,11 +2061,11 @@ public class MOrder extends X_C_Order implements DocAction
 		purchaseOrder.setSalesRep_ID(getSalesRep_ID());
 		purchaseOrder.setM_Warehouse_ID(getM_Warehouse_ID());
 		//	Set Vendor
-		MBPartner vendor = new MBPartner (getCtx(), dropShipSetup.getDropShip_BPartner_ID(), get_TrxName());
+		MBPartner vendor = new MBPartner (getCtx(), getDropShip_BPartner_ID(), get_TrxName());
 		purchaseOrder.setBPartner(vendor);
 		purchaseOrder.setIsDropShip(true);
-		purchaseOrder.setDropShip_BPartner_ID(dropShipSetup.getDropShip_BPartner_ID());
-		purchaseOrder.setDropShip_Location_ID(dropShipSetup.getDropShip_Location_ID());
+		purchaseOrder.setDropShip_BPartner_ID(getDropShip_BPartner_ID());
+		purchaseOrder.setDropShip_Location_ID(getDropShip_Location_ID());
 		if(dropShipSetup.getDropShip_User_ID() > 0) {
 			purchaseOrder.setDropShip_User_ID(dropShipSetup.getDropShip_User_ID());
 		}

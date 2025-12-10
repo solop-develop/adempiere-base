@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="WHH" Name="070 Fix Currency In SB_GenerateWithholding" ReleaseNo="" SeqNo="70">
+    <Comments>https://github.com/solop-develop/adempiere-solop/issues/1944</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="69487" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57971" Column="AD_View_Column_ID" oldValue="70325">72852</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
