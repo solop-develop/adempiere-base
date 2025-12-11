@@ -188,7 +188,7 @@ public class WithholdingGenerate extends WithholdingGenerateAbstract {
 															&& wh.getC_ConversionType_ID() == Curr_C_ConversionType_ID.get())
 								.findFirst();
 
-			if (!withholldingDoc.isPresent() || !getParameterAsBoolean("ConsolidateDocument")) 
+			if (!withholldingDoc.isPresent() || !isConsolidateDocument()) 
 				withholldingDoc = Optional.ofNullable(new Withholding(withholding.getWH_Definition_ID(), 
 																		withholding.getWH_Setting_ID(), 
 																		withholding.getC_BPartner_ID(), 
@@ -197,7 +197,7 @@ public class WithholdingGenerate extends WithholdingGenerateAbstract {
 																		this));
 			
 			withholldingDoc.ifPresent(whDocument->{
-				if (!whDocument.getInvoice().isPresent() || !getParameterAsBoolean("ConsolidateDocument")) {
+				if (!whDocument.getInvoice().isPresent() || !isConsolidateDocument()) {
 					MInvoice invoice = new MInvoice(getCtx(), 0, get_TrxName());
 					invoiceTo.set(Optional.ofNullable(invoice));
 					whDocument.setInvoice(invoice);
