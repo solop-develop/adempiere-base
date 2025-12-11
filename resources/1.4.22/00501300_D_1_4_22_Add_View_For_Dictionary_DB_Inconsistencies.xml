@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_View_For_Dictionary_DB_Inconsistencies" ReleaseNo="1.4.22" SeqNo="501300">
+    <Comments>Add view DictionaryInconsistency Dictionary-Database Inconsistencies</Comments>
+    <Step DBType="Postgres" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW DictionaryInconsistency AS
+        SELECT db.DB_ElementType,
+        db.DB_ElementName,
+        db.DB_Element_ID,
+        db.DB_InconsistencyType FROM
+        (SELECT -- Check for physical Tables that do not exist in DataBase
+        'TA' AS DB_ElementType,
+        t.TableName AS DB_ElementName,
+        t.AD_Table_ID AS DB_Element_ID,
+        'MT' as DB_InconsistencyType
+        FROM AD_Table t
+        WHERE t.IsActive = 'Y'
+        AND t.IsView = 'N'
+        AND NOT EXISTS (
+        SELECT 1 FROM pg_tables pt
+        WHERE LOWER(pt.TableName) = LOWER(t.TableName)
+        AND pt.SchemaName = 'adempiere'
+        )
+        UNION ALL -- Check for physical columns that exist but may have different data TYPES
+        SELECT
+        'CO' AS DB_ElementType,
+        c.ColumnName AS DB_ElementName,
+        c.AD_Column_ID AS DB_Element_ID,
+        CASE
+        WHEN pc.data_type IS NULL THEN 'NE'
+        WHEN (
+        (c.AD_Reference_ID IN (11, 12, 13, 18,19,22,29, 30) AND pc.data_type NOT IN ('numeric', 'decimal', 'integer', 'bigint'))
+        OR (c.AD_Reference_ID IN  (10,17, 20,14,17, 34, 36, 38,39,40,42,53670) AND pc.data_type NOT IN ('character varying', 'text', 'varchar', 'character'))
+        OR (c.AD_Reference_ID IN (15,16,24) AND pc.data_type NOT IN ('date', 'timestamp', 'timestamptz', 'timestamp without time zone', 'timestamp with time zone'))
+        OR (c.AD_Reference_ID = 23 AND pc.data_type NOT IN ('bytea'))
+        OR (c.AD_Reference_ID = 25 AND (c.ColumnName LIKE '%_Acct' OR  c.ColumnName LIKE '%_ID') AND pc.data_type NOT IN ('numeric', 'decimal', 'integer', 'bigint'))
+        OR (c.AD_Reference_ID = 25 AND  c.ColumnName NOT LIKE '%_Acct' AND c.ColumnName NOT LIKE '%_ID' AND pc.data_type NOT IN ('character varying', 'text', 'varchar', 'character'))
+        OR (c.AD_Reference_ID = 28 AND c.ColumnName LIKE '%_ID' AND pc.data_type NOT IN ('numeric', 'decimal', 'integer', 'bigint'))
+        OR (c.AD_Reference_ID = 28 AND c.ColumnName NOT LIKE '%_ID' AND pc.data_type NOT IN ('character varying', 'text', 'varchar', 'character'))
+        ) THEN 'TD'
+        WHEN (
+        (c.DefaultValue NOT LIKE '@SQL%' AND c.DefaultValue NOT LIKE '@%@' AND '-1' NOT LIKE TRIM(C.DefaultValue) AND pc.Column_Default NOT LIKE '%'||c.DefaultValue||'%')
+        OR (C.DefaultValue = TRIM('-1') AND pc.Column_Default NOT LIKE '%NULL%')
+        ) THEN  'DD'
+        ELSE 'OK'
+        END as DB_InconsistencyType
+        FROM AD_Table t
+        JOIN AD_Column c ON t.AD_Table_ID = c.AD_Table_ID
+        LEFT JOIN information_schema.columns pc
+        ON LOWER(pc.Table_Name) = LOWER(t.TableName)
+        AND LOWER(pc.Column_Name) = LOWER(c.ColumnName)
+        AND pc.Table_Schema = 'adempiere'
+        WHERE t.IsActive = 'Y'
+        AND t.IsView = 'N'
+        AND c.IsActive = 'Y'
+        AND (c.ColumnSQL IS NULL OR c.ColumnSQL = '')
+        AND EXISTS (
+        SELECT 1 FROM pg_tables pt
+        WHERE LOWER(pt.TableName) = LOWER(t.TableName)
+        AND pt.SchemaName = 'adempiere'
+        )
+        AND c.ColumnName NOT IN ('AD_Language', 'EntityType')
+        AND LOWER(t.TableName) NOT IN('T_selection_browse', 't_selection', 't_selection2', 't_sp036_CopyReference', 't_alter_column', 't_sp036_copyreference')
+        ORDER BY DB_InconsistencyType, DB_ElementType, DB_Element_ID
+        ) AS db
+        WHERE db.DB_InconsistencyType &lt;&gt; 'OK';
+      </SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS DictionaryInconsistency;
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
