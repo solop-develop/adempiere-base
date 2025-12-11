@@ -16,6 +16,14 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_GL_JournalBatch;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -25,14 +33,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.X_GL_JournalBatch;
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.process.DocAction;
-import org.compiere.process.DocumentEngine;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
 
 /**
  *  Journal Batch Model
@@ -100,7 +100,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction
 	 *	@param GL_JournalBatch_ID id if 0 - create actual batch
 	 *	@param trxName transaction
 	 */
-	public MJournalBatch (Properties ctx, int GL_JournalBatch_ID, String trxName)
+	public MJournalBatch(Properties ctx, int GL_JournalBatch_ID, String trxName)
 	{
 		super (ctx, GL_JournalBatch_ID, trxName);
 		if (GL_JournalBatch_ID == 0)
@@ -126,7 +126,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MJournalBatch (Properties ctx, ResultSet rs, String trxName)
+	public MJournalBatch(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MJournalBatch
@@ -136,7 +136,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction
 	 * 	Dos not copy: Dates/Period
 	 *	@param original original
 	 */
-	public MJournalBatch (MJournalBatch original)
+	public MJournalBatch(MJournalBatch original)
 	{
 		this (original.getCtx(), 0, original.get_TrxName());
 		setClientOrg(original);
@@ -270,6 +270,22 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction
 		return count + lineCount;
 	}	//	copyLinesFrom
 
+
+	/**************************************************************************
+	 * 	Before Save
+	 *	@param newRecord new
+	 *	@return save
+	 */
+	protected boolean beforeSave (boolean newRecord)
+	{
+		if (getC_Period_ID() <= 0) {
+			MPeriod period = MPeriod.get(getCtx(), getDateAcct(), getAD_Org_ID(), get_TrxName());
+			if (period != null && period.get_ID() > 0){
+				setC_Period_ID(period.get_ID());
+			}
+		}
+		return true;
+	}	//	beforeSave
 	
 	/**************************************************************************
 	 * 	Process document
