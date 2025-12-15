@@ -36,7 +36,7 @@ public class X_AD_Scheduler extends PO implements I_AD_Scheduler, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251211L;
+	private static final long serialVersionUID = 20251215L;
 
     /** Standard Constructor */
     public X_AD_Scheduler (Properties ctx, int AD_Scheduler_ID, String trxName)
@@ -318,6 +318,27 @@ public class X_AD_Scheduler extends PO implements I_AD_Scheduler, I_Persistent
 		return (String)get_Value(COLUMNNAME_FrequencyType);
 	}
 
+	/** Set Allows Multi Running.
+		@param IsAllowMultiRunning Allows Multi Running	  */
+	public void setIsAllowMultiRunning (boolean IsAllowMultiRunning)
+	{
+		set_Value (COLUMNNAME_IsAllowMultiRunning, Boolean.valueOf(IsAllowMultiRunning));
+	}
+
+	/** Get Allows Multi Running.
+		@return Allows Multi Running	  */
+	public boolean isAllowMultiRunning () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsAllowMultiRunning);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Ignore Processing Time.
 		@param IsIgnoreProcessingTime 
 		Do not include processing time for the DateNextRun calculation
@@ -333,6 +354,27 @@ public class X_AD_Scheduler extends PO implements I_AD_Scheduler, I_Persistent
 	public boolean isIgnoreProcessingTime () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsIgnoreProcessingTime);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Notify Supervisor On Error.
+		@param IsNotifySupervisorOnError Notify Supervisor On Error	  */
+	public void setIsNotifySupervisorOnError (boolean IsNotifySupervisorOnError)
+	{
+		set_Value (COLUMNNAME_IsNotifySupervisorOnError, Boolean.valueOf(IsNotifySupervisorOnError));
+	}
+
+	/** Get Notify Supervisor On Error.
+		@return Notify Supervisor On Error	  */
+	public boolean isNotifySupervisorOnError () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsNotifySupervisorOnError);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
