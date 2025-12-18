@@ -16,13 +16,28 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_BankStatementLine;
+import org.adempiere.core.domains.models.I_C_Payment;
+import org.adempiere.core.domains.models.X_C_BPartner;
+import org.adempiere.core.domains.models.X_C_DocType;
+import org.adempiere.core.domains.models.X_C_Order;
+import org.adempiere.core.domains.models.X_C_Payment;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.interfaces.PaymentProcessorReverse;
 import org.compiere.interfaces.PaymentProcessorStatus;
-import org.compiere.process.*;
-import org.compiere.util.*;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.process.DocumentReversalEnabled;
+import org.compiere.process.ProcessCall;
+import org.compiere.process.ProcessInfo;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.compiere.util.Trx;
+import org.compiere.util.Util;
+import org.compiere.util.ValueNamePair;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -30,7 +45,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -716,6 +736,12 @@ public final class MPayment extends X_C_Payment
 			MBankAccount ba = MBankAccount.get(getCtx(), getC_BankAccount_ID());
 			if (ba.getAD_Org_ID() != 0)
 				setAD_Org_ID(ba.getAD_Org_ID());
+		}
+		if (newRecord || is_ValueChanged(COLUMNNAME_C_BankAccount_ID) || is_ValueChanged(COLUMNNAME_C_Currency_ID)) {
+			MBankAccount bankAccount = MBankAccount.get(getCtx(), getC_BankAccount_ID());
+			if (bankAccount.isDefaultCurrency() && getC_Currency_ID() != bankAccount.getC_Currency_ID()) {
+				setC_Currency_ID(bankAccount.getC_Currency_ID());
+			}
 		}
 		
 		// [ adempiere-Bugs-1885417 ] Validate BP on Payment Prepare or BeforeSave
