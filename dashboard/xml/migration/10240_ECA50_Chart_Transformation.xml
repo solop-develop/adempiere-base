@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA50" Name="Dashboard Examples" ReleaseNo="1.0" SeqNo="10240">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53058" Action="I" Record_ID="50373" Table="AD_Rule">
+        <Data AD_Column_ID="54241" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="54242" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="54248" Column="AD_Rule_ID">50373</Data>
+        <Data AD_Column_ID="54256" Column="AccessLevel" isNewNull="true"/>
+        <Data AD_Column_ID="54243" Column="Created">2023-04-25 10:25:09.491</Data>
+        <Data AD_Column_ID="54244" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="54245" Column="Description">Chart Line Type</Data>
+        <Data AD_Column_ID="54253" Column="EntityType">ECA50</Data>
+        <Data AD_Column_ID="54255" Column="EventType">X</Data>
+        <Data AD_Column_ID="54246" Column="Help">Return chart transformation to Apache ECharts. See https://echarts.apache.org</Data>
+        <Data AD_Column_ID="54247" Column="IsActive">true</Data>
+        <Data AD_Column_ID="99034" Column="IsRuleClassGenerated">false</Data>
+        <Data AD_Column_ID="54249" Column="Name">Example Chart Line Type</Data>
+        <Data AD_Column_ID="54254" Column="RuleType">A</Data>
+        <Data AD_Column_ID="54257" Column="Script">// Chart Line Type
+const xAxisValues = []
+let seriesToShow = []
+let legendToShow = []
+const allData = data.series
+const dataSet = data.series.map(b =&gt; b.data_set)
+const allDataValue = dataSet.map(currentSet =&gt; {
+  return currentSet.map(data =&gt; data)
+})
+allData.forEach(serie =&gt; {
+  serie.data_set.forEach(set =&gt; {
+    if (!xAxisValues.find(value =&gt; value === set.name)) {
+      xAxisValues.push(set.name)
+    }
+  })
+})
+
+const listSerie = allData.map((currentData, key) =&gt; {
+  return {
+    name: currentData.name,
+    stack: 'vistors',
+    barWidth: '60%',
+    data: allDataValue[key],
+    smooth: true,
+    type: 'line',
+    animationEasing: 'quadraticOut',
+    lineStyle: {
+      width: 2
+    }
+  }
+})
+
+return {
+  xAxis: {
+    data: xAxisValues,
+    boundaryGap: false,
+    axisTick: {
+      show: false
+    }
+  },
+  toolbox: {
+    feature: {
+      magicType: {
+        type: ['stack', 'tiled']
+      },
+      dataView: {},
+      saveAsImage: {
+        pixelRatio: 2
+      }
+    }
+  },
+  grid: {
+    left: 10,
+    right: 10,
+    bottom: 20,
+    top: 30,
+    containLabel: true
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    backgroundColor: '#FFF',
+    labelTextColor: {
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    bodyColor: '#5eff00'
+  },
+  yAxis: {
+    axisTick: {
+      show: false
+    }
+  },
+  legend: {
+    data: data.series.map(legendName =&gt; { return legendName.name })
+  },
+  series: listSerie
+}
+</Data>
+        <Data AD_Column_ID="84411" Column="UUID">b95075fb-7850-4852-bc33-589566b94ea5</Data>
+        <Data AD_Column_ID="54250" Column="Updated">2023-04-25 10:25:09.491</Data>
+        <Data AD_Column_ID="54251" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="54252" Column="Value">Example_Chart_Line_Type</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53058" Action="I" Record_ID="50374" Table="AD_Rule">
+        <Data AD_Column_ID="54241" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="54242" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="54248" Column="AD_Rule_ID">50374</Data>
+        <Data AD_Column_ID="54256" Column="AccessLevel" isNewNull="true"/>
+        <Data AD_Column_ID="54243" Column="Created">2023-04-25 10:27:58.474</Data>
+        <Data AD_Column_ID="54244" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="54245" Column="Description">Chart Cascade Type</Data>
+        <Data AD_Column_ID="54253" Column="EntityType">ECA50</Data>
+        <Data AD_Column_ID="54255" Column="EventType">X</Data>
+        <Data AD_Column_ID="54246" Column="Help">Return chart transformation to Apache ECharts. See https://echarts.apache.org</Data>
+        <Data AD_Column_ID="54247" Column="IsActive">true</Data>
+        <Data AD_Column_ID="99034" Column="IsRuleClassGenerated">false</Data>
+        <Data AD_Column_ID="54249" Column="Name">Example Chart Cascade Type</Data>
+        <Data AD_Column_ID="54254" Column="RuleType">A</Data>
+        <Data AD_Column_ID="54257" Column="Script">// Chart Cascade Type
+const xAxisValues = []
+let seriesToShow = []
+let legendToShow = []
+const allData = data.series
+const dataSet = data.series.map(b =&gt; b.data_set)
+const allDataValue = dataSet.map(currentSet =&gt; {
+  return currentSet.map(data =&gt; data)
+})
+allData.forEach(serie =&gt; {
+  serie.data_set.forEach(set =&gt; {
+    if (!xAxisValues.find(value =&gt; value === set.name)) {
+      xAxisValues.push(set.name)
+    }
+  })
+})
+
+const listSerie = allData.map((currentData, key) =&gt; {
+  return {
+    name: currentData.name,
+    stack: 'vistors',
+    barWidth: '60%',
+    data: allDataValue[key],
+    type: 'line',
+    smooth: 0.1,
+      symbol: 'none',
+      lineStyle: {
+        width: 0
+    },
+    markLine: {
+      label: { show: true },
+    },
+    areaStyle: {},
+  }
+})
+
+return {
+  xAxis: {
+    data: xAxisValues,
+    boundaryGap: false,
+    axisTick: {
+      show: false
+    }
+  },
+  toolbox: {
+    // y: 'bottom',
+    feature: {
+      magicType: {
+        type: ['stack', 'tiled']
+      },
+      dataView: {},
+      saveAsImage: {
+        pixelRatio: 2
+      }
+    }
+  },
+  grid: {
+    left: 10,
+    right: 10,
+    bottom: 20,
+    top: 30,
+    containLabel: true
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    backgroundColor: '#FFF',
+    labelTextColor: {
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    bodyColor: '#5eff00'
+  },
+  yAxis: {
+    type: 'value',
+    axisTick: {
+      show: true
+    },
+    boundaryGap: [0, '100%']
+  },
+  legend: {
+    data: data.series.map(legendName =&gt; { return legendName.name })
+  },
+  series: listSerie
+}
+</Data>
+        <Data AD_Column_ID="84411" Column="UUID">3a549ff1-64ef-4a91-8f96-48f7c184240c</Data>
+        <Data AD_Column_ID="54250" Column="Updated">2023-04-25 10:27:58.474</Data>
+        <Data AD_Column_ID="54251" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="54252" Column="Value">Example_Chart_Cascade_Type</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="53058" Action="I" Record_ID="50375" Table="AD_Rule">
+        <Data AD_Column_ID="54241" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="54242" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="54248" Column="AD_Rule_ID">50375</Data>
+        <Data AD_Column_ID="54256" Column="AccessLevel" isNewNull="true"/>
+        <Data AD_Column_ID="54243" Column="Created">2023-04-25 10:28:54.855</Data>
+        <Data AD_Column_ID="54244" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="54245" Column="Description">Chart Bar Type</Data>
+        <Data AD_Column_ID="54253" Column="EntityType">ECA50</Data>
+        <Data AD_Column_ID="54255" Column="EventType">X</Data>
+        <Data AD_Column_ID="54246" Column="Help">Return chart transformation to Apache ECharts. See https://echarts.apache.org</Data>
+        <Data AD_Column_ID="54247" Column="IsActive">true</Data>
+        <Data AD_Column_ID="99034" Column="IsRuleClassGenerated">false</Data>
+        <Data AD_Column_ID="54249" Column="Name">Example Chart Bar Type</Data>
+        <Data AD_Column_ID="54254" Column="RuleType">A</Data>
+        <Data AD_Column_ID="54257" Column="Script">// Chart Bar Type
+const xAxisValues = []
+const allData = data.series
+const dataSet = data.series.map(b =&gt; b.data_set)
+const allDataValue = dataSet.map(currentSet =&gt; {
+  return currentSet.map(data =&gt; data)
+})
+allData.forEach(serie =&gt; {
+  serie.data_set.forEach(set =&gt; {
+    if (!xAxisValues.find(value =&gt; value === set.name)) {
+      xAxisValues.push(set.name)
+    }
+  })
+})
+
+const listSerie = allData.map((currentData, key) =&gt; {
+  return {
+    name: currentData.name,
+    stack: 'vistors',
+    barWidth: '60%',
+    data: allDataValue[key],
+    smooth: true,
+    type: 'bar',
+    animationEasing: 'quadraticOut',
+    lineStyle: {
+      width: 2
+    }
+  }
+})
+
+return {
+  xAxis: {
+    data: xAxisValues,
+    boundaryGap: true,
+    axisTick: {
+      show: false
+    }
+  },
+  toolbox: {
+    // y: 'bottom',
+    feature: {
+      magicType: {
+        type: ['stack', 'tiled']
+      },
+      dataView: {},
+      saveAsImage: {
+        pixelRatio: 2
+      }
+    }
+  },
+  grid: {
+    left: 10,
+    right: 10,
+    bottom: 20,
+    top: 30,
+    containLabel: true
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    backgroundColor: '#FFF',
+    labelTextColor: {
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    bodyColor: '#5eff00'
+  },
+  yAxis: {
+    axisTick: {
+      show: false
+    }
+  },
+  legend: {
+    data: data.series.map(legendName =&gt; { return legendName.name })
+  },
+  series: listSerie
+}</Data>
+        <Data AD_Column_ID="84411" Column="UUID">04e390f1-3b7b-4ef3-bb1a-f35e39522347</Data>
+        <Data AD_Column_ID="54250" Column="Updated">2023-04-25 10:28:54.855</Data>
+        <Data AD_Column_ID="54251" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="54252" Column="Value">Example_Chart_Bar_Type</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="53058" Action="I" Record_ID="50376" Table="AD_Rule">
+        <Data AD_Column_ID="54241" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="54242" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="54248" Column="AD_Rule_ID">50376</Data>
+        <Data AD_Column_ID="54256" Column="AccessLevel" isNewNull="true"/>
+        <Data AD_Column_ID="54243" Column="Created">2023-04-25 10:33:04.546</Data>
+        <Data AD_Column_ID="54244" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="54245" Column="Description">Chart Pie Type</Data>
+        <Data AD_Column_ID="54253" Column="EntityType">ECA50</Data>
+        <Data AD_Column_ID="54255" Column="EventType">X</Data>
+        <Data AD_Column_ID="54246" Column="Help">Return chart transformation to Apache ECharts. See https://echarts.apache.org</Data>
+        <Data AD_Column_ID="54247" Column="IsActive">true</Data>
+        <Data AD_Column_ID="99034" Column="IsRuleClassGenerated">false</Data>
+        <Data AD_Column_ID="54249" Column="Name">Example Chart Pie Type</Data>
+        <Data AD_Column_ID="54254" Column="RuleType">A</Data>
+        <Data AD_Column_ID="54257" Column="Script">// Chart Pie Type
+const xAxisValues = []
+let seriesToShow = []
+let legendToShow = []
+const allData = data.series
+const dataSet = data.series.map(b =&gt; b.data_set)
+const allDataValue = dataSet.map(currentSet =&gt; {
+  return currentSet.map(data =&gt; data)
+})
+allData.forEach(serie =&gt; {
+  serie.data_set.forEach(set =&gt; {
+    if (!xAxisValues.find(value =&gt; value === set.name)) {
+      xAxisValues.push(set.name)
+    }
+  })
+})
+
+const listSerie = allData.map((currentData, key) =&gt; {
+  return {
+    name: currentData.name,
+    stack: 'vistors',
+    barWidth: '60%',
+    data: allDataValue[key],
+    smooth: true,
+    type: 'pie',
+    animationEasing: 'quadraticOut',
+    lineStyle: {
+      width: 2
+    }
+  }
+})
+
+return {
+  xAxis: {
+    data: xAxisValues,
+    boundaryGap: false,
+    axisTick: {
+      show: false
+    }
+  },
+  toolbox: {
+    feature: {
+      magicType: {
+        type: ['stack', 'tiled']
+      },
+      dataView: {},
+      saveAsImage: {
+        pixelRatio: 2
+      }
+    }
+  },
+  grid: {
+    left: 10,
+    right: 10,
+    bottom: 20,
+    top: 30,
+    containLabel: true
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    backgroundColor: '#FFF',
+    labelTextColor: {
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    bodyColor: '#5eff00'
+  },
+  yAxis: {
+    axisTick: {
+      show: false
+    }
+  },
+  legend: {
+    data: data.series.map(legendName =&gt; { return legendName.name })
+  },
+  series: listSerie
+}</Data>
+        <Data AD_Column_ID="84411" Column="UUID">5aa4d0dd-c16f-45ee-afc5-471cc8d516a4</Data>
+        <Data AD_Column_ID="54250" Column="Updated">2023-04-25 10:33:04.546</Data>
+        <Data AD_Column_ID="54251" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="54252" Column="Value">Example_Chart_Pie_Type</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="53284" Action="I" Record_ID="50017" Table="AD_Chart">
+        <Data AD_Column_ID="59694" Column="AD_Chart_ID">50017</Data>
+        <Data AD_Column_ID="59687" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59688" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="59901" Column="ChartOrientation">V</Data>
+        <Data AD_Column_ID="59695" Column="ChartType">AC</Data>
+        <Data AD_Column_ID="59690" Column="Created">2023-04-25 10:35:33.999</Data>
+        <Data AD_Column_ID="59691" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="59697" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="59906" Column="DomainLabel" isNewNull="true"/>
+        <Data AD_Column_ID="59689" Column="IsActive">true</Data>
+        <Data AD_Column_ID="59900" Column="IsDisplayLegend">true</Data>
+        <Data AD_Column_ID="59902" Column="IsTimeSeries">false</Data>
+        <Data AD_Column_ID="59696" Column="Name">Sales by Product Group</Data>
+        <Data AD_Column_ID="59907" Column="RangeLabel">Value</Data>
+        <Data AD_Column_ID="59904" Column="TimeScope">0</Data>
+        <Data AD_Column_ID="59903" Column="TimeUnit" isNewNull="true"/>
+        <Data AD_Column_ID="84300" Column="UUID">ac89659e-07ab-4ffa-9b67-7806a2a2e8da</Data>
+        <Data AD_Column_ID="59692" Column="Updated">2023-04-25 10:35:33.999</Data>
+        <Data AD_Column_ID="59693" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="59698" Column="WinHeight">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="53282" Action="I" Record_ID="50030" Table="AD_ChartDatasource">
+        <Data AD_Column_ID="59680" Column="AD_ChartDatasource_ID">50030</Data>
+        <Data AD_Column_ID="59699" Column="AD_Chart_ID">50017</Data>
+        <Data AD_Column_ID="59667" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="59668" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="59669" Column="AD_Table_ID">318</Data>
+        <Data AD_Column_ID="59701" Column="CategoryColumn">(g.Value || ' - ' || g.Name)</Data>
+        <Data AD_Column_ID="59671" Column="Created">2023-04-25 10:36:50.622</Data>
+        <Data AD_Column_ID="59672" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="59673" Column="DateColumn" isNewNull="true"/>
+        <Data AD_Column_ID="59674" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="59675" Column="EntityType">ECA50</Data>
+        <Data AD_Column_ID="59682" Column="FromClause">RV_C_Invoice i
+INNER JOIN C_InvoiceLine il ON(il.C_Invoice_ID = i.C_Invoice_ID)
+INNER JOIN M_Product p ON(p.M_Product_ID = il.M_Product_ID)
+INNER JOIN M_Product_Group g ON(g.M_Product_Group_ID = p.M_Product_Group_ID)</Data>
+        <Data AD_Column_ID="59676" Column="IsActive">true</Data>
+        <Data AD_Column_ID="59677" Column="KeyColumn">C_Invoice_ID</Data>
+        <Data AD_Column_ID="59678" Column="Name">Sales by Product</Data>
+        <Data AD_Column_ID="62185" Column="SeriesColumn">to_char(i.DateInvoiced, 'YYYY-MM')</Data>
+        <Data AD_Column_ID="59905" Column="TimeOffset">0</Data>
+        <Data AD_Column_ID="84301" Column="UUID">5f92044a-bb70-46f5-9394-d5543d794099</Data>
+        <Data AD_Column_ID="59683" Column="Updated">2023-04-25 10:36:50.622</Data>
+        <Data AD_Column_ID="59684" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="59700" Column="ValueColumn">SUM(i.Multiplier * il.LineNetAmt)</Data>
+        <Data AD_Column_ID="59685" Column="WhereClause">i.IsSOTrx = 'Y'
+AND i.DocStatus IN('CO', 'CL')</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="54921" Action="I" Record_ID="50000" Table="ECA50_WindowChart">
+        <Data AD_Column_ID="100463" Column="AD_Chart_ID">50017</Data>
+        <Data AD_Column_ID="100454" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="100455" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="100465" Column="AD_Rule_ID">50374</Data>
+        <Data AD_Column_ID="100464" Column="AD_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100462" Column="AD_Window_ID">140</Data>
+        <Data AD_Column_ID="100457" Column="Created">2023-04-25 10:38:31.958</Data>
+        <Data AD_Column_ID="100459" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="100466" Column="ECA50_IsEnableTransformation">true</Data>
+        <Data AD_Column_ID="100453" Column="ECA50_WindowChart_ID">50000</Data>
+        <Data AD_Column_ID="100456" Column="IsActive">true</Data>
+        <Data AD_Column_ID="100526" Column="SeqNo">10</Data>
+        <Data AD_Column_ID="100461" Column="UUID">7cc59553-6d62-4af4-b461-3343caf22add</Data>
+        <Data AD_Column_ID="100458" Column="Updated">2023-04-25 10:38:31.958</Data>
+        <Data AD_Column_ID="100460" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="54922" Action="I" Record_ID="50000" Table="ECA50_WindowChartParameter">
+        <Data AD_Column_ID="100468" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="100492" Column="AD_Element_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100477" Column="AD_Field_ID">68446</Data>
+        <Data AD_Column_ID="100469" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="100493" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100494" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100495" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100489" Column="ColumnName">M_Product_Group_ID</Data>
+        <Data AD_Column_ID="100490" Column="ColumnSQL">g.M_Product_Group_ID = ?</Data>
+        <Data AD_Column_ID="100471" Column="Created">2023-04-25 10:39:04.232</Data>
+        <Data AD_Column_ID="100473" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="100496" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="100497" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="100510" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="100498" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="100491" Column="ECA50_IsEnableSelection">false</Data>
+        <Data AD_Column_ID="100467" Column="ECA50_WindowChartParameter_ID">50000</Data>
+        <Data AD_Column_ID="100476" Column="ECA50_WindowChart_ID">50000</Data>
+        <Data AD_Column_ID="100499" Column="EntityType">ECA50</Data>
+        <Data AD_Column_ID="100511" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="100470" Column="IsActive">true</Data>
+        <Data AD_Column_ID="100500" Column="IsCentrallyMaintained">false</Data>
+        <Data AD_Column_ID="100501" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="100502" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="100503" Column="IsRange">false</Data>
+        <Data AD_Column_ID="100509" Column="Name">Product Group</Data>
+        <Data AD_Column_ID="100504" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="100505" Column="SeqNo">10</Data>
+        <Data AD_Column_ID="100475" Column="UUID">07f90ef4-7fea-46e1-9bd8-0e191e5e8920</Data>
+        <Data AD_Column_ID="100472" Column="Updated">2023-04-25 10:39:04.232</Data>
+        <Data AD_Column_ID="100474" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="100508" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="100506" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="100507" Column="ValueMin" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="54924" Action="I" Record_ID="0" Table="ECA50_WindowChartParameter_Trl">
+        <Data AD_Column_ID="100512" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="100522" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="100513" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="100515" Column="Created">2023-04-25 10:39:04.901</Data>
+        <Data AD_Column_ID="100517" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="100524" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="100520" Column="ECA50_WindowChartParameter_ID">50000</Data>
+        <Data AD_Column_ID="100525" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="100514" Column="IsActive">true</Data>
+        <Data AD_Column_ID="100521" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="100523" Column="Name">Product Group</Data>
+        <Data AD_Column_ID="100519" Column="UUID">b65bc009-60ce-441a-93de-79892e4de262</Data>
+        <Data AD_Column_ID="100516" Column="Updated">2023-04-25 10:39:04.901</Data>
+        <Data AD_Column_ID="100518" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="54922" Action="I" Record_ID="50001" Table="ECA50_WindowChartParameter">
+        <Data AD_Column_ID="100468" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="100492" Column="AD_Element_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100477" Column="AD_Field_ID">1033</Data>
+        <Data AD_Column_ID="100469" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="100493" Column="AD_Reference_ID">10</Data>
+        <Data AD_Column_ID="100494" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100495" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100489" Column="ColumnName">Value</Data>
+        <Data AD_Column_ID="100490" Column="ColumnSQL">p.Value LIKE '%?%'</Data>
+        <Data AD_Column_ID="100471" Column="Created">2023-04-25 10:39:58.392</Data>
+        <Data AD_Column_ID="100473" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="100496" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="100497" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="100510" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="100498" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="100491" Column="ECA50_IsEnableSelection">true</Data>
+        <Data AD_Column_ID="100467" Column="ECA50_WindowChartParameter_ID">50001</Data>
+        <Data AD_Column_ID="100476" Column="ECA50_WindowChart_ID">50000</Data>
+        <Data AD_Column_ID="100499" Column="EntityType">ECA50</Data>
+        <Data AD_Column_ID="100511" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="100470" Column="IsActive">true</Data>
+        <Data AD_Column_ID="100500" Column="IsCentrallyMaintained">false</Data>
+        <Data AD_Column_ID="100501" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="100502" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="100503" Column="IsRange">false</Data>
+        <Data AD_Column_ID="100509" Column="Name">Value</Data>
+        <Data AD_Column_ID="100504" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="100505" Column="SeqNo">20</Data>
+        <Data AD_Column_ID="100475" Column="UUID">1cc89786-8596-4dfd-be96-165283d7f8a4</Data>
+        <Data AD_Column_ID="100472" Column="Updated">2023-04-25 10:39:58.392</Data>
+        <Data AD_Column_ID="100474" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="100508" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="100506" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="100507" Column="ValueMin" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="54924" Action="I" Record_ID="0" Table="ECA50_WindowChartParameter_Trl">
+        <Data AD_Column_ID="100512" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="100522" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="100513" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="100515" Column="Created">2023-04-25 10:39:58.986</Data>
+        <Data AD_Column_ID="100517" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="100524" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="100520" Column="ECA50_WindowChartParameter_ID">50001</Data>
+        <Data AD_Column_ID="100525" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="100514" Column="IsActive">true</Data>
+        <Data AD_Column_ID="100521" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="100523" Column="Name">Value</Data>
+        <Data AD_Column_ID="100519" Column="UUID">52cba9c9-5431-4163-b374-0ca0d4763dc8</Data>
+        <Data AD_Column_ID="100516" Column="Updated">2023-04-25 10:39:58.986</Data>
+        <Data AD_Column_ID="100518" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="54921" Action="I" Record_ID="50001" Table="ECA50_WindowChart">
+        <Data AD_Column_ID="100463" Column="AD_Chart_ID">50017</Data>
+        <Data AD_Column_ID="100454" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="100455" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="100465" Column="AD_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100464" Column="AD_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100462" Column="AD_Window_ID">140</Data>
+        <Data AD_Column_ID="100457" Column="Created">2023-04-25 10:40:50.068</Data>
+        <Data AD_Column_ID="100459" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="100466" Column="ECA50_IsEnableTransformation">false</Data>
+        <Data AD_Column_ID="100453" Column="ECA50_WindowChart_ID">50001</Data>
+        <Data AD_Column_ID="100456" Column="IsActive">true</Data>
+        <Data AD_Column_ID="100526" Column="SeqNo">20</Data>
+        <Data AD_Column_ID="100461" Column="UUID">f075a88a-5d02-4737-bdb7-645a6755a5d8</Data>
+        <Data AD_Column_ID="100458" Column="Updated">2023-04-25 10:40:50.068</Data>
+        <Data AD_Column_ID="100460" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="54921" Action="I" Record_ID="50002" Table="ECA50_WindowChart">
+        <Data AD_Column_ID="100463" Column="AD_Chart_ID">50017</Data>
+        <Data AD_Column_ID="100454" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="100455" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="100465" Column="AD_Rule_ID">50373</Data>
+        <Data AD_Column_ID="100464" Column="AD_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100462" Column="AD_Window_ID">140</Data>
+        <Data AD_Column_ID="100457" Column="Created">2023-04-25 10:41:21.533</Data>
+        <Data AD_Column_ID="100459" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="100466" Column="ECA50_IsEnableTransformation">true</Data>
+        <Data AD_Column_ID="100453" Column="ECA50_WindowChart_ID">50002</Data>
+        <Data AD_Column_ID="100456" Column="IsActive">true</Data>
+        <Data AD_Column_ID="100526" Column="SeqNo">30</Data>
+        <Data AD_Column_ID="100461" Column="UUID">a6bfef6e-c980-4c58-87d8-a7fabee3fb9d</Data>
+        <Data AD_Column_ID="100458" Column="Updated">2023-04-25 10:41:21.533</Data>
+        <Data AD_Column_ID="100460" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="54921" Action="I" Record_ID="50003" Table="ECA50_WindowChart">
+        <Data AD_Column_ID="100463" Column="AD_Chart_ID">50017</Data>
+        <Data AD_Column_ID="100454" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="100455" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="100465" Column="AD_Rule_ID">50375</Data>
+        <Data AD_Column_ID="100464" Column="AD_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100462" Column="AD_Window_ID">140</Data>
+        <Data AD_Column_ID="100457" Column="Created">2023-04-25 10:41:47.08</Data>
+        <Data AD_Column_ID="100459" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="100466" Column="ECA50_IsEnableTransformation">true</Data>
+        <Data AD_Column_ID="100453" Column="ECA50_WindowChart_ID">50003</Data>
+        <Data AD_Column_ID="100456" Column="IsActive">true</Data>
+        <Data AD_Column_ID="100526" Column="SeqNo">40</Data>
+        <Data AD_Column_ID="100461" Column="UUID">491eb952-6ce7-46c0-8570-97f5d8bb0cc1</Data>
+        <Data AD_Column_ID="100458" Column="Updated">2023-04-25 10:41:47.08</Data>
+        <Data AD_Column_ID="100460" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="54921" Action="I" Record_ID="50004" Table="ECA50_WindowChart">
+        <Data AD_Column_ID="100463" Column="AD_Chart_ID">50017</Data>
+        <Data AD_Column_ID="100454" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="100455" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="100465" Column="AD_Rule_ID">50376</Data>
+        <Data AD_Column_ID="100464" Column="AD_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="100462" Column="AD_Window_ID">140</Data>
+        <Data AD_Column_ID="100457" Column="Created">2023-04-25 10:42:01.705</Data>
+        <Data AD_Column_ID="100459" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="100466" Column="ECA50_IsEnableTransformation">true</Data>
+        <Data AD_Column_ID="100453" Column="ECA50_WindowChart_ID">50004</Data>
+        <Data AD_Column_ID="100456" Column="IsActive">true</Data>
+        <Data AD_Column_ID="100526" Column="SeqNo">50</Data>
+        <Data AD_Column_ID="100461" Column="UUID">74362b93-26c8-443f-80a9-c02e91295474</Data>
+        <Data AD_Column_ID="100458" Column="Updated">2023-04-25 10:42:01.705</Data>
+        <Data AD_Column_ID="100460" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="54923" Action="I" Record_ID="50000" Table="ECA50_WindowChartAccess">
+        <Data AD_Column_ID="100487" Column="AD_Chart_ID">50017</Data>
+        <Data AD_Column_ID="100479" Column="AD_Client_ID">11</Data>
+        <Data AD_Column_ID="100480" Column="AD_Org_ID">50001</Data>
+        <Data AD_Column_ID="100488" Column="AD_Role_ID">102</Data>
+        <Data AD_Column_ID="100482" Column="Created">2023-04-25 10:46:07.529</Data>
+        <Data AD_Column_ID="100484" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="100478" Column="ECA50_WindowChartAccess_ID">50000</Data>
+        <Data AD_Column_ID="100481" Column="IsActive">true</Data>
+        <Data AD_Column_ID="100486" Column="UUID">13f98c1e-9440-4ee2-9212-f02688efca06</Data>
+        <Data AD_Column_ID="100483" Column="Updated">2023-04-25 10:46:07.529</Data>
+        <Data AD_Column_ID="100485" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
