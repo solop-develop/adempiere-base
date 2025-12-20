@@ -229,6 +229,15 @@ public interface I_AD_Scheduler
 	  */
 	public boolean isActive();
 
+    /** Column name IsAllowMultiRunning */
+    public static final String COLUMNNAME_IsAllowMultiRunning = "IsAllowMultiRunning";
+
+	/** Set Allows Multi Running	  */
+	public void setIsAllowMultiRunning (boolean IsAllowMultiRunning);
+
+	/** Get Allows Multi Running	  */
+	public boolean isAllowMultiRunning();
+
     /** Column name IsIgnoreProcessingTime */
     public static final String COLUMNNAME_IsIgnoreProcessingTime = "IsIgnoreProcessingTime";
 
@@ -241,6 +250,15 @@ public interface I_AD_Scheduler
 	  * Do not include processing time for the DateNextRun calculation
 	  */
 	public boolean isIgnoreProcessingTime();
+
+    /** Column name IsNotifySupervisorOnError */
+    public static final String COLUMNNAME_IsNotifySupervisorOnError = "IsNotifySupervisorOnError";
+
+	/** Set Notify Supervisor On Error	  */
+	public void setIsNotifySupervisorOnError (boolean IsNotifySupervisorOnError);
+
+	/** Get Notify Supervisor On Error	  */
+	public boolean isNotifySupervisorOnError();
 
     /** Column name KeepLogDays */
     public static final String COLUMNNAME_KeepLogDays = "KeepLogDays";
