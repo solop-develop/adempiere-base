@@ -18,16 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 
 /** Generated Model for C_BankAccount
  *  @author Adempiere (generated) 
@@ -38,7 +37,7 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250814L;
+	private static final long serialVersionUID = 20251218L;
 
     /** Standard Constructor */
     public X_C_BankAccount (Properties ctx, int C_BankAccount_ID, String trxName)
@@ -308,7 +307,7 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 		Default Collect Document Type from this bank or account
 	  */
 	public void setDefaultCollectDocType_ID (int DefaultCollectDocType_ID)
-	{
+    {
 		if (DefaultCollectDocType_ID < 1) 
 			set_Value (COLUMNNAME_DefaultCollectDocType_ID, null);
 		else 
@@ -607,6 +606,27 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	public boolean isDefault () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsDefault);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Default Currency.
+		@param IsDefaultCurrency Default Currency	  */
+	public void setIsDefaultCurrency (boolean IsDefaultCurrency)
+	{
+		set_Value (COLUMNNAME_IsDefaultCurrency, Boolean.valueOf(IsDefaultCurrency));
+	}
+
+	/** Get Default Currency.
+		@return Default Currency	  */
+	public boolean isDefaultCurrency () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsDefaultCurrency);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 

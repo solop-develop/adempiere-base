@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for C_BankAccount
  *  @author Adempiere (generated) 
@@ -386,6 +385,15 @@ public interface I_C_BankAccount
 	  * Default value
 	  */
 	public boolean isDefault();
+
+    /** Column name IsDefaultCurrency */
+    public static final String COLUMNNAME_IsDefaultCurrency = "IsDefaultCurrency";
+
+	/** Set Default Currency	  */
+	public void setIsDefaultCurrency (boolean IsDefaultCurrency);
+
+	/** Get Default Currency	  */
+	public boolean isDefaultCurrency();
 
     /** Column name IsSOTrx */
     public static final String COLUMNNAME_IsSOTrx = "IsSOTrx";
