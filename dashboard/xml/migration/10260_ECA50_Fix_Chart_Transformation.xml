@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA50" Name="ECA50 Fix Chart Transformation" ReleaseNo="1.0" SeqNo="10260">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53058" Action="U" Record_ID="50373" Table="AD_Rule">
+        <Data AD_Column_ID="54257" Column="Script" oldValue="// Chart Line Type&#10;const xAxisValues = []&#10;let seriesToShow = []&#10;let legendToShow = []&#10;const allData = data.series&#10;const dataSet = data.series.map(b =&gt; b.data_set)&#10;const allDataValue = dataSet.map(currentSet =&gt; {&#10;  return currentSet.map(data =&gt; data)&#10;})&#10;allData.forEach(serie =&gt; {&#10;  serie.data_set.forEach(set =&gt; {&#10;    if (!xAxisValues.find(value =&gt; value === set.name)) {&#10;      xAxisValues.push(set.name)&#10;    }&#10;  })&#10;})&#10;&#10;const listSerie = allData.map((currentData, key) =&gt; {&#10;  return {&#10;    name: currentData.name,&#10;    stack: 'vistors',&#10;    barWidth: '60%',&#10;    data: allDataValue[key],&#10;    smooth: true,&#10;    type: 'line',&#10;    animationEasing: 'quadraticOut',&#10;    lineStyle: {&#10;      width: 2&#10;    }&#10;  }&#10;})&#10;&#10;return {&#10;  xAxis: {&#10;    data: xAxisValues,&#10;    boundaryGap: false,&#10;    axisTick: {&#10;      show: false&#10;    }&#10;  },&#10;  toolbox: {&#10;    feature: {&#10;      magicType: {&#10;        type: ['stack', 'tiled']&#10;      },&#10;      dataView: {},&#10;      saveAsImage: {&#10;        pixelRatio: 2&#10;      }&#10;    }&#10;  },&#10;  grid: {&#10;    left: 10,&#10;    right: 10,&#10;    bottom: 20,&#10;    top: 30,&#10;    containLabel: true&#10;  },&#10;  tooltip: {&#10;    trigger: 'axis',&#10;    axisPointer: {&#10;      type: 'cross',&#10;      labelTextColor: '#5eff00',&#10;      bodyColor: '#5eff00'&#10;    },&#10;    backgroundColor: '#FFF',&#10;    labelTextColor: {&#10;      labelTextColor: '#5eff00',&#10;      bodyColor: '#5eff00'&#10;    },&#10;    bodyColor: '#5eff00'&#10;  },&#10;  yAxis: {&#10;    axisTick: {&#10;      show: false&#10;    }&#10;  },&#10;  legend: {&#10;    data: data.series.map(legendName =&gt; { return legendName.name })&#10;  },&#10;  series: listSerie&#10;}&#10;">// Chart Line Type
+const xAxisValues = []
+const listHeader = []
+const dataResult = []
+const allData = data.series
+const dataSet = data.series.map(b =&gt; b.data_set)
+const allDataValue = dataSet.map(currentSet =&gt; {
+  return currentSet.map(data =&gt; data)
+})
+// Create Header
+allData.forEach(serie =&gt; {
+  serie.data_set.forEach(set =&gt; {
+      xAxisValues.push(set.name)
+  })
+})
+// Grup Data
+allData.forEach(serie =&gt; {
+  serie.data_set.forEach(set =&gt; {
+    if (!listHeader.find(value =&gt; value === set.name)) {
+      const filterByLabel = serie.data_set.filter(b =&gt; b.name === set.name)
+      const arrayValues = filterByLabel.map(b =&gt; b.value)
+      const initialValue = 0
+      const sumValues = arrayValues.reduce(
+        (accumulator, currentValue) =&gt; accumulator + currentValue, initialValue
+      )
+      dataResult.push({ name: set.name, value: sumValues})
+      listHeader.push(set.name)
+    }
+  })
+})
+
+const listSerie = allData.map((currentData, key) =&gt; {
+  return {
+    name: currentData.name,
+    stack: 'vistors',
+    barWidth: '60%',
+    data: dataResult,
+    smooth: true,
+    type: 'line',
+    animationEasing: 'quadraticOut',
+    lineStyle: {
+      width: 2
+    }
+  }
+})
+
+return {
+  xAxis: {
+    data: listHeader,
+    boundaryGap: true,
+    axisTick: {
+      show: false
+    }
+  },
+  toolbox: {
+    // y: 'bottom',
+    feature: {
+      magicType: {
+        type: ['stack', 'tiled']
+      },
+      dataView: {},
+      saveAsImage: {
+        pixelRatio: 2
+      }
+    }
+  },
+  grid: {
+    left: 10,
+    right: 10,
+    bottom: 20,
+    top: 30,
+    containLabel: true
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    backgroundColor: '#FFF',
+    labelTextColor: {
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    bodyColor: '#5eff00'
+  },
+  yAxis: {
+    axisTick: {
+      show: false
+    }
+  },
+  legend: {
+    data: data.series.map(legendName =&gt; { return legendName.name </Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53058" Action="U" Record_ID="50374" Table="AD_Rule">
+        <Data AD_Column_ID="54257" Column="Script" oldValue="// Chart Cascade Type&#10;const xAxisValues = []&#10;let seriesToShow = []&#10;let legendToShow = []&#10;const allData = data.series&#10;const dataSet = data.series.map(b =&gt; b.data_set)&#10;const allDataValue = dataSet.map(currentSet =&gt; {&#10;  return currentSet.map(data =&gt; data)&#10;})&#10;allData.forEach(serie =&gt; {&#10;  serie.data_set.forEach(set =&gt; {&#10;    if (!xAxisValues.find(value =&gt; value === set.name)) {&#10;      xAxisValues.push(set.name)&#10;    }&#10;  })&#10;})&#10;&#10;const listSerie = allData.map((currentData, key) =&gt; {&#10;  return {&#10;    name: currentData.name,&#10;    stack: 'vistors',&#10;    barWidth: '60%',&#10;    data: allDataValue[key],&#10;    type: 'line',&#10;    smooth: 0.1,&#10;      symbol: 'none',&#10;      lineStyle: {&#10;        width: 0&#10;    },&#10;    markLine: {&#10;      label: { show: true },&#10;    },&#10;    areaStyle: {},&#10;  }&#10;})&#10;&#10;return {&#10;  xAxis: {&#10;    data: xAxisValues,&#10;    boundaryGap: false,&#10;    axisTick: {&#10;      show: false&#10;    }&#10;  },&#10;  toolbox: {&#10;    // y: 'bottom',&#10;    feature: {&#10;      magicType: {&#10;        type: ['stack', 'tiled']&#10;      },&#10;      dataView: {},&#10;      saveAsImage: {&#10;        pixelRatio: 2&#10;      }&#10;    }&#10;  },&#10;  grid: {&#10;    left: 10,&#10;    right: 10,&#10;    bottom: 20,&#10;    top: 30,&#10;    containLabel: true&#10;  },&#10;  tooltip: {&#10;    trigger: 'axis',&#10;    axisPointer: {&#10;      type: 'cross',&#10;      labelTextColor: '#5eff00',&#10;      bodyColor: '#5eff00'&#10;    },&#10;    backgroundColor: '#FFF',&#10;    labelTextColor: {&#10;      labelTextColor: '#5eff00',&#10;      bodyColor: '#5eff00'&#10;    },&#10;    bodyColor: '#5eff00'&#10;  },&#10;  yAxis: {&#10;    type: 'value',&#10;    axisTick: {&#10;      show: true&#10;    },&#10;    boundaryGap: [0, '100%']&#10;  },&#10;  legend: {&#10;    data: data.series.map(legendName =&gt; { return legendName.name })&#10;  },&#10;  series: listSerie&#10;}&#10;">// Chart Cascade Type
+const xAxisValues = []
+let seriesToShow = []
+let legendToShow = []
+const allData = data.series
+const dataSet = data.series.map(b =&gt; b.data_set)
+const allDataValue = dataSet.map(currentSet =&gt; {
+  return currentSet.map(data =&gt; data)
+})
+allData.forEach(serie =&gt; {
+  serie.data_set.forEach(set =&gt; {
+      xAxisValues.push(set.name)
+  })
+})
+
+const listSerie = allData.map((currentData, key) =&gt; {
+  return {
+    name: currentData.name,
+    stack: 'vistors',
+    barWidth: '60%',
+    data: allDataValue[key],
+    type: 'line',
+    smooth: 0.1,
+      symbol: 'none',
+      lineStyle: {
+        width: 0
+    },
+    markLine: {
+      label: { show: true },
+    },
+    areaStyle: {},
+  }
+})
+
+return {
+  xAxis: {
+    data: xAxisValues,
+    boundaryGap: false,
+    axisTick: {
+      show: false
+    }
+  },
+  toolbox: {
+    // y: 'bottom',
+    feature: {
+      magicType: {
+        type: ['stack', 'tiled']
+      },
+      dataView: {},
+      saveAsImage: {
+        pixelRatio: 2
+      }
+    }
+  },
+  grid: {
+    left: 10,
+    right: 10,
+    bottom: 20,
+    top: 30,
+    containLabel: true
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    backgroundColor: '#FFF',
+    labelTextColor: {
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    bodyColor: '#5eff00'
+  },
+  yAxis: {
+    type: 'value',
+    axisTick: {
+      show: true
+    },
+    boundaryGap: [0, '100%']
+  },
+  legend: {
+    data: data.series.map(legendName =&gt; { return legendName.name })
+  },
+  series: listSerie
+}
+</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="53058" Action="U" Record_ID="50375" Table="AD_Rule">
+        <Data AD_Column_ID="54257" Column="Script" oldValue="// Chart Bar Type&#10;const xAxisValues = []&#10;const allData = data.series&#10;const dataSet = data.series.map(b =&gt; b.data_set)&#10;const allDataValue = dataSet.map(currentSet =&gt; {&#10;  return currentSet.map(data =&gt; data)&#10;})&#10;allData.forEach(serie =&gt; {&#10;  serie.data_set.forEach(set =&gt; {&#10;    if (!xAxisValues.find(value =&gt; value === set.name)) {&#10;      xAxisValues.push(set.name)&#10;    }&#10;  })&#10;})&#10;&#10;const listSerie = allData.map((currentData, key) =&gt; {&#10;  return {&#10;    name: currentData.name,&#10;    stack: 'vistors',&#10;    barWidth: '60%',&#10;    data: allDataValue[key],&#10;    smooth: true,&#10;    type: 'bar',&#10;    animationEasing: 'quadraticOut',&#10;    lineStyle: {&#10;      width: 2&#10;    }&#10;  }&#10;})&#10;&#10;return {&#10;  xAxis: {&#10;    data: xAxisValues,&#10;    boundaryGap: true,&#10;    axisTick: {&#10;      show: false&#10;    }&#10;  },&#10;  toolbox: {&#10;    // y: 'bottom',&#10;    feature: {&#10;      magicType: {&#10;        type: ['stack', 'tiled']&#10;      },&#10;      dataView: {},&#10;      saveAsImage: {&#10;        pixelRatio: 2&#10;      }&#10;    }&#10;  },&#10;  grid: {&#10;    left: 10,&#10;    right: 10,&#10;    bottom: 20,&#10;    top: 30,&#10;    containLabel: true&#10;  },&#10;  tooltip: {&#10;    trigger: 'axis',&#10;    axisPointer: {&#10;      type: 'cross',&#10;      labelTextColor: '#5eff00',&#10;      bodyColor: '#5eff00'&#10;    },&#10;    backgroundColor: '#FFF',&#10;    labelTextColor: {&#10;      labelTextColor: '#5eff00',&#10;      bodyColor: '#5eff00'&#10;    },&#10;    bodyColor: '#5eff00'&#10;  },&#10;  yAxis: {&#10;    axisTick: {&#10;      show: false&#10;    }&#10;  },&#10;  legend: {&#10;    data: data.series.map(legendName =&gt; { return legendName.name })&#10;  },&#10;  series: listSerie&#10;}">// Chart Bar Type
+const xAxisValues = []
+const listHeader = []
+const dataResult = []
+const allData = data.series
+const dataSet = data.series.map(b =&gt; b.data_set)
+const allDataValue = dataSet.map(currentSet =&gt; {
+  return currentSet.map(data =&gt; data)
+})
+// Create Header
+allData.forEach(serie =&gt; {
+  serie.data_set.forEach(set =&gt; {
+      xAxisValues.push(set.name)
+  })
+})
+// Grup Data
+allData.forEach(serie =&gt; {
+  serie.data_set.forEach(set =&gt; {
+    if (!listHeader.find(value =&gt; value === set.name)) {
+      const filterByLabel = serie.data_set.filter(b =&gt; b.name === set.name)
+      const arrayValues = filterByLabel.map(b =&gt; b.value)
+      const initialValue = 0
+      const sumValues = arrayValues.reduce(
+        (accumulator, currentValue) =&gt; accumulator + currentValue, initialValue
+      )
+      dataResult.push({ name: set.name, value: sumValues})
+      listHeader.push(set.name)
+    }
+  })
+})
+
+const listSerie = allData.map((currentData, key) =&gt; {
+  return {
+    name: currentData.name,
+    stack: 'vistors',
+    barWidth: '60%',
+    data: dataResult,
+    smooth: true,
+    type: 'bar',
+    animationEasing: 'quadraticOut',
+    lineStyle: {
+      width: 2
+    }
+  }
+})
+
+return {
+  xAxis: {
+    data: listHeader,
+    boundaryGap: true,
+    axisTick: {
+      show: false
+    }
+  },
+  toolbox: {
+    // y: 'bottom',
+    feature: {
+      magicType: {
+        type: ['stack', 'tiled']
+      },
+      dataView: {},
+      saveAsImage: {
+        pixelRatio: 2
+      }
+    }
+  },
+  grid: {
+    left: 10,
+    right: 10,
+    bottom: 20,
+    top: 30,
+    containLabel: true
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    backgroundColor: '#FFF',
+    labelTextColor: {
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    bodyColor: '#5eff00'
+  },
+  yAxis: {
+    axisTick: {
+      show: false
+    }
+  },
+  legend: {
+    data: data.series.map(legendName =&gt; { return legendName.name })</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="53058" Action="U" Record_ID="50376" Table="AD_Rule">
+        <Data AD_Column_ID="54257" Column="Script" oldValue="// Chart Pie Type&#10;const xAxisValues = []&#10;let seriesToShow = []&#10;let legendToShow = []&#10;const allData = data.series&#10;const dataSet = data.series.map(b =&gt; b.data_set)&#10;const allDataValue = dataSet.map(currentSet =&gt; {&#10;  return currentSet.map(data =&gt; data)&#10;})&#10;allData.forEach(serie =&gt; {&#10;  serie.data_set.forEach(set =&gt; {&#10;    if (!xAxisValues.find(value =&gt; value === set.name)) {&#10;      xAxisValues.push(set.name)&#10;    }&#10;  })&#10;})&#10;&#10;const listSerie = allData.map((currentData, key) =&gt; {&#10;  return {&#10;    name: currentData.name,&#10;    stack: 'vistors',&#10;    barWidth: '60%',&#10;    data: allDataValue[key],&#10;    smooth: true,&#10;    type: 'pie',&#10;    animationEasing: 'quadraticOut',&#10;    lineStyle: {&#10;      width: 2&#10;    }&#10;  }&#10;})&#10;&#10;return {&#10;  xAxis: {&#10;    data: xAxisValues,&#10;    boundaryGap: false,&#10;    axisTick: {&#10;      show: false&#10;    }&#10;  },&#10;  toolbox: {&#10;    feature: {&#10;      magicType: {&#10;        type: ['stack', 'tiled']&#10;      },&#10;      dataView: {},&#10;      saveAsImage: {&#10;        pixelRatio: 2&#10;      }&#10;    }&#10;  },&#10;  grid: {&#10;    left: 10,&#10;    right: 10,&#10;    bottom: 20,&#10;    top: 30,&#10;    containLabel: true&#10;  },&#10;  tooltip: {&#10;    trigger: 'axis',&#10;    axisPointer: {&#10;      type: 'cross',&#10;      labelTextColor: '#5eff00',&#10;      bodyColor: '#5eff00'&#10;    },&#10;    backgroundColor: '#FFF',&#10;    labelTextColor: {&#10;      labelTextColor: '#5eff00',&#10;      bodyColor: '#5eff00'&#10;    },&#10;    bodyColor: '#5eff00'&#10;  },&#10;  yAxis: {&#10;    axisTick: {&#10;      show: false&#10;    }&#10;  },&#10;  legend: {&#10;    data: data.series.map(legendName =&gt; { return legendName.name })&#10;  },&#10;  series: listSerie&#10;}">// Chart Pie Type
+const xAxisValues = []
+let seriesToShow = []
+let legendToShow = []
+const allData = data.series
+const dataSet = data.series.map(b =&gt; b.data_set)
+const allDataValue = dataSet.map(currentSet =&gt; {
+  return currentSet.map(data =&gt; data)
+})
+allData.forEach(serie =&gt; {
+  serie.data_set.forEach(set =&gt; {
+      xAxisValues.push(set.name)
+  })
+})
+
+const listSerie = allData.map((currentData, key) =&gt; {
+  return {
+    name: currentData.name,
+    stack: 'vistors',
+    barWidth: '60%',
+    data: allDataValue[key],
+    smooth: true,
+    type: 'pie',
+    animationEasing: 'quadraticOut',
+    lineStyle: {
+      width: 2
+    }
+  }
+})
+
+return {
+  xAxis: {
+    data: xAxisValues,
+    boundaryGap: false,
+    axisTick: {
+      show: false
+    }
+  },
+  toolbox: {
+    feature: {
+      magicType: {
+        type: ['stack', 'tiled']
+      },
+      dataView: {},
+      saveAsImage: {
+        pixelRatio: 2
+      }
+    }
+  },
+  grid: {
+    left: 10,
+    right: 10,
+    bottom: 20,
+    top: 30,
+    containLabel: true
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    backgroundColor: '#FFF',
+    labelTextColor: {
+      labelTextColor: '#5eff00',
+      bodyColor: '#5eff00'
+    },
+    bodyColor: '#5eff00'
+  },
+  yAxis: {
+    axisTick: {
+      show: false
+    }
+  },
+  legend: {
+    data: data.series.map(legendName =&gt; { return legendName.name })
+  },
+  series: listSerie
+}</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
