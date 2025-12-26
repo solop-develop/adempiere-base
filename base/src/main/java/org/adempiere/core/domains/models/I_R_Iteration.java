@@ -134,19 +134,6 @@ public interface I_R_Iteration
 	  */
 	public int getDuration();
 
-    /** Column name DurationUnit */
-    public static final String COLUMNNAME_DurationUnit = "DurationUnit";
-
-	/** Set Duration Unit.
-	  * Unit of Duration
-	  */
-	public void setDurationUnit (String DurationUnit);
-
-	/** Get Duration Unit.
-	  * Unit of Duration
-	  */
-	public String getDurationUnit();
-
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -182,18 +169,18 @@ public interface I_R_Iteration
 	  */
 	public String getName();
 
-    /** Column name PercentageCompleted */
-    public static final String COLUMNNAME_PercentageCompleted = "PercentageCompleted";
+    /** Column name Percentage */
+    public static final String COLUMNNAME_Percentage = "Percentage";
 
-	/** Set Percentage completed.
-	  * Percentage completed
+	/** Set Percentage.
+	  * Percent of the entire amount
 	  */
-	public void setPercentageCompleted (BigDecimal PercentageCompleted);
+	public void setPercentage (BigDecimal Percentage);
 
-	/** Get Percentage completed.
-	  * Percentage completed
+	/** Get Percentage.
+	  * Percent of the entire amount
 	  */
-	public BigDecimal getPercentageCompleted();
+	public BigDecimal getPercentage();
 
     /** Column name R_Iteration_ID */
     public static final String COLUMNNAME_R_Iteration_ID = "R_Iteration_ID";
@@ -203,6 +190,19 @@ public interface I_R_Iteration
 
 	/** Get Iteration	  */
 	public int getR_Iteration_ID();
+
+    /** Column name TimeUnit */
+    public static final String COLUMNNAME_TimeUnit = "TimeUnit";
+
+	/** Set Time Unit.
+	  * The unit of time for grouping chart data.
+	  */
+	public void setTimeUnit (String TimeUnit);
+
+	/** Get Time Unit.
+	  * The unit of time for grouping chart data.
+	  */
+	public String getTimeUnit();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

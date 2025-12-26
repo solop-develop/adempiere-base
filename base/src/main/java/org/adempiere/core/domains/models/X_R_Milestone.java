@@ -37,7 +37,7 @@ public class X_R_Milestone extends PO implements I_R_Milestone, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251223L;
+	private static final long serialVersionUID = 20251226L;
 
     /** Standard Constructor */
     public X_R_Milestone (Properties ctx, int R_Milestone_ID, String trxName)
@@ -113,21 +113,21 @@ public class X_R_Milestone extends PO implements I_R_Milestone, I_Persistent
 		return (Timestamp)get_Value(COLUMNNAME_DueDate);
 	}
 
-	/** Set Percentage completed.
-		@param PercentageCompleted 
-		Percentage completed
+	/** Set Percentage.
+		@param Percentage 
+		Percent of the entire amount
 	  */
-	public void setPercentageCompleted (BigDecimal PercentageCompleted)
+	public void setPercentage (BigDecimal Percentage)
 	{
-		set_Value (COLUMNNAME_PercentageCompleted, PercentageCompleted);
+		set_Value (COLUMNNAME_Percentage, Percentage);
 	}
 
-	/** Get Percentage completed.
-		@return Percentage completed
+	/** Get Percentage.
+		@return Percent of the entire amount
 	  */
-	public BigDecimal getPercentageCompleted () 
+	public BigDecimal getPercentage () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PercentageCompleted);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Percentage);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;

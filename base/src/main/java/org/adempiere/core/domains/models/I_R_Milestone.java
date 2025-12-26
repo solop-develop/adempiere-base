@@ -119,18 +119,18 @@ public interface I_R_Milestone
 	  */
 	public boolean isActive();
 
-    /** Column name PercentageCompleted */
-    public static final String COLUMNNAME_PercentageCompleted = "PercentageCompleted";
+    /** Column name Percentage */
+    public static final String COLUMNNAME_Percentage = "Percentage";
 
-	/** Set Percentage completed.
-	  * Percentage completed
+	/** Set Percentage.
+	  * Percent of the entire amount
 	  */
-	public void setPercentageCompleted (BigDecimal PercentageCompleted);
+	public void setPercentage (BigDecimal Percentage);
 
-	/** Get Percentage completed.
-	  * Percentage completed
+	/** Get Percentage.
+	  * Percent of the entire amount
 	  */
-	public BigDecimal getPercentageCompleted();
+	public BigDecimal getPercentage();
 
     /** Column name R_Milestone_ID */
     public static final String COLUMNNAME_R_Milestone_ID = "R_Milestone_ID";

@@ -37,7 +37,7 @@ public class X_R_Iteration extends PO implements I_R_Iteration, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251223L;
+	private static final long serialVersionUID = 20251226L;
 
     /** Standard Constructor */
     public X_R_Iteration (Properties ctx, int R_Iteration_ID, String trxName)
@@ -162,38 +162,6 @@ public class X_R_Iteration extends PO implements I_R_Iteration, I_Persistent
 		return ii.intValue();
 	}
 
-	/** DurationUnit AD_Reference_ID=299 */
-	public static final int DURATIONUNIT_AD_Reference_ID=299;
-	/** Year = Y */
-	public static final String DURATIONUNIT_Year = "Y";
-	/** Month = M */
-	public static final String DURATIONUNIT_Month = "M";
-	/** Day = D */
-	public static final String DURATIONUNIT_Day = "D";
-	/** hour = h */
-	public static final String DURATIONUNIT_Hour = "h";
-	/** minute = m */
-	public static final String DURATIONUNIT_Minute = "m";
-	/** second = s */
-	public static final String DURATIONUNIT_Second = "s";
-	/** Set Duration Unit.
-		@param DurationUnit 
-		Unit of Duration
-	  */
-	public void setDurationUnit (String DurationUnit)
-	{
-
-		set_Value (COLUMNNAME_DurationUnit, DurationUnit);
-	}
-
-	/** Get Duration Unit.
-		@return Unit of Duration
-	  */
-	public String getDurationUnit () 
-	{
-		return (String)get_Value(COLUMNNAME_DurationUnit);
-	}
-
 	/** IterationStatus AD_Reference_ID=131 */
 	public static final int ITERATIONSTATUS_AD_Reference_ID=131;
 	/** Drafted = DR */
@@ -252,21 +220,21 @@ public class X_R_Iteration extends PO implements I_R_Iteration, I_Persistent
 		return (String)get_Value(COLUMNNAME_Name);
 	}
 
-	/** Set Percentage completed.
-		@param PercentageCompleted 
-		Percentage completed
+	/** Set Percentage.
+		@param Percentage 
+		Percent of the entire amount
 	  */
-	public void setPercentageCompleted (BigDecimal PercentageCompleted)
+	public void setPercentage (BigDecimal Percentage)
 	{
-		set_Value (COLUMNNAME_PercentageCompleted, PercentageCompleted);
+		set_Value (COLUMNNAME_Percentage, Percentage);
 	}
 
-	/** Get Percentage completed.
-		@return Percentage completed
+	/** Get Percentage.
+		@return Percent of the entire amount
 	  */
-	public BigDecimal getPercentageCompleted () 
+	public BigDecimal getPercentage () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PercentageCompleted);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Percentage);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
@@ -290,6 +258,40 @@ public class X_R_Iteration extends PO implements I_R_Iteration, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** TimeUnit AD_Reference_ID=53376 */
+	public static final int TIMEUNIT_AD_Reference_ID=53376;
+	/** Day = D */
+	public static final String TIMEUNIT_Day = "D";
+	/** Week = W */
+	public static final String TIMEUNIT_Week = "W";
+	/** Month = M */
+	public static final String TIMEUNIT_Month = "M";
+	/** Quarter = Q */
+	public static final String TIMEUNIT_Quarter = "Q";
+	/** Year = Y */
+	public static final String TIMEUNIT_Year = "Y";
+	/** Hour = H */
+	public static final String TIMEUNIT_Hour = "H";
+	/** Minute = I */
+	public static final String TIMEUNIT_Minute = "I";
+	/** Set Time Unit.
+		@param TimeUnit 
+		The unit of time for grouping chart data.
+	  */
+	public void setTimeUnit (String TimeUnit)
+	{
+
+		set_Value (COLUMNNAME_TimeUnit, TimeUnit);
+	}
+
+	/** Get Time Unit.
+		@return The unit of time for grouping chart data.
+	  */
+	public String getTimeUnit () 
+	{
+		return (String)get_Value(COLUMNNAME_TimeUnit);
 	}
 
 	/** Set Immutable Universally Unique Identifier.
