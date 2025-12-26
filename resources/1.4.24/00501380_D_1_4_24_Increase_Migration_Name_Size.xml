@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Increase_Migration_Name_Size" ReleaseNo="1.4.24" SeqNo="501380">
+    <Comments>Increase Migration Name Column Size from 60 to 255</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="57853" Table="AD_Column">
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="60">255</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">Name</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step DBType="Postgres" Parse="N" SeqNo="20" StepType="SQL">
+      <SQLStatement>
+        ALTER TABLE AD_Migration ALTER COLUMN "Name" TYPE VARCHAR(255) USING "Name"::VARCHAR(255);
+      </SQLStatement>
+      <RollbackStatement>
+        ALTER TABLE AD_Migration ALTER COLUMN "Name" TYPE VARCHAR(60) USING "Name"::VARCHAR(60);
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
