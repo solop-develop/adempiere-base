@@ -1601,25 +1601,25 @@
         <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
         <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="109" Column="AD_Column_ID">104616</Data>
-        <Data AD_Column_ID="2608" Column="AD_Element_ID">2321</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">54319</Data>
         <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
         <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
         <Data AD_Column_ID="226" Column="AD_Reference_ID">17</Data>
-        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">299</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">53376</Data>
         <Data AD_Column_ID="114" Column="AD_Table_ID">55059</Data>
         <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
         <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
-        <Data AD_Column_ID="116" Column="ColumnName">DurationUnit</Data>
+        <Data AD_Column_ID="116" Column="ColumnName">TimeUnit</Data>
         <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
         <Data AD_Column_ID="549" Column="Created">2025-12-23 20:38:39.22</Data>
         <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
-        <Data AD_Column_ID="112" Column="Description">Unit of Duration</Data>
+        <Data AD_Column_ID="112" Column="Description">Time Unit</Data>
         <Data AD_Column_ID="6482" Column="EntityType">D</Data>
         <Data AD_Column_ID="118" Column="FieldLength">1</Data>
         <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
-        <Data AD_Column_ID="113" Column="Help">Unit to define the length of time for the execution</Data>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
         <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
         <Data AD_Column_ID="548" Column="IsActive">true</Data>
         <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
@@ -1637,7 +1637,7 @@
         <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
         <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
         <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
-        <Data AD_Column_ID="111" Column="Name">Duration Unit</Data>
+        <Data AD_Column_ID="111" Column="Name">Time Unit</Data>
         <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
         <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
         <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
@@ -1661,7 +1661,7 @@
         <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="12959" Column="IsActive">true</Data>
         <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="12957" Column="Name">Unidad de la Duración</Data>
+        <Data AD_Column_ID="12957" Column="Name">Unidad de Tiempo</Data>
         <Data AD_Column_ID="12952" Column="Updated">2025-12-23 20:38:40.321</Data>
         <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="84310" Column="UUID">fd4803f1-cfea-4a14-860c-979e2e101d82</Data>
@@ -2172,7 +2172,7 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
         <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="109" Column="AD_Column_ID">104624</Data>
-        <Data AD_Column_ID="2608" Column="AD_Element_ID">59660</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">2004</Data>
         <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
         <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
@@ -2181,16 +2181,16 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="114" Column="AD_Table_ID">55059</Data>
         <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
         <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
-        <Data AD_Column_ID="116" Column="ColumnName">PercentageCompleted</Data>
+        <Data AD_Column_ID="116" Column="ColumnName">Percentage</Data>
         <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
         <Data AD_Column_ID="549" Column="Created">2025-12-23 20:38:48.083</Data>
         <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
-        <Data AD_Column_ID="112" Column="Description">Percentage completed</Data>
+        <Data AD_Column_ID="112" Column="Description">Percent of the entire amount</Data>
         <Data AD_Column_ID="6482" Column="EntityType">D</Data>
         <Data AD_Column_ID="118" Column="FieldLength">22</Data>
         <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
-        <Data AD_Column_ID="113" Column="Help">Defines the completion percentage for a project on a scale where 100% indicates that was completed</Data>
+        <Data AD_Column_ID="113" Column="Help">Percentage of an amount (up to 100)</Data>
         <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
         <Data AD_Column_ID="548" Column="IsActive">true</Data>
         <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
@@ -2208,7 +2208,7 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
         <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
         <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
-        <Data AD_Column_ID="111" Column="Name">Percentage completed</Data>
+        <Data AD_Column_ID="111" Column="Name">Percentage</Data>
         <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
         <Data AD_Column_ID="6245" Column="ReadOnlyLogic">1=1</Data>
         <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
@@ -2232,7 +2232,7 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="12959" Column="IsActive">true</Data>
         <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="12957" Column="Name">Porcentaje completado</Data>
+        <Data AD_Column_ID="12957" Column="Name">Porcentaje</Data>
         <Data AD_Column_ID="12952" Column="Updated">2025-12-23 20:38:49.383</Data>
         <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="84310" Column="UUID">90dd1114-f2fe-4319-8b56-21a69aa03c1f</Data>
@@ -3098,7 +3098,7 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
         <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="109" Column="AD_Column_ID">104637</Data>
-        <Data AD_Column_ID="2608" Column="AD_Element_ID">59660</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">2004</Data>
         <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
         <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
@@ -3107,16 +3107,16 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="114" Column="AD_Table_ID">55058</Data>
         <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
         <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
-        <Data AD_Column_ID="116" Column="ColumnName">PercentageCompleted</Data>
+        <Data AD_Column_ID="116" Column="ColumnName">Percentage</Data>
         <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
         <Data AD_Column_ID="549" Column="Created">2025-12-23 20:39:02.887</Data>
         <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
-        <Data AD_Column_ID="112" Column="Description">Percentage completed</Data>
+        <Data AD_Column_ID="112" Column="Description">Percent of the entire amount</Data>
         <Data AD_Column_ID="6482" Column="EntityType">D</Data>
         <Data AD_Column_ID="118" Column="FieldLength">22</Data>
         <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
-        <Data AD_Column_ID="113" Column="Help">Defines the completion percentage for a project on a scale where 100% indicates that was completed</Data>
+        <Data AD_Column_ID="113" Column="Help">Percentage of an amount (up to 100)</Data>
         <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
         <Data AD_Column_ID="548" Column="IsActive">true</Data>
         <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
@@ -3134,7 +3134,7 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
         <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
         <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
-        <Data AD_Column_ID="111" Column="Name">Percentage completed</Data>
+        <Data AD_Column_ID="111" Column="Name">Percentage</Data>
         <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
         <Data AD_Column_ID="6245" Column="ReadOnlyLogic">1=1</Data>
         <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
@@ -3158,7 +3158,7 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="12959" Column="IsActive">true</Data>
         <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="12957" Column="Name">Porcentaje completado</Data>
+        <Data AD_Column_ID="12957" Column="Name">Porcentaje</Data>
         <Data AD_Column_ID="12952" Column="Updated">2025-12-23 20:39:03.728</Data>
         <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="84310" Column="UUID">9f73617c-d110-499b-9736-c4a3c0b66cfe</Data>
@@ -5735,16 +5735,16 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="579" Column="Created">2025-12-23 20:39:47.423</Data>
         <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
-        <Data AD_Column_ID="169" Column="Description">Unit of Duration</Data>
+        <Data AD_Column_ID="169" Column="Description">Time Unit</Data>
         <Data AD_Column_ID="180" Column="DisplayLength">1</Data>
         <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
         <Data AD_Column_ID="7714" Column="EntityType">D</Data>
-        <Data AD_Column_ID="170" Column="Help">Unit to define the length of time for the execution</Data>
+        <Data AD_Column_ID="170" Column="Help">The unit of time for grouping chart data.</Data>
         <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
         <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
         <Data AD_Column_ID="578" Column="IsActive">true</Data>
         <Data AD_Column_ID="74868" Column="IsAllowCopy">false</Data>
-        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">false</Data>
         <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
         <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
         <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
@@ -5755,7 +5755,7 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
         <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
         <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
-        <Data AD_Column_ID="168" Column="Name">Duration Unit</Data>
+        <Data AD_Column_ID="168" Column="Name">Time Unit</Data>
         <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
         <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true"/>
         <Data AD_Column_ID="181" Column="SeqNo">80</Data>
@@ -5774,11 +5774,11 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="672" Column="Created">2025-12-23 20:39:48.443</Data>
         <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="287" Column="Description">Unidad de la Duración</Data>
-        <Data AD_Column_ID="288" Column="Help">Unidad para definir la duración de tiempo para la ejecución.</Data>
+        <Data AD_Column_ID="287" Column="Description">Unidad de Tiempo</Data>
+        <Data AD_Column_ID="288" Column="Help">Unidad de Tiempo.</Data>
         <Data AD_Column_ID="671" Column="IsActive">true</Data>
         <Data AD_Column_ID="289" Column="IsTranslated">true</Data>
-        <Data AD_Column_ID="286" Column="Name">Unidad de la Duración</Data>
+        <Data AD_Column_ID="286" Column="Name">Unidad de Tiempo</Data>
         <Data AD_Column_ID="674" Column="Updated">2025-12-23 20:39:48.443</Data>
         <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="84323" Column="UUID">05fe9861-7616-40ba-a17f-b35d0ee9c067</Data>
@@ -6808,11 +6808,11 @@ If you leave the search key empty, the system automatically creates a numeric nu
         <Data AD_Column_ID="579" Column="Created">2025-12-23 20:40:06.258</Data>
         <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
-        <Data AD_Column_ID="169" Column="Description">Unit of Duration</Data>
+        <Data AD_Column_ID="169" Column="Description">Time Unit</Data>
         <Data AD_Column_ID="180" Column="DisplayLength">1</Data>
         <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
         <Data AD_Column_ID="7714" Column="EntityType">D</Data>
-        <Data AD_Column_ID="170" Column="Help">Unit to define the length of time for the execution</Data>
+        <Data AD_Column_ID="170" Column="Help">Time Unit</Data>
         <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
         <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
         <Data AD_Column_ID="578" Column="IsActive">true</Data>
@@ -6828,7 +6828,7 @@ If you leave the search key empty, the system automatically creates a numeric nu
         <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
         <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
         <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
-        <Data AD_Column_ID="168" Column="Name">Duration Unit</Data>
+        <Data AD_Column_ID="168" Column="Name">Time Unit</Data>
         <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
         <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true"/>
         <Data AD_Column_ID="181" Column="SeqNo">80</Data>
@@ -6847,11 +6847,11 @@ If you leave the search key empty, the system automatically creates a numeric nu
         <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="672" Column="Created">2025-12-23 20:40:07.208</Data>
         <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="287" Column="Description">Unidad de la Duración</Data>
-        <Data AD_Column_ID="288" Column="Help">Unidad para definir la duración de tiempo para la ejecución.</Data>
+        <Data AD_Column_ID="287" Column="Description">Unidad de Tiempo</Data>
+        <Data AD_Column_ID="288" Column="Help">Unidad de Tiempo.</Data>
         <Data AD_Column_ID="671" Column="IsActive">true</Data>
         <Data AD_Column_ID="289" Column="IsTranslated">true</Data>
-        <Data AD_Column_ID="286" Column="Name">Unidad de la Duración</Data>
+        <Data AD_Column_ID="286" Column="Name">Unidad de Tiempo</Data>
         <Data AD_Column_ID="674" Column="Updated">2025-12-23 20:40:07.208</Data>
         <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="84323" Column="UUID">8ef085fb-fd03-4feb-8f59-a81cbb8bb2d2</Data>
