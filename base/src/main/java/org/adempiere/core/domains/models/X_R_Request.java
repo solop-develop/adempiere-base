@@ -38,7 +38,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250929L;
+	private static final long serialVersionUID = 20251223L;
 
     /** Standard Constructor */
     public X_R_Request (Properties ctx, int R_Request_ID, String trxName)
@@ -64,6 +64,8 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 			setR_Request_ID (0);
 			setR_RequestType_ID (0);
 			setSummary (null);
+			setTimeSpent (Env.ZERO);
+// 0
         } */
     }
 
@@ -858,6 +860,26 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		return (String)get_Value(COLUMNNAME_DueType);
 	}
 
+	/** Set Estimated Duration.
+		@param DurationEstimated 
+		Estimated Duration
+	  */
+	public void setDurationEstimated (BigDecimal DurationEstimated)
+	{
+		set_Value (COLUMNNAME_DurationEstimated, DurationEstimated);
+	}
+
+	/** Get Estimated Duration.
+		@return Estimated Duration
+	  */
+	public BigDecimal getDurationEstimated () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_DurationEstimated);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set End Time.
 		@param EndTime 
 		End of the time span
@@ -1639,6 +1661,31 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		return ii.intValue();
 	}
 
+	public I_R_Iteration getR_Iteration() throws RuntimeException
+    {
+		return (I_R_Iteration)MTable.get(getCtx(), I_R_Iteration.Table_Name)
+			.getPO(getR_Iteration_ID(), get_TrxName());	}
+
+	/** Set Iteration.
+		@param R_Iteration_ID Iteration	  */
+	public void setR_Iteration_ID (int R_Iteration_ID)
+	{
+		if (R_Iteration_ID < 1) 
+			set_Value (COLUMNNAME_R_Iteration_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_Iteration_ID, Integer.valueOf(R_Iteration_ID));
+	}
+
+	/** Get Iteration.
+		@return Iteration	  */
+	public int getR_Iteration_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_Iteration_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.adempiere.core.domains.models.I_R_MailText getR_MailText() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_R_MailText)MTable.get(getCtx(), org.adempiere.core.domains.models.I_R_MailText.Table_Name)
@@ -1662,6 +1709,56 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 	public int getR_MailText_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_R_MailText_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Milestone getR_Milestone() throws RuntimeException
+    {
+		return (I_R_Milestone)MTable.get(getCtx(), I_R_Milestone.Table_Name)
+			.getPO(getR_Milestone_ID(), get_TrxName());	}
+
+	/** Set Milestone.
+		@param R_Milestone_ID Milestone	  */
+	public void setR_Milestone_ID (int R_Milestone_ID)
+	{
+		if (R_Milestone_ID < 1) 
+			set_Value (COLUMNNAME_R_Milestone_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_Milestone_ID, Integer.valueOf(R_Milestone_ID));
+	}
+
+	/** Get Milestone.
+		@return Milestone	  */
+	public int getR_Milestone_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_Milestone_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Release getR_Release() throws RuntimeException
+    {
+		return (I_R_Release)MTable.get(getCtx(), I_R_Release.Table_Name)
+			.getPO(getR_Release_ID(), get_TrxName());	}
+
+	/** Set Release.
+		@param R_Release_ID Release	  */
+	public void setR_Release_ID (int R_Release_ID)
+	{
+		if (R_Release_ID < 1) 
+			set_Value (COLUMNNAME_R_Release_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_Release_ID, Integer.valueOf(R_Release_ID));
+	}
+
+	/** Get Release.
+		@return Release	  */
+	public int getR_Release_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_Release_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -2018,6 +2115,43 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 	public String getTaskStatus () 
 	{
 		return (String)get_Value(COLUMNNAME_TaskStatus);
+	}
+
+	/** Set Time Spent.
+		@param TimeSpent 
+		Number of Hourse Spent on this Request
+	  */
+	public void setTimeSpent (BigDecimal TimeSpent)
+	{
+		set_Value (COLUMNNAME_TimeSpent, TimeSpent);
+	}
+
+	/** Get Time Spent.
+		@return Number of Hourse Spent on this Request
+	  */
+	public BigDecimal getTimeSpent () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_TimeSpent);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set URL.
+		@param URL 
+		Full URL address - e.g. http://www.adempiere.org
+	  */
+	public void setURL (String URL)
+	{
+		set_Value (COLUMNNAME_URL, URL);
+	}
+
+	/** Get URL.
+		@return Full URL address - e.g. http://www.adempiere.org
+	  */
+	public String getURL () 
+	{
+		return (String)get_Value(COLUMNNAME_URL);
 	}
 
 	public org.adempiere.core.domains.models.I_C_ElementValue getUser1() throws RuntimeException

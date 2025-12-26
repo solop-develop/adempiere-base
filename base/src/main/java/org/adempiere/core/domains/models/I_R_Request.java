@@ -502,6 +502,19 @@ public interface I_R_Request
 	  */
 	public String getDueType();
 
+    /** Column name DurationEstimated */
+    public static final String COLUMNNAME_DurationEstimated = "DurationEstimated";
+
+	/** Set Estimated Duration.
+	  * Estimated Duration
+	  */
+	public void setDurationEstimated (BigDecimal DurationEstimated);
+
+	/** Get Estimated Duration.
+	  * Estimated Duration
+	  */
+	public BigDecimal getDurationEstimated();
+
     /** Column name EndTime */
     public static final String COLUMNNAME_EndTime = "EndTime";
 
@@ -944,6 +957,17 @@ public interface I_R_Request
 
 	public org.adempiere.core.domains.models.I_R_Group getR_Group() throws RuntimeException;
 
+    /** Column name R_Iteration_ID */
+    public static final String COLUMNNAME_R_Iteration_ID = "R_Iteration_ID";
+
+	/** Set Iteration	  */
+	public void setR_Iteration_ID (int R_Iteration_ID);
+
+	/** Get Iteration	  */
+	public int getR_Iteration_ID();
+
+	public I_R_Iteration getR_Iteration() throws RuntimeException;
+
     /** Column name R_MailText_ID */
     public static final String COLUMNNAME_R_MailText_ID = "R_MailText_ID";
 
@@ -958,6 +982,28 @@ public interface I_R_Request
 	public int getR_MailText_ID();
 
 	public org.adempiere.core.domains.models.I_R_MailText getR_MailText() throws RuntimeException;
+
+    /** Column name R_Milestone_ID */
+    public static final String COLUMNNAME_R_Milestone_ID = "R_Milestone_ID";
+
+	/** Set Milestone	  */
+	public void setR_Milestone_ID (int R_Milestone_ID);
+
+	/** Get Milestone	  */
+	public int getR_Milestone_ID();
+
+	public I_R_Milestone getR_Milestone() throws RuntimeException;
+
+    /** Column name R_Release_ID */
+    public static final String COLUMNNAME_R_Release_ID = "R_Release_ID";
+
+	/** Set Release	  */
+	public void setR_Release_ID (int R_Release_ID);
+
+	/** Get Release	  */
+	public int getR_Release_ID();
+
+	public I_R_Release getR_Release() throws RuntimeException;
 
     /** Column name R_Request_ID */
     public static final String COLUMNNAME_R_Request_ID = "R_Request_ID";
@@ -1157,6 +1203,19 @@ public interface I_R_Request
 	  */
 	public String getTaskStatus();
 
+    /** Column name TimeSpent */
+    public static final String COLUMNNAME_TimeSpent = "TimeSpent";
+
+	/** Set Time Spent.
+	  * Number of Hourse Spent on this Request
+	  */
+	public void setTimeSpent (BigDecimal TimeSpent);
+
+	/** Get Time Spent.
+	  * Number of Hourse Spent on this Request
+	  */
+	public BigDecimal getTimeSpent();
+
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
 
@@ -1172,6 +1231,19 @@ public interface I_R_Request
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name URL */
+    public static final String COLUMNNAME_URL = "URL";
+
+	/** Set URL.
+	  * Full URL address - e.g. http://www.adempiere.org
+	  */
+	public void setURL (String URL);
+
+	/** Get URL.
+	  * Full URL address - e.g. http://www.adempiere.org
+	  */
+	public String getURL();
 
     /** Column name User1_ID */
     public static final String COLUMNNAME_User1_ID = "User1_ID";
