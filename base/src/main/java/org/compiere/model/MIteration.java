@@ -86,7 +86,7 @@ public class MIteration extends X_R_Iteration {
         if (totalIssues > 0) {
             percentage = BigDecimal.valueOf(((double)completedIssues / totalIssues) * 100);
         }
-        setPercentageCompleted(percentage);
+        setPercentage(percentage);
     }
 
 }

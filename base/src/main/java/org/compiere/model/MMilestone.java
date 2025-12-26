@@ -40,6 +40,6 @@ public class MMilestone extends X_R_Milestone {
         if (totalIssues > 0) {
             percentage = BigDecimal.valueOf(((double)completedIssues / totalIssues) * 100);
         }
-        setPercentageCompleted(percentage);
+        setPercentage(percentage);
     }
 }
