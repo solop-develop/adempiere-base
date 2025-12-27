@@ -1498,6 +1498,12 @@ public abstract class PO
 					m_oldValues[index] = decrypt(index, rs.getTimestamp(columnName));
 				else if (DisplayType.isLOB(dt) || (DisplayType.isText(dt) && p_info.getFieldLength(index) > 4000))
 					m_oldValues[index] = get_LOB (rs.getObject(columnName));
+				else if(DisplayType.isTagSet(dt)) {
+					Array array = rs.getArray(columnName);
+					if(array != null) {
+						m_oldValues[index] = (String[]) array.getArray();
+					}
+				}
 				else if (clazz == String.class)
 					m_oldValues[index] = decrypt(index, rs.getString(columnName));
 				else
@@ -2577,6 +2583,8 @@ public abstract class PO
 				else
 					bValue = "Y".equals(value);
 				sql.append(encrypt(i,bValue ? "'Y'" : "'N'"));
+			} else if(c == List.class) {
+				sql.append(DisplayType.convertToArrayString(value));
 			}
 			else if (value instanceof Timestamp)
 				sql.append(DB.TO_DATE((Timestamp)encrypt(i,value),p_info.getColumnDisplayType(i) == DisplayType.Date));
@@ -2831,7 +2839,9 @@ public abstract class PO
 					sqlValues.append (encrypt(i,DB.TO_STRING ((String)value)));
 				else if (DisplayType.isLOB(dt))
 					sqlValues.append("null");		//	no db dependent stuff here
-				else
+				else if(c == List.class) {
+					sqlValues.append(DisplayType.convertToArrayString(value));
+				} else
 					sqlValues.append (saveNewSpecial (value, i));
 			}
 			catch (Exception e)
