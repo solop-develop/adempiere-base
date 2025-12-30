@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_Request_Columns_DB_Type" ReleaseNo="1.4.24" SeqNo="501420">
+    <Comments>Fix new Request Columns Database Type</Comments>
+    <Step DBType="Postgres" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>
+        ALTER TABLE R_Request ALTER COLUMN R_Milestone_ID SET DEFAULT NULL::NUMERIC;
+        ALTER TABLE R_Request ALTER COLUMN R_Milestone_ID TYPE NUMERIC(10) USING R_Milestone_ID::NUMERIC(10);
+        ALTER TABLE R_Request ALTER COLUMN R_Release_ID SET DEFAULT NULL::NUMERIC;
+        ALTER TABLE R_Request ALTER COLUMN R_Release_ID TYPE NUMERIC(10) USING R_Release_ID::NUMERIC(10);
+        ALTER TABLE R_Request ALTER COLUMN R_Iteration_ID SET DEFAULT NULL::NUMERIC;
+        ALTER TABLE R_Request ALTER COLUMN R_Iteration_ID TYPE NUMERIC(10) USING R_Iteration_ID::NUMERIC(10);
+      </SQLStatement>
+      <RollbackStatement>
+        ALTER TABLE R_Request ALTER COLUMN R_Milestone_ID SET DEFAULT NULL::NUMERIC;
+        ALTER TABLE R_Request ALTER COLUMN R_Milestone_ID TYPE NUMERIC(10) USING R_Milestone_ID::NUMERIC(10);
+        ALTER TABLE R_Request ALTER COLUMN R_Release_ID SET DEFAULT NULL::NUMERIC;
+        ALTER TABLE R_Request ALTER COLUMN R_Release_ID TYPE NUMERIC(10) USING R_Release_ID::NUMERIC(10);
+        ALTER TABLE R_Request ALTER COLUMN R_Iteration_ID SET DEFAULT NULL::NUMERIC;
+        ALTER TABLE R_Request ALTER COLUMN R_Iteration_ID TYPE NUMERIC(10) USING R_Iteration_ID::NUMERIC(10);
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>

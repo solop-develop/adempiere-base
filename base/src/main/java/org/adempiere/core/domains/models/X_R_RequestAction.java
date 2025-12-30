@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for R_RequestAction
  *  @author Adempiere (generated) 
@@ -37,21 +38,21 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20251229L;
 
     /** Standard Constructor */
-    public X_R_RequestAction (Properties ctx, int R_RequestAction_ID, String trxName)
+    public X_R_RequestAction(Properties ctx, int R_RequestAction_ID, String trxName)
     {
       super (ctx, R_RequestAction_ID, trxName);
       /** if (R_RequestAction_ID == 0)
         {
-			setR_Request_ID (0);
 			setR_RequestAction_ID (0);
+			setR_Request_ID (0);
         } */
     }
 
     /** Load Constructor */
-    public X_R_RequestAction (Properties ctx, ResultSet rs, String trxName)
+    public X_R_RequestAction(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -78,9 +79,9 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_A_Asset getA_Asset() throws RuntimeException
+	public I_A_Asset getA_Asset() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_A_Asset)MTable.get(getCtx(), org.adempiere.core.domains.models.I_A_Asset.Table_Name)
+		return (I_A_Asset)MTable.get(getCtx(), I_A_Asset.Table_Name)
 			.getPO(getA_Asset_ID(), get_TrxName());	}
 
 	/** Set Fixed Asset.
@@ -106,9 +107,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Role getAD_Role() throws RuntimeException
+	public I_A_Asset getA_AssetTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Role)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Role.Table_Name)
+		return (I_A_Asset)MTable.get(getCtx(), I_A_Asset.Table_Name)
+			.getPO(getA_AssetTo_ID(), get_TrxName());	}
+
+	/** Set Fixed Asset To.
+		@param A_AssetTo_ID 
+		Fixed Asset used internally or by customers
+	  */
+	public void setA_AssetTo_ID (int A_AssetTo_ID)
+	{
+		if (A_AssetTo_ID < 1) 
+			set_Value (COLUMNNAME_A_AssetTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_A_AssetTo_ID, Integer.valueOf(A_AssetTo_ID));
+	}
+
+	/** Get Fixed Asset To.
+		@return Fixed Asset used internally or by customers
+	  */
+	public int getA_AssetTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_A_AssetTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_AD_Role getAD_Role() throws RuntimeException
+    {
+		return (I_AD_Role)MTable.get(getCtx(), I_AD_Role.Table_Name)
 			.getPO(getAD_Role_ID(), get_TrxName());	}
 
 	/** Set Role.
@@ -134,9 +163,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getAD_User() throws RuntimeException
+	public I_AD_Role getAD_RoleTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_Role)MTable.get(getCtx(), I_AD_Role.Table_Name)
+			.getPO(getAD_RoleTo_ID(), get_TrxName());	}
+
+	/** Set Role To.
+		@param AD_RoleTo_ID 
+		Responsibility Role To
+	  */
+	public void setAD_RoleTo_ID (int AD_RoleTo_ID)
+	{
+		if (AD_RoleTo_ID < 1) 
+			set_Value (COLUMNNAME_AD_RoleTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_AD_RoleTo_ID, Integer.valueOf(AD_RoleTo_ID));
+	}
+
+	/** Get Role To.
+		@return Responsibility Role To
+	  */
+	public int getAD_RoleTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_RoleTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_AD_User getAD_User() throws RuntimeException
+    {
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getAD_User_ID(), get_TrxName());	}
 
 	/** Set User/Contact.
@@ -162,9 +219,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Activity getC_Activity() throws RuntimeException
+	public I_AD_User getAD_UserTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Activity)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Activity.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
+			.getPO(getAD_UserTo_ID(), get_TrxName());	}
+
+	/** Set User/Contact To.
+		@param AD_UserTo_ID 
+		User within the system - Internal or Business Partner Contact
+	  */
+	public void setAD_UserTo_ID (int AD_UserTo_ID)
+	{
+		if (AD_UserTo_ID < 1) 
+			set_Value (COLUMNNAME_AD_UserTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_AD_UserTo_ID, Integer.valueOf(AD_UserTo_ID));
+	}
+
+	/** Get User/Contact To.
+		@return User within the system - Internal or Business Partner Contact
+	  */
+	public int getAD_UserTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_UserTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Activity getC_Activity() throws RuntimeException
+    {
+		return (I_C_Activity)MTable.get(getCtx(), I_C_Activity.Table_Name)
 			.getPO(getC_Activity_ID(), get_TrxName());	}
 
 	/** Set Activity.
@@ -190,9 +275,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_Activity getC_ActivityTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_Activity)MTable.get(getCtx(), I_C_Activity.Table_Name)
+			.getPO(getC_ActivityTo_ID(), get_TrxName());	}
+
+	/** Set Activity To.
+		@param C_ActivityTo_ID 
+		Business Activity To
+	  */
+	public void setC_ActivityTo_ID (int C_ActivityTo_ID)
+	{
+		if (C_ActivityTo_ID < 1) 
+			set_Value (COLUMNNAME_C_ActivityTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_ActivityTo_ID, Integer.valueOf(C_ActivityTo_ID));
+	}
+
+	/** Get Activity To.
+		@return Business Activity To
+	  */
+	public int getC_ActivityTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_ActivityTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_BPartner getC_BPartner() throws RuntimeException
+    {
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -218,9 +331,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Invoice getC_Invoice() throws RuntimeException
+	public I_C_BPartner getC_BPartnerTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Invoice)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Invoice.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
+			.getPO(getC_BPartnerTo_ID(), get_TrxName());	}
+
+	/** Set Business Partner To.
+		@param C_BPartnerTo_ID 
+		Identifies a Business Partner
+	  */
+	public void setC_BPartnerTo_ID (int C_BPartnerTo_ID)
+	{
+		if (C_BPartnerTo_ID < 1) 
+			set_Value (COLUMNNAME_C_BPartnerTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_BPartnerTo_ID, Integer.valueOf(C_BPartnerTo_ID));
+	}
+
+	/** Get Business Partner To.
+		@return Identifies a Business Partner
+	  */
+	public int getC_BPartnerTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_BPartnerTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Invoice getC_Invoice() throws RuntimeException
+    {
+		return (I_C_Invoice)MTable.get(getCtx(), I_C_Invoice.Table_Name)
 			.getPO(getC_Invoice_ID(), get_TrxName());	}
 
 	/** Set Invoice.
@@ -246,85 +387,29 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Order getC_Order() throws RuntimeException
+	public I_C_Invoice getC_InvoiceTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Order)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Order.Table_Name)
-			.getPO(getC_Order_ID(), get_TrxName());	}
+		return (I_C_Invoice)MTable.get(getCtx(), I_C_Invoice.Table_Name)
+			.getPO(getC_InvoiceTo_ID(), get_TrxName());	}
 
-	/** Set Order.
-		@param C_Order_ID 
-		Order
+	/** Set Invoice To.
+		@param C_InvoiceTo_ID 
+		Invoice Identifier
 	  */
-	public void setC_Order_ID (int C_Order_ID)
+	public void setC_InvoiceTo_ID (int C_InvoiceTo_ID)
 	{
-		if (C_Order_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_C_Order_ID, null);
+		if (C_InvoiceTo_ID < 1) 
+			set_Value (COLUMNNAME_C_InvoiceTo_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
+			set_Value (COLUMNNAME_C_InvoiceTo_ID, Integer.valueOf(C_InvoiceTo_ID));
 	}
 
-	/** Get Order.
-		@return Order
+	/** Get Invoice To.
+		@return Invoice Identifier
 	  */
-	public int getC_Order_ID () 
+	public int getC_InvoiceTo_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_Order_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_Payment getC_Payment() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_Payment)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Payment.Table_Name)
-			.getPO(getC_Payment_ID(), get_TrxName());	}
-
-	/** Set Payment.
-		@param C_Payment_ID 
-		Payment identifier
-	  */
-	public void setC_Payment_ID (int C_Payment_ID)
-	{
-		if (C_Payment_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_C_Payment_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
-	}
-
-	/** Get Payment.
-		@return Payment identifier
-	  */
-	public int getC_Payment_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_Payment_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
-			.getPO(getC_Project_ID(), get_TrxName());	}
-
-	/** Set Project.
-		@param C_Project_ID 
-		Financial Project
-	  */
-	public void setC_Project_ID (int C_Project_ID)
-	{
-		if (C_Project_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_C_Project_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
-	}
-
-	/** Get Project.
-		@return Financial Project
-	  */
-	public int getC_Project_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_Project_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_InvoiceTo_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -358,6 +443,202 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (String)get_Value(COLUMNNAME_ConfidentialType);
 	}
 
+	/** ConfidentialTypeTo AD_Reference_ID=340 */
+	public static final int CONFIDENTIALTYPETO_AD_Reference_ID=340;
+	/** Public Information = A */
+	public static final String CONFIDENTIALTYPETO_PublicInformation = "A";
+	/** Partner Confidential = C */
+	public static final String CONFIDENTIALTYPETO_PartnerConfidential = "C";
+	/** Internal = I */
+	public static final String CONFIDENTIALTYPETO_Internal = "I";
+	/** Private Information = P */
+	public static final String CONFIDENTIALTYPETO_PrivateInformation = "P";
+	/** Set Confidentiality To.
+		@param ConfidentialTypeTo 
+		Type of Confidentiality
+	  */
+	public void setConfidentialTypeTo (String ConfidentialTypeTo)
+	{
+
+		set_Value (COLUMNNAME_ConfidentialTypeTo, ConfidentialTypeTo);
+	}
+
+	/** Get Confidentiality To.
+		@return Type of Confidentiality
+	  */
+	public String getConfidentialTypeTo () 
+	{
+		return (String)get_Value(COLUMNNAME_ConfidentialTypeTo);
+	}
+
+	public I_C_Order getC_Order() throws RuntimeException
+    {
+		return (I_C_Order)MTable.get(getCtx(), I_C_Order.Table_Name)
+			.getPO(getC_Order_ID(), get_TrxName());	}
+
+	/** Set Order.
+		@param C_Order_ID 
+		Order
+	  */
+	public void setC_Order_ID (int C_Order_ID)
+	{
+		if (C_Order_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_C_Order_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
+	}
+
+	/** Get Order.
+		@return Order
+	  */
+	public int getC_Order_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Order_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Order getC_OrderTo() throws RuntimeException
+    {
+		return (I_C_Order)MTable.get(getCtx(), I_C_Order.Table_Name)
+			.getPO(getC_OrderTo_ID(), get_TrxName());	}
+
+	/** Set Order To.
+		@param C_OrderTo_ID 
+		Order To
+	  */
+	public void setC_OrderTo_ID (int C_OrderTo_ID)
+	{
+		if (C_OrderTo_ID < 1) 
+			set_Value (COLUMNNAME_C_OrderTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_OrderTo_ID, Integer.valueOf(C_OrderTo_ID));
+	}
+
+	/** Get Order To.
+		@return Order To
+	  */
+	public int getC_OrderTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_OrderTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Payment getC_Payment() throws RuntimeException
+    {
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
+			.getPO(getC_Payment_ID(), get_TrxName());	}
+
+	/** Set Payment.
+		@param C_Payment_ID 
+		Payment identifier
+	  */
+	public void setC_Payment_ID (int C_Payment_ID)
+	{
+		if (C_Payment_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_C_Payment_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+	}
+
+	/** Get Payment.
+		@return Payment identifier
+	  */
+	public int getC_Payment_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Payment_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Payment getC_PaymentTo() throws RuntimeException
+    {
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
+			.getPO(getC_PaymentTo_ID(), get_TrxName());	}
+
+	/** Set Payment To.
+		@param C_PaymentTo_ID 
+		Payment identifier
+	  */
+	public void setC_PaymentTo_ID (int C_PaymentTo_ID)
+	{
+		if (C_PaymentTo_ID < 1) 
+			set_Value (COLUMNNAME_C_PaymentTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_PaymentTo_ID, Integer.valueOf(C_PaymentTo_ID));
+	}
+
+	/** Get Payment To.
+		@return Payment identifier
+	  */
+	public int getC_PaymentTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_PaymentTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Project getC_Project() throws RuntimeException
+    {
+		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
+			.getPO(getC_Project_ID(), get_TrxName());	}
+
+	/** Set Project.
+		@param C_Project_ID 
+		Financial Project
+	  */
+	public void setC_Project_ID (int C_Project_ID)
+	{
+		if (C_Project_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_C_Project_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+	}
+
+	/** Get Project.
+		@return Financial Project
+	  */
+	public int getC_Project_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Project_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Project getC_ProjectTo() throws RuntimeException
+    {
+		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
+			.getPO(getC_ProjectTo_ID(), get_TrxName());	}
+
+	/** Set Project To.
+		@param C_ProjectTo_ID 
+		Financial Project
+	  */
+	public void setC_ProjectTo_ID (int C_ProjectTo_ID)
+	{
+		if (C_ProjectTo_ID < 1) 
+			set_Value (COLUMNNAME_C_ProjectTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_ProjectTo_ID, Integer.valueOf(C_ProjectTo_ID));
+	}
+
+	/** Get Project To.
+		@return Financial Project
+	  */
+	public int getC_ProjectTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_ProjectTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Complete Plan.
 		@param DateCompletePlan 
 		Planned Completion Date
@@ -373,6 +654,23 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	public Timestamp getDateCompletePlan () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_DateCompletePlan);
+	}
+
+	/** Set Complete Plan To.
+		@param DateCompletePlanTo 
+		Planned Completion Date
+	  */
+	public void setDateCompletePlanTo (Timestamp DateCompletePlanTo)
+	{
+		set_Value (COLUMNNAME_DateCompletePlanTo, DateCompletePlanTo);
+	}
+
+	/** Get Complete Plan To.
+		@return Planned Completion Date
+	  */
+	public Timestamp getDateCompletePlanTo () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateCompletePlanTo);
 	}
 
 	/** Set Date next action.
@@ -392,6 +690,23 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (Timestamp)get_Value(COLUMNNAME_DateNextAction);
 	}
 
+	/** Set Date next action To.
+		@param DateNextActionTo 
+		Date that this request should be acted on
+	  */
+	public void setDateNextActionTo (Timestamp DateNextActionTo)
+	{
+		set_Value (COLUMNNAME_DateNextActionTo, DateNextActionTo);
+	}
+
+	/** Get Date next action To.
+		@return Date that this request should be acted on
+	  */
+	public Timestamp getDateNextActionTo () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateNextActionTo);
+	}
+
 	/** Set Start Plan.
 		@param DateStartPlan 
 		Planned Start Date
@@ -409,6 +724,40 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (Timestamp)get_Value(COLUMNNAME_DateStartPlan);
 	}
 
+	/** Set Start Plan To.
+		@param DateStartPlanTo 
+		Planned Start Date
+	  */
+	public void setDateStartPlanTo (Timestamp DateStartPlanTo)
+	{
+		set_Value (COLUMNNAME_DateStartPlanTo, DateStartPlanTo);
+	}
+
+	/** Get Start Plan To.
+		@return Planned Start Date
+	  */
+	public Timestamp getDateStartPlanTo () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateStartPlanTo);
+	}
+
+	/** Set Duration in Milliseconds.
+		@param DurationInMillis Duration in Milliseconds	  */
+	public void setDurationInMillis (BigDecimal DurationInMillis)
+	{
+		set_Value (COLUMNNAME_DurationInMillis, DurationInMillis);
+	}
+
+	/** Get Duration in Milliseconds.
+		@return Duration in Milliseconds	  */
+	public BigDecimal getDurationInMillis () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_DurationInMillis);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set End Date.
 		@param EndDate 
 		Last effective date (inclusive)
@@ -424,6 +773,23 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	public Timestamp getEndDate () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_EndDate);
+	}
+
+	/** Set End Date To.
+		@param EndDateTo 
+		Last effective date (inclusive)
+	  */
+	public void setEndDateTo (Timestamp EndDateTo)
+	{
+		set_Value (COLUMNNAME_EndDateTo, EndDateTo);
+	}
+
+	/** Get End Date To.
+		@return Last effective date (inclusive)
+	  */
+	public Timestamp getEndDateTo () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_EndDateTo);
 	}
 
 	/** IsEscalated AD_Reference_ID=319 */
@@ -450,6 +816,30 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (String)get_Value(COLUMNNAME_IsEscalated);
 	}
 
+	/** Set Escalated To.
+		@param IsEscalatedTo 
+		This request has been escalated
+	  */
+	public void setIsEscalatedTo (boolean IsEscalatedTo)
+	{
+		set_Value (COLUMNNAME_IsEscalatedTo, Boolean.valueOf(IsEscalatedTo));
+	}
+
+	/** Get Escalated To.
+		@return This request has been escalated
+	  */
+	public boolean isEscalatedTo () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsEscalatedTo);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** IsInvoiced AD_Reference_ID=319 */
 	public static final int ISINVOICED_AD_Reference_ID=319;
 	/** Yes = Y */
@@ -472,6 +862,30 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	public String getIsInvoiced () 
 	{
 		return (String)get_Value(COLUMNNAME_IsInvoiced);
+	}
+
+	/** Set Invoiced To.
+		@param IsInvoicedTo 
+		Is this invoiced?
+	  */
+	public void setIsInvoicedTo (boolean IsInvoicedTo)
+	{
+		set_Value (COLUMNNAME_IsInvoicedTo, Boolean.valueOf(IsInvoicedTo));
+	}
+
+	/** Get Invoiced To.
+		@return Is this invoiced?
+	  */
+	public boolean isInvoicedTo () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsInvoicedTo);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** IsSelfService AD_Reference_ID=319 */
@@ -498,9 +912,33 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (String)get_Value(COLUMNNAME_IsSelfService);
 	}
 
-	public org.adempiere.core.domains.models.I_M_InOut getM_InOut() throws RuntimeException
+	/** Set Self-Service To.
+		@param IsSelfServiceTo 
+		This is a Self-Service entry or this entry can be changed via Self-Service
+	  */
+	public void setIsSelfServiceTo (boolean IsSelfServiceTo)
+	{
+		set_Value (COLUMNNAME_IsSelfServiceTo, Boolean.valueOf(IsSelfServiceTo));
+	}
+
+	/** Get Self-Service To.
+		@return This is a Self-Service entry or this entry can be changed via Self-Service
+	  */
+	public boolean isSelfServiceTo () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsSelfServiceTo);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	public I_M_InOut getM_InOut() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_InOut)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_InOut.Table_Name)
+		return (I_M_InOut)MTable.get(getCtx(), I_M_InOut.Table_Name)
 			.getPO(getM_InOut_ID(), get_TrxName());	}
 
 	/** Set Shipment/Receipt.
@@ -526,9 +964,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException
+	public I_M_InOut getM_InOutTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
+		return (I_M_InOut)MTable.get(getCtx(), I_M_InOut.Table_Name)
+			.getPO(getM_InOutTo_ID(), get_TrxName());	}
+
+	/** Set Shipment/Receipt To.
+		@param M_InOutTo_ID 
+		Material Shipment Document
+	  */
+	public void setM_InOutTo_ID (int M_InOutTo_ID)
+	{
+		if (M_InOutTo_ID < 1) 
+			set_Value (COLUMNNAME_M_InOutTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_InOutTo_ID, Integer.valueOf(M_InOutTo_ID));
+	}
+
+	/** Get Shipment/Receipt To.
+		@return Material Shipment Document
+	  */
+	public int getM_InOutTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_InOutTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Product getM_Product() throws RuntimeException
+    {
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
 			.getPO(getM_Product_ID(), get_TrxName());	}
 
 	/** Set Product.
@@ -554,9 +1020,9 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product getM_ProductSpent() throws RuntimeException
+	public I_M_Product getM_ProductSpent() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
 			.getPO(getM_ProductSpent_ID(), get_TrxName());	}
 
 	/** Set Product Used.
@@ -582,9 +1048,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_RMA getM_RMA() throws RuntimeException
+	public I_M_Product getM_ProductTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_RMA)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_RMA.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
+			.getPO(getM_ProductTo_ID(), get_TrxName());	}
+
+	/** Set Product To.
+		@param M_ProductTo_ID 
+		Product, Service, Item
+	  */
+	public void setM_ProductTo_ID (int M_ProductTo_ID)
+	{
+		if (M_ProductTo_ID < 1) 
+			set_Value (COLUMNNAME_M_ProductTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_ProductTo_ID, Integer.valueOf(M_ProductTo_ID));
+	}
+
+	/** Get Product To.
+		@return Product, Service, Item
+	  */
+	public int getM_ProductTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_ProductTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_RMA getM_RMA() throws RuntimeException
+    {
+		return (I_M_RMA)MTable.get(getCtx(), I_M_RMA.Table_Name)
 			.getPO(getM_RMA_ID(), get_TrxName());	}
 
 	/** Set RMA.
@@ -605,6 +1099,34 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	public int getM_RMA_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_M_RMA_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_RMA getM_RMATo() throws RuntimeException
+    {
+		return (I_M_RMA)MTable.get(getCtx(), I_M_RMA.Table_Name)
+			.getPO(getM_RMATo_ID(), get_TrxName());	}
+
+	/** Set RMA To.
+		@param M_RMATo_ID 
+		Return Material Authorization
+	  */
+	public void setM_RMATo_ID (int M_RMATo_ID)
+	{
+		if (M_RMATo_ID < 1) 
+			set_Value (COLUMNNAME_M_RMATo_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_RMATo_ID, Integer.valueOf(M_RMATo_ID));
+	}
+
+	/** Get RMA To.
+		@return Return Material Authorization
+	  */
+	public int getM_RMATo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_RMATo_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -657,6 +1179,36 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (String)get_Value(COLUMNNAME_Priority);
 	}
 
+	/** PriorityTo AD_Reference_ID=154 */
+	public static final int PRIORITYTO_AD_Reference_ID=154;
+	/** High = 3 */
+	public static final String PRIORITYTO_High = "3";
+	/** Medium = 5 */
+	public static final String PRIORITYTO_Medium = "5";
+	/** Low = 7 */
+	public static final String PRIORITYTO_Low = "7";
+	/** Urgent = 1 */
+	public static final String PRIORITYTO_Urgent = "1";
+	/** Minor = 9 */
+	public static final String PRIORITYTO_Minor = "9";
+	/** Set Priority To.
+		@param PriorityTo 
+		Indicates if this request is of a high, medium or low priority.
+	  */
+	public void setPriorityTo (String PriorityTo)
+	{
+
+		set_Value (COLUMNNAME_PriorityTo, PriorityTo);
+	}
+
+	/** Get Priority To.
+		@return Indicates if this request is of a high, medium or low priority.
+	  */
+	public String getPriorityTo () 
+	{
+		return (String)get_Value(COLUMNNAME_PriorityTo);
+	}
+
 	/** PriorityUser AD_Reference_ID=154 */
 	public static final int PRIORITYUSER_AD_Reference_ID=154;
 	/** High = 3 */
@@ -687,6 +1239,36 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (String)get_Value(COLUMNNAME_PriorityUser);
 	}
 
+	/** PriorityUserTo AD_Reference_ID=154 */
+	public static final int PRIORITYUSERTO_AD_Reference_ID=154;
+	/** High = 3 */
+	public static final String PRIORITYUSERTO_High = "3";
+	/** Medium = 5 */
+	public static final String PRIORITYUSERTO_Medium = "5";
+	/** Low = 7 */
+	public static final String PRIORITYUSERTO_Low = "7";
+	/** Urgent = 1 */
+	public static final String PRIORITYUSERTO_Urgent = "1";
+	/** Minor = 9 */
+	public static final String PRIORITYUSERTO_Minor = "9";
+	/** Set User Importance To.
+		@param PriorityUserTo 
+		Priority of the issue for the User
+	  */
+	public void setPriorityUserTo (String PriorityUserTo)
+	{
+
+		set_Value (COLUMNNAME_PriorityUserTo, PriorityUserTo);
+	}
+
+	/** Get User Importance To.
+		@return Priority of the issue for the User
+	  */
+	public String getPriorityUserTo () 
+	{
+		return (String)get_Value(COLUMNNAME_PriorityUserTo);
+	}
+
 	/** Set Quantity Invoiced.
 		@param QtyInvoiced 
 		Invoiced Quantity
@@ -702,6 +1284,26 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	public BigDecimal getQtyInvoiced () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyInvoiced);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Quantity Invoiced To.
+		@param QtyInvoicedTo 
+		Invoiced Quantity
+	  */
+	public void setQtyInvoicedTo (BigDecimal QtyInvoicedTo)
+	{
+		set_Value (COLUMNNAME_QtyInvoicedTo, QtyInvoicedTo);
+	}
+
+	/** Get Quantity Invoiced To.
+		@return Invoiced Quantity
+	  */
+	public BigDecimal getQtyInvoicedTo () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyInvoicedTo);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
@@ -727,6 +1329,26 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return bd;
 	}
 
+	/** Set Quantity Plan To.
+		@param QtyPlanTo 
+		Planned Quantity
+	  */
+	public void setQtyPlanTo (BigDecimal QtyPlanTo)
+	{
+		set_Value (COLUMNNAME_QtyPlanTo, QtyPlanTo);
+	}
+
+	/** Get Quantity Plan To.
+		@return Planned Quantity
+	  */
+	public BigDecimal getQtyPlanTo () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyPlanTo);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Quantity Used.
 		@param QtySpent 
 		Quantity used for this event
@@ -747,9 +1369,29 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_R_Category getR_Category() throws RuntimeException
+	/** Set Quantity Used To.
+		@param QtySpentTo 
+		Quantity used for this event
+	  */
+	public void setQtySpentTo (BigDecimal QtySpentTo)
+	{
+		set_Value (COLUMNNAME_QtySpentTo, QtySpentTo);
+	}
+
+	/** Get Quantity Used To.
+		@return Quantity used for this event
+	  */
+	public BigDecimal getQtySpentTo () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtySpentTo);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public I_R_Category getR_Category() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_R_Category)MTable.get(getCtx(), org.adempiere.core.domains.models.I_R_Category.Table_Name)
+		return (I_R_Category)MTable.get(getCtx(), I_R_Category.Table_Name)
 			.getPO(getR_Category_ID(), get_TrxName());	}
 
 	/** Set Category.
@@ -775,9 +1417,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_R_Group getR_Group() throws RuntimeException
+	public I_R_Category getR_CategoryTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_R_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_R_Group.Table_Name)
+		return (I_R_Category)MTable.get(getCtx(), I_R_Category.Table_Name)
+			.getPO(getR_CategoryTo_ID(), get_TrxName());	}
+
+	/** Set Category To.
+		@param R_CategoryTo_ID 
+		Request Category
+	  */
+	public void setR_CategoryTo_ID (int R_CategoryTo_ID)
+	{
+		if (R_CategoryTo_ID < 1) 
+			set_Value (COLUMNNAME_R_CategoryTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_CategoryTo_ID, Integer.valueOf(R_CategoryTo_ID));
+	}
+
+	/** Get Category To.
+		@return Request Category
+	  */
+	public int getR_CategoryTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_CategoryTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Group getR_Group() throws RuntimeException
+    {
+		return (I_R_Group)MTable.get(getCtx(), I_R_Group.Table_Name)
 			.getPO(getR_Group_ID(), get_TrxName());	}
 
 	/** Set Group.
@@ -803,29 +1473,29 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_R_Request getR_Request() throws RuntimeException
+	public I_R_Group getR_GroupTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_R_Request)MTable.get(getCtx(), org.adempiere.core.domains.models.I_R_Request.Table_Name)
-			.getPO(getR_Request_ID(), get_TrxName());	}
+		return (I_R_Group)MTable.get(getCtx(), I_R_Group.Table_Name)
+			.getPO(getR_GroupTo_ID(), get_TrxName());	}
 
-	/** Set Request.
-		@param R_Request_ID 
-		Request from a Business Partner or Prospect
+	/** Set Group To.
+		@param R_GroupTo_ID 
+		Request Group
 	  */
-	public void setR_Request_ID (int R_Request_ID)
+	public void setR_GroupTo_ID (int R_GroupTo_ID)
 	{
-		if (R_Request_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_R_Request_ID, null);
+		if (R_GroupTo_ID < 1) 
+			set_Value (COLUMNNAME_R_GroupTo_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_R_Request_ID, Integer.valueOf(R_Request_ID));
+			set_Value (COLUMNNAME_R_GroupTo_ID, Integer.valueOf(R_GroupTo_ID));
 	}
 
-	/** Get Request.
-		@return Request from a Business Partner or Prospect
+	/** Get Group To.
+		@return Request Group
 	  */
-	public int getR_Request_ID () 
+	public int getR_GroupTo_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_R_Request_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_GroupTo_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -854,9 +1524,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_R_RequestType getR_RequestType() throws RuntimeException
+	public I_R_Request getR_Request() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_R_RequestType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_R_RequestType.Table_Name)
+		return (I_R_Request)MTable.get(getCtx(), I_R_Request.Table_Name)
+			.getPO(getR_Request_ID(), get_TrxName());	}
+
+	/** Set Request.
+		@param R_Request_ID 
+		Request from a Business Partner or Prospect
+	  */
+	public void setR_Request_ID (int R_Request_ID)
+	{
+		if (R_Request_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_R_Request_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_R_Request_ID, Integer.valueOf(R_Request_ID));
+	}
+
+	/** Get Request.
+		@return Request from a Business Partner or Prospect
+	  */
+	public int getR_Request_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_Request_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_RequestType getR_RequestType() throws RuntimeException
+    {
+		return (I_R_RequestType)MTable.get(getCtx(), I_R_RequestType.Table_Name)
 			.getPO(getR_RequestType_ID(), get_TrxName());	}
 
 	/** Set Request Type.
@@ -882,9 +1580,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_R_Resolution getR_Resolution() throws RuntimeException
+	public I_R_RequestType getR_RequestTypeTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_R_Resolution)MTable.get(getCtx(), org.adempiere.core.domains.models.I_R_Resolution.Table_Name)
+		return (I_R_RequestType)MTable.get(getCtx(), I_R_RequestType.Table_Name)
+			.getPO(getR_RequestTypeTo_ID(), get_TrxName());	}
+
+	/** Set Request Type To.
+		@param R_RequestTypeTo_ID 
+		Type of request (e.g. Inquiry, Complaint, ..)
+	  */
+	public void setR_RequestTypeTo_ID (int R_RequestTypeTo_ID)
+	{
+		if (R_RequestTypeTo_ID < 1) 
+			set_Value (COLUMNNAME_R_RequestTypeTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_RequestTypeTo_ID, Integer.valueOf(R_RequestTypeTo_ID));
+	}
+
+	/** Get Request Type To.
+		@return Type of request (e.g. Inquiry, Complaint, ..)
+	  */
+	public int getR_RequestTypeTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_RequestTypeTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Resolution getR_Resolution() throws RuntimeException
+    {
+		return (I_R_Resolution)MTable.get(getCtx(), I_R_Resolution.Table_Name)
 			.getPO(getR_Resolution_ID(), get_TrxName());	}
 
 	/** Set Resolution.
@@ -910,9 +1636,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_R_Status getR_Status() throws RuntimeException
+	public I_R_Resolution getR_ResolutionTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_R_Status)MTable.get(getCtx(), org.adempiere.core.domains.models.I_R_Status.Table_Name)
+		return (I_R_Resolution)MTable.get(getCtx(), I_R_Resolution.Table_Name)
+			.getPO(getR_ResolutionTo_ID(), get_TrxName());	}
+
+	/** Set Resolution To.
+		@param R_ResolutionTo_ID 
+		Request Resolution
+	  */
+	public void setR_ResolutionTo_ID (int R_ResolutionTo_ID)
+	{
+		if (R_ResolutionTo_ID < 1) 
+			set_Value (COLUMNNAME_R_ResolutionTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_ResolutionTo_ID, Integer.valueOf(R_ResolutionTo_ID));
+	}
+
+	/** Get Resolution To.
+		@return Request Resolution
+	  */
+	public int getR_ResolutionTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_ResolutionTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Status getR_Status() throws RuntimeException
+    {
+		return (I_R_Status)MTable.get(getCtx(), I_R_Status.Table_Name)
 			.getPO(getR_Status_ID(), get_TrxName());	}
 
 	/** Set Status.
@@ -938,9 +1692,37 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
+	public I_R_Status getR_StatusTo() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_R_Status)MTable.get(getCtx(), I_R_Status.Table_Name)
+			.getPO(getR_StatusTo_ID(), get_TrxName());	}
+
+	/** Set Status To.
+		@param R_StatusTo_ID 
+		Request Status
+	  */
+	public void setR_StatusTo_ID (int R_StatusTo_ID)
+	{
+		if (R_StatusTo_ID < 1) 
+			set_Value (COLUMNNAME_R_StatusTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_StatusTo_ID, Integer.valueOf(R_StatusTo_ID));
+	}
+
+	/** Get Status To.
+		@return Request Status
+	  */
+	public int getR_StatusTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_StatusTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_AD_User getSalesRep() throws RuntimeException
+    {
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSalesRep_ID(), get_TrxName());	}
 
 	/** Set Sales Representative.
@@ -966,6 +1748,34 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
+	public I_AD_User getSalesRepTo() throws RuntimeException
+    {
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
+			.getPO(getSalesRepTo_ID(), get_TrxName());	}
+
+	/** Set Sales Representative To.
+		@param SalesRepTo_ID 
+		Sales Representative or Company Agent
+	  */
+	public void setSalesRepTo_ID (int SalesRepTo_ID)
+	{
+		if (SalesRepTo_ID < 1) 
+			set_Value (COLUMNNAME_SalesRepTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_SalesRepTo_ID, Integer.valueOf(SalesRepTo_ID));
+	}
+
+	/** Get Sales Representative To.
+		@return Sales Representative or Company Agent
+	  */
+	public int getSalesRepTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SalesRepTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Start Date.
 		@param StartDate 
 		First effective day (inclusive)
@@ -983,6 +1793,23 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (Timestamp)get_Value(COLUMNNAME_StartDate);
 	}
 
+	/** Set Start Date To.
+		@param StartDateTo 
+		First effective day (inclusive)
+	  */
+	public void setStartDateTo (Timestamp StartDateTo)
+	{
+		set_Value (COLUMNNAME_StartDateTo, StartDateTo);
+	}
+
+	/** Get Start Date To.
+		@return First effective day (inclusive)
+	  */
+	public Timestamp getStartDateTo () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_StartDateTo);
+	}
+
 	/** Set Summary.
 		@param Summary 
 		Textual summary of this request
@@ -998,6 +1825,23 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	public String getSummary () 
 	{
 		return (String)get_Value(COLUMNNAME_Summary);
+	}
+
+	/** Set Summary To.
+		@param SummaryTo 
+		Textual summary of this request
+	  */
+	public void setSummaryTo (String SummaryTo)
+	{
+		set_Value (COLUMNNAME_SummaryTo, SummaryTo);
+	}
+
+	/** Get Summary To.
+		@return Textual summary of this request
+	  */
+	public String getSummaryTo () 
+	{
+		return (String)get_Value(COLUMNNAME_SummaryTo);
 	}
 
 	/** TaskStatus AD_Reference_ID=366 */
@@ -1036,6 +1880,44 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	public String getTaskStatus () 
 	{
 		return (String)get_Value(COLUMNNAME_TaskStatus);
+	}
+
+	/** TaskStatusTo AD_Reference_ID=366 */
+	public static final int TASKSTATUSTO_AD_Reference_ID=366;
+	/**  0% Not Started = 0 */
+	public static final String TASKSTATUSTO_0NotStarted = "0";
+	/** 100% Complete = D */
+	public static final String TASKSTATUSTO_100Complete = "D";
+	/**  20% Started = 2 */
+	public static final String TASKSTATUSTO_20Started = "2";
+	/**  80% Nearly Done = 8 */
+	public static final String TASKSTATUSTO_80NearlyDone = "8";
+	/**  40% Busy = 4 */
+	public static final String TASKSTATUSTO_40Busy = "4";
+	/**  60% Good Progress = 6 */
+	public static final String TASKSTATUSTO_60GoodProgress = "6";
+	/**  90% Finishing = 9 */
+	public static final String TASKSTATUSTO_90Finishing = "9";
+	/**  95% Almost Done = A */
+	public static final String TASKSTATUSTO_95AlmostDone = "A";
+	/**  99% Cleaning up = C */
+	public static final String TASKSTATUSTO_99CleaningUp = "C";
+	/** Set Task Status To.
+		@param TaskStatusTo 
+		Status of the Task
+	  */
+	public void setTaskStatusTo (String TaskStatusTo)
+	{
+
+		set_Value (COLUMNNAME_TaskStatusTo, TaskStatusTo);
+	}
+
+	/** Get Task Status To.
+		@return Status of the Task
+	  */
+	public String getTaskStatusTo () 
+	{
+		return (String)get_Value(COLUMNNAME_TaskStatusTo);
 	}
 
 	/** Set Immutable Universally Unique Identifier.

@@ -16,10 +16,20 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_ProjectPhase;
+import org.adempiere.core.domains.models.I_C_ProjectTask;
+import org.adempiere.core.domains.models.I_R_RequestAction;
+import org.adempiere.core.domains.models.I_R_RequestUpdate;
+import org.adempiere.core.domains.models.X_C_BP_Group;
+import org.adempiere.core.domains.models.X_R_Request;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.DBException;
-import org.compiere.util.*;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.compiere.util.TimeUtil;
+import org.compiere.util.Util;
 import org.spin.model.MRNoticeTemplate;
 import org.spin.model.MRNoticeTemplateEvent;
 import org.spin.queue.notification.DefaultNotifier;
@@ -832,7 +842,6 @@ public class MRequest extends X_R_Request
 			if (projectTask != null && getC_ProjectPhase_ID() <= 0)
 				setC_ProjectPhase_ID(projectTask.getC_ProjectPhase_ID());
 		}
-				
 		//	New
 		if (newRecord)
 			return true;
@@ -840,86 +849,68 @@ public class MRequest extends X_R_Request
 		//	Change Log
 		m_changed = false;
 		ArrayList<String> sendInfo = new ArrayList<String>();
-		MRequestAction requestAction = new MRequestAction(this, false);
-		//
-		if (checkChange(requestAction, "R_RequestType_ID"))
-			sendInfo.add("R_RequestType_ID");
-		if (checkChange(requestAction, "R_Group_ID"))
-			sendInfo.add("R_Group_ID");
-		if (checkChange(requestAction, "R_Category_ID"))
-			sendInfo.add("R_Category_ID");
-		if (checkChange(requestAction, "R_Status_ID"))
-			sendInfo.add("R_Status_ID");
-		if (checkChange(requestAction, "R_Resolution_ID"))
-			sendInfo.add("R_Resolution_ID");
-		//
-		if (checkChange(requestAction, "SalesRep_ID"))
-		{
+		if (is_ValueChanged(COLUMNNAME_R_RequestType_ID)) {
+			sendInfo.add(COLUMNNAME_R_RequestType_ID);
+		}
+		if (is_ValueChanged(COLUMNNAME_R_Group_ID)) {
+			sendInfo.add(COLUMNNAME_R_Group_ID);
+		}
+		if (is_ValueChanged(COLUMNNAME_R_Category_ID)) {
+			sendInfo.add(COLUMNNAME_R_Category_ID);
+		}
+		if (is_ValueChanged(COLUMNNAME_R_Status_ID)) {
+			sendInfo.add(COLUMNNAME_R_Status_ID);
+		}
+		if (is_ValueChanged(COLUMNNAME_R_Resolution_ID)) {
+			sendInfo.add(COLUMNNAME_R_Resolution_ID);
+		}
+		if (is_ValueChanged(COLUMNNAME_SalesRep_ID)) {
+
 			//	Sender
 			int AD_User_ID = Env.getContextAsInt(p_ctx, "#AD_User_ID");
 			if (AD_User_ID == 0)
 				AD_User_ID = getUpdatedBy();
 			//	Old
-			Object oo = get_ValueOld("SalesRep_ID");
+			Object oo = get_ValueOld(COLUMNNAME_SalesRep_ID);
 			int oldSalesRep_ID = 0;
 			if (oo instanceof Integer)
 				oldSalesRep_ID = ((Integer)oo).intValue();
 			if (oldSalesRep_ID != 0)
 			{
 				//  RequestActionTransfer - Request {0} was transfered by {1} from {2} to {3}
-				Object[] args = new Object[] {getDocumentNo(), 
-					MUser.getNameOfUser(AD_User_ID),
-					MUser.getNameOfUser(oldSalesRep_ID),
-					MUser.getNameOfUser(getSalesRep_ID())
-					};
+				Object[] args = new Object[] {getDocumentNo(),
+						MUser.getNameOfUser(AD_User_ID),
+						MUser.getNameOfUser(oldSalesRep_ID),
+						MUser.getNameOfUser(getSalesRep_ID())
+				};
 				String msg = Msg.getMsg(getCtx(), "RequestActionTransfer", args);
 				addToResult(msg);
-				sendInfo.add("SalesRep_ID");
+				sendInfo.add(COLUMNNAME_SalesRep_ID);
 			}
 		}
-		checkChange(requestAction, "AD_Role_ID");
-		//
-		checkChange(requestAction, "Priority");
-		if (checkChange(requestAction, "PriorityUser"))
-			sendInfo.add("PriorityUser");
-		if (checkChange(requestAction, "IsEscalated"))
-			sendInfo.add("IsEscalated");
-		//
-		checkChange(requestAction, "ConfidentialType");
-		checkChange(requestAction, "Summary");
-		checkChange(requestAction, "IsSelfService");
-		checkChange(requestAction, "C_BPartner_ID");
-		checkChange(requestAction, "AD_User_ID");
-		checkChange(requestAction, "C_Project_ID");
-		checkChange(requestAction, "A_Asset_ID");
-		checkChange(requestAction, "C_Order_ID");
-		checkChange(requestAction, "C_Invoice_ID");
-		checkChange(requestAction, "M_Product_ID");
-		checkChange(requestAction, "C_Payment_ID");
-		checkChange(requestAction, "M_InOut_ID");
-		checkChange(requestAction, "M_RMA_ID");
-		checkChange(requestAction, "C_Campaign_ID");
-		checkChange(requestAction, "RequestAmt");
-		checkChange(requestAction, "IsInvoiced");
-		checkChange(requestAction, "C_Activity_ID");
-		checkChange(requestAction, "DateNextAction");
-		checkChange(requestAction, "M_ProductSpent_ID");
-		checkChange(requestAction, "QtySpent");
-		checkChange(requestAction, "QtyInvoiced");
-		checkChange(requestAction, "StartDate");
-		checkChange(requestAction, "CloseDate");
-		checkChange(requestAction, "TaskStatus");
-		checkChange(requestAction, "DateStartPlan");
-		checkChange(requestAction, "DateCompletePlan");
-		//
-		if (m_changed)
-			requestAction.saveEx();
+		if (is_ValueChanged(COLUMNNAME_PriorityUser)) {
+			sendInfo.add(COLUMNNAME_PriorityUser);
+		}
+		if (is_ValueChanged(COLUMNNAME_IsEscalated)) {
+			sendInfo.add(COLUMNNAME_IsEscalated);
+		}
+		if (is_ValueChanged(COLUMNNAME_PriorityUser)) {
+			sendInfo.add(COLUMNNAME_PriorityUser);
+		}
+		if (is_ValueChanged(COLUMNNAME_PriorityUser)) {
+			sendInfo.add(COLUMNNAME_PriorityUser);
+		}
+		if (is_ValueChanged(COLUMNNAME_PriorityUser)) {
+			sendInfo.add(COLUMNNAME_PriorityUser);
+		}
+		if (is_ValueChanged(COLUMNNAME_PriorityUser)) {
+			sendInfo.add(COLUMNNAME_PriorityUser);
+		}
+
+
 		
 		//	Current Info
 		MRequestUpdate requestUpdate = new MRequestUpdate(this);
-		// Link Request Action  with Request Update
-		if (requestAction.getR_RequestAction_ID() > 0)
-			requestUpdate.setR_RequestAction_ID(requestAction.getR_RequestAction_ID());
 
 		if (requestUpdate.isNewInfo())
 			requestUpdate.saveEx();
@@ -933,9 +924,9 @@ public class MRequest extends X_R_Request
 			// new interested are not notified if the RV_RequestUpdates view changes
 			// this is, when changed the sales rep (solved in sendNotices)
 			// or when changed the request category or group or contact (unsolved - the old ones are notified)
-			if(checkChange(requestAction, "SalesRep_ID")) {
+			if(is_ValueChanged(COLUMNNAME_SalesRep_ID)) {
 				sendNotices(sendInfo, MRNoticeTemplateEvent.EVENTTYPE_SalesRepAlertWhenTransferringARequest);
-			} else if(checkChange(requestAction, "Summary")) {
+			} else if(is_ValueChanged(COLUMNNAME_Summary)) {
 				sendNotices(sendInfo, MRNoticeTemplateEvent.EVENTTYPE_EndUserLimitOverrideNotice);
 			}
 			sendNotices(sendInfo, MRNoticeTemplateEvent.EVENTTYPE_AutomaticTaskNewActivityNotice);
@@ -959,25 +950,107 @@ public class MRequest extends X_R_Request
 	}	//	beforeSave
 
 	/**
-	 * 	Check for changes
-	 *	@param requestAction request action
-	 *	@param columnName column
-	 *	@return true if changes
+	 * Validate all required Columns to be updated in Request Action
+	 * @param newRecord
 	 */
-	private boolean checkChange (MRequestAction requestAction, String columnName)
-	{
-		if (is_ValueChanged(columnName))
-		{
-			Object value = get_ValueOld(columnName);
-			if (value == null)
-				requestAction.addNullColumn(columnName);
-			else
-				requestAction.set_ValueNoCheck(columnName, value);
-			m_changed = true;
-			return true;
+	private void validateRequestActions(boolean newRecord){
+		updateOrCreateRequestAction(COLUMNNAME_R_RequestType_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_R_Category_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_R_Status_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_R_Resolution_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_SalesRep_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_AD_Role_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_Priority, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_PriorityUser, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_IsEscalated, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_ConfidentialType, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_Summary, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_IsSelfService, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_C_BPartner_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_AD_User_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_C_Project_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_A_Asset_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_C_Order_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_C_Invoice_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_M_Product_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_C_Payment_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_M_InOut_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_M_RMA_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_C_Campaign_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_IsInvoiced, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_C_Activity_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_DateNextAction, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_M_ProductSpent_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_QtySpent, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_QtyInvoiced, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_StartDate, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_CloseDate, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_TaskStatus, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_DateStartPlan, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_DateCompletePlan, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_R_Group_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_URL, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_R_Milestone_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_R_Release_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_R_Iteration_ID, newRecord);
+	}
+
+	/**
+	 * Update existing Request Action with the new value of a column or Create a new one
+	 * @param columnName
+	 * @param newRecord
+	 */
+	private void updateOrCreateRequestAction(String columnName, boolean newRecord){
+		if (!newRecord && (get_ValueOld(columnName) == get_Value(columnName))){
+			return;
 		}
-		return false;
-	}	//	checkChange
+		if((newRecord && get_Value(columnName) != null) || is_ValueChanged(columnName)){
+			if(MColumn.getColumn_ID(MRequestAction.Table_Name, columnName) <= 0) {
+				return;
+			}
+			String whereClause = "R_Request_ID = ? AND ("+columnName+" IS NOT NULL OR NullColumns = ?) AND Updated = Created";
+			MRequestAction requestAction = new Query(getCtx(), MRequestAction.Table_Name, whereClause, get_TrxName())
+					.setParameters(get_ID(), columnName)
+					.first();
+			if (requestAction != null){
+
+				String columnTo = getChangedToColumnName(columnName);
+				Object value = get_Value(columnName);
+				if (value instanceof Boolean) {
+					value = ((Boolean) value)? "Y": "N";
+				}
+				requestAction.set_ValueOfColumn(columnTo, value);
+				requestAction.saveEx();
+			}
+			requestAction = new MRequestAction(this, false);
+			if (get_Value(columnName) == null) {
+				requestAction.setNullColumns(columnName);
+			} else {
+				Object value = get_Value(columnName);
+				if (value instanceof Boolean) {
+					value = ((Boolean) value)? "Y": "N";
+				}
+				requestAction.set_ValueOfColumn(columnName, value);
+			}
+			requestAction.saveEx();
+		}
+	}
+
+	/***
+	 * Get column used for storing the new value of the original Column, it ends with 'To_ID' or only 'TO'
+	 * @param columnName
+	 * @return new Column Name
+	 */
+	private String getChangedToColumnName(String columnName){
+		String result = columnName;
+		if (columnName.endsWith("_ID")){
+			result = columnName.replace("_ID", "To_ID");
+		} else {
+			result = columnName+"To";
+		}
+		return result;
+	}
+
 	
 	/**
 	 * 	Set SalesRep_ID
@@ -1039,7 +1112,34 @@ public class MRequest extends X_R_Request
 				}
 			}
 		}
-		
+		if (is_ValueChanged(COLUMNNAME_R_Iteration_ID) || is_ValueChanged(COLUMNNAME_R_Status_ID)){
+			int oldIterationId = get_ValueOldAsInt(COLUMNNAME_R_Iteration_ID);
+			if (oldIterationId != 0 && oldIterationId != getR_Iteration_ID()) {
+				MIteration oldIteration = new MIteration(getCtx(), oldIterationId, get_TrxName());
+				oldIteration.updateCompletedPercentage();
+				oldIteration.saveEx();
+			}
+			if (getR_Iteration_ID() > 0){
+				MIteration iteration = (MIteration) getR_Iteration();
+				iteration.updateCompletedPercentage();
+				iteration.saveEx();
+			}
+		}
+		if (is_ValueChanged(COLUMNNAME_R_Milestone_ID) || is_ValueChanged(COLUMNNAME_R_Status_ID)){
+			int oldMilestoneId = get_ValueOldAsInt(COLUMNNAME_R_Milestone_ID);
+			if (oldMilestoneId != 0 && oldMilestoneId != getR_Milestone_ID()) {
+				MMilestone oldIteration = new MMilestone(getCtx(), oldMilestoneId, get_TrxName());
+				oldIteration.updateCompletedPercentage();
+				oldIteration.saveEx();
+			}
+			if (getR_Milestone_ID() > 0){
+				MMilestone milestone = (MMilestone) getR_Milestone();
+				milestone.updateCompletedPercentage();
+				milestone.saveEx();
+			}
+		}
+
+		validateRequestActions(newRecord);
 		if (m_emailTo.length() > 0)
 			log.saveInfo ("RequestActionEMailOK", m_emailTo.toString());
 		
