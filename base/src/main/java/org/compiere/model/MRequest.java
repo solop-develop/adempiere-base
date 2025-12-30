@@ -977,7 +977,6 @@ public class MRequest extends X_R_Request
 		updateOrCreateRequestAction(COLUMNNAME_M_InOut_ID, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_M_RMA_ID, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_C_Campaign_ID, newRecord);
-		updateOrCreateRequestAction(COLUMNNAME_RequestAmt, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_IsInvoiced, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_C_Activity_ID, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_DateNextAction, newRecord);
@@ -997,7 +996,6 @@ public class MRequest extends X_R_Request
 		updateOrCreateRequestAction(COLUMNNAME_DateStartPlan, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_QtySpent, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_IsInvoiced, newRecord);
-		updateOrCreateRequestAction(COLUMNNAME_DurationEstimated, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_URL, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_R_Milestone_ID, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_R_Release_ID, newRecord);
