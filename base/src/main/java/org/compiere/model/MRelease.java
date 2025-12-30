@@ -1,5 +1,4 @@
 package org.compiere.model;
-import org.adempiere.core.domains.models.X_R_Milestone;
 import org.adempiere.core.domains.models.X_R_Release;
 
 import java.sql.ResultSet;

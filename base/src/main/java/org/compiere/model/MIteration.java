@@ -1,16 +1,11 @@
 package org.compiere.model;
 import org.adempiere.core.domains.models.X_R_Iteration;
-import org.adempiere.core.domains.models.X_R_Release;
 import org.compiere.util.TimeUtil;
-import org.spin.service.grpc.util.value.TimeManager;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.Properties;
 

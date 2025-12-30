@@ -19,6 +19,7 @@ package org.compiere.model;
 import org.adempiere.core.domains.models.X_R_RequestAction;
 import org.compiere.util.Msg;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
@@ -180,6 +181,9 @@ public class MRequestAction extends X_R_RequestAction
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
+		if (!newRecord) {
+			setDurationInMillis(BigDecimal.valueOf(System.currentTimeMillis() - getCreated().getTime()));
+		}
 		return true;
 	}	//	beforeSave
 }	//	MRequestAction
