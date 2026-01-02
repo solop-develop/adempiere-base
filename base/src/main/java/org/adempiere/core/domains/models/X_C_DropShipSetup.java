@@ -36,7 +36,7 @@ public class X_C_DropShipSetup extends PO implements I_C_DropShipSetup, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251121L;
+	private static final long serialVersionUID = 20251208L;
 
     /** Standard Constructor */
     public X_C_DropShipSetup(Properties ctx, int C_DropShipSetup_ID, String trxName)
@@ -310,6 +310,27 @@ public class X_C_DropShipSetup extends PO implements I_C_DropShipSetup, I_Persis
 	public boolean isDocumentBasedBPartner () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsDocumentBasedBPartner);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Use Vendor Price List.
+		@param IsUseVendorPriceList Use Vendor Price List	  */
+	public void setIsUseVendorPriceList (boolean IsUseVendorPriceList)
+	{
+		set_Value (COLUMNNAME_IsUseVendorPriceList, Boolean.valueOf(IsUseVendorPriceList));
+	}
+
+	/** Get Use Vendor Price List.
+		@return Use Vendor Price List	  */
+	public boolean isUseVendorPriceList ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsUseVendorPriceList);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 

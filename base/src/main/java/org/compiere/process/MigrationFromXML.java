@@ -82,7 +82,7 @@ public class MigrationFromXML extends MigrationFromXMLAbstract {
 	public Comparator<File> fileComparator = new Comparator<File>() {
 		// Note - Not locale sensitive.
 	    public int compare(File f1, File f2) {
-	        return f1.getName().compareToIgnoreCase(f2.getName());
+	        return f1.getAbsolutePath().compareToIgnoreCase(f2.getAbsolutePath());
 	    }
 	};
 		

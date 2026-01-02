@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,7 +12,8 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 
 package org.spin.process;
@@ -22,7 +23,7 @@ import org.compiere.process.SvrProcess;
 
 /** Generated Process for (Withholding Generate)
  *  @author ADempiere (generated) 
- *  @version Release 3.9.3
+ *  @version Release 3.9.4
  */
 public abstract class WithholdingGenerateAbstract extends SvrProcess {
 	/** Process Value 	*/
@@ -51,6 +52,8 @@ public abstract class WithholdingGenerateAbstract extends SvrProcess {
 	public static final String ISMANUAL = "IsManual";
 	/**	Parameter Name for Document No	*/
 	public static final String DOCUMENTNO = "DocumentNo";
+	/**	Parameter Name for Consolidate to one Document	*/
+	public static final String CONSOLIDATEDOCUMENT = "ConsolidateDocument";
 	/**	Parameter Value for Organization	*/
 	private int orgId;
 	/**	Parameter Value for Business Partner 	*/
@@ -71,6 +74,8 @@ public abstract class WithholdingGenerateAbstract extends SvrProcess {
 	private boolean isManual;
 	/**	Parameter Value for Document No	*/
 	private String documentNo;
+	/**	Parameter Value for Consolidate to one Document	*/
+	private boolean isConsolidateDocument;
 
 	@Override
 	protected void prepare() {
@@ -84,6 +89,7 @@ public abstract class WithholdingGenerateAbstract extends SvrProcess {
 		currencyToId = getParameterAsInt(C_CURRENCY_ID_TO);
 		isManual = getParameterAsBoolean(ISMANUAL);
 		documentNo = getParameterAsString(DOCUMENTNO);
+		isConsolidateDocument = getParameterAsBoolean(CONSOLIDATEDOCUMENT);
 	}
 
 	/**	 Getter Parameter Value for Organization	*/
@@ -184,6 +190,16 @@ public abstract class WithholdingGenerateAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Document No	*/
 	protected void setDocumentNo(String documentNo) {
 		this.documentNo = documentNo;
+	}
+
+	/**	 Getter Parameter Value for Consolidate to one Document	*/
+	protected boolean isConsolidateDocument() {
+		return isConsolidateDocument;
+	}
+
+	/**	 Setter Parameter Value for Consolidate to one Document	*/
+	protected void setConsolidateDocument(boolean isConsolidateDocument) {
+		this.isConsolidateDocument = isConsolidateDocument;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

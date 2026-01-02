@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for R_Request
  *  @author Adempiere (generated) 
@@ -56,7 +57,7 @@ public interface I_R_Request
 	  */
 	public int getA_Asset_ID();
 
-	public org.adempiere.core.domains.models.I_A_Asset getA_Asset() throws RuntimeException;
+	public I_A_Asset getA_Asset() throws RuntimeException;
 
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
@@ -92,7 +93,7 @@ public interface I_R_Request
 	  */
 	public int getAD_OrgTrx_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Org getAD_OrgTrx() throws RuntimeException;
+	public I_AD_Org getAD_OrgTrx() throws RuntimeException;
 
     /** Column name AD_Role_ID */
     public static final String COLUMNNAME_AD_Role_ID = "AD_Role_ID";
@@ -107,7 +108,7 @@ public interface I_R_Request
 	  */
 	public int getAD_Role_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Role getAD_Role() throws RuntimeException;
+	public I_AD_Role getAD_Role() throws RuntimeException;
 
     /** Column name AD_Table_ID */
     public static final String COLUMNNAME_AD_Table_ID = "AD_Table_ID";
@@ -122,7 +123,7 @@ public interface I_R_Request
 	  */
 	public int getAD_Table_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Table getAD_Table() throws RuntimeException;
+	public I_AD_Table getAD_Table() throws RuntimeException;
 
     /** Column name AD_User_ID */
     public static final String COLUMNNAME_AD_User_ID = "AD_User_ID";
@@ -137,7 +138,7 @@ public interface I_R_Request
 	  */
 	public int getAD_User_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getAD_User() throws RuntimeException;
+	public I_AD_User getAD_User() throws RuntimeException;
 
     /** Column name C_Activity_ID */
     public static final String COLUMNNAME_C_Activity_ID = "C_Activity_ID";
@@ -152,7 +153,7 @@ public interface I_R_Request
 	  */
 	public int getC_Activity_ID();
 
-	public org.adempiere.core.domains.models.I_C_Activity getC_Activity() throws RuntimeException;
+	public I_C_Activity getC_Activity() throws RuntimeException;
 
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
@@ -167,7 +168,7 @@ public interface I_R_Request
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_Campaign_ID */
     public static final String COLUMNNAME_C_Campaign_ID = "C_Campaign_ID";
@@ -182,7 +183,7 @@ public interface I_R_Request
 	  */
 	public int getC_Campaign_ID();
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException;
+	public I_C_Campaign getC_Campaign() throws RuntimeException;
 
     /** Column name C_Invoice_ID */
     public static final String COLUMNNAME_C_Invoice_ID = "C_Invoice_ID";
@@ -197,7 +198,7 @@ public interface I_R_Request
 	  */
 	public int getC_Invoice_ID();
 
-	public org.adempiere.core.domains.models.I_C_Invoice getC_Invoice() throws RuntimeException;
+	public I_C_Invoice getC_Invoice() throws RuntimeException;
 
     /** Column name C_InvoiceLine_ID */
     public static final String COLUMNNAME_C_InvoiceLine_ID = "C_InvoiceLine_ID";
@@ -212,7 +213,7 @@ public interface I_R_Request
 	  */
 	public int getC_InvoiceLine_ID();
 
-	public org.adempiere.core.domains.models.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException;
+	public I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException;
 
     /** Column name C_InvoiceRequest_ID */
     public static final String COLUMNNAME_C_InvoiceRequest_ID = "C_InvoiceRequest_ID";
@@ -227,7 +228,7 @@ public interface I_R_Request
 	  */
 	public int getC_InvoiceRequest_ID();
 
-	public org.adempiere.core.domains.models.I_C_Invoice getC_InvoiceRequest() throws RuntimeException;
+	public I_C_Invoice getC_InvoiceRequest() throws RuntimeException;
 
     /** Column name CloseDate */
     public static final String COLUMNNAME_CloseDate = "CloseDate";
@@ -281,7 +282,7 @@ public interface I_R_Request
 	  */
 	public int getC_Order_ID();
 
-	public org.adempiere.core.domains.models.I_C_Order getC_Order() throws RuntimeException;
+	public I_C_Order getC_Order() throws RuntimeException;
 
     /** Column name C_OrderLine_ID */
     public static final String COLUMNNAME_C_OrderLine_ID = "C_OrderLine_ID";
@@ -296,7 +297,7 @@ public interface I_R_Request
 	  */
 	public int getC_OrderLine_ID();
 
-	public org.adempiere.core.domains.models.I_C_OrderLine getC_OrderLine() throws RuntimeException;
+	public I_C_OrderLine getC_OrderLine() throws RuntimeException;
 
     /** Column name C_Payment_ID */
     public static final String COLUMNNAME_C_Payment_ID = "C_Payment_ID";
@@ -311,7 +312,7 @@ public interface I_R_Request
 	  */
 	public int getC_Payment_ID();
 
-	public org.adempiere.core.domains.models.I_C_Payment getC_Payment() throws RuntimeException;
+	public I_C_Payment getC_Payment() throws RuntimeException;
 
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
@@ -326,7 +327,7 @@ public interface I_R_Request
 	  */
 	public int getC_Project_ID();
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
+	public I_C_Project getC_Project() throws RuntimeException;
 
     /** Column name C_ProjectLine_ID */
     public static final String COLUMNNAME_C_ProjectLine_ID = "C_ProjectLine_ID";
@@ -356,7 +357,7 @@ public interface I_R_Request
 	  */
 	public int getC_ProjectPhase_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException;
+	public I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException;
 
     /** Column name C_ProjectTask_ID */
     public static final String COLUMNNAME_C_ProjectTask_ID = "C_ProjectTask_ID";
@@ -371,7 +372,7 @@ public interface I_R_Request
 	  */
 	public int getC_ProjectTask_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
+	public I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -463,7 +464,7 @@ public interface I_R_Request
 	/** Get Distribution Order	  */
 	public int getDD_Order_ID();
 
-	public org.adempiere.core.domains.models.I_DD_Order getDD_Order() throws RuntimeException;
+	public I_DD_Order getDD_Order() throws RuntimeException;
 
     /** Column name DD_OrderLine_ID */
     public static final String COLUMNNAME_DD_OrderLine_ID = "DD_OrderLine_ID";
@@ -474,7 +475,7 @@ public interface I_R_Request
 	/** Get Distribution Order Line	  */
 	public int getDD_OrderLine_ID();
 
-	public org.adempiere.core.domains.models.I_DD_OrderLine getDD_OrderLine() throws RuntimeException;
+	public I_DD_OrderLine getDD_OrderLine() throws RuntimeException;
 
     /** Column name DocumentNo */
     public static final String COLUMNNAME_DocumentNo = "DocumentNo";
@@ -501,6 +502,19 @@ public interface I_R_Request
 	  * Status of the next action for this Request
 	  */
 	public String getDueType();
+
+    /** Column name DurationEstimated */
+    public static final String COLUMNNAME_DurationEstimated = "DurationEstimated";
+
+	/** Set Estimated Duration.
+	  * Estimated Duration
+	  */
+	public void setDurationEstimated (BigDecimal DurationEstimated);
+
+	/** Get Estimated Duration.
+	  * Estimated Duration
+	  */
+	public BigDecimal getDurationEstimated();
 
     /** Column name EndTime */
     public static final String COLUMNNAME_EndTime = "EndTime";
@@ -608,7 +622,7 @@ public interface I_R_Request
 	  */
 	public int getM_ChangeRequest_ID();
 
-	public org.adempiere.core.domains.models.I_M_ChangeRequest getM_ChangeRequest() throws RuntimeException;
+	public I_M_ChangeRequest getM_ChangeRequest() throws RuntimeException;
 
     /** Column name M_FixChangeNotice_ID */
     public static final String COLUMNNAME_M_FixChangeNotice_ID = "M_FixChangeNotice_ID";
@@ -623,7 +637,7 @@ public interface I_R_Request
 	  */
 	public int getM_FixChangeNotice_ID();
 
-	public org.adempiere.core.domains.models.I_M_ChangeNotice getM_FixChangeNotice() throws RuntimeException;
+	public I_M_ChangeNotice getM_FixChangeNotice() throws RuntimeException;
 
     /** Column name M_InOut_ID */
     public static final String COLUMNNAME_M_InOut_ID = "M_InOut_ID";
@@ -638,7 +652,7 @@ public interface I_R_Request
 	  */
 	public int getM_InOut_ID();
 
-	public org.adempiere.core.domains.models.I_M_InOut getM_InOut() throws RuntimeException;
+	public I_M_InOut getM_InOut() throws RuntimeException;
 
     /** Column name M_InOutLine_ID */
     public static final String COLUMNNAME_M_InOutLine_ID = "M_InOutLine_ID";
@@ -653,7 +667,7 @@ public interface I_R_Request
 	  */
 	public int getM_InOutLine_ID();
 
-	public org.adempiere.core.domains.models.I_M_InOutLine getM_InOutLine() throws RuntimeException;
+	public I_M_InOutLine getM_InOutLine() throws RuntimeException;
 
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
@@ -668,7 +682,7 @@ public interface I_R_Request
 	  */
 	public int getM_Product_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
+	public I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name M_ProductSpent_ID */
     public static final String COLUMNNAME_M_ProductSpent_ID = "M_ProductSpent_ID";
@@ -683,7 +697,7 @@ public interface I_R_Request
 	  */
 	public int getM_ProductSpent_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getM_ProductSpent() throws RuntimeException;
+	public I_M_Product getM_ProductSpent() throws RuntimeException;
 
     /** Column name M_Requisition_ID */
     public static final String COLUMNNAME_M_Requisition_ID = "M_Requisition_ID";
@@ -698,7 +712,7 @@ public interface I_R_Request
 	  */
 	public int getM_Requisition_ID();
 
-	public org.adempiere.core.domains.models.I_M_Requisition getM_Requisition() throws RuntimeException;
+	public I_M_Requisition getM_Requisition() throws RuntimeException;
 
     /** Column name M_RequisitionLine_ID */
     public static final String COLUMNNAME_M_RequisitionLine_ID = "M_RequisitionLine_ID";
@@ -713,7 +727,7 @@ public interface I_R_Request
 	  */
 	public int getM_RequisitionLine_ID();
 
-	public org.adempiere.core.domains.models.I_M_RequisitionLine getM_RequisitionLine() throws RuntimeException;
+	public I_M_RequisitionLine getM_RequisitionLine() throws RuntimeException;
 
     /** Column name M_RMA_ID */
     public static final String COLUMNNAME_M_RMA_ID = "M_RMA_ID";
@@ -728,7 +742,7 @@ public interface I_R_Request
 	  */
 	public int getM_RMA_ID();
 
-	public org.adempiere.core.domains.models.I_M_RMA getM_RMA() throws RuntimeException;
+	public I_M_RMA getM_RMA() throws RuntimeException;
 
     /** Column name M_RMALine_ID */
     public static final String COLUMNNAME_M_RMALine_ID = "M_RMALine_ID";
@@ -743,7 +757,7 @@ public interface I_R_Request
 	  */
 	public int getM_RMALine_ID();
 
-	public org.adempiere.core.domains.models.I_M_RMALine getM_RMALine() throws RuntimeException;
+	public I_M_RMALine getM_RMALine() throws RuntimeException;
 
     /** Column name NextAction */
     public static final String COLUMNNAME_NextAction = "NextAction";
@@ -767,7 +781,7 @@ public interface I_R_Request
 	/** Get Manufacturing Cost Collector	  */
 	public int getPP_Cost_Collector_ID();
 
-	public org.adempiere.core.domains.models.I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException;
+	public I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException;
 
     /** Column name PP_Order_ID */
     public static final String COLUMNNAME_PP_Order_ID = "PP_Order_ID";
@@ -782,7 +796,7 @@ public interface I_R_Request
 	  */
 	public int getPP_Order_ID();
 
-	public org.adempiere.core.domains.models.I_PP_Order getPP_Order() throws RuntimeException;
+	public I_PP_Order getPP_Order() throws RuntimeException;
 
     /** Column name Priority */
     public static final String COLUMNNAME_Priority = "Priority";
@@ -875,7 +889,7 @@ public interface I_R_Request
 	  */
 	public int getR_Category_ID();
 
-	public org.adempiere.core.domains.models.I_R_Category getR_Category() throws RuntimeException;
+	public I_R_Category getR_Category() throws RuntimeException;
 
     /** Column name Record_ID */
     public static final String COLUMNNAME_Record_ID = "Record_ID";
@@ -942,7 +956,18 @@ public interface I_R_Request
 	  */
 	public int getR_Group_ID();
 
-	public org.adempiere.core.domains.models.I_R_Group getR_Group() throws RuntimeException;
+	public I_R_Group getR_Group() throws RuntimeException;
+
+    /** Column name R_Iteration_ID */
+    public static final String COLUMNNAME_R_Iteration_ID = "R_Iteration_ID";
+
+	/** Set Iteration	  */
+	public void setR_Iteration_ID (int R_Iteration_ID);
+
+	/** Get Iteration	  */
+	public int getR_Iteration_ID();
+
+	public I_R_Iteration getR_Iteration() throws RuntimeException;
 
     /** Column name R_MailText_ID */
     public static final String COLUMNNAME_R_MailText_ID = "R_MailText_ID";
@@ -957,7 +982,29 @@ public interface I_R_Request
 	  */
 	public int getR_MailText_ID();
 
-	public org.adempiere.core.domains.models.I_R_MailText getR_MailText() throws RuntimeException;
+	public I_R_MailText getR_MailText() throws RuntimeException;
+
+    /** Column name R_Milestone_ID */
+    public static final String COLUMNNAME_R_Milestone_ID = "R_Milestone_ID";
+
+	/** Set Milestone	  */
+	public void setR_Milestone_ID (int R_Milestone_ID);
+
+	/** Get Milestone	  */
+	public int getR_Milestone_ID();
+
+	public I_R_Milestone getR_Milestone() throws RuntimeException;
+
+    /** Column name R_Release_ID */
+    public static final String COLUMNNAME_R_Release_ID = "R_Release_ID";
+
+	/** Set Release	  */
+	public void setR_Release_ID (int R_Release_ID);
+
+	/** Get Release	  */
+	public int getR_Release_ID();
+
+	public I_R_Release getR_Release() throws RuntimeException;
 
     /** Column name R_Request_ID */
     public static final String COLUMNNAME_R_Request_ID = "R_Request_ID";
@@ -985,7 +1032,7 @@ public interface I_R_Request
 	  */
 	public int getR_RequestRelated_ID();
 
-	public org.adempiere.core.domains.models.I_R_Request getR_RequestRelated() throws RuntimeException;
+	public I_R_Request getR_RequestRelated() throws RuntimeException;
 
     /** Column name R_RequestType_ID */
     public static final String COLUMNNAME_R_RequestType_ID = "R_RequestType_ID";
@@ -1000,7 +1047,7 @@ public interface I_R_Request
 	  */
 	public int getR_RequestType_ID();
 
-	public org.adempiere.core.domains.models.I_R_RequestType getR_RequestType() throws RuntimeException;
+	public I_R_RequestType getR_RequestType() throws RuntimeException;
 
     /** Column name R_Resolution_ID */
     public static final String COLUMNNAME_R_Resolution_ID = "R_Resolution_ID";
@@ -1015,7 +1062,7 @@ public interface I_R_Request
 	  */
 	public int getR_Resolution_ID();
 
-	public org.adempiere.core.domains.models.I_R_Resolution getR_Resolution() throws RuntimeException;
+	public I_R_Resolution getR_Resolution() throws RuntimeException;
 
     /** Column name R_StandardResponse_ID */
     public static final String COLUMNNAME_R_StandardResponse_ID = "R_StandardResponse_ID";
@@ -1030,7 +1077,7 @@ public interface I_R_Request
 	  */
 	public int getR_StandardResponse_ID();
 
-	public org.adempiere.core.domains.models.I_R_StandardResponse getR_StandardResponse() throws RuntimeException;
+	public I_R_StandardResponse getR_StandardResponse() throws RuntimeException;
 
     /** Column name R_Status_ID */
     public static final String COLUMNNAME_R_Status_ID = "R_Status_ID";
@@ -1045,7 +1092,7 @@ public interface I_R_Request
 	  */
 	public int getR_Status_ID();
 
-	public org.adempiere.core.domains.models.I_R_Status getR_Status() throws RuntimeException;
+	public I_R_Status getR_Status() throws RuntimeException;
 
     /** Column name SalesRep_ID */
     public static final String COLUMNNAME_SalesRep_ID = "SalesRep_ID";
@@ -1060,7 +1107,7 @@ public interface I_R_Request
 	  */
 	public int getSalesRep_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+	public I_AD_User getSalesRep() throws RuntimeException;
 
     /** Column name S_Contract_ID */
     public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
@@ -1157,6 +1204,19 @@ public interface I_R_Request
 	  */
 	public String getTaskStatus();
 
+    /** Column name TimeSpent */
+    public static final String COLUMNNAME_TimeSpent = "TimeSpent";
+
+	/** Set Time Spent.
+	  * Number of Hourse Spent on this Request
+	  */
+	public void setTimeSpent (BigDecimal TimeSpent);
+
+	/** Get Time Spent.
+	  * Number of Hourse Spent on this Request
+	  */
+	public BigDecimal getTimeSpent();
+
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
 
@@ -1173,6 +1233,19 @@ public interface I_R_Request
 	  */
 	public int getUpdatedBy();
 
+    /** Column name URL */
+    public static final String COLUMNNAME_URL = "URL";
+
+	/** Set URL.
+	  * Full URL address - e.g. http://www.adempiere.org
+	  */
+	public void setURL (String URL);
+
+	/** Get URL.
+	  * Full URL address - e.g. http://www.adempiere.org
+	  */
+	public String getURL();
+
     /** Column name User1_ID */
     public static final String COLUMNNAME_User1_ID = "User1_ID";
 
@@ -1186,7 +1259,7 @@ public interface I_R_Request
 	  */
 	public int getUser1_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser1() throws RuntimeException;
+	public I_C_ElementValue getUser1() throws RuntimeException;
 
     /** Column name User2_ID */
     public static final String COLUMNNAME_User2_ID = "User2_ID";
@@ -1201,7 +1274,7 @@ public interface I_R_Request
 	  */
 	public int getUser2_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser2() throws RuntimeException;
+	public I_C_ElementValue getUser2() throws RuntimeException;
 
     /** Column name User3_ID */
     public static final String COLUMNNAME_User3_ID = "User3_ID";
@@ -1216,7 +1289,7 @@ public interface I_R_Request
 	  */
 	public int getUser3_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser3() throws RuntimeException;
+	public I_C_ElementValue getUser3() throws RuntimeException;
 
     /** Column name User4_ID */
     public static final String COLUMNNAME_User4_ID = "User4_ID";
@@ -1231,7 +1304,7 @@ public interface I_R_Request
 	  */
 	public int getUser4_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser4() throws RuntimeException;
+	public I_C_ElementValue getUser4() throws RuntimeException;
 
     /** Column name UUID */
     public static final String COLUMNNAME_UUID = "UUID";

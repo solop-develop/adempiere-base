@@ -16,16 +16,18 @@
  *****************************************************************************/
 package org.compiere.util;
 
+import org.compiere.model.MColumn;
+import org.compiere.model.MRefTable;
+
 import java.sql.Types;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
-
-import org.compiere.model.MColumn;
-import org.compiere.model.MRefTable;
+import java.util.stream.Collectors;
 
 /**
  *	System Display Types.
@@ -117,6 +119,8 @@ public final class DisplayType
 	public static final int PrinterName  = 42;
 	/** Display Type 53370 Chart */
 	public static final int Chart = 53370;
+	/**	Tag Set	*/
+	public static final int TagSet = 54541;
 	//	Candidates: 
 	
 	/**
@@ -177,6 +181,10 @@ public final class DisplayType
 			return true;
 		return false;
 	}	//	isNumeric
+
+	public static boolean isTagSet(int displayType) {
+		return displayType == TagSet;
+	}	//	isTagSet
 	
 	/**
 	 * 	Get Default Precision.
@@ -449,9 +457,30 @@ public final class DisplayType
 			return String.class;
 		else if (isLOB(displayType))	//	CLOB is String
 			return byte[].class;
+		else if (isTagSet(displayType)) {
+			return List.class;
+		}
 		//
 		return Object.class;
 	}   //  getClass
+
+	public static String convertToArrayString(Object value) {
+		if(value instanceof List) {
+			List<String> arrayValue = (List) value;
+			if(arrayValue.isEmpty()) {
+				return "ARRAY[]::text[]";
+			} else {
+				String joined = arrayValue.stream()
+						.map(tag -> {
+							String escaped = tag.replace("'", "''");
+							return "'" + escaped + "'";
+						})
+						.collect(Collectors.joining(", "));
+				return "ARRAY[" + joined + "]";
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * 	Get SQL DataType
@@ -534,6 +563,8 @@ public final class DisplayType
 				return "NUMBER(10)";
 			else
 				return "CHAR(" + fieldLength + ")";
+		} else if(DisplayType.isTagSet(displayType)) {
+			return "TEXT[]";
 		}
 		if (!DisplayType.isText(displayType))
 			s_log.severe("Unhandled Data Type = " + displayType);

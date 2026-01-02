@@ -16,17 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_AD_Column;
 import org.adempiere.core.domains.models.I_AD_Table;
 import org.adempiere.core.domains.models.X_AD_Column;
@@ -40,6 +29,17 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
 import org.compiere.util.Util;
+
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *	Persistent Column Model
@@ -201,7 +201,7 @@ public class MColumn extends X_AD_Column
 	 *	@param AD_Column_ID
 	 *	@param trxName transaction
 	 */
-	public MColumn (Properties ctx, int AD_Column_ID, String trxName)
+	public MColumn(Properties ctx, int AD_Column_ID, String trxName)
 	{
 		super (ctx, AD_Column_ID, trxName);
 		if (AD_Column_ID == 0)
@@ -230,7 +230,7 @@ public class MColumn extends X_AD_Column
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MColumn (Properties ctx, ResultSet rs, String trxName)
+	public MColumn(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MColumn
@@ -239,7 +239,7 @@ public class MColumn extends X_AD_Column
 	 * 	Parent Constructor
 	 *	@param parent table
 	 */
-	public MColumn (MTable parent)
+	public MColumn(MTable parent)
 	{
 		this (parent.getCtx(), 0, parent.get_TrxName());
 		setClientOrg(parent);
@@ -257,7 +257,7 @@ public class MColumn extends X_AD_Column
 	 * @param AD_Reference
 	 * @param defaultValue
 	 */
-	public MColumn (MTable parent, String columnName, int length , int AD_Reference , String defaultValue)
+	public MColumn(MTable parent, String columnName, int length , int AD_Reference , String defaultValue)
 	{
 		this (parent.getCtx(), 0, parent.get_TrxName());
 		setClientOrg(parent);
@@ -580,14 +580,15 @@ public class MColumn extends X_AD_Column
 				if (getAD_Reference_ID() == DisplayType.YesNo)
 					sql.append(" CHECK (").append(getColumnName()).append(" IN ('Y','N'))");
 			sql.append(DB.SQLSTATEMENT_SEPARATOR);
-			
+			boolean isOracle = DB.isOracle();
+			String alterColumn= isOracle ? " MODIFY " : " ALTER COLUMN ";
+			String setColumnData = isOracle ?  "": " SET";
 			//  Set the default value for new records
 			String defaultValue = getDefaultValueSQL();
 			sql.append("ALTER TABLE ")
 			.append(table.getTableName())
-			.append(" MODIFY ").append(getColumnName())
-			.append(" ").append(getSQLDataType())
-			.append(" DEFAULT ").append(defaultValue)
+			.append(alterColumn).append(getColumnName())
+			.append(setColumnData).append(" DEFAULT ").append(defaultValue)
 			.append(DB.SQLSTATEMENT_SEPARATOR);
 
 			//  Set the default value in all existing records
@@ -604,8 +605,8 @@ public class MColumn extends X_AD_Column
 			//  Set the column to Not Null - makes it mandatory
 			sql.append("ALTER TABLE ")
 			.append(table.getTableName())
-			.append(" MODIFY ").append(getColumnName())
-			.append(" NOT NULL")
+			.append(alterColumn).append(getColumnName())
+			.append(setColumnData).append(" NOT NULL")
 			.append(DB.SQLSTATEMENT_SEPARATOR);
 
 		}
@@ -707,6 +708,9 @@ public class MColumn extends X_AD_Column
 	 */
 	public String getSQLModify (MTable table, String oldColumnName, boolean setNullOption)
 	{
+		if (getColumnName().equals("A_Depreciation_Calc_Type")){
+			System.out.println("TEST");
+		}
 		StringBuffer sql = new StringBuffer();
 		if (oldColumnName != null) {
 			// Rename the column in the database
@@ -765,11 +769,10 @@ public class MColumn extends X_AD_Column
 
 			// For non ID columns, we can manage defaults and other stuff
 			sqlBase.append(table.getTableName())
-					.append(" MODIFY ").append(getColumnName());
+					.append(" ALTER COLUMN ").append(getColumnName());
 			//	Default
 			String defaultValue = getDefaultValueSQL();
-			sql.append(sqlBase).append(" ").append(getSQLDataType())
-					.append(" DEFAULT ").append(defaultValue);
+			sql.append(sqlBase).append(" SET DEFAULT ").append(defaultValue);
 
 			//	Constraint
 			//  TODO - rename inline constraints?

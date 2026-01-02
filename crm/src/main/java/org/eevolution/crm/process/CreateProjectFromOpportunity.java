@@ -64,6 +64,9 @@ public class CreateProjectFromOpportunity extends CreateProjectFromOpportunityAb
         project.setC_Currency_ID(opportunity.getC_Currency_ID());
         project.setCommittedAmt(opportunity.getOpportunityAmt());
         project.setDateFinish(getDateFinish());
+        if(opportunity.get_ValueAsInt("S_Contract_ID") > 0) {
+            project.setS_Contract_ID(opportunity.get_ValueAsInt("S_Contract_ID"));
+        }
         project.saveEx();
 
         opportunity.setC_Project_ID(project.getC_Project_ID());

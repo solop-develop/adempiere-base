@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_Increase_Migration_Name_Size" ReleaseNo="1.4.24" SeqNo="501430">
+    <Comments>Fix new Request Columns Database Type</Comments>
+    <Step DBType="Postgres" Parse="N" SeqNo="20" StepType="SQL">
+      <SQLStatement>
+        ALTER TABLE AD_Migration ALTER COLUMN Name TYPE VARCHAR(255) USING Name::VARCHAR(255);
+      </SQLStatement>
+      <RollbackStatement>
+        ALTER TABLE AD_Migration ALTER COLUMN Name TYPE VARCHAR(60) USING Name::VARCHAR(60);
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>

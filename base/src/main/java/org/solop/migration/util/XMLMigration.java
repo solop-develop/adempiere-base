@@ -96,7 +96,7 @@ public class XMLMigration implements IMigrationManagement {
 			try {
 				int migrationId = loadFile(file, finder);
 				if(migrationId > 0) {
-					migrationsToApply.put(file.getName(), migrationId);
+					migrationsToApply.put(file.getAbsolutePath(), migrationId);
 				}
 			} catch (Exception e) {
 				log.log(Level.SEVERE, e.getLocalizedMessage());

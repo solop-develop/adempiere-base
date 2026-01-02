@@ -217,6 +217,15 @@ public interface I_C_DropShipSetup
 	/** Get Document Based Business Partner	  */
 	public boolean isDocumentBasedBPartner();
 
+    /** Column name IsUseVendorPriceList */
+    public static final String COLUMNNAME_IsUseVendorPriceList = "IsUseVendorPriceList";
+
+	/** Set Use Vendor Price List	  */
+	public void setIsUseVendorPriceList (boolean IsUseVendorPriceList);
+
+	/** Get Use Vendor Price List	  */
+	public boolean isUseVendorPriceList();
+
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
 

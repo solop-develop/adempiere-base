@@ -79,6 +79,21 @@ public interface I_AD_Scheduler
 
 	public org.adempiere.core.domains.models.I_AD_Process getAD_Process() throws RuntimeException;
 
+    /** Column name AD_Role_ID */
+    public static final String COLUMNNAME_AD_Role_ID = "AD_Role_ID";
+
+	/** Set Role.
+	  * Responsibility Role
+	  */
+	public void setAD_Role_ID (int AD_Role_ID);
+
+	/** Get Role.
+	  * Responsibility Role
+	  */
+	public int getAD_Role_ID();
+
+	public I_AD_Role getAD_Role() throws RuntimeException;
+
     /** Column name AD_Scheduler_ID */
     public static final String COLUMNNAME_AD_Scheduler_ID = "AD_Scheduler_ID";
 
@@ -214,6 +229,15 @@ public interface I_AD_Scheduler
 	  */
 	public boolean isActive();
 
+    /** Column name IsAllowMultiRunning */
+    public static final String COLUMNNAME_IsAllowMultiRunning = "IsAllowMultiRunning";
+
+	/** Set Allows Multi Running	  */
+	public void setIsAllowMultiRunning (boolean IsAllowMultiRunning);
+
+	/** Get Allows Multi Running	  */
+	public boolean isAllowMultiRunning();
+
     /** Column name IsIgnoreProcessingTime */
     public static final String COLUMNNAME_IsIgnoreProcessingTime = "IsIgnoreProcessingTime";
 
@@ -226,6 +250,15 @@ public interface I_AD_Scheduler
 	  * Do not include processing time for the DateNextRun calculation
 	  */
 	public boolean isIgnoreProcessingTime();
+
+    /** Column name IsNotifySupervisorOnError */
+    public static final String COLUMNNAME_IsNotifySupervisorOnError = "IsNotifySupervisorOnError";
+
+	/** Set Notify Supervisor On Error	  */
+	public void setIsNotifySupervisorOnError (boolean IsNotifySupervisorOnError);
+
+	/** Get Notify Supervisor On Error	  */
+	public boolean isNotifySupervisorOnError();
 
     /** Column name KeepLogDays */
     public static final String COLUMNNAME_KeepLogDays = "KeepLogDays";
