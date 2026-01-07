@@ -3722,7 +3722,7 @@ public abstract class PO
 			parentColumnId.set(tree.getParent_Column_ID());
 			sortColumnId.set(tree.getAD_ColumnSortOrder_ID());
 		}
-		PO treeNode = MTable.get(getCtx(), treeTableName.get()).getPO("Node_ID = " + get_ID(), get_TrxName());
+		PO treeNode = MTable.get(getCtx(), treeTableName.get()).getPO("Node_ID = " + get_ID() + " AND AD_Tree_ID = " + treeId , get_TrxName());
 		if (treeNode!=null) {
 			if (parentColumnId.get() > 0) {
 				MColumn columnIDforTree = MColumn.get(getCtx(), parentColumnId.get());
