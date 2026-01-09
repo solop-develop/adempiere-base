@@ -713,10 +713,10 @@ public class MProject extends X_C_Project
 		}
 
 		BigDecimal result = Env.ZERO;
-		result = this.calcLineNetAmt();
-		pp.set_ValueOfColumn("ProjectPriceListRevenuePlanned", (Object)result.setScale(2, 4));
-		result = this.calcActualamt();
-		pp.set_ValueOfColumn("ProjectOfferedRevenuePlanned", (Object)result.setScale(2, 4));
+		//result = this.calcLineNetAmt();
+		//pp.set_ValueOfColumn("ProjectPriceListRevenuePlanned", (Object)result.setScale(2, 4));
+		//result = this.calcActualamt();
+		//pp.set_ValueOfColumn("ProjectOfferedRevenuePlanned", (Object)result.setScale(2, 4));
 
 		//update planned costs
 		result = calcPlannedCostMaterial(getC_Project_ID());
