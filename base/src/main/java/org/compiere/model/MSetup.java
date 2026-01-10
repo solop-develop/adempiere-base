@@ -28,6 +28,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.core.domains.models.I_C_AcctSchema;
+import org.adempiere.core.domains.models.X_AD_Client;
 import org.adempiere.core.domains.models.X_C_AcctSchema_Default;
 import org.adempiere.core.domains.models.X_C_AcctSchema_GL;
 import org.compiere.impexp.ImpFormat;
@@ -151,6 +152,8 @@ public class MSetup
 		m_client.setName(m_clientName);
 		m_client.setIsUseBetaFunctions(false);
         m_client.setIsCostImmediate(true);
+		m_client.setAccountingConfiguration(X_AD_Client.ACCOUNTINGCONFIGURATION_Immediate);
+		m_client.setCostingConfiguration(X_AD_Client.COSTINGCONFIGURATION_Immediate);
 		m_client.setAutoArchive(MClient.AUTOARCHIVE_ExternalDocuments);
 		
 		MCountry country = MCountry.get(m_ctx, Country_ID);

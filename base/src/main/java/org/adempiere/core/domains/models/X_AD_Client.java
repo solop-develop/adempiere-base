@@ -35,7 +35,7 @@ public class X_AD_Client extends PO implements I_AD_Client, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260109L;
 
     /** Standard Constructor */
     public X_AD_Client (Properties ctx, int AD_Client_ID, String trxName)
@@ -43,8 +43,12 @@ public class X_AD_Client extends PO implements I_AD_Client, I_Persistent
       super (ctx, AD_Client_ID, trxName);
       /** if (AD_Client_ID == 0)
         {
+			setAccountingConfiguration (null);
+// I
 			setAutoArchive (null);
 // N
+			setCostingConfiguration (null);
+// I
 			setIsCostImmediate (false);
 // N
 			setIsMultiLingualDocument (false);
@@ -91,6 +95,29 @@ public class X_AD_Client extends PO implements I_AD_Client, I_Persistent
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	/** AccountingConfiguration AD_Reference_ID=54574 */
+	public static final int ACCOUNTINGCONFIGURATION_AD_Reference_ID=54574;
+	/** Disabled = D */
+	public static final String ACCOUNTINGCONFIGURATION_Disabled = "D";
+	/** Immediate = I */
+	public static final String ACCOUNTINGCONFIGURATION_Immediate = "I";
+	/** Queue = Q */
+	public static final String ACCOUNTINGCONFIGURATION_Queue = "Q";
+	/** Set Accounting Configuration.
+		@param AccountingConfiguration Accounting Configuration	  */
+	public void setAccountingConfiguration (String AccountingConfiguration)
+	{
+
+		set_Value (COLUMNNAME_AccountingConfiguration, AccountingConfiguration);
+	}
+
+	/** Get Accounting Configuration.
+		@return Accounting Configuration	  */
+	public String getAccountingConfiguration () 
+	{
+		return (String)get_Value(COLUMNNAME_AccountingConfiguration);
+	}
 
 	public org.adempiere.core.domains.models.I_AD_EMailConfig getAD_EMailConfig() throws RuntimeException
     {
@@ -191,6 +218,29 @@ public class X_AD_Client extends PO implements I_AD_Client, I_Persistent
 	public String getAutoArchive () 
 	{
 		return (String)get_Value(COLUMNNAME_AutoArchive);
+	}
+
+	/** CostingConfiguration AD_Reference_ID=54574 */
+	public static final int COSTINGCONFIGURATION_AD_Reference_ID=54574;
+	/** Disabled = D */
+	public static final String COSTINGCONFIGURATION_Disabled = "D";
+	/** Immediate = I */
+	public static final String COSTINGCONFIGURATION_Immediate = "I";
+	/** Queue = Q */
+	public static final String COSTINGCONFIGURATION_Queue = "Q";
+	/** Set Costing Configuration.
+		@param CostingConfiguration Costing Configuration	  */
+	public void setCostingConfiguration (String CostingConfiguration)
+	{
+
+		set_Value (COLUMNNAME_CostingConfiguration, CostingConfiguration);
+	}
+
+	/** Get Costing Configuration.
+		@return Costing Configuration	  */
+	public String getCostingConfiguration () 
+	{
+		return (String)get_Value(COLUMNNAME_CostingConfiguration);
 	}
 
 	/** Set Description.

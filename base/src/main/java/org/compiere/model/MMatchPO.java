@@ -33,6 +33,8 @@ import org.adempiere.engine.IDocumentLine;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.solop.queue.MaterialCostProcessor;
+import org.spin.queue.util.QueueLoader;
 
 /**
  *	Match PO Model.
@@ -584,10 +586,19 @@ public class MMatchPO extends X_M_MatchPO implements IDocumentLine
 		//	(Reserved in VMatch and MInOut.completeIt)
 		if (success) {
 			MInOutLine inOutLine = (MInOutLine) getM_InOutLine();
-			for (MTransaction trx : MTransaction.getByInOutLine(inOutLine)) {
-				if (!inOutLine.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item) || trx == null)
-					continue;
-				CostEngineFactory.getCostEngine(getAD_Client_ID()).createCostDetail(trx, this);
+			if (MClient.isClientCostingImmediate()) {
+				for (MTransaction trx : MTransaction.getByInOutLine(inOutLine)) {
+					if (!inOutLine.getM_Product().getProductType().equals(MProduct.PRODUCTTYPE_Item) || trx == null){
+						continue;
+					}
+					CostEngineFactory.getCostEngine(getAD_Client_ID()).createCostDetail(trx , this);
+				}
+			} else if (MClient.isClientCostingQueue()) {
+				QueueLoader.getInstance().getQueueManager(MaterialCostProcessor.QueueType_MaterialCost)
+					.withContext(getCtx())
+					.withTransactionName(get_TrxName())
+					.withEntity(this)
+					.addToQueue();
 			}
 
 			boolean validateOrderedQty = MSysConfig.getBooleanValue("VALIDATE_MATCHING_TO_ORDERED_QTY", true, Env.getAD_Client_ID(Env.getCtx()));
