@@ -141,6 +141,19 @@ public interface I_AD_ChartDatasource
 	  */
 	public String getDateColumn();
 
+    /** Column name DateFilterColumn */
+    public static final String COLUMNNAME_DateFilterColumn = "DateFilterColumn";
+
+	/** Set Date Filter Column.
+	  * Column for Filtering by Date
+	  */
+	public void setDateFilterColumn (String DateFilterColumn);
+
+	/** Get Date Filter Column.
+	  * Column for Filtering by Date
+	  */
+	public String getDateFilterColumn();
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
