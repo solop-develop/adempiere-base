@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="ElementValue_Allow_Change_Parent_Element" ReleaseNo="1.4.25" SeqNo="501560">
+    <Comments>Allows to change Parent element Value if it already has a Parent</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="93168" Table="AD_Column">
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true" oldValue="@ParentElementValue_ID@!0"/>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
