@@ -28,6 +28,16 @@ public class InvoiceGrouping {
         //  Controlled
         return getHash(orderKey, maxLines);
     }
+    public String getKey(MOrder order, int invoiceDocumentTypeId, boolean isConsolidated, String additionalKey) {
+        String orderKey = getOrderKey(order, isConsolidated);
+        orderKey += additionalKey;
+        int maxLines = getMaxLinesStorage(orderKey, order, invoiceDocumentTypeId);
+        if(maxLines == 0) {
+            return orderKey;
+        }
+        //  Controlled
+        return getHash(orderKey, maxLines);
+    }
 
     private final Map<String, Integer> maxLinesStorage;
     private final Map<String, Integer> currentLinesStorage;

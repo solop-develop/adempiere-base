@@ -16,9 +16,31 @@
  *****************************************************************************/
 package org.compiere.process;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_Order;
+import org.adempiere.core.domains.models.I_DD_Order;
+import org.adempiere.core.domains.models.I_HR_Process;
+import org.adempiere.core.domains.models.I_PP_Cost_Collector;
+import org.adempiere.core.domains.models.I_PP_Order;
 import org.compiere.acct.Doc;
-import org.compiere.model.*;
+import org.compiere.model.MAcctSchema;
+import org.compiere.model.MAllocationHdr;
+import org.compiere.model.MBankStatement;
+import org.compiere.model.MCash;
+import org.compiere.model.MClient;
+import org.compiere.model.MColumn;
+import org.compiere.model.MInOut;
+import org.compiere.model.MInventory;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MJournal;
+import org.compiere.model.MJournalBatch;
+import org.compiere.model.MMovement;
+import org.compiere.model.MPayment;
+import org.compiere.model.MProduction;
+import org.compiere.model.MProductionBatch;
+import org.compiere.model.MRequisition;
+import org.compiere.model.MRole;
+import org.compiere.model.MTable;
+import org.compiere.model.PO;
 import org.compiere.util.AdempiereUserError;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
@@ -358,8 +380,8 @@ public class DocumentEngine implements DocAction
         	}
         } else if (isClientAccountingQueue()) {
 			QueueLoader.getInstance().getQueueManager(AccountingProcessor.QueueType_Accounting)
-				.withContext(getCtx())
-				.withTransactionName(get_TrxName())
+				.withContext(document.getCtx())
+				.withTransactionName(document.get_TrxName())
 				.withEntity(document.get_Table_ID(), document.get_ID())
 				.addToQueue();
 		}

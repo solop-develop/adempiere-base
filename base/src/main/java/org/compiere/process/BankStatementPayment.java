@@ -16,14 +16,15 @@
  *****************************************************************************/
 package org.compiere.process;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-
 import org.adempiere.core.domains.models.X_I_BankStatement;
 import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.exceptions.NoCurrencyConversionException;
 import org.compiere.model.MBank;
 import org.compiere.model.MBankStatement;
 import org.compiere.model.MBankStatementLine;
+import org.compiere.model.MClient;
+import org.compiere.model.MConversionRate;
+import org.compiere.model.MConversionType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPayment;
@@ -31,6 +32,9 @@ import org.compiere.util.AdempiereUserError;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Util;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /**
  *	Create Payment from Bank Statement Info
@@ -214,6 +218,16 @@ public class BankStatementPayment extends BankStatementPaymentAbstract {
 		}
 		if (paymentAmount == null) {
 			paymentAmount = Env.ZERO;
+		}
+		Timestamp paymentDate = transactionDate;
+		if (paymentDate == null) {
+			paymentDate = accountingDate;
+		}
+		int baseCurrencyId = MClient.get(getCtx()).getC_Currency_ID();
+		int conversionTypeId = MConversionType.getDefault(getAD_Client_ID());
+		BigDecimal conversionRate = MConversionRate.getRate (currencyId, baseCurrencyId, paymentDate, conversionTypeId, getAD_Client_ID(), organizationId);
+		if(conversionRate == null) {
+			throw new NoCurrencyConversionException(currencyId, baseCurrencyId, paymentDate, conversionTypeId, getAD_Client_ID(), organizationId);
 		}
 		MOrgInfo organizationInfo = MOrgInfo.get(getCtx(), organizationId, get_TrxName());
 		//
