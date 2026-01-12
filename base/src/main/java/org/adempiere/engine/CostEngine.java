@@ -213,7 +213,6 @@ public class CostEngine {
 	 */
 	public void createCostDetail(MTransaction transaction, IDocumentLine model) {
 
-		MClient client =  MClient.get(transaction.getCtx());
 		StringBuilder description = new StringBuilder();
 		if (model != null && model.getDescription() != null && !Util.isEmpty(model.getDescription(), true))
 			description.append(model.getDescription());
@@ -233,7 +232,7 @@ public class CostEngine {
 				if (!costType.isActive())
 					continue;
 				for (MCostElement costElement : costElements) {
-					createCostDetail(accountSchema, costType, costElement, transaction, model, client.isCostImmediate());
+					createCostDetail(accountSchema, costType, costElement, transaction, model, true);
 				}
 			}
 		}

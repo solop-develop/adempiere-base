@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Cost_And_Accounting_Queue_Type" ReleaseNo="1.4.25" SeqNo="501610">
+    <Comments>Add Queue Type for Costing and Accounting</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="54843" Action="I" Record_ID="50014" Table="AD_QueueType">
+        <Data AD_Column_ID="98903" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="98904" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="98902" Column="AD_QueueType_ID">50014</Data>
+        <Data AD_Column_ID="98911" Column="Classname">org.solop.queue.AccountingProcessor</Data>
+        <Data AD_Column_ID="98906" Column="Created">2026-01-09 14:47:59.562</Data>
+        <Data AD_Column_ID="98908" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="98914" Column="Description">Post Documents</Data>
+        <Data AD_Column_ID="98915" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="98905" Column="IsActive">true</Data>
+        <Data AD_Column_ID="104312" Column="IsIgnoreError">false</Data>
+        <Data AD_Column_ID="102257" Column="IsParallelProcessing">false</Data>
+        <Data AD_Column_ID="98912" Column="Name">Accounting Processor</Data>
+        <Data AD_Column_ID="98916" Column="QueueType">PAC</Data>
+        <Data AD_Column_ID="99065" Column="TimeUnit">I</Data>
+        <Data AD_Column_ID="98907" Column="Updated">2026-01-09 14:47:59.562</Data>
+        <Data AD_Column_ID="98909" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="98910" Column="UUID">cf0b8b2d-b5a9-41ce-aa64-02d513ae9b39</Data>
+        <Data AD_Column_ID="98913" Column="Value">PAC</Data>
+        <Data AD_Column_ID="99064" Column="WaitingTime">5</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="54843" Action="I" Record_ID="50015" Table="AD_QueueType">
+        <Data AD_Column_ID="98903" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="98904" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="98902" Column="AD_QueueType_ID">50015</Data>
+        <Data AD_Column_ID="98911" Column="Classname">org.solop.queue.MaterialCostProcessor</Data>
+        <Data AD_Column_ID="98906" Column="Created">2026-01-09 14:48:34.53</Data>
+        <Data AD_Column_ID="98908" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="98914" Column="Description">Generate Material Cost</Data>
+        <Data AD_Column_ID="98915" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="98905" Column="IsActive">true</Data>
+        <Data AD_Column_ID="104312" Column="IsIgnoreError">false</Data>
+        <Data AD_Column_ID="102257" Column="IsParallelProcessing">false</Data>
+        <Data AD_Column_ID="98912" Column="Name">Material Cost Processor</Data>
+        <Data AD_Column_ID="98916" Column="QueueType">PMC</Data>
+        <Data AD_Column_ID="99065" Column="TimeUnit">I</Data>
+        <Data AD_Column_ID="98907" Column="Updated">2026-01-09 14:48:34.531</Data>
+        <Data AD_Column_ID="98909" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="98910" Column="UUID">c4e5b1c0-6443-4cf5-9051-5c541a1ab1d2</Data>
+        <Data AD_Column_ID="98913" Column="Value">PMC</Data>
+        <Data AD_Column_ID="99064" Column="WaitingTime">5</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

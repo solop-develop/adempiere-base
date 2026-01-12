@@ -23,6 +23,8 @@ import org.adempiere.engine.IDocumentLine;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.solop.queue.MaterialCostProcessor;
+import org.spin.queue.util.QueueLoader;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -300,9 +302,19 @@ public class MMatchInv extends X_M_MatchInv implements IDocumentLine
 				orderLine.setQtyInvoiced(orderLine.getQtyInvoiced().subtract(getQty()));
 			orderLine.setDateInvoiced(getDateTrx());    //	overwrite=last
 			orderLine.saveEx();*/
-			for (MTransaction trx : MTransaction.getByInOutLine(inOutLine)) {
-				CostEngineFactory.getCostEngine(getAD_Client_ID()).createCostDetail(trx, this);
+
+			if (MClient.isClientCostingImmediate()){
+				for (MTransaction trx : MTransaction.getByInOutLine(inOutLine)) {
+					CostEngineFactory.getCostEngine(getAD_Client_ID()).createCostDetail(trx , this);
+				}
+			} else if (MClient.isClientCostingQueue()) {
+				QueueLoader.getInstance().getQueueManager(MaterialCostProcessor.QueueType_MaterialCost)
+					.withContext(getCtx())
+					.withTransactionName(get_TrxName())
+					.withEntity(this)
+					.addToQueue();
 			}
+
 		}
 		//
 		return success;

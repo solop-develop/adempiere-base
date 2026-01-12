@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Update_Client_Accounting_And_Costing_Configuration" ReleaseNo="1.4.25" SeqNo="501630">
+    <Comments>Update Clients new Accounting and Costing Configurations based on isCostImmediate and SysConfig Client_Accounting</Comments>
+    <Step DBType="ALL" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>
+        UPDATE AD_Client SET CostingConfiguration = 'Q' WHERE IsCostImmediate IS NULL OR IsCostImmediate = 'N';
+        UPDATE AD_Client SET CostingConfiguration = 'I' WHERE IsCostImmediate IS NULL OR IsCostImmediate = 'I';
+
+        UPDATE AD_Client SET AccountingConfiguration = 'Q'
+        WHERE EXISTS (SELECT 1 FROM AD_SysConfig WHERE Name='CLIENT_ACCOUNTING' AND Value='Q' AND AD_Client_ID = 0);
+        UPDATE AD_Client SET AccountingConfiguration = 'D'
+        WHERE EXISTS (SELECT 1 FROM AD_SysConfig WHERE Name='CLIENT_ACCOUNTING' AND Value='Q' AND AD_Client_ID = 0);
+        UPDATE AD_Client SET AccountingConfiguration = 'I'
+        WHERE EXISTS (SELECT 1 FROM AD_SysConfig WHERE Name='CLIENT_ACCOUNTING' AND Value='Q' AND AD_Client_ID = 0);
+        UPDATE AD_Client c SET AccountingConfiguration = 'Q'
+        WHERE EXISTS (SELECT 1 FROM AD_SysConfig sc WHERE Name='CLIENT_ACCOUNTING' AND Value='Q' AND sc.AD_Client_ID = c.AD_Client_ID);
+        UPDATE AD_Client c SET AccountingConfiguration = 'D'
+        WHERE EXISTS (SELECT 1 FROM AD_SysConfig sc WHERE Name='CLIENT_ACCOUNTING' AND Value='Q' AND sc.AD_Client_ID = c.AD_Client_ID);
+        UPDATE AD_Client c SET AccountingConfiguration = 'I'
+        WHERE EXISTS (SELECT 1 FROM AD_SysConfig sc WHERE Name='CLIENT_ACCOUNTING' AND Value='Q' AND sc.AD_Client_ID = c.AD_Client_ID);
+      </SQLStatement>
+    </Step>
+  </Migration>
+</Migrations>

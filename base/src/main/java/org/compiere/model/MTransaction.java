@@ -29,6 +29,8 @@ import org.adempiere.core.domains.models.X_M_Transaction;
 import org.adempiere.engine.CostEngineFactory;
 import org.adempiere.engine.IDocumentLine;
 import org.compiere.util.Env;
+import org.solop.queue.MaterialCostProcessor;
+import org.spin.queue.util.QueueLoader;
 
 /**
  * 	Material Transaction Model
@@ -237,8 +239,17 @@ public class MTransaction extends X_M_Transaction
 	protected boolean afterSave (boolean newRecord, boolean success)
 	{
 		if (newRecord)
-		{	
-			CostEngineFactory.getCostEngine(getAD_Client_ID()).createCostDetail(this , getDocumentLine());
+		{
+			if (MClient.isClientCostingImmediate()) {
+				CostEngineFactory.getCostEngine(getAD_Client_ID()).createCostDetail(this , getDocumentLine());
+			} else if (MClient.isClientCostingQueue()) {
+				QueueLoader.getInstance().getQueueManager(MaterialCostProcessor.QueueType_MaterialCost)
+					.withContext(getCtx())
+					.withTransactionName(get_TrxName())
+					.withEntity(this)
+					.addToQueue();
+			}
+
 		}	
 		return true;
 	}	//	afterSave

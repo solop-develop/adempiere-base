@@ -23,6 +23,8 @@ import org.compiere.util.AdempiereUserError;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.solop.queue.AccountingProcessor;
+import org.spin.queue.util.QueueLoader;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -334,8 +336,11 @@ public class DocumentEngine implements DocAction
 
     protected void postTheDocAndAnyPostProcessDocs(String status,
             ArrayList<PO> docsPostProcess) {
+		if (!STATUS_Completed.equals(status)) {
+			return;
+		}
 
-        if (STATUS_Completed.equals(status) && isClientAccountingImmediate())
+        if (isClientAccountingImmediate())
         {
         	document.saveEx();
         		postIt();
@@ -351,7 +356,13 @@ public class DocumentEngine implements DocAction
         			    .postImmediate(true); // Force
         		}
         	}
-        }
+        } else if (isClientAccountingQueue()) {
+			QueueLoader.getInstance().getQueueManager(AccountingProcessor.QueueType_Accounting)
+				.withContext(getCtx())
+				.withTransactionName(get_TrxName())
+				.withEntity(document.get_Table_ID(), document.get_ID())
+				.addToQueue();
+		}
 
     }
 
@@ -378,6 +389,11 @@ public class DocumentEngine implements DocAction
         return MClient.isClientAccountingImmediate();
 
     }
+	boolean isClientAccountingQueue() {
+
+		return MClient.isClientAccountingQueue();
+
+	}
 
     protected ArrayList<PO> postProcessDocument() {
 

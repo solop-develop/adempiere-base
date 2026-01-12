@@ -43,6 +43,15 @@ public interface I_AD_Client
 
     /** Load Meta Data */
 
+    /** Column name AccountingConfiguration */
+    public static final String COLUMNNAME_AccountingConfiguration = "AccountingConfiguration";
+
+	/** Set Accounting Configuration	  */
+	public void setAccountingConfiguration (String AccountingConfiguration);
+
+	/** Get Accounting Configuration	  */
+	public String getAccountingConfiguration();
+
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
 
@@ -115,6 +124,15 @@ public interface I_AD_Client
 	  * Enable and level of automatic Archive of documents
 	  */
 	public String getAutoArchive();
+
+    /** Column name CostingConfiguration */
+    public static final String COLUMNNAME_CostingConfiguration = "CostingConfiguration";
+
+	/** Set Costing Configuration	  */
+	public void setCostingConfiguration (String CostingConfiguration);
+
+	/** Get Costing Configuration	  */
+	public String getCostingConfiguration();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";

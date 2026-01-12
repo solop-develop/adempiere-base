@@ -34,13 +34,10 @@ import org.adempiere.core.domains.models.I_AD_Client;
 import org.adempiere.core.domains.models.X_AD_Client;
 import org.adempiere.core.domains.models.X_AD_Tree;
 import org.adempiere.core.domains.models.X_AD_UserMail;
-import org.compiere.db.CConnection;
-import org.compiere.interfaces.Server;
 import org.compiere.util.CCache;
 import org.compiere.util.DB;
 import org.compiere.util.EMail;
 import org.compiere.util.Env;
-import org.compiere.util.Ini;
 import org.compiere.util.Language;
 
 /**
@@ -140,6 +137,8 @@ public class MClient extends X_AD_Client
 				setMMPolicy (MMPOLICY_FiFo);	// F
 				setIsPostImmediate(false);
 				setIsCostImmediate(false);
+				setAccountingConfiguration(ACCOUNTINGCONFIGURATION_Immediate);
+				setCostingConfiguration(COSTINGCONFIGURATION_Immediate);
 			}
 			else
 				load(get_TrxName());
@@ -929,28 +928,39 @@ public class MClient extends X_AD_Client
 	 *   
 	 *	@return boolean representing if client accounting is enabled and it's on a client
 	 */
-	private static final String CLIENT_ACCOUNTING_DISABLED = "D";
-	private static final String CLIENT_ACCOUNTING_QUEUE = "Q";
-	private static final String CLIENT_ACCOUNTING_IMMEDIATE = "I";
+
 
 	public static boolean isClientAccounting() {
-		String ca = MSysConfig.getValue("CLIENT_ACCOUNTING",
-				CLIENT_ACCOUNTING_DISABLED, // default
-				Env.getAD_Client_ID(Env.getCtx()));
-		return (ca.equalsIgnoreCase(CLIENT_ACCOUNTING_IMMEDIATE) || ca.equalsIgnoreCase(CLIENT_ACCOUNTING_QUEUE));
+		MClient client = get(Env.getCtx());
+		return ACCOUNTINGCONFIGURATION_Immediate.equals(client.getAccountingConfiguration())
+				|| ACCOUNTINGCONFIGURATION_Queue.equals(client.getAccountingConfiguration());
 	}
 
 	public static boolean isClientAccountingQueue() {
-		String ca = MSysConfig.getValue("CLIENT_ACCOUNTING",
-				CLIENT_ACCOUNTING_DISABLED, // default
-				Env.getAD_Client_ID(Env.getCtx()));
-		return ca.equalsIgnoreCase(CLIENT_ACCOUNTING_QUEUE);
+		MClient client = get(Env.getCtx());
+		return ACCOUNTINGCONFIGURATION_Queue.equals(client.getAccountingConfiguration());
+
 	}
 
 	public static boolean isClientAccountingImmediate() {
-		String ca = MSysConfig.getValue("CLIENT_ACCOUNTING",
-				CLIENT_ACCOUNTING_DISABLED, // default
-				Env.getAD_Client_ID(Env.getCtx()));
-		return ca.equalsIgnoreCase(CLIENT_ACCOUNTING_IMMEDIATE);
+		MClient client = get(Env.getCtx());
+		return ACCOUNTINGCONFIGURATION_Immediate.equals(client.getAccountingConfiguration());
+	}
+
+	public static boolean isClientCosting(){
+		MClient client = get(Env.getCtx());
+		return COSTINGCONFIGURATION_Immediate.equals(client.getCostingConfiguration())
+				|| COSTINGCONFIGURATION_Queue.equals(client.getCostingConfiguration());
+	}
+
+
+	public static boolean isClientCostingImmediate(){
+		MClient client = get(Env.getCtx());
+		return COSTINGCONFIGURATION_Immediate.equals(client.getCostingConfiguration());
+	}
+
+	public static boolean isClientCostingQueue(){
+		MClient client = get(Env.getCtx());
+		return COSTINGCONFIGURATION_Queue.equals(client.getCostingConfiguration());
 	}
 }	//	MClient
