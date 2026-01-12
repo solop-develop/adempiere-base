@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Enable change log on Bank Statement" ReleaseNo="1.4.25" SeqNo="501590">
+    <Comments>Enable the change log on C_BankStatement and C_BankStatementLine tables</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="392" Table="AD_Table">
+        <Data AD_Column_ID="8564" Column="IsChangeLog" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="393" Table="AD_Table">
+        <Data AD_Column_ID="8564" Column="IsChangeLog" oldValue="false">true</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

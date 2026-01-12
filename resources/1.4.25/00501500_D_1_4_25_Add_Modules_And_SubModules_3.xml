@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Modules_And_SubModules_3" ReleaseNo="1.4.25" SeqNo="501500">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="55023" Action="I" Record_ID="50019" Table="AD_Module">
+        <Data AD_Column_ID="103976" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="103975" Column="AD_Module_ID">50019</Data>
+        <Data AD_Column_ID="103977" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="103979" Column="Created">2025-12-31 17:10:58.919</Data>
+        <Data AD_Column_ID="103981" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="103986" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="103987" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="103978" Column="IsActive">true</Data>
+        <Data AD_Column_ID="103985" Column="Name">Dictionary</Data>
+        <Data AD_Column_ID="103980" Column="Updated">2025-12-31 17:10:58.919</Data>
+        <Data AD_Column_ID="103982" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="103983" Column="UUID">fff534fe-6393-47e2-a199-f1363ed296d8</Data>
+        <Data AD_Column_ID="103984" Column="Value">50019</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="55025" Action="I" Record_ID="0" Table="AD_Module_Trl">
+        <Data AD_Column_ID="104004" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="104013" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="104014" Column="AD_Module_ID">50019</Data>
+        <Data AD_Column_ID="104005" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="104007" Column="Created">2025-12-31 17:10:59.557</Data>
+        <Data AD_Column_ID="104009" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="104016" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="104017" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="104006" Column="IsActive">true</Data>
+        <Data AD_Column_ID="104012" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="104015" Column="Name">Dictionary</Data>
+        <Data AD_Column_ID="104008" Column="Updated">2025-12-31 17:10:59.557</Data>
+        <Data AD_Column_ID="104010" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="104011" Column="UUID">938bb334-fddb-41d8-ba09-abecbb618f0c</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="55025" Action="U" Record_ID="0" Table="AD_Module_Trl">
+        <Data AD_Column_ID="104013" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="104014" Column="AD_Module_ID" oldValue="50019">50019</Data>
+        <Data AD_Column_ID="104012" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="104015" Column="Name" oldValue="Dictionary">Diccionario</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="55024" Action="I" Record_ID="50047" Table="AD_SubModule">
+        <Data AD_Column_ID="103989" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="104001" Column="AD_Module_ID">50019</Data>
+        <Data AD_Column_ID="103990" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="103988" Column="AD_SubModule_ID">50047</Data>
+        <Data AD_Column_ID="103992" Column="Created">2026-01-01 01:57:24.056</Data>
+        <Data AD_Column_ID="103994" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="103999" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="104000" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="103991" Column="IsActive">true</Data>
+        <Data AD_Column_ID="103998" Column="Name">Packaging</Data>
+        <Data AD_Column_ID="103993" Column="Updated">2026-01-01 01:57:24.056</Data>
+        <Data AD_Column_ID="103995" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="103996" Column="UUID">6915110e-64a0-4a1b-a924-2e620956b476</Data>
+        <Data AD_Column_ID="103997" Column="Value">50047</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="55026" Action="I" Record_ID="0" Table="AD_SubModule_Trl">
+        <Data AD_Column_ID="104018" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="104026" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="104019" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="104027" Column="AD_SubModule_ID">50047</Data>
+        <Data AD_Column_ID="104021" Column="Created">2026-01-01 01:57:25.064</Data>
+        <Data AD_Column_ID="104023" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="104029" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="104030" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="104020" Column="IsActive">true</Data>
+        <Data AD_Column_ID="104031" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="104028" Column="Name">Packaging</Data>
+        <Data AD_Column_ID="104022" Column="Updated">2026-01-01 01:57:25.064</Data>
+        <Data AD_Column_ID="104024" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="104025" Column="UUID">a33dbb20-eddb-4625-bc9c-2f7ddc9e977b</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="55026" Action="U" Record_ID="0" Table="AD_SubModule_Trl">
+        <Data AD_Column_ID="104026" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="104027" Column="AD_SubModule_ID" oldValue="50047">50047</Data>
+        <Data AD_Column_ID="104031" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="104028" Column="Name" oldValue="Packaging">Paquetes</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
