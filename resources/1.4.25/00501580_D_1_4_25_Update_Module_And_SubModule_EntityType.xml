@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Update_Module_And_SubModule_EntityType" ReleaseNo="1.4.25" SeqNo="501580">
+    <Comments>Update every Module and SubModule EntityType to be Dictionary where ID less than 1.000.000 and EntityType is User Maintained</Comments>
+    <Step DBType="Postgres" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>
+        UPDATE AD_Module SET EntityType = 'D' WHERE EntityType = 'U' AND AD_Module_ID &lt; 1000000;
+        UPDATE AD_SubModule SET EntityType = 'D' WHERE EntityType = 'U' AND AD_SubModule_ID &lt; 1000000;
+      </SQLStatement>
+    </Step>
+  </Migration>
+</Migrations>

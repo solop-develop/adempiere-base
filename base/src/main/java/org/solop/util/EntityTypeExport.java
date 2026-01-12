@@ -9,8 +9,10 @@ import org.adempiere.core.domains.models.I_AD_Column;
 import org.adempiere.core.domains.models.I_AD_Element;
 import org.adempiere.core.domains.models.I_AD_EntityType;
 import org.adempiere.core.domains.models.I_AD_Field;
+import org.adempiere.core.domains.models.I_AD_Form;
 import org.adempiere.core.domains.models.I_AD_Menu;
 import org.adempiere.core.domains.models.I_AD_Message;
+import org.adempiere.core.domains.models.I_AD_Module;
 import org.adempiere.core.domains.models.I_AD_Process;
 import org.adempiere.core.domains.models.I_AD_Process_Para;
 import org.adempiere.core.domains.models.I_AD_Ref_List;
@@ -18,6 +20,7 @@ import org.adempiere.core.domains.models.I_AD_Ref_Table;
 import org.adempiere.core.domains.models.I_AD_Reference;
 import org.adempiere.core.domains.models.I_AD_ReportView;
 import org.adempiere.core.domains.models.I_AD_Rule;
+import org.adempiere.core.domains.models.I_AD_SubModule;
 import org.adempiere.core.domains.models.I_AD_Tab;
 import org.adempiere.core.domains.models.I_AD_Table;
 import org.adempiere.core.domains.models.I_AD_Table_Process;
@@ -106,6 +109,12 @@ public class EntityTypeExport extends GenericPOHandler {
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Rule.Table_Name, false, null);
 		//	Table Rules
 		createScriptValidators(packOut, document, entityType.getEntityType());
+		//	Forms
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Form.Table_Name, false, null);
+		//	Modules
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Module.Table_Name, false, null);
+		//	SubModules
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_SubModule.Table_Name, false, null);
 		//	Create Menu
 		createMenu(packOut, document, entityType.getEntityType());
 	}
