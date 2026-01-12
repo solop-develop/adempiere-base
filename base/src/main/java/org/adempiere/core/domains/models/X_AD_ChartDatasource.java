@@ -35,7 +35,7 @@ public class X_AD_ChartDatasource extends PO implements I_AD_ChartDatasource, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260112L;
 
     /** Standard Constructor */
     public X_AD_ChartDatasource (Properties ctx, int AD_ChartDatasource_ID, String trxName)
@@ -188,6 +188,23 @@ public class X_AD_ChartDatasource extends PO implements I_AD_ChartDatasource, I_
 	public String getDateColumn () 
 	{
 		return (String)get_Value(COLUMNNAME_DateColumn);
+	}
+
+	/** Set Date Filter Column.
+		@param DateFilterColumn 
+		Column for Filtering by Date
+	  */
+	public void setDateFilterColumn (String DateFilterColumn)
+	{
+		set_Value (COLUMNNAME_DateFilterColumn, DateFilterColumn);
+	}
+
+	/** Get Date Filter Column.
+		@return Column for Filtering by Date
+	  */
+	public String getDateFilterColumn () 
+	{
+		return (String)get_Value(COLUMNNAME_DateFilterColumn);
 	}
 
 	/** Set Description.
