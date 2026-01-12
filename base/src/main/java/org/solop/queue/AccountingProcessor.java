@@ -1,8 +1,10 @@
 package org.solop.queue;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.process.DocumentEngine;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
+import org.compiere.util.Util;
 import org.spin.queue.model.MADQueue;
 import org.spin.queue.util.QueueManager;
 
@@ -27,13 +29,15 @@ public class AccountingProcessor extends QueueManager {
         if(queue.getAD_Table_ID() <= 0 || queue.getRecord_ID() <= 0) {
             return;
         }
-        new DocumentEngine()
+        String errorMsg = new DocumentEngine()
             .withContext(getContext())
             .withAD_Client_ID(Env.getAD_Client_ID(getContext()))
-            .withAD_Table_ID(queue.get_Table_ID())
+            .withAD_Table_ID(queue.getAD_Table_ID())
             .withRecord_ID(queue.getRecord_ID())
             .withTrxName(getTransactionName())
             .postImmediate(true); // Force
-
+        if (!Util.isEmpty(errorMsg)) {
+            throw new AdempiereException(errorMsg);
+        }
     }
 }

@@ -973,15 +973,21 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 					}
 					BigDecimal priceActual = m_productPrice.getPriceStd();
 					if(newRecord) {
-						if (getPriceActual() == null || getPriceActual().signum() == 0) {
+						if ((getPriceActual() == null || getPriceActual().signum() == 0) && getDiscount().compareTo(Env.ONEHUNDRED) != 0) {
 							setPriceActual(priceActual);
 						}
 					}
 					if(is_ValueChanged(COLUMNNAME_PriceActual)) {
-						priceActual = getPriceActual();
+						if(!product.isWithoutDiscount() || getParent().getC_POS_ID() <= 0) {
+							priceActual = getPriceActual();
+						}
+
 					} else if(is_ValueChanged(COLUMNNAME_Discount)) {
 						priceActual = getPriceList()
 								.multiply(Env.ONE.subtract(getDiscount().divide(Env.ONEHUNDRED, m_precision, RoundingMode.HALF_UP)));
+					}
+					if (priceActual == null) {
+						priceActual = BigDecimal.ZERO;
 					}
 					setPriceActual(priceActual);
 					BigDecimal priceEntered = MUOMConversion.convertProductFrom (getCtx(), getM_Product_ID(), getC_UOM_ID(), priceActual);
