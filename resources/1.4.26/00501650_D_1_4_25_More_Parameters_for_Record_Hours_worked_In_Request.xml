@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="More_Parameters_for_Record_Hours_worked_In_Request" ReleaseNo="1.4.25" SeqNo="501650">
+    <Comments>Add more columns and search parameters for Record hours worked in request</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77523" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="0">150</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77581" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="0">160</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77531" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="0">170</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77512" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="0">180</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77563" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="0">190</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77570" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="0">200</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77562" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57976" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="57982" Column="SeqNo" oldValue="0">210</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77523" Table="AD_Browse_Field">
+        <Data AD_Column_ID="64354" Column="DefaultValue" isOldNull="true">-1</Data>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77581" Table="AD_Browse_Field">
+        <Data AD_Column_ID="64354" Column="DefaultValue" isOldNull="true">-1</Data>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77531" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77512" Table="AD_Browse_Field">
+        <Data AD_Column_ID="64354" Column="DefaultValue" isOldNull="true">-1</Data>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77563" Table="AD_Browse_Field">
+        <Data AD_Column_ID="64354" Column="DefaultValue" isOldNull="true">-1</Data>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77570" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="77562" Table="AD_Browse_Field">
+        <Data AD_Column_ID="64354" Column="DefaultValue" isOldNull="true">-1</Data>
+        <Data AD_Column_ID="57979" Column="IsQueryCriteria" oldValue="false">true</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
