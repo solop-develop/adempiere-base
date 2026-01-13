@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Request_TagType" ReleaseNo="1.4.26" SeqNo="501660">
+    <Comments>Add a Tag Type for Requests</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="55061" Action="I" Record_ID="50000" Table="AD_TagType">
+        <Data AD_Column_ID="104658" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="104670" Column="AD_Column_ID">104729</Data>
+        <Data AD_Column_ID="104659" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="104669" Column="AD_Table_ID">417</Data>
+        <Data AD_Column_ID="104657" Column="AD_TagType_ID">50000</Data>
+        <Data AD_Column_ID="104661" Column="Created">2026-01-13 13:45:18.96</Data>
+        <Data AD_Column_ID="104663" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="104668" Column="Description">Labels for Requests</Data>
+        <Data AD_Column_ID="104660" Column="IsActive">true</Data>
+        <Data AD_Column_ID="104684" Column="IsInsertRecord">true</Data>
+        <Data AD_Column_ID="104667" Column="Name">Request Labels</Data>
+        <Data AD_Column_ID="104662" Column="Updated">2026-01-13 13:45:18.96</Data>
+        <Data AD_Column_ID="104664" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="104665" Column="UUID">30b7631b-95a6-4dc4-9085-b2d59a006581</Data>
+        <Data AD_Column_ID="104666" Column="Value">Request.Label</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
