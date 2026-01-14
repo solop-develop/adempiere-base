@@ -11,10 +11,10 @@
     </Step>
     <Step DBType="Postgres" Parse="N" SeqNo="20" StepType="SQL">
       <SQLStatement>
-        ALTER TABLE AD_Migration ALTER COLUMN "Name" TYPE VARCHAR(255) USING "Name"::VARCHAR(255);
+        ALTER TABLE AD_Migration ALTER COLUMN name TYPE VARCHAR(255) USING name::VARCHAR(255);
       </SQLStatement>
       <RollbackStatement>
-        ALTER TABLE AD_Migration ALTER COLUMN "Name" TYPE VARCHAR(60) USING "Name"::VARCHAR(60);
+        ALTER TABLE AD_Migration ALTER COLUMN name TYPE VARCHAR(60) USING name::VARCHAR(60);
       </RollbackStatement>
     </Step>
   </Migration>
