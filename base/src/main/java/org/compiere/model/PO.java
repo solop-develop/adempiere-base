@@ -24,7 +24,20 @@ import org.adempiere.exceptions.DBException;
 import org.adempiere.model.GenericPO;
 import org.compiere.Adempiere;
 import org.compiere.acct.Doc;
-import org.compiere.util.*;
+import org.compiere.util.CLogMgt;
+import org.compiere.util.CLogger;
+import org.compiere.util.CacheMgt;
+import org.compiere.util.DB;
+import org.compiere.util.DisplayType;
+import org.compiere.util.Env;
+import org.compiere.util.Evaluatee;
+import org.compiere.util.Ini;
+import org.compiere.util.Msg;
+import org.compiere.util.SecureEngine;
+import org.compiere.util.Trace;
+import org.compiere.util.Trx;
+import org.compiere.util.Util;
+import org.compiere.util.ValueNamePair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -37,10 +50,24 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Savepoint;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -3638,8 +3665,8 @@ public abstract class PO
 			parentColumnId.set(tree.getParent_Column_ID());
 			sortColumnId.set(tree.getAD_ColumnSortOrder_ID());
 		}
-		
-		PO treeNode = MTable.get(getCtx(), treeTableName.get()).getPO(0, get_TrxName());
+		MTable treeTable = MTable.get(getCtx(), treeTableName.get());
+		PO treeNode = treeTable.getPO(0, get_TrxName());
 		treeNode.setAD_Client_ID(getAD_Client_ID());
 		treeNode.setAD_Org_ID(0);
 		treeNode.setIsActive(true);
@@ -3653,7 +3680,6 @@ public abstract class PO
 		} else {
 			treeNode.set_CustomColumn("Parent_ID", 0);
 		}
-		
 		if (treeNode.get_ValueAsInt("Parent_ID") == 0 
 				&& sortColumnId.get() > 0) {
 			MColumn columnSortforTree = MColumn.get(getCtx(), sortColumnId.get());
@@ -3666,9 +3692,11 @@ public abstract class PO
 			}
 			
 		}
-		
 		treeNode.set_CustomColumn("SeqNo", 999);
 		treeNode.saveEx();
+		if (sortColumnId.get()>0) {
+			updateTreeNodeOrder(treeTableName.get(),sortColumnId.get(),treeId.get(), treeNode.get_ValueAsInt("Parent_ID"), parentColumnId.get(), elementId);
+		}
 		return true;
 		//	End Yamel Senih
 	}	//	insert_Tree
@@ -3724,16 +3752,69 @@ public abstract class PO
 		}
 		PO treeNode = MTable.get(getCtx(), treeTableName.get()).getPO("Node_ID = " + get_ID() + " AND AD_Tree_ID = " + treeId , get_TrxName());
 		if (treeNode!=null) {
+			MColumn columnIDforTree = null;
 			if (parentColumnId.get() > 0) {
-				MColumn columnIDforTree = MColumn.get(getCtx(), parentColumnId.get());
-				if (get_ValueAsInt(columnIDforTree.getColumnName())!= treeNode.get_ValueAsInt("Parent_ID")) {
+				columnIDforTree = MColumn.get(getCtx(), parentColumnId.get());
+				if (elementId > 0 && get_ValueAsInt(columnIDforTree.getColumnName())!= treeNode.get_ValueAsInt("Parent_ID")) {
 					treeNode.set_CustomColumn("Parent_ID", get_ValueAsInt(columnIDforTree.getColumnName()));
 					treeNode.saveEx();
 				}
 			}
+			if (sortColumnId.get() > 0) {
+				MColumn sortColumn = MColumn.get(getCtx(), sortColumnId.get());
+
+				if (is_ValueChanged(sortColumn.getColumnName()) || (columnIDforTree != null && is_ValueChanged(columnIDforTree.getColumnName()))) {
+					updateTreeNodeOrder(treeTableName.get(),sortColumnId.get(),treeId.get(), treeNode.get_ValueAsInt("Parent_ID"), parentColumnId.get(), elementId);
+				}
+			}
 		}
-		
 		return true;
+	}
+
+	private void updateTreeNodeOrder (String treeTableName, int sortColumnId, int treeId, int parentId, int parentColumnId, int elementId) {
+		MColumn sortColumn = MColumn.get(getCtx(), sortColumnId);
+		MColumn parentColumn = MColumn.get(getCtx(), parentColumnId);
+		String parentColumnName = parentColumn.getColumnName();
+		String sortColumnName = sortColumn.getColumnName();
+		List<Object> parameters = new ArrayList<>();
+
+		String whereClause = "AD_Client_ID = ? ";
+		parameters.add(getAD_Client_ID());
+		if (parentId >0) {
+			whereClause += " AND " +parentColumnName + " = ? ";
+			parameters.add(parentId);
+
+		} else {
+			whereClause += " AND (" + parentColumnName +" IS NULL OR "+ parentColumnName +" = 0)";
+		}
+		if (elementId > 0) {
+			whereClause += " AND C_Element_ID = ? ";
+			parameters.add(elementId);
+		}
+
+		List<Integer> siblingIds = new Query(getCtx(), get_TableName(), whereClause, get_TrxName())
+				.setParameters(parameters)
+				.setOnlyActiveRecords(true)
+				.setOrderBy(sortColumnName)
+				.getIDsAsList();
+		int index=0;
+		boolean foundNewNode = false;
+		for (Integer siblingId : siblingIds) {
+			index++;
+			if (siblingId == get_ID()) {
+				foundNewNode = true;
+			}
+			if (!foundNewNode){
+				continue;
+			}
+
+			PO treeNode = MTable.get(getCtx(), treeTableName).getPO("Node_ID = " + siblingId + " AND AD_Tree_ID = " + treeId , get_TrxName());
+			if(treeNode != null) {
+				treeNode.set_Value("SeqNo", index);
+				treeNode.saveEx();
+			}
+		}
+
 	}
 	
 	/**
