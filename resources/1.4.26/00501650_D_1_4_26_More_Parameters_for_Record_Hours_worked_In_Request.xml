@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="More_Parameters_for_Record_Hours_worked_In_Request" ReleaseNo="1.4.25" SeqNo="501650">
+  <Migration EntityType="D" Name="More_Parameters_for_Record_Hours_worked_In_Request" ReleaseNo="1.4.26" SeqNo="501650">
     <Comments>Add more columns and search parameters for Record hours worked in request</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="53223" Action="U" Record_ID="77523" Table="AD_Browse_Field">

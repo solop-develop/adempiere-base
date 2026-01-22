@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_Invoice_Create_From_No_Vendor_Product_No" ReleaseNo="1.4.26" SeqNo="501720">
+    <Comments>Fix Invoice Create From SB Where Clause, show lines when there is no VendorProductNo</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50062" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="EXISTS (SELECT 1 FROM  M_Product_PO po WHERE po.M_Product_ID = cf.M_Product_ID AND po.C_BPartner_ID = cf.C_BPartner_ID AND po.IsCurrentVendor = 'Y' AND po.VendorProductNo = cf.VendorProductNo)">(EXISTS (SELECT 1 FROM  M_Product_PO po WHERE po.M_Product_ID = cf.M_Product_ID AND po.C_BPartner_ID = cf.C_BPartner_ID AND po.IsCurrentVendor = 'Y' AND po.VendorProductNo = cf.VendorProductNo) OR cf.VendorProductNo IS NULL)</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

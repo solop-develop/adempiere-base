@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Invoice_Create_From_Same_Partner_And_Org" ReleaseNo="1.4.26" SeqNo="501740">
+    <Comments>Invoice Create From SB Filter by Partner and Org</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50062" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="(EXISTS (SELECT 1 FROM  M_Product_PO po WHERE po.M_Product_ID = cf.M_Product_ID AND po.C_BPartner_ID = cf.C_BPartner_ID AND po.IsCurrentVendor = 'Y' AND po.VendorProductNo = cf.VendorProductNo) OR cf.VendorProductNo IS NULL)">(EXISTS (SELECT 1 FROM  M_Product_PO po WHERE po.M_Product_ID = cf.M_Product_ID AND po.C_BPartner_ID = cf.C_BPartner_ID AND po.IsCurrentVendor = 'Y' AND po.VendorProductNo = cf.VendorProductNo) OR cf.VendorProductNo IS NULL)
+AND cf.C_BPartner_ID = @C_BPartner_ID@
+AND cf.AD_Org_ID = @AD_Org_ID@</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
