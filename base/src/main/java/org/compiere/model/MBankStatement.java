@@ -297,13 +297,9 @@ public class MBankStatement extends X_C_BankStatement implements DocAction
 
 		}
 
-		if (! isProcessed() && getBeginningBalance().compareTo(Env.ZERO) == 0)
-		{
-			MBankAccount ba = getBankAccount();
-			ba.load(get_TrxName());
-			setBeginningBalance(ba.getCurrentBalance());
-		}
-		setEndingBalance(getBeginningBalance().add(getStatementDifference()));
+		// totals
+		calculateBalance();
+
 		return true;
 	}	//	beforeSave
 
@@ -360,7 +356,31 @@ public class MBankStatement extends X_C_BankStatement implements DocAction
 		setDocAction(DOCACTION_Prepare);
 		return true;
 	}	//	invalidateIt
-	
+
+
+	public void calculateBalance() {
+		calculateBalance(true);
+	}
+	public void calculateBalance(boolean isReload) {
+		BigDecimal total = Env.ZERO;
+		MBankStatementLine[] lines = getLines(isReload);
+		for (int i = 0; i < lines.length; i++) {
+			MBankStatementLine line = lines[i];
+			BigDecimal lineStatementAmount = line.getStmtAmt();
+			total = total.add(lineStatementAmount);
+		}
+
+		if (! isProcessed() && getBeginningBalance().compareTo(Env.ZERO) == 0) {
+			MBankAccount ba = getBankAccount();
+			ba.load(get_TrxName());
+			setBeginningBalance(ba.getCurrentBalance());
+		}
+
+		setStatementDifference(total);
+		setEndingBalance(getBeginningBalance().add(total));
+	}
+
+
 	/**
 	 *	Prepare Document
 	 * 	@return new status (In Progress or Invalid) 
@@ -381,20 +401,20 @@ public class MBankStatement extends X_C_BankStatement implements DocAction
 			return DocAction.STATUS_Invalid;
 		}
 		//	Lines
-		BigDecimal total = Env.ZERO;
 		Timestamp minDate = getStatementDate();
 		Timestamp maxDate = minDate;
 		for (int i = 0; i < lines.length; i++)
 		{
 			MBankStatementLine line = lines[i];
-			total = total.add(line.getStmtAmt());
 			if (line.getDateAcct().before(minDate))
 				minDate = line.getDateAcct(); 
 			if (line.getDateAcct().after(maxDate))
 				maxDate = line.getDateAcct(); 
 		}
-		setStatementDifference(total);
-		setEndingBalance(getBeginningBalance().add(total));
+
+		// totals
+		calculateBalance();
+
 		MPeriod.testPeriodOpen(getCtx(), minDate, MDocType.DOCBASETYPE_BankStatement, 0);
 		MPeriod.testPeriodOpen(getCtx(), maxDate, MDocType.DOCBASETYPE_BankStatement, 0);
 
@@ -507,6 +527,10 @@ public class MBankStatement extends X_C_BankStatement implements DocAction
 				payment.save(get_TrxName());
 			}
 		}
+
+		// totals
+		calculateBalance();
+
 		//	Update Bank Account
 		MBankAccount ba = getBankAccount();
 		ba.load(get_TrxName());
