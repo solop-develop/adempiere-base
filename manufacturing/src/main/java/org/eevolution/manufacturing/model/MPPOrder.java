@@ -624,22 +624,16 @@ public class MPPOrder extends X_PP_Order implements DocAction
 		// Necessary to clear order quantities when called from closeIt - 4Layers
 		if (DOCACTION_Close.equals(getDocAction()))
 		{
-			if (!MStorage.add(getCtx(), getM_Warehouse_ID(), locatorId,
+			MStorage.add(getCtx(), getM_Warehouse_ID(), locatorId,
 					getM_Product_ID(), getM_AttributeSetInstance_ID(),
-					getM_AttributeSetInstance_ID(), Env.ZERO, Env.ZERO, ordered, get_TrxName()))
-			{
-				throw new AdempiereException();
-			}
+					getM_AttributeSetInstance_ID(), Env.ZERO, Env.ZERO, ordered, get_TrxName());
 		}
 		else
 		{
 			//	Update Storage
-			if (!MStorage.add(getCtx(), getM_Warehouse_ID(), locatorId,
+			MStorage.add(getCtx(), getM_Warehouse_ID(), locatorId,
 					getM_Product_ID(), getM_AttributeSetInstance_ID(),
-					getM_AttributeSetInstance_ID(), Env.ZERO, Env.ZERO, ordered, get_TrxName()))
-			{
-				throw new AdempiereException();
-			}
+					getM_AttributeSetInstance_ID(), Env.ZERO, Env.ZERO, ordered, get_TrxName());
 		}
 
 		setQtyReserved(getQtyReserved().add(difference));

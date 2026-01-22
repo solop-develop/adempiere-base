@@ -33,10 +33,10 @@ import java.util.logging.Level;
 
 /**
  *	Model Validation Engine
- *	
+ *
  *  @author Jorg Janke
  *  @version $Id: ModelValidationEngine.java,v 1.2 2006/07/30 00:58:38 jjanke Exp $
- * 
+ *
  * @author Teo Sarca, SC ARHIPAC SERVICE SRL
  * 				<li>FR [ 1670025 ] ModelValidator.afterLoadPreferences will be useful
  * 				<li>BF [ 1679692 ] fireDocValidate doesn't treat exceptions as errors
@@ -48,9 +48,11 @@ import java.util.logging.Level;
  * 				<li>BF [ 2819617 ] NPE if script validator rule returns null
  * 					https://sourceforge.net/tracker/?func=detail&aid=2819617&group_id=176962&atid=879332
  * @author victor.perez@e-evolution.com, www.e-evolution.com
- * 				<li>BF [ 2947607 ] Model Validator Engine duplicate listeners 
+ * 				<li>BF [ 2947607 ] Model Validator Engine duplicate listeners
  * @author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
  * 				<li> Add support to model validator definition by client
+ * @author Performance Optimization
+ * 				<li> Added timing measurement for validator execution profiling
  */
 public class ModelValidationEngine {
 	
@@ -74,7 +76,7 @@ public class ModelValidationEngine {
 	 * 	Constructor.
 	 * 	Creates Model Validators
 	 */
-	private ModelValidationEngine () {
+	private ModelValidationEngine() {
 		super ();
 		// Load global validators
 		try {
@@ -227,7 +229,7 @@ public class ModelValidationEngine {
 										engine.put(MRule.ARGUMENTS_PREFIX + "AD_Org_ID", orgId);
 										engine.put(MRule.ARGUMENTS_PREFIX + "AD_Role_ID", roleId);
 										engine.put(MRule.ARGUMENTS_PREFIX + "AD_User_ID", userId);
-										Object retval = engine.eval(loginRule.getScript());
+										Object retval = loginRule.executeScript(engine);
 										error = (retval == null ? "" : retval.toString());
 									} catch (Exception e) {
 										throw new AdempiereException(e);
@@ -325,7 +327,8 @@ public class ModelValidationEngine {
 		}
 		
 		// now process the script model validator for this event
-		Optional.ofNullable(MTableScriptValidator.getModelValidatorRules(po.getCtx(), po.get_Table_ID(), ModelValidator.tableEventValidators[changeType]))
+		final String scriptEventName = ModelValidator.tableEventValidators[changeType];
+		Optional.ofNullable(MTableScriptValidator.getModelValidatorRules(po.getCtx(), po.get_Table_ID(), scriptEventName))
 				.ifPresent(	tableScriptValidatorList ->
 							tableScriptValidatorList.stream()
 									.filter(Objects::nonNull)
@@ -336,6 +339,7 @@ public class ModelValidationEngine {
 												&& rule.isActive()
 												&& rule.getRuleType().equals(MRule.RULETYPE_JSR223ScriptingAPIs)
 												&& rule.getEventType().equals(MRule.EVENTTYPE_ModelValidatorTableEvent)) {
+											long startTime = System.currentTimeMillis();
 											String error;
 											try {
 												ScriptEngine engine = rule.getScriptEngine();
@@ -344,10 +348,23 @@ public class ModelValidationEngine {
 												engine.put(MRule.ARGUMENTS_PREFIX + "Ctx", po.getCtx());
 												engine.put(MRule.ARGUMENTS_PREFIX + "PO", po);
 												engine.put(MRule.ARGUMENTS_PREFIX + "Type", changeType);
-												engine.put(MRule.ARGUMENTS_PREFIX + "Event", ModelValidator.tableEventValidators[changeType]);
-												Object retval = engine.eval(rule.getScript());
+												engine.put(MRule.ARGUMENTS_PREFIX + "Event", scriptEventName);
+												Object retval = rule.executeScript(engine);
 												error = (retval == null ? "" : retval.toString());
+												long duration = System.currentTimeMillis() - startTime;
+												// Log timing for script validators
+												if (duration > 0) {
+													log.fine("[VALIDATOR-TIMING] ScriptModelChange | RuleName: " + rule.getName()
+															+ " | Table: " + po.get_TableName()
+															+ " | Event: " + scriptEventName
+															+ " | Duration: " + duration + "ms");
+												}
 											} catch (Exception e) {
+												long duration = System.currentTimeMillis() - startTime;
+												log.fine("[VALIDATOR-TIMING] ScriptModelChange | RuleName: " + rule.getName()
+														+ " | Table: " + po.get_TableName()
+														+ " | Event: " + scriptEventName
+														+ " | Duration: " + duration + "ms | EXCEPTION");
 												throw new AdempiereException(e);
 											}
 											if (error != null && error.length() > 0)
@@ -359,21 +376,43 @@ public class ModelValidationEngine {
 	
 	private String fireModelChange(PO po, int changeType, List<ModelValidator> modelValidators)
 	{
+		final String eventName = ModelValidator.tableEventValidators[changeType];
 		Optional.ofNullable(modelValidators)
 				.ifPresent(	modelValidatorList ->
 							modelValidatorList.stream()
 									.filter(modelValidator -> modelValidator.getAD_Client_ID() == po.getAD_Client_ID()
 											|| globalValidators.contains(modelValidator))
 									.forEach(modelValidator -> {
+										long startTime = System.currentTimeMillis();
 										try {
 											String error = modelValidator.modelChange(po, changeType);
+											long duration = System.currentTimeMillis() - startTime;
+											// Log timing for performance analysis
+											if (duration > 0) {
+												log.fine("[VALIDATOR-TIMING] ModelChange | Class: " + modelValidator.getClass().getName()
+														+ " | Table: " + po.get_TableName()
+														+ " | Event: " + eventName
+														+ " | Duration: " + duration + "ms");
+											}
 											if (error != null && error.length() > 0) {
 												if (log.isLoggable(Level.FINE)) {
 													log.log(Level.FINE, "po=" + po + " validator=" + modelValidator + " changeType=" + changeType);
 												}
 												throw new AdempiereException(error);
 											}
+										} catch (AdempiereException ae) {
+											long duration = System.currentTimeMillis() - startTime;
+											log.fine("[VALIDATOR-TIMING] ModelChange | Class: " + modelValidator.getClass().getName()
+													+ " | Table: " + po.get_TableName()
+													+ " | Event: " + eventName
+													+ " | Duration: " + duration + "ms | ERROR");
+											throw ae;
 										} catch (Exception e) {
+											long duration = System.currentTimeMillis() - startTime;
+											log.fine("[VALIDATOR-TIMING] ModelChange | Class: " + modelValidator.getClass().getName()
+													+ " | Table: " + po.get_TableName()
+													+ " | Event: " + eventName
+													+ " | Duration: " + duration + "ms | EXCEPTION");
 											//log the exception
 											log.log(Level.SEVERE, e.getLocalizedMessage(), e);
 											String error = e.getLocalizedMessage();
@@ -465,7 +504,8 @@ public class ModelValidationEngine {
 		}
 		
 		// now process the script model validator for this event
-		List<MTableScriptValidator> tableScriptValidators = MTableScriptValidator.getModelValidatorRules(po.getCtx(), po.get_Table_ID(), ModelValidator.documentEventValidators[docTiming]);
+		final String scriptDocEventName = ModelValidator.documentEventValidators[docTiming];
+		List<MTableScriptValidator> tableScriptValidators = MTableScriptValidator.getModelValidatorRules(po.getCtx(), po.get_Table_ID(), scriptDocEventName);
 		Optional.ofNullable(tableScriptValidators)
 				.ifPresent(	tableScriptValidatorList ->
 							tableScriptValidatorList.stream()
@@ -477,6 +517,7 @@ public class ModelValidationEngine {
 												&& rule.isActive()
 												&& rule.getRuleType().equals(MRule.RULETYPE_JSR223ScriptingAPIs)
 												&& rule.getEventType().equals(MRule.EVENTTYPE_ModelValidatorDocumentEvent)) {
+											long startTime = System.currentTimeMillis();
 											String error;
 											try {
 												ScriptEngine engine = rule.getScriptEngine();
@@ -485,10 +526,23 @@ public class ModelValidationEngine {
 												engine.put(MRule.ARGUMENTS_PREFIX + "Ctx", po.getCtx());
 												engine.put(MRule.ARGUMENTS_PREFIX + "PO", po);
 												engine.put(MRule.ARGUMENTS_PREFIX + "Type", docTiming);
-												engine.put(MRule.ARGUMENTS_PREFIX + "Event", ModelValidator.documentEventValidators[docTiming]);
-												Object retval = engine.eval(rule.getScript());
+												engine.put(MRule.ARGUMENTS_PREFIX + "Event", scriptDocEventName);
+												Object retval = rule.executeScript(engine);
 												error = (retval == null ? "" : retval.toString());
+												long duration = System.currentTimeMillis() - startTime;
+												// Log timing for script validators
+												if (duration > 0) {
+													log.fine("[VALIDATOR-TIMING] ScriptDocValidate | RuleName: " + rule.getName()
+															+ " | Table: " + po.get_TableName()
+															+ " | Event: " + scriptDocEventName
+															+ " | Duration: " + duration + "ms");
+												}
 											} catch (Exception e) {
+												long duration = System.currentTimeMillis() - startTime;
+												log.fine("[VALIDATOR-TIMING] ScriptDocValidate | RuleName: " + rule.getName()
+														+ " | Table: " + po.get_TableName()
+														+ " | Event: " + scriptDocEventName
+														+ " | Duration: " + duration + "ms | EXCEPTION");
 												throw new AdempiereException(e);
 											}
 											if (error != null && error.length() > 0)
@@ -500,20 +554,42 @@ public class ModelValidationEngine {
 	
 	private String fireDocValidate(PO po, int docTiming, List<ModelValidator> modelValidators)
 	{
+		final String eventName = ModelValidator.documentEventValidators[docTiming];
 		Optional.ofNullable(modelValidators)
 				.ifPresent(	modelValidatorList ->
 							modelValidatorList.stream()
 									.filter(modelValidator -> modelValidator.getAD_Client_ID() == po.getAD_Client_ID() || globalValidators.contains(modelValidator))
 									.forEach(modelValidator -> {
+										long startTime = System.currentTimeMillis();
 										try {
 											String error = modelValidator.docValidate(po, docTiming);
+											long duration = System.currentTimeMillis() - startTime;
+											// Log timing for performance analysis
+											if (duration > 0) {
+												log.fine("[VALIDATOR-TIMING] DocValidate | Class: " + modelValidator.getClass().getName()
+														+ " | Table: " + po.get_TableName()
+														+ " | Event: " + eventName
+														+ " | Duration: " + duration + "ms");
+											}
 											if (error != null && error.length() > 0) {
 												if (log.isLoggable(Level.FINE)) {
 													log.log(Level.FINE, "po=" + po + " validator=" + modelValidator + " timing=" + docTiming);
 												}
 												throw new AdempiereException(error);
 											}
+										} catch (AdempiereException ae) {
+											long duration = System.currentTimeMillis() - startTime;
+											log.fine("[VALIDATOR-TIMING] DocValidate | Class: " + modelValidator.getClass().getName()
+													+ " | Table: " + po.get_TableName()
+													+ " | Event: " + eventName
+													+ " | Duration: " + duration + "ms | ERROR");
+											throw ae;
 										} catch (Exception e) {
+											long duration = System.currentTimeMillis() - startTime;
+											log.fine("[VALIDATOR-TIMING] DocValidate | Class: " + modelValidator.getClass().getName()
+													+ " | Table: " + po.get_TableName()
+													+ " | Event: " + eventName
+													+ " | Duration: " + duration + "ms | EXCEPTION");
 											//log the stack trace
 											log.log(Level.SEVERE, e.getLocalizedMessage(), e);
 											// Exeptions are errors and should stop the document processing - teo_sarca [ 1679692 ]
@@ -634,15 +710,36 @@ public class ModelValidationEngine {
 							factsValidatorList.stream()
 									.filter(factsValidator -> factsValidator.getAD_Client_ID() == po.getAD_Client_ID() || globalValidators.contains(factsValidator))
 									.forEach(factsValidator -> {
+										long startTime = System.currentTimeMillis();
 										try {
 											String error = factsValidator.factsValidate(schema, facts, po);
+											long duration = System.currentTimeMillis() - startTime;
+											// Log timing for performance analysis
+											if (duration > 0) {
+												log.fine("[VALIDATOR-TIMING] FactsValidate | Class: " + factsValidator.getClass().getName()
+														+ " | Table: " + po.get_TableName()
+														+ " | Schema: " + schema.getName()
+														+ " | Duration: " + duration + "ms");
+											}
 											if (error != null && error.length() > 0) {
 												if (log.isLoggable(Level.FINE)) {
 													log.log(Level.FINE, "po=" + po + " schema=" + schema + " validator=" + factsValidator);
 												}
 												throw new AdempiereException(error);
 											}
+										} catch (AdempiereException ae) {
+											long duration = System.currentTimeMillis() - startTime;
+											log.fine("[VALIDATOR-TIMING] FactsValidate | Class: " + factsValidator.getClass().getName()
+													+ " | Table: " + po.get_TableName()
+													+ " | Schema: " + schema.getName()
+													+ " | Duration: " + duration + "ms | ERROR");
+											throw ae;
 										} catch (Exception e) {
+											long duration = System.currentTimeMillis() - startTime;
+											log.fine("[VALIDATOR-TIMING] FactsValidate | Class: " + factsValidator.getClass().getName()
+													+ " | Table: " + po.get_TableName()
+													+ " | Schema: " + schema.getName()
+													+ " | Duration: " + duration + "ms | EXCEPTION");
 											//log the stack trace
 											log.log(Level.SEVERE, e.getLocalizedMessage(), e);
 											// Exeptions are errors and should stop the document processing - teo_sarca [ 1679692 ]

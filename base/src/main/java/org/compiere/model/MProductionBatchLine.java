@@ -15,13 +15,14 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_M_ProductionBatchLine;
+import org.compiere.util.Env;
+import org.solop.util.ReservationBuilder;
+
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.X_M_ProductionBatchLine;
-import org.compiere.util.Env;
 
 public class MProductionBatchLine extends X_M_ProductionBatchLine
 {
@@ -63,13 +64,13 @@ public class MProductionBatchLine extends X_M_ProductionBatchLine
 		BigDecimal diff = getQtyReserved();
 		BigDecimal reservedQty = Env.ZERO;
 		BigDecimal orderedQty = Env.ZERO;
-		if (isEndProduct())
-			orderedQty = diff;
-		else
-			reservedQty = diff.negate();
-		if (!MStorage.add(getCtx(), getM_ProductionBatch().getM_Locator().getM_Warehouse_ID(), getM_ProductionBatch().getM_Locator_ID(),
-				getM_Product_ID(), 0, 0, Env.ZERO, reservedQty,orderedQty , get_TrxName()))			
-			return false;		
+		if (!isEndProduct())
+			diff = diff.negate();
+//		MStorage.add(getCtx(), getM_ProductionBatch().getM_Locator().getM_Warehouse_ID(), getM_ProductionBatch().getM_Locator_ID(),
+//				getM_Product_ID(), 0, 0, Env.ZERO, reservedQty,orderedQty , get_TrxName());
+		ReservationBuilder.newInstance(getCtx(), get_TrxName())
+				.withProductionOrderLine(this)
+				.build();
 		return true;
 	}
 
@@ -85,11 +86,13 @@ public class MProductionBatchLine extends X_M_ProductionBatchLine
 		BigDecimal reservedQty = Env.ZERO;
 		BigDecimal orderedQty = Env.ZERO;
 		if (isEndProduct())
-			orderedQty = diff;
-		else
-			reservedQty = diff;
-		MStorage.add(getCtx(), getM_ProductionBatch().getM_Locator().getM_Warehouse_ID(), getM_ProductionBatch().getM_Locator_ID(),
-				getM_Product_ID(), 0, 0, Env.ZERO, reservedQty,orderedQty.negate() , get_TrxName());
+			diff = diff.negate();
+//		MStorage.add(getCtx(), getM_ProductionBatch().getM_Locator().getM_Warehouse_ID(), getM_ProductionBatch().getM_Locator_ID(),
+//				getM_Product_ID(), 0, 0, Env.ZERO, reservedQty,orderedQty.negate() , get_TrxName());
+		ReservationBuilder.newInstance(getCtx(), get_TrxName())
+				.withProductionOrderLine(this)
+				.withQuantity(diff)
+				.build();
 		return true;
 	}
 }

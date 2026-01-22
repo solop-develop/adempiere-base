@@ -16,6 +16,18 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_M_InventoryLine;
+import org.adempiere.core.domains.models.X_M_Inventory;
+import org.adempiere.exceptions.PeriodClosedException;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.process.DocumentReversalEnabled;
+import org.compiere.util.CCache;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.solop.queue.storage.StorageUpdate;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -23,17 +35,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.I_M_InventoryLine;
-import org.adempiere.core.domains.models.X_M_Inventory;
-import org.adempiere.exceptions.PeriodClosedException;
-import org.compiere.process.DocAction;
-import org.compiere.process.DocumentReversalEnabled;
-import org.compiere.process.DocumentEngine;
-import org.compiere.util.CCache;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
 
 /**
  *  Physical Inventory Model
@@ -440,16 +441,11 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 						log.fine("Diff=" + qtyDiff 
 								+ " - Instance OnHand=" + QtyMA + "->" + QtyNew);
 
-						if (!MStorage.add(getCtx(), getM_Warehouse_ID(),
-								line.getM_Locator_ID(),
-								line.getM_Product_ID(), 
-								ma.getM_AttributeSetInstance_ID(), 0, 
-								QtyMA.negate(), Env.ZERO, Env.ZERO, get_TrxName()))
-						{
-							m_processMsg = "Cannot correct Inventory (MA)";
-							return DocAction.STATUS_Invalid;
-						}
-
+//						MStorage.add(getCtx(), getM_Warehouse_ID(),
+//								line.getM_Locator_ID(),
+//								line.getM_Product_ID(),
+//								ma.getM_AttributeSetInstance_ID(), 0,
+//								QtyMA.negate(), Env.ZERO, Env.ZERO, get_TrxName());
 						// Only Update Date Last Inventory if is a Physical Inventory
 						if(line.getQtyInternalUse().compareTo(Env.ZERO) == 0)
 						{	
@@ -474,20 +470,7 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 								QtyMA.negate(), getMovementDate(), get_TrxName());
 						
 							mtrx.setM_InventoryLine_ID(line.getM_InventoryLine_ID());
-							if (!mtrx.save())
-							{
-								m_processMsg = "Transaction not inserted(2)";
-								return DocAction.STATUS_Invalid;
-							}
-							/*if(QtyMA.signum() != 0)
-							{	
-								String err = createCostDetail(line, ma.getM_AttributeSetInstance_ID() , QtyMA.negate());
-								if (err != null && err.length() > 0) {
-									m_processMsg = err;
-									return DocAction.STATUS_Invalid;
-								}
-							}*/
-							
+							mtrx.saveEx();
 							qtyDiff = QtyNew;						
 
 					}	
@@ -498,29 +481,25 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 				if (mtrx == null)
 				{
 					//Fallback: Update Storage - see also VMatch.createMatchRecord
-					if (!MStorage.add(getCtx(), getM_Warehouse_ID(),
-							line.getM_Locator_ID(),
-							line.getM_Product_ID(), 
-							line.getM_AttributeSetInstance_ID(), 0, 
-							qtyDiff, Env.ZERO, Env.ZERO, get_TrxName()))
-					{
-						m_processMsg = "Cannot correct Inventory (MA)";
-						return DocAction.STATUS_Invalid;
-					}
+//					MStorage.add(getCtx(), getM_Warehouse_ID(),
+//							line.getM_Locator_ID(),
+//							line.getM_Product_ID(),
+//							line.getM_AttributeSetInstance_ID(), 0,
+//							qtyDiff, Env.ZERO, Env.ZERO, get_TrxName());
 
 					// Only Update Date Last Inventory if is a Physical Inventory
-					if(line.getQtyInternalUse().compareTo(Env.ZERO) == 0)
-					{	
-						MStorage storage = MStorage.get(getCtx(), line.getM_Locator_ID(), 
-								line.getM_Product_ID(), line.getM_AttributeSetInstance_ID(), get_TrxName());						
-
-						storage.setDateLastInventory(getMovementDate());
-						if (!storage.save(get_TrxName()))
-						{
-							m_processMsg = "Storage not updated(2)";
-							return DocAction.STATUS_Invalid;
-						}
-					}
+//					if(line.getQtyInternalUse().compareTo(Env.ZERO) == 0)
+//					{
+//						MStorage storage = MStorage.get(getCtx(), line.getM_Locator_ID(),
+//								line.getM_Product_ID(), line.getM_AttributeSetInstance_ID(), get_TrxName());
+//
+//						storage.setDateLastInventory(getMovementDate());
+//						if (!storage.save(get_TrxName()))
+//						{
+//							m_processMsg = "Storage not updated(2)";
+//							return DocAction.STATUS_Invalid;
+//						}
+//					}
 
 					String m_MovementType = null;
 					if(qtyDiff.compareTo(Env.ZERO) > 0 )
@@ -532,20 +511,7 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 							line.getM_Locator_ID(), line.getM_Product_ID(), line.getM_AttributeSetInstance_ID(),
 							qtyDiff, getMovementDate(), get_TrxName());
 					mtrx.setM_InventoryLine_ID(line.getM_InventoryLine_ID());
-					if (!mtrx.save())
-					{
-						m_processMsg = "Transaction not inserted(2)";
-						return DocAction.STATUS_Invalid;
-					}
-					
-					/*if(qtyDiff.signum() != 0)
-					{	
-						String err = createCostDetail(line, line.getM_AttributeSetInstance_ID(), qtyDiff);
-						if (err != null && err.length() > 0) {
-							m_processMsg = err;
-							return DocAction.STATUS_Invalid;
-						}
-					}*/
+					mtrx.saveEx();
 				}	//	Fallback
 			}	//	stock movement
 
@@ -561,6 +527,8 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 
 		// Set the definite document number after completed (if needed)
 		setDefiniteDocumentNo();
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 
 		//
 		setProcessed(true);
@@ -759,6 +727,9 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_CLOSE);
 		if (m_processMsg != null)
 			return false;
+
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 
 		setDocAction(DOCACTION_None);
 		// After Close

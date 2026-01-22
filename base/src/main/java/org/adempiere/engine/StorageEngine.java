@@ -86,17 +86,14 @@ public class StorageEngine
 						QtyMA = QtyMA.negate();					
 					
 					//	Update Storage - see also VMatch.createMatchRecord
-					if (!MStorage.add(docLine.getCtx(), M_Warehouse_ID,
-						docLine.getM_Locator_ID(),
-						docLine.getM_Product_ID(), 
-						ma.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID, 
-						QtyMA,
-						Env.ZERO,
-						Env.ZERO,
-						docLine.get_TrxName()))
-					{
-						throw new AdempiereException(); //Cannot correct Inventory (MA)
-					}
+					MStorage.add(docLine.getCtx(), M_Warehouse_ID,
+							docLine.getM_Locator_ID(),
+							docLine.getM_Product_ID(),
+							ma.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
+							QtyMA,
+							Env.ZERO,
+							Env.ZERO,
+							docLine.get_TrxName());
 					create(docLine, MovementType ,MovementDate, ma.getM_AttributeSetInstance_ID() , QtyMA);
 				}
 			}
@@ -109,14 +106,11 @@ public class StorageEngine
 					Qty = Qty.negate();
 								
 				//	Fallback: Update Storage - see also VMatch.createMatchRecord
-				if (!MStorage.add(docLine.getCtx(), M_Warehouse_ID, 
-					docLine.getM_Locator_ID(),
-					docLine.getM_Product_ID(), 
-					docLine.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID, 
-					Qty, Env.ZERO, Env.ZERO, docLine.get_TrxName()))
-				{
-					throw new AdempiereException(); //Cannot correct Inventory (MA)
-				}
+				MStorage.add(docLine.getCtx(), M_Warehouse_ID,
+						docLine.getM_Locator_ID(),
+						docLine.getM_Product_ID(),
+						docLine.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
+						Qty, Env.ZERO, Env.ZERO, docLine.get_TrxName());
 				create(docLine, MovementType ,MovementDate, docLine.getM_AttributeSetInstance_ID() , Qty);
 			}
 		}	//	stock movement

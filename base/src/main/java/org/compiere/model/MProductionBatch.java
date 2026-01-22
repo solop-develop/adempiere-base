@@ -15,6 +15,14 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_M_Movement;
+import org.adempiere.core.domains.models.I_M_Production;
+import org.adempiere.core.domains.models.X_M_ProductionBatch;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.util.Env;
+import org.solop.queue.storage.StorageUpdate;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -23,13 +31,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_M_Movement;
-import org.adempiere.core.domains.models.I_M_Production;
-import org.adempiere.core.domains.models.X_M_ProductionBatch;
-import org.compiere.process.DocAction;
-import org.compiere.process.DocumentEngine;
-import org.compiere.util.Env;
 
 /**
  * Contributed from Adaxa
@@ -296,6 +297,9 @@ public class MProductionBatch extends X_M_ProductionBatch implements DocAction {
 		if(m_processMsg != null) {
 			return DocAction.STATUS_Invalid;
 		}
+
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 		// User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
 		if (valid != null) {
@@ -396,6 +400,8 @@ public class MProductionBatch extends X_M_ProductionBatch implements DocAction {
 			//orderedStock(getM_Product(), getQtyReserved().negate());
 			setQtyReserved(Env.ZERO);
 		}
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 
 		setProcessed(true);
 		setDocAction(DOCACTION_None);
@@ -417,6 +423,9 @@ public class MProductionBatch extends X_M_ProductionBatch implements DocAction {
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_VOID);
 		if (m_processMsg != null)
 			return false;
+
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 
 		if (DOCSTATUS_Closed.equals(getDocStatus()) || DOCSTATUS_Reversed.equals(getDocStatus())
 				|| DOCSTATUS_Voided.equals(getDocStatus()))
@@ -521,17 +530,15 @@ public class MProductionBatch extends X_M_ProductionBatch implements DocAction {
 						}
 					}
 					//	Update Storage
-					if (!MStorage.add(getCtx(), pLine.getM_Locator().getM_Warehouse_ID(), M_Locator_ID, 
-							pLine.getM_Product_ID(), 
+					MStorage.add(getCtx(), pLine.getM_Locator().getM_Warehouse_ID(), M_Locator_ID,
+							pLine.getM_Product_ID(),
 							0, pLine.getM_AttributeSetInstance_ID(),
-						Env.ZERO, reserved, Env.ZERO, get_TrxName()))
-						return false;
+							Env.ZERO, reserved, Env.ZERO, get_TrxName());
 					
 				}	//	stockec
 				//	update line
-				
-				if (!pLine.save(get_TrxName()))
-					return false;
+
+				pLine.saveEx(get_TrxName());
 				//
 			}	//	product
 		}	//	reserve inventory
@@ -572,10 +579,9 @@ public class MProductionBatch extends X_M_ProductionBatch implements DocAction {
 			if (pBatchLine.isEndProduct())
 				continue;
 			reservationQty = pBatchLine.getQtyReserved().negate();
-			if (!MStorage.add(getCtx(), getM_Locator().getM_Warehouse_ID(),
-					getM_Locator_ID(), pBatchLine.getM_Product_ID(), 0, reservationAttributeSetInstance_ID, 
-					Env.ZERO, reservationQty, Env.ZERO, get_TrxName()))
-				return ;
+			MStorage.add(getCtx(), getM_Locator().getM_Warehouse_ID(),
+					getM_Locator_ID(), pBatchLine.getM_Product_ID(), 0, reservationAttributeSetInstance_ID,
+					Env.ZERO, reservationQty, Env.ZERO, get_TrxName());
 		}
 	}
 

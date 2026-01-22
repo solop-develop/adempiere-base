@@ -597,12 +597,9 @@ public class MPPOrderBOMLine extends X_PP_Order_BOMLine
 			locatorId = getReservedLocatorId(reserved);
 
 		//	Update Storage
-		if (!MStorage.add(getCtx(), getM_Warehouse_ID(), locatorId,
+		MStorage.add(getCtx(), getM_Warehouse_ID(), locatorId,
 				getM_Product_ID(), getM_AttributeSetInstance_ID(),
-				getM_AttributeSetInstance_ID(), Env.ZERO, reserved, Env.ZERO, get_TrxName()))
-		{
-			throw new AdempiereException();
-		}
+				getM_AttributeSetInstance_ID(), Env.ZERO, reserved, Env.ZERO, get_TrxName());
 		//	update line
 		setQtyReserved(getQtyReserved().add(difference));
 	} //	reserveStock
