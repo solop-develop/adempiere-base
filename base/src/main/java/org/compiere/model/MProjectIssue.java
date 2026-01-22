@@ -16,16 +16,17 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_C_ProjectIssue;
+import org.adempiere.engine.IDocumentLine;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.solop.queue.storage.StorageUpdate;
+
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.X_C_ProjectIssue;
-import org.adempiere.engine.IDocumentLine;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 /**
  * 	Project Issue Model
@@ -165,25 +166,17 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocumentLine
 		mTrx.setC_ProjectIssue_ID(getC_ProjectIssue_ID());
 		//
 		MLocator loc = MLocator.get(getCtx(), getM_Locator_ID());
-		if (MStorage.add(getCtx(), loc.getM_Warehouse_ID(), getM_Locator_ID(), 
-				getM_Product_ID(), getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
-				getMovementQty().negate(), null, null, get_TrxName()))
-		{
-			if (mTrx.save(get_TrxName()))
-			{
-				setProcessed (true);
-				if (save())
-					return true;
-				else
-					log.log(Level.SEVERE, "Issue not saved");		//	requires trx !!
-			}
-			else
-				log.log(Level.SEVERE, "Transaction not saved");	//	requires trx !!
-		}
-		else
-			log.log(Level.SEVERE, "Storage not updated");			//	OK
-		//
-		return false;
+//		MStorage.add(getCtx(), loc.getM_Warehouse_ID(), getM_Locator_ID(),
+//				getM_Product_ID(), getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
+//				getMovementQty().negate(), null, null, get_TrxName());
+		mTrx.saveEx(get_TrxName());
+
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
+
+		setProcessed (true);
+		saveEx();
+		return true;
 	}	//	process
 
 	@Override

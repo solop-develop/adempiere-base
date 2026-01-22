@@ -16,6 +16,13 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_M_Storage;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.util.CLogMgt;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,12 +31,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.X_M_Storage;
-import org.compiere.util.CLogMgt;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 /**
  * 	Inventory Storage Model
@@ -291,12 +292,12 @@ public class MStorage extends X_M_Storage
 	 *
 	 *  @deprecated
 	 */
-	public static MStorage[] getWarehouse (Properties ctx, int M_Warehouse_ID, 
+	public static MStorage[] getWarehouse (Properties ctx, int M_Warehouse_ID,
 		int M_Product_ID, int M_AttributeSetInstance_ID, int M_AttributeSet_ID,
 		boolean allAttributeInstances, Timestamp minGuaranteeDate,
 		boolean FiFo, String trxName)
 	{
-		return getWarehouse(ctx, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID, 
+		return getWarehouse(ctx, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID,
 				minGuaranteeDate, FiFo, false, 0, trxName);
 	}
 	
@@ -313,17 +314,17 @@ public class MStorage extends X_M_Storage
 	 *	@param trxName transaction
 	 *	@return existing - ordered by location priority (desc) and/or guarantee date
 	 */
-	public static MStorage[] getWarehouse (Properties ctx, int M_Warehouse_ID, 
+	public static MStorage[] getWarehouse (Properties ctx, int M_Warehouse_ID,
 		int M_Product_ID, int M_AttributeSetInstance_ID, Timestamp minGuaranteeDate,
 		boolean FiFo, boolean positiveOnly, int M_Locator_ID, String trxName)
 	{
 		if ((M_Warehouse_ID == 0 && M_Locator_ID == 0) || M_Product_ID == 0)
 			return new MStorage[0];
-		
+
 		boolean allAttributeInstances = false;
 		if (M_AttributeSetInstance_ID == 0)
-			allAttributeInstances = true;		
-		
+			allAttributeInstances = true;
+
 		ArrayList<MStorage> list = new ArrayList<MStorage>();
 		//	Specific Attribute Set Instance
 		String sql = "SELECT s.* "
@@ -382,7 +383,7 @@ public class MStorage extends X_M_Storage
 					sql += " DESC";
 				sql += ", s.QtyOnHand DESC";
 			}
-		} 
+		}
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
@@ -400,10 +401,10 @@ public class MStorage extends X_M_Storage
 			}
 			rs = pstmt.executeQuery();
 			while (rs.next())
-			{	
+			{
 				if(rs.getBigDecimal("QtyOnHand").signum() != 0)
 					list.add (new MStorage (ctx, rs, trxName));
-			}	
+			}
 		}
 		catch (Exception e)
 		{
@@ -429,7 +430,7 @@ public class MStorage extends X_M_Storage
 	 *	@param trxName transaction
 	 *	@return existing/new or null
 	 */
-	public static MStorage getCreate (Properties ctx, int M_Locator_ID, 
+	public static MStorage getCreate (Properties ctx, int M_Locator_ID,
 		int M_Product_ID, int M_AttributeSetInstance_ID, String trxName)
 	{
 		if (M_Locator_ID == 0)
@@ -439,7 +440,7 @@ public class MStorage extends X_M_Storage
 		MStorage retValue = get(ctx, M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID, trxName);
 		if (retValue != null)
 			return retValue;
-		
+
 		//	Insert row based on locator
 		MLocator locator = new MLocator (ctx, M_Locator_ID, trxName);
 		if (locator.get_ID() != M_Locator_ID)
@@ -467,9 +468,9 @@ public class MStorage extends X_M_Storage
 	 *	@param trxName transaction
 	 *	@return true if updated
 	 */
-	public static boolean add (Properties ctx, int M_Warehouse_ID, int M_Locator_ID, 
+	public static void add (Properties ctx, int M_Warehouse_ID, int M_Locator_ID,
 		int M_Product_ID, int M_AttributeSetInstance_ID, int reservationAttributeSetInstance_ID,
-		BigDecimal diffQtyOnHand, 
+		BigDecimal diffQtyOnHand,
 		BigDecimal diffQtyReserved, BigDecimal diffQtyOrdered, String trxName)
 	{
 		MStorage storage = null;
@@ -477,29 +478,27 @@ public class MStorage extends X_M_Storage
 
 		//	Get Storage
 		if (storage == null)
-			storage = getCreate (ctx, M_Locator_ID, 
+			storage = getCreate (ctx, M_Locator_ID,
 				M_Product_ID, M_AttributeSetInstance_ID, trxName);
 		//	Verify
-		if (storage.getM_Locator_ID() != M_Locator_ID 
+		if (storage.getM_Locator_ID() != M_Locator_ID
 			&& storage.getM_Product_ID() != M_Product_ID
 			&& storage.getM_AttributeSetInstance_ID() != M_AttributeSetInstance_ID)
 		{
-			s_log.severe ("No Storage found - M_Locator_ID=" + M_Locator_ID 
-				+ ",M_Product_ID=" + M_Product_ID + ",ASI=" + M_AttributeSetInstance_ID);
-			return false;
+			throw new AdempiereException("No Storage found - M_Locator_ID=" + M_Locator_ID
+					+ ",M_Product_ID=" + M_Product_ID + ",ASI=" + M_AttributeSetInstance_ID);
 		}
-		
+
 		// CarlosRuiz - globalqss - Fix [ 1725383 ] QtyOrdered wrongly updated
 		MProduct prd = new MProduct(ctx, M_Product_ID, trxName);
 		if (prd.getM_AttributeSet_ID() == 0) {
 			// Product doesn't manage attribute set, always reserved with 0
 			reservationAttributeSetInstance_ID = 0;
 		}
-		//		
-		
+		//
+
 		MStorage storage0 = null;
-		if (M_AttributeSetInstance_ID != reservationAttributeSetInstance_ID)
-		{
+		if (M_AttributeSetInstance_ID != reservationAttributeSetInstance_ID) {
 			//consumed the reserved qty storage
 			if(diffQtyReserved != null && diffQtyReserved.signum() != 0)
 				storage0 = getQtyReserved(ctx,
@@ -512,35 +511,29 @@ public class MStorage extends X_M_Storage
 			{
 				MWarehouse wh = MWarehouse.get(ctx, M_Warehouse_ID);
 				int xM_Locator_ID = wh.getDefaultLocator().getM_Locator_ID();
-				storage0 = getCreate (ctx, xM_Locator_ID, 
+				storage0 = getCreate (ctx, xM_Locator_ID,
 					M_Product_ID, reservationAttributeSetInstance_ID, trxName);
 			}
-		}		
+		}
 		boolean changed = false;
-		if (diffQtyOnHand != null && diffQtyOnHand.signum() != 0)
-		{
+		if (diffQtyOnHand != null && diffQtyOnHand.signum() != 0) {
 			storage.setQtyOnHand (storage.getQtyOnHand().add (diffQtyOnHand));
 			diffText.append("OnHand=").append(diffQtyOnHand);
 			changed = true;
 		}
-		if (diffQtyReserved != null && diffQtyReserved.signum() != 0)
-		{
-			if (storage0 == null)
-			{
+		if (diffQtyReserved != null && diffQtyReserved.signum() != 0) {
+			if (storage0 == null) {
 				storage.setQtyReserved(storage.getQtyReserved().add(diffQtyReserved));
 				//Util.assume(storage.getQtyReserved().signum() >= 0, "QtyReserved should be >=0 for " + storage);
-			}
-			else
-			{
+			} else {
 				storage0.setQtyReserved(storage0.getQtyReserved().add(diffQtyReserved));
 				//Util.assume(storage0.getQtyReserved().signum() >= 0, "QtyReserved should be >=0 for " + storage0);
 			}
 			diffText.append(" Reserved=").append(diffQtyReserved);
 			changed = true;
-			
+
 		}
-		if (diffQtyOrdered != null && diffQtyOrdered.signum() != 0)
-		{
+		if (diffQtyOrdered != null && diffQtyOrdered.signum() != 0) {
 			if (storage0 == null)
 				storage.setQtyOrdered (storage.getQtyOrdered().add (diffQtyOrdered));
 			else
@@ -548,16 +541,13 @@ public class MStorage extends X_M_Storage
 			diffText.append(" Ordered=").append(diffQtyOrdered);
 			changed = true;
 		}
-		if (changed)
-		{
+		if (changed) {
 			diffText.append(") -> ").append(storage.toString());
 			s_log.fine(diffText.toString());
 			if (storage0 != null)
-				storage0.save(trxName);		//	No AttributeSetInstance (reserved/ordered)
-			return storage.save (trxName);
+				storage0.saveEx(trxName);		//	No AttributeSetInstance (reserved/ordered)
+			storage.saveEx(trxName);
 		}
-		
-		return true;
 	}	//	add
 
 	

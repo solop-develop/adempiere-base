@@ -15,6 +15,21 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_M_ProductionLine;
+import org.adempiere.core.domains.models.X_M_Production;
+import org.adempiere.core.domains.models.X_PP_Product_BOM;
+import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
+import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.exceptions.PeriodClosedException;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.process.DocumentReversalEnabled;
+import org.compiere.process.ProcessInfo;
+import org.compiere.util.*;
+import org.eevolution.services.dsl.ProcessBuilder;
+import org.solop.queue.storage.StorageUpdate;
+import org.solop.util.ReservationBuilder;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,24 +42,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_M_ProductionLine;
-import org.adempiere.core.domains.models.X_M_Production;
-import org.adempiere.core.domains.models.X_PP_Product_BOM;
-import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
-import org.adempiere.exceptions.AdempiereException;
-import org.adempiere.exceptions.PeriodClosedException;
-import org.compiere.process.DocAction;
-import org.compiere.process.DocumentReversalEnabled;
-import org.compiere.process.DocumentEngine;
-import org.compiere.process.ProcessInfo;
-import org.compiere.util.AdempiereUserError;
-import org.compiere.util.CLogger;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.Util;
-import org.eevolution.services.dsl.ProcessBuilder;
 
 /**
  * Contributed from Adaxa
@@ -282,13 +279,14 @@ public class MProduction extends X_M_Production implements DocAction , DocumentR
 						BigDecimal quantityMA = ma.getMovementQty();
 						//Parameters: ctx,M_Warehouse_ID, M_Locator_ID, M_Product_ID,M_AttributeSetInstance_ID, reservationAttributeSetInstance_ID,
 						//diffQtyOnHand, 	diffQtyReserved, diffQtyOrdered, trxName
-						if (!MStorage.add(getCtx(), locator.getM_Warehouse_ID(),
-								productionLine.getM_Locator_ID(),
-								productionLine.getM_Product_ID(), 
-								ma.getM_AttributeSetInstance_ID(), 0, 
-								quantityMA.negate(),Env.ZERO, Env.ZERO, get_TrxName())) {
-							throw new AdempiereException("@M_Transaction_ID@ @no@ @Created@");
-						}
+//						MStorage.add(getCtx(), locator.getM_Warehouse_ID(),
+//								productionLine.getM_Locator_ID(),
+//								productionLine.getM_Product_ID(),
+//								ma.getM_AttributeSetInstance_ID(), 0,
+//								quantityMA.negate(),Env.ZERO, Env.ZERO, get_TrxName());
+						ReservationBuilder.newInstance(getCtx(), get_TrxName())
+								.withProductionLine(productionLine, ma.getM_AttributeSetInstance_ID(), quantityMA)
+								.build();
 						//	Transaction
 						transaction = new MTransaction (getCtx(), productionLine.getAD_Org_ID(), movementType,
 								productionLine.getM_Locator_ID(), productionLine.getM_Product_ID(), ma.getM_AttributeSetInstance_ID(),
@@ -314,13 +312,14 @@ public class MProduction extends X_M_Production implements DocAction , DocumentR
 						log.config("New ASI=" + productionLine);
 					}
 					//	Fallback: Update Storage - see also VMatch.createMatchRecord
-					if (!MStorage.add(getCtx(), locator.getM_Warehouse_ID(),
-							productionLine.getM_Locator_ID(),
-							productionLine.getM_Product_ID(),
-							transactionAttributeSetInstance_ID, reservationAttributeSetInstance_ID,
-						quantity, Env.ZERO, Env.ZERO, get_TrxName())) {
-						throw new AdempiereException("@M_Transaction_ID@ @no@ @Created@");
-					}
+//					MStorage.add(getCtx(), locator.getM_Warehouse_ID(),
+//							productionLine.getM_Locator_ID(),
+//							productionLine.getM_Product_ID(),
+//							transactionAttributeSetInstance_ID, reservationAttributeSetInstance_ID,
+//							quantity, Env.ZERO, Env.ZERO, get_TrxName());
+					ReservationBuilder.newInstance(getCtx(), get_TrxName())
+							.withProductionLine(productionLine)
+							.build();
 					//	FallBack: Create Transaction
 					transaction = new MTransaction (getCtx(), productionLine.getAD_Org_ID(),
 						movementType, productionLine.getM_Locator_ID(),
@@ -460,6 +459,8 @@ public class MProduction extends X_M_Production implements DocAction , DocumentR
 		} else {
 			m_processMsg = processFromPlan();
 		}
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 		//	Validate process message
 		if(m_processMsg != null)
 			return DocAction.STATUS_Invalid;
@@ -632,6 +633,9 @@ public class MProduction extends X_M_Production implements DocAction , DocumentR
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_CLOSE);
 		if (m_processMsg != null)
 			return false;
+
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 
 		setProcessed(true);
 		setDocAction(DOCACTION_None);

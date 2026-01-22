@@ -24,6 +24,7 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.solop.util.ReservationBuilder;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -1184,14 +1185,15 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 	public void reserveStock() {
 		//	Binding
 		BigDecimal target = getParent().isBinding() ? getQtyOrdered() : Env.ZERO;
-		BigDecimal difference = target.subtract(getQtyReserved()).subtract(getQtyDelivered());
+		BigDecimal currentReserved = getQtyReserved();
+		BigDecimal difference = target.subtract(currentReserved).subtract(getQtyDelivered());
 		if (difference.signum() == 0)
 			return;
 
 		log.fine("Line=" + getLine()
 				+ " - Target=" + target + ",Difference=" + difference
 				+ " - Ordered=" + getQtyOrdered()
-				+ ",Reserved=" + getQtyReserved() + ",Delivered=" + getQtyDelivered());
+				+ ",Reserved=" + currentReserved + ",Delivered=" + getQtyDelivered());
 
 		//	Check Product - Stocked and Item
 		MProduct product = getProduct();
@@ -1202,7 +1204,7 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 				BigDecimal ordered = isSOTrx() ? Env.ZERO : difference;
 				BigDecimal reserved = isSOTrx() ? difference : Env.ZERO;
 				//	update line
-				setQtyReserved(getQtyReserved().add(difference));
+				setQtyReserved(currentReserved.add(difference));
 				int locatorId = 0;
 				//	Get Locator to reserve
 				if (getM_AttributeSetInstance_ID() != 0)    //	Get existing Location
@@ -1226,10 +1228,13 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 					}
 				}
 				//	Update Storage
-				MStorage.add(getCtx(), getM_Warehouse_ID(), locatorId,
-						getM_Product_ID(),
-						getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
-						Env.ZERO, reserved, ordered, get_TrxName());
+//				MStorage.add(getCtx(), getM_Warehouse_ID(), locatorId,
+//						getM_Product_ID(),
+//						getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
+//						Env.ZERO, reserved, ordered, get_TrxName());
+				ReservationBuilder.newInstance(getCtx(), get_TrxName())
+						.withOrderLine(this, currentReserved)
+						.build();
 			}    //	stocked
 		}
 	}

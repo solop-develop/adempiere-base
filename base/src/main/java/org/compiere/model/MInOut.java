@@ -23,8 +23,13 @@ import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
 import org.compiere.process.DocumentReversalEnabled;
-import org.compiere.util.*;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.compiere.util.Util;
 import org.eevolution.wms.model.MWMInOutBoundLine;
+import org.solop.queue.storage.StorageUpdate;
+import org.solop.util.ReservationBuilder;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -1403,30 +1408,28 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 
 
 						//	Update Storage - see also VMatch.createMatchRecord
-						if (!MStorage.add(getCtx(), getM_Warehouse_ID(),
-							inOutLine.getM_Locator_ID(),
-							inOutLine.getM_Product_ID(),
-							ma.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
-							QtyMA,
-							sameWarehouse ? reservedDiff : Env.ZERO,
-							sameWarehouse ? orderedDiff : Env.ZERO,
-							get_TrxName()))
-						{
-							processMsg = "Cannot correct Inventory (MA)";
-							return DocAction.STATUS_Invalid;
-						}
+//						MStorage.add(getCtx(), getM_Warehouse_ID(),
+//								inOutLine.getM_Locator_ID(),
+//								inOutLine.getM_Product_ID(),
+//								ma.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
+//								QtyMA,
+//								sameWarehouse ? reservedDiff : Env.ZERO,
+//								sameWarehouse ? orderedDiff : Env.ZERO,
+//								get_TrxName());
+						ReservationBuilder.newInstance(getCtx(), get_TrxName())
+								.withInOutLine(inOutLine)
+								.build();
 						if (!sameWarehouse) {
 							//correct qtyOrdered in warehouse of order
 							MWarehouse warehouse = MWarehouse.get(getCtx(), orderLine.getM_Warehouse_ID());
-							if (!MStorage.add(getCtx(), orderLine.getM_Warehouse_ID(),
-									warehouse.getDefaultLocator().getM_Locator_ID(),
-									inOutLine.getM_Product_ID(),
-									ma.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
-									Env.ZERO, reservedDiff, orderedDiff, get_TrxName()))
-								{
-									processMsg = "Cannot correct Inventory (MA) in order warehouse";
-									return DocAction.STATUS_Invalid;
-								}
+//							MStorage.add(getCtx(), orderLine.getM_Warehouse_ID(),
+//									warehouse.getDefaultLocator().getM_Locator_ID(),
+//									inOutLine.getM_Product_ID(),
+//									ma.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
+//									Env.ZERO, reservedDiff, orderedDiff, get_TrxName());
+							ReservationBuilder.newInstance(getCtx(), get_TrxName())
+									.withInOutLine(inOutLine)
+									.build();
 						}
 						//	Create Transaction
 						materialTransaction = new MTransaction (getCtx(), inOutLine.getAD_Org_ID(),
@@ -1434,11 +1437,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 							inOutLine.getM_Product_ID(), ma.getM_AttributeSetInstance_ID(),
 							QtyMA, getMovementDate(), get_TrxName());
 						materialTransaction.setM_InOutLine_ID(inOutLine.getM_InOutLine_ID());
-						if (!materialTransaction.save())
-						{
-							processMsg = "Could not create Material Transaction (MA)";
-							return DocAction.STATUS_Invalid;
-						}
+						materialTransaction.saveEx();
 					}
 				}
 				//	sLine.getM_AttributeSetInstance_ID() != 0
@@ -1457,27 +1456,25 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 					}
 
 					//	Fallback: Update Storage - see also VMatch.createMatchRecord
-					if (!MStorage.add(getCtx(), getM_Warehouse_ID(),
-						inOutLine.getM_Locator_ID(),
-						inOutLine.getM_Product_ID(),
-						inOutLine.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
-						quantity, reservedDiff, orderedDiff, get_TrxName()))
-					{
-						processMsg = "Cannot correct Inventory";
-						return DocAction.STATUS_Invalid;
-					}
+//					MStorage.add(getCtx(), getM_Warehouse_ID(),
+//							inOutLine.getM_Locator_ID(),
+//							inOutLine.getM_Product_ID(),
+//							inOutLine.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
+//							quantity, reservedDiff, orderedDiff, get_TrxName());
+					ReservationBuilder.newInstance(getCtx(), get_TrxName())
+							.withInOutLine(inOutLine)
+							.build();
 					if (!sameWarehouse) {
 						//correct qtyOrdered in warehouse of order
 						MWarehouse warehouse = MWarehouse.get(getCtx(), orderLine.getM_Warehouse_ID());
-						if (!MStorage.add(getCtx(), orderLine.getM_Warehouse_ID(),
-								warehouse.getDefaultLocator().getM_Locator_ID(),
-								inOutLine.getM_Product_ID(),
-								inOutLine.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
-								Env.ZERO, QtySO.negate(), QtyPO.negate(), get_TrxName()))
-							{
-								processMsg = "Cannot correct Inventory";
-								return DocAction.STATUS_Invalid;
-							}
+//						MStorage.add(getCtx(), orderLine.getM_Warehouse_ID(),
+//								warehouse.getDefaultLocator().getM_Locator_ID(),
+//								inOutLine.getM_Product_ID(),
+//								inOutLine.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
+//								Env.ZERO, QtySO.negate(), QtyPO.negate(), get_TrxName());
+						ReservationBuilder.newInstance(getCtx(), get_TrxName())
+								.withInOutLine(inOutLine)
+								.build();
 					}
 					//	FallBack: Create Transaction
 					materialTransaction = new MTransaction (getCtx(), inOutLine.getAD_Org_ID(),
@@ -1485,11 +1482,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 						inOutLine.getM_Product_ID(), inOutLine.getM_AttributeSetInstance_ID(),
 						quantity, getMovementDate(), get_TrxName());
 					materialTransaction.setM_InOutLine_ID(inOutLine.getM_InOutLine_ID());
-					if (!materialTransaction.save())
-					{
-						processMsg = CLogger.retrieveErrorString("Could not create Material Transaction");
-						return DocAction.STATUS_Invalid;
-					}
+					materialTransaction.saveEx();
 				}
 				//	Set Inoutbound order
 				if(inOutLine.getWM_InOutBoundLine_ID() > 0) {
@@ -1649,7 +1642,8 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 				order.saveEx(get_TrxName());
 			}
 		}
-		
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 
 		processMsg = info.toString();
 		setProcessed(true);
@@ -2094,6 +2088,8 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 
 		setProcessed(true);
 		setDocAction(DOCACTION_None);
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 
 		// After Close
 		processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_CLOSE);

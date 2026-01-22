@@ -16,17 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_Invoice;
-import org.adempiere.core.domains.models.I_C_OrderLine;
-import org.adempiere.core.domains.models.I_C_OrderTax;
-import org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan;
-import org.adempiere.core.domains.models.I_M_InOut;
-import org.adempiere.core.domains.models.I_M_RMA;
-import org.adempiere.core.domains.models.I_PP_Product_Planning;
-import org.adempiere.core.domains.models.X_C_Order;
-import org.adempiere.core.domains.models.X_PP_Product_BOM;
-import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
-import org.adempiere.core.domains.models.X_PP_Product_Planning;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoBillToAddressException;
 import org.adempiere.exceptions.BPartnerNoShipToAddressException;
@@ -34,11 +24,8 @@ import org.adempiere.exceptions.FillMandatoryException;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Util;
+import org.compiere.util.*;
+import org.solop.queue.storage.StorageUpdate;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -47,11 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -1427,6 +1410,8 @@ public class MOrder extends X_C_Order implements DocAction
 		}
 
 		createRevenueRecognitionPlan();
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 		
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
 		if (m_processMsg != null)
@@ -2424,6 +2409,8 @@ public class MOrder extends X_C_Order implements DocAction
 		setPosted(false);
 
 		reverseAllRecognitionPlans();
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 
 		// After Void
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_VOID);
@@ -2562,6 +2549,8 @@ public class MOrder extends X_C_Order implements DocAction
 
 		//Calculate Sizes (Weight & Volume)
 		calculateOrderSizes(Arrays.asList(lines));
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 		
 		setProcessed(true);
 		setDocAction(DOCACTION_None);

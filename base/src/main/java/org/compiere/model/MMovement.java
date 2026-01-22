@@ -28,6 +28,8 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Util;
 import org.eevolution.distribution.model.MDDOrder;
+import org.solop.queue.storage.StorageUpdate;
+import org.solop.util.ReservationBuilder;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -421,15 +423,14 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 						MLocator locator = new MLocator (getCtx(), movementLine.getM_Locator_ID(), get_TrxName());
 						MLocator locatorTo = new MLocator (getCtx(), movementLine.getM_LocatorTo_ID(), get_TrxName());
 						//Update Storage 
-						if (!MStorage.add(getCtx(),locator.getM_Warehouse_ID(),
-								movementLine.getM_Locator_ID(),
-								movementLine.getM_Product_ID(),
-								movementLineMA.getM_AttributeSetInstance_ID(), 0,
-								movementLineMA.getMovementQty().negate(), Env.ZERO ,  Env.ZERO , get_TrxName()))
-						{
-							processMessage = "Cannot correct Inventory (MA)";
-							return DocAction.STATUS_Invalid;
-						}
+//						MStorage.add(getCtx(),locator.getM_Warehouse_ID(),
+//								movementLine.getM_Locator_ID(),
+//								movementLine.getM_Product_ID(),
+//								movementLineMA.getM_AttributeSetInstance_ID(), 0,
+//								movementLineMA.getMovementQty().negate(), Env.ZERO ,  Env.ZERO , get_TrxName());
+						ReservationBuilder.newInstance(getCtx(), get_TrxName())
+								.withMovementLine(movementLine, false)
+								.build();
 
 						int attributeSetInstanceToId = movementLine.getM_AttributeSetInstanceTo_ID();
 						//only can be same asi if locator is different
@@ -438,38 +439,28 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 							attributeSetInstanceToId = movementLineMA.getM_AttributeSetInstance_ID();
 						}
 						//Update Storage 
-						if (!MStorage.add(getCtx(),locatorTo.getM_Warehouse_ID(),
-								movementLine.getM_LocatorTo_ID(),
-								movementLine.getM_Product_ID(),
-								attributeSetInstanceToId, 0,
-								movementLineMA.getMovementQty(), Env.ZERO ,  Env.ZERO , get_TrxName()))
-						{
-							processMessage = "Cannot correct Inventory (MA)";
-							return DocAction.STATUS_Invalid;
-						}
-
+//						MStorage.add(getCtx(),locatorTo.getM_Warehouse_ID(),
+//								movementLine.getM_LocatorTo_ID(),
+//								movementLine.getM_Product_ID(),
+//								attributeSetInstanceToId, 0,
+//								movementLineMA.getMovementQty(), Env.ZERO ,  Env.ZERO , get_TrxName());
+						ReservationBuilder.newInstance(getCtx(), get_TrxName())
+								.withMovementLine(movementLine, true)
+								.build();
 						//
 						transactionFrom = new MTransaction (getCtx(), locator.getAD_Org_ID(),
 								MTransaction.MOVEMENTTYPE_MovementFrom,
 								movementLine.getM_Locator_ID(), movementLine.getM_Product_ID(), movementLineMA.getM_AttributeSetInstance_ID(),
 								movementLineMA.getMovementQty().negate(), getMovementDate(), get_TrxName());
 						transactionFrom.setM_MovementLine_ID(movementLine.getM_MovementLine_ID());
-						if (!transactionFrom.save())
-						{
-							processMessage = "Transaction From not inserted (MA)";
-							return DocAction.STATUS_Invalid;
-						}
+						transactionFrom.saveEx();
 						MTransaction transactionTo = new MTransaction (getCtx(), locatorTo.getAD_Org_ID(),
 								MTransaction.MOVEMENTTYPE_MovementTo,
 								movementLine.getM_LocatorTo_ID(), movementLine.getM_Product_ID(), attributeSetInstanceToId,
 								movementLineMA.getMovementQty(), getMovementDate(), get_TrxName());
 						transactionTo.setAD_Org_ID(locatorTo.getAD_Org_ID());
 						transactionTo.setM_MovementLine_ID(movementLine.getM_MovementLine_ID());
-						if (!transactionTo.save())
-						{
-							processMessage = "Transaction To not inserted (MA)";
-							return DocAction.STATUS_Invalid;
-						}
+						transactionTo.saveEx();
 					}
 				}
 				//	Fallback - We have ASI
@@ -478,38 +469,30 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 					MLocator locator = new MLocator (getCtx(), movementLine.getM_Locator_ID(), get_TrxName());
 					MLocator locatorTo = new MLocator (getCtx(), movementLine.getM_LocatorTo_ID(), get_TrxName());
 					//Update Storage 
-					if (!MStorage.add(getCtx(),locator.getM_Warehouse_ID(),
-							movementLine.getM_Locator_ID(),
-							movementLine.getM_Product_ID(),
-							movementLine.getM_AttributeSetInstance_ID(), 0,
-							movementLine.getMovementQty().negate(), Env.ZERO ,  Env.ZERO , get_TrxName()))
-					{
-						processMessage = "Cannot correct Inventory (MA)";
-						return DocAction.STATUS_Invalid;
-					}
-
+//					MStorage.add(getCtx(),locator.getM_Warehouse_ID(),
+//							movementLine.getM_Locator_ID(),
+//							movementLine.getM_Product_ID(),
+//							movementLine.getM_AttributeSetInstance_ID(), 0,
+//							movementLine.getMovementQty().negate(), Env.ZERO ,  Env.ZERO , get_TrxName());
+					ReservationBuilder.newInstance(getCtx(), get_TrxName())
+							.withMovementLine(movementLine, false)
+							.build();
 					//Update Storage 
-					if (!MStorage.add(getCtx(),locatorTo.getM_Warehouse_ID(),
-							movementLine.getM_LocatorTo_ID(),
-							movementLine.getM_Product_ID(),
-							movementLine.getM_AttributeSetInstanceTo_ID(), 0,
-							movementLine.getMovementQty(), Env.ZERO ,  Env.ZERO , get_TrxName()))
-					{
-						processMessage = "Cannot correct Inventory (MA)";
-						return DocAction.STATUS_Invalid;
-					}
-
+//					MStorage.add(getCtx(),locatorTo.getM_Warehouse_ID(),
+//							movementLine.getM_LocatorTo_ID(),
+//							movementLine.getM_Product_ID(),
+//							movementLine.getM_AttributeSetInstanceTo_ID(), 0,
+//							movementLine.getMovementQty(), Env.ZERO ,  Env.ZERO , get_TrxName());
+					ReservationBuilder.newInstance(getCtx(), get_TrxName())
+							.withMovementLine(movementLine, true)
+							.build();
 					//
 					transactionFrom = new MTransaction (getCtx(), locator.getAD_Org_ID(),
 							MTransaction.MOVEMENTTYPE_MovementFrom,
 							movementLine.getM_Locator_ID(), movementLine.getM_Product_ID(), movementLine.getM_AttributeSetInstance_ID(),
 							movementLine.getMovementQty().negate(), getMovementDate(), get_TrxName());
 					transactionFrom.setM_MovementLine_ID(movementLine.getM_MovementLine_ID());
-					if (!transactionFrom.save())
-					{
-						processMessage = "Transaction From not inserted";
-						return DocAction.STATUS_Invalid;
-					}
+					transactionFrom.saveEx();
 
 					MTransaction transactionTo = new MTransaction (getCtx(), locatorTo.getAD_Org_ID(),
 							MTransaction.MOVEMENTTYPE_MovementTo,
@@ -517,11 +500,7 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 							movementLine.getMovementQty(), getMovementDate(), get_TrxName());
 					transactionTo.setM_MovementLine_ID(movementLine.getM_MovementLine_ID());
 					transactionTo.setAD_Org_ID(locatorTo.getAD_Org_ID());
-					if (!transactionTo.save())
-					{
-						processMessage = "Transaction To not inserted";
-						return DocAction.STATUS_Invalid;
-					}
+					transactionTo.saveEx();
 				}	//	Fallback
 			} // product stock	
 		}	//	for all lines
@@ -535,6 +514,8 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 		
 		// Set the definite document number after completed (if needed)
 		setDefiniteDocumentNo();
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
 
 		//
 		setProcessed(true);
@@ -695,6 +676,9 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 		if (processMessage != null)
 			return false;
 
+		//	Add to Storage Queue
+		StorageUpdate.addDocumentToQueue(this);
+
 		//	Close Not delivered Qty
 		setDocAction(DOCACTION_None);
 
@@ -736,11 +720,7 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 			reversalMovement.setDocumentNo(getDocumentNo()+ Msg.getMsg(reversalMovement.getCtx(), "^"));
 		}
 		//
-		if (!reversalMovement.save())
-		{
-			processMessage = "Could not create Movement Reversal";
-			return null;
-		}
+		reversalMovement.saveEx();
 		reversalMovement.setReversal(true);
 
 		//	Reverse Line Qty
