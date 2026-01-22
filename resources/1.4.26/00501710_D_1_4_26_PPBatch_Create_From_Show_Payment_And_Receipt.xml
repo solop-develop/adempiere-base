@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="PPBatch_Create_From_Show_Payment_And_Receipt" ReleaseNo="1.4.26" SeqNo="501710">
+    <Comments>Allows to create PPBatch Lines from Payments and Receipts, not only Receipts</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50307" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="NOT EXISTS(SELECT 1 FROM C_PaymentProcessorBatch pp INNER JOIN C_PPBatchLine ppl ON(pp.C_PaymentProcessorBatch_ID = ppl.C_PaymentProcessorBatch_ID) WHERE pp.DocStatus NOT IN('VO', 'RE') AND ppl.C_Payment_ID = p.C_Payment_ID)&#10;AND EXISTS(SELECT 1 FROM C_BankStatement bs WHERE bs.C_BankStatement_ID = bsl.C_BankStatement_ID AND bs.C_BankAccount_ID IN (SELECT ppb.C_BankAccount_ID FROM C_PPBatchConfigurationLine ppb WHERE ppb.C_PPBatchConfiguration_ID = @C_PPBatchConfiguration_ID@))&#10;AND p.IsReceipt = 'Y' &#10;AND p.IsReconciled = 'Y'&#10;AND p.DocStatus IN('CO', 'CL')&#10;AND p.Withdrawal_ID IS NOT NULL &#10;AND p.Deposit_ID IS NOT NULL&#10;AND (p.IsOnline ='Y' OR p.TenderType='C')">NOT EXISTS(SELECT 1 FROM C_PaymentProcessorBatch pp INNER JOIN C_PPBatchLine ppl ON(pp.C_PaymentProcessorBatch_ID = ppl.C_PaymentProcessorBatch_ID) WHERE pp.DocStatus NOT IN('VO', 'RE') AND ppl.C_Payment_ID = p.C_Payment_ID)
+AND EXISTS(SELECT 1 FROM C_BankStatement bs WHERE bs.C_BankStatement_ID = bsl.C_BankStatement_ID AND bs.C_BankAccount_ID IN (SELECT ppb.C_BankAccount_ID FROM C_PPBatchConfigurationLine ppb WHERE ppb.C_PPBatchConfiguration_ID = @C_PPBatchConfiguration_ID@))
+AND p.IsReconciled = 'Y'
+AND p.DocStatus IN('CO', 'CL')
+AND p.Withdrawal_ID IS NOT NULL 
+AND p.Deposit_ID IS NOT NULL
+AND (p.IsOnline ='Y' OR p.TenderType='C')
+AND p.C_Order_ID IS NOT NULL
+AND p.C_POS_ID IS NOT NULL</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

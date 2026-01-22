@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Create_Invoice_From_Shipment_Show_All" ReleaseNo="1.4.26" SeqNo="501730">
+    <Comments>Remove mandatory for Shipment parameter in Invoice Create From</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="108" Action="U" Record_ID="52482" Table="AD_Val_Rule">
+        <Data AD_Column_ID="193" Column="Code" oldValue="M_InOut.C_BPartner_ID = @C_BPartner_ID@ &#10;AND M_InOut.IsSOTrx='N' &#10;AND M_InOut.DocStatus IN ('CO', 'CL')&#10;AND EXISTS(SELECT 1 FROM M_InOutLine il &#10;&#9;&#9;&#9;LEFT OUTER JOIN M_MatchInv mi ON (il.M_InOutLine_ID=mi.M_InOutLine_ID) &#10;&#9;&#9;&#9;WHERE M_InOut.M_InOut_ID = il.M_InOut_ID&#10;&#9;&#9;&#9;GROUP BY il.M_InOut_ID, mi.M_InOutLine_ID, il.MovementQty &#10;&#9;&#9;&#9;HAVING (il.MovementQty &lt;&gt; SUM(mi.Qty) AND mi.M_InOutLine_ID IS NOT NULL)&#10;&#9;&#9;&#9;OR mi.M_InOutLine_ID IS NULL)">M_InOut.C_BPartner_ID = @C_BPartner_ID@ 
+AND M_InOut.DocStatus IN ('CO', 'CL')
+AND EXISTS(SELECT 1 FROM M_InOutLine il 
+			LEFT OUTER JOIN M_MatchInv mi ON (il.M_InOutLine_ID=mi.M_InOutLine_ID) 
+			WHERE M_InOut.M_InOut_ID = il.M_InOut_ID
+			GROUP BY il.M_InOut_ID, mi.M_InOutLine_ID, il.MovementQty 
+			HAVING (il.MovementQty &lt;&gt; SUM(mi.Qty) AND mi.M_InOutLine_ID IS NOT NULL)
+			OR mi.M_InOutLine_ID IS NULL)</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="55748" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57985" Column="IsMandatory" oldValue="true">false</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
