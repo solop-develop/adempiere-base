@@ -17,14 +17,30 @@
 package org.compiere.process;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
+import org.compiere.model.MColumn;
+import org.compiere.model.MTable;
+import org.compiere.model.MTree;
+import org.compiere.model.MTree_Node;
+import org.compiere.model.MTree_NodeBP;
+import org.compiere.model.MTree_NodeMM;
+import org.compiere.model.MTree_NodePR;
+import org.compiere.model.MTree_NodeU1;
+import org.compiere.model.MTree_NodeU2;
+import org.compiere.model.MTree_NodeU3;
+import org.compiere.model.MTree_NodeU4;
+import org.compiere.model.PO;
+import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Util;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
@@ -44,7 +60,8 @@ public class TreeMaintenance extends SvrProcess
 {
 	/**	Tree				*/
 	private int		m_AD_Tree_ID;
-	
+
+	private Set<Integer> orderedNodeIds;
 	/**
 	 *  Prepare - e.g., get Parameters.
 	 */
@@ -78,6 +95,7 @@ public class TreeMaintenance extends SvrProcess
 		//
 		if (MTree.TREETYPE_BoM.equals(tree.getTreeType()))
 			return "BOM Trees not implemented";
+		orderedNodeIds = new HashSet<>();
 		return verifyTree(tree);
 	}	//	doIt
 
@@ -110,118 +128,181 @@ public class TreeMaintenance extends SvrProcess
 			for (int i : elements) {
 				treeElements.add(i);
 			}
-		} else{
+		} else {
 			treeElements.add(0);
 		}
 		
 		AtomicReference<Boolean> ok = new AtomicReference<>();
 		ok.set(true);
 		
-		treeElements.forEach(treeElement -> {
+        treeElements.forEach(treeElement -> {
 			AtomicReference<String> parentColumnName = new AtomicReference<>();
+			AtomicReference<String> sortColumnName = new AtomicReference<>();
+
 			MTable sourceTable	 = null;
-			String[] keyColumns = null;
 			if (tree.getParent_Column_ID() > 0) {
 				parentColumnName.set(MColumn.getColumnName(Env.getCtx(), tree.getParent_Column_ID()));
 				sourceTable = MTable.get(Env.getCtx(),tree.getAD_Table_ID());
-				keyColumns = sourceTable.getKeyColumns();
 			}
+			if (tree.getAD_ColumnSortOrder_ID() > 0) {
+				sortColumnName.set(MColumn.getColumnName(Env.getCtx(), tree.getAD_ColumnSortOrder_ID()));
+			}
+
+
+
+
 			int C_Element_ID = treeElement;
-			//	Delete unused
 			StringBuffer sql = new StringBuffer();
 			sql.append("DELETE ").append(nodeTableName)
-				.append(" WHERE AD_Tree_ID=").append(tree.getAD_Tree_ID())
-				.append(" AND Node_ID NOT IN (SELECT ").append(sourceTableKey)
-				.append(" FROM ").append(sourceTableName)
-				.append(" st WHERE st.AD_Client_ID=").append(AD_Client_ID);
+					.append(" WHERE AD_Tree_ID=").append(tree.getAD_Tree_ID())
+					.append(" AND Node_ID NOT IN (SELECT ").append(sourceTableKey)
+					.append(" FROM ").append(sourceTableName)
+					.append(" st WHERE st.AD_Client_ID=").append(AD_Client_ID);
 			if (C_Element_ID > 0)
 				sql.append(" AND EXISTS (SELECT 1 FROM C_Element WHERE ")
-					.append(" C_Element_ID=").append(C_Element_ID)
-					.append(" AND C_Element.AD_Tree_ID = ").append(nodeTableName).append(".AD_Tree_ID)");
+						.append(" C_Element_ID=").append(C_Element_ID)
+						.append(" AND C_Element.AD_Tree_ID = ").append(nodeTableName).append(".AD_Tree_ID)");
 			sql.append(")");
 			log.finer(sql.toString());
 			//
 			int deletes = DB.executeUpdate(sql.toString(), get_TrxName());
 			addLog(0,null, new BigDecimal(deletes), tree.getName()+ " Deleted");
-			if (tree.isAllNodes()) {
-				//	Insert new
-				AtomicInteger inserts = new AtomicInteger();
-				sql = new StringBuffer();
-				sql.append("SELECT ").append(sourceTableKey)
-					.append(" FROM ").append(sourceTableName)
-					.append(" WHERE AD_Client_ID=").append(AD_Client_ID);
-				if (C_Element_ID > 0)
-					sql.append(" AND C_Element_ID=").append(C_Element_ID);
-				sql.append(" AND ").append(sourceTableKey)
-					.append("  NOT IN (SELECT Node_ID FROM ").append(nodeTableName)
-					.append(" WHERE AD_Tree_ID=").append(tree.getAD_Tree_ID()).append(")");
-				log.finer(sql.toString());
-				//
-				DB.runResultSet(get_TrxName(), sql.toString(), null, resulset -> {
-					while (resulset.next()) {
-						int nodeId = resulset.getInt(1);
-						PO node = getPO(tree, nodeTableName, nodeId);
-						//
-						if (node == null) {
-							log.log(Level.SEVERE, "No Model for " + nodeTableName);
-						} else {
-							//FR [ 729 ]
-							if (node.get_ID() > 0) {
-								if(parentColumnName.get() != null) {
-									node.set_ValueOfColumn("Parent_ID", node.get_ValueAsInt(parentColumnName.get()));
-								}
-							} else {
-								node.set_ValueOfColumn("Parent_ID", null);
-							}
-							if (node.save()) {
-								inserts.getAndIncrement();
-							} else {
-								log.log(Level.SEVERE, "Could not add to " + tree + " Node_ID=" + nodeId);
-							}
-						}
-					}
-				});
-				//FR [ 729 ]
-				if (keyColumns != null
-						&& keyColumns.length > 0
-						 	&& parentColumnName.get() != null) {
-					
-					String elementFilter = "";
-					if (C_Element_ID > 0)
-						elementFilter = " AND st.C_Element_ID=" + C_Element_ID;
-					
-					String whereClause = "NOT EXISTS (SELECT 1 FROM " + sourceTableName + " st "
-														+ "WHERE " +nodeTableName + ".Node_ID = st." + keyColumns[0] + " "
-														+ "AND " + nodeTableName + ".Parent_ID = COALESCE(st." + parentColumnName.get() + ",0) "
-														+ elementFilter
-														+ ") " +
-										 "AND EXISTS (SELECT 1 FROM " + sourceTableName + " st "
-														+ "WHERE " +nodeTableName + ".Parent_ID = st." + keyColumns[0] + elementFilter +  ") "
-										+ "AND AD_Tree_ID = ? ";
-					List<PO> parentNodes = new Query(getCtx(), nodeTableName, whereClause, get_TrxName()).setParameters(tree.getAD_Tree_ID()).list();
-					int updated = 0;
-					for (PO node : parentNodes) {
-						whereClause = keyColumns[0] + "=" + node.get_ID();
-						PO table = MTable.get(Env.getCtx(), sourceTableName).getPO(whereClause, node.get_TrxName());
-						if (table.get_ID() > 0) {
-							if (node.get_ID()>0) {
-								if (node.get_ValueAsInt("Parent_ID")>0)
-									table.set_ValueOfColumn(parentColumnName.get(), node.get_ValueAsInt("Parent_ID"));
-								else 
-									table.set_ValueOfColumn(parentColumnName.get(), null);
-								
-								table.saveEx();
-							}
-						}
-						updated +=1;
-					}
-					addLog(0,null, new BigDecimal(updated), tree.getName()+ " Updated");
-				}
-				addLog(0,null, new BigDecimal(inserts.get()), tree.getName()+ " Inserted");
+			String whereClause = "1=1";
+			List<Object> parameters = new ArrayList<>();
+			if (C_Element_ID > 0) {
+				whereClause = " C_Element_ID = ?";
+				parameters.add(C_Element_ID);
 			}
+			List<Integer> treeElementIds = new Query(getCtx(), sourceTableName, whereClause, get_TrxName())
+					.setParameters(parameters)
+					.setOnlyActiveRecords(true)
+					.getIDsAsList();
+
+			whereClause = "C_Element_ID = " + C_Element_ID;
+			MTable treeTable = MTable.get(getCtx(), nodeTableName);
+			for (Integer treeElementId : treeElementIds) {
+
+				PO treeNode = treeTable.getPO("AD_Tree_ID = " + tree.get_ID() + " AND Node_ID = " + treeElementId, get_TrxName());
+				if (treeNode == null) {
+					treeNode = treeTable.getPO(0, get_TrxName());
+					treeNode.setAD_Org_ID(0);
+					treeNode.set_CustomColumn("AD_Tree_ID", tree.get_ID());
+					treeNode.set_CustomColumn("Node_ID", treeElementId);
+				}
+				treeNode.setIsActive(true);
+
+				PO element = sourceTable.getPO(treeElementId, get_TrxName());
+				String sortColumnValue = element.get_ValueAsString(sortColumnName.get());
+				if (!Util.isEmpty(sortColumnName.get(), true) && C_Element_ID > 0) {
+					int parentId = getParentFromSort(sortColumnName.get(), sortColumnValue, whereClause, sourceTableName);
+					if (parentId <= 0) {
+						treeNode.set_CustomColumn("Parent_ID", null);
+					} else {
+						treeNode.set_CustomColumn("Parent_ID", parentId);
+					}
+					if (!Util.isEmpty(parentColumnName.get(), true)) {
+						if (parentId <= 0) {
+							element.set_ValueOfColumn(parentColumnName.get(), null);
+						}else {
+							element.set_ValueOfColumn(parentColumnName.get(), parentId);
+						}
+
+					}
+				} else if (element.get_ValueAsInt(parentColumnName.get()) > 0) {
+					treeNode.set_CustomColumn("Parent_ID", element.get_ValueAsInt(parentColumnName.get()));
+				}
+				element.saveEx();
+
+
+				treeNode.setIsDirectLoad(true);
+				treeNode.set_CustomColumn("SeqNo", 999);
+				treeNode.saveEx();
+			}
+
+			whereClause = "AD_Tree_ID = ?";
+			List<PO> nodeList = new Query(getCtx(), nodeTableName, whereClause, get_TrxName())
+				.setParameters(tree.get_ID())
+				.list();
+			for (PO node : nodeList) {
+				updateTreeNodeOrder(nodeTableName,sortColumnName.get(),tree.get_ID(), node.get_ValueAsInt("Parent_ID"),parentColumnName.get(), sourceTableName, C_Element_ID);
+			}
+
 		});
 		return tree.getName() + (ok.get() ? " OK" : " Error");
 	}	//	verifyTree
+
+	private void updateTreeNodeOrder (String treeTableName, String sortColumnName, int treeId, int parentId, String parentColumnName, String tableName, int elementId) {
+		List<Object> parameters = new ArrayList<>();
+
+		String whereClause = "AD_Client_ID = ?";
+		parameters.add(getAD_Client_ID());
+		if (parentId >0) {
+			whereClause += "AND " + parentColumnName + " = ? ";
+			parameters.add(parentId);
+
+		} else {
+			whereClause += " AND (" + parentColumnName + " IS NULL OR "+ parentColumnName +" = 0)";
+		}
+		if (elementId > 0) {
+			whereClause += " AND C_Element_ID = ? ";
+			parameters.add(elementId);
+		}
+
+		List<Integer> siblingIds = new Query(getCtx(), tableName, whereClause, get_TrxName())
+				.setParameters(parameters)
+				.setOnlyActiveRecords(true)
+				.setOrderBy(sortColumnName)
+				.getIDsAsList();
+		int index=0;
+		for (Integer siblingId : siblingIds) {
+			index++;
+			if (orderedNodeIds.contains(siblingId) ) {
+				continue;
+			}
+
+			PO treeNode = MTable.get(getCtx(), treeTableName).getPO("Node_ID = " + siblingId + " AND AD_Tree_ID = " + treeId , get_TrxName());
+			if(treeNode != null) {
+				treeNode.set_ValueOfColumn("SeqNo", index);
+				treeNode.setIsDirectLoad(true);
+				treeNode.saveEx();
+				orderedNodeIds.add(siblingId);
+			}
+		}
+
+	}
+
+
+	/**
+	 * FR [ 729 ]
+	 * Get Tree Parent from Sort
+	 * @param sortColumn
+	 * @param sortValue
+	 * @return
+	 */
+	private int getParentFromSort(String sortColumn ,String sortValue, String whereClause, String tableName) {
+		Integer parentID = -1 ;
+		whereClause = Optional.ofNullable(whereClause + " AND ").orElse("");
+
+		if (sortValue!=null) {
+			List<PO> parentPO = new Query(getCtx(), tableName, whereClause + " IsSummary = 'Y' ", get_TrxName()).setOrderBy(sortColumn).list();
+			HashMap<String,Integer> currentValues = new HashMap<String,Integer>();
+
+			for (PO po : parentPO)
+				currentValues.put(po.get_ValueAsString(sortColumn), po.get_ID());
+
+			while (!sortValue.isEmpty()) {
+				sortValue = sortValue.substring(0, sortValue.length()-1);
+				parentID = currentValues.get(sortValue);
+				if (parentID==null)
+					parentID = 0;
+				else
+					break;
+
+			}
+		}
+		return parentID;
+	}
+
 
 	private static PO getPO(MTree tree, String nodeTableName, int nodeId) {
 		PO node = null;
