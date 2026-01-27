@@ -1,11 +1,11 @@
 CREATE OR REPLACE VIEW RV_C_INVOICE_VENDORMONTH
-(AD_CLIENT_ID, AD_ORG_ID, C_BPARTNER_ID, M_PRODUCT_CATEGORY_ID, DATEINVOICED, 
- LINENETAMT, LINELISTAMT, LINELIMITAMT, LINEDISCOUNTAMT, LINEDISCOUNT, 
+(AD_CLIENT_ID, AD_ORG_ID, C_BPARTNER_ID, M_PRODUCT_CATEGORY_ID, DATEINVOICED,
+ LINENETAMT, LINELISTAMT, LINELIMITAMT, LINEDISCOUNTAMT, LINEDISCOUNT,
  LINEOVERLIMITAMT, LINEOVERLIMIT, QTYINVOICED, IsSOTrx,
- C_BP_Group_ID, C_DocTypeTarget_ID, DocStatus, 
+ C_BP_Group_ID, C_DocTypeTarget_ID, DocStatus,
  M_Product_Class_ID, M_Product_Group_ID, M_Product_Classification_ID,
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID)
-AS 
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID C_SalesRegion_ID, Weight, Volume, M_Product_ID)
+AS
 SELECT il.AD_Client_ID, il.AD_Org_ID,
 	po.C_BPartner_ID, il.M_Product_Category_ID,
 	firstOf(il.DateInvoiced, 'MM') AS DateInvoiced,	--	DD Day, DY Week, MM Month
@@ -21,11 +21,14 @@ SELECT il.AD_Client_ID, il.AD_Org_ID,
 	SUM(QtyInvoiced) AS QtyInvoiced, IsSOTrx,
  C_BP_Group_ID, C_DocTypeTarget_ID, DocStatus, 
  M_Product_Class_ID, M_Product_Group_ID, M_Product_Classification_ID,
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, il.C_SalesRegion_ID,
+ SUM(il.Weight) AS Weight,
+ SUM(il.Volume) AS Volume,
+ il.M_Product_ID
 FROM RV_C_InvoiceLine il
     INNER JOIN M_Product_PO po ON (il.M_Product_ID=po.M_Product_ID)
 GROUP BY il.AD_Client_ID, il.AD_Org_ID, po.C_BPartner_ID, il.M_Product_Category_ID,
 	firstOf(il.DateInvoiced, 'MM'), IsSOTrx,
  C_BP_Group_ID, C_DocTypeTarget_ID, DocStatus, 
  M_Product_Class_ID, M_Product_Group_ID, M_Product_Classification_ID,
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID;
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, il.C_SalesRegion_ID, il.M_Product_ID;
