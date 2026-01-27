@@ -18,6 +18,7 @@
 package org.spin.pos.model.validator;
 
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MProduct;
@@ -54,6 +55,7 @@ public class GiftCardModelValidator implements ModelValidator {
 		}
 		engine.addModelChange(MProduct.Table_Name, this);
 		engine.addModelChange(MOrderLine.Table_Name, this);
+		engine.addModelChange(MOrder.Table_Name, this);
 
 		engine.addDocValidate(MOrder.Table_Name, this);
 	}
@@ -76,8 +78,14 @@ public class GiftCardModelValidator implements ModelValidator {
 				MProductCategory productCategory = (MProductCategory) product.getM_Product_Category();
 				product.set_ValueOfColumn(IGiftCard.IsGenerateGiftCard, productCategory.get_ValueAsBoolean(IGiftCard.IsGenerateGiftCard));
 			}
-		}
-		if (po instanceof MOrderLine) {
+		}else if (po instanceof MOrder) {
+			MOrder order = (MOrder) po;
+			if (type == TYPE_BEFORE_NEW
+				|| (order.is_ValueChanged(MOrder.COLUMNNAME_C_DocTypeTarget_ID) && order.getC_DocTypeTarget_ID() > 0)) {
+				MDocType docType = order.getDocumentType();
+				order.set_ValueOfColumn(IGiftCard.IsGenerateGiftCard, docType.get_ValueAsBoolean(IGiftCard.IsGenerateGiftCard));
+			}
+		} else if (po instanceof MOrderLine) {
 			MOrderLine orderLine = (MOrderLine) po;
 			if (type == TYPE_BEFORE_NEW || type == TYPE_BEFORE_CHANGE) {
 				if (orderLine.isSOTrx() && (orderLine.is_new()
@@ -110,6 +118,9 @@ public class GiftCardModelValidator implements ModelValidator {
 				if (!order.isSOTrx()) {
 					return null;
 				}
+				if (!order.get_ValueAsBoolean(IGiftCard.IsGenerateGiftCard)) {
+					return null;
+				}
 				MTable giftCardTable = MTable.get(order.getCtx(), IGiftCard.ECA14_GiftCard);
 				MTable giftCardLineTable = MTable.get(order.getCtx(), IGiftCard.ECA14_GiftCardLine);
 				if (giftCardTable == null || giftCardTable.get_ID() <= 0) {
@@ -118,6 +129,7 @@ public class GiftCardModelValidator implements ModelValidator {
 				if (giftCardLineTable == null || giftCardLineTable.get_ID() <= 0) {
 					return null;
 				}
+
 				final String whereClause = IGiftCard.IsGenerateGiftCard + " = 'Y' AND C_Order_ID = ?";
 				List<Integer> lineIds = new Query(
 					order.getCtx(),
@@ -133,9 +145,9 @@ public class GiftCardModelValidator implements ModelValidator {
 					MUOM uom = (MUOM) orderLine.getC_UOM();
 					int precision = uom.getStdPrecision();
 					if (precision == 0) {
-						iterateOrderLineQty(orderLine.getQtyEntered(), order, orderLine);
+						iterateOrderLineQty(orderLine.getQtyEntered(), order, orderLine, giftCardTable, giftCardLineTable);
 					} else {
-						createGiftCard(order, orderLine, orderLine.getQtyEntered());
+						createGiftCard(order, orderLine, orderLine.getQtyEntered(), giftCardTable, giftCardLineTable);
 					}
 				});
 			}
@@ -143,21 +155,20 @@ public class GiftCardModelValidator implements ModelValidator {
 		return null;
 	}
 
-	private void iterateOrderLineQty(BigDecimal lineQty, MOrder order, MOrderLine orderLine) {
+	private void iterateOrderLineQty(BigDecimal lineQty, MOrder order, MOrderLine orderLine, MTable giftCardTable, MTable giftCardLineTable) {
 		Stream.iterate(BigDecimal.ONE,
 			current -> current.compareTo(lineQty) <= 0,
 			current -> current.add(BigDecimal.ONE)
 		)
 		.forEach(unit -> {
-			createGiftCard(order, orderLine, BigDecimal.ONE);
+			createGiftCard(order, orderLine, BigDecimal.ONE, giftCardTable, giftCardLineTable);
 		});
 	}
 
-	private void createGiftCard(MOrder order, MOrderLine orderLine, BigDecimal qty) {
-		MTable giftCardTable = MTable.get(order.getCtx(), IGiftCard.ECA14_GiftCard);
-		MTable giftCardLineTable = MTable.get(order.getCtx(), IGiftCard.ECA14_GiftCardLine);
+	private void createGiftCard(MOrder order, MOrderLine orderLine, BigDecimal qty, MTable giftCardTable, MTable giftCardLineTable) {
 
 		PO giftCard = giftCardTable.getPO(0, order.get_TrxName());
+		giftCard.setAD_Org_ID(order.getAD_Org_ID());
 		giftCard.set_ValueOfColumn(MOrder.COLUMNNAME_C_BPartner_ID, order.getC_BPartner_ID());
 		giftCard.set_ValueOfColumn(MOrder.COLUMNNAME_C_ConversionType_ID, order.getC_ConversionType_ID());
 		giftCard.set_ValueOfColumn(MOrder.COLUMNNAME_C_Currency_ID, order.getC_Currency_ID());
@@ -170,6 +181,7 @@ public class GiftCardModelValidator implements ModelValidator {
 		giftCard.saveEx();
 
 		PO giftCardLine = giftCardLineTable.getPO(0, order.get_TrxName());
+		giftCardLine.setAD_Org_ID(giftCard.getAD_Org_ID());
 		giftCardLine.set_ValueOfColumn(IGiftCard.Amount, qty.multiply(orderLine.getPriceEntered()));
 		giftCardLine.set_ValueOfColumn(MOrderLine.COLUMNNAME_C_OrderLine_ID, orderLine.getC_OrderLine_ID());
 		giftCardLine.set_ValueOfColumn(MOrderLine.COLUMNNAME_C_UOM_ID, orderLine.getC_UOM_ID());

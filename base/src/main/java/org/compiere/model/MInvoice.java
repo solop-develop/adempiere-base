@@ -1163,7 +1163,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		//	? ROUND(NVL(v_AllocatedAmt,0), 2);
 		return retValue;
 	}	//	getAllocatedAmt
-
+	private boolean hasAllocation;
 	/**
 	 * 	Test Allocation (and set paid flag)
 	 *	@return true if updated
@@ -1926,6 +1926,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	 */
 	public String completeIt()
 	{
+		hasAllocation = false;
 		//	Re-Check
 		if (!justPrepared)
 		{
@@ -2184,6 +2185,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			if (invoiceToAllocateId > 0) {
 				allocationManager.addAllocateDocument(invoiceToAllocateId, getGrandTotal(), Env.ZERO, Env.ZERO);
 				allocationManager.createAllocation();
+				hasAllocation = true;
 			} else {
 
 				if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
@@ -2214,6 +2216,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					});
 					if (!allocateInvoiceIds.isEmpty()) {
 						allocationManager.createAllocation();
+						hasAllocation = true;
 					}
 				}
 			}
@@ -2246,6 +2249,9 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
         }
 		processMsg = info.toString().trim();
 		setProcessed(true);
+		if (hasAllocation) {
+			testAllocation();
+		}
 		setDocAction(DOCACTION_Close);
 		return DocAction.STATUS_Completed;
 	}	//	completeIt
@@ -3023,6 +3029,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 				throw new AdempiereException("Cannot complete allocation: " + alloc.getProcessMsg()); //@Trifon
 			alloc.saveEx();
 			openAmt = openAmt.subtract(aLineAmount);
+			hasAllocation = true;
 		}
 		return ;
 	}

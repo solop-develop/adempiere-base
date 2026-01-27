@@ -16,16 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.I_C_BankStatementLine;
 import org.adempiere.core.domains.models.X_C_BankStatement;
 import org.adempiere.exceptions.AdempiereException;
@@ -37,6 +27,16 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.compiere.util.Util;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 
 
 /**
@@ -80,10 +80,11 @@ public class MBankStatement extends X_C_BankStatement implements DocAction
 		StringBuilder whereClause = new StringBuilder();
 		whereClause.append(MBankStatement.COLUMNNAME_C_BankAccount_ID).append("=? AND ")
 				.append("TRUNC(").append(MBankStatement.COLUMNNAME_StatementDate).append(",'DD')=? AND ")
-				.append(MBankStatement.COLUMNNAME_Processed).append("=?");
+				.append(MBankStatement.COLUMNNAME_Processed).append("=? AND ")
+				.append(MBankStatement.COLUMNNAME_Processing).append(" <> ?");
 		MBankStatement bankStatement = new Query(payment.getCtx() , MBankStatement.Table_Name , whereClause.toString(), payment.get_TrxName())
 				.setClient_ID()
-				.setParameters(payment.getC_BankAccount_ID(), TimeUtil.getDay(payment.getDateTrx()) , false)
+				.setParameters(payment.getC_BankAccount_ID(), TimeUtil.getDay(payment.getDateTrx()) , false, true)
 				.first();
 		if (bankStatement == null || bankStatement.get_ID() <= 0)
 		{
@@ -393,7 +394,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction
 			return DocAction.STATUS_Invalid;
 
 		//	Std Period open?
-		MPeriod.testPeriodOpen(getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getAD_Org_ID());
+		MPeriod.testPeriodOpen(getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getAD_Org_ID(), null);
 		MBankStatementLine[] lines = getLines(true);
 		if (lines.length == 0)
 		{
@@ -415,8 +416,8 @@ public class MBankStatement extends X_C_BankStatement implements DocAction
 		// totals
 		calculateBalance();
 
-		MPeriod.testPeriodOpen(getCtx(), minDate, MDocType.DOCBASETYPE_BankStatement, 0);
-		MPeriod.testPeriodOpen(getCtx(), maxDate, MDocType.DOCBASETYPE_BankStatement, 0);
+		MPeriod.testPeriodOpen(getCtx(), minDate, MDocType.DOCBASETYPE_BankStatement, 0, null);
+		MPeriod.testPeriodOpen(getCtx(), maxDate, MDocType.DOCBASETYPE_BankStatement, 0, null);
 
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
 		if (m_processMsg != null)
@@ -582,7 +583,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction
 		//	Std Period open?
 		else
 		{
-			MPeriod.testPeriodOpen(getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getAD_Org_ID());
+			MPeriod.testPeriodOpen(getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getAD_Org_ID(), null);
 			MFactAcct.deleteEx(Table_ID, getC_BankStatement_ID(), get_TrxName());
 		}
 		
