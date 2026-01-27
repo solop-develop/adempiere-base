@@ -118,6 +118,19 @@ public interface I_C_POSSellerAllocation
 	  */
 	public boolean isECA14_WriteOffByPercent();
 
+    /** Column name IsAccessAllOrgs */
+    public static final String COLUMNNAME_IsAccessAllOrgs = "IsAccessAllOrgs";
+
+	/** Set Access all Orgs.
+	  * Access all Organizations (no org access control) of the client
+	  */
+	public void setIsAccessAllOrgs (boolean IsAccessAllOrgs);
+
+	/** Get Access all Orgs.
+	  * Access all Organizations (no org access control) of the client
+	  */
+	public boolean isAccessAllOrgs();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 

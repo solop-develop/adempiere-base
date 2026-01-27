@@ -38,7 +38,7 @@ public class X_C_POSSellerAllocation extends PO implements I_C_POSSellerAllocati
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251002L;
+	private static final long serialVersionUID = 20260119L;
 
     /** Standard Constructor */
     public X_C_POSSellerAllocation(Properties ctx, int C_POSSellerAllocation_ID, String trxName)
@@ -146,6 +146,30 @@ public class X_C_POSSellerAllocation extends PO implements I_C_POSSellerAllocati
 	public boolean isECA14_WriteOffByPercent () 
 	{
 		Object oo = get_Value(COLUMNNAME_ECA14_WriteOffByPercent);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Access all Orgs.
+		@param IsAccessAllOrgs 
+		Access all Organizations (no org access control) of the client
+	  */
+	public void setIsAccessAllOrgs (boolean IsAccessAllOrgs)
+	{
+		set_Value (COLUMNNAME_IsAccessAllOrgs, Boolean.valueOf(IsAccessAllOrgs));
+	}
+
+	/** Get Access all Orgs.
+		@return Access all Organizations (no org access control) of the client
+	  */
+	public boolean isAccessAllOrgs () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsAccessAllOrgs);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 

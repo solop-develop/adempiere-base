@@ -58,11 +58,14 @@ public class PaymentProcessorBatchCreateStatement extends PaymentProcessorBatchC
 					feeAmt = MConversionRate.convert(getCtx(), feeAmt, bankStatementLine.getC_Currency_ID(),
 							batch.getC_Currency_ID(), bankStatementLine.getStatementLineDate(), 0, getAD_Client_ID(), batch.getAD_Org_ID());
 				}
-
-				paymentProcessorLine.setPayAmt(payment.getPayAmt());
-				paymentProcessorLine.setTaxAmt(payment.getTaxAmt());
-				paymentProcessorLine.setFeeAmt(feeAmt);
-				paymentProcessorLine.setDiscountAmt(payment.getDiscountAmt());
+				BigDecimal multiplier = BigDecimal.ONE;
+				if (!payment.isReceipt()){
+					multiplier = multiplier.negate();
+				}
+				paymentProcessorLine.setPayAmt(payment.getPayAmt().multiply(multiplier));
+				paymentProcessorLine.setTaxAmt(payment.getTaxAmt().multiply(multiplier));
+				paymentProcessorLine.setFeeAmt(feeAmt.multiply(multiplier));
+				paymentProcessorLine.setDiscountAmt(payment.getDiscountAmt().multiply(multiplier));
 				if(payment.getWithdrawal_ID() > 0) {
 					paymentProcessorLine.setWithdrawal_ID(payment.getWithdrawal_ID());
 				}
