@@ -27,6 +27,7 @@ SELECT il.AD_Client_ID, il.AD_Org_ID,
  il.M_Product_ID
 FROM RV_C_InvoiceLine il
     INNER JOIN M_Product_PO po ON (il.M_Product_ID=po.M_Product_ID)
+WHERE po.IsCurrentVendor = 'Y'
 GROUP BY il.AD_Client_ID, il.AD_Org_ID, po.C_BPartner_ID, il.M_Product_Category_ID,
 	firstOf(il.DateInvoiced, 'MM'), IsSOTrx,
  C_BP_Group_ID, C_DocTypeTarget_ID, DocStatus, 

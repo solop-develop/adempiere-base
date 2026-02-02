@@ -31,11 +31,18 @@ SUM(iol.MovementQty * p.Volume) AS Volume,
 iol.C_UOM_ID,
 o.C_Order_ID,
 i.DocumentNo,
-iol.C_Invoice_ID
+iol.C_Invoice_ID,
+p.Group1,
+p.Group2,
+p.Classification,
+((COALESCE(loc.Address1, ''::character varying)::text || COALESCE(', '::text || loc.Address2::text, ''::text)) || COALESCE(', '::text || loc.Address3::text, ''::text)) || COALESCE(', '::text || loc.Address4::text, ''::text) AS DirectionName,
+loc.City
 FROM WM_InOutbound io
 JOIN WM_InOutboundLine iol ON iol.WM_InOutbound_ID = io.WM_InOutbound_ID
 JOIN C_Order o ON o.C_Order_ID = iol.C_Order_ID
 JOIN C_BPartner bp ON bp.C_BPartner_ID = o.C_BPartner_ID
+JOIN C_BPartner_Location bpl ON bpl.C_BPartner_Location_ID = o.C_BPartner_Location_ID
+JOIN C_Location loc ON loc.C_Location_ID = bpl.C_Location_ID
 JOIN M_Product p ON p.M_Product_ID = iol.M_Product_ID
 JOIN M_Product_Category pc ON pc.M_Product_Category_ID = p.M_Product_Category_ID
 LEFT JOIN M_Product_Group pg ON pg.M_Product_Group_ID = p.M_Product_Group_ID
@@ -49,5 +56,6 @@ LEFT JOIN M_Sales_Group sg ON sg.M_Sales_Group_ID = p.M_Sales_Group_ID
 LEFT JOIN C_Invoice i ON (i.C_Invoice_ID = iol.C_Invoice_ID)
 GROUP BY io.AD_Client_ID, io.AD_Org_ID, io.IsActive, pc.M_Product_Category_ID, pg.M_Product_Group_ID, mpc.M_Product_Class_ID, pcl.M_Product_Classification_ID,
 isp.M_Industry_Sector_ID, mg.M_Material_Group_ID, mt.M_Material_Type_ID, mpg.M_Purchase_Group_ID, sg.M_Sales_Group_ID,
-o.C_BPartner_ID, iol.C_UOM_ID, iol.M_Product_ID, io.WM_InOutbound_ID, p.UnitsPerPallet, o.C_Order_ID, i.DocumentNo, iol.C_Invoice_ID
+o.C_BPartner_ID, iol.C_UOM_ID, iol.M_Product_ID, io.WM_InOutbound_ID, p.UnitsPerPallet, o.C_Order_ID, i.DocumentNo, iol.C_Invoice_ID,
+p.Group1, p.Group2, p.Classification, loc.Address1, loc.Address2, loc.Address3, loc.Address4, loc.City
 ;

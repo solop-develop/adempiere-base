@@ -16,13 +16,6 @@
  *****************************************************************************/
 package org.compiere.print;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_AD_PrintFormatItem;
 import org.compiere.model.MRole;
 import org.compiere.model.Query;
@@ -35,6 +28,13 @@ import org.compiere.util.Evaluatee;
 import org.compiere.util.Evaluator;
 import org.compiere.util.Language;
 import org.compiere.util.Util;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *	Print Format Item Model.
@@ -585,6 +585,9 @@ public class MPrintFormatItem extends X_AD_PrintFormatItem
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
+		if (getAD_Org_ID() > 0) {
+			setAD_Org_ID(0);
+		}
 		//	Order
 		if (!isOrderBy())
 		{
