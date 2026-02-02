@@ -23,17 +23,17 @@ import org.compiere.util.KeyNamePair;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/** Generated Interface for M_Cost
- *  @author Adempiere (generated) 
+/** Generated Interface for AD_Corporation
+ *  @author Gabriel Escalona (generated)
  *  @version Release 3.9.4
  */
-public interface I_M_Cost 
+public interface I_AD_Corporation 
 {
 
-    /** TableName=M_Cost */
-    public static final String Table_Name = "M_Cost";
+    /** TableName=AD_Corporation */
+    public static final String Table_Name = "AD_Corporation";
 
-    /** AD_Table_ID=771 */
+    /** AD_Table_ID=55075 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -60,8 +60,6 @@ public interface I_M_Cost
 
 	/** Get Corporation	  */
 	public int getAD_Corporation_ID();
-
-	public I_AD_Corporation getAD_Corporation() throws RuntimeException;
 
     /** Column name AD_Org_ID */
     public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";
@@ -90,6 +88,21 @@ public interface I_M_Cost
 	public int getC_AcctSchema_ID();
 
 	public I_C_AcctSchema getC_AcctSchema() throws RuntimeException;
+
+    /** Column name C_Currency_ID */
+    public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
+
+	/** Set Currency.
+	  * The Currency for this record
+	  */
+	public void setC_Currency_ID (int C_Currency_ID);
+
+	/** Get Currency.
+	  * The Currency for this record
+	  */
+	public int getC_Currency_ID();
+
+	public I_C_Currency getC_Currency() throws RuntimeException;
 
     /** Column name CostingMethod */
     public static final String COLUMNNAME_CostingMethod = "CostingMethod";
@@ -120,84 +133,6 @@ public interface I_M_Cost
 	  */
 	public int getCreatedBy();
 
-    /** Column name CumulatedAmt */
-    public static final String COLUMNNAME_CumulatedAmt = "CumulatedAmt";
-
-	/** Set Accumulated Amt.
-	  * Total Amount
-	  */
-	public void setCumulatedAmt (BigDecimal CumulatedAmt);
-
-	/** Get Accumulated Amt.
-	  * Total Amount
-	  */
-	public BigDecimal getCumulatedAmt();
-
-    /** Column name CumulatedAmtLL */
-    public static final String COLUMNNAME_CumulatedAmtLL = "CumulatedAmtLL";
-
-	/** Set Accumulated Amt LL.
-	  * Total Amount
-	  */
-	public void setCumulatedAmtLL (BigDecimal CumulatedAmtLL);
-
-	/** Get Accumulated Amt LL.
-	  * Total Amount
-	  */
-	public BigDecimal getCumulatedAmtLL();
-
-    /** Column name CumulatedQty */
-    public static final String COLUMNNAME_CumulatedQty = "CumulatedQty";
-
-	/** Set Accumulated Qty.
-	  * Total Quantity
-	  */
-	public void setCumulatedQty (BigDecimal CumulatedQty);
-
-	/** Get Accumulated Qty.
-	  * Total Quantity
-	  */
-	public BigDecimal getCumulatedQty();
-
-    /** Column name CurrentCostPrice */
-    public static final String COLUMNNAME_CurrentCostPrice = "CurrentCostPrice";
-
-	/** Set Current Cost Price.
-	  * The currently used cost price
-	  */
-	public void setCurrentCostPrice (BigDecimal CurrentCostPrice);
-
-	/** Get Current Cost Price.
-	  * The currently used cost price
-	  */
-	public BigDecimal getCurrentCostPrice();
-
-    /** Column name CurrentCostPriceLL */
-    public static final String COLUMNNAME_CurrentCostPriceLL = "CurrentCostPriceLL";
-
-	/** Set Current Cost Price LL.
-	  * Current Price Lower Level Is the sum of the costs of the components of this product manufactured for this level.
-	  */
-	public void setCurrentCostPriceLL (BigDecimal CurrentCostPriceLL);
-
-	/** Get Current Cost Price LL.
-	  * Current Price Lower Level Is the sum of the costs of the components of this product manufactured for this level.
-	  */
-	public BigDecimal getCurrentCostPriceLL();
-
-    /** Column name CurrentQty */
-    public static final String COLUMNNAME_CurrentQty = "CurrentQty";
-
-	/** Set Current Quantity.
-	  * Current Quantity
-	  */
-	public void setCurrentQty (BigDecimal CurrentQty);
-
-	/** Get Current Quantity.
-	  * Current Quantity
-	  */
-	public BigDecimal getCurrentQty();
-
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -210,24 +145,6 @@ public interface I_M_Cost
 	  * Optional short description of the record
 	  */
 	public String getDescription();
-
-    /** Column name FutureCostPrice */
-    public static final String COLUMNNAME_FutureCostPrice = "FutureCostPrice";
-
-	/** Set Future Cost Price	  */
-	public void setFutureCostPrice (BigDecimal FutureCostPrice);
-
-	/** Get Future Cost Price	  */
-	public BigDecimal getFutureCostPrice();
-
-    /** Column name FutureCostPriceLL */
-    public static final String COLUMNNAME_FutureCostPriceLL = "FutureCostPriceLL";
-
-	/** Set Future Cost Price LL	  */
-	public void setFutureCostPriceLL (BigDecimal FutureCostPriceLL);
-
-	/** Get Future Cost Price LL	  */
-	public BigDecimal getFutureCostPriceLL();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -242,78 +159,46 @@ public interface I_M_Cost
 	  */
 	public boolean isActive();
 
-    /** Column name IsCostFrozen */
-    public static final String COLUMNNAME_IsCostFrozen = "IsCostFrozen";
+    /** Column name IsShareCosts */
+    public static final String COLUMNNAME_IsShareCosts = "IsShareCosts";
 
-	/** Set Cost Frozen.
-	  * Indicated that the Standard Cost is frozen
+	/** Set Share Costs.
+	  * Organizations in the group share cost calculation
 	  */
-	public void setIsCostFrozen (boolean IsCostFrozen);
+	public void setIsShareCosts (boolean IsShareCosts);
 
-	/** Get Cost Frozen.
-	  * Indicated that the Standard Cost is frozen
+	/** Get Share Costs.
+	  * Organizations in the group share cost calculation
 	  */
-	public boolean isCostFrozen();
+	public boolean isShareCosts();
 
-    /** Column name M_AttributeSetInstance_ID */
-    public static final String COLUMNNAME_M_AttributeSetInstance_ID = "M_AttributeSetInstance_ID";
+    /** Column name IsShareInventory */
+    public static final String COLUMNNAME_IsShareInventory = "IsShareInventory";
 
-	/** Set Attribute Set Instance.
-	  * Product Attribute Set Instance
+	/** Set Share Inventory.
+	  * Organizations in the group share inventory visibility
 	  */
-	public void setM_AttributeSetInstance_ID (int M_AttributeSetInstance_ID);
+	public void setIsShareInventory (boolean IsShareInventory);
 
-	/** Get Attribute Set Instance.
-	  * Product Attribute Set Instance
+	/** Get Share Inventory.
+	  * Organizations in the group share inventory visibility
 	  */
-	public int getM_AttributeSetInstance_ID();
+	public boolean isShareInventory();
 
-	public I_M_AttributeSetInstance getM_AttributeSetInstance() throws RuntimeException;
+    /** Column name M_PriceList_ID */
+    public static final String COLUMNNAME_M_PriceList_ID = "M_PriceList_ID";
 
-    /** Column name M_CostElement_ID */
-    public static final String COLUMNNAME_M_CostElement_ID = "M_CostElement_ID";
-
-	/** Set Cost Element.
-	  * Product Cost Element
+	/** Set Price List.
+	  * Unique identifier of a Price List
 	  */
-	public void setM_CostElement_ID (int M_CostElement_ID);
+	public void setM_PriceList_ID (int M_PriceList_ID);
 
-	/** Get Cost Element.
-	  * Product Cost Element
+	/** Get Price List.
+	  * Unique identifier of a Price List
 	  */
-	public int getM_CostElement_ID();
+	public int getM_PriceList_ID();
 
-	public I_M_CostElement getM_CostElement() throws RuntimeException;
-
-    /** Column name M_CostType_ID */
-    public static final String COLUMNNAME_M_CostType_ID = "M_CostType_ID";
-
-	/** Set Cost Type.
-	  * Type of Cost (e.g. Current, Plan, Future)
-	  */
-	public void setM_CostType_ID (int M_CostType_ID);
-
-	/** Get Cost Type.
-	  * Type of Cost (e.g. Current, Plan, Future)
-	  */
-	public int getM_CostType_ID();
-
-	public I_M_CostType getM_CostType() throws RuntimeException;
-
-    /** Column name M_Product_ID */
-    public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
-
-	/** Set Product.
-	  * Product, Service, Item
-	  */
-	public void setM_Product_ID (int M_Product_ID);
-
-	/** Get Product.
-	  * Product, Service, Item
-	  */
-	public int getM_Product_ID();
-
-	public I_M_Product getM_Product() throws RuntimeException;
+	public I_M_PriceList getM_PriceList() throws RuntimeException;
 
     /** Column name M_Warehouse_ID */
     public static final String COLUMNNAME_M_Warehouse_ID = "M_Warehouse_ID";
@@ -330,31 +215,18 @@ public interface I_M_Cost
 
 	public I_M_Warehouse getM_Warehouse() throws RuntimeException;
 
-    /** Column name Percent */
-    public static final String COLUMNNAME_Percent = "Percent";
+    /** Column name Name */
+    public static final String COLUMNNAME_Name = "Name";
 
-	/** Set Percent.
-	  * Percentage
+	/** Set Name.
+	  * Alphanumeric identifier of the entity
 	  */
-	public void setPercent (int Percent);
+	public void setName (String Name);
 
-	/** Get Percent.
-	  * Percentage
+	/** Get Name.
+	  * Alphanumeric identifier of the entity
 	  */
-	public int getPercent();
-
-    /** Column name Processed */
-    public static final String COLUMNNAME_Processed = "Processed";
-
-	/** Set Processed.
-	  * The document has been processed
-	  */
-	public void setProcessed (boolean Processed);
-
-	/** Get Processed.
-	  * The document has been processed
-	  */
-	public boolean isProcessed();
+	public String getName();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -384,4 +256,17 @@ public interface I_M_Cost
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name Value */
+    public static final String COLUMNNAME_Value = "Value";
+
+	/** Set Search Key.
+	  * Search key for the record in the format required - must be unique
+	  */
+	public void setValue (String Value);
+
+	/** Get Search Key.
+	  * Search key for the record in the format required - must be unique
+	  */
+	public String getValue();
 }

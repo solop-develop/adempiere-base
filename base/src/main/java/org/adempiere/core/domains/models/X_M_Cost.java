@@ -18,14 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for M_Cost
  *  @author Adempiere (generated) 
@@ -36,7 +37,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260128L;
 
     /** Standard Constructor */
     public X_M_Cost (Properties ctx, int M_Cost_ID, String trxName)
@@ -84,9 +85,34 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_AcctSchema getC_AcctSchema() throws RuntimeException
+	public I_AD_Corporation getAD_Corporation() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_AcctSchema)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_AcctSchema.Table_Name)
+		return (I_AD_Corporation)MTable.get(getCtx(), I_AD_Corporation.Table_Name)
+			.getPO(getAD_Corporation_ID(), get_TrxName());	}
+
+	/** Set Corporation.
+		@param AD_Corporation_ID Corporation	  */
+	public void setAD_Corporation_ID (int AD_Corporation_ID)
+	{
+		if (AD_Corporation_ID < 1) 
+			set_Value (COLUMNNAME_AD_Corporation_ID, null);
+		else 
+			set_Value (COLUMNNAME_AD_Corporation_ID, Integer.valueOf(AD_Corporation_ID));
+	}
+
+	/** Get Corporation.
+		@return Corporation	  */
+	public int getAD_Corporation_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_Corporation_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_AcctSchema getC_AcctSchema() throws RuntimeException
+    {
+		return (I_C_AcctSchema)MTable.get(getCtx(), I_C_AcctSchema.Table_Name)
 			.getPO(getC_AcctSchema_ID(), get_TrxName());	}
 
 	/** Set Accounting Schema.
@@ -372,9 +398,9 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_CostElement getM_CostElement() throws RuntimeException
+	public I_M_CostElement getM_CostElement() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_CostElement)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_CostElement.Table_Name)
+		return (I_M_CostElement)MTable.get(getCtx(), I_M_CostElement.Table_Name)
 			.getPO(getM_CostElement_ID(), get_TrxName());	}
 
 	/** Set Cost Element.
@@ -400,9 +426,9 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_CostType getM_CostType() throws RuntimeException
+	public I_M_CostType getM_CostType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_CostType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_CostType.Table_Name)
+		return (I_M_CostType)MTable.get(getCtx(), I_M_CostType.Table_Name)
 			.getPO(getM_CostType_ID(), get_TrxName());	}
 
 	/** Set Cost Type.
@@ -428,9 +454,9 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException
+	public I_M_Product getM_Product() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
 			.getPO(getM_Product_ID(), get_TrxName());	}
 
 	/** Set Product.
@@ -456,9 +482,9 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Warehouse getM_Warehouse() throws RuntimeException
+	public I_M_Warehouse getM_Warehouse() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Warehouse)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Warehouse.Table_Name)
+		return (I_M_Warehouse)MTable.get(getCtx(), I_M_Warehouse.Table_Name)
 			.getPO(getM_Warehouse_ID(), get_TrxName());	}
 
 	/** Set Warehouse.

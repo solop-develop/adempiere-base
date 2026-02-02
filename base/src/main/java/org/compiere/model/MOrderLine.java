@@ -796,6 +796,7 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
             setPriceEntered(invoiceLine.getPriceEntered());
             setPriceActual(invoiceLine.getPriceActual());
             setC_Tax_ID(invoiceLine.getC_Tax_ID());
+			setRef_InvoiceLine_ID(invoiceLineReferenceId);
         } else if (inOutLineReference.getC_OrderLine_ID() != 0) {
             MOrderLine orderLine = new MOrderLine (getCtx(), inOutLineReference.getC_OrderLine_ID(), get_TrxName());
             setPriceList(orderLine.getPriceList());

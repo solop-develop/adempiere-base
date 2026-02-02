@@ -16,17 +16,6 @@
  *****************************************************************************/
 package org.compiere.print;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Properties;
-import java.util.logging.Level;
-
-import javax.sql.RowSet;
-
 import org.adempiere.core.domains.models.X_AD_PrintFormat;
 import org.compiere.model.MClient;
 import org.compiere.model.MQuery;
@@ -39,6 +28,16 @@ import org.compiere.util.Env;
 import org.compiere.util.Language;
 import org.compiere.util.Msg;
 import org.compiere.util.Util;
+
+import javax.sql.RowSet;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *	AD_PrintFormat - Print Format Model.
@@ -170,6 +169,19 @@ public class MPrintFormat extends X_AD_PrintFormat
 			retValue[i] = ((Integer)list.get(i)).intValue();
 		return retValue;
 	}	//	getAD_Column_IDs
+
+	/**************************************************************************
+	 * 	Before Save
+	 *	@param newRecord new
+	 *	@return true
+	 */
+	protected boolean beforeSave (boolean newRecord) {
+		if (getAD_Org_ID() > 0) {
+			setAD_Org_ID(0);
+		}
+		return super.beforeSave(newRecord);
+	}
+
 
 	/**
 	 * 	Set Items
