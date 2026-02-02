@@ -18,10 +18,9 @@
 
 package org.solop.process;
 
-import org.compiere.process.SvrProcess;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.process.SvrProcess;
 
 /** Generated Process for (Generate AP Invoice)
  *  @author ADempiere (generated) 
@@ -36,6 +35,8 @@ public abstract class GenerateAPInvoiceFromBatchAbstract extends SvrProcess {
 	private static final int ID_FOR_PROCESS = 54886;
 	/**	Parameter Name for Document Date	*/
 	public static final String DATEDOC = "DateDoc";
+	/**	Parameter Name for Account Date	*/
+	public static final String DATEACCT = "DateAcct";
 	/**	Parameter Name for Document Action	*/
 	public static final String DOCACTION = "DocAction";
 	/**	Parameter Name for Vendor Document Type	*/
@@ -48,6 +49,8 @@ public abstract class GenerateAPInvoiceFromBatchAbstract extends SvrProcess {
 	public static final String C_CHARGE_ID = "C_Charge_ID";
 	/**	Parameter Value for Document Date	*/
 	private Timestamp dateDoc;
+	/**	Parameter Value for Account Date	*/
+	private Timestamp dateAcct;
 	/**	Parameter Value for Document Action	*/
 	private String docAction;
 	/**	Parameter Value for Vendor Document Type	*/
@@ -62,6 +65,7 @@ public abstract class GenerateAPInvoiceFromBatchAbstract extends SvrProcess {
 	@Override
 	protected void prepare() {
 		dateDoc = getParameterAsTimestamp(DATEDOC);
+		dateAcct = getParameterAsTimestamp(DATEACCT);
 		docAction = getParameterAsString(DOCACTION);
 		vendorDocumentType = getParameterAsString(VENDORDOCUMENTTYPE);
 		isOverwriteAmtAndCharge = getParameterAsBoolean(OVERWRITEAMTANDCHARGE);
@@ -77,6 +81,16 @@ public abstract class GenerateAPInvoiceFromBatchAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Document Date	*/
 	protected void setDateDoc(Timestamp dateDoc) {
 		this.dateDoc = dateDoc;
+	}
+
+	/**	 Getter Parameter Value for Account Date	*/
+	protected Timestamp getDateAcct() {
+		return dateAcct;
+	}
+
+	/**	 Setter Parameter Value for Account Date	*/
+	protected void setDateAcct(Timestamp dateAcct) {
+		this.dateAcct = dateAcct;
 	}
 
 	/**	 Getter Parameter Value for Document Action	*/

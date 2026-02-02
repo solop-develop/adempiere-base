@@ -38,7 +38,7 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250916L;
+	private static final long serialVersionUID = 20260202L;
 
     /** Standard Constructor */
     public X_C_PaymentProcessorBatch (Properties ctx, int C_PaymentProcessorBatch_ID, String trxName)
@@ -349,6 +349,23 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
 	public String getCreateFrom () 
 	{
 		return (String)get_Value(COLUMNNAME_CreateFrom);
+	}
+
+	/** Set Account Date.
+		@param DateAcct 
+		Accounting Date
+	  */
+	public void setDateAcct (Timestamp DateAcct)
+	{
+		set_Value (COLUMNNAME_DateAcct, DateAcct);
+	}
+
+	/** Get Account Date.
+		@return Accounting Date
+	  */
+	public Timestamp getDateAcct () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateAcct);
 	}
 
 	/** Set Document Date.

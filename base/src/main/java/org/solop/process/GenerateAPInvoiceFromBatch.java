@@ -128,7 +128,7 @@ public class GenerateAPInvoiceFromBatch extends GenerateAPInvoiceFromBatchAbstra
 		invoice.setBPartner(businessPartner);
 		invoice.setSalesRep_ID(getAD_User_ID());	//	caller
 		invoice.setDateInvoiced(getDateDoc());
-		invoice.setDateAcct(getDateDoc());
+		invoice.setDateAcct(getDateAcct());
 		String currencyIsoCode = MCurrency.get(getCtx(), batch.getC_Currency_ID()).getISO_Code();
 		MPriceList priceList = MPriceList.getDefault(getCtx(), false, currencyIsoCode);
 		if(priceList == null) {
