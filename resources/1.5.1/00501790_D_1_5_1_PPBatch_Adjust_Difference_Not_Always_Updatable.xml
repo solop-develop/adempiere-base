@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="PPBatch_Adjust_Difference_Not_Always_Updatable" ReleaseNo="1.5.1" SeqNo="501790">
+    <Comments>Set AdjustDifference Button as Not AlwaysUpdateable, it should not work when PPBatch was already processed</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="105086" Table="AD_Column">
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable" oldValue="true">false</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
