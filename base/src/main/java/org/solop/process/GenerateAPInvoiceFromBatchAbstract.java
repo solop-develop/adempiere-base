@@ -18,9 +18,9 @@
 
 package org.solop.process;
 
+import org.compiere.process.SvrProcess;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import org.compiere.process.SvrProcess;
 
 /** Generated Process for (Generate AP Invoice)
  *  @author ADempiere (generated) 
