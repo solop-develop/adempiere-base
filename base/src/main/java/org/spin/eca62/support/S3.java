@@ -130,7 +130,7 @@ public class S3 implements IWebDav, IS3 {
 		}
 		return bucketName;
 	}
-	
+
 	/**
 	 * Get S3 Instance
 	 * @return
@@ -138,19 +138,25 @@ public class S3 implements IWebDav, IS3 {
 	private AmazonS3 getS3Instance() {
 		MADAppRegistration registration = getRegistrationInstance();
 		return AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(
-                		new BasicAWSCredentials(
-                				registration.getParameterValue(ACCESS_KEY), 
-                				registration.getParameterValue(SECRET_KEY)
-                				)
-                		))
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
-                		getHost(), 
-                		registration.getParameterValue(BUCKET_REGION)))
-                .build();
+			.standard()
+			.withCredentials(
+				new AWSStaticCredentialsProvider(
+					new BasicAWSCredentials(
+						registration.getParameterValue(ACCESS_KEY), 
+						registration.getParameterValue(SECRET_KEY)
+					)
+				)
+			)
+			.withEndpointConfiguration(
+				new AwsClientBuilder.EndpointConfiguration(
+					getHost(), 
+					registration.getParameterValue(BUCKET_REGION)
+				)
+			)
+			.build()
+		;
 	}
-	
+
 	@Override
 	public void setAppRegistrationId(int registrationId) {
 		this.registrationId = registrationId;
@@ -335,4 +341,31 @@ public class S3 implements IWebDav, IS3 {
 		}
 		return resource.getObjectContent();
 	}
+
+	@Override
+	public List<String> getResourceFileNames(ResourceMetadata resourceMetadata) throws Exception {
+		AmazonS3 s3Client = getS3Instance();
+		List<String> fileNames = new ArrayList<>();
+		try {
+			String prefix = resourceMetadata.getResourcePathOnly();
+			s3Client
+				.listObjects(getBucketName(), prefix)
+				.getObjectSummaries()
+				.forEach(resource -> {
+					String key = resource.getKey();
+					//	Remove prefix from key to get only file name
+					if(key.startsWith(prefix)) {
+						String fileName = key.substring(prefix.length());
+						//	Only add if it's not empty (avoid empty folder markers)
+						if(!Util.isEmpty(fileName, true)) {
+							fileNames.add(fileName);
+						}
+					}
+				});
+		} catch (Exception e) {
+			throw new AdempiereException(e);
+		}
+		return fileNames;
+	}
+
 }

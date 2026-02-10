@@ -216,6 +216,14 @@ public class ResourceMetadata {
 		return (getResourcePath() + "/" + getValidFileName(name)).toLowerCase();
 	}
 	
+	/**
+	 * Get resource path without file name (used for listing files)
+	 * @return Resource path directory
+	 */
+	public String getResourcePathOnly() {
+		return getResourcePath() + "/";
+	}
+
 	public static String getValidPathName(String path) {
 		if(path == null) {
 			return "";
