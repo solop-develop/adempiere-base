@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Project_Form" ReleaseNo="1.5.2" SeqNo="501990">
+    <Comments>Add Project Form</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="376" Action="I" Record_ID="53096" Table="AD_Form">
+        <Data AD_Column_ID="5791" Column="AccessLevel">3</Data>
+        <Data AD_Column_ID="4597" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="4596" Column="AD_Form_ID">53096</Data>
+        <Data AD_Column_ID="4598" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="4607" Column="Classname">org.compiere.apps.form.ProjectForm</Data>
+        <Data AD_Column_ID="4600" Column="Created">2026-02-19 19:18:50.878</Data>
+        <Data AD_Column_ID="4601" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4605" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="7708" Column="EntityType">D</Data>
+        <Data AD_Column_ID="4606" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="4599" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12738" Column="IsBetaFunctionality">false</Data>
+        <Data AD_Column_ID="13022" Column="JSPURL" isNewNull="true"/>
+        <Data AD_Column_ID="4604" Column="Name">Project Form</Data>
+        <Data AD_Column_ID="4602" Column="Updated">2026-02-19 19:18:50.879</Data>
+        <Data AD_Column_ID="4603" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84325" Column="UUID">adcc7532-5dc2-4698-af29-7c9593aa1ee8</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="377" Action="I" Record_ID="53096" Table="AD_Form_Trl">
+        <Data AD_Column_ID="4610" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="4608" Column="AD_Form_ID">53096</Data>
+        <Data AD_Column_ID="4609" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="4611" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="4613" Column="Created">2026-02-19 19:18:51.884</Data>
+        <Data AD_Column_ID="4614" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4618" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="4619" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="4612" Column="IsActive">true</Data>
+        <Data AD_Column_ID="4620" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="4617" Column="Name">Project Form</Data>
+        <Data AD_Column_ID="4615" Column="Updated">2026-02-19 19:18:51.884</Data>
+        <Data AD_Column_ID="4616" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84327" Column="UUID">890b378a-0630-4355-8428-c502eb671799</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="377" Action="U" Record_ID="53096" Table="AD_Form_Trl">
+        <Data AD_Column_ID="4608" Column="AD_Form_ID" oldValue="53096">53096</Data>
+        <Data AD_Column_ID="4609" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="4620" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="4617" Column="Name" oldValue="Project Form">Proyecto (Forma)</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="116" Action="I" Record_ID="55093" Table="AD_Menu">
+        <Data AD_Column_ID="232" Column="Action">X</Data>
+        <Data AD_Column_ID="57960" Column="AD_Browse_ID" isNewNull="true"/>
+        <Data AD_Column_ID="399" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="4621" Column="AD_Form_ID">53096</Data>
+        <Data AD_Column_ID="228" Column="AD_Menu_ID">55093</Data>
+        <Data AD_Column_ID="104002" Column="AD_Module_ID">50000</Data>
+        <Data AD_Column_ID="400" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="3375" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="104003" Column="AD_SubModule_ID">50000</Data>
+        <Data AD_Column_ID="235" Column="AD_Task_ID" isNewNull="true"/>
+        <Data AD_Column_ID="233" Column="AD_Window_ID" isNewNull="true"/>
+        <Data AD_Column_ID="6297" Column="AD_Workbench_ID" isNewNull="true"/>
+        <Data AD_Column_ID="234" Column="AD_Workflow_ID" isNewNull="true"/>
+        <Data AD_Column_ID="599" Column="Created">2026-02-19 19:21:35.54</Data>
+        <Data AD_Column_ID="600" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="230" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="7721" Column="EntityType">D</Data>
+        <Data AD_Column_ID="598" Column="IsActive">true</Data>
+        <Data AD_Column_ID="59134" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="6651" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="4426" Column="IsSOTrx">false</Data>
+        <Data AD_Column_ID="1169" Column="IsSummary">false</Data>
+        <Data AD_Column_ID="229" Column="Name">Project Form</Data>
+        <Data AD_Column_ID="104730" Column="WebPath">module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@</Data>
+        <Data AD_Column_ID="601" Column="Updated">2026-02-19 19:21:35.54</Data>
+        <Data AD_Column_ID="602" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84344" Column="UUID">3bebf3c6-e78a-4f96-b00b-d663a2ec157a</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="120" Action="I" Record_ID="0" Table="AD_Menu_Trl">
+        <Data AD_Column_ID="1194" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="246" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="245" Column="AD_Menu_ID">55093</Data>
+        <Data AD_Column_ID="1195" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="637" Column="Created">2026-02-19 19:21:36.785</Data>
+        <Data AD_Column_ID="638" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="248" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="636" Column="IsActive">true</Data>
+        <Data AD_Column_ID="249" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="247" Column="Name">Project Form</Data>
+        <Data AD_Column_ID="639" Column="Updated">2026-02-19 19:21:36.785</Data>
+        <Data AD_Column_ID="640" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84345" Column="UUID">58f64034-94ce-4e0d-a6fd-d2aa2f288427</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="452" Action="I" Record_ID="10" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6162" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6149" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID">10</Data>
+        <Data AD_Column_ID="6151" Column="Created">2026-02-19 19:21:36.93</Data>
+        <Data AD_Column_ID="6152" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="6150" Column="IsActive">true</Data>
+        <Data AD_Column_ID="6161" Column="Node_ID">55093</Data>
+        <Data AD_Column_ID="6155" Column="Parent_ID">0</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo">999</Data>
+        <Data AD_Column_ID="6153" Column="Updated">2026-02-19 19:21:36.93</Data>
+        <Data AD_Column_ID="6154" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84442" Column="UUID">12d2cb7a-0503-45c4-b3d9-74b97eaa2d01</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="452" Action="U" Record_ID="10" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID" oldValue="10">10</Data>
+        <Data AD_Column_ID="6161" Column="Node_ID" oldValue="55093">55093</Data>
+        <Data AD_Column_ID="6155" Column="Parent_ID" oldValue="0">160</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo" oldValue="999">56</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
