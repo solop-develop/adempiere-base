@@ -795,9 +795,9 @@ public class MColumn extends X_AD_Column
 				//  the calculated default or manage the update via the database directly.
 				StringBuffer sqlNull = new StringBuffer(sqlBase);
 				if (isMandatory())
-					sqlNull.append(" NOT NULL");
+					sqlNull.append(" SET NOT NULL");
 				else
-					sqlNull.append(" NULL");
+					sqlNull.append(" DROP NOT NULL");
 				sql.append(DB.SQLSTATEMENT_SEPARATOR).append(sqlNull);
 			}
 		}
