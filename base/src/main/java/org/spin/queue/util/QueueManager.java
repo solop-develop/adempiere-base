@@ -281,7 +281,7 @@ public abstract class QueueManager {
 				queueToProcess.setErrorMsg(error);
 			}
 			queueToProcess.setProcessed(!isError || queueType.isIgnoreError());
-			queueToProcess.saveEx();
+			queueToProcess.saveEx(null);
 		}
 		if(isError && !queueType.isIgnoreError()) {
 			throw new AdempiereException(error);

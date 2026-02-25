@@ -27,8 +27,6 @@ import org.spin.queue.model.MADQueueType;
 import org.spin.queue.process.FlushSystemQueue;
 
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.IntStream;
 
@@ -38,9 +36,6 @@ import java.util.stream.IntStream;
  */
 public class QueueLoader {
 
-    /**	Token Generator	*/
-    private Map<Integer, QueueManager> queueMap = null;
-    
 	private static final CLogger logger = CLogger.getCLogger(QueueLoader.class);
 	
 	/**
@@ -55,7 +50,7 @@ public class QueueLoader {
      * Instance hash map
      */
     private QueueLoader() {
-    	queueMap = new HashMap<Integer, QueueManager>();
+
     }
     
     public QueueManager getQueueManager(String queueType) {
@@ -73,13 +68,7 @@ public class QueueLoader {
      * @throws Exception
      */
     public QueueManager getQueueManager(int queueTypeId) {
-        if(!queueMap.containsKey(queueTypeId)) {
-            loadClass(queueTypeId);
-        }
-        //  Default return
-        QueueManager manager = queueMap.get(queueTypeId);
-        manager.clear().withQueueTypeId(queueTypeId);
-        return manager;
+        return getClassFromType(queueTypeId);
     }
     
     /**
@@ -87,7 +76,7 @@ public class QueueLoader {
      * @param queueTypeId
      * @return
      */
-    private String getClassname(int queueTypeId) {
+    private String getClassName(int queueTypeId) {
     	MADQueueType definition = MADQueueType.getById(Env.getCtx(), queueTypeId, null);
     	if(definition == null) {
     		return null;
@@ -103,7 +92,7 @@ public class QueueLoader {
      * @return Class<?>
      */
     private Class<?> getHandlerClass(int queueTypeId) {
-        String className = getClassname(queueTypeId);
+        String className = getClassName(queueTypeId);
         //	Validate null values
         if(Util.isEmpty(className)) {
         	className = QueueManager.class.getName();
@@ -128,8 +117,7 @@ public class QueueLoader {
         	logger.log(Level.SEVERE, "Loading class Error"+ e.getMessage());
         }
         //
-        logger.log(Level.SEVERE,"Not found Class: " + className);
-        return null;
+        throw new AdempiereException("Cannot find class for Queue Type ID: " + queueTypeId);
     }	//	getHandlerClass
 
     /**
@@ -137,17 +125,14 @@ public class QueueLoader {
      * @param queueTypeId
      * @throws Exception
      */
-    private void loadClass(int queueTypeId) {
+    private QueueManager getClassFromType(int queueTypeId) {
     	try {
-            //	Load it
-            //	Get class from parent
             Class<?> clazz = getHandlerClass(queueTypeId);
-            QueueManager generator = null;
             Constructor<?> constructor = clazz.getDeclaredConstructor();
             //	new instance
-            generator = (QueueManager) constructor.newInstance();
+            QueueManager generator = (QueueManager) constructor.newInstance();
             generator.withQueueTypeId(queueTypeId);
-            queueMap.put(queueTypeId, generator);
+            return generator;
     	} catch (Exception e) {
     		throw new AdempiereException(e);
     	}

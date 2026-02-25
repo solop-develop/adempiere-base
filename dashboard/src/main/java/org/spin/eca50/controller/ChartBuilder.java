@@ -15,16 +15,6 @@
  *************************************************************************************/
 package org.spin.eca50.controller;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MChart;
 import org.compiere.model.MChartDatasource;
@@ -39,6 +29,10 @@ import org.spin.eca50.data.ChartSeriesValue;
 import org.spin.eca50.data.ChartValue;
 import org.spin.eca50.util.ChartQueryDefinition;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.*;
+
 /**
  * A class as controller for Chart Service
  * @author Yamel Senih at www.erpya.com
@@ -46,21 +40,18 @@ import org.spin.eca50.util.ChartQueryDefinition;
  */
 public class ChartBuilder {
 
+	public static String DATE_FROM_PARAMETER = "DATE_FROM";
+	public static String DATE_TO_PARAMETER = "DATE_TO";
+
 	/**
 	 * Get Data Source Query
-	 * @param chartDatasourceId
-	 * @param isTimeSeries
-	 * @param timeUnit
-	 * @param timeScope
-	 * @param customParameters
-	 * @return
 	 */
 	private static ChartQueryDefinition getDataSourceQuery(int chartDatasourceId, boolean isTimeSeries, String timeUnit, int timeScope, Map<String, Object> customParameters) {
 		if(chartDatasourceId <= 0) {
 			throw new AdempiereException("@FillMandatory@ @AD_ChartDatasource_ID@");
 		}
 		MChartDatasource datasource = new MChartDatasource(Env.getCtx(), chartDatasourceId, null);
-		if (datasource == null || datasource.getAD_ChartDatasource_ID() <= 0) {
+		if (datasource.getAD_ChartDatasource_ID() <= 0) {
 			throw new AdempiereException("@AD_ChartDatasource_ID@ @NotFound@");
 		}
 
@@ -95,7 +86,7 @@ public class ChartBuilder {
 		}
 
 		List<Object> parameters = new ArrayList<Object>();
-		StringBuffer sql = new StringBuffer("SELECT " + value + ", " + category + ", " + series);
+		StringBuilder sql = new StringBuilder("SELECT " + value + ", " + category + ", " + series);
 		sql.append(" FROM ").append(fromClause);
 
 		// where clause
@@ -105,16 +96,15 @@ public class ChartBuilder {
 		Timestamp startDate = null;
 		Timestamp endDate = null;
 
-		int scope = timeScope;
-		int offset = datasource.getTimeOffset();
+        int offset = datasource.getTimeOffset();
 		
-		if (isTimeSeries && scope != 0) {
-			offset += -scope;
+		if (isTimeSeries && timeScope != 0) {
+			offset += -timeScope;
 			startDate = TimeUtil.getDay(TimeUtil.addDuration(currentDate, timeUnit, offset));
-			endDate = TimeUtil.getDay(TimeUtil.addDuration(currentDate, timeUnit, scope));
+			endDate = TimeUtil.getDay(TimeUtil.addDuration(currentDate, timeUnit, timeScope));
 		}
 
-		if (startDate != null && endDate != null) {
+		if (startDate != null) {
 			whereClause.append(" AND ").append(category).append(" >= ? ")
 				.append("AND ").append(category).append(" <= ? ")
 			;
@@ -122,21 +112,20 @@ public class ChartBuilder {
 			parameters.add(endDate);
 		}
 		//	Add custom parameters
-		if (customParameters != null && customParameters.size() > 0) {
-			customParameters.entrySet().forEach(parameter -> {
-				whereClause.append(" AND ")
-					.append(parameter.getKey())
-				;
+		if (customParameters != null && !customParameters.isEmpty()) {
+			customParameters.forEach((key, currentValue) -> {
+                whereClause.append(" AND ")
+                        .append(key)
+                ;
 
-				// add value(s)
-				Object currentValue = parameter.getValue();
-				if (currentValue instanceof Collection) {
-					// is multiple values to IN or BETWEEN operators
-					addCollectionParameters(currentValue, parameters);
-				} else {
-					parameters.add(currentValue);
-				}
-			});
+                // add value(s)
+                if (currentValue instanceof Collection) {
+                    // is multiple values to IN or BETWEEN operators
+                    addCollectionParameters(currentValue, parameters);
+                } else {
+                    parameters.add(currentValue);
+                }
+            });
 		}
 
 		//	Add where clause
@@ -159,24 +148,25 @@ public class ChartBuilder {
 			sqlWithAccess += " AND (" + parsedWhere.trim() + ")";
 		}
 
-		sql = new StringBuffer(sqlWithAccess);
+		sql = new StringBuilder(sqlWithAccess);
 
 		if (hasSeries) {
-			sql.append(" GROUP BY " + series + ", " + category + " ORDER BY " + series + ", " + category);
+			sql.append(" GROUP BY ").append(series).append(", ").append(category).append(" ORDER BY ").append(series).append(", ").append(category);
 		} else {
-			sql.append(" GROUP BY " + category + " ORDER BY " + category);
+			sql.append(" GROUP BY ").append(category).append(" ORDER BY ").append(category);
 		}
 		return new ChartQueryDefinition(name, sql.toString(), parameters);
+	}
+
+	public static ChartValue getChartData(int chartId, Map<String, Object> customParameters) {
+		return getChartData(chartId, null, null, customParameters);
 	}
 
 	/**
 	 * Get Chart data
 	 * This method allows run all data sources and get data
-	 * @param chartId
-	 * @param customParameters
-	 * @return
 	 */
-	public static ChartValue getChartData(int chartId, Map<String, Object> customParameters) {
+	public static ChartValue getChartData(int chartId, Timestamp dateFrom, Timestamp dateTo, Map<String, Object> customParameters) {
 		if(chartId <= 0) {
 			throw new AdempiereException("@AD_Chart_ID@ @NotFound@");
 		}
@@ -187,31 +177,38 @@ public class ChartBuilder {
 			.setParameters(chart.getAD_Chart_ID())
 			.setOnlyActiveRecords(true)
 			.getIDsAsList().forEach(chartDataSourceId -> {
-				ChartQueryDefinition queryDefinition = getDataSourceQuery(
-					chartDataSourceId,
-					chart.isTimeSeries(), chart.getTimeUnit(), chart.getTimeScope(),
-					customParameters
-				);
-				dataSources.add(queryDefinition);
+					MChartDatasource chartDateSource = new MChartDatasource(Env.getCtx(), chartDataSourceId, null);
+					Map<String, Object> dataSourceCustomParameters = new HashMap<String, Object>();
+					String dateParameter = chartDateSource.get_ValueAsString("DateFilterColumn");
+					Map<String, Object> parameters = new HashMap<String, Object>();
+					if(dateParameter != null && !dateParameter.isEmpty()) {
+						if(dateFrom != null) {
+							dataSourceCustomParameters.put(dateParameter + " >= ?", dateFrom);
+						}
+						if(dateTo != null) {
+							dataSourceCustomParameters.put(dateParameter + " <= ?", dateTo);
+						}
+						parameters.putAll(dataSourceCustomParameters);
+					}
+					if(customParameters != null && !customParameters.isEmpty()) {
+						parameters.putAll(customParameters);
+					}
+					ChartQueryDefinition queryDefinition = getDataSourceQuery(
+						chartDataSourceId,
+						chart.isTimeSeries(), chart.getTimeUnit(), chart.getTimeScope(),
+							parameters
+					);
+					dataSources.add(queryDefinition);
 			});
 		//	Run queries
-		if (dataSources != null && dataSources.size() > 0) {
+		if (!dataSources.isEmpty()) {
 			Map<String, List<Map<String, BigDecimal>>> seriesMap = new HashMap<String, List<Map<String, BigDecimal>>>();
 			dataSources.forEach(dataSource -> {
-				PreparedStatement pstmt = null;
-				ResultSet rs = null;
-				try {
-					pstmt = DB.prepareStatement(dataSource.getQuery(), null);
-					DB.setParameters(pstmt, dataSource.getParameters());
-
-					rs = pstmt.executeQuery();
-					while(rs.next()) {
-						String key = rs.getString(2);
-						String seriesName = rs.getString(3);
-						if(chart.isTimeSeries()) {
-							//	TODO: Define it with dates
-						}
-						BigDecimal amount = rs.getBigDecimal(1);
+				DB.runResultSet(null, dataSource.getQuery(), dataSource.getParameters(), resulSet -> {
+					while (resulSet.next()) {
+						String key = resulSet.getString(2);
+						String seriesName = resulSet.getString(3);
+						BigDecimal amount = resulSet.getBigDecimal(1);
 
 						// series values
 						List<Map<String, BigDecimal>> valuesList = new ArrayList<Map<String, BigDecimal>>();
@@ -224,29 +221,23 @@ public class ChartBuilder {
 
 						seriesMap.put(seriesName, valuesList);
 					}
-				} catch (Exception e) {
-					throw new AdempiereException(e);
-				} finally {
-					DB.close(rs, pstmt);
-					rs = null;
-					pstmt = null;
-				}
+				}).onFailure(throwable -> {
+					throw new AdempiereException(throwable);
+				});
 			});
 
-			seriesMap.entrySet().stream().forEach(seriesEntry -> {
-				ChartSeriesValue chartSerie = new ChartSeriesValue(seriesEntry.getKey());
-				// each values list
-				seriesEntry.getValue().stream().forEach(serie -> {
-					serie.entrySet().stream().forEach(value -> {
-						String name = value.getKey();
-						BigDecimal amount = value.getValue();
-						ChartDataValue data = new ChartDataValue(name, amount);
-						// fill series with value data
-						chartSerie.addData(data);
-					});
-				});
-				metrics.addSerie(chartSerie);
-			});
+			seriesMap.forEach((key, value1) -> {
+                ChartSeriesValue chartSeries = new ChartSeriesValue(key);
+                // each values list
+                value1.forEach(serie -> {
+                    serie.forEach((name, amount) -> {
+                        ChartDataValue data = new ChartDataValue(name, amount);
+                        // fill series with value data
+                        chartSeries.addData(data);
+                    });
+                });
+                metrics.addSerie(chartSeries);
+            });
 		}
 		//	
 		return metrics;
@@ -255,18 +246,14 @@ public class ChartBuilder {
 
 	/**
 	 * When filter value is a collection (List, ArrayList)
-	 * @param objectColelction
-	 * @param parameters
 	 */
 	@SuppressWarnings("unchecked")
-	public static void addCollectionParameters(Object objectColelction, List<Object> parameters) {
-		if (objectColelction instanceof Collection) {
+	public static void addCollectionParameters(Object objectCollection, List<Object> parameters) {
+		if (objectCollection instanceof Collection) {
 			try {
-				Collection<Object> collection = (Collection<Object>) objectColelction;
+				Collection<Object> collection = (Collection<Object>) objectCollection;
 				// for-each loop
-				for (Object rangeValue : collection) {
-					parameters.add(rangeValue);
-				}
+                parameters.addAll(collection);
 			}
 			catch (Exception e) {
 				System.out.println(e.getMessage());

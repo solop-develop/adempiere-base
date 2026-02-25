@@ -16,14 +16,13 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_AD_EntityType;
+import org.compiere.util.CCache;
+import org.compiere.util.CLogger;
+
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.StringTokenizer;
-
-import org.adempiere.core.domains.models.X_AD_EntityType;
-import org.compiere.util.CLogger;
 
 /**
  * 	Enitity Type Model
@@ -48,22 +47,18 @@ public class MEntityType extends X_AD_EntityType
 	private boolean isDeleteForced = false;
 
 	/**
-	 * 	Get Entity Types
-	 * 	@param ctx context
-	 *	@return entity type array
+	 * Get Entity Types
+	 *
+	 * @param ctx context
 	 */
-	static public MEntityType[] getEntityTypes(Properties ctx)
+	static public void loadEntityTypes(Properties ctx)
 	{
-		if (s_entityTypes != null)
-			return s_entityTypes;
 		List<MEntityType> list = new Query(ctx, Table_Name, null, null)
 		.setOnlyActiveRecords(true)
 		.setOrderBy(COLUMNNAME_AD_EntityType_ID)
 		.list();
-		s_entityTypes = new MEntityType[list.size()];
-		list.toArray(s_entityTypes);
-		s_log.finer("# " + s_entityTypes.length);
-		return s_entityTypes;
+		list.forEach(entity -> s_cache.put(entity.getEntityType(), entity));
+		s_log.finer("# " + s_cache.size());
 	}	//	getEntityTypes
 
 	/**
@@ -72,103 +67,19 @@ public class MEntityType extends X_AD_EntityType
 	 * @param entityType
 	 * @return
 	 */
-	public static MEntityType get(Properties ctx, String entityType)
-	{
-		for (MEntityType entity : getEntityTypes(ctx))
-		{
-			if (entity.getEntityType().equals(entityType))
-			{
-				return entity;
-			}
+	public static MEntityType get(Properties ctx, String entityType) {
+		if(s_cache.containsKey(entityType)) {
+			return s_cache.get(entityType);
 		}
-		return null;
+		if(!s_cache.isEmpty()) {
+			return null;
+		}
+		loadEntityTypes(ctx);
+		return s_cache.get(entityType);
 	}
 	
-	/**
-	 * 	Get Entity Type as String array
-	 *	@param ctx context
-	 *	@return entity type array
-	 */
-	static public String[] getEntityTypeStrings(Properties ctx)
-	{
-		MEntityType[] entityTypes = getEntityTypes(ctx);
-		ArrayList<String> list = new ArrayList<String>();	//	list capabilities
-		String[] retValue = new String[entityTypes.length];
-		for (int i = 0; i < entityTypes.length; i++)
-		{
-			String s = entityTypes[i].getEntityType().trim();
-			list.add(s);
-			retValue[i] = s;
-		}
-		s_log.finer(list.toString());
-		return retValue;
-	}	//	getEntityTypeStrings
-
-	/**
-	 * 	Get Entity Type Classpath array
-	 *	@param ctx context
-	 *	@return classpath array
-	 */
-	static public String[] getClasspaths(Properties ctx)
-	{
-		MEntityType[] entityTypes = getEntityTypes(ctx);
-		ArrayList<String> list = new ArrayList<String>();
-		for (int i = 0; i < entityTypes.length; i++)
-		{
-			String classpath = entityTypes[i].getClasspath();
-			if (classpath == null || classpath.length() == 0)
-				continue;
-			StringTokenizer st = new StringTokenizer(classpath, ";, \t\n\r\f");
-			while (st.hasMoreTokens())
-			{
-				String token = st.nextToken();
-				if (token.length() > 0)
-				{
-					if (!list.contains(token))
-						list.add(token);
-				}
-			}
-		}
-		String[] retValue = new String[list.size()];
-		list.toArray(retValue);
-		s_log.finer(list.toString());
-		return retValue;
-	}	//	getClathpaths
-
-	/**
-	 * 	Get Entity Type Model Package array
-	 *	@param ctx context
-	 *	@return entity type array
-	 */
-	static public String[] getModelPackages(Properties ctx)
-	{
-		MEntityType[] entityTypes = getEntityTypes(ctx);
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("adempiere.model");		//	default
-		for (int i = 0; i < entityTypes.length; i++)
-		{
-			String modelPackage = entityTypes[i].getModelPackage();
-			if (modelPackage == null || modelPackage.length() == 0)
-				continue;
-			StringTokenizer st = new StringTokenizer(modelPackage, ";, \t\n\r\f");
-			while (st.hasMoreTokens())
-			{
-				String token = st.nextToken();
-				if (token.length() > 0)
-				{
-					if (!list.contains(token))
-						list.add(token);
-				}
-			}
-		}
-		String[] retValue = new String[list.size()];
-		list.toArray(retValue);
-		s_log.finer(list.toString());
-		return retValue;
-	}	//	getModelPackages
-	
 	/** Cached EntityTypes						*/
-	private static MEntityType[] s_entityTypes = null;
+	private static CCache<String, MEntityType> s_cache = new CCache<String, MEntityType>("AD_EntityType", 20);
 	/**	Logger	*/
 	private static CLogger s_log = CLogger.getCLogger (MEntityType.class);
 	
@@ -178,7 +89,7 @@ public class MEntityType extends X_AD_EntityType
 	 *	@param AD_EntityType_ID id
 	 *	@param trxName transaction
 	 */
-	public MEntityType (Properties ctx, int AD_EntityType_ID, String trxName)
+	public MEntityType(Properties ctx, int AD_EntityType_ID, String trxName)
 	{
 		super (ctx, AD_EntityType_ID, trxName);
 	}	//	MEntityType
@@ -189,7 +100,7 @@ public class MEntityType extends X_AD_EntityType
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MEntityType (Properties ctx, ResultSet rs, String trxName)
+	public MEntityType(Properties ctx, ResultSet rs, String trxName)
 	{
 		super (ctx, rs, trxName);
 	}	//	MEntityType
@@ -253,32 +164,7 @@ public class MEntityType extends X_AD_EntityType
 				return false;
 			}
 		}
-		else	//	new
-		{
-			/*
-			setEntityType(getEntityType().toUpperCase());	//	upper case
-			if (getEntityType().trim().length() < 4)
-			{
-				log.saveError("FillMandatory", Msg.getElement(getCtx(), "EntityType") 
-					+ " - 4 Characters");
-				return false;
-			}
-			boolean ok = true;
-			char[] cc = getEntityType().toCharArray();
-			for (int i = 0; i < cc.length; i++)
-			{
-				char c = cc[i];
-				if (Character.isDigit(c) || (c >= 'A' && c <= 'Z'))
-					continue;
-				//
-				log.saveError("FillMandatory", Msg.getElement(getCtx(), "EntityType") 
-					+ " - Must be ASCII Letter or Digit");
-				return false;
-			}
-			*/
-			//setAD_EntityType_ID();
-		}	//	new
-		s_entityTypes = null;	//	reset
+		s_cache.clear();	//	reset
 		return true;
 	}	//	beforeSave
 	
@@ -291,7 +177,7 @@ public class MEntityType extends X_AD_EntityType
 		// Allow delete of entities way
 		if (isDeleteForced())
 		{
-			s_entityTypes = null;	//	reset
+			s_cache.clear();	//	reset
 			return true;
 		}
 
@@ -300,7 +186,7 @@ public class MEntityType extends X_AD_EntityType
 			log.saveError("Error", "You cannot delete a System maintained entity");
 			return false;
 		}
-		s_entityTypes = null;	//	reset
+		s_cache.clear();	//	reset
 		return true;
 	}	//	beforeDelete
 	
