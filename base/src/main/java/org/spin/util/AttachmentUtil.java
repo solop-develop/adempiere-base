@@ -372,6 +372,53 @@ public class AttachmentUtil {
 	}
 	
 	/**
+	 * Get list of file names for attachments directly from S3 without reading attachment references
+	 * Uses container type, table name and record ID to build the resource path
+	 * @param clientId Client ID  
+	 * @param tableName Table name (e.g., "AD_Attachment")
+	 * @param recordId Record ID
+	 * @return List of file names in the resource path
+	 * @throws Exception
+	 */
+	public List<String> getFileNameListFromResourcePath(int clientId, String tableName, int recordId) throws Exception {
+		return getFileNameListFromResourcePath(clientId, tableName, recordId, ResourceMetadata.ContainerType.ATTACHMENT, null);
+	}
+
+	/**
+	 * Get list of file names for resources directly from S3 without reading references
+	 * @param clientId Client ID
+	 * @param tableName Table name 
+	 * @param recordId Record ID
+	 * @param containerType Container type (ATTACHMENT, RESOURCE, etc.)
+	 * @param containerId Container ID (for RESOURCE type, e.g., "image", "archive")
+	 * @return List of file names in the resource path
+	 * @throws Exception
+	 */
+	public List<String> getFileNameListFromResourcePath(int clientId, String tableName, int recordId, 
+			ResourceMetadata.ContainerType containerType, String containerId) throws Exception {
+		IWebDav handler = getFileHandler();
+		//	Validate S3 handler
+		if(!IS3.class.isAssignableFrom(handler.getClass())) {
+			throw new AdempiereException("@AD_AppSupport_ID@ @Unsupported@ - This method requires S3 storage");
+		}
+		//	Build metadata
+		ResourceMetadata resourceMetadata = ResourceMetadata.newInstance()
+			.withClientId(clientId)
+			.withContainerType(containerType)
+			.withTableName(tableName)
+			.withRecordId(recordId)
+		;
+
+		if(containerId != null) {
+			resourceMetadata.withContainerId(containerId);
+		}
+
+		//	Get file list from S3
+		IS3 s3Handler = (IS3) handler;
+		return s3Handler.getResourceFileNames(resourceMetadata);
+	}
+
+	/**
 	 * Read bytes
 	 * @param stream
 	 * @return
@@ -489,35 +536,35 @@ public class AttachmentUtil {
 				MAttachment attachment = new MAttachment(context, attachmentReference.getAD_Attachment_ID(), attachmentReference.get_TrxName());
 				String tableName = MTable.getTableName(context, attachment.getAD_Table_ID());
 				return ResourceMetadata.newInstance()
-						.withClientId(attachmentReference.getAD_Client_ID())
-						.withContainerType(ResourceMetadata.ContainerType.ATTACHMENT)
-						.withTableName(tableName)
-						.withRecordId(attachment.getRecord_ID())
-						.withName(attachmentReference.getFileName())
-						.getResourceFileName()
-						;
+					.withClientId(attachmentReference.getAD_Client_ID())
+					.withContainerType(ResourceMetadata.ContainerType.ATTACHMENT)
+					.withTableName(tableName)
+					.withRecordId(attachment.getRecord_ID())
+					.withName(attachmentReference.getFileName())
+					.getResourceFileName()
+				;
 			} else if(attachmentReference.getAD_Image_ID() > 0) {
 				return ResourceMetadata.newInstance()
-						.withClientId(attachmentReference.getAD_Client_ID())
-						.withContainerType(ResourceMetadata.ContainerType.RESOURCE)
-						.withContainerId("image")
-						.withTableName(I_AD_Image.Table_Name)
-						.withRecordId(attachmentReference.getAD_Image_ID())
-						.withName(attachmentReference.getFileName())
-						.getResourceFileName()
-						;
+					.withClientId(attachmentReference.getAD_Client_ID())
+					.withContainerType(ResourceMetadata.ContainerType.RESOURCE)
+					.withContainerId("image")
+					.withTableName(I_AD_Image.Table_Name)
+					.withRecordId(attachmentReference.getAD_Image_ID())
+					.withName(attachmentReference.getFileName())
+					.getResourceFileName()
+				;
 			} else if(attachmentReference.getAD_Archive_ID() > 0) {
 				MArchive archive = new MArchive(context, attachmentReference.getAD_Archive_ID(), attachmentReference.get_TrxName());
 				String tableName = MTable.getTableName(context, archive.getAD_Table_ID());
 				return ResourceMetadata.newInstance()
-						.withClientId(attachmentReference.getAD_Client_ID())
-						.withContainerType(ResourceMetadata.ContainerType.RESOURCE)
-						.withContainerId("archive")
-						.withTableName(tableName)
-						.withRecordId(archive.getRecord_ID())
-						.withName(attachmentReference.getFileName())
-						.getResourceFileName()
-						;
+					.withClientId(attachmentReference.getAD_Client_ID())
+					.withContainerType(ResourceMetadata.ContainerType.RESOURCE)
+					.withContainerId("archive")
+					.withTableName(tableName)
+					.withRecordId(archive.getRecord_ID())
+					.withName(attachmentReference.getFileName())
+					.getResourceFileName()
+				;
 			}
 		} else {
 			return getCompleteFileNameOld(attachmentReference);
@@ -590,7 +637,7 @@ public class AttachmentUtil {
 		fileHandlerId = clientInfo.getFileHandler_ID();
 		return MADAppRegistration.getById(context, fileHandlerId, transactionName);
 	}
-	
+
 	/**
 	 * Get API
 	 * @param fileHandlerId
@@ -625,7 +672,7 @@ public class AttachmentUtil {
 		fileHandler = (IWebDav) supportedApi;
 		return fileHandler;
 	}
-	
+
 	/**
 	 * Process folder for a valid name
 	 * @param folder

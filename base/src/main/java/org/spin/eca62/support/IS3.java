@@ -18,6 +18,7 @@ package org.spin.eca62.support;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * S3 interface, this can help to implement methods like shared URL
@@ -49,4 +50,13 @@ public interface IS3 {
 	 * @throws Exception
 	 */
 	public String putTemporaryFile(File file) throws Exception;
+	
+	/**
+	 * Get list of file names from a resource path based on metadata
+	 * @param resourceMetadata
+	 * @return List of file names
+	 * @throws Exception
+	 */
+	public List<String> getResourceFileNames(ResourceMetadata resourceMetadata) throws Exception;
+
 }
