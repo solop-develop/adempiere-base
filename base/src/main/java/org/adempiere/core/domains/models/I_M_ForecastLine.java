@@ -64,6 +64,19 @@ public interface I_M_ForecastLine
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name ConfidenceLevel */
+    public static final String COLUMNNAME_ConfidenceLevel = "ConfidenceLevel";
+
+	/** Set Confidence Level.
+	  * Confidence level percentage 0-100
+	  */
+	public void setConfidenceLevel (BigDecimal ConfidenceLevel);
+
+	/** Get Confidence Level.
+	  * Confidence level percentage 0-100
+	  */
+	public BigDecimal getConfidenceLevel();
+
     /** Column name C_Period_ID */
     public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
 
@@ -107,6 +120,45 @@ public interface I_M_ForecastLine
 	  * Date Order was promised
 	  */
 	public Timestamp getDatePromised();
+
+    /** Column name DateReviewed */
+    public static final String COLUMNNAME_DateReviewed = "DateReviewed";
+
+	/** Set Date Reviewed.
+	  * Date of review
+	  */
+	public void setDateReviewed (Timestamp DateReviewed);
+
+	/** Get Date Reviewed.
+	  * Date of review
+	  */
+	public Timestamp getDateReviewed();
+
+    /** Column name FactorsApplied */
+    public static final String COLUMNNAME_FactorsApplied = "FactorsApplied";
+
+	/** Set Factors Applied.
+	  * Number of adjustment factors applied
+	  */
+	public void setFactorsApplied (int FactorsApplied);
+
+	/** Get Factors Applied.
+	  * Number of adjustment factors applied
+	  */
+	public int getFactorsApplied();
+
+    /** Column name ForecastOrigin */
+    public static final String COLUMNNAME_ForecastOrigin = "ForecastOrigin";
+
+	/** Set Forecast Origin.
+	  * Origin of forecast data
+	  */
+	public void setForecastOrigin (String ForecastOrigin);
+
+	/** Get Forecast Origin.
+	  * Origin of forecast data
+	  */
+	public String getForecastOrigin();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -207,6 +259,32 @@ public interface I_M_ForecastLine
 	  */
 	public BigDecimal getQty();
 
+    /** Column name QtyAdjusted */
+    public static final String COLUMNNAME_QtyAdjusted = "QtyAdjusted";
+
+	/** Set Adjusted Quantity.
+	  * Adjusted quantity after factor application
+	  */
+	public void setQtyAdjusted (BigDecimal QtyAdjusted);
+
+	/** Get Adjusted Quantity.
+	  * Adjusted quantity after factor application
+	  */
+	public BigDecimal getQtyAdjusted();
+
+    /** Column name QtyBase */
+    public static final String COLUMNNAME_QtyBase = "QtyBase";
+
+	/** Set Base Quantity.
+	  * Base quantity before adjustments
+	  */
+	public void setQtyBase (BigDecimal QtyBase);
+
+	/** Get Base Quantity.
+	  * Base quantity before adjustments
+	  */
+	public BigDecimal getQtyBase();
+
     /** Column name QtyCalculated */
     public static final String COLUMNNAME_QtyCalculated = "QtyCalculated";
 
@@ -219,6 +297,34 @@ public interface I_M_ForecastLine
 	  * Calculated Quantity
 	  */
 	public BigDecimal getQtyCalculated();
+
+    /** Column name RequiresReview */
+    public static final String COLUMNNAME_RequiresReview = "RequiresReview";
+
+	/** Set Requires Review.
+	  * Indicates this record needs manual review
+	  */
+	public void setRequiresReview (boolean RequiresReview);
+
+	/** Get Requires Review.
+	  * Indicates this record needs manual review
+	  */
+	public boolean isRequiresReview();
+
+    /** Column name ReviewedBy */
+    public static final String COLUMNNAME_ReviewedBy = "ReviewedBy";
+
+	/** Set Reviewed By.
+	  * User who reviewed this line
+	  */
+	public void setReviewedBy (int ReviewedBy);
+
+	/** Get Reviewed By.
+	  * User who reviewed this line
+	  */
+	public int getReviewedBy();
+
+	public org.adempiere.core.domains.models.I_AD_User getReviewe() throws RuntimeException;
 
     /** Column name SalesRep_ID */
     public static final String COLUMNNAME_SalesRep_ID = "SalesRep_ID";

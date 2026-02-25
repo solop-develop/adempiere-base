@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Forecast_Comparison_fix_period_reference" ReleaseNo="1.5.2" SeqNo="502040">
+    <Comments>Fix reference of Period_To_ID in M_ForecastAdjustApp</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="105370" Table="AD_Column">
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" oldValue="231">275</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
