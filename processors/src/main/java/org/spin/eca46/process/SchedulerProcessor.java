@@ -17,6 +17,16 @@
 
 package org.spin.eca46.process;
 
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.*;
+import org.compiere.print.ReportEngine;
+import org.compiere.process.ProcessInfo;
+import org.compiere.process.ProcessInfoUtil;
+import org.compiere.util.*;
+import org.eevolution.services.dsl.ProcessBuilder;
+import org.spin.queue.notification.DefaultNotifier;
+import org.spin.queue.util.QueueLoader;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -26,27 +36,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MClient;
-import org.compiere.model.MOrgInfo;
-import org.compiere.model.MPInstance;
-import org.compiere.model.MProcess;
-import org.compiere.model.MRole;
-import org.compiere.model.MScheduler;
-import org.compiere.model.MSchedulerLog;
-import org.compiere.model.MUser;
-import org.compiere.print.ReportEngine;
-import org.compiere.process.ProcessInfo;
-import org.compiere.process.ProcessInfoUtil;
-import org.compiere.util.DB;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Trx;
-import org.eevolution.services.dsl.ProcessBuilder;
-import org.spin.queue.notification.DefaultNotifier;
-import org.spin.queue.util.QueueLoader;
 
 /** 
  * 	Generated Process for (Product Internal Use)
@@ -82,9 +71,9 @@ public class SchedulerProcessor extends SchedulerProcessorAbstract {
 				.append(" - ");
 		// Prepare a ctx for the report/process - BF [1966880]
 		schedulerContext.clear();
-		MClient schedclient = MClient.get(getCtx(), schedulerProcessor.getAD_Client_ID());
-		Env.setContext(schedulerContext, "#AD_Client_ID", schedclient.getAD_Client_ID());
-		Env.setContext(schedulerContext, "#AD_Language", schedclient.getAD_Language());
+		MClient schedClient = MClient.get(getCtx(), schedulerProcessor.getAD_Client_ID());
+		Env.setContext(schedulerContext, "#AD_Client_ID", schedClient.getAD_Client_ID());
+		Env.setContext(schedulerContext, "#AD_Language", schedClient.getAD_Language());
 		Env.setContext(schedulerContext, "#AD_Org_ID", schedulerProcessor.getAD_Org_ID());
 		if (schedulerProcessor.getAD_Org_ID() != 0) {
 			MOrgInfo schedorg = MOrgInfo.get(getCtx(), schedulerProcessor.getAD_Org_ID(), null);

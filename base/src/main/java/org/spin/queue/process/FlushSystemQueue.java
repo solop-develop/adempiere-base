@@ -71,13 +71,13 @@ public class FlushSystemQueue extends FlushSystemQueueAbstract {
 							});
 				});
 			} else {
-				Trx.run(transactionName -> {
-					IntStream.range(0, getBatchsToProcess()).forEach(page -> {
-						getQueuesToProcess(whereClause.toString(), parameters, transactionName)
-								.forEach(queueId -> {
+				IntStream.range(0, getBatchsToProcess()).forEach(page -> {
+					getQueuesToProcess(whereClause.toString(), parameters, get_TrxName())
+							.forEach(queueId -> {
+								Trx.run(transactionName -> {
 									processQueue(queueId, now, transactionName);
 								});
-					});
+							});
 				});
 			}
 		}
@@ -101,7 +101,7 @@ public class FlushSystemQueue extends FlushSystemQueueAbstract {
 					.withContext(getCtx())
 					.withTransactionName(transactionName);
 			try {
-				queueManager.process(queueToProcess, isDeleteAfterProcess());
+					queueManager.process(queueToProcess, isDeleteAfterProcess());
 				counter.incrementAndGet();
 			} catch (Exception e) {
 				errors.incrementAndGet();
@@ -127,7 +127,7 @@ public class FlushSystemQueue extends FlushSystemQueueAbstract {
 	 * @return
 	 */
 	private Timestamp addWaitingTime(MADQueue queueToProcess) {
-		MADQueueType queueType = MADQueueType.getById(getCtx(), queueToProcess.getAD_QueueType_ID(), queueToProcess.get_TrxName());
+		MADQueueType queueType = MADQueueType.getById(getCtx(), queueToProcess.getAD_QueueType_ID(), null);
 		if(queueType.getWaitingTime() > 0
 				&& !Util.isEmpty(queueType.getTimeUnit())) {
 			GregorianCalendar calendar = new GregorianCalendar();
