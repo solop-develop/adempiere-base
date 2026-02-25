@@ -15,6 +15,7 @@
  *****************************************************************************/
 package org.solop.util;
 
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.util.Env;
 import org.eevolution.distribution.model.MDDOrderLine;
@@ -55,6 +56,7 @@ public class ReservationBuilder {
         reservation.setC_Order_ID(orderLine.getC_Order_ID());
         reservation.setM_Product_ID(orderLine.getM_Product_ID());
         reservation.setM_AttributeSetInstance_ID(orderLine.getM_AttributeSetInstance_ID());
+        reservation.setAD_Org_ID(orderLine.getAD_Org_ID());
         MOrder order = orderLine.getParent();
         if(order.isSOTrx()) {
             reservation.setReservationType(MReservation.RESERVATIONTYPE_SOReserveQuantity);
@@ -63,7 +65,26 @@ public class ReservationBuilder {
         }
         reservation.setM_Warehouse_ID(orderLine.getM_Warehouse_ID());
         reservation.setQty(orderLine.getQtyOrdered().subtract(Optional.ofNullable(currentReservation).orElse(Env.ZERO)));
+        fillLocatorLocatorId();
         return this;
+    }
+
+    private void fillLocatorLocatorId() {
+        if(reservation.getM_Locator_ID() > 0) {
+            return;
+        }
+        int locatorId = MStorage.getM_Locator_ID(reservation.getM_Warehouse_ID(), reservation.getM_Product_ID(), reservation.getM_AttributeSetInstance_ID(), reservation.getQty(), reservation.get_TrxName());
+        if(locatorId <= 0) {
+            MWarehouse warehouse = MWarehouse.get(reservation.getCtx(), reservation.getM_Warehouse_ID());
+            MLocator locator = MLocator.getDefault(warehouse);
+            if(locator != null) {
+                locatorId = locator.getM_Locator_ID();
+            }
+        }
+        if(locatorId <= 0) {
+            throw new AdempiereException("@MLocator_ID@ @NotFound@");
+        }
+        reservation.setM_Locator_ID(locatorId);
     }
 
     public ReservationBuilder withInOutLine(MInOutLine inOutLine) {
@@ -75,6 +96,7 @@ public class ReservationBuilder {
             reservation.setM_InOut_ID(inOutLine.getM_InOut_ID());
             reservation.setM_Product_ID(orderLine.getM_Product_ID());
             reservation.setM_AttributeSetInstance_ID(inOutLine.getM_AttributeSetInstance_ID());
+            reservation.setAD_Org_ID(inOutLine.getAD_Org_ID());
             MOrder order = orderLine.getParent();
             if(order.isSOTrx()) {
                 reservation.setReservationType(MReservation.RESERVATIONTYPE_SODeliveryQuantity);
@@ -84,6 +106,7 @@ public class ReservationBuilder {
             reservation.setM_Warehouse_ID(orderLine.getM_Warehouse_ID());
             reservation.setM_Locator_ID(inOutLine.getM_Locator_ID());
             reservation.setQty(inOutLine.getMovementQty().negate());
+            fillLocatorLocatorId();
         }
         return this;
     }
@@ -93,6 +116,7 @@ public class ReservationBuilder {
         reservation.setDD_Order_ID(orderLine.getDD_Order_ID());
         reservation.setM_Product_ID(orderLine.getM_Product_ID());
         reservation.setReservationType(MReservation.RESERVATIONTYPE_DistributionOrderQuantity);
+        reservation.setAD_Org_ID(orderLine.getAD_Org_ID());
         BigDecimal quantityToReserve = orderLine.getQtyOrdered().subtract(Optional.ofNullable(currentReservation).orElse(Env.ZERO));
         if(isReverse) {
             quantityToReserve = quantityToReserve.negate();
@@ -110,6 +134,7 @@ public class ReservationBuilder {
             reservation.setM_AttributeSetInstance_ID(orderLine.getM_AttributeSetInstance_ID());
             reservation.setQty(quantityToReserve);
         }
+        fillLocatorLocatorId();
         return this;
     }
 
@@ -122,6 +147,7 @@ public class ReservationBuilder {
             reservation.setM_Movement_ID(movementLine.getM_Movement_ID());
             reservation.setM_Product_ID(orderLine.getM_Product_ID());
             reservation.setReservationType(MReservation.RESERVATIONTYPE_DistributionMoveQuantity);
+            reservation.setAD_Org_ID(orderLine.getAD_Org_ID());
             if(isToLocator) {
                 MLocator locator = MLocator.get(movementLine.getCtx(), movementLine.getM_LocatorTo_ID());
                 reservation.setM_Warehouse_ID(locator.getM_Warehouse_ID());
@@ -136,6 +162,7 @@ public class ReservationBuilder {
                 reservation.setQty(movementLine.getMovementQty().negate());
             }
         }
+        fillLocatorLocatorId();
         return this;
     }
 
@@ -148,6 +175,8 @@ public class ReservationBuilder {
         MLocator locator = MLocator.get(batch.getCtx(), batch.getM_Locator_ID());
         reservation.setM_Warehouse_ID(locator.getM_Warehouse_ID());
         reservation.setReservationType(MReservation.RESERVATIONTYPE_ProductionOrderQuantity);
+        reservation.setAD_Org_ID(orderLine.getAD_Org_ID());
+        fillLocatorLocatorId();
         return this;
     }
 
@@ -172,6 +201,7 @@ public class ReservationBuilder {
             MLocator locator = MLocator.get(productionLine.getCtx(), productionLine.getM_Locator_ID());
             reservation.setM_Warehouse_ID(locator.getM_Warehouse_ID());
             reservation.setReservationType(MReservation.RESERVATIONTYPE_ProductionUseQuantity);
+            reservation.setAD_Org_ID(productionLine.getAD_Org_ID());
             if(attributeSetInstanceId > 0) {
                 reservation.setM_AttributeSetInstance_ID(attributeSetInstanceId);
                 reservation.setQty(quantity.negate());
@@ -180,6 +210,7 @@ public class ReservationBuilder {
                 reservation.setQty(productionLine.getMovementQty().negate());
             }
         }
+        fillLocatorLocatorId();
         return this;
     }
 
