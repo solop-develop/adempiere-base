@@ -37,7 +37,7 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260224L;
 
     /** Standard Constructor */
     public X_M_Forecast (Properties ctx, int M_Forecast_ID, String trxName)
@@ -191,6 +191,31 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 		return ii.intValue();
 	}
 
+	public org.adempiere.core.domains.models.I_C_SalesBudget getC_SalesBudget() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_C_SalesBudget)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SalesBudget.Table_Name)
+			.getPO(getC_SalesBudget_ID(), get_TrxName());	}
+
+	/** Set Sales Budget.
+		@param C_SalesBudget_ID Sales Budget	  */
+	public void setC_SalesBudget_ID (int C_SalesBudget_ID)
+	{
+		if (C_SalesBudget_ID < 1) 
+			set_Value (COLUMNNAME_C_SalesBudget_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_SalesBudget_ID, Integer.valueOf(C_SalesBudget_ID));
+	}
+
+	/** Get Sales Budget.
+		@return Sales Budget	  */
+	public int getC_SalesBudget_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_SalesBudget_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.adempiere.core.domains.models.I_C_Year getC_Year() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_Year)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Year.Table_Name)
@@ -234,6 +259,32 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	/** ForecastLevel AD_Reference_ID=54593 */
+	public static final int FORECASTLEVEL_AD_Reference_ID=54593;
+	/** Financial = FI */
+	public static final String FORECASTLEVEL_Financial = "FI";
+	/** Classification = CL */
+	public static final String FORECASTLEVEL_Classification = "CL";
+	/** Operational = OP */
+	public static final String FORECASTLEVEL_Operational = "OP";
+	/** Set Forecast Level.
+		@param ForecastLevel 
+		Financial, Commercial, or Operational forecast level
+	  */
+	public void setForecastLevel (String ForecastLevel)
+	{
+
+		set_Value (COLUMNNAME_ForecastLevel, ForecastLevel);
+	}
+
+	/** Get Forecast Level.
+		@return Financial, Commercial, or Operational forecast level
+	  */
+	public String getForecastLevel () 
+	{
+		return (String)get_Value(COLUMNNAME_ForecastLevel);
 	}
 
 	/** Set Comment/Help.
@@ -352,6 +403,54 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
     {
         return new KeyNamePair(get_ID(), getName());
     }
+
+	/** Set Overall Accuracy.
+		@param OverallAccuracy 
+		Overall forecast accuracy percentage
+	  */
+	public void setOverallAccuracy (BigDecimal OverallAccuracy)
+	{
+		set_Value (COLUMNNAME_OverallAccuracy, OverallAccuracy);
+	}
+
+	/** Get Overall Accuracy.
+		@return Overall forecast accuracy percentage
+	  */
+	public BigDecimal getOverallAccuracy () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_OverallAccuracy);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public org.adempiere.core.domains.models.I_M_Forecast getParentForecast() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Forecast)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Forecast.Table_Name)
+			.getPO(getParentForecast_ID(), get_TrxName());	}
+
+	/** Set Parent Forecast.
+		@param ParentForecast_ID 
+		Self-referencing parent forecast
+	  */
+	public void setParentForecast_ID (int ParentForecast_ID)
+	{
+		if (ParentForecast_ID < 1) 
+			set_Value (COLUMNNAME_ParentForecast_ID, null);
+		else 
+			set_Value (COLUMNNAME_ParentForecast_ID, Integer.valueOf(ParentForecast_ID));
+	}
+
+	/** Get Parent Forecast.
+		@return Self-referencing parent forecast
+	  */
+	public int getParentForecast_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_ParentForecast_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 
 	public org.adempiere.core.domains.models.I_PP_Calendar getPP_Calendar() throws RuntimeException
     {
@@ -472,6 +571,46 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Total Actual Amount.
+		@param TotalActualAmt 
+		Total actual amount
+	  */
+	public void setTotalActualAmt (BigDecimal TotalActualAmt)
+	{
+		set_Value (COLUMNNAME_TotalActualAmt, TotalActualAmt);
+	}
+
+	/** Get Total Actual Amount.
+		@return Total actual amount
+	  */
+	public BigDecimal getTotalActualAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_TotalActualAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Total Forecast Amount.
+		@param TotalForecastAmt 
+		Total forecast amount
+	  */
+	public void setTotalForecastAmt (BigDecimal TotalForecastAmt)
+	{
+		set_Value (COLUMNNAME_TotalForecastAmt, TotalForecastAmt);
+	}
+
+	/** Get Total Forecast Amount.
+		@return Total forecast amount
+	  */
+	public BigDecimal getTotalForecastAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_TotalForecastAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Immutable Universally Unique Identifier.

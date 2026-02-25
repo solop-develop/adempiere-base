@@ -38,7 +38,7 @@ public class X_M_ForecastLine extends PO implements I_M_ForecastLine, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260224L;
 
     /** Standard Constructor */
     public X_M_ForecastLine (Properties ctx, int M_ForecastLine_ID, String trxName)
@@ -84,6 +84,26 @@ public class X_M_ForecastLine extends PO implements I_M_ForecastLine, I_Persiste
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	/** Set Confidence Level.
+		@param ConfidenceLevel 
+		Confidence level percentage 0-100
+	  */
+	public void setConfidenceLevel (BigDecimal ConfidenceLevel)
+	{
+		set_Value (COLUMNNAME_ConfidenceLevel, ConfidenceLevel);
+	}
+
+	/** Get Confidence Level.
+		@return Confidence level percentage 0-100
+	  */
+	public BigDecimal getConfidenceLevel () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ConfidenceLevel);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
 
 	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException
     {
@@ -136,6 +156,71 @@ public class X_M_ForecastLine extends PO implements I_M_ForecastLine, I_Persiste
 	public Timestamp getDatePromised () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_DatePromised);
+	}
+
+	/** Set Date Reviewed.
+		@param DateReviewed 
+		Date of review
+	  */
+	public void setDateReviewed (Timestamp DateReviewed)
+	{
+		set_Value (COLUMNNAME_DateReviewed, DateReviewed);
+	}
+
+	/** Get Date Reviewed.
+		@return Date of review
+	  */
+	public Timestamp getDateReviewed () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateReviewed);
+	}
+
+	/** Set Factors Applied.
+		@param FactorsApplied 
+		Number of adjustment factors applied
+	  */
+	public void setFactorsApplied (int FactorsApplied)
+	{
+		set_Value (COLUMNNAME_FactorsApplied, Integer.valueOf(FactorsApplied));
+	}
+
+	/** Get Factors Applied.
+		@return Number of adjustment factors applied
+	  */
+	public int getFactorsApplied () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_FactorsApplied);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** ForecastOrigin AD_Reference_ID=54592 */
+	public static final int FORECASTORIGIN_AD_Reference_ID=54592;
+	/** Manual = MA */
+	public static final String FORECASTORIGIN_Manual = "MA";
+	/** Calculated = CA */
+	public static final String FORECASTORIGIN_Calculated = "CA";
+	/** Adjusted = AD */
+	public static final String FORECASTORIGIN_Adjusted = "AD";
+	/** Imported = IM */
+	public static final String FORECASTORIGIN_Imported = "IM";
+	/** Set Forecast Origin.
+		@param ForecastOrigin 
+		Origin of forecast data
+	  */
+	public void setForecastOrigin (String ForecastOrigin)
+	{
+
+		set_Value (COLUMNNAME_ForecastOrigin, ForecastOrigin);
+	}
+
+	/** Get Forecast Origin.
+		@return Origin of forecast data
+	  */
+	public String getForecastOrigin () 
+	{
+		return (String)get_Value(COLUMNNAME_ForecastOrigin);
 	}
 
 	public org.adempiere.core.domains.models.I_M_Forecast getM_Forecast() throws RuntimeException
@@ -293,6 +378,46 @@ public class X_M_ForecastLine extends PO implements I_M_ForecastLine, I_Persiste
 		return bd;
 	}
 
+	/** Set Adjusted Quantity.
+		@param QtyAdjusted 
+		Adjusted quantity after factor application
+	  */
+	public void setQtyAdjusted (BigDecimal QtyAdjusted)
+	{
+		set_Value (COLUMNNAME_QtyAdjusted, QtyAdjusted);
+	}
+
+	/** Get Adjusted Quantity.
+		@return Adjusted quantity after factor application
+	  */
+	public BigDecimal getQtyAdjusted () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyAdjusted);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Base Quantity.
+		@param QtyBase 
+		Base quantity before adjustments
+	  */
+	public void setQtyBase (BigDecimal QtyBase)
+	{
+		set_Value (COLUMNNAME_QtyBase, QtyBase);
+	}
+
+	/** Get Base Quantity.
+		@return Base quantity before adjustments
+	  */
+	public BigDecimal getQtyBase () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyBase);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Calculated Quantity.
 		@param QtyCalculated 
 		Calculated Quantity
@@ -311,6 +436,55 @@ public class X_M_ForecastLine extends PO implements I_M_ForecastLine, I_Persiste
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Requires Review.
+		@param RequiresReview 
+		Indicates this record needs manual review
+	  */
+	public void setRequiresReview (boolean RequiresReview)
+	{
+		set_Value (COLUMNNAME_RequiresReview, Boolean.valueOf(RequiresReview));
+	}
+
+	/** Get Requires Review.
+		@return Indicates this record needs manual review
+	  */
+	public boolean isRequiresReview () 
+	{
+		Object oo = get_Value(COLUMNNAME_RequiresReview);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	public org.adempiere.core.domains.models.I_AD_User getReviewe() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+			.getPO(getReviewedBy(), get_TrxName());	}
+
+	/** Set Reviewed By.
+		@param ReviewedBy 
+		User who reviewed this line
+	  */
+	public void setReviewedBy (int ReviewedBy)
+	{
+		set_Value (COLUMNNAME_ReviewedBy, Integer.valueOf(ReviewedBy));
+	}
+
+	/** Get Reviewed By.
+		@return User who reviewed this line
+	  */
+	public int getReviewedBy () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_ReviewedBy);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException

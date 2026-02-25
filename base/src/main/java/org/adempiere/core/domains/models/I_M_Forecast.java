@@ -124,21 +124,6 @@ public interface I_M_Forecast
 
 	public org.adempiere.core.domains.models.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException;
 
-    /** Column name C_Year_ID */
-    public static final String COLUMNNAME_C_Year_ID = "C_Year_ID";
-
-	/** Set Year.
-	  * Calendar Year
-	  */
-	public void setC_Year_ID (int C_Year_ID);
-
-	/** Get Year.
-	  * Calendar Year
-	  */
-	public int getC_Year_ID();
-
-	public org.adempiere.core.domains.models.I_C_Year getC_Year() throws RuntimeException;
-
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -155,6 +140,32 @@ public interface I_M_Forecast
 	  */
 	public int getCreatedBy();
 
+    /** Column name C_SalesBudget_ID */
+    public static final String COLUMNNAME_C_SalesBudget_ID = "C_SalesBudget_ID";
+
+	/** Set Sales Budget	  */
+	public void setC_SalesBudget_ID (int C_SalesBudget_ID);
+
+	/** Get Sales Budget	  */
+	public int getC_SalesBudget_ID();
+
+	public org.adempiere.core.domains.models.I_C_SalesBudget getC_SalesBudget() throws RuntimeException;
+
+    /** Column name C_Year_ID */
+    public static final String COLUMNNAME_C_Year_ID = "C_Year_ID";
+
+	/** Set Year.
+	  * Calendar Year
+	  */
+	public void setC_Year_ID (int C_Year_ID);
+
+	/** Get Year.
+	  * Calendar Year
+	  */
+	public int getC_Year_ID();
+
+	public org.adempiere.core.domains.models.I_C_Year getC_Year() throws RuntimeException;
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -167,6 +178,19 @@ public interface I_M_Forecast
 	  * Optional short description of the record
 	  */
 	public String getDescription();
+
+    /** Column name ForecastLevel */
+    public static final String COLUMNNAME_ForecastLevel = "ForecastLevel";
+
+	/** Set Forecast Level.
+	  * Financial, Commercial, or Operational forecast level
+	  */
+	public void setForecastLevel (String ForecastLevel);
+
+	/** Get Forecast Level.
+	  * Financial, Commercial, or Operational forecast level
+	  */
+	public String getForecastLevel();
 
     /** Column name Help */
     public static final String COLUMNNAME_Help = "Help";
@@ -248,6 +272,34 @@ public interface I_M_Forecast
 	  */
 	public String getName();
 
+    /** Column name OverallAccuracy */
+    public static final String COLUMNNAME_OverallAccuracy = "OverallAccuracy";
+
+	/** Set Overall Accuracy.
+	  * Overall forecast accuracy percentage
+	  */
+	public void setOverallAccuracy (BigDecimal OverallAccuracy);
+
+	/** Get Overall Accuracy.
+	  * Overall forecast accuracy percentage
+	  */
+	public BigDecimal getOverallAccuracy();
+
+    /** Column name ParentForecast_ID */
+    public static final String COLUMNNAME_ParentForecast_ID = "ParentForecast_ID";
+
+	/** Set Parent Forecast.
+	  * Self-referencing parent forecast
+	  */
+	public void setParentForecast_ID (int ParentForecast_ID);
+
+	/** Get Parent Forecast.
+	  * Self-referencing parent forecast
+	  */
+	public int getParentForecast_ID();
+
+	public org.adempiere.core.domains.models.I_M_Forecast getParentForecast() throws RuntimeException;
+
     /** Column name PP_Calendar_ID */
     public static final String COLUMNNAME_PP_Calendar_ID = "PP_Calendar_ID";
 
@@ -312,6 +364,32 @@ public interface I_M_Forecast
 
 	/** Get Process Now	  */
 	public boolean isProcessing();
+
+    /** Column name TotalActualAmt */
+    public static final String COLUMNNAME_TotalActualAmt = "TotalActualAmt";
+
+	/** Set Total Actual Amount.
+	  * Total actual amount
+	  */
+	public void setTotalActualAmt (BigDecimal TotalActualAmt);
+
+	/** Get Total Actual Amount.
+	  * Total actual amount
+	  */
+	public BigDecimal getTotalActualAmt();
+
+    /** Column name TotalForecastAmt */
+    public static final String COLUMNNAME_TotalForecastAmt = "TotalForecastAmt";
+
+	/** Set Total Forecast Amount.
+	  * Total forecast amount
+	  */
+	public void setTotalForecastAmt (BigDecimal TotalForecastAmt);
+
+	/** Get Total Forecast Amount.
+	  * Total forecast amount
+	  */
+	public BigDecimal getTotalForecastAmt();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
