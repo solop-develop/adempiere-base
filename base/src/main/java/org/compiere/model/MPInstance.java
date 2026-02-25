@@ -65,12 +65,13 @@ public class MPInstance extends X_AD_PInstance
 		//	New Process
 		if (AD_PInstance_ID == 0)
 		{
+			final int userId = Env.getAD_User_ID(getCtx());
+			setAD_User_ID(userId);
 		//	setAD_Process_ID (0);	//	parent
 		//	setRecord_ID (0);
 			setIsProcessing (false);
 			MSession session = MSession.get(getCtx(), false);
-			if(session != null
-					&& session.getAD_Session_ID() > 0) {
+			if(session != null && session.getAD_Session_ID() > 0) {
 				setAD_Session_ID(session.getAD_Session_ID());
 			}
 		}
@@ -97,7 +98,6 @@ public class MPInstance extends X_AD_PInstance
 		this (process.getCtx(), 0, null);
 		setAD_Process_ID (process.getAD_Process_ID());
 		setRecord_ID (Record_ID);
-		setAD_User_ID(Env.getAD_User_ID(process.getCtx()));
 		if (!save())		//	need to save for parameters
 			throw new IllegalArgumentException ("Cannot Save");
 		//	Set Parameter Base Info
@@ -122,8 +122,6 @@ public class MPInstance extends X_AD_PInstance
 		this(ctx, 0, null);
 		setAD_Process_ID (AD_Process_ID);
 		setRecord_ID (Record_ID);
-		setAD_User_ID(Env.getAD_User_ID(ctx));
-		setIsProcessing (false);
 	}	//	MPInstance
 	
 
@@ -298,6 +296,30 @@ public class MPInstance extends X_AD_PInstance
 	{
 		super.setResult (ok ? RESULT_OK : RESULT_ERROR);
 	}	//	setResult
+
+
+	/**
+	 * 	Before Save
+	 *	@param newRecord new
+	 *	@return success
+	 */
+	protected boolean beforeSave(boolean newRecord)
+	{
+		//	Fill session
+		if (newRecord) {
+			if (getAD_Session_ID() <= 0) {
+				MSession session = MSession.get(getCtx(), false);
+				if(session != null && session.getAD_Session_ID() > 0) {
+					setAD_Session_ID(session.getAD_Session_ID());
+				}
+			}
+			if (getAD_User_ID()	<= 0) {
+				final int userId = Env.getAD_User_ID(getCtx());
+				setAD_User_ID(userId);
+			}
+		}
+		return true;
+	}	//	beforeSave
 	
 	/**
 	 * 	After Save
@@ -425,22 +447,61 @@ public class MPInstance extends X_AD_PInstance
 		return displayValue;
 	}
 
-	public static List<MPInstance> get(Properties ctx, int AD_Process_ID, int AD_User_ID) {
-		String where = "AD_Process_ID = ? AND AD_User_ID = ? AND Name IS NOT NULL ";
-		
-		List<MPInstance> list = MTable.get(ctx, MPInstance.Table_Name).createQuery(where, null).setOnlyActiveRecords(true)
-		.setClient_ID().setParameters(AD_Process_ID, AD_User_ID).setOrderBy("Name").list();
-		
-		where = "AD_Process_ID = ? AND AD_User_ID = ? AND Name IS NULL ";
-		MPInstance lastrun = MTable.get(ctx, MPInstance.Table_Name).createQuery(where, null).setOnlyActiveRecords(true)
-		.setClient_ID().setParameters(AD_Process_ID, AD_User_ID).setOrderBy("Created DESC").first();
-		
-		if ( lastrun != null )
-		{
+	public static List<MPInstance> get(Properties ctx, int processId, int sessionId) {
+		final String where = "AD_Process_ID = ? AND AD_User_ID = ? AND Name IS NOT NULL ";
+		List<MPInstance> list = MTable.get(ctx, MPInstance.Table_Name)
+			.createQuery(where, null)
+			.setOnlyActiveRecords(true)
+			.setClient_ID()
+			.setParameters(processId, sessionId)
+			.setOrderBy("Name")
+			.list()
+		;
+
+		final String whereLastRun = "AD_Process_ID = ? AND AD_User_ID = ? AND Name IS NULL ";
+		MPInstance lastrun = MTable.get(ctx, MPInstance.Table_Name)
+			.createQuery(whereLastRun, null)
+			.setOnlyActiveRecords(true)
+			.setClient_ID()
+			.setParameters(processId, sessionId)
+			.setOrderBy("Created DESC")
+			.first()
+		;
+		if (lastrun != null) {
 			lastrun.setName("** " + Msg.getMsg(ctx, "LastRun") + " **");
 			Collections.addAll(list, lastrun);
 		}
-		
+
 		return list;
 	}
+
+
+	public static List<MPInstance> getBySession(Properties ctx, int processId, int sessionId) {
+		final String where = "AD_Process_ID = ? AND AD_Session_ID = ? AND Name IS NOT NULL ";
+		List<MPInstance> list = MTable.get(ctx, MPInstance.Table_Name)
+			.createQuery(where, null)
+			.setOnlyActiveRecords(true)
+			.setClient_ID()
+			.setParameters(processId, sessionId)
+			.setOrderBy("Name")
+			.list()
+		;
+
+		final String whereLastRun = "AD_Process_ID = ? AND AD_Session_ID = ? AND Name IS NULL ";
+		MPInstance lastrun = MTable.get(ctx, MPInstance.Table_Name)
+			.createQuery(whereLastRun, null)
+			.setOnlyActiveRecords(true)
+			.setClient_ID()
+			.setParameters(processId, sessionId)
+			.setOrderBy("Created DESC")
+			.first()
+		;
+		if (lastrun != null) {
+			lastrun.setName("** " + Msg.getMsg(ctx, "LastRun") + " **");
+			Collections.addAll(list, lastrun);
+		}
+
+		return list;
+	}
+
 }	//	MPInstance
