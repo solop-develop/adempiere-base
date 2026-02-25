@@ -168,8 +168,9 @@ public class StorageUpdaterBuilder {
     private void createStoreFromSnapshot(MStorageSnapshotRun lastSnapshot) {
         List<Object> parameters = new ArrayList<>();
         StringBuilder transactionSQL = new StringBuilder("INSERT INTO M_Storage (M_Storage_ID, AD_Client_ID, AD_Org_ID, M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID, QtyOnHand, QtyReserved, QtyOrdered, IsActive, Created, CreatedBy, Updated, UpdatedBy, UUID) " +
-                "SELECT nextval('m_storage_seq'), sl.AD_Client_ID, sl.AD_Org_ID, sl.M_Product_ID, sl.M_Locator_ID, sl.M_AttributeSetInstance_ID, SUM(sl.QtyOnHand), SUM(sl.QtyReserved), SUM(sl.QtyOrdered), 'Y', now(), sl.CreatedBy, now(), sl.UpdatedBy, getUUID() " +
-                "FROM M_StorageSnapshot sl " +
+                "SELECT nextval('m_storage_seq'), ssr.AD_Client_ID, ssr.AD_Org_ID, sl.M_Product_ID, sl.M_Locator_ID, sl.M_AttributeSetInstance_ID, SUM(sl.QtyOnHand), SUM(sl.QtyReserved), SUM(sl.QtyOrdered), 'Y', now(), ssr.CreatedBy, now(), ssr.UpdatedBy, getUUID() " +
+                "FROM M_StorageSnapshotRun ssr " +
+                "INNER JOIN M_StorageSnapshot sl ON(sl.M_StorageSnapshotRun_ID = ssr.M_StorageSnapshotRun_ID) " +
                 "WHERE sl.AD_Client_ID = ? ");
         parameters.add(getClientId());
         //	Org
@@ -197,7 +198,7 @@ public class StorageUpdaterBuilder {
         }
         transactionSQL.append("AND sl.M_StorageSnapshotRun_ID = ? ");
         //	Group By
-        transactionSQL.append("GROUP BY sl.AD_Client_ID, sl.AD_Org_ID, sl.M_Product_ID, sl.M_Locator_ID, sl.M_AttributeSetInstance_ID, sl.CreatedBy, sl.UpdatedBy");
+        transactionSQL.append("GROUP BY ssr.AD_Client_ID, ssr.AD_Org_ID, sl.M_Product_ID, sl.M_Locator_ID, sl.M_AttributeSetInstance_ID, ssr.CreatedBy, ssr.UpdatedBy ");
         parameters.add(lastSnapshot.getM_StorageSnapshotRun_ID());
         log.fine("StorageSQL (Snapshot)=" + transactionSQL);
         int inserted = DB.executeUpdateEx(transactionSQL.toString(), parameters.toArray(), getTransactionName());
@@ -215,8 +216,8 @@ public class StorageUpdaterBuilder {
                 "QtyReserved = s.QtyReserved + r.QtyReserved " +
                 "FROM (" +
                 "SELECT s.M_Storage_ID, " +
-                "SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) QtyOrdered, " +
-                "SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) QtyReserved " +
+                "SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) QtyOrdered, " +
+                "SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) QtyReserved " +
                 "FROM M_Reservation r " +
                 "INNER JOIN M_Storage s ON(s.M_Product_ID = r.M_Product_ID AND s.M_Locator_ID = r.M_Locator_ID AND s.M_AttributeSetInstance_ID = r.M_AttributeSetInstance_ID) ");
         transactionSQL.append("WHERE r.AD_Client_ID = ? ");
@@ -248,7 +249,7 @@ public class StorageUpdaterBuilder {
         }
         transactionSQL.append("GROUP BY s.M_Storage_ID " +
                 "HAVING SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0 " +
-                "AND SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0" +
+                "OR SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0" +
                 ") r " +
                 "WHERE s.M_Storage_ID = r.M_Storage_ID");
         log.fine("StorageSQL (Reservations Existing)=" + transactionSQL);
@@ -291,7 +292,7 @@ public class StorageUpdaterBuilder {
         }
         //Group By
         transactionSQL.append("GROUP BY r.AD_Client_ID, r.AD_Org_ID, r.M_Product_ID, r.M_Locator_ID, r.M_Warehouse_ID, r.M_AttributeSetInstance_ID ");
-        transactionSQL.append("HAVING SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0 AND SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0");
+        transactionSQL.append("HAVING SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0 OR SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0");
         log.fine("StorageSQL (Reservations)=" + transactionSQL);
         inserted = DB.executeUpdateEx(transactionSQL.toString(), parameters.toArray(), getTransactionName());
         log.fine("Storage Created (Reservations)=" + inserted);
