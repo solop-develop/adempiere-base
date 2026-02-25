@@ -104,7 +104,7 @@ public class GenerateARInvoiceFromBatch extends GenerateARInvoiceFromBatchAbstra
 			invoice.setBPartner(businessPartner);
 			invoice.setSalesRep_ID(getAD_User_ID());	//	caller
 			invoice.setDateInvoiced(batch.getDateDoc());
-			invoice.setDateAcct(batch.getDateDoc());
+			invoice.setDateAcct(batch.getDateAcct());
 			String currencyIsoCode = MCurrency.get(getCtx(), batch.getC_Currency_ID()).getISO_Code();
 			MPriceList priceList = MPriceList.getDefault(getCtx(), true, currencyIsoCode);
 			if(priceList == null || priceList.get_ID() <= 0) {
