@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for M_ForecastComparison
  *  @author Adempiere (generated) 
@@ -129,7 +130,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name ComparisonSource */
     public static final String COLUMNNAME_ComparisonSource = "ComparisonSource";
@@ -157,7 +158,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getC_Period_ID();
 
-	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException;
+	public I_C_Period getC_Period() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -262,7 +263,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_Forecast_ID();
 
-	public org.adempiere.core.domains.models.I_M_Forecast getM_Forecast() throws RuntimeException;
+	public I_M_Forecast getM_Forecast() throws RuntimeException;
 
     /** Column name M_ForecastLine_ID */
     public static final String COLUMNNAME_M_ForecastLine_ID = "M_ForecastLine_ID";
@@ -277,7 +278,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_ForecastLine_ID();
 
-	public org.adempiere.core.domains.models.I_M_ForecastLine getM_ForecastLine() throws RuntimeException;
+	public I_M_ForecastLine getM_ForecastLine() throws RuntimeException;
 
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
@@ -292,7 +293,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_Product_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
+	public I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name QtyActual */
     public static final String COLUMNNAME_QtyActual = "QtyActual";

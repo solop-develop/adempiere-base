@@ -20,16 +20,7 @@ package org.solop.process;
 
 import org.adempiere.core.domains.models.X_C_PPBatchConfiguration;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MBPartner;
-import org.compiere.model.MCharge;
-import org.compiere.model.MCurrency;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MPayment;
-import org.compiere.model.MPaymentProcessorBatch;
-import org.compiere.model.MPriceList;
-import org.compiere.model.MTax;
-import org.compiere.model.Query;
+import org.compiere.model.*;
 import org.compiere.util.Env;
 import org.compiere.util.Util;
 

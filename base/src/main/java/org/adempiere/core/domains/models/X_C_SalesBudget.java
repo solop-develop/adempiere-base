@@ -18,16 +18,17 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for C_SalesBudget
  *  @author Adempiere (generated) 
@@ -99,9 +100,9 @@ public class X_C_SalesBudget extends PO implements I_C_SalesBudget, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_AD_User getApprove() throws RuntimeException
+	public I_AD_User getApprove() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getApprovedBy(), get_TrxName());	}
 
 	/** Set Approved By.
@@ -152,9 +153,9 @@ public class X_C_SalesBudget extends PO implements I_C_SalesBudget, I_Persistent
 		return (String)get_Value(COLUMNNAME_BudgetStatus);
 	}
 
-	public org.adempiere.core.domains.models.I_C_Calendar getC_Calendar() throws RuntimeException
+	public I_C_Calendar getC_Calendar() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Calendar)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Calendar.Table_Name)
+		return (I_C_Calendar)MTable.get(getCtx(), I_C_Calendar.Table_Name)
 			.getPO(getC_Calendar_ID(), get_TrxName());	}
 
 	/** Set Calendar.
@@ -180,9 +181,9 @@ public class X_C_SalesBudget extends PO implements I_C_SalesBudget, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException
+	public I_C_DocType getC_DocType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocType_ID(), get_TrxName());	}
 
 	/** Set Document Type.
@@ -228,9 +229,9 @@ public class X_C_SalesBudget extends PO implements I_C_SalesBudget, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Year getC_Year() throws RuntimeException
+	public I_C_Year getC_Year() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Year)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Year.Table_Name)
+		return (I_C_Year)MTable.get(getCtx(), I_C_Year.Table_Name)
 			.getPO(getC_Year_ID(), get_TrxName());	}
 
 	/** Set Year.
@@ -482,9 +483,9 @@ public class X_C_SalesBudget extends PO implements I_C_SalesBudget, I_Persistent
 		return false;
 	}
 
-	public org.adempiere.core.domains.models.I_M_Forecast getM_Forecast() throws RuntimeException
+	public I_M_Forecast getM_Forecast() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Forecast)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Forecast.Table_Name)
+		return (I_M_Forecast)MTable.get(getCtx(), I_M_Forecast.Table_Name)
 			.getPO(getM_Forecast_ID(), get_TrxName());	}
 
 	/** Set Forecast.

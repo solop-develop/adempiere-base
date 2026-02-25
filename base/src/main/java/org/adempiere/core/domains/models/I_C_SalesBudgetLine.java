@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_SalesBudgetLine
  *  @author Adempiere (generated) 
@@ -116,7 +117,7 @@ public interface I_C_SalesBudgetLine
 	  */
 	public int getC_Channel_ID();
 
-	public org.adempiere.core.domains.models.I_C_Channel getC_Channel() throws RuntimeException;
+	public I_C_Channel getC_Channel() throws RuntimeException;
 
     /** Column name C_Period_ID */
     public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
@@ -131,7 +132,7 @@ public interface I_C_SalesBudgetLine
 	  */
 	public int getC_Period_ID();
 
-	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException;
+	public I_C_Period getC_Period() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -158,7 +159,7 @@ public interface I_C_SalesBudgetLine
 	/** Get Sales Budget	  */
 	public int getC_SalesBudget_ID();
 
-	public org.adempiere.core.domains.models.I_C_SalesBudget getC_SalesBudget() throws RuntimeException;
+	public I_C_SalesBudget getC_SalesBudget() throws RuntimeException;
 
     /** Column name C_SalesBudgetLine_ID */
     public static final String COLUMNNAME_C_SalesBudgetLine_ID = "C_SalesBudgetLine_ID";
@@ -182,7 +183,7 @@ public interface I_C_SalesBudgetLine
 	  */
 	public int getC_SalesRegion_ID();
 
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
+	public I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
 
     /** Column name CumulativeActualAmt */
     public static final String COLUMNNAME_CumulativeActualAmt = "CumulativeActualAmt";
@@ -249,7 +250,7 @@ public interface I_C_SalesBudgetLine
 	  */
 	public int getSalesRep_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+	public I_AD_User getSalesRep() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

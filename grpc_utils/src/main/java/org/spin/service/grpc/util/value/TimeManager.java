@@ -15,6 +15,13 @@
 
 package org.spin.service.grpc.util.value;
 
+import com.google.protobuf.Struct;
+import com.google.protobuf.Value;
+import org.compiere.util.DisplayType;
+import org.compiere.util.Env;
+import org.compiere.util.TimeUtil;
+import org.compiere.util.Util;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
@@ -27,14 +34,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
-
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Util;
-
-import com.google.protobuf.Struct;
-import com.google.protobuf.Value;
 
 /**
  * Class for handle Time (TimesTamp, Date, Long, Instant) values

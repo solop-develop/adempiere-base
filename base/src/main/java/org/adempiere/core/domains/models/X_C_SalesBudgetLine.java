@@ -18,14 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_SalesBudgetLine
  *  @author Adempiere (generated) 
@@ -142,9 +143,9 @@ public class X_C_SalesBudgetLine extends PO implements I_C_SalesBudgetLine, I_Pe
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_C_Channel getC_Channel() throws RuntimeException
+	public I_C_Channel getC_Channel() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Channel)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Channel.Table_Name)
+		return (I_C_Channel)MTable.get(getCtx(), I_C_Channel.Table_Name)
 			.getPO(getC_Channel_ID(), get_TrxName());	}
 
 	/** Set Channel.
@@ -170,9 +171,9 @@ public class X_C_SalesBudgetLine extends PO implements I_C_SalesBudgetLine, I_Pe
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException
+	public I_C_Period getC_Period() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Period)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Period.Table_Name)
+		return (I_C_Period)MTable.get(getCtx(), I_C_Period.Table_Name)
 			.getPO(getC_Period_ID(), get_TrxName());	}
 
 	/** Set Period.
@@ -198,9 +199,9 @@ public class X_C_SalesBudgetLine extends PO implements I_C_SalesBudgetLine, I_Pe
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_SalesBudget getC_SalesBudget() throws RuntimeException
+	public I_C_SalesBudget getC_SalesBudget() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_SalesBudget)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SalesBudget.Table_Name)
+		return (I_C_SalesBudget)MTable.get(getCtx(), I_C_SalesBudget.Table_Name)
 			.getPO(getC_SalesBudget_ID(), get_TrxName());	}
 
 	/** Set Sales Budget.
@@ -243,9 +244,9 @@ public class X_C_SalesBudgetLine extends PO implements I_C_SalesBudgetLine, I_Pe
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException
+	public I_C_SalesRegion getC_SalesRegion() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_SalesRegion)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SalesRegion.Table_Name)
+		return (I_C_SalesRegion)MTable.get(getCtx(), I_C_SalesRegion.Table_Name)
 			.getPO(getC_SalesRegion_ID(), get_TrxName());	}
 
 	/** Set Sales Region.
@@ -331,9 +332,9 @@ public class X_C_SalesBudgetLine extends PO implements I_C_SalesBudgetLine, I_Pe
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
+	public I_AD_User getSalesRep() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSalesRep_ID(), get_TrxName());	}
 
 	/** Set Sales Representative.

@@ -15,11 +15,7 @@
  *************************************************************************************/
 package org.spin.service.grpc.authentication;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.adempiere.core.domains.models.I_AD_Language;
 import org.adempiere.core.domains.models.I_AD_Session;
@@ -27,28 +23,8 @@ import org.adempiere.core.domains.models.I_AD_User_Authentication;
 import org.adempiere.core.domains.models.I_C_ConversionType;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.MUserAuthentication;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MClient;
-import org.compiere.model.MClientInfo;
-import org.compiere.model.MCountry;
-import org.compiere.model.MLanguage;
-import org.compiere.model.MOrg;
-import org.compiere.model.MRole;
-import org.compiere.model.MSession;
-import org.compiere.model.MSysConfig;
-import org.compiere.model.MTable;
-import org.compiere.model.MUser;
-import org.compiere.model.MWarehouse;
-import org.compiere.model.ModelValidationEngine;
-import org.compiere.model.Query;
-import org.compiere.util.CCache;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Ini;
-import org.compiere.util.Language;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Util;
+import org.compiere.model.*;
+import org.compiere.util.*;
 import org.spin.eca52.util.JWTUtil;
 import org.spin.model.MADToken;
 import org.spin.model.MADTokenDefinition;
@@ -63,13 +39,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Level;
 
 /**

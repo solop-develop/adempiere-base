@@ -16,7 +16,11 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.awt.Color;
+import org.adempiere.core.domains.models.I_PA_Goal;
+import org.adempiere.core.domains.models.X_PA_Goal;
+import org.compiere.util.*;
+
+import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.PreparedStatement;
@@ -26,14 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_PA_Goal;
-import org.adempiere.core.domains.models.X_PA_Goal;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
 
 /**
  * 	Performance Goal
@@ -262,7 +258,7 @@ public class MGoal extends X_PA_Goal
 	 *	@param PA_Goal_ID id
 	 *	@param trxName trx
 	 */
-	public MGoal (Properties ctx, int PA_Goal_ID, String trxName)
+	public MGoal(Properties ctx, int PA_Goal_ID, String trxName)
 	{
 		super (ctx, PA_Goal_ID, trxName);
 		if (PA_Goal_ID == 0)
@@ -286,7 +282,7 @@ public class MGoal extends X_PA_Goal
 	 *	@param rs result set
 	 *	@param trxName trx
 	 */
-	public MGoal (Properties ctx, ResultSet rs, String trxName)
+	public MGoal(Properties ctx, ResultSet rs, String trxName)
 	{
 		super (ctx, rs, trxName);
 	}	//	MGoal
@@ -299,8 +295,8 @@ public class MGoal extends X_PA_Goal
 	 *	@param MeasureTarget target
 	 *	@param trxName trx
 	 */
-	public MGoal (Properties ctx, String Name, String Description,
-		BigDecimal MeasureTarget, String trxName)
+	public MGoal(Properties ctx, String Name, String Description,
+                 BigDecimal MeasureTarget, String trxName)
 	{
 		super (ctx, 0, trxName);
 		setName(Name);
@@ -533,7 +529,7 @@ public class MGoal extends X_PA_Goal
 	//		setMeasureDisplay(getMeasureScope());
 		
 		//	Measure required if nor Summary
-		if (!isSummary() && getPA_Measure_ID() == 0 && getAD_Chart_ID() == 0)
+		if (!isSummary() && getPA_Measure_ID() == 0 && getAD_Chart_ID() == 0 && get_ValueAsInt("AD_PrintFormatChart_ID") == 0)
 		{
 			log.saveError("FillMandatory", Msg.getElement(getCtx(), "PA_Measure_ID"));
 			return false;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Chart_Datasource_Increase_Column_Size" ReleaseNo="1.5.2" SeqNo="501930">
+    <Comments>Increase Column Size of CategoryColumn, SeriesColumn and ValueColumn to 255</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="59700" Table="AD_Column">
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="60">2000</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">ValueColumn</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="62185" Table="AD_Column">
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="60">2000</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">SeriesColumn</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="59701" Table="AD_Column">
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="60">2000</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">CategoryColumn</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step DBType="Postgres" Parse="N" SeqNo="40" StepType="SQL">
+      <SQLStatement>ALTER TABLE AD_ChartDataSource ALTER COLUMN ValueColumn TYPE VARCHAR(2000) USING ValueColumn::VARCHAR(2000);
+        ALTER TABLE AD_ChartDataSource ALTER COLUMN SeriesColumn TYPE VARCHAR(2000) USING SeriesColumn::VARCHAR(2000);
+        ALTER TABLE AD_ChartDataSource ALTER COLUMN CategoryColumn TYPE VARCHAR(2000) USING CategoryColumn::VARCHAR(2000);</SQLStatement>
+      <RollbackStatement>ALTER TABLE AD_ChartDataSource ALTER COLUMN ValueColumn TYPE VARCHAR(60) USING ValueColumn::VARCHAR(60);
+        ALTER TABLE AD_ChartDataSource ALTER COLUMN SeriesColumn TYPE VARCHAR(60) USING SeriesColumn::VARCHAR(60);
+        ALTER TABLE AD_ChartDataSource ALTER COLUMN CategoryColumn TYPE VARCHAR(60) USING CategoryColumn::VARCHAR(60);</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
