@@ -19,17 +19,15 @@
 
 package org.adempiere.ad.services.impl;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.ad.services.IDeveloperModeBL;
+import org.adempiere.core.domains.models.I_AD_EntityType;
 import org.adempiere.core.domains.models.X_AD_Message;
 import org.adempiere.util.Check;
-import org.compiere.model.MEntityType;
-import org.compiere.model.MMessage;
-import org.compiere.model.MSysConfig;
-import org.compiere.model.M_Element;
-import org.compiere.model.PO;
+import org.compiere.model.*;
 import org.compiere.util.CLogger;
 import org.compiere.util.CacheMgt;
 import org.compiere.util.DB;
@@ -231,7 +229,10 @@ public class DeveloperModeBL implements IDeveloperModeBL
 
 			//
 			// Get EntityType by PackageName
-			final MEntityType[] entityTypes = MEntityType.getEntityTypes(Env.getCtx());
+			List<MEntityType> entityTypes = new Query(ctx, I_AD_EntityType.Table_Name, null, null)
+					.setOnlyActiveRecords(true)
+					.setOrderBy(I_AD_EntityType.COLUMNNAME_AD_EntityType_ID)
+					.list();
 			MEntityType entityType = null;
 			for (MEntityType et : entityTypes)
 			{
