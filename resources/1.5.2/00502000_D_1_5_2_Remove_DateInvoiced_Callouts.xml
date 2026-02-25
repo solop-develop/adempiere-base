@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Remove_DateInvoiced_Callouts" ReleaseNo="1.5.2" SeqNo="502000">
+    <Comments>Remove all callouts in Invoice DateInvoiced Column, they are added to MInvoice class</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="3783" Table="AD_Column">
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true" oldValue="org.compiere.model.CalloutOrder.priceList"/>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

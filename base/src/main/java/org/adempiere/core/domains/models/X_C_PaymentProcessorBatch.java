@@ -18,16 +18,17 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for C_PaymentProcessorBatch
  *  @author Adempiere (generated) 
@@ -41,7 +42,7 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
 	private static final long serialVersionUID = 20260202L;
 
     /** Standard Constructor */
-    public X_C_PaymentProcessorBatch (Properties ctx, int C_PaymentProcessorBatch_ID, String trxName)
+    public X_C_PaymentProcessorBatch(Properties ctx, int C_PaymentProcessorBatch_ID, String trxName)
     {
       super (ctx, C_PaymentProcessorBatch_ID, trxName);
       /** if (C_PaymentProcessorBatch_ID == 0)
@@ -74,7 +75,7 @@ public class X_C_PaymentProcessorBatch extends PO implements I_C_PaymentProcesso
     }
 
     /** Load Constructor */
-    public X_C_PaymentProcessorBatch (Properties ctx, ResultSet rs, String trxName)
+    public X_C_PaymentProcessorBatch(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }

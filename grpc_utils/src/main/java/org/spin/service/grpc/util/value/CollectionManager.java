@@ -1,19 +1,18 @@
 package org.spin.service.grpc.util.value;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.compiere.util.Util;
-import org.spin.service.grpc.util.query.Filter;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.ListValue;
 import com.google.protobuf.Struct;
 import com.google.protobuf.Value;
+import org.compiere.util.Util;
+import org.spin.service.grpc.util.query.Filter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class for handle Collection (List, Map, Struct Enum) values

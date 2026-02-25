@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for M_Forecast
  *  @author Adempiere (generated) 
@@ -79,9 +80,9 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_Calendar getC_Calendar() throws RuntimeException
+	public I_C_Calendar getC_Calendar() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Calendar)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Calendar.Table_Name)
+		return (I_C_Calendar)MTable.get(getCtx(), I_C_Calendar.Table_Name)
 			.getPO(getC_Calendar_ID(), get_TrxName());	}
 
 	/** Set Calendar.
@@ -107,9 +108,9 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException
+	public I_C_Campaign getC_Campaign() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Campaign)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Campaign.Table_Name)
+		return (I_C_Campaign)MTable.get(getCtx(), I_C_Campaign.Table_Name)
 			.getPO(getC_Campaign_ID(), get_TrxName());	}
 
 	/** Set Campaign.
@@ -135,9 +136,9 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
+	public I_C_Project getC_Project() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
+		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
 			.getPO(getC_Project_ID(), get_TrxName());	}
 
 	/** Set Project.
@@ -163,9 +164,9 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException
+	public I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ProjectPhase)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ProjectPhase.Table_Name)
+		return (I_C_ProjectPhase)MTable.get(getCtx(), I_C_ProjectPhase.Table_Name)
 			.getPO(getC_ProjectPhase_ID(), get_TrxName());	}
 
 	/** Set Project Phase.
@@ -191,9 +192,9 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_SalesBudget getC_SalesBudget() throws RuntimeException
+	public I_C_SalesBudget getC_SalesBudget() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_SalesBudget)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SalesBudget.Table_Name)
+		return (I_C_SalesBudget)MTable.get(getCtx(), I_C_SalesBudget.Table_Name)
 			.getPO(getC_SalesBudget_ID(), get_TrxName());	}
 
 	/** Set Sales Budget.
@@ -216,9 +217,9 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Year getC_Year() throws RuntimeException
+	public I_C_Year getC_Year() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Year)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Year.Table_Name)
+		return (I_C_Year)MTable.get(getCtx(), I_C_Year.Table_Name)
 			.getPO(getC_Year_ID(), get_TrxName());	}
 
 	/** Set Year.
@@ -351,9 +352,9 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_PriceList getM_PriceList() throws RuntimeException
+	public I_M_PriceList getM_PriceList() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_PriceList)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_PriceList.Table_Name)
+		return (I_M_PriceList)MTable.get(getCtx(), I_M_PriceList.Table_Name)
 			.getPO(getM_PriceList_ID(), get_TrxName());	}
 
 	/** Set Price List.
@@ -424,9 +425,9 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_M_Forecast getParentForecast() throws RuntimeException
+	public I_M_Forecast getParentForecast() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Forecast)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Forecast.Table_Name)
+		return (I_M_Forecast)MTable.get(getCtx(), I_M_Forecast.Table_Name)
 			.getPO(getParentForecast_ID(), get_TrxName());	}
 
 	/** Set Parent Forecast.
@@ -452,9 +453,9 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_PP_Calendar getPP_Calendar() throws RuntimeException
+	public I_PP_Calendar getPP_Calendar() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_PP_Calendar)MTable.get(getCtx(), org.adempiere.core.domains.models.I_PP_Calendar.Table_Name)
+		return (I_PP_Calendar)MTable.get(getCtx(), I_PP_Calendar.Table_Name)
 			.getPO(getPP_Calendar_ID(), get_TrxName());	}
 
 	/** Set Operational Calendar.
@@ -480,9 +481,9 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_PP_PeriodDefinition getPP_PeriodDefinition() throws RuntimeException
+	public I_PP_PeriodDefinition getPP_PeriodDefinition() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_PP_PeriodDefinition)MTable.get(getCtx(), org.adempiere.core.domains.models.I_PP_PeriodDefinition.Table_Name)
+		return (I_PP_PeriodDefinition)MTable.get(getCtx(), I_PP_PeriodDefinition.Table_Name)
 			.getPO(getPP_PeriodDefinition_ID(), get_TrxName());	}
 
 	/** Set Current Period.

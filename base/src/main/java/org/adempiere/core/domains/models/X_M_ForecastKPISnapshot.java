@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for M_ForecastKPISnapshot
  *  @author Adempiere (generated) 
@@ -101,9 +102,9 @@ public class X_M_ForecastKPISnapshot extends PO implements I_M_ForecastKPISnapsh
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException
+	public I_C_Period getC_Period() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Period)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Period.Table_Name)
+		return (I_C_Period)MTable.get(getCtx(), I_C_Period.Table_Name)
 			.getPO(getC_Period_ID(), get_TrxName());	}
 
 	/** Set Period.
@@ -279,9 +280,9 @@ public class X_M_ForecastKPISnapshot extends PO implements I_M_ForecastKPISnapsh
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_M_Forecast getM_Forecast() throws RuntimeException
+	public I_M_Forecast getM_Forecast() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Forecast)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Forecast.Table_Name)
+		return (I_M_Forecast)MTable.get(getCtx(), I_M_Forecast.Table_Name)
 			.getPO(getM_Forecast_ID(), get_TrxName());	}
 
 	/** Set Forecast.

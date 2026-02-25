@@ -15,13 +15,6 @@
  *************************************************************************************/
 package org.spin.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.I_AD_Image;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MArchive;
@@ -37,6 +30,13 @@ import org.spin.model.MADAttachmentReference;
 import org.spin.util.support.AppSupportHandler;
 import org.spin.util.support.IAppSupport;
 import org.spin.util.support.webdav.IWebDav;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 
 /** Class for handle Attachment with a external storage

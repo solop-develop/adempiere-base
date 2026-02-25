@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for M_Forecast
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_M_Forecast
 	  */
 	public int getC_Calendar_ID();
 
-	public org.adempiere.core.domains.models.I_C_Calendar getC_Calendar() throws RuntimeException;
+	public I_C_Calendar getC_Calendar() throws RuntimeException;
 
     /** Column name C_Campaign_ID */
     public static final String COLUMNNAME_C_Campaign_ID = "C_Campaign_ID";
@@ -92,7 +93,7 @@ public interface I_M_Forecast
 	  */
 	public int getC_Campaign_ID();
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException;
+	public I_C_Campaign getC_Campaign() throws RuntimeException;
 
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
@@ -107,7 +108,7 @@ public interface I_M_Forecast
 	  */
 	public int getC_Project_ID();
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
+	public I_C_Project getC_Project() throws RuntimeException;
 
     /** Column name C_ProjectPhase_ID */
     public static final String COLUMNNAME_C_ProjectPhase_ID = "C_ProjectPhase_ID";
@@ -122,7 +123,7 @@ public interface I_M_Forecast
 	  */
 	public int getC_ProjectPhase_ID();
 
-	public org.adempiere.core.domains.models.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException;
+	public I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -149,7 +150,7 @@ public interface I_M_Forecast
 	/** Get Sales Budget	  */
 	public int getC_SalesBudget_ID();
 
-	public org.adempiere.core.domains.models.I_C_SalesBudget getC_SalesBudget() throws RuntimeException;
+	public I_C_SalesBudget getC_SalesBudget() throws RuntimeException;
 
     /** Column name C_Year_ID */
     public static final String COLUMNNAME_C_Year_ID = "C_Year_ID";
@@ -164,7 +165,7 @@ public interface I_M_Forecast
 	  */
 	public int getC_Year_ID();
 
-	public org.adempiere.core.domains.models.I_C_Year getC_Year() throws RuntimeException;
+	public I_C_Year getC_Year() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -257,7 +258,7 @@ public interface I_M_Forecast
 	  */
 	public int getM_PriceList_ID();
 
-	public org.adempiere.core.domains.models.I_M_PriceList getM_PriceList() throws RuntimeException;
+	public I_M_PriceList getM_PriceList() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -298,7 +299,7 @@ public interface I_M_Forecast
 	  */
 	public int getParentForecast_ID();
 
-	public org.adempiere.core.domains.models.I_M_Forecast getParentForecast() throws RuntimeException;
+	public I_M_Forecast getParentForecast() throws RuntimeException;
 
     /** Column name PP_Calendar_ID */
     public static final String COLUMNNAME_PP_Calendar_ID = "PP_Calendar_ID";
@@ -313,7 +314,7 @@ public interface I_M_Forecast
 	  */
 	public int getPP_Calendar_ID();
 
-	public org.adempiere.core.domains.models.I_PP_Calendar getPP_Calendar() throws RuntimeException;
+	public I_PP_Calendar getPP_Calendar() throws RuntimeException;
 
     /** Column name PP_PeriodDefinition_ID */
     public static final String COLUMNNAME_PP_PeriodDefinition_ID = "PP_PeriodDefinition_ID";
@@ -328,7 +329,7 @@ public interface I_M_Forecast
 	  */
 	public int getPP_PeriodDefinition_ID();
 
-	public org.adempiere.core.domains.models.I_PP_PeriodDefinition getPP_PeriodDefinition() throws RuntimeException;
+	public I_PP_PeriodDefinition getPP_PeriodDefinition() throws RuntimeException;
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";

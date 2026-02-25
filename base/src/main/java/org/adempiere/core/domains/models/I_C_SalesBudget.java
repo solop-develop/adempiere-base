@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_SalesBudget
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_C_SalesBudget
 	  */
 	public int getApprovedBy();
 
-	public org.adempiere.core.domains.models.I_AD_User getApprove() throws RuntimeException;
+	public I_AD_User getApprove() throws RuntimeException;
 
     /** Column name BudgetStatus */
     public static final String COLUMNNAME_BudgetStatus = "BudgetStatus";
@@ -105,7 +106,7 @@ public interface I_C_SalesBudget
 	  */
 	public int getC_Calendar_ID();
 
-	public org.adempiere.core.domains.models.I_C_Calendar getC_Calendar() throws RuntimeException;
+	public I_C_Calendar getC_Calendar() throws RuntimeException;
 
     /** Column name C_DocType_ID */
     public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
@@ -120,7 +121,7 @@ public interface I_C_SalesBudget
 	  */
 	public int getC_DocType_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException;
+	public I_C_DocType getC_DocType() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -160,7 +161,7 @@ public interface I_C_SalesBudget
 	  */
 	public int getC_Year_ID();
 
-	public org.adempiere.core.domains.models.I_C_Year getC_Year() throws RuntimeException;
+	public I_C_Year getC_Year() throws RuntimeException;
 
     /** Column name DateApproved */
     public static final String COLUMNNAME_DateApproved = "DateApproved";
@@ -305,7 +306,7 @@ public interface I_C_SalesBudget
 	  */
 	public int getM_Forecast_ID();
 
-	public org.adempiere.core.domains.models.I_M_Forecast getM_Forecast() throws RuntimeException;
+	public I_M_Forecast getM_Forecast() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";

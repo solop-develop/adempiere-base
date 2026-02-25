@@ -16,18 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_InvoiceLine;
-import org.adempiere.core.domains.models.I_C_InvoiceTax;
-import org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan;
-import org.adempiere.core.domains.models.I_PP_Product_Planning;
-import org.adempiere.core.domains.models.I_WM_InOutBoundLine;
-import org.adempiere.core.domains.models.X_C_Bank;
-import org.adempiere.core.domains.models.X_C_Invoice;
-import org.adempiere.core.domains.models.X_C_Payment;
-import org.adempiere.core.domains.models.X_PP_Product_BOM;
-import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
-import org.adempiere.core.domains.models.X_PP_Product_Planning;
-import org.adempiere.core.domains.models.X_WM_InOutBoundLine;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.engine.CostEngineFactory;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoAddressException;
@@ -37,15 +26,10 @@ import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
 import org.compiere.process.DocumentReversalEnabled;
-import org.compiere.util.CCache;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 import org.solop.util.AllocationManager;
+import org.solop.util.DocumentDateUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -53,12 +37,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -920,6 +899,8 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
+		//Update DateAcct if necessary
+		DocumentDateUtil.updateDateAcct(this, COLUMNNAME_DateInvoiced);
 		log.fine("");
 		//	No Partner Info - set Template
 		if (getC_BPartner_ID() == 0)
@@ -941,9 +922,24 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					setM_PriceList_ID (ii);
 			}
 		}
+		boolean priceListChanged = is_ValueChanged(COLUMNNAME_M_PriceList_ID);
+		if(newRecord || priceListChanged || is_ValueChanged(COLUMNNAME_DateInvoiced)) {
+			if(getM_PriceList_ID() > 0) {
+				MPriceList priceList = (MPriceList) getM_PriceList();
+				if (newRecord || priceListChanged) {
+					setIsTaxIncluded(priceList.isTaxIncluded());
+					setC_Currency_ID(priceList.getC_Currency_ID());
+				}
+				//	Set Price List Version in context
+				MPriceListVersion priceListVersion = priceList.getPriceListVersion(getDateInvoiced());
+				if(priceListVersion != null) {
+					Env.setContext(getCtx(), 0, "M_PriceList_Version_ID", priceListVersion.getM_PriceList_Version_ID());
+				}
+			}
+		}
 
 		//	Currency
-		if (getC_Currency_ID() == 0 || (is_ValueChanged(COLUMNNAME_M_PriceList_ID) && getM_PriceList_ID() > 0))
+		if (getC_Currency_ID() == 0 && getM_PriceList_ID() > 0)
 		{
 			String sql = "SELECT C_Currency_ID FROM M_PriceList WHERE M_PriceList_ID=?";
 			int ii = DB.getSQLValue (null, sql, getM_PriceList_ID());
@@ -1016,11 +1012,6 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					setDocumentNo(order.getManualInvoiceDocumentNo());
 				}
 			}
-		}
-
-		if(newRecord || is_ValueChanged(COLUMNNAME_M_PriceList_ID)) {
-			MPriceList priceList = (MPriceList) getM_PriceList();
-			setIsTaxIncluded(priceList.isTaxIncluded());
 		}
 
 		return true;
