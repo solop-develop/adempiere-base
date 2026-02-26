@@ -29,6 +29,7 @@ import org.compiere.util.Msg;
 import org.compiere.util.Util;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 import org.solop.queue.storage.StorageUpdate;
+import org.solop.util.DocumentDateUtil;
 import org.solop.util.ReservationBuilder;
 
 import java.io.File;
@@ -980,6 +981,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
+		DocumentDateUtil.updateDateAcct(this, COLUMNNAME_MovementDate);
 		//	Warehouse Org
 		if (newRecord)
 		{

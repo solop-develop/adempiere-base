@@ -26,6 +26,7 @@ import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
 import org.compiere.util.*;
 import org.solop.queue.storage.StorageUpdate;
+import org.solop.util.DocumentDateUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -916,6 +917,7 @@ public class MOrder extends X_C_Order implements DocAction
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
+		DocumentDateUtil.updateDateAcct(this, COLUMNNAME_DateOrdered);
 		//	Client/Org Check
 		if (getAD_Org_ID() == 0)
 		{
@@ -1092,6 +1094,7 @@ public class MOrder extends X_C_Order implements DocAction
 		if (newRecord || is_ValueChanged(COLUMNNAME_C_DocTypeTarget_ID)) {
 			setIsManualDocument(getC_DocTypeTarget().isGenerateManualDocument());
 		}
+
 		return true;
 	}	//	beforeSave
 	

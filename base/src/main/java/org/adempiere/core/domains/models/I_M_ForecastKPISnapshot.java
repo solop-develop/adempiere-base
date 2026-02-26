@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for M_ForecastKPISnapshot
  *  @author Adempiere (generated) 
@@ -90,7 +91,7 @@ public interface I_M_ForecastKPISnapshot
 	  */
 	public int getC_Period_ID();
 
-	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException;
+	public I_C_Period getC_Period() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -225,7 +226,7 @@ public interface I_M_ForecastKPISnapshot
 	  */
 	public int getM_Forecast_ID();
 
-	public org.adempiere.core.domains.models.I_M_Forecast getM_Forecast() throws RuntimeException;
+	public I_M_Forecast getM_Forecast() throws RuntimeException;
 
     /** Column name M_ForecastKPISnapshot_ID */
     public static final String COLUMNNAME_M_ForecastKPISnapshot_ID = "M_ForecastKPISnapshot_ID";

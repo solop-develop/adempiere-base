@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for M_ForecastLine
  *  @author Adempiere (generated) 
@@ -90,7 +91,7 @@ public interface I_M_ForecastLine
 	  */
 	public int getC_Period_ID();
 
-	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException;
+	public I_C_Period getC_Period() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -186,7 +187,7 @@ public interface I_M_ForecastLine
 	  */
 	public int getM_Forecast_ID();
 
-	public org.adempiere.core.domains.models.I_M_Forecast getM_Forecast() throws RuntimeException;
+	public I_M_Forecast getM_Forecast() throws RuntimeException;
 
     /** Column name M_ForecastLine_ID */
     public static final String COLUMNNAME_M_ForecastLine_ID = "M_ForecastLine_ID";
@@ -214,7 +215,7 @@ public interface I_M_ForecastLine
 	  */
 	public int getM_Product_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
+	public I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name M_Warehouse_ID */
     public static final String COLUMNNAME_M_Warehouse_ID = "M_Warehouse_ID";
@@ -229,7 +230,7 @@ public interface I_M_ForecastLine
 	  */
 	public int getM_Warehouse_ID();
 
-	public org.adempiere.core.domains.models.I_M_Warehouse getM_Warehouse() throws RuntimeException;
+	public I_M_Warehouse getM_Warehouse() throws RuntimeException;
 
     /** Column name PP_Period_ID */
     public static final String COLUMNNAME_PP_Period_ID = "PP_Period_ID";
@@ -244,7 +245,7 @@ public interface I_M_ForecastLine
 	  */
 	public int getPP_Period_ID();
 
-	public org.adempiere.core.domains.models.I_PP_Period getPP_Period() throws RuntimeException;
+	public I_PP_Period getPP_Period() throws RuntimeException;
 
     /** Column name Qty */
     public static final String COLUMNNAME_Qty = "Qty";
@@ -324,7 +325,7 @@ public interface I_M_ForecastLine
 	  */
 	public int getReviewedBy();
 
-	public org.adempiere.core.domains.models.I_AD_User getReviewe() throws RuntimeException;
+	public I_AD_User getReviewe() throws RuntimeException;
 
     /** Column name SalesRep_ID */
     public static final String COLUMNNAME_SalesRep_ID = "SalesRep_ID";
@@ -339,7 +340,7 @@ public interface I_M_ForecastLine
 	  */
 	public int getSalesRep_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+	public I_AD_User getSalesRep() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

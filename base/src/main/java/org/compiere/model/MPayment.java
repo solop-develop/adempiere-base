@@ -16,28 +16,14 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_BankStatementLine;
-import org.adempiere.core.domains.models.I_C_Payment;
-import org.adempiere.core.domains.models.X_C_BPartner;
-import org.adempiere.core.domains.models.X_C_DocType;
-import org.adempiere.core.domains.models.X_C_Order;
-import org.adempiere.core.domains.models.X_C_Payment;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.interfaces.PaymentProcessorReverse;
 import org.compiere.interfaces.PaymentProcessorStatus;
-import org.compiere.process.DocAction;
-import org.compiere.process.DocumentEngine;
-import org.compiere.process.DocumentReversalEnabled;
-import org.compiere.process.ProcessCall;
-import org.compiere.process.ProcessInfo;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.Trx;
-import org.compiere.util.Util;
-import org.compiere.util.ValueNamePair;
+import org.compiere.process.*;
+import org.compiere.util.*;
+import org.solop.util.DocumentDateUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -45,12 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -661,6 +642,7 @@ public final class MPayment extends X_C_Payment
 			log.saveError("Error", m_errorMessage);
 			return false;
 		}
+		DocumentDateUtil.updateDateAcct(this, COLUMNNAME_DateTrx);
 		// end @Trifon - CashPayments
 
 		//	We have a charge

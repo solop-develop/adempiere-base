@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for M_ForecastAdjustApp
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_M_ForecastAdjustApp
 	  */
 	public int getApprovedBy();
 
-	public org.adempiere.core.domains.models.I_AD_User getApprove() throws RuntimeException;
+	public I_AD_User getApprove() throws RuntimeException;
 
     /** Column name C_Period_ID */
     public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
@@ -92,7 +93,7 @@ public interface I_M_ForecastAdjustApp
 	  */
 	public int getC_Period_ID();
 
-	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException;
+	public I_C_Period getC_Period() throws RuntimeException;
 
     /** Column name C_Period_To_ID */
     public static final String COLUMNNAME_C_Period_To_ID = "C_Period_To_ID";
@@ -107,7 +108,7 @@ public interface I_M_ForecastAdjustApp
 	  */
 	public int getC_Period_To_ID();
 
-	public org.adempiere.core.domains.models.I_C_Period getC_Period_To() throws RuntimeException;
+	public I_C_Period getC_Period_To() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -221,7 +222,7 @@ public interface I_M_ForecastAdjustApp
 	/** Get Forecast Adjust Factor	  */
 	public int getM_ForecastAdjustFactor_ID();
 
-	public org.adempiere.core.domains.models.I_M_ForecastAdjustFactor getM_ForecastAdjustFactor() throws RuntimeException;
+	public I_M_ForecastAdjustFactor getM_ForecastAdjustFactor() throws RuntimeException;
 
     /** Column name M_Forecast_ID */
     public static final String COLUMNNAME_M_Forecast_ID = "M_Forecast_ID";
@@ -236,7 +237,7 @@ public interface I_M_ForecastAdjustApp
 	  */
 	public int getM_Forecast_ID();
 
-	public org.adempiere.core.domains.models.I_M_Forecast getM_Forecast() throws RuntimeException;
+	public I_M_Forecast getM_Forecast() throws RuntimeException;
 
     /** Column name M_ForecastLine_ID */
     public static final String COLUMNNAME_M_ForecastLine_ID = "M_ForecastLine_ID";
@@ -251,7 +252,7 @@ public interface I_M_ForecastAdjustApp
 	  */
 	public int getM_ForecastLine_ID();
 
-	public org.adempiere.core.domains.models.I_M_ForecastLine getM_ForecastLine() throws RuntimeException;
+	public I_M_ForecastLine getM_ForecastLine() throws RuntimeException;
 
     /** Column name M_Product_Category_ID */
     public static final String COLUMNNAME_M_Product_Category_ID = "M_Product_Category_ID";
@@ -266,7 +267,7 @@ public interface I_M_ForecastAdjustApp
 	  */
 	public int getM_Product_Category_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category() throws RuntimeException;
+	public I_M_Product_Category getM_Product_Category() throws RuntimeException;
 
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
@@ -281,7 +282,7 @@ public interface I_M_ForecastAdjustApp
 	  */
 	public int getM_Product_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
+	public I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

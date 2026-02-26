@@ -16,6 +16,17 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_GL_JournalLine;
+import org.adempiere.core.domains.models.X_GL_Journal;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.process.DocumentReversalEnabled;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.solop.util.DocumentDateUtil;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -24,16 +35,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_GL_JournalLine;
-import org.adempiere.core.domains.models.X_GL_Journal;
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.process.DocAction;
-import org.compiere.process.DocumentReversalEnabled;
-import org.compiere.process.DocumentEngine;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
 
 /**
  *  GL Journal Model
@@ -302,6 +303,7 @@ public class MJournal extends X_GL_Journal implements DocAction , DocumentRevers
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
+
 		//	Imported Journals may not have date
 		if (getDateDoc() == null)
 		{
@@ -312,7 +314,7 @@ public class MJournal extends X_GL_Journal implements DocAction , DocumentRevers
 		}
 		if (getDateAcct() == null)
 			setDateAcct(getDateDoc());
-		
+		DocumentDateUtil.updateDateAcct(this, COLUMNNAME_DateDoc);
 		// Update DateAcct on lines - teo_sarca BF [ 1775358 ]
 		if (is_ValueChanged(COLUMNNAME_DateAcct)) {
 			int no = DB.executeUpdate(
@@ -321,6 +323,7 @@ public class MJournal extends X_GL_Journal implements DocAction , DocumentRevers
 					false, get_TrxName());
 			log.finest("Updated GL_JournalLine.DateAcct #" + no);
 		}
+
 		return true;
 	}	//	beforeSave
 	
