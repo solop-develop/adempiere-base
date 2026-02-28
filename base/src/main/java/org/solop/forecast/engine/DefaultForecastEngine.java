@@ -150,37 +150,38 @@ public class DefaultForecastEngine implements IForecastEngine {
 		}
 
 		for (String level : levels) {
-			MForecastComparison comparison = resolveOrCreateComparison(ctx, productId, salesRepId, orgId, level, periodId, trxName);
-			//TODO: Validate if Comparisons should be create when not found
-			if (comparison == null) {
+			List<MForecastComparison> comparisons = resolveComparisons(ctx, productId, salesRepId, orgId, level, periodId, trxName);
+			if (comparisons.isEmpty()) {
+				log.fine("No comparisons found for product=" + productId + " level=" + level + " period=" + periodId);
 				continue;
 			}
 
+			for (MForecastComparison comparison : comparisons) {
+				// Accumulate actuals (multiplier-aware)
+				BigDecimal qtyActual = comparison.getQtyActual().add(qty.multiply(multiplier));
+				BigDecimal amtActual = comparison.getAmtActual().add(amount.multiply(multiplier));
+				comparison.setQtyActual(qtyActual);
+				comparison.setAmtActual(amtActual);
 
-			// Accumulate actuals (multiplier-aware)
-			BigDecimal qtyActual = comparison.getQtyActual().add(qty.multiply(multiplier));
-			BigDecimal amtActual = comparison.getAmtActual().add(amount.multiply(multiplier));
-			comparison.setQtyActual(qtyActual);
-			comparison.setAmtActual(amtActual);
+				// Create thin bridge fact: line reference + comparison link
+				MForecastFact fact = new MForecastFact(ctx, 0, trxName);
+				fact.setAD_Table_ID(lineTableId);
+				fact.setRecord_ID(lineRecordId);
+				fact.setAD_Org_ID(orgId);
+				fact.setM_ForecastComparison_ID(comparison.getM_ForecastComparison_ID());
 
-			// Create thin bridge fact: line reference + comparison link
-			MForecastFact fact = new MForecastFact(ctx, 0, trxName);
-			fact.setAD_Table_ID(lineTableId);
-			fact.setRecord_ID(lineRecordId);
-			fact.setAD_Org_ID(orgId);
-			fact.setM_ForecastComparison_ID(comparison.getM_ForecastComparison_ID());
+				// For FI level: link budget line and pull forecast amount
+				if (MClientInfo.FORECASTLEVEL_Financial.equals(level)) {
+					linkBudgetLine(ctx, fact, comparison, salesRepId, periodId, trxName);
+				}
 
-			// For FI level: link budget line and pull forecast amount
-			if (MClientInfo.FORECASTLEVEL_Financial.equals(level)) {
-				linkBudgetLine(ctx, fact, comparison, salesRepId, periodId, trxName);
+				// Calculate comparison metrics
+				calculateComparison(ctx, comparison, trxName);
+
+				// Save
+				comparison.saveEx();
+				fact.saveEx();
 			}
-
-			// Calculate comparison metrics
-			calculateComparison(ctx, comparison, trxName);
-
-			// Save
-			comparison.saveEx();
-			fact.saveEx();
 		}
 	}
 
@@ -266,19 +267,18 @@ public class DefaultForecastEngine implements IForecastEngine {
 	}
 
 	/**
-	 * Find or create a MForecastComparison.
+	 * Find all valid MForecastComparison records for a product/level/period.
+	 * A product can belong to multiple Forecasts, so we return ALL matching comparisons.
 	 * FI matches by SalesRep_ID + C_Period_ID.
 	 * CL matches by C_Period_ID + all 12 product grouping columns (NULL on comparison = wildcard).
 	 * OP matches by C_Period_ID + M_Product_ID only (product is the most granular level).
 	 */
-	private MForecastComparison resolveOrCreateComparison(Properties ctx, int productId,
+	private List<MForecastComparison> resolveComparisons(Properties ctx, int productId,
 			int salesRepId, int orgId, String level, int periodId, String trxName) {
 		StringBuilder whereClause = new StringBuilder("ForecastLevel=? AND C_Period_ID=? AND IsActive='Y'");
 		List<Object> params = new ArrayList<>();
 		params.add(level);
 		params.add(periodId);
-
-		Map<String, Integer> groupings = null;
 
 		if (MClientInfo.FORECASTLEVEL_Financial.equals(level)) {
 			// FI: match by SalesRep_ID
@@ -290,7 +290,7 @@ public class DefaultForecastEngine implements IForecastEngine {
 			params.add(productId);
 		} else {
 			// CL: match by all 12 product grouping columns
-			groupings = resolveProductGroupings(ctx, productId);
+			Map<String, Integer> groupings = resolveProductGroupings(ctx, productId);
 			for (String col : PRODUCT_GROUPING_COLUMNS) {
 				Integer val = groupings.get(col);
 				if (val != null) {
@@ -302,46 +302,10 @@ public class DefaultForecastEngine implements IForecastEngine {
 			}
 		}
 
-		MForecastComparison comparison = new Query(ctx, I_M_ForecastComparison.Table_Name,
+		return new Query(ctx, I_M_ForecastComparison.Table_Name,
 				whereClause.toString(), trxName)
 			.setParameters(params.toArray())
-			.first();
-/*TODO: Should validate for what Forecast we are calculating, should add Forecast Relation to Comparison, not only Forecast Line the recommendation was to create a Comparison when the product was not calculated in Forecast.
-		if (comparison == null) {
-			comparison = new MForecastComparison(ctx, 0, trxName);
-			comparison.set_ValueOfColumn("ForecastLevel", level);
-			comparison.setC_Period_ID(periodId);
-			comparison.setAD_Org_ID(orgId);
-
-			if (MClientInfo.FORECASTLEVEL_Financial.equals(level)) {
-				comparison.set_ValueOfColumn("SalesRep_ID", salesRepId);
-			} else if (MClientInfo.FORECASTLEVEL_Operational.equals(level)) {
-				// OP: set product + populate groupings for informational purposes
-				comparison.setM_Product_ID(productId);
-				Map<String, Integer> productGroupings = resolveProductGroupings(ctx, productId);
-				for (Map.Entry<String, Integer> entry : productGroupings.entrySet()) {
-					comparison.set_ValueOfColumn(entry.getKey(), entry.getValue());
-				}
-			} else {
-				// CL: set groupings from product
-				if (!groupings.isEmpty()) {
-					for (Map.Entry<String, Integer> entry : groupings.entrySet()) {
-						comparison.set_ValueOfColumn(entry.getKey(), entry.getValue());
-					}
-				}
-			}
-
-			// Initialize accumulators
-			comparison.setQtyActual(Env.ZERO);
-			comparison.setAmtActual(Env.ZERO);
-			comparison.setQtyForecast(Env.ZERO);
-			comparison.setAmtForecast(Env.ZERO);
-			comparison.saveEx();
-		}
-
- */
-
-		return comparison;
+			.list();
 	}
 
 	/**
