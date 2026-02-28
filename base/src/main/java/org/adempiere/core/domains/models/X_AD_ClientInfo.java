@@ -18,12 +18,13 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for AD_ClientInfo
  *  @author Adempiere (generated) 
@@ -34,10 +35,10 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260227L;
 
     /** Standard Constructor */
-    public X_AD_ClientInfo (Properties ctx, int AD_ClientInfo_ID, String trxName)
+    public X_AD_ClientInfo(Properties ctx, int AD_ClientInfo_ID, String trxName)
     {
       super (ctx, AD_ClientInfo_ID, trxName);
       /** if (AD_ClientInfo_ID == 0)
@@ -47,7 +48,7 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
     }
 
     /** Load Constructor */
-    public X_AD_ClientInfo (Properties ctx, ResultSet rs, String trxName)
+    public X_AD_ClientInfo(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -74,9 +75,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Activity() throws RuntimeException
+	public I_AD_Tree getAD_Tree_Activity() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Tree)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Tree.Table_Name)
+		return (I_AD_Tree)MTable.get(getCtx(), I_AD_Tree.Table_Name)
 			.getPO(getAD_Tree_Activity_ID(), get_TrxName());	}
 
 	/** Set Activity Tree.
@@ -102,9 +103,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_BPartner() throws RuntimeException
+	public I_AD_Tree getAD_Tree_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Tree)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Tree.Table_Name)
+		return (I_AD_Tree)MTable.get(getCtx(), I_AD_Tree.Table_Name)
 			.getPO(getAD_Tree_BPartner_ID(), get_TrxName());	}
 
 	/** Set BPartner Tree.
@@ -130,9 +131,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Campaign() throws RuntimeException
+	public I_AD_Tree getAD_Tree_Campaign() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Tree)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Tree.Table_Name)
+		return (I_AD_Tree)MTable.get(getCtx(), I_AD_Tree.Table_Name)
 			.getPO(getAD_Tree_Campaign_ID(), get_TrxName());	}
 
 	/** Set Campaign Tree.
@@ -158,9 +159,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Menu() throws RuntimeException
+	public I_AD_Tree getAD_Tree_Menu() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Tree)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Tree.Table_Name)
+		return (I_AD_Tree)MTable.get(getCtx(), I_AD_Tree.Table_Name)
 			.getPO(getAD_Tree_Menu_ID(), get_TrxName());	}
 
 	/** Set Menu Tree.
@@ -186,9 +187,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Org() throws RuntimeException
+	public I_AD_Tree getAD_Tree_Org() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Tree)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Tree.Table_Name)
+		return (I_AD_Tree)MTable.get(getCtx(), I_AD_Tree.Table_Name)
 			.getPO(getAD_Tree_Org_ID(), get_TrxName());	}
 
 	/** Set Organization Tree.
@@ -214,9 +215,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Product() throws RuntimeException
+	public I_AD_Tree getAD_Tree_Product() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Tree)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Tree.Table_Name)
+		return (I_AD_Tree)MTable.get(getCtx(), I_AD_Tree.Table_Name)
 			.getPO(getAD_Tree_Product_ID(), get_TrxName());	}
 
 	/** Set Product Tree.
@@ -242,9 +243,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Project() throws RuntimeException
+	public I_AD_Tree getAD_Tree_Project() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Tree)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Tree.Table_Name)
+		return (I_AD_Tree)MTable.get(getCtx(), I_AD_Tree.Table_Name)
 			.getPO(getAD_Tree_Project_ID(), get_TrxName());	}
 
 	/** Set Project Tree.
@@ -270,9 +271,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_SalesRegion() throws RuntimeException
+	public I_AD_Tree getAD_Tree_SalesRegion() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Tree)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Tree.Table_Name)
+		return (I_AD_Tree)MTable.get(getCtx(), I_AD_Tree.Table_Name)
 			.getPO(getAD_Tree_SalesRegion_ID(), get_TrxName());	}
 
 	/** Set Sales Region Tree.
@@ -298,9 +299,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_AcctSchema getC_AcctSchema1() throws RuntimeException
+	public I_C_AcctSchema getC_AcctSchema1() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_AcctSchema)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_AcctSchema.Table_Name)
+		return (I_C_AcctSchema)MTable.get(getCtx(), I_C_AcctSchema.Table_Name)
 			.getPO(getC_AcctSchema1_ID(), get_TrxName());	}
 
 	/** Set Primary Accounting Schema.
@@ -326,9 +327,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartnerCashTrx() throws RuntimeException
+	public I_C_BPartner getC_BPartnerCashTrx() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartnerCashTrx_ID(), get_TrxName());	}
 
 	/** Set Template B.Partner.
@@ -354,9 +355,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Calendar getC_Calendar() throws RuntimeException
+	public I_C_Calendar getC_Calendar() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Calendar)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Calendar.Table_Name)
+		return (I_C_Calendar)MTable.get(getCtx(), I_C_Calendar.Table_Name)
 			.getPO(getC_Calendar_ID(), get_TrxName());	}
 
 	/** Set Calendar.
@@ -382,9 +383,35 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM_Length() throws RuntimeException
+	/** ComparisonSource AD_Reference_ID=54589 */
+	public static final int COMPARISONSOURCE_AD_Reference_ID=54589;
+	/** Order = OR */
+	public static final String COMPARISONSOURCE_Order = "OR";
+	/** Shipment = SH */
+	public static final String COMPARISONSOURCE_Shipment = "SH";
+	/** Invoice = IN */
+	public static final String COMPARISONSOURCE_Invoice = "IN";
+	/** Set Comparison Source.
+		@param ComparisonSource 
+		Document source used for actual sales comparison
+	  */
+	public void setComparisonSource (String ComparisonSource)
+	{
+
+		set_Value (COLUMNNAME_ComparisonSource, ComparisonSource);
+	}
+
+	/** Get Comparison Source.
+		@return Document source used for actual sales comparison
+	  */
+	public String getComparisonSource () 
+	{
+		return (String)get_Value(COLUMNNAME_ComparisonSource);
+	}
+
+	public I_C_UOM getC_UOM_Length() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_UOM)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_UOM.Table_Name)
+		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
 			.getPO(getC_UOM_Length_ID(), get_TrxName());	}
 
 	/** Set UOM for Length.
@@ -410,9 +437,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM_Time() throws RuntimeException
+	public I_C_UOM getC_UOM_Time() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_UOM)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_UOM.Table_Name)
+		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
 			.getPO(getC_UOM_Time_ID(), get_TrxName());	}
 
 	/** Set UOM for Time.
@@ -438,9 +465,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM_Volume() throws RuntimeException
+	public I_C_UOM getC_UOM_Volume() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_UOM)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_UOM.Table_Name)
+		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
 			.getPO(getC_UOM_Volume_ID(), get_TrxName());	}
 
 	/** Set UOM for Volume.
@@ -466,9 +493,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM_Weight() throws RuntimeException
+	public I_C_UOM getC_UOM_Weight() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_UOM)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_UOM.Table_Name)
+		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
 			.getPO(getC_UOM_Weight_ID(), get_TrxName());	}
 
 	/** Set UOM for Weight.
@@ -494,9 +521,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_AppRegistration getFileHandler() throws RuntimeException
+	public I_AD_AppRegistration getFileHandler() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_AppRegistration)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_AppRegistration.Table_Name)
+		return (I_AD_AppRegistration)MTable.get(getCtx(), I_AD_AppRegistration.Table_Name)
 			.getPO(getFileHandler_ID(), get_TrxName());	}
 
 	/** Set File Handler.
@@ -520,6 +547,74 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** ForecastEngine AD_Reference_ID=54603 */
+	public static final int FORECASTENGINE_AD_Reference_ID=54603;
+	/** Default Forecast Engine = org.solop.util.DefaultForecastEngine */
+	public static final String FORECASTENGINE_DefaultForecastEngine = "org.solop.forecast.engine.DefaultForecastEngine";
+	/** Set Forecast Engine.
+		@param ForecastEngine Forecast Engine	  */
+	public void setForecastEngine (String ForecastEngine)
+	{
+
+		set_Value (COLUMNNAME_ForecastEngine, ForecastEngine);
+	}
+
+	/** Get Forecast Engine.
+		@return Forecast Engine	  */
+	public String getForecastEngine () 
+	{
+		return (String)get_Value(COLUMNNAME_ForecastEngine);
+	}
+
+	/** ForecastLevel AD_Reference_ID=54593 */
+	public static final int FORECASTLEVEL_AD_Reference_ID=54593;
+	/** Financial = FI */
+	public static final String FORECASTLEVEL_Financial = "FI";
+	/** Classification = CL */
+	public static final String FORECASTLEVEL_Classification = "CL";
+	/** Operational = OP */
+	public static final String FORECASTLEVEL_Operational = "OP";
+	/** Everything = EV */
+	public static final String FORECASTLEVEL_Everything = "EV";
+	/** Set Forecast Level.
+		@param ForecastLevel 
+		Financial, Commercial, or Operational forecast level
+	  */
+	public void setForecastLevel (String ForecastLevel)
+	{
+
+		set_Value (COLUMNNAME_ForecastLevel, ForecastLevel);
+	}
+
+	/** Get Forecast Level.
+		@return Financial, Commercial, or Operational forecast level
+	  */
+	public String getForecastLevel () 
+	{
+		return (String)get_Value(COLUMNNAME_ForecastLevel);
+	}
+
+	/** Set Calculates Forecast.
+		@param IsCalculateForecast Calculates Forecast	  */
+	public void setIsCalculateForecast (boolean IsCalculateForecast)
+	{
+		set_Value (COLUMNNAME_IsCalculateForecast, Boolean.valueOf(IsCalculateForecast));
+	}
+
+	/** Get Calculates Forecast.
+		@return Calculates Forecast	  */
+	public boolean isCalculateForecast () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsCalculateForecast);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Discount calculated from Line Amounts.
@@ -626,9 +721,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product getM_ProductFreight() throws RuntimeException
+	public I_M_Product getM_ProductFreight() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
 			.getPO(getM_ProductFreight_ID(), get_TrxName());	}
 
 	/** Set Product for Freight.
@@ -651,9 +746,9 @@ public class X_AD_ClientInfo extends PO implements I_AD_ClientInfo, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_R_MailText getRestorePassword_MailText() throws RuntimeException
+	public I_R_MailText getRestorePassword_MailText() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_R_MailText)MTable.get(getCtx(), org.adempiere.core.domains.models.I_R_MailText.Table_Name)
+		return (I_R_MailText)MTable.get(getCtx(), I_R_MailText.Table_Name)
 			.getPO(getRestorePassword_MailText_ID(), get_TrxName());	}
 
 	/** Set Restore Password Mail Text.

@@ -17,16 +17,26 @@
 package org.compiere.model;
 
 import org.adempiere.core.domains.models.*;
+import org.adempiere.engine.CostEngineFactory;
 import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.exceptions.BPartnerNoAddressException;
 import org.adempiere.exceptions.BPartnerNoBillToAddressException;
 import org.adempiere.exceptions.BPartnerNoShipToAddressException;
+import org.adempiere.exceptions.DBException;
 import org.adempiere.exceptions.FillMandatoryException;
+import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
+import org.compiere.process.DocumentReversalEnabled;
 import org.compiere.util.*;
+import org.eevolution.wms.model.MWMInOutBoundLine;
+import org.solop.queue.ForecastComparisonProcessor;
 import org.solop.queue.storage.StorageUpdate;
+import org.solop.util.AllocationManager;
 import org.solop.util.DocumentDateUtil;
+import org.solop.util.ReservationBuilder;
+import org.spin.queue.util.QueueLoader;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -38,8 +48,10 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 /**
@@ -2017,13 +2029,30 @@ public class MOrder extends X_C_Order implements DocAction
 		// Set the definite document number after completed (if needed)
 		setDefiniteDocumentNo();
 
-		setProcessed(true);	
+		setProcessed(true);
 		m_processMsg = info.toString();
 		//
+		addForecastQueue();
 		setDocAction(DOCACTION_Close);
 		return DocAction.STATUS_Completed;
 	}	//	completeIt
+	private void addForecastQueue(){
+		MClientInfo clientInfo = MClientInfo.get(getCtx(), getAD_Client_ID());
+		if (!clientInfo.isCalculateForecast()) {
+			return;
+		}
+		String comparisonSource = clientInfo.getComparisonSource();
+		String forecastLevel = clientInfo.getForecastLevel();
+		if (!MClientInfo.COMPARISONSOURCE_Order.equals(comparisonSource) || MClientInfo.FORECASTLEVEL_Financial.equals(forecastLevel)) {
+			return;
+		}
+		QueueLoader.getInstance().getQueueManager(ForecastComparisonProcessor.QueueType_ForecastComparison)
+				.withContext(getCtx())
+				.withTransactionName(get_TrxName())
+				.withEntity(get_Table_ID(), get_ID())
+				.addToQueue();
 
+	}
 	private void createDropShipmentOrder() {
 		if(!isSOTrx()) {
 			return;
