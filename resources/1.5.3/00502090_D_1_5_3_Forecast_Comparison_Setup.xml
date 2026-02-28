@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Forecast_Comparison_Setup" ReleaseNo="1.5.3" SeqNo="502090">
+    <Comments>Add Setup for Forecast Comparison</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="54786" Action="I" Record_ID="50134" Table="AD_SetupDefinition">
+        <Data AD_Column_ID="97364" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="97365" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97366" Column="AD_SetupDefinition_ID">50134</Data>
+        <Data AD_Column_ID="97367" Column="Classname">org.solop.queue.setup.ForecastComparisonSetup</Data>
+        <Data AD_Column_ID="97368" Column="Created">2026-02-26 20:49:14.68</Data>
+        <Data AD_Column_ID="97369" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97370" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="97371" Column="EntityType">D</Data>
+        <Data AD_Column_ID="97372" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="97373" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97374" Column="Name">Forecast Comparison Setup</Data>
+        <Data AD_Column_ID="97375" Column="Updated">2026-02-26 20:49:14.68</Data>
+        <Data AD_Column_ID="97376" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97377" Column="UUID">23218103-9b1a-420d-b238-4f25d77f35fe</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
