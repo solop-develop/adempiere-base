@@ -22,8 +22,11 @@ import org.compiere.model.MClientInfo;
 import org.compiere.model.MForecastComparison;
 import org.compiere.model.MForecastFact;
 import org.compiere.model.MForecastKPISnapshot;
+import org.compiere.model.MInOut;
 import org.compiere.model.MInOutLine;
+import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MProduct;
@@ -31,6 +34,7 @@ import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
+import org.compiere.util.Util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -215,15 +219,17 @@ public class DefaultForecastEngine implements IForecastEngine {
 	 * OR -> Order, SH -> Shipment, IN -> Invoice
 	 */
 	private boolean documentMatchesComparisonSource(int tableId, String comparisonSource) {
-		if (comparisonSource == null) {
+		if (Util.isEmpty(comparisonSource, true)) {
 			return false;
 		}
-        return switch (comparisonSource) {
-            case MClientInfo.COMPARISONSOURCE_Order -> MOrder.Table_ID == tableId;
-            case MClientInfo.COMPARISONSOURCE_Shipment -> MInOut.Table_ID == tableId;
-            case MClientInfo.COMPARISONSOURCE_Invoice -> MInvoice.Table_ID == tableId;
-            default -> false;
-        };
+		if (MClientInfo.COMPARISONSOURCE_Order.equals(comparisonSource)) {
+			return MOrder.Table_ID == tableId;
+		} else if (MClientInfo.COMPARISONSOURCE_Shipment.equals(comparisonSource)) {
+			return MInOut.Table_ID == tableId;
+		} else if (MClientInfo.COMPARISONSOURCE_Invoice.equals(comparisonSource)) {
+			return MInvoice.Table_ID == tableId;
+		}
+		return false;
 	}
 
 	/**
