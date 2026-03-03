@@ -24,10 +24,10 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /** Generated Interface for M_ForecastFact
- *  @author Adempiere (generated)
+ *  @author Adempiere (generated) 
  *  @version Release 3.9.4
  */
-public interface I_M_ForecastFact
+public interface I_M_ForecastFact 
 {
 
     /** TableName=M_ForecastFact */
@@ -38,7 +38,7 @@ public interface I_M_ForecastFact
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
-    /** AccessLevel = 3 - Client - Org
+    /** AccessLevel = 3 - Client - Org 
      */
     BigDecimal accessLevel = BigDecimal.valueOf(3);
 
@@ -96,16 +96,18 @@ public interface I_M_ForecastFact
 	  */
 	public int getCreatedBy();
 
-    /** Column name C_SalesBudgetLine_ID */
-    public static final String COLUMNNAME_C_SalesBudgetLine_ID = "C_SalesBudgetLine_ID";
+    /** Column name DateDoc */
+    public static final String COLUMNNAME_DateDoc = "DateDoc";
 
-	/** Set Sales Budget Line	  */
-	public void setC_SalesBudgetLine_ID (int C_SalesBudgetLine_ID);
+	/** Set Document Date.
+	  * Date of the Document
+	  */
+	public void setDateDoc (Timestamp DateDoc);
 
-	/** Get Sales Budget Line	  */
-	public int getC_SalesBudgetLine_ID();
-
-	public I_C_SalesBudgetLine getC_SalesBudgetLine() throws RuntimeException;
+	/** Get Document Date.
+	  * Date of the Document
+	  */
+	public Timestamp getDateDoc();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";

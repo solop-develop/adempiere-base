@@ -39,10 +39,10 @@ public class X_M_ForecastLine extends PO implements I_M_ForecastLine, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260227L;
+	private static final long serialVersionUID = 20260302L;
 
     /** Standard Constructor */
-    public X_M_ForecastLine (Properties ctx, int M_ForecastLine_ID, String trxName)
+    public X_M_ForecastLine(Properties ctx, int M_ForecastLine_ID, String trxName)
     {
       super (ctx, M_ForecastLine_ID, trxName);
       /** if (M_ForecastLine_ID == 0)
@@ -59,7 +59,7 @@ public class X_M_ForecastLine extends PO implements I_M_ForecastLine, I_Persiste
     }
 
     /** Load Constructor */
-    public X_M_ForecastLine (Properties ctx, ResultSet rs, String trxName)
+    public X_M_ForecastLine(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -85,6 +85,26 @@ public class X_M_ForecastLine extends PO implements I_M_ForecastLine, I_Persiste
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	/** Set Forecast Amount.
+		@param AmtForecast 
+		Forecasted amount for the period
+	  */
+	public void setAmtForecast (BigDecimal AmtForecast)
+	{
+		set_Value (COLUMNNAME_AmtForecast, AmtForecast);
+	}
+
+	/** Get Forecast Amount.
+		@return Forecasted amount for the period
+	  */
+	public BigDecimal getAmtForecast () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_AmtForecast);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
 
 	/** Set Confidence Level.
 		@param ConfidenceLevel 

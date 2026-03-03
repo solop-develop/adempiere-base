@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for M_ForecastComparison
  *  @author Adempiere (generated) 
@@ -130,7 +129,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getC_BPartner_ID();
 
-	public I_C_BPartner getC_BPartner() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name ComparisonSource */
     public static final String COLUMNNAME_ComparisonSource = "ComparisonSource";
@@ -158,7 +157,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getC_Period_ID();
 
-	public I_C_Period getC_Period() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -175,6 +174,28 @@ public interface I_M_ForecastComparison
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name C_SalesBudget_ID */
+    public static final String COLUMNNAME_C_SalesBudget_ID = "C_SalesBudget_ID";
+
+	/** Set Sales Budget	  */
+	public void setC_SalesBudget_ID (int C_SalesBudget_ID);
+
+	/** Get Sales Budget	  */
+	public int getC_SalesBudget_ID();
+
+	public org.adempiere.core.domains.models.I_C_SalesBudget getC_SalesBudget() throws RuntimeException;
+
+    /** Column name C_SalesBudgetLine_ID */
+    public static final String COLUMNNAME_C_SalesBudgetLine_ID = "C_SalesBudgetLine_ID";
+
+	/** Set Sales Budget Line	  */
+	public void setC_SalesBudgetLine_ID (int C_SalesBudgetLine_ID);
+
+	/** Get Sales Budget Line	  */
+	public int getC_SalesBudgetLine_ID();
+
+	public org.adempiere.core.domains.models.I_C_SalesBudgetLine getC_SalesBudgetLine() throws RuntimeException;
 
     /** Column name DateCalculated */
     public static final String COLUMNNAME_DateCalculated = "DateCalculated";
@@ -201,6 +222,19 @@ public interface I_M_ForecastComparison
 	  * Forecast accuracy percentage
 	  */
 	public BigDecimal getForecastAccuracy();
+
+    /** Column name ForecastLevel */
+    public static final String COLUMNNAME_ForecastLevel = "ForecastLevel";
+
+	/** Set Forecast Level.
+	  * Financial, Commercial, or Operational forecast level
+	  */
+	public void setForecastLevel (String ForecastLevel);
+
+	/** Get Forecast Level.
+	  * Financial, Commercial, or Operational forecast level
+	  */
+	public String getForecastLevel();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -250,7 +284,7 @@ public interface I_M_ForecastComparison
 	/** Get Product Brand	  */
 	public int getM_Brand_ID();
 
-	public I_M_Brand getM_Brand() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Brand getM_Brand() throws RuntimeException;
 
     /** Column name M_ForecastComparison_ID */
     public static final String COLUMNNAME_M_ForecastComparison_ID = "M_ForecastComparison_ID";
@@ -274,7 +308,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_Forecast_ID();
 
-	public I_M_Forecast getM_Forecast() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Forecast getM_Forecast() throws RuntimeException;
 
     /** Column name M_ForecastLine_ID */
     public static final String COLUMNNAME_M_ForecastLine_ID = "M_ForecastLine_ID";
@@ -289,7 +323,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_ForecastLine_ID();
 
-	public I_M_ForecastLine getM_ForecastLine() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_ForecastLine getM_ForecastLine() throws RuntimeException;
 
     /** Column name M_FreightCategory_ID */
     public static final String COLUMNNAME_M_FreightCategory_ID = "M_FreightCategory_ID";
@@ -304,7 +338,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_FreightCategory_ID();
 
-	public I_M_FreightCategory getM_FreightCategory() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_FreightCategory getM_FreightCategory() throws RuntimeException;
 
     /** Column name M_Industry_Sector_ID */
     public static final String COLUMNNAME_M_Industry_Sector_ID = "M_Industry_Sector_ID";
@@ -315,7 +349,7 @@ public interface I_M_ForecastComparison
 	/** Get Industry Sector	  */
 	public int getM_Industry_Sector_ID();
 
-	public I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException;
 
     /** Column name M_Material_Group_ID */
     public static final String COLUMNNAME_M_Material_Group_ID = "M_Material_Group_ID";
@@ -326,7 +360,7 @@ public interface I_M_ForecastComparison
 	/** Get Material Group	  */
 	public int getM_Material_Group_ID();
 
-	public I_M_Material_Group getM_Material_Group() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Material_Group getM_Material_Group() throws RuntimeException;
 
     /** Column name M_Material_Type_ID */
     public static final String COLUMNNAME_M_Material_Type_ID = "M_Material_Type_ID";
@@ -337,7 +371,7 @@ public interface I_M_ForecastComparison
 	/** Get Material Type	  */
 	public int getM_Material_Type_ID();
 
-	public I_M_Material_Type getM_Material_Type() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Material_Type getM_Material_Type() throws RuntimeException;
 
     /** Column name M_PartType_ID */
     public static final String COLUMNNAME_M_PartType_ID = "M_PartType_ID";
@@ -348,7 +382,7 @@ public interface I_M_ForecastComparison
 	/** Get Part Type	  */
 	public int getM_PartType_ID();
 
-	public I_M_PartType getM_PartType() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_PartType getM_PartType() throws RuntimeException;
 
     /** Column name M_Product_Category_ID */
     public static final String COLUMNNAME_M_Product_Category_ID = "M_Product_Category_ID";
@@ -363,7 +397,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_Product_Category_ID();
 
-	public I_M_Product_Category getM_Product_Category() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category() throws RuntimeException;
 
     /** Column name M_Product_Class_ID */
     public static final String COLUMNNAME_M_Product_Class_ID = "M_Product_Class_ID";
@@ -378,7 +412,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_Product_Class_ID();
 
-	public I_M_Product_Class getM_Product_Class() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Product_Class getM_Product_Class() throws RuntimeException;
 
     /** Column name M_Product_Classification_ID */
     public static final String COLUMNNAME_M_Product_Classification_ID = "M_Product_Classification_ID";
@@ -393,7 +427,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_Product_Classification_ID();
 
-	public I_M_Product_Classification getM_Product_Classification() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Product_Classification getM_Product_Classification() throws RuntimeException;
 
     /** Column name M_Product_Group_ID */
     public static final String COLUMNNAME_M_Product_Group_ID = "M_Product_Group_ID";
@@ -408,7 +442,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_Product_Group_ID();
 
-	public I_M_Product_Group getM_Product_Group() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Product_Group getM_Product_Group() throws RuntimeException;
 
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
@@ -423,7 +457,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getM_Product_ID();
 
-	public I_M_Product getM_Product() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name M_Purchase_Group_ID */
     public static final String COLUMNNAME_M_Purchase_Group_ID = "M_Purchase_Group_ID";
@@ -434,7 +468,7 @@ public interface I_M_ForecastComparison
 	/** Get Purchase Group	  */
 	public int getM_Purchase_Group_ID();
 
-	public I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException;
 
     /** Column name M_Sales_Group_ID */
     public static final String COLUMNNAME_M_Sales_Group_ID = "M_Sales_Group_ID";
@@ -445,7 +479,7 @@ public interface I_M_ForecastComparison
 	/** Get Sales Group	  */
 	public int getM_Sales_Group_ID();
 
-	public I_M_Sales_Group getM_Sales_Group() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_M_Sales_Group getM_Sales_Group() throws RuntimeException;
 
     /** Column name QtyActual */
     public static final String COLUMNNAME_QtyActual = "QtyActual";
@@ -525,7 +559,7 @@ public interface I_M_ForecastComparison
 	  */
 	public int getSalesRep_ID();
 
-	public I_AD_User getSalesRep() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

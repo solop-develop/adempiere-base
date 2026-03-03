@@ -24,18 +24,19 @@ import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 
 /** Generated Model for M_ForecastFact
- *  @author Adempiere (generated)
+ *  @author Adempiere (generated) 
  *  @version Release 3.9.4 - $Id$ */
-public class X_M_ForecastFact extends PO implements I_M_ForecastFact, I_Persistent
+public class X_M_ForecastFact extends PO implements I_M_ForecastFact, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260227L;
+	private static final long serialVersionUID = 20260303L;
 
     /** Standard Constructor */
     public X_M_ForecastFact(Properties ctx, int M_ForecastFact_ID, String trxName)
@@ -56,7 +57,7 @@ public class X_M_ForecastFact extends PO implements I_M_ForecastFact, I_Persiste
     }
 
     /** AccessLevel
-      * @return 3 - Client - Org
+      * @return 3 - Client - Org 
       */
     protected int get_AccessLevel()
     {
@@ -83,21 +84,21 @@ public class X_M_ForecastFact extends PO implements I_M_ForecastFact, I_Persiste
 			.getPO(getAD_Table_ID(), get_TrxName());	}
 
 	/** Set Table.
-		@param AD_Table_ID
+		@param AD_Table_ID 
 		Database Table information
 	  */
 	public void setAD_Table_ID (int AD_Table_ID)
 	{
-		if (AD_Table_ID < 1)
+		if (AD_Table_ID < 1) 
 			set_Value (COLUMNNAME_AD_Table_ID, null);
-		else
+		else 
 			set_Value (COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
 	}
 
 	/** Get Table.
 		@return Database Table information
 	  */
-	public int getAD_Table_ID ()
+	public int getAD_Table_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AD_Table_ID);
 		if (ii == null)
@@ -105,29 +106,23 @@ public class X_M_ForecastFact extends PO implements I_M_ForecastFact, I_Persiste
 		return ii.intValue();
 	}
 
-	public I_C_SalesBudgetLine getC_SalesBudgetLine() throws RuntimeException
-    {
-		return (I_C_SalesBudgetLine)MTable.get(getCtx(), I_C_SalesBudgetLine.Table_Name)
-			.getPO(getC_SalesBudgetLine_ID(), get_TrxName());	}
 
-	/** Set Sales Budget Line.
-		@param C_SalesBudgetLine_ID Sales Budget Line	  */
-	public void setC_SalesBudgetLine_ID (int C_SalesBudgetLine_ID)
+
+	/** Set Document Date.
+		@param DateDoc 
+		Date of the Document
+	  */
+	public void setDateDoc (Timestamp DateDoc)
 	{
-		if (C_SalesBudgetLine_ID < 1)
-			set_Value (COLUMNNAME_C_SalesBudgetLine_ID, null);
-		else
-			set_Value (COLUMNNAME_C_SalesBudgetLine_ID, Integer.valueOf(C_SalesBudgetLine_ID));
+		set_Value (COLUMNNAME_DateDoc, DateDoc);
 	}
 
-	/** Get Sales Budget Line.
-		@return Sales Budget Line	  */
-	public int getC_SalesBudgetLine_ID ()
+	/** Get Document Date.
+		@return Date of the Document
+	  */
+	public Timestamp getDateDoc () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_SalesBudgetLine_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		return (Timestamp)get_Value(COLUMNNAME_DateDoc);
 	}
 
 	public I_M_ForecastComparison getM_ForecastComparison() throws RuntimeException
@@ -139,15 +134,15 @@ public class X_M_ForecastFact extends PO implements I_M_ForecastFact, I_Persiste
 		@param M_ForecastComparison_ID Forecast Comparison	  */
 	public void setM_ForecastComparison_ID (int M_ForecastComparison_ID)
 	{
-		if (M_ForecastComparison_ID < 1)
+		if (M_ForecastComparison_ID < 1) 
 			set_Value (COLUMNNAME_M_ForecastComparison_ID, null);
-		else
+		else 
 			set_Value (COLUMNNAME_M_ForecastComparison_ID, Integer.valueOf(M_ForecastComparison_ID));
 	}
 
 	/** Get Forecast Comparison.
 		@return Forecast Comparison	  */
-	public int getM_ForecastComparison_ID ()
+	public int getM_ForecastComparison_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_M_ForecastComparison_ID);
 		if (ii == null)
@@ -159,15 +154,15 @@ public class X_M_ForecastFact extends PO implements I_M_ForecastFact, I_Persiste
 		@param M_ForecastFact_ID Forecast Fact	  */
 	public void setM_ForecastFact_ID (int M_ForecastFact_ID)
 	{
-		if (M_ForecastFact_ID < 1)
+		if (M_ForecastFact_ID < 1) 
 			set_ValueNoCheck (COLUMNNAME_M_ForecastFact_ID, null);
-		else
+		else 
 			set_ValueNoCheck (COLUMNNAME_M_ForecastFact_ID, Integer.valueOf(M_ForecastFact_ID));
 	}
 
 	/** Get Forecast Fact.
 		@return Forecast Fact	  */
-	public int getM_ForecastFact_ID ()
+	public int getM_ForecastFact_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_M_ForecastFact_ID);
 		if (ii == null)
@@ -176,21 +171,21 @@ public class X_M_ForecastFact extends PO implements I_M_ForecastFact, I_Persiste
 	}
 
 	/** Set Record ID.
-		@param Record_ID
+		@param Record_ID 
 		Direct internal record ID
 	  */
 	public void setRecord_ID (int Record_ID)
 	{
-		if (Record_ID < 0)
+		if (Record_ID < 0) 
 			set_Value (COLUMNNAME_Record_ID, null);
-		else
+		else 
 			set_Value (COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
 	}
 
 	/** Get Record ID.
 		@return Direct internal record ID
 	  */
-	public int getRecord_ID ()
+	public int getRecord_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_Record_ID);
 		if (ii == null)
@@ -199,7 +194,7 @@ public class X_M_ForecastFact extends PO implements I_M_ForecastFact, I_Persiste
 	}
 
 	/** Set Immutable Universally Unique Identifier.
-		@param UUID
+		@param UUID 
 		Immutable Universally Unique Identifier
 	  */
 	public void setUUID (String UUID)
@@ -210,7 +205,7 @@ public class X_M_ForecastFact extends PO implements I_M_ForecastFact, I_Persiste
 	/** Get Immutable Universally Unique Identifier.
 		@return Immutable Universally Unique Identifier
 	  */
-	public String getUUID ()
+	public String getUUID () 
 	{
 		return (String)get_Value(COLUMNNAME_UUID);
 	}

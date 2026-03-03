@@ -81,7 +81,6 @@ public class DefaultForecastEngine implements IForecastEngine {
 		MClientInfo clientInfo = MClientInfo.get(ctx);
 		String comparisonSource = clientInfo.getComparisonSource();
 		String forecastLevel = clientInfo.getForecastLevel();
-
 		List<String> levels = computeLevelsForDocument(tableId, comparisonSource, forecastLevel);
 		if (levels.isEmpty()) {
 			return;
@@ -152,8 +151,9 @@ public class DefaultForecastEngine implements IForecastEngine {
 		for (String level : levels) {
 			List<MForecastComparison> comparisons = resolveComparisons(ctx, productId, salesRepId, orgId, level, periodId, trxName);
 			if (comparisons.isEmpty()) {
-				log.fine("No comparisons found for product=" + productId + " level=" + level + " period=" + periodId);
-				continue;
+				log.fine("No comparisons found for product=" + productId
+					+ " level=" + level + " period=" + periodId + ". Creating new comparison.");
+				comparisons = createComparison(ctx, productId, salesRepId, orgId, level, periodId, trxName);
 			}
 
 			for (MForecastComparison comparison : comparisons) {
@@ -168,12 +168,8 @@ public class DefaultForecastEngine implements IForecastEngine {
 				fact.setAD_Table_ID(lineTableId);
 				fact.setRecord_ID(lineRecordId);
 				fact.setAD_Org_ID(orgId);
+				fact.setDateDoc(dateDoc);
 				fact.setM_ForecastComparison_ID(comparison.getM_ForecastComparison_ID());
-
-				// For FI level: link budget line and pull forecast amount
-				if (MClientInfo.FORECASTLEVEL_Financial.equals(level)) {
-					linkBudgetLine(ctx, fact, comparison, salesRepId, periodId, trxName);
-				}
 
 				// Calculate comparison metrics
 				calculateComparison(ctx, comparison, trxName);
@@ -267,6 +263,41 @@ public class DefaultForecastEngine implements IForecastEngine {
 	}
 
 	/**
+	 * Create a standalone ForecastComparison when none exists for the document line.
+	 * The comparison has zero forecast amounts so that actual sales without a forecast
+	 * are visible in reports as forecasting errors.
+	 */
+	private List<MForecastComparison> createComparison(Properties ctx, int productId,
+			int salesRepId, int orgId, String level, int periodId, String trxName) {
+		MForecastComparison comparison = new MForecastComparison(ctx, 0, trxName);
+		comparison.setForecastLevel(level);
+		comparison.setC_Period_ID(periodId);
+		comparison.setSalesRep_ID(salesRepId);
+		comparison.setAD_Org_ID(orgId);
+		comparison.setQtyForecast(Env.ZERO);
+		comparison.setAmtForecast(Env.ZERO);
+		comparison.setQtyActual(Env.ZERO);
+		comparison.setAmtActual(Env.ZERO);
+
+		if (MClientInfo.FORECASTLEVEL_Classification.equals(level)
+				|| MClientInfo.FORECASTLEVEL_Operational.equals(level)) {
+			Map<String, Integer> groupings = resolveProductGroupings(ctx, productId);
+			for (Map.Entry<String, Integer> entry : groupings.entrySet()) {
+				comparison.set_ValueOfColumn(entry.getKey(), entry.getValue());
+			}
+		}
+
+		if (MClientInfo.FORECASTLEVEL_Operational.equals(level)) {
+			comparison.setM_Product_ID(productId);
+		}
+
+		comparison.saveEx();
+		List<MForecastComparison> result = new ArrayList<>();
+		result.add(comparison);
+		return result;
+	}
+
+	/**
 	 * Find all valid MForecastComparison records for a product/level/period.
 	 * A product can belong to multiple Forecasts, so we return ALL matching comparisons.
 	 * FI matches by SalesRep_ID + C_Period_ID.
@@ -275,10 +306,11 @@ public class DefaultForecastEngine implements IForecastEngine {
 	 */
 	private List<MForecastComparison> resolveComparisons(Properties ctx, int productId,
 			int salesRepId, int orgId, String level, int periodId, String trxName) {
-		StringBuilder whereClause = new StringBuilder("ForecastLevel=? AND C_Period_ID=? AND IsActive='Y'");
+		StringBuilder whereClause = new StringBuilder("ForecastLevel=? AND C_Period_ID=? AND AD_Org_ID = ? AND IsActive='Y'");
 		List<Object> params = new ArrayList<>();
 		params.add(level);
 		params.add(periodId);
+		params.add(orgId);
 
 		if (MClientInfo.FORECASTLEVEL_Financial.equals(level)) {
 			// FI: match by SalesRep_ID
@@ -306,27 +338,6 @@ public class DefaultForecastEngine implements IForecastEngine {
 				whereClause.toString(), trxName)
 			.setParameters(params.toArray())
 			.list();
-	}
-
-	/**
-	 * For FI level: find matching C_SalesBudgetLine by (C_Period_ID, SalesRep_ID),
-	 * link it to the event and pull BudgetAmt into comparison's AmtForecast.
-	 */
-	private void linkBudgetLine(Properties ctx, MForecastFact event,
-			MForecastComparison comparison, int salesRepId,
-			int periodId, String trxName) {
-		PO budgetLine = new Query(ctx, "C_SalesBudgetLine",
-				"C_Period_ID=? AND SalesRep_ID=? AND IsActive='Y'", trxName)
-			.setParameters(periodId, salesRepId)
-			.first();
-
-		if (budgetLine != null) {
-			event.setC_SalesBudgetLine_ID(budgetLine.get_ID());
-			BigDecimal budgetAmt = (BigDecimal) budgetLine.get_Value("BudgetAmt");
-			if (budgetAmt != null) {
-				comparison.setAmtForecast(budgetAmt);
-			}
-		}
 	}
 
 	@Override
@@ -360,19 +371,18 @@ public class DefaultForecastEngine implements IForecastEngine {
 		// MAD = |Actual - Forecast| (Mean Absolute Deviation for single line)
 		BigDecimal mad = amtVariance.abs();
 		comparison.setMAD(mad);
-
-		// MAPE = |Actual - Forecast| / |Forecast| * 100  (if Forecast != 0)
-		if (amtForecast.signum() != 0) {
-			BigDecimal mape = amtVariance.abs()
-					.multiply(Env.ONEHUNDRED)
-					.divide(amtForecast.abs(), PERCENTAGE_SCALE, RoundingMode.HALF_UP);
+		BigDecimal mape = Env.ZERO;
+		// MAPE = |Actual - Forecast| / |Actual| * 100  (if Forecast != 0)
+		if (amtActual.signum() != 0) {
+			mape = amtVariance.abs()
+				.divide(amtActual.abs(), 4, RoundingMode.HALF_UP)
+				.multiply(Env.ONEHUNDRED);
 			comparison.setMAPE(mape);
-		} else {
-			comparison.setMAPE(Env.ZERO);
+		} else if (amtForecast.signum() != 0) {
+			mape = Env.ONEHUNDRED;
 		}
 
 		// ForecastAccuracy = max(0, 100 - MAPE)
-		BigDecimal mape = comparison.getMAPE() != null ? comparison.getMAPE() : Env.ZERO;
 		BigDecimal forecastAccuracy = Env.ONEHUNDRED.subtract(mape).max(Env.ZERO);
 		comparison.setForecastAccuracy(forecastAccuracy);
 

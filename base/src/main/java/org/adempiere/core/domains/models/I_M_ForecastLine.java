@@ -65,6 +65,19 @@ public interface I_M_ForecastLine
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name AmtForecast */
+    public static final String COLUMNNAME_AmtForecast = "AmtForecast";
+
+	/** Set Forecast Amount.
+	  * Forecasted amount for the period
+	  */
+	public void setAmtForecast (BigDecimal AmtForecast);
+
+	/** Get Forecast Amount.
+	  * Forecasted amount for the period
+	  */
+	public BigDecimal getAmtForecast();
+
     /** Column name ConfidenceLevel */
     public static final String COLUMNNAME_ConfidenceLevel = "ConfidenceLevel";
 

@@ -97,7 +97,7 @@ public class ForecastComparisonSetup implements ISetupDefinition {
 			schedulerParameter.setAD_Org_ID(0);
 			schedulerParameter.setAD_Scheduler_ID(scheduler.getAD_Scheduler_ID());
 			schedulerParameter.setAD_Process_Para_ID(parameter.getAD_Process_Para_ID());
-			schedulerParameter.setParameterDefault("50016");
+			schedulerParameter.setParameterDefault("50017");
 			schedulerParameter.saveEx();
 		});
 	}
