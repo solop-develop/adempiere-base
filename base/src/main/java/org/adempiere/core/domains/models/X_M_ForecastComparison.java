@@ -38,7 +38,7 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260224L;
+	private static final long serialVersionUID = 20260305L;
 
     /** Standard Constructor */
     public X_M_ForecastComparison (Properties ctx, int M_ForecastComparison_ID, String trxName)
@@ -48,8 +48,6 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
         {
 			setC_Period_ID (0);
 			setM_ForecastComparison_ID (0);
-			setM_Forecast_ID (0);
-			setM_Product_ID (0);
 			setQtyActual (Env.ZERO);
 // 0
 			setQtyForecast (Env.ZERO);
@@ -193,6 +191,34 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
+	public I_C_Currency getC_Currency() throws RuntimeException
+    {
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
+			.getPO(getC_Currency_ID(), get_TrxName());	}
+
+	/** Set Currency.
+		@param C_Currency_ID 
+		The Currency for this record
+	  */
+	public void setC_Currency_ID (int C_Currency_ID)
+	{
+		if (C_Currency_ID < 1) 
+			set_Value (COLUMNNAME_C_Currency_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+	}
+
+	/** Get Currency.
+		@return The Currency for this record
+	  */
+	public int getC_Currency_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Currency_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** ComparisonSource AD_Reference_ID=54589 */
 	public static final int COMPARISONSOURCE_AD_Reference_ID=54589;
 	/** Order = OR */
@@ -247,6 +273,56 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
+	public I_C_SalesBudget getC_SalesBudget() throws RuntimeException
+    {
+		return (I_C_SalesBudget)MTable.get(getCtx(), I_C_SalesBudget.Table_Name)
+			.getPO(getC_SalesBudget_ID(), get_TrxName());	}
+
+	/** Set Sales Budget.
+		@param C_SalesBudget_ID Sales Budget	  */
+	public void setC_SalesBudget_ID (int C_SalesBudget_ID)
+	{
+		if (C_SalesBudget_ID < 1) 
+			set_Value (COLUMNNAME_C_SalesBudget_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_SalesBudget_ID, Integer.valueOf(C_SalesBudget_ID));
+	}
+
+	/** Get Sales Budget.
+		@return Sales Budget	  */
+	public int getC_SalesBudget_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_SalesBudget_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_SalesBudgetLine getC_SalesBudgetLine() throws RuntimeException
+    {
+		return (I_C_SalesBudgetLine)MTable.get(getCtx(), I_C_SalesBudgetLine.Table_Name)
+			.getPO(getC_SalesBudgetLine_ID(), get_TrxName());	}
+
+	/** Set Sales Budget Line.
+		@param C_SalesBudgetLine_ID Sales Budget Line	  */
+	public void setC_SalesBudgetLine_ID (int C_SalesBudgetLine_ID)
+	{
+		if (C_SalesBudgetLine_ID < 1) 
+			set_Value (COLUMNNAME_C_SalesBudgetLine_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_SalesBudgetLine_ID, Integer.valueOf(C_SalesBudgetLine_ID));
+	}
+
+	/** Get Sales Budget Line.
+		@return Sales Budget Line	  */
+	public int getC_SalesBudgetLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_SalesBudgetLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Date Calculated.
 		@param DateCalculated 
 		Date the comparison metrics were calculated
@@ -282,6 +358,34 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** ForecastLevel AD_Reference_ID=54593 */
+	public static final int FORECASTLEVEL_AD_Reference_ID=54593;
+	/** Financial = FI */
+	public static final String FORECASTLEVEL_Financial = "FI";
+	/** Classification = CL */
+	public static final String FORECASTLEVEL_Classification = "CL";
+	/** Operational = OP */
+	public static final String FORECASTLEVEL_Operational = "OP";
+	/** Everything = EV */
+	public static final String FORECASTLEVEL_Everything = "EV";
+	/** Set Forecast Level.
+		@param ForecastLevel 
+		Financial, Commercial, or Operational forecast level
+	  */
+	public void setForecastLevel (String ForecastLevel)
+	{
+
+		set_Value (COLUMNNAME_ForecastLevel, ForecastLevel);
+	}
+
+	/** Get Forecast Level.
+		@return Financial, Commercial, or Operational forecast level
+	  */
+	public String getForecastLevel () 
+	{
+		return (String)get_Value(COLUMNNAME_ForecastLevel);
 	}
 
 	/** Set MAD.
@@ -322,6 +426,31 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	public I_M_Brand getM_Brand() throws RuntimeException
+    {
+		return (I_M_Brand)MTable.get(getCtx(), I_M_Brand.Table_Name)
+			.getPO(getM_Brand_ID(), get_TrxName());	}
+
+	/** Set Product Brand.
+		@param M_Brand_ID Product Brand	  */
+	public void setM_Brand_ID (int M_Brand_ID)
+	{
+		if (M_Brand_ID < 1) 
+			set_Value (COLUMNNAME_M_Brand_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Brand_ID, Integer.valueOf(M_Brand_ID));
+	}
+
+	/** Get Product Brand.
+		@return Product Brand	  */
+	public int getM_Brand_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Brand_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Forecast Comparison.
@@ -400,6 +529,246 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
+	public I_M_FreightCategory getM_FreightCategory() throws RuntimeException
+    {
+		return (I_M_FreightCategory)MTable.get(getCtx(), I_M_FreightCategory.Table_Name)
+			.getPO(getM_FreightCategory_ID(), get_TrxName());	}
+
+	/** Set Freight Category.
+		@param M_FreightCategory_ID 
+		Category of the Freight
+	  */
+	public void setM_FreightCategory_ID (int M_FreightCategory_ID)
+	{
+		if (M_FreightCategory_ID < 1) 
+			set_Value (COLUMNNAME_M_FreightCategory_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_FreightCategory_ID, Integer.valueOf(M_FreightCategory_ID));
+	}
+
+	/** Get Freight Category.
+		@return Category of the Freight
+	  */
+	public int getM_FreightCategory_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_FreightCategory_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException
+    {
+		return (I_M_Industry_Sector)MTable.get(getCtx(), I_M_Industry_Sector.Table_Name)
+			.getPO(getM_Industry_Sector_ID(), get_TrxName());	}
+
+	/** Set Industry Sector.
+		@param M_Industry_Sector_ID Industry Sector	  */
+	public void setM_Industry_Sector_ID (int M_Industry_Sector_ID)
+	{
+		if (M_Industry_Sector_ID < 1) 
+			set_Value (COLUMNNAME_M_Industry_Sector_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Industry_Sector_ID, Integer.valueOf(M_Industry_Sector_ID));
+	}
+
+	/** Get Industry Sector.
+		@return Industry Sector	  */
+	public int getM_Industry_Sector_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Industry_Sector_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Material_Group getM_Material_Group() throws RuntimeException
+    {
+		return (I_M_Material_Group)MTable.get(getCtx(), I_M_Material_Group.Table_Name)
+			.getPO(getM_Material_Group_ID(), get_TrxName());	}
+
+	/** Set Material Group.
+		@param M_Material_Group_ID Material Group	  */
+	public void setM_Material_Group_ID (int M_Material_Group_ID)
+	{
+		if (M_Material_Group_ID < 1) 
+			set_Value (COLUMNNAME_M_Material_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Material_Group_ID, Integer.valueOf(M_Material_Group_ID));
+	}
+
+	/** Get Material Group.
+		@return Material Group	  */
+	public int getM_Material_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Material_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Material_Type getM_Material_Type() throws RuntimeException
+    {
+		return (I_M_Material_Type)MTable.get(getCtx(), I_M_Material_Type.Table_Name)
+			.getPO(getM_Material_Type_ID(), get_TrxName());	}
+
+	/** Set Material Type.
+		@param M_Material_Type_ID Material Type	  */
+	public void setM_Material_Type_ID (int M_Material_Type_ID)
+	{
+		if (M_Material_Type_ID < 1) 
+			set_Value (COLUMNNAME_M_Material_Type_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Material_Type_ID, Integer.valueOf(M_Material_Type_ID));
+	}
+
+	/** Get Material Type.
+		@return Material Type	  */
+	public int getM_Material_Type_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Material_Type_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_PartType getM_PartType() throws RuntimeException
+    {
+		return (I_M_PartType)MTable.get(getCtx(), I_M_PartType.Table_Name)
+			.getPO(getM_PartType_ID(), get_TrxName());	}
+
+	/** Set Part Type.
+		@param M_PartType_ID Part Type	  */
+	public void setM_PartType_ID (int M_PartType_ID)
+	{
+		if (M_PartType_ID < 1) 
+			set_Value (COLUMNNAME_M_PartType_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_PartType_ID, Integer.valueOf(M_PartType_ID));
+	}
+
+	/** Get Part Type.
+		@return Part Type	  */
+	public int getM_PartType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_PartType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Product_Category getM_Product_Category() throws RuntimeException
+    {
+		return (I_M_Product_Category)MTable.get(getCtx(), I_M_Product_Category.Table_Name)
+			.getPO(getM_Product_Category_ID(), get_TrxName());	}
+
+	/** Set Product Category.
+		@param M_Product_Category_ID 
+		Category of a Product
+	  */
+	public void setM_Product_Category_ID (int M_Product_Category_ID)
+	{
+		if (M_Product_Category_ID < 1) 
+			set_Value (COLUMNNAME_M_Product_Category_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Product_Category_ID, Integer.valueOf(M_Product_Category_ID));
+	}
+
+	/** Get Product Category.
+		@return Category of a Product
+	  */
+	public int getM_Product_Category_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_Category_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Product_Class getM_Product_Class() throws RuntimeException
+    {
+		return (I_M_Product_Class)MTable.get(getCtx(), I_M_Product_Class.Table_Name)
+			.getPO(getM_Product_Class_ID(), get_TrxName());	}
+
+	/** Set Product Class.
+		@param M_Product_Class_ID 
+		Class of a Product
+	  */
+	public void setM_Product_Class_ID (int M_Product_Class_ID)
+	{
+		if (M_Product_Class_ID < 1) 
+			set_Value (COLUMNNAME_M_Product_Class_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Product_Class_ID, Integer.valueOf(M_Product_Class_ID));
+	}
+
+	/** Get Product Class.
+		@return Class of a Product
+	  */
+	public int getM_Product_Class_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_Class_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Product_Classification getM_Product_Classification() throws RuntimeException
+    {
+		return (I_M_Product_Classification)MTable.get(getCtx(), I_M_Product_Classification.Table_Name)
+			.getPO(getM_Product_Classification_ID(), get_TrxName());	}
+
+	/** Set Product Classification.
+		@param M_Product_Classification_ID 
+		Classification of a Product
+	  */
+	public void setM_Product_Classification_ID (int M_Product_Classification_ID)
+	{
+		if (M_Product_Classification_ID < 1) 
+			set_Value (COLUMNNAME_M_Product_Classification_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Product_Classification_ID, Integer.valueOf(M_Product_Classification_ID));
+	}
+
+	/** Get Product Classification.
+		@return Classification of a Product
+	  */
+	public int getM_Product_Classification_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_Classification_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Product_Group getM_Product_Group() throws RuntimeException
+    {
+		return (I_M_Product_Group)MTable.get(getCtx(), I_M_Product_Group.Table_Name)
+			.getPO(getM_Product_Group_ID(), get_TrxName());	}
+
+	/** Set Product Group.
+		@param M_Product_Group_ID 
+		Group of a Product
+	  */
+	public void setM_Product_Group_ID (int M_Product_Group_ID)
+	{
+		if (M_Product_Group_ID < 1) 
+			set_Value (COLUMNNAME_M_Product_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Product_Group_ID, Integer.valueOf(M_Product_Group_ID));
+	}
+
+	/** Get Product Group.
+		@return Group of a Product
+	  */
+	public int getM_Product_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public I_M_Product getM_Product() throws RuntimeException
     {
 		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
@@ -423,6 +792,56 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 	public int getM_Product_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException
+    {
+		return (I_M_Purchase_Group)MTable.get(getCtx(), I_M_Purchase_Group.Table_Name)
+			.getPO(getM_Purchase_Group_ID(), get_TrxName());	}
+
+	/** Set Purchase Group.
+		@param M_Purchase_Group_ID Purchase Group	  */
+	public void setM_Purchase_Group_ID (int M_Purchase_Group_ID)
+	{
+		if (M_Purchase_Group_ID < 1) 
+			set_Value (COLUMNNAME_M_Purchase_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Purchase_Group_ID, Integer.valueOf(M_Purchase_Group_ID));
+	}
+
+	/** Get Purchase Group.
+		@return Purchase Group	  */
+	public int getM_Purchase_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Purchase_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_M_Sales_Group getM_Sales_Group() throws RuntimeException
+    {
+		return (I_M_Sales_Group)MTable.get(getCtx(), I_M_Sales_Group.Table_Name)
+			.getPO(getM_Sales_Group_ID(), get_TrxName());	}
+
+	/** Set Sales Group.
+		@param M_Sales_Group_ID Sales Group	  */
+	public void setM_Sales_Group_ID (int M_Sales_Group_ID)
+	{
+		if (M_Sales_Group_ID < 1) 
+			set_Value (COLUMNNAME_M_Sales_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Sales_Group_ID, Integer.valueOf(M_Sales_Group_ID));
+	}
+
+	/** Get Sales Group.
+		@return Sales Group	  */
+	public int getM_Sales_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Sales_Group_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -527,6 +946,34 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 	public String getReviewNotes () 
 	{
 		return (String)get_Value(COLUMNNAME_ReviewNotes);
+	}
+
+	public I_AD_User getSalesRep() throws RuntimeException
+    {
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
+			.getPO(getSalesRep_ID(), get_TrxName());	}
+
+	/** Set Sales Representative.
+		@param SalesRep_ID 
+		Sales Representative or Company Agent
+	  */
+	public void setSalesRep_ID (int SalesRep_ID)
+	{
+		if (SalesRep_ID < 1) 
+			set_Value (COLUMNNAME_SalesRep_ID, null);
+		else 
+			set_Value (COLUMNNAME_SalesRep_ID, Integer.valueOf(SalesRep_ID));
+	}
+
+	/** Get Sales Representative.
+		@return Sales Representative or Company Agent
+	  */
+	public int getSalesRep_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SalesRep_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Immutable Universally Unique Identifier.

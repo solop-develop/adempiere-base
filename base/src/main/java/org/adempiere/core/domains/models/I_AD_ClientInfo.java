@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for AD_ClientInfo
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getAD_Tree_Activity_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Activity() throws RuntimeException;
+	public I_AD_Tree getAD_Tree_Activity() throws RuntimeException;
 
     /** Column name AD_Tree_BPartner_ID */
     public static final String COLUMNNAME_AD_Tree_BPartner_ID = "AD_Tree_BPartner_ID";
@@ -92,7 +93,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getAD_Tree_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_BPartner() throws RuntimeException;
+	public I_AD_Tree getAD_Tree_BPartner() throws RuntimeException;
 
     /** Column name AD_Tree_Campaign_ID */
     public static final String COLUMNNAME_AD_Tree_Campaign_ID = "AD_Tree_Campaign_ID";
@@ -107,7 +108,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getAD_Tree_Campaign_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Campaign() throws RuntimeException;
+	public I_AD_Tree getAD_Tree_Campaign() throws RuntimeException;
 
     /** Column name AD_Tree_Menu_ID */
     public static final String COLUMNNAME_AD_Tree_Menu_ID = "AD_Tree_Menu_ID";
@@ -122,7 +123,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getAD_Tree_Menu_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Menu() throws RuntimeException;
+	public I_AD_Tree getAD_Tree_Menu() throws RuntimeException;
 
     /** Column name AD_Tree_Org_ID */
     public static final String COLUMNNAME_AD_Tree_Org_ID = "AD_Tree_Org_ID";
@@ -137,7 +138,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getAD_Tree_Org_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Org() throws RuntimeException;
+	public I_AD_Tree getAD_Tree_Org() throws RuntimeException;
 
     /** Column name AD_Tree_Product_ID */
     public static final String COLUMNNAME_AD_Tree_Product_ID = "AD_Tree_Product_ID";
@@ -152,7 +153,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getAD_Tree_Product_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Product() throws RuntimeException;
+	public I_AD_Tree getAD_Tree_Product() throws RuntimeException;
 
     /** Column name AD_Tree_Project_ID */
     public static final String COLUMNNAME_AD_Tree_Project_ID = "AD_Tree_Project_ID";
@@ -167,7 +168,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getAD_Tree_Project_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_Project() throws RuntimeException;
+	public I_AD_Tree getAD_Tree_Project() throws RuntimeException;
 
     /** Column name AD_Tree_SalesRegion_ID */
     public static final String COLUMNNAME_AD_Tree_SalesRegion_ID = "AD_Tree_SalesRegion_ID";
@@ -182,7 +183,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getAD_Tree_SalesRegion_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Tree getAD_Tree_SalesRegion() throws RuntimeException;
+	public I_AD_Tree getAD_Tree_SalesRegion() throws RuntimeException;
 
     /** Column name C_AcctSchema1_ID */
     public static final String COLUMNNAME_C_AcctSchema1_ID = "C_AcctSchema1_ID";
@@ -197,7 +198,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getC_AcctSchema1_ID();
 
-	public org.adempiere.core.domains.models.I_C_AcctSchema getC_AcctSchema1() throws RuntimeException;
+	public I_C_AcctSchema getC_AcctSchema1() throws RuntimeException;
 
     /** Column name C_BPartnerCashTrx_ID */
     public static final String COLUMNNAME_C_BPartnerCashTrx_ID = "C_BPartnerCashTrx_ID";
@@ -212,7 +213,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getC_BPartnerCashTrx_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartnerCashTrx() throws RuntimeException;
+	public I_C_BPartner getC_BPartnerCashTrx() throws RuntimeException;
 
     /** Column name C_Calendar_ID */
     public static final String COLUMNNAME_C_Calendar_ID = "C_Calendar_ID";
@@ -227,7 +228,20 @@ public interface I_AD_ClientInfo
 	  */
 	public int getC_Calendar_ID();
 
-	public org.adempiere.core.domains.models.I_C_Calendar getC_Calendar() throws RuntimeException;
+	public I_C_Calendar getC_Calendar() throws RuntimeException;
+
+    /** Column name ComparisonSource */
+    public static final String COLUMNNAME_ComparisonSource = "ComparisonSource";
+
+	/** Set Comparison Source.
+	  * Document source used for actual sales comparison
+	  */
+	public void setComparisonSource (String ComparisonSource);
+
+	/** Get Comparison Source.
+	  * Document source used for actual sales comparison
+	  */
+	public String getComparisonSource();
 
     /** Column name C_UOM_Length_ID */
     public static final String COLUMNNAME_C_UOM_Length_ID = "C_UOM_Length_ID";
@@ -242,7 +256,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getC_UOM_Length_ID();
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM_Length() throws RuntimeException;
+	public I_C_UOM getC_UOM_Length() throws RuntimeException;
 
     /** Column name C_UOM_Time_ID */
     public static final String COLUMNNAME_C_UOM_Time_ID = "C_UOM_Time_ID";
@@ -257,7 +271,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getC_UOM_Time_ID();
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM_Time() throws RuntimeException;
+	public I_C_UOM getC_UOM_Time() throws RuntimeException;
 
     /** Column name C_UOM_Volume_ID */
     public static final String COLUMNNAME_C_UOM_Volume_ID = "C_UOM_Volume_ID";
@@ -272,7 +286,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getC_UOM_Volume_ID();
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM_Volume() throws RuntimeException;
+	public I_C_UOM getC_UOM_Volume() throws RuntimeException;
 
     /** Column name C_UOM_Weight_ID */
     public static final String COLUMNNAME_C_UOM_Weight_ID = "C_UOM_Weight_ID";
@@ -287,7 +301,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getC_UOM_Weight_ID();
 
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM_Weight() throws RuntimeException;
+	public I_C_UOM getC_UOM_Weight() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -318,7 +332,29 @@ public interface I_AD_ClientInfo
 	  */
 	public int getFileHandler_ID();
 
-	public org.adempiere.core.domains.models.I_AD_AppRegistration getFileHandler() throws RuntimeException;
+	public I_AD_AppRegistration getFileHandler() throws RuntimeException;
+
+    /** Column name ForecastEngine */
+    public static final String COLUMNNAME_ForecastEngine = "ForecastEngine";
+
+	/** Set Forecast Engine	  */
+	public void setForecastEngine (String ForecastEngine);
+
+	/** Get Forecast Engine	  */
+	public String getForecastEngine();
+
+    /** Column name ForecastLevel */
+    public static final String COLUMNNAME_ForecastLevel = "ForecastLevel";
+
+	/** Set Forecast Level.
+	  * Financial, Commercial, or Operational forecast level
+	  */
+	public void setForecastLevel (String ForecastLevel);
+
+	/** Get Forecast Level.
+	  * Financial, Commercial, or Operational forecast level
+	  */
+	public String getForecastLevel();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -332,6 +368,15 @@ public interface I_AD_ClientInfo
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name IsCalculateForecast */
+    public static final String COLUMNNAME_IsCalculateForecast = "IsCalculateForecast";
+
+	/** Set Calculates Forecast	  */
+	public void setIsCalculateForecast (boolean IsCalculateForecast);
+
+	/** Get Calculates Forecast	  */
+	public boolean isCalculateForecast();
 
     /** Column name IsDiscountLineAmt */
     public static final String COLUMNNAME_IsDiscountLineAmt = "IsDiscountLineAmt";
@@ -395,7 +440,7 @@ public interface I_AD_ClientInfo
 	/** Get Product for Freight	  */
 	public int getM_ProductFreight_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getM_ProductFreight() throws RuntimeException;
+	public I_M_Product getM_ProductFreight() throws RuntimeException;
 
     /** Column name RestorePassword_MailText_ID */
     public static final String COLUMNNAME_RestorePassword_MailText_ID = "RestorePassword_MailText_ID";
@@ -410,7 +455,7 @@ public interface I_AD_ClientInfo
 	  */
 	public int getRestorePassword_MailText_ID();
 
-	public org.adempiere.core.domains.models.I_R_MailText getRestorePassword_MailText() throws RuntimeException;
+	public I_R_MailText getRestorePassword_MailText() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

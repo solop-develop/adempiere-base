@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="SalesBudget_DocBaseType" ReleaseNo="1.5.3" SeqNo="502170">
+    <Comments>Add DocBaseType Sales Budget (SB1) for C_SalesBudget</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="104" Action="I" Record_ID="56547" Table="AD_Ref_List">
+        <Data AD_Column_ID="371" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="372" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="151" Column="AD_Reference_ID">183</Data>
+        <Data AD_Column_ID="148" Column="AD_Ref_List_ID">56547</Data>
+        <Data AD_Column_ID="564" Column="Created">2026-03-03 11:20:04.83</Data>
+        <Data AD_Column_ID="565" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="150" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="7712" Column="EntityType">D</Data>
+        <Data AD_Column_ID="563" Column="IsActive">true</Data>
+        <Data AD_Column_ID="149" Column="Name">Forecast Comparison</Data>
+        <Data AD_Column_ID="566" Column="Updated">2026-03-03 11:20:04.83</Data>
+        <Data AD_Column_ID="567" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84390" Column="UUID">2345087d-092b-4f6e-9f14-d94283ff4f83</Data>
+        <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
+        <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
+        <Data AD_Column_ID="200" Column="Value">FCC</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="136" Action="I" Record_ID="0" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="1215" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="337" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1216" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID">56547</Data>
+        <Data AD_Column_ID="707" Column="Created">2026-03-03 11:20:06.019</Data>
+        <Data AD_Column_ID="708" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="339" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="706" Column="IsActive">true</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="338" Column="Name">Forecast Comparison</Data>
+        <Data AD_Column_ID="709" Column="Updated">2026-03-03 11:20:06.019</Data>
+        <Data AD_Column_ID="710" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84391" Column="UUID">fe166ba1-70e9-4d0f-bb38-f72c2843bf6c</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="136" Action="U" Record_ID="0" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="337" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID" oldValue="56547">56547</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="338" Column="Name" oldValue="Forecast Comparison">Comparación de Pronóstico</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="104" Action="U" Record_ID="56547" Table="AD_Ref_List">
+        <Data AD_Column_ID="149" Column="Name" oldValue="Forecast Comparison">Sales Budget</Data>
+        <Data AD_Column_ID="200" Column="Value" oldValue="FCC">SB1</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="136" Action="U" Record_ID="0" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="337" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID" oldValue="56547">56547</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="136" Action="U" Record_ID="0" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="337" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID" oldValue="56547">56547</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="338" Column="Name" oldValue="Comparación de Pronóstico">Presupuesto de Ventas</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="54810" Action="I" Record_ID="50049" Table="C_DocBaseType">
+        <Data AD_Column_ID="97944" Column="AccountingClassname" isNewNull="true"/>
+        <Data AD_Column_ID="97941" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="97942" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97943" Column="AD_Table_ID">55081</Data>
+        <Data AD_Column_ID="97945" Column="C_DocBaseType_ID">50049</Data>
+        <Data AD_Column_ID="97946" Column="Created">2026-03-03 11:23:57.058</Data>
+        <Data AD_Column_ID="97947" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97948" Column="Description">Sales Budget</Data>
+        <Data AD_Column_ID="97949" Column="DocBaseType">SB1</Data>
+        <Data AD_Column_ID="97950" Column="EntityType">D</Data>
+        <Data AD_Column_ID="97951" Column="Help">Use this for Sales Budget</Data>
+        <Data AD_Column_ID="97952" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97953" Column="IsDefault">true</Data>
+        <Data AD_Column_ID="97954" Column="Name">Sales Budget</Data>
+        <Data AD_Column_ID="97956" Column="Updated">2026-03-03 11:23:57.058</Data>
+        <Data AD_Column_ID="97957" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97955" Column="UUID">78e9f6d1-0701-4bfa-a8fa-c810c3839050</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="54811" Action="I" Record_ID="0" Table="C_DocBaseType_Trl">
+        <Data AD_Column_ID="97958" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="97959" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="97960" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97961" Column="C_DocBaseType_ID">50049</Data>
+        <Data AD_Column_ID="97962" Column="Created">2026-03-03 11:23:58.152</Data>
+        <Data AD_Column_ID="97963" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97964" Column="Description">Sales Budget</Data>
+        <Data AD_Column_ID="97965" Column="Help">Use this for Sales Budget</Data>
+        <Data AD_Column_ID="97966" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97967" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="97968" Column="Name">Sales Budget</Data>
+        <Data AD_Column_ID="97970" Column="Updated">2026-03-03 11:23:58.152</Data>
+        <Data AD_Column_ID="97971" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97969" Column="UUID">09cfcdf9-b5e5-435b-b411-de113dc8c8c2</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="54811" Action="U" Record_ID="0" Table="C_DocBaseType_Trl">
+        <Data AD_Column_ID="97959" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="97961" Column="C_DocBaseType_ID" oldValue="50049">50049</Data>
+        <Data AD_Column_ID="97964" Column="Description" oldValue="Sales Budget">Presupuesto de Ventas</Data>
+        <Data AD_Column_ID="97965" Column="Help" oldValue="Use this for Sales Budget">Usar para Presupuesto de Ventas</Data>
+        <Data AD_Column_ID="97967" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="97968" Column="Name" oldValue="Sales Budget">Presupuesto de Ventas</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

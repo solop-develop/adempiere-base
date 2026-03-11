@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Forecast_Comparison_Queue_Type" ReleaseNo="1.5.3" SeqNo="502080">
+    <Comments>Add Queue Type for Forecast Comparison</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="104" Action="I" Record_ID="56545" Table="AD_Ref_List">
+        <Data AD_Column_ID="371" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="372" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="151" Column="AD_Reference_ID">54274</Data>
+        <Data AD_Column_ID="148" Column="AD_Ref_List_ID">56545</Data>
+        <Data AD_Column_ID="564" Column="Created">2026-02-26 20:45:26.558</Data>
+        <Data AD_Column_ID="565" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="150" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="7712" Column="EntityType">D</Data>
+        <Data AD_Column_ID="563" Column="IsActive">true</Data>
+        <Data AD_Column_ID="149" Column="Name">Forecast Comparison</Data>
+        <Data AD_Column_ID="566" Column="Updated">2026-02-26 20:45:26.558</Data>
+        <Data AD_Column_ID="567" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84390" Column="UUID">bf0c2406-6e97-42fb-a8c4-dd8aff31e0bc</Data>
+        <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
+        <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
+        <Data AD_Column_ID="200" Column="Value">FCC</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="136" Action="I" Record_ID="0" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="1215" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="337" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1216" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID">56545</Data>
+        <Data AD_Column_ID="707" Column="Created">2026-02-26 20:45:27.469</Data>
+        <Data AD_Column_ID="708" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="339" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="706" Column="IsActive">true</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="338" Column="Name">Forecast Comparison</Data>
+        <Data AD_Column_ID="709" Column="Updated">2026-02-26 20:45:27.469</Data>
+        <Data AD_Column_ID="710" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84391" Column="UUID">18cc0b69-1e64-48b6-98c9-12d7526ba2fe</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="136" Action="U" Record_ID="0" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="337" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID" oldValue="56545">56545</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="338" Column="Name" oldValue="Forecast Comparison">Comparación de Pronóstico</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="54843" Action="I" Record_ID="50017" Table="AD_QueueType">
+        <Data AD_Column_ID="98903" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="98904" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="98902" Column="AD_QueueType_ID">50017</Data>
+        <Data AD_Column_ID="98911" Column="Classname">org.solop.queue.ForecastComparisonProcessor</Data>
+        <Data AD_Column_ID="98906" Column="Created">2026-02-26 20:46:33.214</Data>
+        <Data AD_Column_ID="98908" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="98914" Column="Description">Update Forecast Comparisons</Data>
+        <Data AD_Column_ID="98915" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="98905" Column="IsActive">true</Data>
+        <Data AD_Column_ID="104312" Column="IsIgnoreError">true</Data>
+        <Data AD_Column_ID="102257" Column="IsParallelProcessing">false</Data>
+        <Data AD_Column_ID="98912" Column="Name">Forecast Comparison</Data>
+        <Data AD_Column_ID="98916" Column="QueueType">FCC</Data>
+        <Data AD_Column_ID="99065" Column="TimeUnit">I</Data>
+        <Data AD_Column_ID="98907" Column="Updated">2026-02-26 20:46:33.214</Data>
+        <Data AD_Column_ID="98909" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="98910" Column="UUID">7f1da415-e631-4b52-8df8-5089d3ac197e</Data>
+        <Data AD_Column_ID="98913" Column="Value">FCC</Data>
+        <Data AD_Column_ID="99064" Column="WaitingTime">5</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

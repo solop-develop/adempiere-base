@@ -38,7 +38,7 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260224L;
+	private static final long serialVersionUID = 20260305L;
 
     /** Standard Constructor */
     public X_M_Forecast (Properties ctx, int M_Forecast_ID, String trxName)
@@ -131,6 +131,34 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 	public int getC_Campaign_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_Campaign_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Currency getC_Currency() throws RuntimeException
+    {
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
+			.getPO(getC_Currency_ID(), get_TrxName());	}
+
+	/** Set Currency.
+		@param C_Currency_ID 
+		The Currency for this record
+	  */
+	public void setC_Currency_ID (int C_Currency_ID)
+	{
+		if (C_Currency_ID < 1) 
+			set_Value (COLUMNNAME_C_Currency_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+	}
+
+	/** Get Currency.
+		@return The Currency for this record
+	  */
+	public int getC_Currency_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Currency_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -270,6 +298,8 @@ public class X_M_Forecast extends PO implements I_M_Forecast, I_Persistent
 	public static final String FORECASTLEVEL_Classification = "CL";
 	/** Operational = OP */
 	public static final String FORECASTLEVEL_Operational = "OP";
+	/** Everything = EV */
+	public static final String FORECASTLEVEL_Everything = "EV";
 	/** Set Forecast Level.
 		@param ForecastLevel 
 		Financial, Commercial, or Operational forecast level

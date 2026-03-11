@@ -28,8 +28,10 @@ import org.compiere.process.DocumentEngine;
 import org.compiere.process.DocumentReversalEnabled;
 import org.compiere.util.*;
 import org.eevolution.wms.model.MWMInOutBoundLine;
+import org.solop.queue.ForecastComparisonProcessor;
 import org.solop.util.AllocationManager;
 import org.solop.util.DocumentDateUtil;
+import org.spin.queue.util.QueueLoader;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -2243,9 +2245,30 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		if (hasAllocation) {
 			testAllocation();
 		}
+		addForecastQueue();
 		setDocAction(DOCACTION_Close);
 		return DocAction.STATUS_Completed;
 	}	//	completeIt
+
+	private void addForecastQueue(){
+		MClientInfo clientInfo = MClientInfo.get(getCtx(), getAD_Client_ID());
+		if (!clientInfo.isCalculateForecast()) {
+			return;
+		}
+		String comparisonSource = clientInfo.getComparisonSource();
+		String forecastLevel = clientInfo.getForecastLevel();
+		if (!MClientInfo.COMPARISONSOURCE_Invoice.equals(comparisonSource)
+				&& !MClientInfo.FORECASTLEVEL_Financial.equals(forecastLevel)
+				&& !MClientInfo.FORECASTLEVEL_Everything.equals(forecastLevel)) {
+			return;
+		}
+		QueueLoader.getInstance().getQueueManager(ForecastComparisonProcessor.QueueType_ForecastComparison)
+				.withContext(getCtx())
+				.withTransactionName(get_TrxName())
+				.withEntity(get_Table_ID(), get_ID())
+				.addToQueue();
+
+	}
 
 	/* Save array of documents to process AFTER completing this one */
 	ArrayList<PO> docsPostProcess = new ArrayList<PO>();

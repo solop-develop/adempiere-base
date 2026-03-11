@@ -28,9 +28,11 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Util;
 import org.eevolution.wms.model.MWMInOutBoundLine;
+import org.solop.queue.ForecastComparisonProcessor;
 import org.solop.queue.storage.StorageUpdate;
 import org.solop.util.DocumentDateUtil;
 import org.solop.util.ReservationBuilder;
+import org.spin.queue.util.QueueLoader;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -1649,9 +1651,28 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 
 		processMsg = info.toString();
 		setProcessed(true);
+
+		addForecastQueue();
 		setDocAction(DOCACTION_Close);
 		return DocAction.STATUS_Completed;
 	}	//	completeIt
+	private void addForecastQueue(){
+		MClientInfo clientInfo = MClientInfo.get(getCtx(), getAD_Client_ID());
+		if (!clientInfo.isCalculateForecast()) {
+			return;
+		}
+		String comparisonSource = clientInfo.getComparisonSource();
+		String forecastLevel = clientInfo.getForecastLevel();
+		if (!MClientInfo.COMPARISONSOURCE_Shipment.equals(comparisonSource) || MClientInfo.FORECASTLEVEL_Financial.equals(forecastLevel)) {
+			return;
+		}
+		QueueLoader.getInstance().getQueueManager(ForecastComparisonProcessor.QueueType_ForecastComparison)
+				.withContext(getCtx())
+				.withTransactionName(get_TrxName())
+				.withEntity(get_Table_ID(), get_ID())
+				.addToQueue();
+
+	}
 
 	private void setInoutBoundLineValues(MInOutLine inOutLine) {
 		MWMInOutBoundLine outboundLine = new MWMInOutBoundLine(inOutLine.getCtx(), inOutLine.getWM_InOutBoundLine_ID(), get_TrxName());

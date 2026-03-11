@@ -65,6 +65,19 @@ public interface I_M_ForecastLine
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name AmtForecast */
+    public static final String COLUMNNAME_AmtForecast = "AmtForecast";
+
+	/** Set Forecast Amount.
+	  * Forecasted amount for the period
+	  */
+	public void setAmtForecast (BigDecimal AmtForecast);
+
+	/** Get Forecast Amount.
+	  * Forecasted amount for the period
+	  */
+	public BigDecimal getAmtForecast();
+
     /** Column name ConfidenceLevel */
     public static final String COLUMNNAME_ConfidenceLevel = "ConfidenceLevel";
 
@@ -174,6 +187,17 @@ public interface I_M_ForecastLine
 	  */
 	public boolean isActive();
 
+    /** Column name M_Brand_ID */
+    public static final String COLUMNNAME_M_Brand_ID = "M_Brand_ID";
+
+	/** Set Product Brand	  */
+	public void setM_Brand_ID (int M_Brand_ID);
+
+	/** Get Product Brand	  */
+	public int getM_Brand_ID();
+
+	public I_M_Brand getM_Brand() throws RuntimeException;
+
     /** Column name M_Forecast_ID */
     public static final String COLUMNNAME_M_Forecast_ID = "M_Forecast_ID";
 
@@ -202,6 +226,125 @@ public interface I_M_ForecastLine
 	  */
 	public int getM_ForecastLine_ID();
 
+    /** Column name M_FreightCategory_ID */
+    public static final String COLUMNNAME_M_FreightCategory_ID = "M_FreightCategory_ID";
+
+	/** Set Freight Category.
+	  * Category of the Freight
+	  */
+	public void setM_FreightCategory_ID (int M_FreightCategory_ID);
+
+	/** Get Freight Category.
+	  * Category of the Freight
+	  */
+	public int getM_FreightCategory_ID();
+
+	public I_M_FreightCategory getM_FreightCategory() throws RuntimeException;
+
+    /** Column name M_Industry_Sector_ID */
+    public static final String COLUMNNAME_M_Industry_Sector_ID = "M_Industry_Sector_ID";
+
+	/** Set Industry Sector	  */
+	public void setM_Industry_Sector_ID (int M_Industry_Sector_ID);
+
+	/** Get Industry Sector	  */
+	public int getM_Industry_Sector_ID();
+
+	public I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException;
+
+    /** Column name M_Material_Group_ID */
+    public static final String COLUMNNAME_M_Material_Group_ID = "M_Material_Group_ID";
+
+	/** Set Material Group	  */
+	public void setM_Material_Group_ID (int M_Material_Group_ID);
+
+	/** Get Material Group	  */
+	public int getM_Material_Group_ID();
+
+	public I_M_Material_Group getM_Material_Group() throws RuntimeException;
+
+    /** Column name M_Material_Type_ID */
+    public static final String COLUMNNAME_M_Material_Type_ID = "M_Material_Type_ID";
+
+	/** Set Material Type	  */
+	public void setM_Material_Type_ID (int M_Material_Type_ID);
+
+	/** Get Material Type	  */
+	public int getM_Material_Type_ID();
+
+	public I_M_Material_Type getM_Material_Type() throws RuntimeException;
+
+    /** Column name M_PartType_ID */
+    public static final String COLUMNNAME_M_PartType_ID = "M_PartType_ID";
+
+	/** Set Part Type	  */
+	public void setM_PartType_ID (int M_PartType_ID);
+
+	/** Get Part Type	  */
+	public int getM_PartType_ID();
+
+	public I_M_PartType getM_PartType() throws RuntimeException;
+
+    /** Column name M_Product_Category_ID */
+    public static final String COLUMNNAME_M_Product_Category_ID = "M_Product_Category_ID";
+
+	/** Set Product Category.
+	  * Category of a Product
+	  */
+	public void setM_Product_Category_ID (int M_Product_Category_ID);
+
+	/** Get Product Category.
+	  * Category of a Product
+	  */
+	public int getM_Product_Category_ID();
+
+	public I_M_Product_Category getM_Product_Category() throws RuntimeException;
+
+    /** Column name M_Product_Class_ID */
+    public static final String COLUMNNAME_M_Product_Class_ID = "M_Product_Class_ID";
+
+	/** Set Product Class.
+	  * Class of a Product
+	  */
+	public void setM_Product_Class_ID (int M_Product_Class_ID);
+
+	/** Get Product Class.
+	  * Class of a Product
+	  */
+	public int getM_Product_Class_ID();
+
+	public I_M_Product_Class getM_Product_Class() throws RuntimeException;
+
+    /** Column name M_Product_Classification_ID */
+    public static final String COLUMNNAME_M_Product_Classification_ID = "M_Product_Classification_ID";
+
+	/** Set Product Classification.
+	  * Classification of a Product
+	  */
+	public void setM_Product_Classification_ID (int M_Product_Classification_ID);
+
+	/** Get Product Classification.
+	  * Classification of a Product
+	  */
+	public int getM_Product_Classification_ID();
+
+	public I_M_Product_Classification getM_Product_Classification() throws RuntimeException;
+
+    /** Column name M_Product_Group_ID */
+    public static final String COLUMNNAME_M_Product_Group_ID = "M_Product_Group_ID";
+
+	/** Set Product Group.
+	  * Group of a Product
+	  */
+	public void setM_Product_Group_ID (int M_Product_Group_ID);
+
+	/** Get Product Group.
+	  * Group of a Product
+	  */
+	public int getM_Product_Group_ID();
+
+	public I_M_Product_Group getM_Product_Group() throws RuntimeException;
+
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
 
@@ -216,6 +359,28 @@ public interface I_M_ForecastLine
 	public int getM_Product_ID();
 
 	public I_M_Product getM_Product() throws RuntimeException;
+
+    /** Column name M_Purchase_Group_ID */
+    public static final String COLUMNNAME_M_Purchase_Group_ID = "M_Purchase_Group_ID";
+
+	/** Set Purchase Group	  */
+	public void setM_Purchase_Group_ID (int M_Purchase_Group_ID);
+
+	/** Get Purchase Group	  */
+	public int getM_Purchase_Group_ID();
+
+	public I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException;
+
+    /** Column name M_Sales_Group_ID */
+    public static final String COLUMNNAME_M_Sales_Group_ID = "M_Sales_Group_ID";
+
+	/** Set Sales Group	  */
+	public void setM_Sales_Group_ID (int M_Sales_Group_ID);
+
+	/** Get Sales Group	  */
+	public int getM_Sales_Group_ID();
+
+	public I_M_Sales_Group getM_Sales_Group() throws RuntimeException;
 
     /** Column name M_Warehouse_ID */
     public static final String COLUMNNAME_M_Warehouse_ID = "M_Warehouse_ID";
