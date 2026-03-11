@@ -204,6 +204,9 @@ dependencies {
     api 'org.apache.axis:axis:1.4'
     api 'javax.xml.soap:javax.xml.soap-api:1.4.0'
     api 'com.squareup.okhttp3:okhttp:5.0.0-alpha.16'
+    // GraalVM JavaScript engine (JSR-223, JDK 17+)
+    api 'org.graalvm.js:js:23.0.0'
+    api 'org.graalvm.js:js-scriptengine:23.0.0'
 }
 
 def entityType = 'D'

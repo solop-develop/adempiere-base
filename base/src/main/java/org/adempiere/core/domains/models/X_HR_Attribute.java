@@ -1229,8 +1229,43 @@ public class X_HR_Attribute extends PO implements I_HR_Attribute, I_Persistent
 		return (String)get_Value(COLUMNNAME_UUID);
 	}
 
+	/** CalculationTypeValue AD_Reference_ID=54580 */
+	public static final int CALCULATIONTYPEVALUE_AD_Reference_ID = 54580;
+	/** Expression = E */
+	public static final String CALCULATIONTYPEVALUE_Expression = "E";
+	/** Script = S */
+	public static final String CALCULATIONTYPEVALUE_Script = "S";
+
+	/** Set Calculation Type.
+		@param CalculationTypeValue Calculation Type	*/
+	public void setCalculationTypeValue (String CalculationTypeValue)
+	{
+		set_Value (COLUMNNAME_CalculationTypeValue, CalculationTypeValue);
+	}
+
+	/** Get Calculation Type.
+		@return Calculation Type	*/
+	public String getCalculationTypeValue ()
+	{
+		return (String) get_Value (COLUMNNAME_CalculationTypeValue);
+	}
+
+	/** Set Expression.
+		@param Expression Mathematical/conditional expression evaluated in Java	*/
+	public void setExpression (String Expression)
+	{
+		set_Value (COLUMNNAME_Expression, Expression);
+	}
+
+	/** Get Expression.
+		@return Mathematical/conditional expression evaluated in Java	*/
+	public String getExpression ()
+	{
+		return (String) get_Value (COLUMNNAME_Expression);
+	}
+
 	/** Set Valid from.
-		@param ValidFrom 
+		@param ValidFrom
 		Valid from including this date (first day)
 	  */
 	public void setValidFrom (Timestamp ValidFrom)
