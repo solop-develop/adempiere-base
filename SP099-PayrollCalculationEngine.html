@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SP099 — Motor de Cálculo Embebido en HR_Attribute</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #1e293b;
+      background: #f8fafc;
+    }
+
+    /* ── Layout ───────────────────────────────────────────────── */
+    .page { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* ── Cover ────────────────────────────────────────────────── */
+    .cover {
+      background: linear-gradient(135deg, #1e40af 0%, #0ea5e9 100%);
+      color: #fff;
+      padding: 64px 48px 56px;
+      border-radius: 0 0 24px 24px;
+      margin-bottom: 48px;
+    }
+    .cover .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 99px;
+      padding: 4px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .cover h1 { font-size: 2.6rem; font-weight: 800; line-height: 1.2; margin-bottom: 12px; }
+    .cover .subtitle { font-size: 1.15rem; opacity: 0.85; margin-bottom: 32px; }
+    .cover .meta { display: flex; gap: 32px; flex-wrap: wrap; font-size: 13px; opacity: 0.75; }
+    .cover .meta strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; opacity: 0.8; }
+
+    /* ── TOC ──────────────────────────────────────────────────── */
+    .toc {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+    .toc h2 { font-size: 1rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 16px; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin: 6px 0; }
+    .toc a { color: #1e40af; text-decoration: none; font-weight: 500; }
+    .toc a:hover { text-decoration: underline; }
+    .toc .sub { padding-left: 20px; list-style: disc; }
+    .toc .sub li { font-size: 13.5px; color: #475569; }
+
+    /* ── Sections ─────────────────────────────────────────────── */
+    section { margin-bottom: 56px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .section-num {
+      background: #1e40af;
+      color: #fff;
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px;
+      flex-shrink: 0;
+    }
+    h2.section-title { font-size: 1.5rem; font-weight: 700; color: #0f172a; }
+    h3 { font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 28px 0 10px; }
+    h4 { font-size: 0.95rem; font-weight: 700; color: #334155; margin: 20px 0 8px; }
+    p { margin-bottom: 12px; color: #334155; }
+    ul, ol { margin: 8px 0 12px 24px; }
+    li { margin: 4px 0; color: #334155; }
+
+    /* ── Cards & Boxes ────────────────────────────────────────── */
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      color: #1e40af;
+      font-size: 14px;
+    }
+    .warn-box {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      color: #92400e;
+      font-size: 14px;
+    }
+    .success-box {
+      background: #f0fdf4;
+      border-left: 4px solid #22c55e;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      color: #166534;
+      font-size: 14px;
+    }
+    .danger-box {
+      background: #fff1f2;
+      border-left: 4px solid #ef4444;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      color: #991b1b;
+      font-size: 14px;
+    }
+
+    /* ── Tables ───────────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; margin: 16px 0 24px; border-radius: 10px; border: 1px solid #e2e8f0; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead { background: #f1f5f9; }
+    th { padding: 12px 16px; text-align: left; font-weight: 700; color: #475569; font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; border-bottom: 1px solid #e2e8f0; }
+    td { padding: 11px 16px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
+    code { font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; font-size: 12.5px; background: #f1f5f9; border-radius: 4px; padding: 1px 6px; color: #0f172a; }
+    td code { font-size: 12px; }
+
+    /* ── Code blocks ──────────────────────────────────────────── */
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 16px 0 20px;
+    }
+    pre .comment  { color: #64748b; }
+    pre .keyword  { color: #7dd3fc; }
+    pre .string   { color: #86efac; }
+    pre .number   { color: #fca5a5; }
+    pre .fn       { color: #fde68a; }
+    pre .type     { color: #c4b5fd; }
+    pre .var      { color: #fb923c; }
+    pre .op       { color: #94a3b8; }
+
+    /* ── Architecture diagram ─────────────────────────────────── */
+    .arch {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 28px 32px;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      margin: 20px 0;
+    }
+    .arch .a-blue   { color: #7dd3fc; }
+    .arch .a-green  { color: #86efac; }
+    .arch .a-yellow { color: #fde68a; }
+    .arch .a-orange { color: #fb923c; }
+    .arch .a-purple { color: #c4b5fd; }
+    .arch .a-red    { color: #fca5a5; }
+    .arch .a-dim    { color: #475569; }
+
+    /* ── Example blocks ───────────────────────────────────────── */
+    .example {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .example-header {
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .example-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .badge-expr  { background: #dbeafe; color: #1e40af; }
+    .badge-js    { background: #fef9c3; color: #854d0e; }
+    .badge-groovy{ background: #dcfce7; color: #166534; }
+    .badge-bs    { background: #fce7f3; color: #9d174d; }
+    .example-title { font-weight: 600; font-size: 14px; color: #1e293b; }
+    .example-body { padding: 0; }
+    .example-body pre { margin: 0; border-radius: 0; }
+    .example-result {
+      background: #f0fdf4;
+      border-top: 1px solid #dcfce7;
+      padding: 12px 20px;
+      font-size: 13px;
+      color: #166534;
+    }
+    .example-result strong { font-weight: 700; }
+
+    /* ── Function reference ───────────────────────────────────── */
+    .fn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .fn-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .fn-card .fn-sig { font-family: 'Cascadia Code', monospace; font-size: 13px; color: #1e40af; font-weight: 700; margin-bottom: 6px; }
+    .fn-card .fn-desc { font-size: 13px; color: #475569; margin-bottom: 8px; }
+    .fn-card .fn-ex { font-family: 'Cascadia Code', monospace; font-size: 12px; background: #f8fafc; border-radius: 4px; padding: 4px 8px; color: #0f172a; }
+
+    /* ── Variables table ──────────────────────────────────────── */
+    .var-cat { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #64748b; padding: 8px 16px; background: #f8fafc; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 32px 0;
+      border-top: 1px solid #e2e8f0;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    /* ── Print ────────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; }
+      .cover { border-radius: 0; }
+      pre { white-space: pre-wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     COVER
+══════════════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="page">
+    <div class="badge">SP099 · Especificación Técnica y Funcional</div>
+    <h1>Motor de Cálculo Embebido<br>en HR_Attribute</h1>
+    <p class="subtitle">
+      Implementación de un motor dual (Expresiones + Scripts) directamente en el atributo de nómina,
+      eliminando la dependencia de registros <code style="background:rgba(255,255,255,0.2);color:#fff">AD_Rule</code> externos para fórmulas simples.
+    </p>
+    <div class="meta">
+      <div><strong>Módulo</strong>HR &amp; Payroll</div>
+      <div><strong>Entity Type</strong>SP099</div>
+      <div><strong>Versión</strong>1.0.0</div>
+      <div><strong>Fecha</strong>2026-03-05</div>
+      <div><strong>Proyecto</strong>adempiere-base</div>
+      <div><strong>Rama</strong>develop</div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ══════════════════════════════════════════════════════════════
+     TOC
+══════════════════════════════════════════════════════════════════ -->
+<div class="toc">
+  <h2>Tabla de Contenidos</h2>
+  <ol>
+    <li><a href="#s1">Resumen Ejecutivo</a></li>
+    <li><a href="#s2">Contexto y Problema</a></li>
+    <li><a href="#s3">Arquitectura de la Solución</a></li>
+    <li><a href="#s4">Cambios de Diccionario (MCP)</a>
+      <ul class="sub">
+        <li>Entity Type SP099</li>
+        <li>Nuevas columnas en HR_Attribute</li>
+        <li>Fields en ventana Payroll Concept Catalog</li>
+        <li>Traducciones es_MX</li>
+      </ul>
+    </li>
+    <li><a href="#s5">Modelo Java — I_HR_Attribute &amp; X_HR_Attribute</a></li>
+    <li><a href="#s6">PayrollExpressionEvaluator — Referencia Completa</a>
+      <ul class="sub">
+        <li>Tokenizador</li>
+        <li>Parser recursivo descendente</li>
+        <li>Funciones soportadas</li>
+        <li>Variables de contexto</li>
+      </ul>
+    </li>
+    <li><a href="#s7">PayrollCalculationEngine — Motor Orquestador</a>
+      <ul class="sub">
+        <li>Tipo E — Expresión</li>
+        <li>Tipo S — Script (JSR-223 / BeanShell)</li>
+        <li>Seguridad y timeout</li>
+      </ul>
+    </li>
+    <li><a href="#s8">Integración en MHRProcess</a></li>
+    <li><a href="#s9">Ejemplos Funcionales</a></li>
+    <li><a href="#s10">Compatibilidad hacia Atrás</a></li>
+    <li><a href="#s11">Seguridad</a></li>
+    <li><a href="#s12">Guía de Verificación</a></li>
+    <li><a href="#s13">Referencia de Archivos</a></li>
+  </ol>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     1. RESUMEN EJECUTIVO
+══════════════════════════════════════════════════════════════════ -->
+<section id="s1">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <h2 class="section-title">Resumen Ejecutivo</h2>
+  </div>
+
+  <p>
+    SP099 agrega un <strong>motor de cálculo embebido</strong> directamente en la entidad
+    <code>HR_Attribute</code>, permitiendo definir fórmulas de nómina sin necesidad de crear
+    registros <code>AD_Rule</code> separados. El motor soporta dos modos:
+  </p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>🧮 Tipo E — Expresión</h4>
+      <p>Fórmulas matemáticas y condicionales evaluadas en Java puro mediante un parser
+      recursivo descendente. No requiere motor de scripting externo.</p>
+      <p><strong>Ejemplo:</strong> <code>IF(_Days &gt; 15, ROUND(_Days * 100, 2), 0)</code></p>
+    </div>
+    <div class="card">
+      <h4>📜 Tipo S — Script</h4>
+      <p>Scripts completos ejecutados vía JSR-223 (JavaScript, Groovy, Python) o BeanShell.
+      Soporta lógica arbitraria con acceso completo al contexto de nómina.</p>
+      <p><strong>Ejemplo:</strong> <code>var r = _Days * 200; r;</code> (JavaScript)</p>
+    </div>
+  </div>
+
+  <div class="success-box">
+    <strong>Compatibilidad total:</strong> Los conceptos existentes con <code>AD_Rule_ID</code>
+    y sin <code>CalculationTypeValue</code> siguen funcionando exactamente igual. El cambio
+    es estrictamente aditivo.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     2. CONTEXTO Y PROBLEMA
+══════════════════════════════════════════════════════════════════ -->
+<section id="s2">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <h2 class="section-title">Contexto y Problema</h2>
+  </div>
+
+  <h3>Flujo previo</h3>
+  <p>
+    Cuando un concepto de nómina tiene <code>HR_Concept.Type = 'E'</code> (TYPE_RuleEngine),
+    el proceso <code>MHRProcess.createMovementFromConcept()</code> delega el cálculo a
+    <code>executeScript(concept, attribute.getAD_Rule_ID(), ...)</code>.
+  </p>
+
+  <h3>Problema</h3>
+  <ul>
+    <li>Cada fórmula, por simple que sea, requiere crear y mantener un registro <code>AD_Rule</code> separado.</li>
+    <li>Para fórmulas como <code>_Days * 100</code> es necesario ir al módulo de Reglas, crear la regla, asociarla, guardar y regresar.</li>
+    <li>El mantenimiento masivo de reglas simples es engorroso y difícil de auditar.</li>
+    <li>No hay validación de sintaxis en tiempo de edición.</li>
+  </ul>
+
+  <h3>Solución</h3>
+  <p>
+    Agregar campos de cálculo directamente a <code>HR_Attribute</code> e implementar un motor
+    que los evalúe. El patrón es equivalente al de <code>AD_PrintFormatCalculation</code>,
+    que ya demostró ser ergonómico en el módulo de reportes.
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     3. ARQUITECTURA
+══════════════════════════════════════════════════════════════════ -->
+<section id="s3">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <h2 class="section-title">Arquitectura de la Solución</h2>
+  </div>
+
+  <div class="arch">
+<span class="a-blue">MHRProcess.createMovementFromConcept()</span>
+  <span class="a-dim">│</span>
+  <span class="a-dim">└─ concept.Type = 'E' (TYPE_RuleEngine)?</span>
+  <span class="a-dim">     │</span>
+  <span class="a-dim">     ├─ attribute.CalculationTypeValue != null?</span>
+  <span class="a-dim">     │    │</span>
+  <span class="a-dim">     │    └─ YES ──►</span> <span class="a-yellow">PayrollCalculationEngine.calculate(attribute, scriptCtx)</span>
+  <span class="a-dim">     │                   │</span>
+  <span class="a-dim">     │                   ├─ Type 'E' ──►</span> <span class="a-green">PayrollExpressionEvaluator.evaluate(expr, ctx)</span>
+  <span class="a-dim">     │                   │              </span><span class="a-dim">└─ Tokenizer → Parser → Result</span>
+  <span class="a-dim">     │                   │</span>
+  <span class="a-dim">     │                   └─ Type 'S' ──►</span> <span class="a-orange">executeScript(attribute, scriptCtx)</span>
+  <span class="a-dim">     │                                  │</span>
+  <span class="a-dim">     │                                  ├─ 'B' ──►</span> <span class="a-purple">Scriptlet (BeanShell)</span>
+  <span class="a-dim">     │                                  ├─ 'J' ──►</span> <span class="a-purple">JSR-223 JavaScript</span>
+  <span class="a-dim">     │                                  ├─ 'G' ──►</span> <span class="a-purple">JSR-223 Groovy</span>
+  <span class="a-dim">     │                                  └─ 'P' ──►</span> <span class="a-purple">JSR-223 Python</span>
+  <span class="a-dim">     │</span>
+  <span class="a-dim">     └─ NO (CalculationTypeValue vacío) ──►</span> <span class="a-red">executeScript(concept, AD_Rule_ID, ...) [flujo existente]</span>
+  </div>
+
+  <h3>Componentes nuevos</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Componente</th><th>Tipo</th><th>Responsabilidad</th></tr></thead>
+      <tbody>
+        <tr><td><code>PayrollExpressionEvaluator</code></td><td>Clase Java</td><td>Parser y evaluador de expresiones en Java puro</td></tr>
+        <tr><td><code>PayrollCalculationEngine</code></td><td>Clase Java</td><td>Despachador: delega a Expression o Script según CalculationTypeValue</td></tr>
+        <tr><td>Columnas en <code>HR_Attribute</code></td><td>Diccionario</td><td>CalculationTypeValue, Expression, ScriptEngine, ScriptCode, ScriptTimeout</td></tr>
+        <tr><td>Fields en ventana</td><td>Diccionario</td><td>Campos en tab "Concept Attributes" (ventana Payroll Concept Catalog)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     4. DICCIONARIO
+══════════════════════════════════════════════════════════════════ -->
+<section id="s4">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <h2 class="section-title">Cambios de Diccionario (MCP)</h2>
+  </div>
+
+  <h3>4.1 Entity Type</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Campo</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td>EntityType</td><td><code>SP099</code></td></tr>
+        <tr><td>Name</td><td>Solop: Payroll Calculation Engine</td></tr>
+        <tr><td>Description</td><td>Motor de cálculo embebido para conceptos de nómina</td></tr>
+        <tr><td>Help</td><td>Agrega soporte de expresiones y scripts directamente en HR_Attribute</td></tr>
+        <tr><td>ModelPackage</td><td><code>com.solop.sp099.model</code></td></tr>
+        <tr><td>AD_EntityType_ID</td><td>2000033</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4.2 Nuevas columnas en HR_Attribute (AD_Table_ID = 53087)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ColumnName</th><th>Col ID</th><th>Elem ID</th><th>Reference</th><th>Length</th><th>Default</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>CalculationTypeValue</code></td><td>2005160</td><td>63400</td>
+          <td>List 54580</td><td>1</td><td>—</td>
+          <td>Tipo de motor: E=Expresión, S=Script</td>
+        </tr>
+        <tr>
+          <td><code>Expression</code></td><td>2005161</td><td>63401</td>
+          <td>Text (14)</td><td>2000</td><td>—</td>
+          <td>Fórmula matemática/condicional</td>
+        </tr>
+        <tr>
+          <td><code>ScriptEngine</code></td><td>2005162</td><td>63402</td>
+          <td>List 54581</td><td>1</td><td>—</td>
+          <td>Motor de script: J/G/B/P</td>
+        </tr>
+        <tr>
+          <td><code>ScriptCode</code></td><td>2005163</td><td>63403</td>
+          <td>Text (14)</td><td>2000</td><td>—</td>
+          <td>Código del script completo</td>
+        </tr>
+        <tr>
+          <td><code>ScriptTimeout</code></td><td>2005164</td><td>63404</td>
+          <td>Integer (11)</td><td>10</td><td>5000</td>
+          <td>Timeout en milisegundos</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4.3 Fields en ventana Payroll Concept Catalog</h3>
+  <p>
+    Ventana: <strong>Payroll Concept Catalog</strong> (ID 53036) ·
+    Tab: <strong>Concept Attributes</strong> (ID 53113, tabla HR_Attribute)
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field ID</th><th>Nombre</th><th>SeqNo</th><th>Display Logic</th></tr></thead>
+      <tbody>
+        <tr><td>2011330</td><td>Calculation Type / Tipo de Cálculo</td><td>310</td><td>—</td></tr>
+        <tr><td>2011331</td><td>Expression / Expresión</td><td>320</td><td><code>CalculationTypeValue='E'</code></td></tr>
+        <tr><td>2011332</td><td>Script Engine / Motor de Script</td><td>330</td><td><code>CalculationTypeValue='S'</code></td></tr>
+        <tr><td>2011333</td><td>Script Code / Código de Script</td><td>340</td><td><code>CalculationTypeValue='S'</code></td></tr>
+        <tr><td>2011334</td><td>Script Timeout / Tiempo Límite</td><td>350</td><td><code>CalculationTypeValue='S'</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4.4 Traducciones es_MX</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Entidad</th><th>ID</th><th>Nombre es_MX</th><th>Description</th><th>Help</th></tr></thead>
+      <tbody>
+        <tr><td>AD_Element</td><td>63400</td><td>Tipo de Cálculo</td><td>✓</td><td>✓</td></tr>
+        <tr><td>AD_Element</td><td>63401</td><td>Expresión</td><td>✓</td><td>✓</td></tr>
+        <tr><td>AD_Element</td><td>63402</td><td>Motor de Script</td><td>✓</td><td>✓</td></tr>
+        <tr><td>AD_Element</td><td>63403</td><td>Código de Script</td><td>✓</td><td>✓</td></tr>
+        <tr><td>AD_Element</td><td>63404</td><td>Tiempo Límite de Script</td><td>✓</td><td>✓</td></tr>
+        <tr><td>AD_Field</td><td>2011330</td><td>Tipo de Cálculo</td><td>✓</td><td>✓</td></tr>
+        <tr><td>AD_Field</td><td>2011331</td><td>Expresión</td><td>✓</td><td>✓</td></tr>
+        <tr><td>AD_Field</td><td>2011332</td><td>Motor de Script</td><td>✓</td><td>✓</td></tr>
+        <tr><td>AD_Field</td><td>2011333</td><td>Código de Script</td><td>✓</td><td>✓</td></tr>
+        <tr><td>AD_Field</td><td>2011334</td><td>Tiempo Límite de Script</td><td>✓</td><td>✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     5. MODELO JAVA
+══════════════════════════════════════════════════════════════════ -->
+<section id="s5">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <h2 class="section-title">Modelo Java — I_HR_Attribute &amp; X_HR_Attribute</h2>
+  </div>
+
+  <h3>I_HR_Attribute.java — Interfaz</h3>
+  <p>Se agregaron 5 constantes <code>COLUMNNAME_*</code>, constantes de valor y métodos getter/setter:</p>
+
+  <pre><span class="comment">// Constantes de columna y valores para CalculationTypeValue</span>
+<span class="keyword">String</span> <span class="var">COLUMNNAME_CalculationTypeValue</span> = <span class="string">"CalculationTypeValue"</span>;
+<span class="keyword">String</span> <span class="var">CALCULATIONTYPEVALUE_Expression</span>  = <span class="string">"E"</span>;
+<span class="keyword">String</span> <span class="var">CALCULATIONTYPEVALUE_Script</span>      = <span class="string">"S"</span>;
+
+<span class="keyword">String</span> <span class="var">COLUMNNAME_Expression</span> = <span class="string">"Expression"</span>;
+
+<span class="keyword">String</span> <span class="var">COLUMNNAME_ScriptEngine</span>  = <span class="string">"ScriptEngine"</span>;
+<span class="keyword">String</span> <span class="var">SCRIPTENGINE_JavaScript</span>   = <span class="string">"J"</span>;
+<span class="keyword">String</span> <span class="var">SCRIPTENGINE_Groovy</span>       = <span class="string">"G"</span>;
+<span class="keyword">String</span> <span class="var">SCRIPTENGINE_BeanShell</span>    = <span class="string">"B"</span>;
+<span class="keyword">String</span> <span class="var">SCRIPTENGINE_Python</span>       = <span class="string">"P"</span>;
+
+<span class="keyword">String</span> <span class="var">COLUMNNAME_ScriptCode</span>    = <span class="string">"ScriptCode"</span>;
+<span class="keyword">String</span> <span class="var">COLUMNNAME_ScriptTimeout</span> = <span class="string">"ScriptTimeout"</span>;
+
+<span class="comment">// Métodos de interfaz (×5 get + ×5 set)</span>
+<span class="keyword">String</span>  <span class="fn">getCalculationTypeValue</span>();
+<span class="keyword">void</span>    <span class="fn">setCalculationTypeValue</span>(<span class="keyword">String</span> v);
+<span class="keyword">String</span>  <span class="fn">getExpression</span>();
+<span class="keyword">void</span>    <span class="fn">setExpression</span>(<span class="keyword">String</span> v);
+<span class="keyword">String</span>  <span class="fn">getScriptEngine</span>();
+<span class="keyword">void</span>    <span class="fn">setScriptEngine</span>(<span class="keyword">String</span> v);
+<span class="keyword">String</span>  <span class="fn">getScriptCode</span>();
+<span class="keyword">void</span>    <span class="fn">setScriptCode</span>(<span class="keyword">String</span> v);
+<span class="keyword">int</span>     <span class="fn">getScriptTimeout</span>();
+<span class="keyword">void</span>    <span class="fn">setScriptTimeout</span>(<span class="keyword">int</span> v);</pre>
+
+  <h3>X_HR_Attribute.java — Implementación</h3>
+  <p>Se implementaron los 5 campos con el patrón estándar del modelo generado:</p>
+
+  <pre><span class="comment">/** CalculationTypeValue AD_Reference_ID=54580 */</span>
+<span class="keyword">public static final int</span>    <span class="var">CALCULATIONTYPEVALUE_AD_Reference_ID</span> = <span class="number">54580</span>;
+<span class="keyword">public static final String</span> <span class="var">CALCULATIONTYPEVALUE_Expression</span>      = <span class="string">"E"</span>;
+<span class="keyword">public static final String</span> <span class="var">CALCULATIONTYPEVALUE_Script</span>          = <span class="string">"S"</span>;
+
+<span class="keyword">public void</span> <span class="fn">setCalculationTypeValue</span>(<span class="keyword">String</span> CalculationTypeValue) {
+    <span class="fn">set_Value</span>(<span class="var">COLUMNNAME_CalculationTypeValue</span>, CalculationTypeValue);
+}
+<span class="keyword">public</span> <span class="keyword">String</span> <span class="fn">getCalculationTypeValue</span>() {
+    <span class="keyword">return</span> (<span class="keyword">String</span>) <span class="fn">get_Value</span>(<span class="var">COLUMNNAME_CalculationTypeValue</span>);
+}
+<span class="comment">// ... (patrón idéntico para Expression, ScriptEngine, ScriptCode, ScriptTimeout)</span></pre>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     6. EXPRESSION EVALUATOR
+══════════════════════════════════════════════════════════════════ -->
+<section id="s6">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <h2 class="section-title">PayrollExpressionEvaluator — Referencia Completa</h2>
+  </div>
+
+  <p><strong>Archivo:</strong> <code>hr_and_payroll/src/main/java/org/spin/hr/util/PayrollExpressionEvaluator.java</code></p>
+
+  <h3>API pública</h3>
+  <pre><span class="keyword">public class</span> <span class="type">PayrollExpressionEvaluator</span> {
+
+    <span class="comment">/** Evalúa la expresión con el contexto de scriptCtx del proceso de nómina.
+     *  @return Number, String, Boolean, Timestamp o null */</span>
+    <span class="keyword">public static</span> <span class="type">Object</span> <span class="fn">evaluate</span>(<span class="keyword">String</span> expression, <span class="type">Map</span>&lt;<span class="keyword">String</span>, <span class="type">Object</span>&gt; context);
+
+    <span class="comment">/** Valida sintaxis sin ejecutar (para validación en UI).
+     *  @return null si válido, mensaje de error si inválido */</span>
+    <span class="keyword">public static</span> <span class="keyword">String</span> <span class="fn">validateSyntax</span>(<span class="keyword">String</span> expression);
+}</pre>
+
+  <h3>6.1 Gramática del lenguaje</h3>
+  <pre><span class="comment">expression    ::= or_expr
+or_expr       ::= and_expr  ( 'OR'  and_expr  )*
+and_expr      ::= comparison ( 'AND' comparison )*
+comparison    ::= additive  ( ('='|'!='|'&lt;'|'&lt;='|'&gt;'|'&gt;=') additive )?
+additive      ::= multiplicative ( ('+'|'-') multiplicative )*
+multiplicative::= unary ( ('*'|'/'|'%') unary )*
+unary         ::= ('-'|'NOT')? primary
+primary       ::= NUMBER | STRING | '(' expression ')' | IDENTIFIER ['(' args ')']
+args          ::= expression (',' expression)*</span></pre>
+
+  <h3>6.2 Funciones soportadas</h3>
+
+  <div class="fn-grid">
+    <div class="fn-card">
+      <div class="fn-sig">ROUND(n, decimales)</div>
+      <div class="fn-desc">Redondea n a la cantidad de decimales indicada (HALF_UP).</div>
+      <div class="fn-ex">ROUND(123.456, 2)  → 123.46</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">ABS(n)</div>
+      <div class="fn-desc">Valor absoluto de n.</div>
+      <div class="fn-ex">ABS(-50)  → 50</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">FLOOR(n)</div>
+      <div class="fn-desc">Redondea hacia abajo al entero más cercano.</div>
+      <div class="fn-ex">FLOOR(3.9)  → 3</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">CEIL(n)</div>
+      <div class="fn-desc">Redondea hacia arriba al entero más cercano.</div>
+      <div class="fn-ex">CEIL(3.1)  → 4</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">MIN(a, b)</div>
+      <div class="fn-desc">Retorna el menor de los dos valores.</div>
+      <div class="fn-ex">MIN(10, 25)  → 10</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">MAX(a, b)</div>
+      <div class="fn-desc">Retorna el mayor de los dos valores.</div>
+      <div class="fn-ex">MAX(10, 25)  → 25</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">IF(cond, then, else)</div>
+      <div class="fn-desc">Condicional ternaria. Retorna then si cond es verdadero, else en caso contrario.</div>
+      <div class="fn-ex">IF(_Days &gt; 15, 100, 0)  → 100</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">COALESCE(a, b, ...)</div>
+      <div class="fn-desc">Retorna el primer valor no nulo de la lista.</div>
+      <div class="fn-ex">COALESCE(null, null, 42)  → 42</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">NVL(val, default)</div>
+      <div class="fn-desc">Retorna val si no es nulo, default en caso contrario.</div>
+      <div class="fn-ex">NVL(null, 0)  → 0</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">UPPER(s)</div>
+      <div class="fn-desc">Convierte la cadena a mayúsculas.</div>
+      <div class="fn-ex">UPPER('hola')  → "HOLA"</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">LOWER(s)</div>
+      <div class="fn-desc">Convierte la cadena a minúsculas.</div>
+      <div class="fn-ex">LOWER('HOLA')  → "hola"</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">TRIM(s)</div>
+      <div class="fn-desc">Elimina espacios al inicio y final de la cadena.</div>
+      <div class="fn-ex">TRIM('  hola  ')  → "hola"</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">CONCAT(a, b, ...)</div>
+      <div class="fn-desc">Concatena todos los argumentos como cadena.</div>
+      <div class="fn-ex">CONCAT('Días: ', _Days)  → "Días: 30"</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">LENGTH(s)</div>
+      <div class="fn-desc">Retorna la longitud de la cadena.</div>
+      <div class="fn-ex">LENGTH('hola')  → 4</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">TODAY()</div>
+      <div class="fn-desc">Retorna el timestamp actual del sistema.</div>
+      <div class="fn-ex">TODAY()  → Timestamp actual</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">DATEDIFF(d1, d2)</div>
+      <div class="fn-desc">Diferencia en días entre d1 y d2 (d2 - d1).</div>
+      <div class="fn-ex">DATEDIFF(_From, _To)  → 30</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">TONUMBER(s)</div>
+      <div class="fn-desc">Convierte una cadena a número. Retorna 0 si no es convertible.</div>
+      <div class="fn-ex">TONUMBER('123.5')  → 123.5</div>
+    </div>
+    <div class="fn-card">
+      <div class="fn-sig">TOSTRING(v)</div>
+      <div class="fn-desc">Convierte cualquier valor a su representación en cadena.</div>
+      <div class="fn-ex">TOSTRING(123)  → "123"</div>
+    </div>
+  </div>
+
+  <h3>6.3 Variables de contexto disponibles</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Variable</th><th>Tipo</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr><td colspan="3" class="var-cat">Proceso</td></tr>
+        <tr><td><code>process</code></td><td>MHRProcess</td><td>Instancia del proceso de nómina</td></tr>
+        <tr><td><code>_Process</code></td><td>Integer</td><td>HR_Process_ID</td></tr>
+        <tr><td><code>_Period</code></td><td>Integer</td><td>Número de período</td></tr>
+        <tr><td><code>_HR_Period_ID</code></td><td>Integer</td><td>HR_Period_ID</td></tr>
+        <tr><td><code>_Payroll</code></td><td>Integer</td><td>HR_Payroll_ID</td></tr>
+        <tr><td><code>_HR_Payroll_Value</code></td><td>String</td><td>Valor (código) de la nómina</td></tr>
+        <tr><td><code>_PeriodNo</code></td><td>Integer</td><td>Número de período</td></tr>
+        <tr><td><code>_From</code></td><td>Timestamp</td><td>Fecha inicio del período</td></tr>
+        <tr><td><code>_To</code></td><td>Timestamp</td><td>Fecha fin del período</td></tr>
+        <tr><td><code>_Department</code></td><td>Integer</td><td>HR_Department_ID</td></tr>
+        <tr><td colspan="3" class="var-cat">Empleado</td></tr>
+        <tr><td><code>_HR_Employee_ID</code></td><td>Integer</td><td>ID del empleado</td></tr>
+        <tr><td><code>_C_BPartner_ID</code></td><td>Integer</td><td>ID del socio de negocio</td></tr>
+        <tr><td><code>_C_BPartner</code></td><td>MBPartner</td><td>Instancia del socio de negocio</td></tr>
+        <tr><td><code>_HR_Employee</code></td><td>MHREmployee</td><td>Instancia del empleado</td></tr>
+        <tr><td><code>_Days</code></td><td>Integer</td><td>Días del período para el empleado</td></tr>
+        <tr><td colspan="3" class="var-cat">Concepto</td></tr>
+        <tr><td><code>_HR_Concept_ID</code></td><td>Integer</td><td>ID del concepto actual</td></tr>
+        <tr><td><code>_HR_Concept</code></td><td>MHRConcept</td><td>Instancia del concepto</td></tr>
+        <tr><td><code>_HR_PayrollConcept_ID</code></td><td>Integer</td><td>HR_PayrollConcept_ID</td></tr>
+        <tr><td colspan="3" class="var-cat">Alcance y persistencia</td></tr>
+        <tr><td><code>SCOPE_PROCESS</code></td><td>String</td><td>Constante de alcance proceso</td></tr>
+        <tr><td><code>SCOPE_EMPLOYEE</code></td><td>String</td><td>Constante de alcance empleado</td></tr>
+        <tr><td><code>SCOPE_CONCEPT</code></td><td>String</td><td>Constante de alcance concepto</td></tr>
+        <tr><td><code>PERSISTENCE_SAVE</code></td><td>String</td><td>Guardar movimiento</td></tr>
+        <tr><td><code>PERSISTENCE_IGNORE</code></td><td>String</td><td>Ignorar movimiento</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box">
+    <strong>Resolución de variables:</strong> El evaluador busca primero el nombre en MAYÚSCULAS en el contexto (<code>_DAYS</code>),
+    luego intenta el nombre original (<code>_Days</code>). Los literales especiales <code>TRUE</code>, <code>FALSE</code> y
+    <code>NULL</code> están reservados. Variables no encontradas retornan <code>null</code>.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     7. CALCULATION ENGINE
+══════════════════════════════════════════════════════════════════ -->
+<section id="s7">
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <h2 class="section-title">PayrollCalculationEngine — Motor Orquestador</h2>
+  </div>
+
+  <p><strong>Archivo:</strong> <code>hr_and_payroll/src/main/java/org/spin/hr/util/PayrollCalculationEngine.java</code></p>
+
+  <h3>API pública</h3>
+  <pre><span class="keyword">public class</span> <span class="type">PayrollCalculationEngine</span> {
+
+    <span class="comment">/** Punto de entrada principal. Delega según CalculationTypeValue. */</span>
+    <span class="keyword">public static</span> <span class="type">Object</span> <span class="fn">calculate</span>(<span class="type">MHRAttribute</span> attribute,
+                                    <span class="type">Map</span>&lt;<span class="keyword">String</span>, <span class="type">Object</span>&gt; scriptCtx);
+}</pre>
+
+  <h3>7.1 Tipo E — Expresión</h3>
+  <p>Delega directamente a <code>PayrollExpressionEvaluator.evaluate(expression, scriptCtx)</code>.
+  No crea hilos adicionales ni motores JSR-223. Es la opción más eficiente y segura.</p>
+
+  <h3>7.2 Tipo S — Script</h3>
+
+  <h4>BeanShell (B)</h4>
+  <p>Usa el <code>Scriptlet</code> integrado, exactamente igual al motor actual de nómina.
+  El script recibe los imports estándar prepended automáticamente y debe declarar la variable <code>result</code>.</p>
+
+  <h4>JSR-223: JavaScript (J), Groovy (G), Python (P)</h4>
+  <ul>
+    <li>Usa <code>ScriptEngineManager</code> estático con caché <code>ThreadLocal</code> por nombre de motor.</li>
+    <li>Cada variable del <code>scriptCtx</code> se inyecta en el <code>SimpleScriptContext</code> con scope <code>ENGINE_SCOPE</code>.</li>
+    <li>La variable <code>result</code> se pre-inicializa a <code>0.0</code> (o <code>null</code> para tipos Date/Text).</li>
+    <li>La ejecución corre en un hilo separado y se interrumpe si supera el <code>ScriptTimeout</code>.</li>
+  </ul>
+
+  <h3>7.3 Timeout y seguridad</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Patrón bloqueado</th><th>Motivo</th></tr></thead>
+      <tbody>
+        <tr><td><code>Runtime.getRuntime</code></td><td>Previene ejecución de comandos del SO</td></tr>
+        <tr><td><code>System.exit</code></td><td>Previene cierre abrupto de la JVM</td></tr>
+        <tr><td><code>Class.forName</code></td><td>Previene carga dinámica de clases peligrosas</td></tr>
+        <tr><td><code>ProcessBuilder</code></td><td>Previene creación de procesos externos</td></tr>
+        <tr><td><code>java.io.File</code></td><td>Previene acceso al sistema de archivos</td></tr>
+        <tr><td><code>java.net.</code></td><td>Previene acceso a red</td></tr>
+        <tr><td><code>java.lang.reflect</code></td><td>Previene reflexión no autorizada</td></tr>
+        <tr><td><code>Thread.sleep</code></td><td>Previene bloqueos indefinidos</td></tr>
+        <tr><td><code>System.load</code></td><td>Previene carga de librerías nativas</td></tr>
+        <tr><td><code>ClassLoader</code></td><td>Previene manipulación del classloader</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="warn-box">
+    <strong>Timeout por defecto:</strong> 5000 ms. Si el script supera este límite, el hilo se interrumpe
+    y se lanza <code>AdempiereException("Script execution timed out after N ms")</code>.
+    Configurable por atributo mediante el campo <code>ScriptTimeout</code>.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     8. INTEGRACIÓN MHRPROCESS
+══════════════════════════════════════════════════════════════════ -->
+<section id="s8">
+  <div class="section-header">
+    <div class="section-num">8</div>
+    <h2 class="section-title">Integración en MHRProcess</h2>
+  </div>
+
+  <p><strong>Archivo:</strong> <code>hr_and_payroll/src/main/java/org/eevolution/hr/model/MHRProcess.java</code><br>
+  <strong>Método:</strong> <code>createMovementFromConcept()</code> — alrededor de la línea 1244</p>
+
+  <h3>Cambio aplicado</h3>
+  <pre><span class="keyword">if</span> (<span class="type">MHRConcept</span>.<span class="var">TYPE_RuleEngine</span>.<span class="fn">equals</span>(concept.<span class="fn">getType</span>())) {
+    logger.<span class="fn">info</span>(<span class="string">"Processing -> Rule to Concept "</span> + concept.<span class="fn">getValue</span>());
+    <span class="keyword">if</span> (activeConceptRule.<span class="fn">contains</span>(concept)) {
+        <span class="keyword">throw new</span> <span class="type">AdempiereException</span>(<span class="string">"Recursion loop detected in concept "</span>
+                                    + concept.<span class="fn">getValue</span>());
+    }
+    activeConceptRule.<span class="fn">add</span>(concept);
+
+    <span class="type">Object</span> result;
+    <span class="keyword">if</span> (!<span class="type">Util</span>.<span class="fn">isEmpty</span>(attribute.<span class="fn">getCalculationTypeValue</span>())) {
+        <span class="comment">// ► Nuevo motor embebido (SP099)</span>
+        result = <span class="type">PayrollCalculationEngine</span>.<span class="fn">calculate</span>(attribute, scriptCtx);
+    } <span class="keyword">else</span> {
+        <span class="comment">// ► Motor clásico AD_Rule (backward compatible)</span>
+        result = <span class="fn">executeScript</span>(concept, attribute.<span class="fn">getAD_Rule_ID</span>(),
+                               attribute.<span class="fn">getColumnType</span>());
+    }
+
+    activeConceptRule.<span class="fn">remove</span>(concept);
+    movement.<span class="fn">setColumnValue</span>(result);
+    <span class="keyword">if</span> (description != <span class="keyword">null</span>)
+        movement.<span class="fn">setDescription</span>(description.<span class="fn">toString</span>());
+}</pre>
+
+  <p>Se agregó también el import:</p>
+  <pre><span class="keyword">import</span> org.spin.hr.util.<span class="type">PayrollCalculationEngine</span>;</pre>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     9. EJEMPLOS FUNCIONALES
+══════════════════════════════════════════════════════════════════ -->
+<section id="s9">
+  <div class="section-header">
+    <div class="section-num">9</div>
+    <h2 class="section-title">Ejemplos Funcionales</h2>
+  </div>
+
+  <!-- Ejemplo 1 -->
+  <div class="example">
+    <div class="example-header">
+      <span class="example-badge badge-expr">Expresión</span>
+      <span class="example-title">Salario diario proporcional a días trabajados</span>
+    </div>
+    <div class="example-body">
+      <pre><span class="comment">-- Configuración en HR_Attribute:</span>
+CalculationTypeValue = 'E'
+Expression           = '_Days * 100'</pre>
+    </div>
+    <div class="example-result">
+      <strong>Resultado:</strong> Si <code>_Days = 30</code> → Movement.Amount = <strong>3000</strong>
+    </div>
+  </div>
+
+  <!-- Ejemplo 2 -->
+  <div class="example">
+    <div class="example-header">
+      <span class="example-badge badge-expr">Expresión</span>
+      <span class="example-title">Bono condicional con redondeo</span>
+    </div>
+    <div class="example-body">
+      <pre><span class="comment">-- Paga bono solo si trabajó más de 15 días, redondeado a 2 decimales</span>
+CalculationTypeValue = 'E'
+Expression           = 'IF(_Days > 15, ROUND(_Days * 150.75, 2), 0)'</pre>
+    </div>
+    <div class="example-result">
+      <strong>Resultado:</strong> Si <code>_Days = 20</code> → <code>ROUND(20 * 150.75, 2)</code> = <strong>3015.00</strong><br>
+      Si <code>_Days = 10</code> → <strong>0</strong>
+    </div>
+  </div>
+
+  <!-- Ejemplo 3 -->
+  <div class="example">
+    <div class="example-header">
+      <span class="example-badge badge-expr">Expresión</span>
+      <span class="example-title">Cálculo con COALESCE y NVL</span>
+    </div>
+    <div class="example-body">
+      <pre><span class="comment">-- Usa un concepto auxiliar si el salario base no está definido</span>
+CalculationTypeValue = 'E'
+Expression           = 'COALESCE(SALARIO_BASE, NVL(SALARIO_MIN, 0)) * _Days / 30'</pre>
+    </div>
+    <div class="example-result">
+      <strong>Resultado:</strong> Calcula proporción mensual usando el primer valor disponible entre SALARIO_BASE y SALARIO_MIN.
+    </div>
+  </div>
+
+  <!-- Ejemplo 4 -->
+  <div class="example">
+    <div class="example-header">
+      <span class="example-badge badge-expr">Expresión</span>
+      <span class="example-title">Diferencia de días entre fechas del período</span>
+    </div>
+    <div class="example-body">
+      <pre><span class="comment">-- Calcula días efectivos del período y paga 50 por día</span>
+CalculationTypeValue = 'E'
+Expression           = 'DATEDIFF(_From, _To) * 50'</pre>
+    </div>
+    <div class="example-result">
+      <strong>Resultado:</strong> Si el período va del 01/03 al 31/03 → 30 días → <strong>1500</strong>
+    </div>
+  </div>
+
+  <!-- Ejemplo 5 -->
+  <div class="example">
+    <div class="example-header">
+      <span class="example-badge badge-expr">Expresión</span>
+      <span class="example-title">Expresión anidada compleja</span>
+    </div>
+    <div class="example-body">
+      <pre><span class="comment">-- Horas extra: si días > 22 paga las horas extra con recargo del 150%</span>
+CalculationTypeValue = 'E'
+Expression           = 'IF(_Days > 22,
+                           ROUND((_Days - 22) * 8 * SALARIO_HORA * 1.5, 2),
+                           0)'</pre>
+    </div>
+    <div class="example-result">
+      <strong>Resultado:</strong> Si <code>_Days = 25</code> y <code>SALARIO_HORA = 50</code>:
+      <code>ROUND((25-22) * 8 * 50 * 1.5, 2)</code> = <strong>1800.00</strong>
+    </div>
+  </div>
+
+  <!-- Ejemplo 6 -->
+  <div class="example">
+    <div class="example-header">
+      <span class="example-badge badge-js">Script — JavaScript</span>
+      <span class="example-title">Cálculo con lógica de negocio compleja</span>
+    </div>
+    <div class="example-body">
+      <pre><span class="comment">-- Configuración en HR_Attribute:</span>
+CalculationTypeValue = 'S'
+ScriptEngine         = 'J'
+ScriptTimeout        = 3000
+
+<span class="comment">-- ScriptCode:</span>
+<span class="keyword">var</span> <span class="var">baseSalary</span>  = process.<span class="fn">getAttribute</span>(<span class="string">'SALARIO_BASE'</span>);
+<span class="keyword">var</span> <span class="var">days</span>        = _Days;
+<span class="keyword">var</span> <span class="var">dailyRate</span>   = baseSalary / <span class="number">30</span>;
+<span class="keyword">var</span> <span class="var">bonus</span>       = days &gt;= <span class="number">28</span> ? dailyRate * <span class="number">2</span> : <span class="number">0</span>;
+
+result = Math.<span class="fn">round</span>((dailyRate * days + bonus) * <span class="number">100</span>) / <span class="number">100</span>;</pre>
+    </div>
+    <div class="example-result">
+      <strong>Resultado:</strong> Pago proporcional + bono de 2 días si trabajó 28 o más días.
+    </div>
+  </div>
+
+  <!-- Ejemplo 7 -->
+  <div class="example">
+    <div class="example-header">
+      <span class="example-badge badge-groovy">Script — Groovy</span>
+      <span class="example-title">Deducción escalonada por tramos</span>
+    </div>
+    <div class="example-body">
+      <pre><span class="comment">-- ScriptCode (Groovy):</span>
+<span class="keyword">def</span> <span class="var">salary</span> = process.<span class="fn">getAttribute</span>(<span class="string">'SALARIO_NETO'</span>)
+
+<span class="keyword">def</span> <span class="var">deduction</span>
+<span class="keyword">if</span> (salary &lt;= <span class="number">5000</span>) {
+    deduction = salary * <span class="number">0.05</span>
+} <span class="keyword">else if</span> (salary &lt;= <span class="number">15000</span>) {
+    deduction = salary * <span class="number">0.10</span>
+} <span class="keyword">else</span> {
+    deduction = salary * <span class="number">0.15</span>
+}
+
+result = deduction.<span class="fn">round</span>(<span class="number">2</span>)</pre>
+    </div>
+    <div class="example-result">
+      <strong>Resultado:</strong> Deducción del 5%, 10% o 15% según tramo salarial, redondeada a 2 decimales.
+    </div>
+  </div>
+
+  <!-- Ejemplo 8 -->
+  <div class="example">
+    <div class="example-header">
+      <span class="example-badge badge-bs">Script — BeanShell</span>
+      <span class="example-title">Cálculo de antigüedad</span>
+    </div>
+    <div class="example-body">
+      <pre><span class="comment">-- ScriptCode (BeanShell - equivalente al motor clásico de nómina):</span>
+<span class="type">MHREmployee</span> emp      = _HR_Employee;
+<span class="type">Timestamp</span>   hireDate = emp.<span class="fn">getStartDate</span>();
+<span class="type">Timestamp</span>   today    = <span class="keyword">new</span> <span class="type">Timestamp</span>(System.<span class="fn">currentTimeMillis</span>());
+
+<span class="keyword">long</span> diffMs   = today.<span class="fn">getTime</span>() - hireDate.<span class="fn">getTime</span>();
+<span class="keyword">long</span> years    = diffMs / (<span class="number">1000L</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">365</span>);
+
+<span class="comment">// Bono de antigüedad: 500 por año completo de servicio</span>
+<span class="keyword">double</span> result = years * <span class="number">500</span>;</pre>
+    </div>
+    <div class="example-result">
+      <strong>Resultado:</strong> Si el empleado tiene 5 años de antigüedad → <strong>2500.00</strong>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     10. COMPATIBILIDAD
+══════════════════════════════════════════════════════════════════ -->
+<section id="s10">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <h2 class="section-title">Compatibilidad hacia Atrás</h2>
+  </div>
+
+  <div class="success-box">
+    <strong>100% backward compatible.</strong> No se modificó ningún comportamiento existente.
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Escenario</th><th>CalculationTypeValue</th><th>AD_Rule_ID</th><th>Comportamiento</th></tr></thead>
+      <tbody>
+        <tr><td>Concepto existente con regla</td><td><em>vacío / null</em></td><td>≥ 1</td><td>✅ Sigue usando <code>executeScript(AD_Rule_ID)</code></td></tr>
+        <tr><td>Nuevo concepto con expresión</td><td><code>E</code></td><td>cualquiera</td><td>✅ Usa <code>PayrollExpressionEvaluator</code></td></tr>
+        <tr><td>Nuevo concepto con script</td><td><code>S</code></td><td>cualquiera</td><td>✅ Usa <code>PayrollCalculationEngine.executeScript()</code></td></tr>
+        <tr><td>Concepto sin regla ni expresión</td><td><em>vacío / null</em></td><td>0</td><td>✅ Motor original retorna null (sin cambio)</td></tr>
+        <tr><td>Tipo de concepto ≠ 'E'</td><td>cualquiera</td><td>cualquiera</td><td>✅ No entra al bloque, sin cambio</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     11. SEGURIDAD
+══════════════════════════════════════════════════════════════════ -->
+<section id="s11">
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <h2 class="section-title">Seguridad</h2>
+  </div>
+
+  <h3>Tipo E — Expresión (sin riesgos de ejecución arbitraria)</h3>
+  <p>El evaluador de expresiones es un parser en Java puro. No invoca ningún motor de scripting externo.
+  Solo puede acceder a las funciones y variables explícitamente soportadas.
+  No existe forma de ejecutar código Java arbitrario desde una expresión.</p>
+
+  <h3>Tipo S — Script (validación previa)</h3>
+  <p>Antes de ejecutar cualquier script, <code>PayrollCalculationEngine</code> valida que el código
+  no contenga ninguno de los patrones prohibidos. Si alguno se detecta, se lanza
+  <code>AdempiereException</code> y el proceso se detiene.</p>
+
+  <div class="danger-box">
+    <strong>Patrones bloqueados:</strong>
+    <code>Runtime.getRuntime</code>, <code>System.exit</code>, <code>Class.forName</code>,
+    <code>ProcessBuilder</code>, <code>java.io.File</code>, <code>java.net.</code>,
+    <code>java.lang.reflect</code>, <code>Thread.sleep</code>, <code>System.load</code>,
+    <code>ClassLoader</code>
+  </div>
+
+  <h3>Timeout de ejecución</h3>
+  <p>Los scripts JSR-223 corren en un hilo separado con un join de máximo <code>ScriptTimeout</code> ms.
+  Si el hilo sigue vivo al vencer el timeout, se llama <code>interrupt()</code> y se lanza excepción.
+  Valor por defecto: <strong>5000 ms</strong>.</p>
+
+  <div class="warn-box">
+    <strong>Nota:</strong> BeanShell (tipo B) no usa el mecanismo de timeout con hilo separado.
+    Utiliza el mismo patrón síncrono que el motor clásico de nómina. Se recomienda usar
+    JavaScript o Groovy cuando se requiera control de timeout.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     12. VERIFICACIÓN
+══════════════════════════════════════════════════════════════════ -->
+<section id="s12">
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <h2 class="section-title">Guía de Verificación</h2>
+  </div>
+
+  <h3>12.1 Verificar columnas en BD</h3>
+  <pre><span class="keyword">SELECT</span> column_name, data_type, character_maximum_length
+<span class="keyword">FROM</span>   information_schema.columns
+<span class="keyword">WHERE</span>  table_name = <span class="string">'hr_attribute'</span>
+  <span class="keyword">AND</span>  column_name <span class="keyword">IN</span> (
+    <span class="string">'calculationtypevalue'</span>, <span class="string">'expression'</span>,
+    <span class="string">'scriptengine'</span>, <span class="string">'scriptcode'</span>, <span class="string">'scripttimeout'</span>
+  )
+<span class="keyword">ORDER BY</span> column_name;</pre>
+
+  <h3>12.2 Verificar columnas en diccionario</h3>
+  <pre><span class="keyword">SELECT</span> c.ColumnName, c.AD_Column_ID, e.AD_Element_ID,
+       c.FieldLength, c.AD_Reference_ID
+<span class="keyword">FROM</span>   AD_Column c
+<span class="keyword">JOIN</span>   AD_Element e <span class="keyword">ON</span> e.AD_Element_ID = c.AD_Element_ID
+<span class="keyword">WHERE</span>  c.AD_Table_ID = <span class="number">53087</span>          <span class="comment">-- HR_Attribute</span>
+  <span class="keyword">AND</span>  c.EntityType  = <span class="string">'SP099'</span>
+<span class="keyword">ORDER BY</span> c.ColumnName;</pre>
+
+  <h3>12.3 Test funcional — Tipo E (Expresión)</h3>
+  <ol>
+    <li>Abrir <strong>Payroll Concept Catalog</strong> → seleccionar un concepto con Type = <em>Rule Engine</em>.</li>
+    <li>En el tab <strong>Concept Attributes</strong>, crear o editar un registro:</li>
+  </ol>
+  <pre>CalculationTypeValue = 'E'
+Expression           = '_Days * 100'</pre>
+  <ol start="3">
+    <li>Ejecutar el proceso de nómina para el empleado/período correspondiente.</li>
+    <li>Verificar en <strong>HR_Movement</strong>:</li>
+  </ol>
+  <pre><span class="keyword">SELECT</span> Amount, Qty, TextMsg
+<span class="keyword">FROM</span>   HR_Movement
+<span class="keyword">WHERE</span>  HR_Process_ID = &lt;proceso&gt;
+  <span class="keyword">AND</span>  HR_Concept_ID = &lt;concepto&gt;;</pre>
+  <p>El <code>Amount</code> debe ser <code>_Days × 100</code>.</p>
+
+  <h3>12.4 Test funcional — Tipo S (Script JavaScript)</h3>
+  <pre>CalculationTypeValue = 'S'
+ScriptEngine         = 'J'
+ScriptCode           = 'var r = _Days * 200; result = r;'
+ScriptTimeout        = 5000</pre>
+  <p>Resultado esperado en <code>HR_Movement.Amount</code>: <code>_Days × 200</code>.</p>
+
+  <h3>12.5 Test de compatibilidad backward</h3>
+  <p>Conceptos existentes con <code>CalculationTypeValue = null</code> y <code>AD_Rule_ID</code> válido
+  deben procesar exactamente igual que antes de SP099. No debe haber diferencias en los montos de nóminas ya procesadas.</p>
+
+  <h3>12.6 Test de seguridad</h3>
+  <pre>ScriptCode = 'Runtime.getRuntime().exec("ls");'</pre>
+  <p>Debe lanzar <code>AdempiereException: Forbidden pattern detected in script: Runtime.getRuntime</code>
+  y detener el proceso con error claro.</p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     13. REFERENCIA DE ARCHIVOS
+══════════════════════════════════════════════════════════════════ -->
+<section id="s13">
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <h2 class="section-title">Referencia de Archivos</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Archivo</th><th>Acción</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>base/src/main/java/org/adempiere/core/domains/models/<br>I_HR_Attribute.java</code></td>
+          <td>Modificado</td>
+          <td>+5 constantes COLUMNNAME_* + constantes de valor + interfaces getter/setter</td>
+        </tr>
+        <tr>
+          <td><code>base/src/main/java/org/adempiere/core/domains/models/<br>X_HR_Attribute.java</code></td>
+          <td>Modificado</td>
+          <td>+5 campos con implementación get/set siguiendo patrón del modelo generado</td>
+        </tr>
+        <tr>
+          <td><code>hr_and_payroll/src/main/java/org/spin/hr/util/<br>PayrollExpressionEvaluator.java</code></td>
+          <td>Creado</td>
+          <td>Parser/evaluador de expresiones en Java puro (tokenizador + parser recursivo descendente)</td>
+        </tr>
+        <tr>
+          <td><code>hr_and_payroll/src/main/java/org/spin/hr/util/<br>PayrollCalculationEngine.java</code></td>
+          <td>Creado</td>
+          <td>Motor orquestador: E→evaluador / S→JSR-223 o BeanShell, con timeout y validación de seguridad</td>
+        </tr>
+        <tr>
+          <td><code>hr_and_payroll/src/main/java/org/eevolution/hr/model/<br>MHRProcess.java</code></td>
+          <td>Modificado</td>
+          <td>Hook en createMovementFromConcept(): fork al nuevo motor si CalculationTypeValue != null</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>IDs de diccionario generados</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Artefacto</th><th>ID</th></tr></thead>
+      <tbody>
+        <tr><td>AD_EntityType SP099</td><td>2000033</td></tr>
+        <tr><td>AD_Column CalculationTypeValue</td><td>2005160</td></tr>
+        <tr><td>AD_Column Expression</td><td>2005161</td></tr>
+        <tr><td>AD_Column ScriptEngine</td><td>2005162</td></tr>
+        <tr><td>AD_Column ScriptCode</td><td>2005163</td></tr>
+        <tr><td>AD_Column ScriptTimeout</td><td>2005164</td></tr>
+        <tr><td>AD_Element CalculationTypeValue</td><td>63400</td></tr>
+        <tr><td>AD_Element Expression</td><td>63401</td></tr>
+        <tr><td>AD_Element ScriptEngine</td><td>63402</td></tr>
+        <tr><td>AD_Element ScriptCode</td><td>63403</td></tr>
+        <tr><td>AD_Element ScriptTimeout</td><td>63404</td></tr>
+        <tr><td>AD_Field Calculation Type (tab 53113)</td><td>2011330</td></tr>
+        <tr><td>AD_Field Expression (tab 53113)</td><td>2011331</td></tr>
+        <tr><td>AD_Field Script Engine (tab 53113)</td><td>2011332</td></tr>
+        <tr><td>AD_Field Script Code (tab 53113)</td><td>2011333</td></tr>
+        <tr><td>AD_Field Script Timeout (tab 53113)</td><td>2011334</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div><!-- /page -->
+
+<footer>
+  <div class="page">
+    SP099 — Motor de Cálculo Embebido en HR_Attribute · adempiere-base/develop ·
+    Generado 2026-03-05 · Entity Type SP099
+  </div>
+</footer>
+
+</body>
+</html>

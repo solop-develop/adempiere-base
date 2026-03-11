@@ -708,6 +708,33 @@ public interface I_HR_Attribute
 	  */
 	public String getUUID();
 
+    /** Column name CalculationTypeValue */
+    public static final String COLUMNNAME_CalculationTypeValue = "CalculationTypeValue";
+
+	/** Expression = E */
+	public static final String CALCULATIONTYPEVALUE_Expression = "E";
+	/** Script = S */
+	public static final String CALCULATIONTYPEVALUE_Script = "S";
+
+	/** Set Calculation Type	  */
+	public void setCalculationTypeValue (String CalculationTypeValue);
+
+	/** Get Calculation Type	  */
+	public String getCalculationTypeValue();
+
+    /** Column name Expression */
+    public static final String COLUMNNAME_Expression = "Expression";
+
+	/** Set Expression.
+	  * Mathematical/conditional expression evaluated in Java
+	  */
+	public void setExpression (String Expression);
+
+	/** Get Expression.
+	  * Mathematical/conditional expression evaluated in Java
+	  */
+	public String getExpression();
+
     /** Column name ValidFrom */
     public static final String COLUMNNAME_ValidFrom = "ValidFrom";
 

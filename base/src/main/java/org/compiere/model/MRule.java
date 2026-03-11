@@ -257,7 +257,9 @@ public class MRule extends X_AD_Rule
 			if (engineName == null ||
 					(!(engineName.equalsIgnoreCase("groovy")
 						|| engineName.equalsIgnoreCase("jython")
-						|| engineName.equalsIgnoreCase("beanshell")))) {
+						|| engineName.equalsIgnoreCase("beanshell")
+						|| engineName.equalsIgnoreCase("javascript")
+						|| engineName.equalsIgnoreCase("graal.js")))) {
 				log.saveError("Error", Msg.getMsg(getCtx(), "WrongScriptValue"));
 				return false;
 			}
