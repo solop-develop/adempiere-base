@@ -18,7 +18,9 @@
 package org.solop.forecast.engine;
 
 import org.adempiere.core.domains.models.I_M_ForecastComparison;
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MClientInfo;
+import org.compiere.model.MConversionRate;
 import org.compiere.model.MForecastComparison;
 import org.compiere.model.MForecastFact;
 import org.compiere.model.MForecastKPISnapshot;
@@ -98,8 +100,9 @@ public class DefaultForecastEngine implements IForecastEngine {
 				}
 				processDocumentLine(ctx, MOrderLine.Table_ID, line.getC_OrderLine_ID(),
 						line.getM_Product_ID(), order.getSalesRep_ID(), order.getAD_Org_ID(),
-						line.getQtyOrdered(), line.getLineNetAmt(), multiplier,
-						order.getDateOrdered(), levels, trxName);
+						order.getAD_Client_ID(), line.getQtyOrdered(), line.getLineNetAmt(), multiplier,
+						order.getDateOrdered(), order.getC_Currency_ID(), order.getC_ConversionType_ID(),
+						levels, trxName);
 			}
 		} else if (MInvoice.Table_ID == tableId) {
 			MInvoice invoice = new MInvoice(ctx, recordId, trxName);
@@ -113,8 +116,9 @@ public class DefaultForecastEngine implements IForecastEngine {
 				}
 				processDocumentLine(ctx, MInvoiceLine.Table_ID, line.getC_InvoiceLine_ID(),
 						line.getM_Product_ID(), invoice.getSalesRep_ID(), invoice.getAD_Org_ID(),
-						line.getQtyInvoiced(), line.getLineNetAmt(), multiplier,
-						invoice.getDateInvoiced(), levels, trxName);
+						invoice.getAD_Client_ID(), line.getQtyInvoiced(), line.getLineNetAmt(), multiplier,
+						invoice.getDateInvoiced(), invoice.getC_Currency_ID(), invoice.getC_ConversionType_ID(),
+						levels, trxName);
 			}
 		} else if (MInOut.Table_ID == tableId) {
 			MInOut inOut = new MInOut(ctx, recordId, trxName);
@@ -129,19 +133,22 @@ public class DefaultForecastEngine implements IForecastEngine {
 				BigDecimal lineNetAmt = Env.ZERO;
 				processDocumentLine(ctx, MInOutLine.Table_ID, line.getM_InOutLine_ID(),
 						line.getM_Product_ID(), inOut.getSalesRep_ID(), inOut.getAD_Org_ID(),
-						line.getMovementQty(), lineNetAmt, multiplier,
-						inOut.getMovementDate(), levels, trxName);
+						inOut.getAD_Client_ID(), line.getMovementQty(), lineNetAmt, multiplier,
+						inOut.getMovementDate(), 0, 0,
+						levels, trxName); //TODO: where should shipment get currency and amount?
 			}
 		}
 	}
 
 	/**
 	 * Process a single document line across all applicable forecast levels.
+	 * Converts the amount to the comparison's currency using the document's conversion type.
 	 */
 	private void processDocumentLine(Properties ctx, int lineTableId, int lineRecordId,
-			int productId, int salesRepId, int orgId,
+			int productId, int salesRepId, int orgId, int clientId,
 			BigDecimal qty, BigDecimal amount, BigDecimal multiplier,
-			Timestamp dateDoc, List<String> levels, String trxName) {
+			Timestamp dateDoc, int docCurrencyId, int conversionTypeId,
+			List<String> levels, String trxName) {
 		int periodId = resolvePeriodId(ctx, dateDoc, trxName);
 		if (periodId <= 0) {
 			log.warning("No period found for date: " + dateDoc);
@@ -149,35 +156,47 @@ public class DefaultForecastEngine implements IForecastEngine {
 		}
 
 		for (String level : levels) {
-			List<MForecastComparison> comparisons = resolveComparisons(ctx, productId, salesRepId, orgId, level, periodId, trxName);
-			if (comparisons.isEmpty()) {
+			MForecastComparison comparison = resolveComparisons(ctx, productId, salesRepId, orgId, level, periodId, trxName);
+			if (comparison == null || comparison.get_ID() <= 0) {
 				log.fine("No comparisons found for product=" + productId
 					+ " level=" + level + " period=" + periodId + ". Creating new comparison.");
-				comparisons = createComparison(ctx, productId, salesRepId, orgId, level, periodId, trxName);
+				comparison = createComparison(ctx, productId, salesRepId, orgId, level, periodId, docCurrencyId, trxName);
 			}
 
-			for (MForecastComparison comparison : comparisons) {
-				// Accumulate actuals (multiplier-aware)
-				BigDecimal qtyActual = comparison.getQtyActual().add(qty.multiply(multiplier));
-				BigDecimal amtActual = comparison.getAmtActual().add(amount.multiply(multiplier));
-				comparison.setQtyActual(qtyActual);
-				comparison.setAmtActual(amtActual);
-
-				// Create thin bridge fact: line reference + comparison link
-				MForecastFact fact = new MForecastFact(ctx, 0, trxName);
-				fact.setAD_Table_ID(lineTableId);
-				fact.setRecord_ID(lineRecordId);
-				fact.setAD_Org_ID(orgId);
-				fact.setDateDoc(dateDoc);
-				fact.setM_ForecastComparison_ID(comparison.getM_ForecastComparison_ID());
-
-				// Calculate comparison metrics
-				calculateComparison(ctx, comparison, trxName);
-
-				// Save
-				comparison.saveEx();
-				fact.saveEx();
+			// Convert amount to comparison currency if needed
+			BigDecimal convertedAmount = amount;
+			int compCurrencyId = comparison.getC_Currency_ID();
+			if (compCurrencyId > 0 && docCurrencyId > 0 && compCurrencyId != docCurrencyId) {
+				BigDecimal converted = MConversionRate.convert(ctx, amount,
+					docCurrencyId, compCurrencyId, dateDoc, conversionTypeId,
+					clientId, orgId);
+				if (converted != null) {
+					convertedAmount = converted;
+				} else {
+					throw new AdempiereException("@C_ConversionType_ID@ @NotFound@");
+				}
 			}
+
+			// Accumulate actuals (multiplier-aware)
+			BigDecimal qtyActual = comparison.getQtyActual().add(qty.multiply(multiplier));
+			BigDecimal amtActual = comparison.getAmtActual().add(convertedAmount.multiply(multiplier));
+			comparison.setQtyActual(qtyActual);
+			comparison.setAmtActual(amtActual);
+
+			// Create thin bridge fact: line reference + comparison link
+			MForecastFact fact = new MForecastFact(ctx, 0, trxName);
+			fact.setAD_Table_ID(lineTableId);
+			fact.setRecord_ID(lineRecordId);
+			fact.setAD_Org_ID(orgId);
+			fact.setDateDoc(dateDoc);
+			fact.setM_ForecastComparison_ID(comparison.getM_ForecastComparison_ID());
+
+			// Calculate comparison metrics
+			calculateComparison(ctx, comparison, trxName);
+
+			// Save
+			comparison.saveEx();
+			fact.saveEx();
 		}
 	}
 
@@ -266,9 +285,11 @@ public class DefaultForecastEngine implements IForecastEngine {
 	 * Create a standalone ForecastComparison when none exists for the document line.
 	 * The comparison has zero forecast amounts so that actual sales without a forecast
 	 * are visible in reports as forecasting errors.
+	 * Currency is resolved from an existing Forecast or SalesBudget with a line in the same period;
+	 * if none is found, the document's currency is used.
 	 */
-	private List<MForecastComparison> createComparison(Properties ctx, int productId,
-			int salesRepId, int orgId, String level, int periodId, String trxName) {
+	private MForecastComparison createComparison(Properties ctx, int productId,
+			int salesRepId, int orgId, String level, int periodId, int docCurrencyId, String trxName) {
 		MForecastComparison comparison = new MForecastComparison(ctx, 0, trxName);
 		comparison.setForecastLevel(level);
 		comparison.setC_Period_ID(periodId);
@@ -278,6 +299,15 @@ public class DefaultForecastEngine implements IForecastEngine {
 		comparison.setAmtForecast(Env.ZERO);
 		comparison.setQtyActual(Env.ZERO);
 		comparison.setAmtActual(Env.ZERO);
+
+		// Resolve currency from Forecast or SalesBudget with a line in the same period
+		int currencyId = resolveCurrencyFromForecastOrBudget(ctx, periodId, trxName);
+		if (currencyId <= 0) {
+			currencyId = docCurrencyId;
+		}
+		if (currencyId > 0) {
+			comparison.setC_Currency_ID(currencyId);
+		}
 
 		if (MClientInfo.FORECASTLEVEL_Classification.equals(level)
 				|| MClientInfo.FORECASTLEVEL_Operational.equals(level)) {
@@ -292,9 +322,44 @@ public class DefaultForecastEngine implements IForecastEngine {
 		}
 
 		comparison.saveEx();
-		List<MForecastComparison> result = new ArrayList<>();
-		result.add(comparison);
-		return result;
+		return comparison;
+	}
+
+	/**
+	 * Find the currency from an existing Forecast or SalesBudget that has a line with the given period.
+	 * First checks M_Forecast (via M_ForecastLine), then C_SalesBudget (via C_SalesBudgetLine).
+	 * @return C_Currency_ID or 0 if not found
+	 */
+	private int resolveCurrencyFromForecastOrBudget(Properties ctx, int periodId, String trxName) {
+		// Try Forecast first: find M_Forecast.C_Currency_ID where exists M_ForecastLine with same period
+		String forecastSql = "EXISTS (SELECT 1 FROM M_ForecastLine fl "
+			+ "WHERE fl.M_Forecast_ID = M_Forecast.M_Forecast_ID AND fl.C_Period_ID=? AND fl.IsActive='Y')";
+		PO forecast = new Query(ctx, "M_Forecast", forecastSql, trxName)
+			.setParameters(periodId)
+			.setOnlyActiveRecords(true)
+			.first();
+		if (forecast != null) {
+			int currencyId = forecast.get_ValueAsInt("C_Currency_ID");
+			if (currencyId > 0) {
+				return currencyId;
+			}
+		}
+
+		// Try SalesBudget: find C_SalesBudget.C_Currency_ID where exists C_SalesBudgetLine with same period
+		String budgetSql = "EXISTS (SELECT 1 FROM C_SalesBudgetLine bl "
+			+ "WHERE bl.C_SalesBudget_ID = C_SalesBudget.C_SalesBudget_ID AND bl.C_Period_ID=? AND bl.IsActive='Y')";
+		PO budget = new Query(ctx, "C_SalesBudget", budgetSql, trxName)
+			.setParameters(periodId)
+			.setOnlyActiveRecords(true)
+			.first();
+		if (budget != null) {
+			int currencyId = budget.get_ValueAsInt("C_Currency_ID");
+			if (currencyId > 0) {
+				return currencyId;
+			}
+		}
+
+		return 0;
 	}
 
 	/**
@@ -304,40 +369,59 @@ public class DefaultForecastEngine implements IForecastEngine {
 	 * CL matches by C_Period_ID + all 12 product grouping columns (NULL on comparison = wildcard).
 	 * OP matches by C_Period_ID + M_Product_ID only (product is the most granular level).
 	 */
-	private List<MForecastComparison> resolveComparisons(Properties ctx, int productId,
+	private MForecastComparison resolveComparisons(Properties ctx, int productId,
 			int salesRepId, int orgId, String level, int periodId, String trxName) {
 		StringBuilder whereClause = new StringBuilder("ForecastLevel=? AND C_Period_ID=? AND AD_Org_ID = ? AND IsActive='Y'");
+
+		String ORDERVALUE = " DESC NULLS LAST";
+		StringBuilder orderBy = new StringBuilder("SalesRep_ID").append(ORDERVALUE);
 		List<Object> params = new ArrayList<>();
 		params.add(level);
 		params.add(periodId);
 		params.add(orgId);
-
-		if (MClientInfo.FORECASTLEVEL_Financial.equals(level)) {
-			// FI: match by SalesRep_ID
-			whereClause.append(" AND SalesRep_ID=?");
+		if (salesRepId > 0) {
+			whereClause.append(" AND (SalesRep_ID IS NULL OR SalesRep_ID=?)");
 			params.add(salesRepId);
-		} else if (MClientInfo.FORECASTLEVEL_Operational.equals(level)) {
+		} else {
+			whereClause.append(" AND SalesRep_ID IS NULL");
+		}
+
+		if (MClientInfo.FORECASTLEVEL_Operational.equals(level)) {
+			// CL: match by all 12 product grouping columns
+			Map<String, Integer> groupings = resolveProductGroupings(ctx, productId);
+			for (String column : PRODUCT_GROUPING_COLUMNS) {
+				Integer val = groupings.get(column);
+				if (val != null) {
+					whereClause.append(" AND (").append(column).append(" IS NULL OR ").append(column).append("=?)");
+					params.add(val);
+				} else {
+					whereClause.append(" AND ").append(column).append(" IS NULL");
+				}
+				orderBy.append(", ").append(column).append(ORDERVALUE);
+			}
 			// OP: match by M_Product_ID only — product is the most granular dimension
 			whereClause.append(" AND M_Product_ID=?");
 			params.add(productId);
 		} else {
 			// CL: match by all 12 product grouping columns
 			Map<String, Integer> groupings = resolveProductGroupings(ctx, productId);
-			for (String col : PRODUCT_GROUPING_COLUMNS) {
-				Integer val = groupings.get(col);
+			for (String column : PRODUCT_GROUPING_COLUMNS) {
+				Integer val = groupings.get(column);
 				if (val != null) {
-					whereClause.append(" AND (").append(col).append(" IS NULL OR ").append(col).append("=?)");
+					whereClause.append(" AND (").append(column).append(" IS NULL OR ").append(column).append("=?)");
 					params.add(val);
 				} else {
-					whereClause.append(" AND ").append(col).append(" IS NULL");
+					whereClause.append(" AND ").append(column).append(" IS NULL");
 				}
+				orderBy.append(",").append(column).append(ORDERVALUE);
 			}
 		}
 
 		return new Query(ctx, I_M_ForecastComparison.Table_Name,
 				whereClause.toString(), trxName)
 			.setParameters(params.toArray())
-			.list();
+			.setOrderBy(orderBy.toString())
+			.first();
 	}
 
 	@Override
@@ -372,7 +456,7 @@ public class DefaultForecastEngine implements IForecastEngine {
 		BigDecimal mad = amtVariance.abs();
 		comparison.setMAD(mad);
 		BigDecimal mape = Env.ZERO;
-		// MAPE = |Actual - Forecast| / |Actual| * 100  (if Forecast != 0)
+		// MAPE = |Actual - Forecast| / |Forecast| * 100  (if Forecast != 0)
 		if (amtActual.signum() != 0) {
 			mape = amtVariance.abs()
 				.divide(amtActual.abs(), 4, RoundingMode.HALF_UP)

@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Forecast_Comparison_Minor_Fixes" ReleaseNo="1.5.3" SeqNo="502210">
+    <Comments>Make minor fixes for Forecast comparison, show new fields, better field order, add identifiers to some tables used by Forecast Comparison</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="105318" Table="AD_Column">
+        <Data AD_Column_ID="126" Column="IsIdentifier" oldValue="false">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isOldNull="true">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="105447" Table="AD_Column">
+        <Data AD_Column_ID="126" Column="IsIdentifier" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="105351" Table="AD_Column">
+        <Data AD_Column_ID="126" Column="IsIdentifier" oldValue="false">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isOldNull="true">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="105314" Table="AD_Column">
+        <Data AD_Column_ID="124" Column="IsMandatory" oldValue="true">false</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">M_Forecast_ID</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="105316" Table="AD_Column">
+        <Data AD_Column_ID="124" Column="IsMandatory" oldValue="true">false</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">M_Product_ID</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="105407" Table="AD_Column">
+        <Data AD_Column_ID="126" Column="IsIdentifier" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="105309" Table="AD_Column">
+        <Data AD_Column_ID="126" Column="IsIdentifier" oldValue="false">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isOldNull="true">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="55081" Table="AD_Table">
+        <Data AD_Column_ID="105" Column="AD_Window_ID" isOldNull="true">53883</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="115" Action="I" Record_ID="55630" Table="AD_Sequence">
+        <Data AD_Column_ID="426" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="427" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="1186" Column="AD_Sequence_ID">55630</Data>
+        <Data AD_Column_ID="627" Column="Created">2026-03-04 11:56:45.703</Data>
+        <Data AD_Column_ID="628" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="220" Column="CurrentNext">1000000</Data>
+        <Data AD_Column_ID="3887" Column="CurrentNextSys">50000</Data>
+        <Data AD_Column_ID="54272" Column="DateColumn" isNewNull="true"/>
+        <Data AD_Column_ID="54309" Column="DecimalPattern" isNewNull="true"/>
+        <Data AD_Column_ID="347" Column="Description">Table C_SalesBudget</Data>
+        <Data AD_Column_ID="2747" Column="IncrementNo">1</Data>
+        <Data AD_Column_ID="349" Column="IsActive">true</Data>
+        <Data AD_Column_ID="222" Column="IsAudited">false</Data>
+        <Data AD_Column_ID="1188" Column="IsAutoSequence">true</Data>
+        <Data AD_Column_ID="350" Column="IsTableID">true</Data>
+        <Data AD_Column_ID="216" Column="Name">C_SalesBudget</Data>
+        <Data AD_Column_ID="223" Column="Prefix" isNewNull="true"/>
+        <Data AD_Column_ID="225" Column="StartNewYear">false</Data>
+        <Data AD_Column_ID="2746" Column="StartNo">1000000</Data>
+        <Data AD_Column_ID="224" Column="Suffix" isNewNull="true"/>
+        <Data AD_Column_ID="629" Column="Updated">2026-03-04 11:56:45.703</Data>
+        <Data AD_Column_ID="630" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84417" Column="UUID">0f5ddf1f-e0aa-4566-b599-697993cd9c50</Data>
+        <Data AD_Column_ID="1187" Column="VFormat" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108658" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="260">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108659" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="270">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108653" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="10">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108655" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="70">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108656" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="80">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108660" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="280">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108657" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="90">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108654" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="20">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108634" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="10">20</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108635" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="20">30</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108636" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="30">40</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108637" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="40">50</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108638" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="50">60</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108639" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="60">70</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108640" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="70">80</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="250" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108641" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="80">90</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="260" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108642" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="90">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="270" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108643" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="100">110</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="280" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108644" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="110">120</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="290" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108645" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="120">130</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="300" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108646" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="130">140</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="310" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108647" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="140">150</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="320" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108648" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="150">160</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="330" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108649" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="160">170</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="340" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108650" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="170">180</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="350" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108818" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="180">190</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="360" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108651" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="190">200</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="370" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108652" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="200">210</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="380" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108745" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="180">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="390" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108746" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="190">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="400" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108739" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="20">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="410" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108743" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="80">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="420" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108744" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="90">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="430" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108747" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="200">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="440" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108742" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="110">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="450" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108741" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="100">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="460" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108740" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="30">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="470" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108727" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="10">20</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="480" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108728" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="20">30</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="490" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108819" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="30">40</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="500" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108729" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="40">50</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="510" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108730" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="50">60</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="520" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108731" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="60">70</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="530" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108732" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="70">80</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="540" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108733" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="80">90</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="550" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108734" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="90">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="560" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108735" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="100">110</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="570" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108736" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="110">120</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="580" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108737" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="120">130</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="590" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108738" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="130">140</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="600" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108699" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="0">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="610" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108678" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="10">20</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="620" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108679" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="20">30</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="630" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108680" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="30">40</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="640" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108681" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="40">50</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="650" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108682" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="50">60</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="660" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108683" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="60">70</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="670" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108684" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="70">80</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="680" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108685" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="80">90</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="690" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108686" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="90">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="700" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108687" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="100">110</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="710" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108688" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="110">120</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="720" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108689" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="120">130</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="730" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108690" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="130">140</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="740" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108632" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="140">150</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="750" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108691" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="150">160</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="760" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108692" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="160">170</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="770" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108693" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="170">180</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="780" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108694" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="180">190</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="790" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108695" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="190">200</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="800" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108696" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="200">210</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="810" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108697" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="210">220</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="820" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108836" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="220">230</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="830" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108837" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="230">240</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="840" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108838" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="240">250</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="850" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108840" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="250">260</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="860" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108841" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="260">270</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="870" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108842" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="270">280</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="880" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108843" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="280">290</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="890" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108846" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="290">300</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="900" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108844" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="300">310</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="910" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108845" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="310">320</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="920" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108847" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="320">330</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="930" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108848" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="330">340</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="940" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108861" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="340">350</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="950" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108864" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="350">360</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="960" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108865" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="360">370</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="970" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108866" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="370">380</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="980" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="108867" Table="AD_Field">
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">105387</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">108867</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">653</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">328</Data>
+        <Data AD_Column_ID="579" Column="Created">2026-03-04 12:53:57.804</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="169" Column="Description">Financial, Commercial, or Operational forecast level</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="7714" Column="EntityType">D</Data>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Forecast Level</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">170</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">170</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="581" Column="Updated">2026-03-04 12:53:57.804</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84320" Column="UUID">62d83272-29e2-4660-8894-1e1cdfa4f2c0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="990" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="108867" Table="AD_Field_Trl">
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">108867</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-03-04 12:53:59.14</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="287" Column="Description">Financial, Commercial, or Operational forecast level</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Forecast Level</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-03-04 12:53:59.14</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84323" Column="UUID">5431ace4-3701-40db-bb5c-99e70778617a</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1000" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108682" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="60">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1010" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108632" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="150">40</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1020" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108680" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="40">50</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1030" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108864" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="360">60</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1040" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108691" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="160">150</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1050" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108692" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="170">160</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1060" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108693" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="180">170</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1070" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108694" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="190">180</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1080" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108695" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="200">190</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1090" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108696" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="210">200</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1100" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108697" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="220">210</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1110" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108681" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="50">220</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1120" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108865" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="370">360</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="1130" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108866" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="380">370</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

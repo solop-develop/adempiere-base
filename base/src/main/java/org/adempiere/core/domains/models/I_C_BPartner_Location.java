@@ -203,6 +203,19 @@ public interface I_C_BPartner_Location
 	  */
 	public String getFax();
 
+    /** Column name GeoFenceRadius */
+    public static final String COLUMNNAME_GeoFenceRadius = "GeoFenceRadius";
+
+	/** Set Geofence Radius.
+	  * Acceptable distance in meters for geofence validation of attendance marks
+	  */
+	public void setGeoFenceRadius (int GeoFenceRadius);
+
+	/** Get Geofence Radius.
+	  * Acceptable distance in meters for geofence validation of attendance marks
+	  */
+	public int getGeoFenceRadius();
+
     /** Column name HR_Relationship_ID */
     public static final String COLUMNNAME_HR_Relationship_ID = "HR_Relationship_ID";
 

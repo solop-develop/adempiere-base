@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for M_ForecastComparison
  *  @author Adempiere (generated) 
@@ -37,7 +38,7 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260303L;
+	private static final long serialVersionUID = 20260305L;
 
     /** Standard Constructor */
     public X_M_ForecastComparison (Properties ctx, int M_ForecastComparison_ID, String trxName)
@@ -47,8 +48,6 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
         {
 			setC_Period_ID (0);
 			setM_ForecastComparison_ID (0);
-			setM_Forecast_ID (0);
-			setM_Product_ID (0);
 			setQtyActual (Env.ZERO);
 // 0
 			setQtyForecast (Env.ZERO);
@@ -164,9 +163,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -187,6 +186,34 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 	public int getC_BPartner_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_BPartner_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Currency getC_Currency() throws RuntimeException
+    {
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
+			.getPO(getC_Currency_ID(), get_TrxName());	}
+
+	/** Set Currency.
+		@param C_Currency_ID 
+		The Currency for this record
+	  */
+	public void setC_Currency_ID (int C_Currency_ID)
+	{
+		if (C_Currency_ID < 1) 
+			set_Value (COLUMNNAME_C_Currency_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+	}
+
+	/** Get Currency.
+		@return The Currency for this record
+	  */
+	public int getC_Currency_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Currency_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -218,9 +245,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return (String)get_Value(COLUMNNAME_ComparisonSource);
 	}
 
-	public org.adempiere.core.domains.models.I_C_Period getC_Period() throws RuntimeException
+	public I_C_Period getC_Period() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Period)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Period.Table_Name)
+		return (I_C_Period)MTable.get(getCtx(), I_C_Period.Table_Name)
 			.getPO(getC_Period_ID(), get_TrxName());	}
 
 	/** Set Period.
@@ -246,9 +273,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_SalesBudget getC_SalesBudget() throws RuntimeException
+	public I_C_SalesBudget getC_SalesBudget() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_SalesBudget)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SalesBudget.Table_Name)
+		return (I_C_SalesBudget)MTable.get(getCtx(), I_C_SalesBudget.Table_Name)
 			.getPO(getC_SalesBudget_ID(), get_TrxName());	}
 
 	/** Set Sales Budget.
@@ -271,9 +298,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_SalesBudgetLine getC_SalesBudgetLine() throws RuntimeException
+	public I_C_SalesBudgetLine getC_SalesBudgetLine() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_SalesBudgetLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SalesBudgetLine.Table_Name)
+		return (I_C_SalesBudgetLine)MTable.get(getCtx(), I_C_SalesBudgetLine.Table_Name)
 			.getPO(getC_SalesBudgetLine_ID(), get_TrxName());	}
 
 	/** Set Sales Budget Line.
@@ -401,9 +428,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_M_Brand getM_Brand() throws RuntimeException
+	public I_M_Brand getM_Brand() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Brand)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Brand.Table_Name)
+		return (I_M_Brand)MTable.get(getCtx(), I_M_Brand.Table_Name)
 			.getPO(getM_Brand_ID(), get_TrxName());	}
 
 	/** Set Product Brand.
@@ -446,9 +473,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Forecast getM_Forecast() throws RuntimeException
+	public I_M_Forecast getM_Forecast() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Forecast)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Forecast.Table_Name)
+		return (I_M_Forecast)MTable.get(getCtx(), I_M_Forecast.Table_Name)
 			.getPO(getM_Forecast_ID(), get_TrxName());	}
 
 	/** Set Forecast.
@@ -474,9 +501,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_ForecastLine getM_ForecastLine() throws RuntimeException
+	public I_M_ForecastLine getM_ForecastLine() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_ForecastLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_ForecastLine.Table_Name)
+		return (I_M_ForecastLine)MTable.get(getCtx(), I_M_ForecastLine.Table_Name)
 			.getPO(getM_ForecastLine_ID(), get_TrxName());	}
 
 	/** Set Forecast Line.
@@ -502,9 +529,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_FreightCategory getM_FreightCategory() throws RuntimeException
+	public I_M_FreightCategory getM_FreightCategory() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_FreightCategory)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_FreightCategory.Table_Name)
+		return (I_M_FreightCategory)MTable.get(getCtx(), I_M_FreightCategory.Table_Name)
 			.getPO(getM_FreightCategory_ID(), get_TrxName());	}
 
 	/** Set Freight Category.
@@ -530,9 +557,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException
+	public I_M_Industry_Sector getM_Industry_Sector() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Industry_Sector)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Industry_Sector.Table_Name)
+		return (I_M_Industry_Sector)MTable.get(getCtx(), I_M_Industry_Sector.Table_Name)
 			.getPO(getM_Industry_Sector_ID(), get_TrxName());	}
 
 	/** Set Industry Sector.
@@ -555,9 +582,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Material_Group getM_Material_Group() throws RuntimeException
+	public I_M_Material_Group getM_Material_Group() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Material_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Material_Group.Table_Name)
+		return (I_M_Material_Group)MTable.get(getCtx(), I_M_Material_Group.Table_Name)
 			.getPO(getM_Material_Group_ID(), get_TrxName());	}
 
 	/** Set Material Group.
@@ -580,9 +607,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Material_Type getM_Material_Type() throws RuntimeException
+	public I_M_Material_Type getM_Material_Type() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Material_Type)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Material_Type.Table_Name)
+		return (I_M_Material_Type)MTable.get(getCtx(), I_M_Material_Type.Table_Name)
 			.getPO(getM_Material_Type_ID(), get_TrxName());	}
 
 	/** Set Material Type.
@@ -605,9 +632,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_PartType getM_PartType() throws RuntimeException
+	public I_M_PartType getM_PartType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_PartType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_PartType.Table_Name)
+		return (I_M_PartType)MTable.get(getCtx(), I_M_PartType.Table_Name)
 			.getPO(getM_PartType_ID(), get_TrxName());	}
 
 	/** Set Part Type.
@@ -630,9 +657,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product_Category getM_Product_Category() throws RuntimeException
+	public I_M_Product_Category getM_Product_Category() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product_Category)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product_Category.Table_Name)
+		return (I_M_Product_Category)MTable.get(getCtx(), I_M_Product_Category.Table_Name)
 			.getPO(getM_Product_Category_ID(), get_TrxName());	}
 
 	/** Set Product Category.
@@ -658,9 +685,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product_Class getM_Product_Class() throws RuntimeException
+	public I_M_Product_Class getM_Product_Class() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product_Class)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product_Class.Table_Name)
+		return (I_M_Product_Class)MTable.get(getCtx(), I_M_Product_Class.Table_Name)
 			.getPO(getM_Product_Class_ID(), get_TrxName());	}
 
 	/** Set Product Class.
@@ -686,9 +713,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product_Classification getM_Product_Classification() throws RuntimeException
+	public I_M_Product_Classification getM_Product_Classification() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product_Classification)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product_Classification.Table_Name)
+		return (I_M_Product_Classification)MTable.get(getCtx(), I_M_Product_Classification.Table_Name)
 			.getPO(getM_Product_Classification_ID(), get_TrxName());	}
 
 	/** Set Product Classification.
@@ -714,9 +741,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product_Group getM_Product_Group() throws RuntimeException
+	public I_M_Product_Group getM_Product_Group() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product_Group.Table_Name)
+		return (I_M_Product_Group)MTable.get(getCtx(), I_M_Product_Group.Table_Name)
 			.getPO(getM_Product_Group_ID(), get_TrxName());	}
 
 	/** Set Product Group.
@@ -742,9 +769,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException
+	public I_M_Product getM_Product() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
 			.getPO(getM_Product_ID(), get_TrxName());	}
 
 	/** Set Product.
@@ -770,9 +797,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException
+	public I_M_Purchase_Group getM_Purchase_Group() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Purchase_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Purchase_Group.Table_Name)
+		return (I_M_Purchase_Group)MTable.get(getCtx(), I_M_Purchase_Group.Table_Name)
 			.getPO(getM_Purchase_Group_ID(), get_TrxName());	}
 
 	/** Set Purchase Group.
@@ -795,9 +822,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Sales_Group getM_Sales_Group() throws RuntimeException
+	public I_M_Sales_Group getM_Sales_Group() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Sales_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Sales_Group.Table_Name)
+		return (I_M_Sales_Group)MTable.get(getCtx(), I_M_Sales_Group.Table_Name)
 			.getPO(getM_Sales_Group_ID(), get_TrxName());	}
 
 	/** Set Sales Group.
@@ -921,9 +948,9 @@ public class X_M_ForecastComparison extends PO implements I_M_ForecastComparison
 		return (String)get_Value(COLUMNNAME_ReviewNotes);
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
+	public I_AD_User getSalesRep() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSalesRep_ID(), get_TrxName());	}
 
 	/** Set Sales Representative.

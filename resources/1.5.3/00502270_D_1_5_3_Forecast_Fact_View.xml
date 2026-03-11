@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Forecast_Fact_View" ReleaseNo="1.5.3" SeqNo="502270">
+    <Comments>Add Forecast Comparison View</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_ForecastFact AS
+        -- Invoice Lines
+        SELECT
+        ff.M_ForecastFact_ID,
+        ff.AD_Client_ID,
+        ff.AD_Org_ID,
+        ff.M_ForecastComparison_ID,
+        fc.ComparisonSource,
+        ff.AD_Table_ID,
+        ff.Record_ID,
+        ff.DateDoc,
+        il.M_Product_ID,
+        il.LineNetAmt,
+        il.QtyInvoiced AS Qty,
+        i.DocumentNo,
+        ff.IsActive,
+        ff.Created,
+        ff.Updated
+        FROM M_ForecastFact ff
+        JOIN M_ForecastComparison fc ON (fc.M_ForecastComparison_ID = ff.M_ForecastComparison_ID)
+        JOIN C_InvoiceLine il ON (il.C_InvoiceLine_ID = ff.Record_ID)
+        JOIN C_Invoice i ON (i.C_Invoice_ID = il.C_Invoice_ID)
+        WHERE ff.AD_Table_ID = 333
+        UNION ALL
+        -- Order Lines
+        SELECT
+        ff.M_ForecastFact_ID,
+        ff.AD_Client_ID,
+        ff.AD_Org_ID,
+        ff.M_ForecastComparison_ID,
+        fc.ComparisonSource,
+        ff.AD_Table_ID,
+        ff.Record_ID,
+        ff.DateDoc,
+        ol.M_Product_ID,
+        ol.LineNetAmt,
+        ol.QtyOrdered AS Qty,
+        o.DocumentNo,
+        ff.IsActive,
+        ff.Created,
+        ff.Updated
+        FROM M_ForecastFact ff
+        JOIN M_ForecastComparison fc ON (fc.M_ForecastComparison_ID = ff.M_ForecastComparison_ID)
+        JOIN C_OrderLine ol ON (ol.C_OrderLine_ID = ff.Record_ID)
+        JOIN C_Order o ON (o.C_Order_ID = ol.C_Order_ID)
+        WHERE ff.AD_Table_ID = 260
+        UNION ALL
+        -- InOut Lines (Shipment/Receipt)
+        SELECT
+        ff.M_ForecastFact_ID,
+        ff.AD_Client_ID,
+        ff.AD_Org_ID,
+        ff.M_ForecastComparison_ID,
+        fc.ComparisonSource,
+        ff.AD_Table_ID,
+        ff.Record_ID,
+        ff.DateDoc,
+        iol.M_Product_ID,
+        0 AS LineNetAmt,
+        iol.MovementQty AS Qty,
+        io.DocumentNo,
+        ff.IsActive,
+        ff.Created,
+        ff.Updated
+        FROM M_ForecastFact ff
+        JOIN M_ForecastComparison fc ON (fc.M_ForecastComparison_ID = ff.M_ForecastComparison_ID)
+        JOIN M_InOutLine iol ON (iol.M_InOutLine_ID = ff.Record_ID)
+        JOIN M_InOut io ON (io.M_InOut_ID = iol.M_InOut_ID)
+        WHERE ff.AD_Table_ID = 320;</SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS RV_ForecastFact;
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
