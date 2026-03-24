@@ -17,16 +17,18 @@
 
 package org.spin.tar.process;
 
-import java.math.BigDecimal;
-
 import org.adempiere.core.domains.models.X_HR_Incidence;
+import org.adempiere.core.domains.models.X_S_Contract;
 import org.adempiere.core.domains.models.X_S_TimeExpense;
 import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.MProductPricing;
 import org.compiere.model.MTimeExpense;
 import org.compiere.model.MTimeExpenseLine;
 import org.compiere.util.Util;
 import org.spin.tar.model.MHRIncidence;
 import org.spin.tar.model.MHRShiftIncidence;
+
+import java.math.BigDecimal;
 
 /** Generated Process for (Create Expense Report (From Incidence))
  *  @author ADempiere (generated) 
@@ -68,7 +70,7 @@ public class CreateExpenseReportFromIncidence extends CreateExpenseReportFromInc
 			MTimeExpenseLine expenseLine = new MTimeExpenseLine(getCtx(), 0, get_TrxName());
 			expenseLine.setS_TimeExpense_ID(expenseReport.getS_TimeExpense_ID());
 			expenseLine.setDateExpense(getDateReport());
-			expenseLine.setIsTimeReport(true);
+			expenseLine.setIsTimeReport(!shiftIncidence.isInvoiced());
 			boolean isInvoiced = (Util.isEmpty(getIsInvoiced())
 					? shiftIncidence.isInvoiced()
 							: getIsInvoiced().equals("Y"));
@@ -76,6 +78,11 @@ public class CreateExpenseReportFromIncidence extends CreateExpenseReportFromInc
 			//	Validate product
 			if(shiftIncidence.getM_Product_ID() != 0) {
 				expenseLine.setM_Product_ID(shiftIncidence.getM_Product_ID());
+				//	Get price from price list
+				MProductPricing productPricing = new MProductPricing(shiftIncidence.getM_Product_ID(),
+						currentBPartnerId, qty, expenseReport.isSOTrx(), get_TrxName());
+				productPricing.setM_PriceList_ID(expenseReport.getM_PriceList_ID());
+				expenseLine.setExpenseAmt(productPricing.getPriceStd());
 			}
 			expenseLine.setQty(qty);
 			expenseLine.setC_BPartner_ID(currentBPartnerId);
@@ -123,7 +130,11 @@ public class CreateExpenseReportFromIncidence extends CreateExpenseReportFromInc
 		expenseReport.setM_Warehouse_ID(getWarehouseId());
 		expenseReport.setM_PriceList_ID(getPriceListId());
 		if(currentContractId > 0) {
+			X_S_Contract contract = new X_S_Contract(getCtx(), currentContractId, get_TrxName());
+			expenseReport.setC_BPartner_ID(contract.getC_BPartner_ID());
+			expenseReport.set_ValueOfColumn("Bill_BPartner_ID", contract.getBill_BPartner_ID());
 			expenseReport.set_ValueOfColumn("S_Contract_ID", currentContractId);
+			currentBPartnerId = contract.getC_BPartner_ID();
 		}
 		expenseReport.saveEx();
 	}

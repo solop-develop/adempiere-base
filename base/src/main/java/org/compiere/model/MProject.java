@@ -16,10 +16,15 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_ProjectIssue;
+import org.adempiere.core.domains.models.I_C_ProjectLine;
+import org.adempiere.core.domains.models.I_C_ProjectPhase;
+import org.adempiere.core.domains.models.X_C_Project;
+import org.adempiere.core.domains.models.X_I_Project;
 import org.compiere.util.CCache;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Util;
 import org.eevolution.model.MProjectMember;
 
 import java.math.BigDecimal;
@@ -383,7 +388,7 @@ public class MProject extends X_C_Project
 	{
 		//FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
 		//final String whereClause = "C_Project_ID=?";
-		if (whereClause==null)
+		if (Util.isEmpty(whereClause, true))
 			whereClause = "C_Project_ID=?";
 		else
 			whereClause += " AND C_Project_ID=?";

@@ -18,16 +18,17 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for C_BankStatementLine
  *  @author Adempiere (generated) 
@@ -38,7 +39,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260317L;
 
     /** Standard Constructor */
     public X_C_BankStatementLine (Properties ctx, int C_BankStatementLine_ID, String trxName)
@@ -48,7 +49,6 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
         {
 			setC_BankStatement_ID (0);
 			setC_BankStatementLine_ID (0);
-			setC_Charge_ID (0);
 			setC_Currency_ID (0);
 // @SQL=SELECT C_Currency_ID FROM C_BankAccount WHERE C_BankAccount_ID=@C_BankAccount_ID@
 			setChargeAmt (Env.ZERO);
@@ -98,9 +98,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_BankStatement getC_BankStatement() throws RuntimeException
+	public I_C_BankStatement getC_BankStatement() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BankStatement)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BankStatement.Table_Name)
+		return (I_C_BankStatement)MTable.get(getCtx(), I_C_BankStatement.Table_Name)
 			.getPO(getC_BankStatement_ID(), get_TrxName());	}
 
 	/** Set Bank Statement.
@@ -149,9 +149,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -177,9 +177,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Charge getC_Charge() throws RuntimeException
+	public I_C_Charge getC_Charge() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Charge)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Charge.Table_Name)
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
 			.getPO(getC_Charge_ID(), get_TrxName());	}
 
 	/** Set Charge.
@@ -205,9 +205,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException
+	public I_C_Currency getC_Currency() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Currency)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Currency.Table_Name)
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
 			.getPO(getC_Currency_ID(), get_TrxName());	}
 
 	/** Set Currency.
@@ -233,9 +233,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Invoice getC_Invoice() throws RuntimeException
+	public I_C_Invoice getC_Invoice() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Invoice)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Invoice.Table_Name)
+		return (I_C_Invoice)MTable.get(getCtx(), I_C_Invoice.Table_Name)
 			.getPO(getC_Invoice_ID(), get_TrxName());	}
 
 	/** Set Invoice.
@@ -261,9 +261,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Payment getC_Payment() throws RuntimeException
+	public I_C_Payment getC_Payment() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Payment)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Payment.Table_Name)
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
 			.getPO(getC_Payment_ID(), get_TrxName());	}
 
 	/** Set Payment.
@@ -582,6 +582,30 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
 	public boolean isManual () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsManual);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Multi-Payment Match.
+		@param IsMultiPaymentMatch 
+		Indicates that this line is matched to more than one payment
+	  */
+	public void setIsMultiPaymentMatch (boolean IsMultiPaymentMatch)
+	{
+		set_Value (COLUMNNAME_IsMultiPaymentMatch, Boolean.valueOf(IsMultiPaymentMatch));
+	}
+
+	/** Get Multi-Payment Match.
+		@return Indicates that this line is matched to more than one payment
+	  */
+	public boolean isMultiPaymentMatch () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsMultiPaymentMatch);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 

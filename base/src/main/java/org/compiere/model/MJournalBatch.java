@@ -23,7 +23,6 @@ import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.solop.util.DocumentDateUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -279,7 +278,6 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction
 	 */
 	protected boolean beforeSave (boolean newRecord)
 	{
-		DocumentDateUtil.updateDateAcct(this, COLUMNNAME_DateDoc);
 		if (getC_Period_ID() <= 0) {
 			MPeriod period = MPeriod.get(getCtx(), getDateAcct(), getAD_Org_ID(), get_TrxName());
 			if (period != null && period.get_ID() > 0){

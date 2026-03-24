@@ -37,15 +37,20 @@ public abstract class GenerateSalesOrderAbstract extends SvrProcess {
 	public static final String C_DOCTYPETARGET_ID = "C_DocTypeTarget_ID";
 	/**	Parameter Name for Date Ordered	*/
 	public static final String DATEORDERED = "DateOrdered";
+	/**	Parameter Name for Consolidate to one Document	*/
+	public static final String CONSOLIDATEDOCUMENT = "ConsolidateDocument";
 	/**	Parameter Value for Target Document Type	*/
 	private int docTypeTargetId;
 	/**	Parameter Value for Date Ordered	*/
 	private Timestamp dateOrdered;
+	/**	Parameter Value for Consolidate to one Document	*/
+	private boolean isConsolidateDocument;
 
 	@Override
 	protected void prepare() {
 		docTypeTargetId = getParameterAsInt(C_DOCTYPETARGET_ID);
 		dateOrdered = getParameterAsTimestamp(DATEORDERED);
+		isConsolidateDocument = getParameterAsBoolean(CONSOLIDATEDOCUMENT);
 	}
 
 	/**	 Getter Parameter Value for Target Document Type	*/
@@ -66,6 +71,16 @@ public abstract class GenerateSalesOrderAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Date Ordered	*/
 	protected void setDateOrdered(Timestamp dateOrdered) {
 		this.dateOrdered = dateOrdered;
+	}
+
+	/**	 Getter Parameter Value for Consolidate to one Document	*/
+	protected boolean isConsolidateDocument() {
+		return isConsolidateDocument;
+	}
+
+	/**	 Setter Parameter Value for Consolidate to one Document	*/
+	protected void setConsolidateDocument(boolean isConsolidateDocument) {
+		this.isConsolidateDocument = isConsolidateDocument;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

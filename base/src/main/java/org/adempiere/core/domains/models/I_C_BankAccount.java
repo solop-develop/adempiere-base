@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_BankAccount
  *  @author Adempiere (generated) 
@@ -63,6 +64,17 @@ public interface I_C_BankAccount
 	  * Client/Tenant for this installation.
 	  */
 	public int getAD_Client_ID();
+
+    /** Column name AdjustDifferenceCharge_ID */
+    public static final String COLUMNNAME_AdjustDifferenceCharge_ID = "AdjustDifferenceCharge_ID";
+
+	/** Set Adjust Difference Charge	  */
+	public void setAdjustDifferenceCharge_ID (int AdjustDifferenceCharge_ID);
+
+	/** Get Adjust Difference Charge	  */
+	public int getAdjustDifferenceCharge_ID();
+
+	public I_C_Charge getAdjustDifferenceCharge() throws RuntimeException;
 
     /** Column name AD_Org_ID */
     public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";

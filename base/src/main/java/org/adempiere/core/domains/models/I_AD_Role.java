@@ -325,6 +325,19 @@ public interface I_AD_Role
 	  */
 	public String getDescription();
 
+    /** Column name HelpDeskAccessLevel */
+    public static final String COLUMNNAME_HelpDeskAccessLevel = "HelpDeskAccessLevel";
+
+	/** Set HelpDesk Access Level.
+	  * Level of access to the HelpDesk/Ticket system
+	  */
+	public void setHelpDeskAccessLevel (String HelpDeskAccessLevel);
+
+	/** Get HelpDesk Access Level.
+	  * Level of access to the HelpDesk/Ticket system
+	  */
+	public String getHelpDeskAccessLevel();
+
     /** Column name IsAccessAllOrgs */
     public static final String COLUMNNAME_IsAccessAllOrgs = "IsAccessAllOrgs";
 

@@ -102,6 +102,44 @@ public interface I_AD_OrgInfo
 
 	public I_AD_OrgType getAD_OrgType() throws RuntimeException;
 
+    /** Column name AllowsAttendanceOutOfTolerance */
+    public static final String COLUMNNAME_AllowsAttendanceOutOfTolerance = "AllowsAttendanceOutOfTolerance";
+
+	/** Set Allows Attendance Out Of Tolerance	  */
+	public void setAllowsAttendanceOutOfTolerance (String AllowsAttendanceOutOfTolerance);
+
+	/** Get Allows Attendance Out Of Tolerance	  */
+	public String getAllowsAttendanceOutOfTolerance();
+
+    /** Column name ApprovalSupervisor_ID */
+    public static final String COLUMNNAME_ApprovalSupervisor_ID = "ApprovalSupervisor_ID";
+
+	/** Set Approval Supervisor	  */
+	public void setApprovalSupervisor_ID (int ApprovalSupervisor_ID);
+
+	/** Get Approval Supervisor	  */
+	public int getApprovalSupervisor_ID();
+
+	public I_AD_User getApprovalSupervisor() throws RuntimeException;
+
+    /** Column name AttendanceRangeTolerance */
+    public static final String COLUMNNAME_AttendanceRangeTolerance = "AttendanceRangeTolerance";
+
+	/** Set Attendance Range Tolerance	  */
+	public void setAttendanceRangeTolerance (BigDecimal AttendanceRangeTolerance);
+
+	/** Get Attendance Range Tolerance	  */
+	public BigDecimal getAttendanceRangeTolerance();
+
+    /** Column name AttendanceTimeTolerance */
+    public static final String COLUMNNAME_AttendanceTimeTolerance = "AttendanceTimeTolerance";
+
+	/** Set Attendance Time Tolerance	  */
+	public void setAttendanceTimeTolerance (BigDecimal AttendanceTimeTolerance);
+
+	/** Get Attendance Time Tolerance	  */
+	public BigDecimal getAttendanceTimeTolerance();
+
     /** Column name C_Calendar_ID */
     public static final String COLUMNNAME_C_Calendar_ID = "C_Calendar_ID";
 
@@ -256,6 +294,15 @@ public interface I_AD_OrgInfo
 	  */
 	public boolean isActive();
 
+    /** Column name IsRequiresToleranceApproval */
+    public static final String COLUMNNAME_IsRequiresToleranceApproval = "IsRequiresToleranceApproval";
+
+	/** Set Requires Out Of Tolerance Approval	  */
+	public void setIsRequiresToleranceApproval (String IsRequiresToleranceApproval);
+
+	/** Get Requires Out Of Tolerance Approval	  */
+	public String getIsRequiresToleranceApproval();
+
     /** Column name Logo_ID */
     public static final String COLUMNNAME_Logo_ID = "Logo_ID";
 
@@ -348,6 +395,17 @@ public interface I_AD_OrgInfo
 	  * This message will be displayed at the bottom of a receipt when doing a sales or purchase
 	  */
 	public String getReceiptFooterMsg();
+
+    /** Column name ReportCurrency_ID */
+    public static final String COLUMNNAME_ReportCurrency_ID = "ReportCurrency_ID";
+
+	/** Set Report Currency	  */
+	public void setReportCurrency_ID (int ReportCurrency_ID);
+
+	/** Get Report Currency	  */
+	public int getReportCurrency_ID();
+
+	public I_C_Currency getReportCurrency() throws RuntimeException;
 
     /** Column name RequestUserPW */
     public static final String COLUMNNAME_RequestUserPW = "RequestUserPW";

@@ -21,7 +21,13 @@ package org.solop.project.process;
 import org.adempiere.core.domains.models.I_C_Order;
 import org.adempiere.core.domains.models.I_C_ProjectLine;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
+import org.compiere.model.MDocType;
+import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
+import org.compiere.model.MProduct;
+import org.compiere.model.MProject;
+import org.compiere.model.MProjectLine;
+import org.compiere.model.MUOMConversion;
 import org.compiere.util.Env;
 import org.compiere.util.TimeUtil;
 import org.compiere.util.Trx;
@@ -34,7 +40,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
 
 /**
  * 	Generated Process for (Generate Sales Order (From Line))
@@ -55,15 +60,22 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 
 	@Override
 	protected String doIt() throws Exception {
-		getProjectLineIds().forEach(projectLineId -> {
+		List<Integer> projectLineIds = getProjectLineIds();
+		if (isConsolidateDocument()) {
 			try {
-				Trx.run(transactionName -> {
-					generateOrderFromProjectLine(projectLineId, transactionName);
-				});
+				Trx.run(transactionName -> generateOrders(projectLineIds, transactionName));
 			} catch (Exception e) {
 				addLog(e.getLocalizedMessage());
 			}
-		});
+		} else {
+			projectLineIds.forEach(projectLineId -> {
+				try {
+					Trx.run(transactionName -> generateOrders(List.of(projectLineId), transactionName));
+				} catch (Exception e) {
+					addLog(e.getLocalizedMessage());
+				}
+			});
+		}
 		return "@Created@ " + generated.toString();
 	}	//	doIt
 
@@ -74,95 +86,92 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 		return List.of(getRecord_ID());
 	}
 
-	private void generateOrderFromProjectLine(int projectLineId, String transactionName) {
-		MProjectLine mainLine = new MProjectLine(getCtx(), projectLineId, transactionName);
-		log.info("doIt - C_ProjectPhase_ID=" + projectLineId);
-		MProject project = getProject (getCtx(), mainLine.getC_Project_ID(), transactionName);
-		if (project.getC_PaymentTerm_ID() <= 0) {
-			throw new AdempiereException(mainLine.getName() + " @C_PaymentTerm_ID@ @NotFound@");
-		}
-		if(!mainLine.isSummary()) {
-			return;
-		}
-		MOrder order = new MOrder (project, true, MDocType.COLUMNNAME_DocSubTypeSO);
-		//	Add Document Type Target
-		if(getDocTypeTargetId() > 0) {
-			order.setC_DocTypeTarget_ID(getDocTypeTargetId());
-		}
-		order.setC_Project_ID(mainLine.getC_Project_ID());
-		order.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_C_ProjectLine_ID, mainLine.getC_ProjectLine_ID());
-		//	Phase
-		if(mainLine.get_ValueAsBoolean(I_C_Order.COLUMNNAME_IsDropShip)) {
-			int dropShipBPartnerId = mainLine.get_ValueAsInt(I_C_Order.COLUMNNAME_DropShip_BPartner_ID);
-			int dropShipBPartnerLocationId = mainLine.get_ValueAsInt(I_C_Order.COLUMNNAME_DropShip_Location_ID);
-			if(dropShipBPartnerId > 0
-					&& dropShipBPartnerLocationId > 0) {
-				order.setIsDropShip(mainLine.get_ValueAsBoolean(I_C_Order.COLUMNNAME_IsDropShip));
-				order.setDropShip_BPartner_ID(dropShipBPartnerId);
-				order.setDropShip_Location_ID(dropShipBPartnerLocationId);
-			}
-		}
-		order.setDateOrdered(getDateOrdered());
-		//	Get Lines
-		List<MProjectLine> projectLines = mainLine.getChildren();
-		for (MProjectLine pLine : projectLines) {
-			Timestamp datePromisedLine = pLine.getDatePromised();
-			Timestamp dateOrder = TimeUtil.addDays(order.getDateOrdered(), -1);
-			if (datePromisedLine != null && datePromisedLine.compareTo(dateOrder) <= 0) {
-				throw new AdempiereException(mainLine.getName() + " @DatePromised@ < @DateOrdered@");
-			}
-		}
-
-		order.setDescription(order.getDescription() + " - " + mainLine.getName());
-		if(mainLine.getDatePromised() != null) {
-			order.setDatePromised(mainLine.getDatePromised());
-		}
-		order.saveEx(transactionName);
-
-		//	Create an order on Phase Level
-		String lineInvoiceRule = Optional.ofNullable(mainLine.getProjInvoiceRule()).orElse(MProjectLine.PROJINVOICERULE_None);
-		if (lineInvoiceRule.equals(MProjectLine.PROJINVOICERULE_ProductQuantity) && mainLine.getM_Product_ID() != 0) {
-			String description = mainLine.getDescription();
-			BigDecimal quantityToOrder = mainLine.getPlannedQty();
-			//	Add UOM
-			BigDecimal quantityEntered = mainLine.getPlannedQty();
-			int projectUomId = mainLine.get_ValueAsInt("C_UOM_ID");
-			MProduct product = MProduct.get(getCtx(), mainLine.getM_Product_ID());
-			MOrderLine orderLine = new MOrderLine(order);
-			orderLine.setLine(mainLine.getLine());
-			StringBuilder stringBuilder = new StringBuilder(mainLine.getName());
-			if (!Util.isEmpty(description)) {
-				stringBuilder.append(" - ").append(description);
-			}
-			orderLine.setDescription(stringBuilder.toString());
-			//
-			orderLine.setProduct(product);
-			setQuantityToOrder(orderLine, product, projectUomId, quantityEntered, quantityToOrder);
-			orderLine.setPrice();
-			orderLine.setC_Project_ID(project.getC_Project_ID());
-			if (mainLine.getPlannedAmt()!= null && mainLine.getPlannedAmt().compareTo(Env.ZERO) != 0) {
-				orderLine.setPrice(mainLine.getPlannedPrice());
-			}
-			orderLine.setTax();
-			orderLine.saveEx(transactionName);
-			generated.add("@C_Order_ID@ " + order.getDocumentNo() + " (1)");
-			return;
-		}
-
-		//	Project Phase Lines
+	private void generateOrders(List<Integer> projectLineIds, String transactionName) {
+		MOrder order = null;
 		AtomicInteger count = new AtomicInteger(0);
-		projectLines
-				.forEach(projectLine -> {
+		for (int projectLineId : projectLineIds) {
+			MProjectLine mainLine = new MProjectLine(getCtx(), projectLineId, transactionName);
+			log.info("doIt - C_ProjectLine_ID=" + projectLineId);
+			MProject project = getProject(getCtx(), mainLine.getC_Project_ID(), transactionName);
+			if (project.getC_PaymentTerm_ID() <= 0) {
+				throw new AdempiereException(mainLine.getName() + " @C_PaymentTerm_ID@ @NotFound@");
+			}
+			if (!mainLine.isSummary()) {
+				continue;
+			}
+			//	Create new order header when needed
+			if (order == null) {
+				order = new MOrder(project, true, MDocType.COLUMNNAME_DocSubTypeSO);
+				if (getDocTypeTargetId() > 0) {
+					order.setC_DocTypeTarget_ID(getDocTypeTargetId());
+				}
+				order.setC_Project_ID(mainLine.getC_Project_ID());
+				order.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_C_ProjectLine_ID, mainLine.getC_ProjectLine_ID());
+				if (mainLine.get_ValueAsBoolean(I_C_Order.COLUMNNAME_IsDropShip)) {
+					int dropShipBPartnerId = mainLine.get_ValueAsInt(I_C_Order.COLUMNNAME_DropShip_BPartner_ID);
+					int dropShipBPartnerLocationId = mainLine.get_ValueAsInt(I_C_Order.COLUMNNAME_DropShip_Location_ID);
+					if (dropShipBPartnerId > 0 && dropShipBPartnerLocationId > 0) {
+						order.setIsDropShip(true);
+						order.setDropShip_BPartner_ID(dropShipBPartnerId);
+						order.setDropShip_Location_ID(dropShipBPartnerLocationId);
+					}
+				}
+				order.setDateOrdered(getDateOrdered());
+				if (mainLine.getDatePromised() != null) {
+					order.setDatePromised(mainLine.getDatePromised());
+				}
+				//	Build description
+				if (!isConsolidateDocument()) {
+					order.setDescription(order.getDescription() + " - " + mainLine.getName());
+				}
+			}
+
+			//	Validate children dates
+			List<MProjectLine> projectLines = mainLine.getChildren();
+			for (MProjectLine pLine : projectLines) {
+				Timestamp datePromisedLine = pLine.getDatePromised();
+				Timestamp dateOrder = TimeUtil.addDays(order.getDateOrdered(), -1);
+				if (datePromisedLine != null && datePromisedLine.compareTo(dateOrder) <= 0) {
+					throw new AdempiereException(mainLine.getName() + " @DatePromised@ < @DateOrdered@");
+				}
+			}
+			order.saveEx(transactionName);
+			//	Create order lines
+			String lineInvoiceRule = Optional.ofNullable(mainLine.getProjInvoiceRule()).orElse(MProjectLine.PROJINVOICERULE_None);
+			if (lineInvoiceRule.equals(MProjectLine.PROJINVOICERULE_ProductQuantity) && mainLine.getM_Product_ID() != 0) {
+				String description = mainLine.getDescription();
+				BigDecimal quantityToOrder = mainLine.getPlannedQty();
+				BigDecimal quantityEntered = mainLine.getPlannedQty();
+				int projectUomId = mainLine.get_ValueAsInt("C_UOM_ID");
+				MProduct product = MProduct.get(getCtx(), mainLine.getM_Product_ID());
+				MOrderLine orderLine = new MOrderLine(order);
+				orderLine.setLine(mainLine.getLine());
+				StringBuilder stringBuilder = new StringBuilder(mainLine.getName());
+				if (!Util.isEmpty(description)) {
+					stringBuilder.append(" - ").append(description);
+				}
+				orderLine.setDescription(stringBuilder.toString());
+				orderLine.setProduct(product);
+				setQuantityToOrder(orderLine, product, projectUomId, quantityEntered, quantityToOrder);
+				orderLine.setPrice();
+				orderLine.setC_Project_ID(project.getC_Project_ID());
+				if (mainLine.getPlannedAmt() != null && mainLine.getPlannedAmt().compareTo(Env.ZERO) != 0) {
+					orderLine.setPrice(mainLine.getPlannedPrice());
+				}
+				orderLine.setTax();
+				orderLine.saveEx(transactionName);
+				count.getAndIncrement();
+			} else {
+				for (MProjectLine projectLine : projectLines) {
 					MOrderLine orderLine = new MOrderLine(order);
 					orderLine.setLine(projectLine.getLine());
 					orderLine.setDescription(projectLine.getDescription());
-					//
 					orderLine.setM_Product_ID(projectLine.getM_Product_ID(), true);
-					MProduct product = new MProduct(getCtx(),projectLine.getM_Product_ID(), transactionName);
+					MProduct product = new MProduct(getCtx(), projectLine.getM_Product_ID(), transactionName);
 					BigDecimal toOrder = projectLine.getPlannedQty().subtract(projectLine.getInvoicedQty());
 					setQuantityToOrder(orderLine, product, projectLine.get_ValueAsInt("C_UOM_ID"), projectLine.getPlannedQty(), toOrder);
 					orderLine.setPrice();
-					if (projectLine.getPlannedPrice() != null && projectLine.getPlannedPrice().compareTo(Env.ZERO) != 0){
+					if (projectLine.getPlannedPrice() != null && projectLine.getPlannedPrice().compareTo(Env.ZERO) != 0) {
 						orderLine.setPrice(projectLine.getPlannedPrice());
 						orderLine.setPriceList(projectLine.getPlannedPrice());
 					}
@@ -170,18 +179,27 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 					orderLine.setTax();
 					orderLine.setC_Project_ID(project.getC_Project_ID());
 					orderLine.setC_ProjectPhase_ID(projectLine.getC_ProjectPhase_ID());
-					if(projectLine.getDatePromised() != null) {
+					if (projectLine.getDatePromised() != null) {
 						orderLine.setDatePromised(projectLine.getDatePromised());
 					}
 					orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_StartDate, projectLine.getStartDate());
 					orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_EndDate, projectLine.getEndDate());
 					orderLine.set_ValueOfColumn(I_C_ProjectLine.COLUMNNAME_C_ProjectLine_ID, projectLine.getC_ProjectLine_ID());
 					orderLine.saveEx(transactionName);
-					count.getAndUpdate(no -> no + 1);
-				});    //	for all lines
-		if (projectLines.size() != count.get())
-			log.log(Level.SEVERE, "Lines difference - ProjectLines=" + projectLines.size() + " <> Saved=" + count.get());
-		generated.add(project.getValue() + " - " + project.getName() + " - " + mainLine.getName() + ": " + order.getDocumentNo() + " (" + count + ")");
+					count.getAndIncrement();
+				}
+			}
+			//	When not consolidating, register and reset for next iteration
+			if (!isConsolidateDocument()) {
+				generated.add(project.getValue() + " - " + project.getName() + " - " + mainLine.getName() + ": " + order.getDocumentNo() + " (" + count.get() + ")");
+				order = null;
+				count.set(0);
+			}
+		}
+		//	When consolidating, register the single order
+		if (isConsolidateDocument() && order != null) {
+			generated.add("@C_Order_ID@ " + order.getDocumentNo() + " (" + count.get() + ")");
+		}
 	}
 
 	/**

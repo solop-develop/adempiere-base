@@ -22,7 +22,9 @@ import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
+import org.compiere.util.Env;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
@@ -35,21 +37,25 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260128L;
+	private static final long serialVersionUID = 20260306L;
 
     /** Standard Constructor */
-    public X_AD_OrgInfo(Properties ctx, int AD_OrgInfo_ID, String trxName)
+    public X_AD_OrgInfo (Properties ctx, int AD_OrgInfo_ID, String trxName)
     {
       super (ctx, AD_OrgInfo_ID, trxName);
       /** if (AD_OrgInfo_ID == 0)
         {
+			setAttendanceRangeTolerance (Env.ZERO);
+// 0
+			setAttendanceTimeTolerance (Env.ZERO);
+// 0
 			setDUNS (null);
 			setTaxID (null);
         } */
     }
 
     /** Load Constructor */
-    public X_AD_OrgInfo(Properties ctx, ResultSet rs, String trxName)
+    public X_AD_OrgInfo (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -152,6 +158,86 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** AllowsAttendanceOutOfTolerance AD_Reference_ID=319 */
+	public static final int ALLOWSATTENDANCEOUTOFTOLERANCE_AD_Reference_ID=319;
+	/** Yes = Y */
+	public static final String ALLOWSATTENDANCEOUTOFTOLERANCE_Yes = "Y";
+	/** No = N */
+	public static final String ALLOWSATTENDANCEOUTOFTOLERANCE_No = "N";
+	/** Set Allows Attendance Out Of Tolerance.
+		@param AllowsAttendanceOutOfTolerance Allows Attendance Out Of Tolerance	  */
+	public void setAllowsAttendanceOutOfTolerance (String AllowsAttendanceOutOfTolerance)
+	{
+
+		set_Value (COLUMNNAME_AllowsAttendanceOutOfTolerance, AllowsAttendanceOutOfTolerance);
+	}
+
+	/** Get Allows Attendance Out Of Tolerance.
+		@return Allows Attendance Out Of Tolerance	  */
+	public String getAllowsAttendanceOutOfTolerance () 
+	{
+		return (String)get_Value(COLUMNNAME_AllowsAttendanceOutOfTolerance);
+	}
+
+	public I_AD_User getApprovalSupervisor() throws RuntimeException
+    {
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
+			.getPO(getApprovalSupervisor_ID(), get_TrxName());	}
+
+	/** Set Approval Supervisor.
+		@param ApprovalSupervisor_ID Approval Supervisor	  */
+	public void setApprovalSupervisor_ID (int ApprovalSupervisor_ID)
+	{
+		if (ApprovalSupervisor_ID < 1) 
+			set_Value (COLUMNNAME_ApprovalSupervisor_ID, null);
+		else 
+			set_Value (COLUMNNAME_ApprovalSupervisor_ID, Integer.valueOf(ApprovalSupervisor_ID));
+	}
+
+	/** Get Approval Supervisor.
+		@return Approval Supervisor	  */
+	public int getApprovalSupervisor_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_ApprovalSupervisor_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Attendance Range Tolerance.
+		@param AttendanceRangeTolerance Attendance Range Tolerance	  */
+	public void setAttendanceRangeTolerance (BigDecimal AttendanceRangeTolerance)
+	{
+		set_Value (COLUMNNAME_AttendanceRangeTolerance, AttendanceRangeTolerance);
+	}
+
+	/** Get Attendance Range Tolerance.
+		@return Attendance Range Tolerance	  */
+	public BigDecimal getAttendanceRangeTolerance () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_AttendanceRangeTolerance);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Attendance Time Tolerance.
+		@param AttendanceTimeTolerance Attendance Time Tolerance	  */
+	public void setAttendanceTimeTolerance (BigDecimal AttendanceTimeTolerance)
+	{
+		set_Value (COLUMNNAME_AttendanceTimeTolerance, AttendanceTimeTolerance);
+	}
+
+	/** Get Attendance Time Tolerance.
+		@return Attendance Time Tolerance	  */
+	public BigDecimal getAttendanceTimeTolerance () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_AttendanceTimeTolerance);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	public I_C_Calendar getC_Calendar() throws RuntimeException
@@ -357,6 +443,27 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 		return ii.intValue();
 	}
 
+	/** IsRequiresToleranceApproval AD_Reference_ID=319 */
+	public static final int ISREQUIRESTOLERANCEAPPROVAL_AD_Reference_ID=319;
+	/** Yes = Y */
+	public static final String ISREQUIRESTOLERANCEAPPROVAL_Yes = "Y";
+	/** No = N */
+	public static final String ISREQUIRESTOLERANCEAPPROVAL_No = "N";
+	/** Set Requires Out Of Tolerance Approval.
+		@param IsRequiresToleranceApproval Requires Out Of Tolerance Approval	  */
+	public void setIsRequiresToleranceApproval (String IsRequiresToleranceApproval)
+	{
+
+		set_Value (COLUMNNAME_IsRequiresToleranceApproval, IsRequiresToleranceApproval);
+	}
+
+	/** Get Requires Out Of Tolerance Approval.
+		@return Requires Out Of Tolerance Approval	  */
+	public String getIsRequiresToleranceApproval () 
+	{
+		return (String)get_Value(COLUMNNAME_IsRequiresToleranceApproval);
+	}
+
 	/** Set Logo.
 		@param Logo_ID Logo	  */
 	public void setLogo_ID (int Logo_ID)
@@ -510,6 +617,31 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 	public String getReceiptFooterMsg () 
 	{
 		return (String)get_Value(COLUMNNAME_ReceiptFooterMsg);
+	}
+
+	public I_C_Currency getReportCurrency() throws RuntimeException
+    {
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
+			.getPO(getReportCurrency_ID(), get_TrxName());	}
+
+	/** Set Report Currency.
+		@param ReportCurrency_ID Report Currency	  */
+	public void setReportCurrency_ID (int ReportCurrency_ID)
+	{
+		if (ReportCurrency_ID < 1) 
+			set_Value (COLUMNNAME_ReportCurrency_ID, null);
+		else 
+			set_Value (COLUMNNAME_ReportCurrency_ID, Integer.valueOf(ReportCurrency_ID));
+	}
+
+	/** Get Report Currency.
+		@return Report Currency	  */
+	public int getReportCurrency_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_ReportCurrency_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Request User Password.

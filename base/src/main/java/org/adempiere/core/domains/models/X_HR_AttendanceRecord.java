@@ -18,14 +18,17 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
+import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for HR_AttendanceRecord
  *  @author Adempiere (generated) 
@@ -36,7 +39,7 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260306L;
 
     /** Standard Constructor */
     public X_HR_AttendanceRecord (Properties ctx, int HR_AttendanceRecord_ID, String trxName)
@@ -47,6 +50,12 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
 			setAttendanceTime (new Timestamp( System.currentTimeMillis() ));
 			setHR_AttendanceBatch_ID (0);
 			setHR_AttendanceRecord_ID (0);
+			setIsOfflineMark (false);
+// N
+			setIsOutOfTime (false);
+// N
+			setIsOutOfZone (false);
+// N
         } */
     }
 
@@ -103,9 +112,26 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
         return new KeyNamePair(get_ID(), String.valueOf(getAttendanceTime()));
     }
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
+	/** Set Comments.
+		@param Comments 
+		Comments or additional information
+	  */
+	public void setComments (String Comments)
+	{
+		set_Value (COLUMNNAME_Comments, Comments);
+	}
+
+	/** Get Comments.
+		@return Comments or additional information
+	  */
+	public String getComments () 
+	{
+		return (String)get_Value(COLUMNNAME_Comments);
+	}
+
+	public I_C_Project getC_Project() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
+		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
 			.getPO(getC_Project_ID(), get_TrxName());	}
 
 	/** Set Project.
@@ -131,9 +157,9 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException
+	public I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_AttendanceBatch)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_AttendanceBatch.Table_Name)
+		return (I_HR_AttendanceBatch)MTable.get(getCtx(), I_HR_AttendanceBatch.Table_Name)
 			.getPO(getHR_AttendanceBatch_ID(), get_TrxName());	}
 
 	/** Set Attendance Batch.
@@ -179,6 +205,118 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
 		return ii.intValue();
 	}
 
+	/** Set Offline Mark.
+		@param IsOfflineMark 
+		Attendance mark was made without internet connection and synced later
+	  */
+	public void setIsOfflineMark (boolean IsOfflineMark)
+	{
+		set_Value (COLUMNNAME_IsOfflineMark, Boolean.valueOf(IsOfflineMark));
+	}
+
+	/** Get Offline Mark.
+		@return Attendance mark was made without internet connection and synced later
+	  */
+	public boolean isOfflineMark () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsOfflineMark);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Out of Time.
+		@param IsOutOfTime 
+		Attendance mark was made outside the time tolerance (10 minutes)
+	  */
+	public void setIsOutOfTime (boolean IsOutOfTime)
+	{
+		set_Value (COLUMNNAME_IsOutOfTime, Boolean.valueOf(IsOutOfTime));
+	}
+
+	/** Get Out of Time.
+		@return Attendance mark was made outside the time tolerance (10 minutes)
+	  */
+	public boolean isOutOfTime () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsOutOfTime);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Out of Zone.
+		@param IsOutOfZone 
+		Attendance mark was made outside the geofence radius of the client location
+	  */
+	public void setIsOutOfZone (boolean IsOutOfZone)
+	{
+		set_Value (COLUMNNAME_IsOutOfZone, Boolean.valueOf(IsOutOfZone));
+	}
+
+	/** Get Out of Zone.
+		@return Attendance mark was made outside the geofence radius of the client location
+	  */
+	public boolean isOutOfZone () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsOutOfZone);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Latitude.
+		@param Latitude 
+		Latitude is a geographic coordinate that specifies the north–south position of a point on the Earth's surface.
+	  */
+	public void setLatitude (BigDecimal Latitude)
+	{
+		set_Value (COLUMNNAME_Latitude, Latitude);
+	}
+
+	/** Get Latitude.
+		@return Latitude is a geographic coordinate that specifies the north–south position of a point on the Earth's surface.
+	  */
+	public BigDecimal getLatitude () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Latitude);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Longitude.
+		@param Longitude 
+		Longitude  is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body
+	  */
+	public void setLongitude (BigDecimal Longitude)
+	{
+		set_Value (COLUMNNAME_Longitude, Longitude);
+	}
+
+	/** Get Longitude.
+		@return Longitude  is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body
+	  */
+	public BigDecimal getLongitude () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Longitude);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Processed.
 		@param Processed 
 		The document has been processed
@@ -218,6 +356,34 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
 	public int getSeqNo () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_SeqNo);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_S_ResourceAssignment getS_ResourceAssignment() throws RuntimeException
+    {
+		return (I_S_ResourceAssignment)MTable.get(getCtx(), I_S_ResourceAssignment.Table_Name)
+			.getPO(getS_ResourceAssignment_ID(), get_TrxName());	}
+
+	/** Set Resource Assignment.
+		@param S_ResourceAssignment_ID 
+		Resource Assignment
+	  */
+	public void setS_ResourceAssignment_ID (int S_ResourceAssignment_ID)
+	{
+		if (S_ResourceAssignment_ID < 1) 
+			set_Value (COLUMNNAME_S_ResourceAssignment_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ResourceAssignment_ID, Integer.valueOf(S_ResourceAssignment_ID));
+	}
+
+	/** Get Resource Assignment.
+		@return Resource Assignment
+	  */
+	public int getS_ResourceAssignment_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ResourceAssignment_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

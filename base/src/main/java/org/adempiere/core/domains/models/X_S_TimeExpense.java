@@ -199,6 +199,33 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
 		return (I_C_Campaign) MTable.get(getCtx(), I_C_Campaign.Table_Name)
 			.getPO(getC_Campaign_ID(), get_TrxName());	}
 
+	public I_C_DocType getC_DocType() throws RuntimeException
+	{
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+				.getPO(getC_DocType_ID(), get_TrxName());	}
+
+	/** Set Document Type.
+	 @param C_DocType_ID
+	 Document type or rules
+	 */
+	public void setC_DocType_ID (int C_DocType_ID)
+	{
+		if (C_DocType_ID < 0)
+			set_Value (COLUMNNAME_C_DocType_ID, null);
+		else
+			set_Value (COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+	}
+
+	/** Get Document Type.
+	 @return Document type or rules
+	 */
+	public int getC_DocType_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
+		if (ii == null)
+			return 0;
+		return ii.intValue();
+	}
 	/** Set Campaign.
 		@param C_Campaign_ID 
 		Marketing Campaign

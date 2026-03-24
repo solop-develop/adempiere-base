@@ -16,13 +16,28 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_BankStatementLine;
+import org.adempiere.core.domains.models.I_C_Payment;
+import org.adempiere.core.domains.models.X_C_BPartner;
+import org.adempiere.core.domains.models.X_C_DocType;
+import org.adempiere.core.domains.models.X_C_Order;
+import org.adempiere.core.domains.models.X_C_Payment;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.interfaces.PaymentProcessorReverse;
 import org.compiere.interfaces.PaymentProcessorStatus;
-import org.compiere.process.*;
-import org.compiere.util.*;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.process.DocumentReversalEnabled;
+import org.compiere.process.ProcessCall;
+import org.compiere.process.ProcessInfo;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.compiere.util.Trx;
+import org.compiere.util.Util;
+import org.compiere.util.ValueNamePair;
 import org.solop.util.DocumentDateUtil;
 
 import java.io.File;
@@ -31,7 +46,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -2487,11 +2507,15 @@ public final class MPayment extends X_C_Payment
 	 *	@return id or -1
 	 */
 	private int getC_BankStatementLine_ID() {
-		String sql = "SELECT bsl.C_BankStatementLine_ID FROM C_BankStatementLine bsl WHERE bsl.C_Payment_ID=? "
+		String sql = "SELECT bsl.C_BankStatementLine_ID FROM C_BankStatementLine bsl "
+				+ "WHERE (bsl.C_Payment_ID=? "
+				+ "  OR EXISTS(SELECT 1 FROM C_BankStatementLineMatch bslm "
+				+ "            WHERE bslm.C_BankStatementLine_ID = bsl.C_BankStatementLine_ID "
+				+ "            AND bslm.C_Payment_ID=?)) "
 				+ "AND EXISTS(SELECT 1 FROM C_BankStatement bs "
-				+ "					WHERE bs.C_BankStatement_ID = bsl.C_BankStatement_ID "
-				+ "					AND bs.DocStatus IN('CO', 'CL'))";
-		return DB.getSQLValue(get_TrxName(), sql, getC_Payment_ID());
+				+ "           WHERE bs.C_BankStatement_ID = bsl.C_BankStatement_ID "
+				+ "           AND bs.DocStatus IN('CO', 'CL'))";
+		return DB.getSQLValue(get_TrxName(), sql, getC_Payment_ID(), getC_Payment_ID());
 	}	//	getC_BankStatementLine_ID
 
 	/** 

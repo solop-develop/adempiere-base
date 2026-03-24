@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_BankAccount
  *  @author Adempiere (generated) 
@@ -37,7 +38,7 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251218L;
+	private static final long serialVersionUID = 20260323L;
 
     /** Standard Constructor */
     public X_C_BankAccount (Properties ctx, int C_BankAccount_ID, String trxName)
@@ -99,6 +100,31 @@ public class X_C_BankAccount extends PO implements I_C_BankAccount, I_Persistent
 	public String getAccountNo () 
 	{
 		return (String)get_Value(COLUMNNAME_AccountNo);
+	}
+
+	public I_C_Charge getAdjustDifferenceCharge() throws RuntimeException
+    {
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
+			.getPO(getAdjustDifferenceCharge_ID(), get_TrxName());	}
+
+	/** Set Adjust Difference Charge.
+		@param AdjustDifferenceCharge_ID Adjust Difference Charge	  */
+	public void setAdjustDifferenceCharge_ID (int AdjustDifferenceCharge_ID)
+	{
+		if (AdjustDifferenceCharge_ID < 1) 
+			set_Value (COLUMNNAME_AdjustDifferenceCharge_ID, null);
+		else 
+			set_Value (COLUMNNAME_AdjustDifferenceCharge_ID, Integer.valueOf(AdjustDifferenceCharge_ID));
+	}
+
+	/** Get Adjust Difference Charge.
+		@return Adjust Difference Charge	  */
+	public int getAdjustDifferenceCharge_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AdjustDifferenceCharge_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** BankAccountType AD_Reference_ID=216 */

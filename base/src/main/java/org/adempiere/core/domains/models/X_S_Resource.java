@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for S_Resource
  *  @author Adempiere (generated) 
@@ -37,7 +38,7 @@ public class X_S_Resource extends PO implements I_S_Resource, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260306L;
 
     /** Standard Constructor */
     public X_S_Resource (Properties ctx, int S_Resource_ID, String trxName)
@@ -85,9 +86,9 @@ public class X_S_Resource extends PO implements I_S_Resource, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_AD_User getAD_User() throws RuntimeException
+	public I_AD_User getAD_User() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getAD_User_ID(), get_TrxName());	}
 
 	/** Set User/Contact.
@@ -164,6 +165,31 @@ public class X_S_Resource extends PO implements I_S_Resource, I_Persistent
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
+	public I_HR_Employee getHR_Employee() throws RuntimeException
+    {
+		return (I_HR_Employee)MTable.get(getCtx(), I_HR_Employee.Table_Name)
+			.getPO(getHR_Employee_ID(), get_TrxName());	}
+
+	/** Set Payroll Employee.
+		@param HR_Employee_ID Payroll Employee	  */
+	public void setHR_Employee_ID (int HR_Employee_ID)
+	{
+		if (HR_Employee_ID < 1) 
+			set_Value (COLUMNNAME_HR_Employee_ID, null);
+		else 
+			set_Value (COLUMNNAME_HR_Employee_ID, Integer.valueOf(HR_Employee_ID));
+	}
+
+	/** Get Payroll Employee.
+		@return Payroll Employee	  */
+	public int getHR_Employee_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_HR_Employee_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Available.
 		@param IsAvailable 
 		Resource is available
@@ -209,9 +235,9 @@ public class X_S_Resource extends PO implements I_S_Resource, I_Persistent
 		return false;
 	}
 
-	public org.adempiere.core.domains.models.I_M_Warehouse getM_Warehouse() throws RuntimeException
+	public I_M_Warehouse getM_Warehouse() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Warehouse)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Warehouse.Table_Name)
+		return (I_M_Warehouse)MTable.get(getCtx(), I_M_Warehouse.Table_Name)
 			.getPO(getM_Warehouse_ID(), get_TrxName());	}
 
 	/** Set Warehouse.
@@ -367,9 +393,9 @@ public class X_S_Resource extends PO implements I_S_Resource, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_S_ResourceType getS_ResourceType() throws RuntimeException
+	public I_S_ResourceType getS_ResourceType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_ResourceType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ResourceType.Table_Name)
+		return (I_S_ResourceType)MTable.get(getCtx(), I_S_ResourceType.Table_Name)
 			.getPO(getS_ResourceType_ID(), get_TrxName());	}
 
 	/** Set Resource Type.
