@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_Charge
  *  @author Adempiere (generated) 
@@ -37,7 +38,7 @@ public class X_C_Charge extends PO implements I_C_Charge, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260323L;
 
     /** Standard Constructor */
     public X_C_Charge (Properties ctx, int C_Charge_ID, String trxName)
@@ -46,8 +47,8 @@ public class X_C_Charge extends PO implements I_C_Charge, I_Persistent
       /** if (C_Charge_ID == 0)
         {
 			setC_Charge_ID (0);
-			setC_TaxCategory_ID (0);
 			setChargeAmt (Env.ZERO);
+			setC_TaxCategory_ID (0);
 			setIsSameCurrency (false);
 			setIsSameTax (false);
 			setIsTaxIncluded (false);
@@ -84,9 +85,9 @@ public class X_C_Charge extends PO implements I_C_Charge, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -135,9 +136,9 @@ public class X_C_Charge extends PO implements I_C_Charge, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ChargeType getC_ChargeType() throws RuntimeException
+	public I_C_ChargeType getC_ChargeType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ChargeType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ChargeType.Table_Name)
+		return (I_C_ChargeType)MTable.get(getCtx(), I_C_ChargeType.Table_Name)
 			.getPO(getC_ChargeType_ID(), get_TrxName());	}
 
 	/** Set Charge Type.
@@ -160,9 +161,9 @@ public class X_C_Charge extends PO implements I_C_Charge, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_TaxCategory getC_TaxCategory() throws RuntimeException
+	public I_C_TaxCategory getC_TaxCategory() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_TaxCategory)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_TaxCategory.Table_Name)
+		return (I_C_TaxCategory)MTable.get(getCtx(), I_C_TaxCategory.Table_Name)
 			.getPO(getC_TaxCategory_ID(), get_TrxName());	}
 
 	/** Set Tax Category.
@@ -188,9 +189,9 @@ public class X_C_Charge extends PO implements I_C_Charge, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_TaxType getC_TaxType() throws RuntimeException
+	public I_C_TaxType getC_TaxType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_TaxType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_TaxType.Table_Name)
+		return (I_C_TaxType)MTable.get(getCtx(), I_C_TaxType.Table_Name)
 			.getPO(getC_TaxType_ID(), get_TrxName());	}
 
 	/** Set Tax Type.
@@ -251,6 +252,23 @@ public class X_C_Charge extends PO implements I_C_Charge, I_Persistent
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	/** Set Document Note.
+		@param DocumentNote 
+		Additional information for a Document
+	  */
+	public void setDocumentNote (String DocumentNote)
+	{
+		set_Value (COLUMNNAME_DocumentNote, DocumentNote);
+	}
+
+	/** Get Document Note.
+		@return Additional information for a Document
+	  */
+	public String getDocumentNote () 
+	{
+		return (String)get_Value(COLUMNNAME_DocumentNote);
 	}
 
 	/** Set Same Currency.

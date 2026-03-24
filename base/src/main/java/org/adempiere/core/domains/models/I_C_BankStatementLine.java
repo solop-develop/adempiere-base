@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_BankStatementLine
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_C_BankStatementLine
 	  */
 	public int getC_BankStatement_ID();
 
-	public org.adempiere.core.domains.models.I_C_BankStatement getC_BankStatement() throws RuntimeException;
+	public I_C_BankStatement getC_BankStatement() throws RuntimeException;
 
     /** Column name C_BankStatementLine_ID */
     public static final String COLUMNNAME_C_BankStatementLine_ID = "C_BankStatementLine_ID";
@@ -105,7 +106,7 @@ public interface I_C_BankStatementLine
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_Charge_ID */
     public static final String COLUMNNAME_C_Charge_ID = "C_Charge_ID";
@@ -120,7 +121,7 @@ public interface I_C_BankStatementLine
 	  */
 	public int getC_Charge_ID();
 
-	public org.adempiere.core.domains.models.I_C_Charge getC_Charge() throws RuntimeException;
+	public I_C_Charge getC_Charge() throws RuntimeException;
 
     /** Column name C_Currency_ID */
     public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
@@ -135,7 +136,7 @@ public interface I_C_BankStatementLine
 	  */
 	public int getC_Currency_ID();
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException;
+	public I_C_Currency getC_Currency() throws RuntimeException;
 
     /** Column name C_Invoice_ID */
     public static final String COLUMNNAME_C_Invoice_ID = "C_Invoice_ID";
@@ -150,7 +151,7 @@ public interface I_C_BankStatementLine
 	  */
 	public int getC_Invoice_ID();
 
-	public org.adempiere.core.domains.models.I_C_Invoice getC_Invoice() throws RuntimeException;
+	public I_C_Invoice getC_Invoice() throws RuntimeException;
 
     /** Column name C_Payment_ID */
     public static final String COLUMNNAME_C_Payment_ID = "C_Payment_ID";
@@ -165,7 +166,7 @@ public interface I_C_BankStatementLine
 	  */
 	public int getC_Payment_ID();
 
-	public org.adempiere.core.domains.models.I_C_Payment getC_Payment() throws RuntimeException;
+	public I_C_Payment getC_Payment() throws RuntimeException;
 
     /** Column name ChargeAmt */
     public static final String COLUMNNAME_ChargeAmt = "ChargeAmt";
@@ -412,6 +413,19 @@ public interface I_C_BankStatementLine
 	  * This is a manual process
 	  */
 	public boolean isManual();
+
+    /** Column name IsMultiPaymentMatch */
+    public static final String COLUMNNAME_IsMultiPaymentMatch = "IsMultiPaymentMatch";
+
+	/** Set Multi-Payment Match.
+	  * Indicates that this line is matched to more than one payment
+	  */
+	public void setIsMultiPaymentMatch (boolean IsMultiPaymentMatch);
+
+	/** Get Multi-Payment Match.
+	  * Indicates that this line is matched to more than one payment
+	  */
+	public boolean isMultiPaymentMatch();
 
     /** Column name IsReversal */
     public static final String COLUMNNAME_IsReversal = "IsReversal";

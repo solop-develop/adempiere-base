@@ -18,14 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for HR_AttendanceBatch
  *  @author Adempiere (generated) 
@@ -36,7 +37,7 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260311L;
 
     /** Standard Constructor */
     public X_HR_AttendanceBatch (Properties ctx, int HR_AttendanceBatch_ID, String trxName)
@@ -89,9 +90,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -117,9 +118,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException
+	public I_C_DocType getC_DocType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocType_ID(), get_TrxName());	}
 
 	/** Set Document Type.
@@ -316,9 +317,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_Employee getHR_Employee() throws RuntimeException
+	public I_HR_Employee getHR_Employee() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_Employee)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_Employee.Table_Name)
+		return (I_HR_Employee)MTable.get(getCtx(), I_HR_Employee.Table_Name)
 			.getPO(getHR_Employee_ID(), get_TrxName());	}
 
 	/** Set Payroll Employee.
@@ -341,9 +342,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_ShiftSchedule getHR_ShiftSchedule() throws RuntimeException
+	public I_HR_ShiftSchedule getHR_ShiftSchedule() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_ShiftSchedule)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_ShiftSchedule.Table_Name)
+		return (I_HR_ShiftSchedule)MTable.get(getCtx(), I_HR_ShiftSchedule.Table_Name)
 			.getPO(getHR_ShiftSchedule_ID(), get_TrxName());	}
 
 	/** Set Shift Schedule.
@@ -369,9 +370,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_WorkShift getHR_WorkShift() throws RuntimeException
+	public I_HR_WorkShift getHR_WorkShift() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_WorkShift)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_WorkShift.Table_Name)
+		return (I_HR_WorkShift)MTable.get(getCtx(), I_HR_WorkShift.Table_Name)
 			.getPO(getHR_WorkShift_ID(), get_TrxName());	}
 
 	/** Set Work Shift.
@@ -512,6 +513,85 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	public I_S_Contract getS_Contract() throws RuntimeException
+    {
+		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Resource Assignment.
+		@param S_ResourceAssignment_ID 
+		Resource Assignment
+	  */
+	public void setS_ResourceAssignment_ID (int S_ResourceAssignment_ID)
+	{
+		if (S_ResourceAssignment_ID < 1) 
+			set_Value (COLUMNNAME_S_ResourceAssignment_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ResourceAssignment_ID, Integer.valueOf(S_ResourceAssignment_ID));
+	}
+
+	/** Get Resource Assignment.
+		@return Resource Assignment
+	  */
+	public int getS_ResourceAssignment_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ResourceAssignment_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_S_ServiceSchedule getS_ServiceSchedule() throws RuntimeException
+    {
+		return (I_S_ServiceSchedule)MTable.get(getCtx(), I_S_ServiceSchedule.Table_Name)
+			.getPO(getS_ServiceSchedule_ID(), get_TrxName());	}
+
+	/** Set Service Schedule ID.
+		@param S_ServiceSchedule_ID 
+		Weekly visit pattern for a service plan
+	  */
+	public void setS_ServiceSchedule_ID (int S_ServiceSchedule_ID)
+	{
+		if (S_ServiceSchedule_ID < 1) 
+			set_Value (COLUMNNAME_S_ServiceSchedule_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ServiceSchedule_ID, Integer.valueOf(S_ServiceSchedule_ID));
+	}
+
+	/** Get Service Schedule ID.
+		@return Weekly visit pattern for a service plan
+	  */
+	public int getS_ServiceSchedule_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ServiceSchedule_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Immutable Universally Unique Identifier.

@@ -140,7 +140,11 @@ import java.util.concurrent.atomic.AtomicReference;
 			setC_Charge_ID(imp.getC_Charge_ID());
 		}
 		setInterestAmt(imp.getInterestAmt());
-		setChargeAmt(imp.getChargeAmt());
+		BigDecimal chargeAmt = imp.getChargeAmt();
+		if (chargeAmt.compareTo(BigDecimal.ZERO) == 0) {
+			chargeAmt = imp.getSimulationChargeAmt();
+		}
+		setChargeAmt(chargeAmt);
 		setMemo(imp.getMemo());
 		if (imp.getC_Payment_ID() != 0) {
 			setC_Payment_ID(imp.getC_Payment_ID());
@@ -255,8 +259,13 @@ import java.util.concurrent.atomic.AtomicReference;
 		}
 		if (getChargeAmt().signum() != 0 && getC_Charge_ID() == 0)
 		{
-			log.saveError("FillMandatory", Msg.getElement(getCtx(), "C_Charge_ID"));
-			return false;
+			int adjustDifferenceChargeId = getParent().getBankAccount().getAdjustDifferenceCharge_ID();
+			if (adjustDifferenceChargeId > 0) {
+				setC_Charge_ID(adjustDifferenceChargeId);
+			} else {
+				log.saveError("FillMandatory", Msg.getElement(getCtx(), "C_Charge_ID"));
+				return false;
+			}
 		}
 		// Un-link Payment if TrxAmt is zero - teo_sarca BF [ 1896880 ] 
 		if (getTrxAmt().signum() == 0 && getC_Payment_ID() > 0)

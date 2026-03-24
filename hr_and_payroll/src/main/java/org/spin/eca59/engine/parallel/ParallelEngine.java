@@ -17,23 +17,6 @@
  *****************************************************************************/
 package org.spin.eca59.engine.parallel;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.SimpleScriptContext;
-
 import org.adempiere.core.domains.models.I_HR_Movement;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBPartner;
@@ -71,6 +54,22 @@ import org.spin.hr.util.PayrollCalculationEngine;
 import org.spin.hr.util.PayrollEngineHandler;
 import org.spin.hr.util.RuleInterface;
 import org.spin.util.RuleEngineUtil;
+
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.SimpleScriptContext;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 
 /**
  * Default payroll process implementation
@@ -368,8 +367,8 @@ public class ParallelEngine implements PayrollEngine {
 
 				String text = "";
 				if (rule.getScript() != null) {
-					text = rule.getScript().trim().replaceAll("\\bget", "ruleContext.getEngineHelper().get")
-					.replace(".ruleContext.getEngineHelper().get", ".get");
+					text = rule.getScript().trim().replaceAll("\\bget", "engineHelper.get")
+					.replace(".engineHelper.get", ".get");
 				}
 				String resultType = "double";
 				//	Yamel Senih Add DefValue to another Types
@@ -422,6 +421,7 @@ public class ParallelEngine implements PayrollEngine {
 		/** the context for rules */
 		HashMap<String, Object> scriptCtx = new HashMap<String, Object>();
 		scriptCtx.put("ruleContext", ruleContext);
+		scriptCtx.put("engineHelper", ruleContext.getEngineHelper());
 		scriptCtx.put("payrollEngine", this);
 		scriptCtx.put("process", getProcess());
 		scriptCtx.put("_Process", payrollProcess.getId());

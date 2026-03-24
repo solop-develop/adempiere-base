@@ -18,13 +18,14 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_BPartner_Location
  *  @author Adempiere (generated) 
@@ -35,7 +36,7 @@ public class X_C_BPartner_Location extends PO implements I_C_BPartner_Location, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260306L;
 
     /** Standard Constructor */
     public X_C_BPartner_Location (Properties ctx, int C_BPartner_Location_ID, String trxName)
@@ -87,9 +88,9 @@ public class X_C_BPartner_Location extends PO implements I_C_BPartner_Location, 
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -166,9 +167,9 @@ public class X_C_BPartner_Location extends PO implements I_C_BPartner_Location, 
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException
+	public I_C_SalesRegion getC_SalesRegion() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_SalesRegion)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SalesRegion.Table_Name)
+		return (I_C_SalesRegion)MTable.get(getCtx(), I_C_SalesRegion.Table_Name)
 			.getPO(getC_SalesRegion_ID(), get_TrxName());	}
 
 	/** Set Sales Region.
@@ -286,9 +287,29 @@ public class X_C_BPartner_Location extends PO implements I_C_BPartner_Location, 
 		return (String)get_Value(COLUMNNAME_Fax);
 	}
 
-	public org.adempiere.core.domains.models.I_HR_Relationship getHR_Relationship() throws RuntimeException
+	/** Set Geofence Radius.
+		@param GeoFenceRadius 
+		Acceptable distance in meters for geofence validation of attendance marks
+	  */
+	public void setGeoFenceRadius (int GeoFenceRadius)
+	{
+		set_Value (COLUMNNAME_GeoFenceRadius, Integer.valueOf(GeoFenceRadius));
+	}
+
+	/** Get Geofence Radius.
+		@return Acceptable distance in meters for geofence validation of attendance marks
+	  */
+	public int getGeoFenceRadius () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_GeoFenceRadius);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_HR_Relationship getHR_Relationship() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_Relationship)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_Relationship.Table_Name)
+		return (I_HR_Relationship)MTable.get(getCtx(), I_HR_Relationship.Table_Name)
 			.getPO(getHR_Relationship_ID(), get_TrxName());	}
 
 	/** Set Employee Relationship.

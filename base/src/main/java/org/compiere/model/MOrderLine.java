@@ -24,6 +24,7 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Util;
 import org.solop.util.ReservationBuilder;
 
 import java.math.BigDecimal;
@@ -1074,7 +1075,15 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 		//	Calculations & Rounding
 		setLineNetAmt();	//	extended Amount with or without tax
 		setDiscount();
-
+		String documentNote = null;
+		if ((newRecord || is_ValueChanged(getM_Product_ID())) && getM_Product_ID() > 0 ) {
+			documentNote = getProduct().get_Translation(MProduct.COLUMNNAME_DocumentNote);
+		} else if ((newRecord || is_ValueChanged(getC_Charge_ID())) && getC_Charge_ID() > 0 ) {
+			documentNote = getCharge().get_Translation(MCharge.COLUMNNAME_DocumentNote);
+		}
+		if (!Util.isEmpty(documentNote, true)) {
+			addDescription(documentNote);
+		}
 		return true;
 	}	//	beforeSave
 

@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_BPartner_Location
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_C_BPartner_Location
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_BPartner_Location_ID */
     public static final String COLUMNNAME_C_BPartner_Location_ID = "C_BPartner_Location_ID";
@@ -120,7 +121,7 @@ public interface I_C_BPartner_Location
 	  */
 	public int getC_SalesRegion_ID();
 
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
+	public I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
 
     /** Column name ContactPerson */
     public static final String COLUMNNAME_ContactPerson = "ContactPerson";
@@ -203,6 +204,19 @@ public interface I_C_BPartner_Location
 	  */
 	public String getFax();
 
+    /** Column name GeoFenceRadius */
+    public static final String COLUMNNAME_GeoFenceRadius = "GeoFenceRadius";
+
+	/** Set Geofence Radius.
+	  * Acceptable distance in meters for geofence validation of attendance marks
+	  */
+	public void setGeoFenceRadius (int GeoFenceRadius);
+
+	/** Get Geofence Radius.
+	  * Acceptable distance in meters for geofence validation of attendance marks
+	  */
+	public int getGeoFenceRadius();
+
     /** Column name HR_Relationship_ID */
     public static final String COLUMNNAME_HR_Relationship_ID = "HR_Relationship_ID";
 
@@ -216,7 +230,7 @@ public interface I_C_BPartner_Location
 	  */
 	public int getHR_Relationship_ID();
 
-	public org.adempiere.core.domains.models.I_HR_Relationship getHR_Relationship() throws RuntimeException;
+	public I_HR_Relationship getHR_Relationship() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";

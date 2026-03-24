@@ -23,17 +23,17 @@ import org.compiere.util.KeyNamePair;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/** Generated Interface for C_Charge
+/** Generated Interface for S_ServiceSchedule
  *  @author Adempiere (generated) 
  *  @version Release 3.9.4
  */
-public interface I_C_Charge 
+public interface I_S_ServiceSchedule 
 {
 
-    /** TableName=C_Charge */
-    public static final String Table_Name = "C_Charge";
+    /** TableName=S_ServiceSchedule */
+    public static final String Table_Name = "S_ServiceSchedule";
 
-    /** AD_Table_ID=313 */
+    /** AD_Table_ID=55095 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -80,72 +80,20 @@ public interface I_C_Charge
 
 	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
-    /** Column name C_Charge_ID */
-    public static final String COLUMNNAME_C_Charge_ID = "C_Charge_ID";
+    /** Column name C_BPartner_Location_ID */
+    public static final String COLUMNNAME_C_BPartner_Location_ID = "C_BPartner_Location_ID";
 
-	/** Set Charge.
-	  * Additional document charges
+	/** Set Partner Location.
+	  * Identifies the (ship to) address for this Business Partner
 	  */
-	public void setC_Charge_ID (int C_Charge_ID);
+	public void setC_BPartner_Location_ID (int C_BPartner_Location_ID);
 
-	/** Get Charge.
-	  * Additional document charges
+	/** Get Partner Location.
+	  * Identifies the (ship to) address for this Business Partner
 	  */
-	public int getC_Charge_ID();
+	public int getC_BPartner_Location_ID();
 
-    /** Column name C_ChargeType_ID */
-    public static final String COLUMNNAME_C_ChargeType_ID = "C_ChargeType_ID";
-
-	/** Set Charge Type	  */
-	public void setC_ChargeType_ID (int C_ChargeType_ID);
-
-	/** Get Charge Type	  */
-	public int getC_ChargeType_ID();
-
-	public I_C_ChargeType getC_ChargeType() throws RuntimeException;
-
-    /** Column name C_TaxCategory_ID */
-    public static final String COLUMNNAME_C_TaxCategory_ID = "C_TaxCategory_ID";
-
-	/** Set Tax Category.
-	  * Tax Category
-	  */
-	public void setC_TaxCategory_ID (int C_TaxCategory_ID);
-
-	/** Get Tax Category.
-	  * Tax Category
-	  */
-	public int getC_TaxCategory_ID();
-
-	public I_C_TaxCategory getC_TaxCategory() throws RuntimeException;
-
-    /** Column name C_TaxType_ID */
-    public static final String COLUMNNAME_C_TaxType_ID = "C_TaxType_ID";
-
-	/** Set Tax Type.
-	  * Tax Type
-	  */
-	public void setC_TaxType_ID (int C_TaxType_ID);
-
-	/** Get Tax Type.
-	  * Tax Type
-	  */
-	public int getC_TaxType_ID();
-
-	public I_C_TaxType getC_TaxType() throws RuntimeException;
-
-    /** Column name ChargeAmt */
-    public static final String COLUMNNAME_ChargeAmt = "ChargeAmt";
-
-	/** Set Charge amount.
-	  * Charge Amount
-	  */
-	public void setChargeAmt (BigDecimal ChargeAmt);
-
-	/** Get Charge amount.
-	  * Charge Amount
-	  */
-	public BigDecimal getChargeAmt();
+	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -163,6 +111,19 @@ public interface I_C_Charge
 	  */
 	public int getCreatedBy();
 
+    /** Column name DayOfWeek */
+    public static final String COLUMNNAME_DayOfWeek = "DayOfWeek";
+
+	/** Set Day of Week.
+	  * Day of the week: 1=Monday, 2=Tuesday, ..., 7=Sunday (ISO 8601)
+	  */
+	public void setDayOfWeek (String DayOfWeek);
+
+	/** Get Day of Week.
+	  * Day of the week: 1=Monday, 2=Tuesday, ..., 7=Sunday (ISO 8601)
+	  */
+	public String getDayOfWeek();
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -175,19 +136,6 @@ public interface I_C_Charge
 	  * Optional short description of the record
 	  */
 	public String getDescription();
-
-    /** Column name DocumentNote */
-    public static final String COLUMNNAME_DocumentNote = "DocumentNote";
-
-	/** Set Document Note.
-	  * Additional information for a Document
-	  */
-	public void setDocumentNote (String DocumentNote);
-
-	/** Get Document Note.
-	  * Additional information for a Document
-	  */
-	public String getDocumentNote();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -202,53 +150,87 @@ public interface I_C_Charge
 	  */
 	public boolean isActive();
 
-    /** Column name IsSameCurrency */
-    public static final String COLUMNNAME_IsSameCurrency = "IsSameCurrency";
+    /** Column name PlannedHours */
+    public static final String COLUMNNAME_PlannedHours = "PlannedHours";
 
-	/** Set Same Currency	  */
-	public void setIsSameCurrency (boolean IsSameCurrency);
-
-	/** Get Same Currency	  */
-	public boolean isSameCurrency();
-
-    /** Column name IsSameTax */
-    public static final String COLUMNNAME_IsSameTax = "IsSameTax";
-
-	/** Set Same Tax.
-	  * Use the same tax as the main transaction
+	/** Set Planned Hours.
+	  * Planned duration in hours for this visit
 	  */
-	public void setIsSameTax (boolean IsSameTax);
+	public void setPlannedHours (BigDecimal PlannedHours);
 
-	/** Get Same Tax.
-	  * Use the same tax as the main transaction
+	/** Get Planned Hours.
+	  * Planned duration in hours for this visit
 	  */
-	public boolean isSameTax();
+	public BigDecimal getPlannedHours();
 
-    /** Column name IsTaxIncluded */
-    public static final String COLUMNNAME_IsTaxIncluded = "IsTaxIncluded";
+    /** Column name S_Resource_ID */
+    public static final String COLUMNNAME_S_Resource_ID = "S_Resource_ID";
 
-	/** Set Price includes Tax.
-	  * Tax is included in the price 
+	/** Set Resource.
+	  * Resource
 	  */
-	public void setIsTaxIncluded (boolean IsTaxIncluded);
+	public void setS_Resource_ID (int S_Resource_ID);
 
-	/** Get Price includes Tax.
-	  * Tax is included in the price 
+	/** Get Resource.
+	  * Resource
 	  */
-	public boolean isTaxIncluded();
+	public int getS_Resource_ID();
 
-    /** Column name Name */
-    public static final String COLUMNNAME_Name = "Name";
+	public I_S_Resource getS_Resource() throws RuntimeException;
 
-	/** Set Name.
-	  * Alphanumeric identifier of the entity
+    /** Column name S_ServicePlan_ID */
+    public static final String COLUMNNAME_S_ServicePlan_ID = "S_ServicePlan_ID";
+
+	/** Set Service Plan ID.
+	  * Operational service plan
 	  */
-	public void setName (String Name);
+	public void setS_ServicePlan_ID (int S_ServicePlan_ID);
 
-	/** Get Name.
-	  * Alphanumeric identifier of the entity
+	/** Get Service Plan ID.
+	  * Operational service plan
 	  */
-	public String getName();
+	public int getS_ServicePlan_ID();
+
+	public I_S_ServicePlan getS_ServicePlan() throws RuntimeException;
+
+    /** Column name S_ServiceSchedule_ID */
+    public static final String COLUMNNAME_S_ServiceSchedule_ID = "S_ServiceSchedule_ID";
+
+	/** Set Service Schedule ID.
+	  * Weekly visit pattern for a service plan
+	  */
+	public void setS_ServiceSchedule_ID (int S_ServiceSchedule_ID);
+
+	/** Get Service Schedule ID.
+	  * Weekly visit pattern for a service plan
+	  */
+	public int getS_ServiceSchedule_ID();
+
+    /** Column name TimeFrom */
+    public static final String COLUMNNAME_TimeFrom = "TimeFrom";
+
+	/** Set Time (From).
+	  * Starting Time
+	  */
+	public void setTimeFrom (Timestamp TimeFrom);
+
+	/** Get Time (From).
+	  * Starting Time
+	  */
+	public Timestamp getTimeFrom();
+
+    /** Column name TimeTo */
+    public static final String COLUMNNAME_TimeTo = "TimeTo";
+
+	/** Set Time (To).
+	  * Ending Time
+	  */
+	public void setTimeTo (Timestamp TimeTo);
+
+	/** Get Time (To).
+	  * Ending Time
+	  */
+	public Timestamp getTimeTo();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -278,4 +260,17 @@ public interface I_C_Charge
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name WeekOfMonth */
+    public static final String COLUMNNAME_WeekOfMonth = "WeekOfMonth";
+
+	/** Set Week of Month.
+	  * Which week of the month (1-5). Used for biweekly and monthly frequency
+	  */
+	public void setWeekOfMonth (int WeekOfMonth);
+
+	/** Get Week of Month.
+	  * Which week of the month (1-5). Used for biweekly and monthly frequency
+	  */
+	public int getWeekOfMonth();
 }

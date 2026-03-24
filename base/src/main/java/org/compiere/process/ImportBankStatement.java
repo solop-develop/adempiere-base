@@ -16,21 +16,24 @@
  *****************************************************************************/
 package org.compiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_I_BankStatement;
 import org.adempiere.core.domains.models.X_I_BankStatement;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MBankStatement;
 import org.compiere.model.MBankStatementLine;
+import org.compiere.model.MBankStatementLineMatch;
+import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Util;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 
 /**
  *	Import Bank Statement from I_BankStatement
@@ -57,7 +60,7 @@ public class ImportBankStatement extends ImportBankStatementAbstract {
 	 *  @return Message
 	 *  @throws Exception
 	 */
-	protected String doIt() throws java.lang.Exception {
+	protected String doIt() throws Exception {
 		log.info("AD_Org_ID=" + getOrgId() + ", C_BankAccount_ID" + getBankAccountId());
 		StringBuffer sql = null;
 		int no = 0;
@@ -403,6 +406,8 @@ public class ImportBankStatement extends ImportBankStatementAbstract {
 			try {
 				MBankStatementLine line = new MBankStatementLine(statement, toImport, lineNo.get());
 				line.saveEx();
+				createLineMatch(line, toImport);
+
 				toImport.setC_BankStatement_ID(statement.getC_BankStatement_ID());
 				toImport.setC_BankStatementLine_ID(line.getC_BankStatementLine_ID());
 				toImport.setI_IsImported(true);
@@ -413,6 +418,25 @@ public class ImportBankStatement extends ImportBankStatementAbstract {
 			} catch (Exception e) {
 				
 			}
+		}
+	}
+
+	private void createLineMatch(MBankStatementLine statementLine, X_I_BankStatement importStatement){
+		if (importStatement.isMultiPaymentMatch()) {
+			String whereClause = X_I_BankStatement.COLUMNNAME_I_BankStatement_ID + " = ?";
+			List<MBankStatementLineMatch> lineMatches = new Query(getCtx(), MBankStatementLineMatch.Table_Name, whereClause, get_TrxName())
+					.setParameters(importStatement.get_ID())
+					.setOnlyActiveRecords(true)
+					.setClient_ID()
+					.list();
+			for (MBankStatementLineMatch lineMatch : lineMatches) {
+				MBankStatementLineMatch newMatch = new MBankStatementLineMatch(getCtx(), 0, get_TrxName());
+				PO.copyValues(lineMatch, newMatch);
+				newMatch.setI_BankStatement_ID(-1);
+				newMatch.setC_BankStatementLine_ID(statementLine.get_ID());
+				newMatch.setC_BankStatement_ID(statementLine.getC_BankStatement_ID());
+			}
+			statementLine.setIsMultiPaymentMatch(true);
 		}
 	}
 	

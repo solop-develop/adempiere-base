@@ -396,7 +396,7 @@ public class PayrollExpressionEvaluator {
 
                 // Named constant: COMMISSION_AMT → getCommissionAmt() (usa dateFrom/dateTo del período)
                 if ("COMMISSION_AMT".equals(name)) {
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc != null) {
                         try {
                             Method m = proc.getClass().getMethod("getCommissionAmt");
@@ -423,7 +423,7 @@ public class PayrollExpressionEvaluator {
                             return null;
                         } catch (NoSuchMethodException | IllegalAccessException ignored) { }
                     }
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc != null) {
                         try {
                             Method m = proc.getClass().getMethod("getMonthlySalary");
@@ -450,7 +450,7 @@ public class PayrollExpressionEvaluator {
                             return null;
                         } catch (NoSuchMethodException | IllegalAccessException ignored) { }
                     }
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc != null) {
                         try {
                             Method m = proc.getClass().getMethod("getDailySalary");
@@ -465,7 +465,7 @@ public class PayrollExpressionEvaluator {
                 // Check for _LAST suffix (case-insensitive): SALARIO_LAST → getLastConceptValue("SALARIO")
                 if (name.endsWith("_LAST")) {
                     String baseName = t.value.substring(0, t.value.length() - 5); // remove "_LAST", preserve original case
-                    Object procLast = context.get("process");
+                    Object procLast = context.get("engineHelper");
                     if (procLast != null) {
                         try {
                             Method m = procLast.getClass().getMethod("getLastConceptValue", String.class);
@@ -480,7 +480,7 @@ public class PayrollExpressionEvaluator {
                 // _TYPE_SUM: TIPO_A_TYPE_SUM → getConceptType("TIPO_A")
                 if (name.endsWith("_TYPE_SUM")) {
                     String baseName = t.value.substring(0, t.value.length() - 9);
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc != null) {
                         try {
                             Method m = proc.getClass().getMethod("getConceptType", String.class);
@@ -495,7 +495,7 @@ public class PayrollExpressionEvaluator {
                 // _GROUP_SUM: CAT_BASICA_GROUP_SUM → getConceptGroup("CAT_BASICA")
                 if (name.endsWith("_GROUP_SUM")) {
                     String baseName = t.value.substring(0, t.value.length() - 10);
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc != null) {
                         try {
                             Method m = proc.getClass().getMethod("getConceptGroup", String.class);
@@ -510,7 +510,7 @@ public class PayrollExpressionEvaluator {
                 // _CATEGORY_SUM: CAT_BASICA_CATEGORY_SUM → getConceptCategory("CAT_BASICA")
                 if (name.endsWith("_CATEGORY_SUM")) {
                     String baseName = t.value.substring(0, t.value.length() - 13);
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc != null) {
                         try {
                             Method m = proc.getClass().getMethod("getConceptCategory", String.class);
@@ -525,7 +525,7 @@ public class PayrollExpressionEvaluator {
                 // _ATTR: ANTIGUEDAD_ATTR → getAttribute("ANTIGUEDAD")
                 if (name.endsWith("_ATTR")) {
                     String baseName = t.value.substring(0, t.value.length() - 5);
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc != null) {
                         try {
                             Method m = proc.getClass().getMethod("getAttribute", String.class);
@@ -540,7 +540,7 @@ public class PayrollExpressionEvaluator {
                 // _INCIDENCE_SUM: ASISTENCIA_INCIDENCE_SUM → getIncidenceSum("ASISTENCIA", _From, _To)
                 if (name.endsWith("_INCIDENCE_SUM")) {
                     String baseName = t.value.substring(0, t.value.length() - 14);
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc != null) {
                         try {
                             Timestamp from = (Timestamp) context.get("_From");
@@ -575,7 +575,7 @@ public class PayrollExpressionEvaluator {
                 }
 
                 // Legacy fallback: process.getConceptValue() (MHRProcess non-parallel path)
-                Object proc = context.get("process");
+                Object proc = context.get("engineHelper");
                 if (proc != null) {
                     try {
                         Method m = proc.getClass().getMethod("getConceptValue", String.class);
@@ -680,7 +680,7 @@ public class PayrollExpressionEvaluator {
                 case "LAST": {
                     if (args.size() != 2)
                         throw new AdempiereException("LAST requires exactly 2 arguments: LAST(\"concept\", \"payroll\")");
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc == null) return null;
                     String conceptCode = args.get(0) == null ? null : args.get(0).toString();
                     if (conceptCode == null) return null;
@@ -697,7 +697,7 @@ public class PayrollExpressionEvaluator {
 
                 case "COMMISSION": {
                     require(name, args, 1);
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc == null) return null;
                     String docBasisType = args.get(0) == null ? null : args.get(0).toString();
                     try {
@@ -710,7 +710,7 @@ public class PayrollExpressionEvaluator {
                 }
                 case "COMMISSION_RANGE": {
                     require(name, args, 3);
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc == null) return null;
                     Timestamp from = args.get(0) == null ? null : (args.get(0) instanceof Timestamp ? (Timestamp) args.get(0) : Timestamp.valueOf(args.get(0).toString()));
                     Timestamp to   = args.get(1) == null ? null : (args.get(1) instanceof Timestamp ? (Timestamp) args.get(1) : Timestamp.valueOf(args.get(1).toString()));
@@ -726,7 +726,7 @@ public class PayrollExpressionEvaluator {
 
                 default:
                     // Fallback: invoke method on process object via reflection
-                    Object proc = context.get("process");
+                    Object proc = context.get("engineHelper");
                     if (proc != null)
                         return invokeOnProcess(proc, originalName, args);
                     throw new AdempiereException("Unknown function: " + name);

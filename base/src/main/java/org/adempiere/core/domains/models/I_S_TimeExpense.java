@@ -121,6 +121,21 @@ public interface I_S_TimeExpense
 
 	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
+	/** Column name C_DocType_ID */
+	public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
+
+	/** Set Document Type.
+	 * Document type or rules
+	 */
+	public void setC_DocType_ID (int C_DocType_ID);
+
+	/** Get Document Type.
+	 * Document type or rules
+	 */
+	public int getC_DocType_ID();
+
+	public I_C_DocType getC_DocType() throws RuntimeException;
+
     /** Column name C_Campaign_ID */
     public static final String COLUMNNAME_C_Campaign_ID = "C_Campaign_ID";
 

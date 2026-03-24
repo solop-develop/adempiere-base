@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for HR_AttendanceRecord
  *  @author Adempiere (generated) 
@@ -77,6 +78,19 @@ public interface I_HR_AttendanceRecord
 	  */
 	public Timestamp getAttendanceTime();
 
+    /** Column name Comments */
+    public static final String COLUMNNAME_Comments = "Comments";
+
+	/** Set Comments.
+	  * Comments or additional information
+	  */
+	public void setComments (String Comments);
+
+	/** Get Comments.
+	  * Comments or additional information
+	  */
+	public String getComments();
+
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
 
@@ -90,7 +104,7 @@ public interface I_HR_AttendanceRecord
 	  */
 	public int getC_Project_ID();
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
+	public I_C_Project getC_Project() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -117,7 +131,7 @@ public interface I_HR_AttendanceRecord
 	/** Get Attendance Batch	  */
 	public int getHR_AttendanceBatch_ID();
 
-	public org.adempiere.core.domains.models.I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException;
+	public I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException;
 
     /** Column name HR_AttendanceRecord_ID */
     public static final String COLUMNNAME_HR_AttendanceRecord_ID = "HR_AttendanceRecord_ID";
@@ -144,6 +158,71 @@ public interface I_HR_AttendanceRecord
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name IsOfflineMark */
+    public static final String COLUMNNAME_IsOfflineMark = "IsOfflineMark";
+
+	/** Set Offline Mark.
+	  * Attendance mark was made without internet connection and synced later
+	  */
+	public void setIsOfflineMark (boolean IsOfflineMark);
+
+	/** Get Offline Mark.
+	  * Attendance mark was made without internet connection and synced later
+	  */
+	public boolean isOfflineMark();
+
+    /** Column name IsOutOfTime */
+    public static final String COLUMNNAME_IsOutOfTime = "IsOutOfTime";
+
+	/** Set Out of Time.
+	  * Attendance mark was made outside the time tolerance (10 minutes)
+	  */
+	public void setIsOutOfTime (boolean IsOutOfTime);
+
+	/** Get Out of Time.
+	  * Attendance mark was made outside the time tolerance (10 minutes)
+	  */
+	public boolean isOutOfTime();
+
+    /** Column name IsOutOfZone */
+    public static final String COLUMNNAME_IsOutOfZone = "IsOutOfZone";
+
+	/** Set Out of Zone.
+	  * Attendance mark was made outside the geofence radius of the client location
+	  */
+	public void setIsOutOfZone (boolean IsOutOfZone);
+
+	/** Get Out of Zone.
+	  * Attendance mark was made outside the geofence radius of the client location
+	  */
+	public boolean isOutOfZone();
+
+    /** Column name Latitude */
+    public static final String COLUMNNAME_Latitude = "Latitude";
+
+	/** Set Latitude.
+	  * Latitude is a geographic coordinate that specifies the north–south position of a point on the Earth's surface.
+	  */
+	public void setLatitude (BigDecimal Latitude);
+
+	/** Get Latitude.
+	  * Latitude is a geographic coordinate that specifies the north–south position of a point on the Earth's surface.
+	  */
+	public BigDecimal getLatitude();
+
+    /** Column name Longitude */
+    public static final String COLUMNNAME_Longitude = "Longitude";
+
+	/** Set Longitude.
+	  * Longitude  is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body
+	  */
+	public void setLongitude (BigDecimal Longitude);
+
+	/** Get Longitude.
+	  * Longitude  is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body
+	  */
+	public BigDecimal getLongitude();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
@@ -172,6 +251,21 @@ public interface I_HR_AttendanceRecord
  lowest number comes first
 	  */
 	public int getSeqNo();
+
+    /** Column name S_ResourceAssignment_ID */
+    public static final String COLUMNNAME_S_ResourceAssignment_ID = "S_ResourceAssignment_ID";
+
+	/** Set Resource Assignment.
+	  * Resource Assignment
+	  */
+	public void setS_ResourceAssignment_ID (int S_ResourceAssignment_ID);
+
+	/** Get Resource Assignment.
+	  * Resource Assignment
+	  */
+	public int getS_ResourceAssignment_ID();
+
+	public I_S_ResourceAssignment getS_ResourceAssignment() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

@@ -37,7 +37,7 @@ public class X_AD_Role extends PO implements I_AD_Role, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260324L;
 
     /** Standard Constructor */
     public X_AD_Role (Properties ctx, int AD_Role_ID, String trxName)
@@ -74,6 +74,8 @@ public class X_AD_Role extends PO implements I_AD_Role, I_Persistent
 // Y
 			setConfirmQueryRecords (0);
 // 0
+			setHelpDeskAccessLevel (null);
+// N
 			setIsAccessAllOrgs (false);
 // N
 			setIsCanApproveOwnDoc (false);
@@ -639,6 +641,34 @@ public class X_AD_Role extends PO implements I_AD_Role, I_Persistent
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	/** HelpDeskAccessLevel AD_Reference_ID=54638 */
+	public static final int HELPDESKACCESSLEVEL_AD_Reference_ID=54638;
+	/** No Access = N */
+	public static final String HELPDESKACCESSLEVEL_NoAccess = "N";
+	/** Reporter = R */
+	public static final String HELPDESKACCESSLEVEL_Reporter = "R";
+	/** Agent = A */
+	public static final String HELPDESKACCESSLEVEL_Agent = "A";
+	/** Manager = M */
+	public static final String HELPDESKACCESSLEVEL_Manager = "M";
+	/** Set HelpDesk Access Level.
+		@param HelpDeskAccessLevel 
+		Level of access to the HelpDesk/Ticket system
+	  */
+	public void setHelpDeskAccessLevel (String HelpDeskAccessLevel)
+	{
+
+		set_Value (COLUMNNAME_HelpDeskAccessLevel, HelpDeskAccessLevel);
+	}
+
+	/** Get HelpDesk Access Level.
+		@return Level of access to the HelpDesk/Ticket system
+	  */
+	public String getHelpDeskAccessLevel () 
+	{
+		return (String)get_Value(COLUMNNAME_HelpDeskAccessLevel);
 	}
 
 	/** Set Access all Orgs.

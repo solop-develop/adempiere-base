@@ -16,6 +16,17 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_S_TimeExpense;
+import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.exceptions.PeriodClosedException;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocOptions;
+import org.compiere.process.DocumentEngine;
+import org.compiere.process.DocumentReversalEnabled;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -23,15 +34,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.X_S_TimeExpense;
-import org.compiere.process.DocAction;
-import org.compiere.process.DocumentEngine;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
 
 /**
  * 	Time + Expense Model
@@ -43,21 +49,22 @@ import org.compiere.util.Msg;
  *			@see http://sourceforge.net/tracker2/?func=detail&atid=879335&aid=2520591&group_id=176962 
  *	@version $Id: MTimeExpense.java,v 1.4 2006/07/30 00:51:03 jjanke Exp $
  */
-public class MTimeExpense extends X_S_TimeExpense implements DocAction
+public class MTimeExpense extends X_S_TimeExpense implements DocAction, DocumentReversalEnabled, DocOptions
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1567303438502090279L;
 
-
+	/**	Process Message 			*/
+	private String processMsg = null;
 	/**
 	 * 	Default Constructor
 	 *	@param ctx context
 	 *	@param S_TimeExpense_ID id
 	 *	@param trxName transaction
 	 */
-	public MTimeExpense (Properties ctx, int S_TimeExpense_ID, String trxName)
+	public MTimeExpense(Properties ctx, int S_TimeExpense_ID, String trxName)
 	{
 		super (ctx, S_TimeExpense_ID, trxName);
 		if (S_TimeExpense_ID == 0)
@@ -79,7 +86,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 	 * 	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MTimeExpense (Properties ctx, ResultSet rs, String trxName)
+	public MTimeExpense(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MTimeExpense
@@ -90,7 +97,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 	private MTimeExpenseLine[]	m_lines = null;
 	/** Cached User					*/
 	private int					m_AD_User_ID = 0;
-	
+
 
 	/**
 	 * 	Get Lines Convenience Wrapper
@@ -151,6 +158,18 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 		list.toArray(m_lines);
 		return m_lines;
 	}	//	getLines
+
+	@Override
+	protected boolean beforeSave(boolean newRecord) {
+		if (getC_DocType_ID() <= 0) {
+			Optional<MDocType> doctypeOptional = Arrays.stream(MDocType.getOfDocBaseType(getCtx(), "TE1")).min((docType1, docType2) -> Boolean.compare(docType2.isDefault(), docType1.isDefault()));
+			doctypeOptional.ifPresent(docType -> setC_DocType_ID(docType.getC_DocType_ID()));
+			if (getC_DocType_ID() <= 0)
+				throw new AdempiereException("@C_DocType_ID@ @FillMandatory@");
+		}
+
+		return super.beforeSave(newRecord);
+	}
 
 	/**
 	 * 	Add to Description
@@ -279,7 +298,10 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 	private String		m_processMsg = null;
 	/**	Just Prepared Flag			*/
 	private boolean		m_justPrepared = false;
-
+	
+	private boolean isReversal;
+	private boolean isVoided = false;
+	
 	/**
 	 * 	Unlock Document.
 	 * 	@return true if success 
@@ -422,22 +444,62 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 	 */
 	public boolean voidIt()
 	{
-		log.info("voidIt - " + toString());
 
-		// Before Void
-		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_VOID);
-		if (m_processMsg != null)
+		log.info(toString());
+		boolean retValue = false;
+		if (DOCSTATUS_Closed.equals(getDocStatus())
+				|| DOCSTATUS_Reversed.equals(getDocStatus())
+				|| DOCSTATUS_Voided.equals(getDocStatus()))
+		{
+			processMsg = "Document Closed: " + getDocStatus();
+			setDocAction(DOCACTION_None);
 			return false;
-		
-		if (!closeIt())
-			return false;
-		
+		}
+
+		//	Not Processed
+		if (DOCSTATUS_Drafted.equals(getDocStatus())
+				|| DOCSTATUS_Invalid.equals(getDocStatus())
+				|| DOCSTATUS_InProgress.equals(getDocStatus())
+				|| DOCSTATUS_Approved.equals(getDocStatus()))
+
+		{
+			processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_VOID);
+			if (processMsg != null)
+				return false;
+
+			//	Set lines to 0
+
+			setDocStatus(DOCSTATUS_Voided);
+			setDocAction(DOCACTION_None);
+			addDescription(Msg.getMsg(getCtx(), "Voided"));
+			retValue = true;
+		}
+		else
+		{
+			boolean accrual = false;
+			try
+			{
+				MPeriod.testPeriodOpen(getCtx(), getDateReport(), MPeriodControl.DOCBASETYPE_ARInvoice, getAD_Org_ID());
+			}
+			catch (PeriodClosedException e)
+			{
+				accrual = true;
+			}
+			isVoided = true;
+			if (accrual)
+				return reverseAccrualIt();
+			else
+				return reverseCorrectIt();
+		}
+
 		// After Void
-		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_VOID);
-		if (m_processMsg != null)
+		processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_VOID);
+		if (processMsg != null)
 			return false;
-		
-		return true;
+
+		setDocAction(DOCACTION_None);
+
+		return retValue;
 	}	//	voidIt
 	
 	/**
@@ -461,25 +523,71 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 	//	setDocAction(DOCACTION_None);
 		return true;
 	}	//	closeIt
-	
+
+	@Override
+	public void setReversal_ID(int i) {
+
+	}
+
+	@Override
+	public int getReversal_ID() {
+		return 0;
+	}
+
+	@Override
+	public MTimeExpense reverseIt(boolean b) {
+		log.info("reverseCorrectIt - " + toString());
+		String whereClause = "S_TimeExpenseLine.S_TimeExpense_ID = ? " +
+				" AND EXISTS (SELECT 1 FROM C_Invoice i " +
+				" INNER JOIN C_InvoiceLine il ON (il.C_Invoice_ID = i.C_Invoice_ID) " +
+				" WHERE il.C_InvoiceLine_ID = S_TimeExpenseLine.C_InvoiceLine_ID " +
+				" AND i.DocStatus IN ('DR','CO', 'CL', 'IP') " +
+				")";
+		MTimeExpenseLine expenseLineInvoice = new Query(getCtx(), MTimeExpenseLine.Table_Name, whereClause, get_TrxName())
+				.setParameters(get_ID())
+				.setOnlyActiveRecords(true)
+				.setClient_ID()
+				.first();
+		if(expenseLineInvoice != null && expenseLineInvoice.get_ID() > 0){
+			StringBuilder error = new StringBuilder();
+			error.append("@S_TimeExpenseLine_ID@: ");
+
+			MInvoiceLine invoiceLine = new MInvoiceLine(getCtx(), expenseLineInvoice.getC_InvoiceLine_ID(), get_TrxName());
+			MInvoice invoice = invoiceLine.getParent();
+			error.append("@LineNo@: ").append(expenseLineInvoice.getLine())
+				.append(" @C_Invoice_ID@: ").append(invoice.getDocumentNo())
+				.append(" @DocStatus@: ").append(invoice.getDocStatus()).append("\n");
+
+			processMsg = error.toString();
+			throw new AdempiereException(processMsg);
+		}
+		setDocStatus(DOCSTATUS_Voided);
+		setDocAction(DOCACTION_None);
+		addDescription(Msg.getMsg(getCtx(), "Voided"));
+		saveEx();
+		return this;
+	}
+
 	/**
 	 * 	Reverse Correction
 	 * 	@return false 
 	 */
 	public boolean reverseCorrectIt()
 	{
-		log.info("reverseCorrectIt - " + toString());
+		log.info(toString());
 		// Before reverseCorrect
-		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_REVERSECORRECT);
-		if (m_processMsg != null)
+		processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_REVERSECORRECT);
+		if (processMsg != null)
 			return false;
-		
+		reverseIt(true);
+
 		// After reverseCorrect
-		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_REVERSECORRECT);
-		if (m_processMsg != null)
+		processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_REVERSECORRECT);
+		if (processMsg != null)
 			return false;
-		
-		return false;
+
+		setDocAction(DOCACTION_None);
+		return true;
 	}	//	reverseCorrectionIt
 	
 	/**
@@ -493,7 +601,8 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_REVERSEACCRUAL);
 		if (m_processMsg != null)
 			return false;
-		
+
+		MTimeExpense reversal = reverseIt(true);
 		// After reverseAccrual
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_REVERSEACCRUAL);
 		if (m_processMsg != null)
@@ -501,7 +610,17 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 		
 		return false;
 	}	//	reverseAccrualIt
-	
+
+	@Override
+	public boolean isReversal() {
+		return false;
+	}
+
+	@Override
+	public void setReversal(boolean b) {
+
+	}
+
 	/** 
 	 * 	Re-activate
 	 * 	@return true if success 
@@ -593,5 +712,28 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction
 			|| DOCSTATUS_Closed.equals(ds)
 			|| DOCSTATUS_Reversed.equals(ds);
 	}	//	isComplete
-	
+
+	@Override
+	public int customizeValidActions(String docStatus, Object processing,
+									 String orderType, String isSOTrx, int tableId,
+									 String[] docAction, String[] options, int index) {
+		//	Valid Document Action
+		if (Table_ID == tableId) {
+			if (docStatus.equals(DocumentEngine.STATUS_Drafted)
+					|| docStatus.equals(DocumentEngine.STATUS_InProgress)
+					|| docStatus.equals(DocumentEngine.STATUS_Invalid)) {
+				options[index++] = DocumentEngine.ACTION_Prepare;
+			}
+			//	Complete                    ..  CO
+			else if (docStatus.equals(DocumentEngine.STATUS_Completed)) {
+				options[index++] = DocumentEngine.ACTION_Void;
+				options[index++] = DocumentEngine.ACTION_ReActivate;
+				options[index++] = DocumentEngine.ACTION_Close;
+
+			} else if (docStatus.equals(DocumentEngine.STATUS_Closed)) {
+				options[index++] = DocumentEngine.ACTION_None;
+			}
+		}
+		return index;
+	}
 }	//	MTimeExpense

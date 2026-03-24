@@ -23,17 +23,17 @@ import org.compiere.util.KeyNamePair;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/** Generated Interface for S_Resource
+/** Generated Interface for S_ServicePlan
  *  @author Adempiere (generated) 
  *  @version Release 3.9.4
  */
-public interface I_S_Resource 
+public interface I_S_ServicePlan 
 {
 
-    /** TableName=S_Resource */
-    public static final String Table_Name = "S_Resource";
+    /** TableName=S_ServicePlan */
+    public static final String Table_Name = "S_ServicePlan";
 
-    /** AD_Table_ID=487 */
+    /** AD_Table_ID=55096 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -80,14 +80,35 @@ public interface I_S_Resource
 
 	public I_AD_User getAD_User() throws RuntimeException;
 
-    /** Column name ChargeableQty */
-    public static final String COLUMNNAME_ChargeableQty = "ChargeableQty";
+    /** Column name C_BPartner_ID */
+    public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
 
-	/** Set Chargeable Quantity	  */
-	public void setChargeableQty (BigDecimal ChargeableQty);
+	/** Set Business Partner .
+	  * Identifies a Business Partner
+	  */
+	public void setC_BPartner_ID (int C_BPartner_ID);
 
-	/** Get Chargeable Quantity	  */
-	public BigDecimal getChargeableQty();
+	/** Get Business Partner .
+	  * Identifies a Business Partner
+	  */
+	public int getC_BPartner_ID();
+
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
+
+    /** Column name C_BPartner_Location_ID */
+    public static final String COLUMNNAME_C_BPartner_Location_ID = "C_BPartner_Location_ID";
+
+	/** Set Partner Location.
+	  * Identifies the (ship to) address for this Business Partner
+	  */
+	public void setC_BPartner_Location_ID (int C_BPartner_Location_ID);
+
+	/** Get Partner Location.
+	  * Identifies the (ship to) address for this Business Partner
+	  */
+	public int getC_BPartner_Location_ID();
+
+	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -105,15 +126,6 @@ public interface I_S_Resource
 	  */
 	public int getCreatedBy();
 
-    /** Column name DailyCapacity */
-    public static final String COLUMNNAME_DailyCapacity = "DailyCapacity";
-
-	/** Set Daily Capacity	  */
-	public void setDailyCapacity (BigDecimal DailyCapacity);
-
-	/** Get Daily Capacity	  */
-	public BigDecimal getDailyCapacity();
-
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -127,16 +139,31 @@ public interface I_S_Resource
 	  */
 	public String getDescription();
 
-    /** Column name HR_Employee_ID */
-    public static final String COLUMNNAME_HR_Employee_ID = "HR_Employee_ID";
+    /** Column name DocStatus */
+    public static final String COLUMNNAME_DocStatus = "DocStatus";
 
-	/** Set Payroll Employee	  */
-	public void setHR_Employee_ID (int HR_Employee_ID);
+	/** Set Document Status.
+	  * The current status of the document
+	  */
+	public void setDocStatus (String DocStatus);
 
-	/** Get Payroll Employee	  */
-	public int getHR_Employee_ID();
+	/** Get Document Status.
+	  * The current status of the document
+	  */
+	public String getDocStatus();
 
-	public I_HR_Employee getHR_Employee() throws RuntimeException;
+    /** Column name FrequencyType */
+    public static final String COLUMNNAME_FrequencyType = "FrequencyType";
+
+	/** Set Frequency Type.
+	  * Frequency of event
+	  */
+	public void setFrequencyType (String FrequencyType);
+
+	/** Get Frequency Type.
+	  * Frequency of event
+	  */
+	public String getFrequencyType();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -151,99 +178,33 @@ public interface I_S_Resource
 	  */
 	public boolean isActive();
 
-    /** Column name IsAvailable */
-    public static final String COLUMNNAME_IsAvailable = "IsAvailable";
+    /** Column name IsBillable */
+    public static final String COLUMNNAME_IsBillable = "IsBillable";
 
-	/** Set Available.
-	  * Resource is available
+	/** Set Billable.
+	  * Whether hours from this plan are billed to the client
 	  */
-	public void setIsAvailable (boolean IsAvailable);
+	public void setIsBillable (boolean IsBillable);
 
-	/** Get Available.
-	  * Resource is available
+	/** Get Billable.
+	  * Whether hours from this plan are billed to the client
 	  */
-	public boolean isAvailable();
+	public boolean isBillable();
 
-    /** Column name IsManufacturingResource */
-    public static final String COLUMNNAME_IsManufacturingResource = "IsManufacturingResource";
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
 
-	/** Set Manufacturing Resource	  */
-	public void setIsManufacturingResource (boolean IsManufacturingResource);
-
-	/** Get Manufacturing Resource	  */
-	public boolean isManufacturingResource();
-
-    /** Column name M_Warehouse_ID */
-    public static final String COLUMNNAME_M_Warehouse_ID = "M_Warehouse_ID";
-
-	/** Set Warehouse.
-	  * Storage Warehouse and Service Point
+	/** Set Contract.
+	  * Contract
 	  */
-	public void setM_Warehouse_ID (int M_Warehouse_ID);
+	public void setS_Contract_ID (int S_Contract_ID);
 
-	/** Get Warehouse.
-	  * Storage Warehouse and Service Point
+	/** Get Contract.
+	  * Contract
 	  */
-	public int getM_Warehouse_ID();
+	public int getS_Contract_ID();
 
-	public I_M_Warehouse getM_Warehouse() throws RuntimeException;
-
-    /** Column name ManufacturingResourceType */
-    public static final String COLUMNNAME_ManufacturingResourceType = "ManufacturingResourceType";
-
-	/** Set Manufacturing Resource Type	  */
-	public void setManufacturingResourceType (String ManufacturingResourceType);
-
-	/** Get Manufacturing Resource Type	  */
-	public String getManufacturingResourceType();
-
-    /** Column name Name */
-    public static final String COLUMNNAME_Name = "Name";
-
-	/** Set Name.
-	  * Alphanumeric identifier of the entity
-	  */
-	public void setName (String Name);
-
-	/** Get Name.
-	  * Alphanumeric identifier of the entity
-	  */
-	public String getName();
-
-    /** Column name PercentUtilization */
-    public static final String COLUMNNAME_PercentUtilization = "PercentUtilization";
-
-	/** Set % Utilization	  */
-	public void setPercentUtilization (BigDecimal PercentUtilization);
-
-	/** Get % Utilization	  */
-	public BigDecimal getPercentUtilization();
-
-    /** Column name PlanningHorizon */
-    public static final String COLUMNNAME_PlanningHorizon = "PlanningHorizon";
-
-	/** Set Planning Horizon.
-	  * The planning horizon is the amount of time (Days) an organisation will look into the future when preparing a strategic plan.
-	  */
-	public void setPlanningHorizon (int PlanningHorizon);
-
-	/** Get Planning Horizon.
-	  * The planning horizon is the amount of time (Days) an organisation will look into the future when preparing a strategic plan.
-	  */
-	public int getPlanningHorizon();
-
-    /** Column name QueuingTime */
-    public static final String COLUMNNAME_QueuingTime = "QueuingTime";
-
-	/** Set Queuing Time.
-	  * Queue time is the time a job waits at a work center before begin handled.
-	  */
-	public void setQueuingTime (BigDecimal QueuingTime);
-
-	/** Get Queuing Time.
-	  * Queue time is the time a job waits at a work center before begin handled.
-	  */
-	public BigDecimal getQueuingTime();
+	public I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name S_Resource_ID */
     public static final String COLUMNNAME_S_Resource_ID = "S_Resource_ID";
@@ -258,6 +219,8 @@ public interface I_S_Resource
 	  */
 	public int getS_Resource_ID();
 
+	public I_S_Resource getS_Resource() throws RuntimeException;
+
     /** Column name S_ResourceType_ID */
     public static final String COLUMNNAME_S_ResourceType_ID = "S_ResourceType_ID";
 
@@ -268,6 +231,32 @@ public interface I_S_Resource
 	public int getS_ResourceType_ID();
 
 	public I_S_ResourceType getS_ResourceType() throws RuntimeException;
+
+    /** Column name S_ServicePlan_ID */
+    public static final String COLUMNNAME_S_ServicePlan_ID = "S_ServicePlan_ID";
+
+	/** Set Service Plan ID.
+	  * Operational service plan
+	  */
+	public void setS_ServicePlan_ID (int S_ServicePlan_ID);
+
+	/** Get Service Plan ID.
+	  * Operational service plan
+	  */
+	public int getS_ServicePlan_ID();
+
+    /** Column name TotalWeeklyHours */
+    public static final String COLUMNNAME_TotalWeeklyHours = "TotalWeeklyHours";
+
+	/** Set Total Weekly Hours.
+	  * Sum of planned hours per week for this service plan
+	  */
+	public void setTotalWeeklyHours (BigDecimal TotalWeeklyHours);
+
+	/** Get Total Weekly Hours.
+	  * Sum of planned hours per week for this service plan
+	  */
+	public BigDecimal getTotalWeeklyHours();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -298,29 +287,29 @@ public interface I_S_Resource
 	  */
 	public String getUUID();
 
-    /** Column name Value */
-    public static final String COLUMNNAME_Value = "Value";
+    /** Column name ValidFrom */
+    public static final String COLUMNNAME_ValidFrom = "ValidFrom";
 
-	/** Set Search Key.
-	  * Search key for the record in the format required - must be unique
+	/** Set Valid from.
+	  * Valid from including this date (first day)
 	  */
-	public void setValue (String Value);
+	public void setValidFrom (Timestamp ValidFrom);
 
-	/** Get Search Key.
-	  * Search key for the record in the format required - must be unique
+	/** Get Valid from.
+	  * Valid from including this date (first day)
 	  */
-	public String getValue();
+	public Timestamp getValidFrom();
 
-    /** Column name WaitingTime */
-    public static final String COLUMNNAME_WaitingTime = "WaitingTime";
+    /** Column name ValidTo */
+    public static final String COLUMNNAME_ValidTo = "ValidTo";
 
-	/** Set Waiting Time.
-	  * Workflow Simulation Waiting time
+	/** Set Valid to.
+	  * Valid to including this date (last day)
 	  */
-	public void setWaitingTime (BigDecimal WaitingTime);
+	public void setValidTo (Timestamp ValidTo);
 
-	/** Get Waiting Time.
-	  * Workflow Simulation Waiting time
+	/** Get Valid to.
+	  * Valid to including this date (last day)
 	  */
-	public BigDecimal getWaitingTime();
+	public Timestamp getValidTo();
 }

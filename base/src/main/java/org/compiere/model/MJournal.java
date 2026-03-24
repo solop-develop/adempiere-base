@@ -25,7 +25,6 @@ import org.compiere.process.DocumentReversalEnabled;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.solop.util.DocumentDateUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -314,7 +313,6 @@ public class MJournal extends X_GL_Journal implements DocAction , DocumentRevers
 		}
 		if (getDateAcct() == null)
 			setDateAcct(getDateDoc());
-		DocumentDateUtil.updateDateAcct(this, COLUMNNAME_DateDoc);
 		// Update DateAcct on lines - teo_sarca BF [ 1775358 ]
 		if (is_ValueChanged(COLUMNNAME_DateAcct)) {
 			int no = DB.executeUpdate(
