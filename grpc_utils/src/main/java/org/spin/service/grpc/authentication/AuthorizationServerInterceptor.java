@@ -14,10 +14,6 @@
  ************************************************************************************/
 package org.spin.service.grpc.authentication;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import io.grpc.Context;
 import io.grpc.Contexts;
 import io.grpc.Metadata;
@@ -25,6 +21,10 @@ import io.grpc.ServerCall;
 import io.grpc.ServerCallHandler;
 import io.grpc.ServerInterceptor;
 import io.grpc.Status;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 public class AuthorizationServerInterceptor implements ServerInterceptor {
 

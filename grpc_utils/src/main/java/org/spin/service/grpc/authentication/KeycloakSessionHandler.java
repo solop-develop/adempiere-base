@@ -2,12 +2,6 @@ package org.spin.service.grpc.authentication;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import java.sql.Timestamp;
-import java.util.Base64;
-import java.util.List;
-import java.util.Properties;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MPreference;
 import org.compiere.model.MSession;
@@ -17,6 +11,11 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Util;
 import org.spin.service.grpc.util.base.PreferenceUtil;
+
+import java.sql.Timestamp;
+import java.util.Base64;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Resolves an ADempiere session from a pre-validated Keycloak JWT.
