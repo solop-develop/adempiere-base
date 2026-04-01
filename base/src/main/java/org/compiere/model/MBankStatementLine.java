@@ -141,8 +141,11 @@ import java.util.concurrent.atomic.AtomicReference;
 		}
 		setInterestAmt(imp.getInterestAmt());
 		BigDecimal chargeAmt = imp.getChargeAmt();
-		if (chargeAmt.compareTo(BigDecimal.ZERO) == 0) {
+		if (BigDecimal.ZERO.compareTo(imp.getSimulationChargeAmt()) != 0) {
+			BigDecimal newTrxAmt = imp.getStmtAmt().subtract(imp.getSimulationChargeAmt());
+			setTrxAmt(newTrxAmt);
 			chargeAmt = imp.getSimulationChargeAmt();
+			setInterestAmt(BigDecimal.ZERO);
 		}
 		setChargeAmt(chargeAmt);
 		setMemo(imp.getMemo());

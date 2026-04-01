@@ -132,6 +132,14 @@ public class CashManagementUtil {
 		Timestamp dateAcct = bankStatement.getStatementDate();
 		MBankAccount mBankFrom = MBankAccount.get(bankStatement.getCtx(), bankStatement.getC_BankAccount_ID());
 		MBankAccount mBankTo = MBankAccount.get(bankStatement.getCtx(), depositBankAccountId);
+		//	Get POS organization
+		int posOrgId = 0;
+		if(bankStatement.getC_POS_ID() > 0) {
+			MPOS pos = MPOS.get(bankStatement.getCtx(), bankStatement.getC_POS_ID());
+			if(pos != null && pos.getC_POS_ID() > 0) {
+				posOrgId = pos.getAD_Org_ID();
+			}
+		}
 
 		MPayment paymentBankFrom = new MPayment(bankStatement.getCtx(), 0 ,  bankStatement.get_TrxName());
 		if(!paymentIds.isEmpty()) {
@@ -163,6 +171,10 @@ public class CashManagementUtil {
 			paymentBankFrom.setC_DocType_ID(false);
 		}
 		paymentBankFrom.setC_Charge_ID(cashAccount.getDepositCharge_ID());
+		//	Set POS organization before save
+		if(posOrgId > 0) {
+			paymentBankFrom.setAD_Org_ID(posOrgId);
+		}
 		paymentBankFrom.saveEx();
 		//
 		MPayment paymentBankTo = new MPayment(bankStatement.getCtx(), 0 ,  bankStatement.get_TrxName());
@@ -204,6 +216,10 @@ public class CashManagementUtil {
 			paymentBankTo.setC_DocType_ID(true);
 		}
 		paymentBankTo.setC_Charge_ID(cashAccount.getDepositCharge_ID());
+		//	Set POS organization before save
+		if(posOrgId > 0) {
+			paymentBankTo.setAD_Org_ID(posOrgId);
+		}
 		paymentBankTo.saveEx();
 
 		paymentBankFrom.setRelatedPayment_ID(paymentBankTo.getC_Payment_ID());
@@ -216,6 +232,10 @@ public class CashManagementUtil {
 		if(isReconciled) {
 			MBankStatementLine bsl = MBankStatement.addPayment(paymentBankFrom);
 			if(bsl != null) {
+				//	Set POS organization on bank statement line and its bank statement
+				if(posOrgId > 0) {
+					updateBankStatementOrg(bsl, posOrgId);
+				}
 				log.fine("@C_Payment_ID@: " + paymentBankFrom.getDocumentNo()
 						+ " @Added@ @to@ [@AccountNo@ " + paymentBankFrom.getC_BankAccount().getAccountNo()
 						+ " @C_BankStatement_ID@ " + bsl.getC_BankStatement().getName() + "]");
@@ -238,6 +258,10 @@ public class CashManagementUtil {
 		if(isReconciled) {
 			MBankStatementLine bsl = MBankStatement.addPayment(paymentBankTo);
 			if(bsl != null) {
+				//	Set POS organization on bank statement line and its bank statement
+				if(posOrgId > 0) {
+					updateBankStatementOrg(bsl, posOrgId);
+				}
 				log.fine("@C_Payment_ID@: " + paymentBankTo.getDocumentNo()
 						+ " @Added@ @to@ [@AccountNo@ " + paymentBankTo.getC_BankAccount().getAccountNo()
 						+ " @C_BankStatement_ID@ " + bsl.getC_BankStatement().getName() + "]");
@@ -245,6 +269,21 @@ public class CashManagementUtil {
 		}
 		//	Return
 		log.fine("@Created@ (1) @From@ " + mBankFrom.getAccountNo()+ " @To@ " + mBankTo.getAccountNo() + " @Amt@ " + DisplayType.getNumberFormat(DisplayType.Amount).format(amount));
+	}
+
+	/**
+	 * Update bank statement line and its parent bank statement with the POS organization
+	 * @param bankStatementLine
+	 * @param orgId
+	 */
+	private static void updateBankStatementOrg(MBankStatementLine bankStatementLine, int orgId) {
+		bankStatementLine.setAD_Org_ID(orgId);
+		bankStatementLine.saveEx();
+		MBankStatement parentBankStatement = new MBankStatement(bankStatementLine.getCtx(), bankStatementLine.getC_BankStatement_ID(), bankStatementLine.get_TrxName());
+		if(parentBankStatement.getAD_Org_ID() != orgId) {
+			parentBankStatement.setAD_Org_ID(orgId);
+			parentBankStatement.saveEx();
+		}
 	}
 
 	/**

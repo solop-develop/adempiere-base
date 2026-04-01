@@ -16,26 +16,32 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.*;
-import org.adempiere.engine.CostEngineFactory;
+import org.adempiere.core.domains.models.I_C_Invoice;
+import org.adempiere.core.domains.models.I_C_OrderLine;
+import org.adempiere.core.domains.models.I_C_OrderTax;
+import org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan;
+import org.adempiere.core.domains.models.I_M_InOut;
+import org.adempiere.core.domains.models.I_M_RMA;
+import org.adempiere.core.domains.models.I_PP_Product_Planning;
+import org.adempiere.core.domains.models.X_C_Order;
+import org.adempiere.core.domains.models.X_PP_Product_BOM;
+import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
+import org.adempiere.core.domains.models.X_PP_Product_Planning;
 import org.adempiere.exceptions.AdempiereException;
-import org.adempiere.exceptions.BPartnerNoAddressException;
 import org.adempiere.exceptions.BPartnerNoBillToAddressException;
 import org.adempiere.exceptions.BPartnerNoShipToAddressException;
-import org.adempiere.exceptions.DBException;
 import org.adempiere.exceptions.FillMandatoryException;
-import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
-import org.compiere.process.DocumentReversalEnabled;
-import org.compiere.util.*;
-import org.eevolution.wms.model.MWMInOutBoundLine;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.compiere.util.TimeUtil;
+import org.compiere.util.Util;
 import org.solop.queue.ForecastComparisonProcessor;
 import org.solop.queue.storage.StorageUpdate;
-import org.solop.util.AllocationManager;
 import org.solop.util.DocumentDateUtil;
-import org.solop.util.ReservationBuilder;
 import org.spin.queue.util.QueueLoader;
 
 import java.io.File;
@@ -45,13 +51,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 
 /**
@@ -138,14 +146,20 @@ public class MOrder extends X_C_Order implements DocAction
 		to.setIsTransferred (false);
 		to.setPosted (false);
 		to.setProcessed (false);
-		if (counter)
+		if (counter){
 			to.setRef_Order_ID(from.getC_Order_ID());
-		else
+			to.setPOReference(from.getDocumentNo());
+
+		}
+		else {
 			to.setRef_Order_ID(0);
+		}
 		//
 		to.saveEx(trxName);
-		if (counter)
+		if (counter){
 			from.setRef_Order_ID(to.getC_Order_ID());
+		}
+
 
 		if (to.copyLinesFrom(from, counter, copyASI) == 0)
 			throw new IllegalStateException("Could not create Order Lines");
@@ -2008,7 +2022,9 @@ public class MOrder extends X_C_Order implements DocAction
 			if (msg != null && msg.length() > 0)
 				info.append(" (").append(msg).append(")");
 		}	//	Invoice
-		
+
+		// Set the definite document number after completed (if needed)
+		setDefiniteDocumentNo();
 		//	Counter Documents
 		MOrder counter = createCounterDoc();
 		if (counter != null)
@@ -2025,9 +2041,6 @@ public class MOrder extends X_C_Order implements DocAction
 		}
 		createDropShipmentOrder();
 		processRecognitionPlans();
-
-		// Set the definite document number after completed (if needed)
-		setDefiniteDocumentNo();
 
 		setProcessed(true);
 		m_processMsg = info.toString();
@@ -2355,6 +2368,9 @@ public class MOrder extends X_C_Order implements DocAction
 				counter.processIt(counterDT.getDocAction());
 				counter.saveEx(get_TrxName());
 			}
+		}
+		if (Util.isEmpty(getPOReference(), true)){
+			setPOReference(counter.getDocumentNo());
 		}
 		return counter;
 	}	//	createCounterDoc

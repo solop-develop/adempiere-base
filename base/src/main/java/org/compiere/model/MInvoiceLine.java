@@ -25,6 +25,7 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.Util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -888,6 +889,18 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 		// or this is an Invoice(Customer) - teo_sarca, globalqss [ 1686773 ]
 		if (getTaxAmt().compareTo(Env.ZERO) == 0)
 			setTaxAmt();
+
+		if (getC_OrderLine_ID() <= 0) {
+			String documentNote = null;
+			if ((newRecord || is_ValueChanged(getM_Product_ID())) && getM_Product_ID() > 0 ) {
+				documentNote = getProduct().get_Translation(MProduct.COLUMNNAME_DocumentNote);
+			} else if ((newRecord || is_ValueChanged(getC_Charge_ID())) && getC_Charge_ID() > 0 ) {
+				documentNote = getCharge().get_Translation(MCharge.COLUMNNAME_DocumentNote);
+			}
+			if (!Util.isEmpty(documentNote, true)) {
+				addDescription(documentNote);
+			}
+		}
 		//
 		return true;
 	}	//	beforeSave
@@ -979,16 +992,27 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
     	//	Validate
     	if(inOutLineId <= 0) {
     		if(getParent().isSOTrx()) {
-    			inOutLineId = DB.getSQLValue(get_TrxName(), 
+    			inOutLineId = DB.getSQLValue(get_TrxName(),
     					"SELECT il.M_InOutLine_ID "
     					+ "FROM M_InOutLine il "
     					+ "WHERE il.C_OrderLine_ID = ? "
     					+ "AND EXISTS(SELECT 1 FROM "
     					+ "						M_InOut i "
     					+ "						WHERE i.M_InOut_ID = il.M_InOut_ID "
-    					+ "						AND i.DocStatus IN('CO', 'CL'))", getC_OrderLine_ID());
+    					+ "						AND i.DocStatus IN('CO', 'CL') "
+    					+ "						AND i.IsSOTrx = 'Y')", getC_OrderLine_ID());
+    		} else {
+    			inOutLineId = DB.getSQLValue(get_TrxName(),
+    					"SELECT il.M_InOutLine_ID "
+    					+ "FROM M_InOutLine il "
+    					+ "WHERE il.C_OrderLine_ID = ? "
+    					+ "AND EXISTS(SELECT 1 FROM "
+    					+ "						M_InOut i "
+    					+ "						WHERE i.M_InOut_ID = il.M_InOut_ID "
+    					+ "						AND i.DocStatus IN('CO', 'CL') "
+    					+ "						AND i.IsSOTrx = 'N')", getC_OrderLine_ID());
     		}
-        	//	
+        	//
         	if(inOutLineId == -1) {
         		inOutLineId = 0;
         	}
