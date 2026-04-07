@@ -21,12 +21,17 @@ import org.compiere.model.MColumn;
 import org.compiere.model.MTable;
 import org.compiere.model.M_Element;
 import org.compiere.model.Query;
-import org.compiere.util.*;
+import org.compiere.util.DB;
+import org.compiere.util.DisplayType;
+import org.compiere.util.Env;
+import org.compiere.util.Trx;
+import org.compiere.util.TrxRunnable;
 import org.jfree.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /** Generated Process for (Generate Surrogate Key UUID for all tables)
@@ -46,14 +51,24 @@ public class GenerateSurrogateKeys extends GenerateSurrogateKeysAbstract
 	{
 		List<Integer> tableList = getTableList(get_TrxName());
 		//	Add columns
-		tableList.stream().filter(Objects::nonNull).forEach(this::addColumn);
+		tableList.stream()
+			.filter(Objects::nonNull)
+			.forEach(this::addColumn)
+		;
 		//	Generate Surrogate Keys
 		if (isGenerateUUIDforallrecords()) {
+			// Collect log messages from parallel workers in a thread-safe queue.
+			// addLog() mutates ProcessInfo.logs (a non-thread-safe ArrayList);
+			// calling it from parallelStream corrupts the list and later causes
+			// duplicate AD_PInstance_Log_ID inserts in ProcessInfoUtil.saveLogToDB.
+			ConcurrentLinkedQueue<String> logMessages = new ConcurrentLinkedQueue<>();
 			tableList.parallelStream().filter(Objects::nonNull).forEach(tableId -> {
 				Trx.run(transactionName -> {
-					generateUUIDByTable(tableId, transactionName);
+					generateUUIDByTable(tableId, transactionName, logMessages);
 				});
 			});
+			// Flush collected messages sequentially from the main thread.
+			logMessages.forEach(this::addLog);
 		}
 		return "@Ok@";
 	}
@@ -125,13 +140,13 @@ public class GenerateSurrogateKeys extends GenerateSurrogateKeysAbstract
 		}
 	}
 
-	private void generateUUIDByTable(int tableId, String transactionName) {
+	private void generateUUIDByTable(int tableId, String transactionName, ConcurrentLinkedQueue<String> logMessages) {
 		String tableName = MTable.getTableName(getCtx(), tableId);
 		try {
 			int updated = DB.executeUpdateEx("UPDATE " + tableName + " SET UUID = getUUID() WHERE UUID IS NULL", transactionName);
-			addLog(tableName + " @Updated@: " + updated);
+			logMessages.add(tableName + " @Updated@: " + updated);
 		} catch (Exception e) {
-			addLog(tableName + " @Error@: " + e.getLocalizedMessage());
+			logMessages.add(tableName + " @Error@: " + e.getLocalizedMessage());
 		}
 	}
 
