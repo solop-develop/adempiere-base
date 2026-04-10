@@ -40,6 +40,7 @@ import org.compiere.process.DocumentReversalEnabled;
 import org.compiere.util.CCache;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
+import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
@@ -56,10 +57,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1429,6 +1432,27 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		return true;
 	}	//	invalidateIt
 
+	private void validateOrderDate(List<MInvoiceLine> lines) {
+		Map<String, Timestamp> orderErrors = new HashMap<>();
+		SimpleDateFormat dateFormat = DisplayType.getDateFormat(DisplayType.Date);
+		lines.parallelStream()
+				.filter(invoiceLine -> invoiceLine.getC_OrderLine_ID() > 0)
+				.forEach(invoiceLine -> {
+			MOrder order = new MOrder(getCtx(), invoiceLine.getC_OrderLine().getC_Order_ID(), get_TrxName());
+			if(order.getDateAcct().after(getDateAcct())) {
+				if(!orderErrors.containsKey(order.getDocumentNo())) {
+					orderErrors.put(order.getDocumentNo(), order.getDateAcct());
+				}
+			}
+		});
+		if(!orderErrors.isEmpty()) {
+			StringBuilder errors = new StringBuilder();
+			errors.append("@InvoiceDateAcctBad@").append(Env.NL);
+			orderErrors.forEach((key, value) -> errors.append(Env.NL).append(key).append(" - ").append(dateFormat.format(value)));
+			throw new AdempiereException(errors.toString());
+		}
+	}
+
 	/**
 	 *	Prepare Document
 	 * 	@return new status (In Progress or Invalid)
@@ -1449,6 +1473,9 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			processMsg = "@NoLines@";
 			return DocAction.STATUS_Invalid;
 		}
+		//	Validate if the dates is bad
+		validateOrderDate(Arrays.asList(lines));
+
 		//	No Cash Book
 		if (PAYMENTRULE_Cash.equals(getPaymentRule())
 			&& !isValidCashBook())
@@ -2017,17 +2044,16 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					}
 				}
 				BigDecimal matchQty = invoiceLine.getQtyInvoiced();
-				Boolean useReceiptDateAcct = MSysConfig.getBooleanValue("MatchInv_Use_DateAcct_From_Receipt",
-						false, getAD_Client_ID());
 
 				if (receiptLine.getMovementQty().compareTo(matchQty) < 0)
 					matchQty = receiptLine.getMovementQty();
+				Timestamp receiptDateAcct = receiptLine.getParent().getDateAcct();
 				MMatchInv matchInvoice = null;
-				Boolean isReceiptPeriodOpen = MPeriod.isOpen(getCtx(), receiptLine.getParent().getDateAcct(),
+				Boolean isReceiptPeriodOpen = MPeriod.isOpen(getCtx(), receiptDateAcct,
 						receiptLine.getParent().getC_DocType().getDocBaseType(), receiptLine.getParent().getAD_Org_ID());
-
+				boolean useReceiptDateAcct = receiptDateAcct.compareTo(getDateAcct()) > 0;
 				if (useReceiptDateAcct & isReceiptPeriodOpen ) {
-					matchInvoice = new MMatchInv(invoiceLine,receiptLine.getParent().getDateAcct() , matchQty);
+					matchInvoice = new MMatchInv(invoiceLine,  receiptDateAcct, matchQty);
 				}
 				else {
 					matchInvoice = new MMatchInv(invoiceLine, getDateAcct(), matchQty);
@@ -2049,6 +2075,16 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 				|| invoiceLine.getM_Product_ID() == 0) {
 					BigDecimal qtyInvoiced = invoiceLine.getQtyInvoiced().multiply(multiplier);
 					orderLine.setQtyInvoiced(orderLine.getQtyInvoiced().add(qtyInvoiced));
+					//	Validate QtyInvoiced does not exceed QtyOrdered (skip for bulk products)
+					if (isSOTrx() && !orderLine.getParent().isReturnOrder() && !isReversal()) {
+						MProduct lineProduct = invoiceLine.getProduct();
+						if (lineProduct == null || !lineProduct.isBulk()) {
+							if (orderLine.getQtyInvoiced().compareTo(orderLine.getQtyOrdered()) > 0) {
+								throw new AdempiereException("@QtyInvoiced@ > @QtyOrdered@ - @Line@: " + invoiceLine.getLine()
+										+ (lineProduct != null ? " @M_Product_ID@: " + lineProduct.getValue() : ""));
+							}
+						}
+					}
 					orderLine.saveEx();
 				}
 				//	Order Invoiced Qty updated via Matching Inv-PO

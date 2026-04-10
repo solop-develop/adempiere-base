@@ -485,6 +485,28 @@ public class X_M_Product extends PO implements I_M_Product, I_Persistent
 		return (String)get_Value(COLUMNNAME_Group2);
 	}
 
+
+	/** Set Bulk Product.
+	 @param IsBulk Bulk Product	  */
+	public void setIsBulk (boolean IsBulk)
+	{
+		set_Value (COLUMNNAME_IsBulk, Boolean.valueOf(IsBulk));
+	}
+
+	/** Get Bulk Product.
+	 @return Bulk Product	  */
+	public boolean isBulk ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsBulk);
+		if (oo != null)
+		{
+			if (oo instanceof Boolean)
+				return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Guarantee Days.
 		@param GuaranteeDays 
 		Number of days the product is guaranteed or available
