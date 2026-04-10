@@ -133,7 +133,7 @@ public interface I_C_AllocationHdr
 	  */
 	public int getC_PaySelection_ID();
 
-	public I_C_PaySelection getC_PaySelection() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_C_PaySelection getC_PaySelection() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -330,6 +330,21 @@ public interface I_C_AllocationHdr
 	public int getReversal_ID();
 
 	public org.adempiere.core.domains.models.I_C_AllocationHdr getReversal() throws RuntimeException;
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

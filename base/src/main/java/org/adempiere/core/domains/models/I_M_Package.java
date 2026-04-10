@@ -320,21 +320,6 @@ public interface I_M_Package
 	  */
 	public boolean isInvoiced();
 
-    /** Column name M_Freight_ID */
-    public static final String COLUMNNAME_M_Freight_ID = "M_Freight_ID";
-
-	/** Set Freight.
-	  * Freight Rate
-	  */
-	public void setM_Freight_ID (int M_Freight_ID);
-
-	/** Get Freight.
-	  * Freight Rate
-	  */
-	public int getM_Freight_ID();
-
-	public org.adempiere.core.domains.models.I_M_Freight getM_Freight() throws RuntimeException;
-
     /** Column name M_FreightCategory_ID */
     public static final String COLUMNNAME_M_FreightCategory_ID = "M_FreightCategory_ID";
 
@@ -349,6 +334,21 @@ public interface I_M_Package
 	public int getM_FreightCategory_ID();
 
 	public org.adempiere.core.domains.models.I_M_FreightCategory getM_FreightCategory() throws RuntimeException;
+
+    /** Column name M_Freight_ID */
+    public static final String COLUMNNAME_M_Freight_ID = "M_Freight_ID";
+
+	/** Set Freight.
+	  * Freight Rate
+	  */
+	public void setM_Freight_ID (int M_Freight_ID);
+
+	/** Get Freight.
+	  * Freight Rate
+	  */
+	public int getM_Freight_ID();
+
+	public org.adempiere.core.domains.models.I_M_Freight getM_Freight() throws RuntimeException;
 
     /** Column name M_InOut_ID */
     public static final String COLUMNNAME_M_InOut_ID = "M_InOut_ID";
@@ -472,6 +472,21 @@ public interface I_M_Package
 	public int getSalesRep_ID();
 
 	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name ShipDate */
     public static final String COLUMNNAME_ShipDate = "ShipDate";

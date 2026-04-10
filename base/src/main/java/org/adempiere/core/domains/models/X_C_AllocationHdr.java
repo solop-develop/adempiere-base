@@ -38,7 +38,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251111L;
+	private static final long serialVersionUID = 20260410L;
 
     /** Standard Constructor */
     public X_C_AllocationHdr (Properties ctx, int C_AllocationHdr_ID, String trxName)
@@ -190,9 +190,9 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
 		return ii.intValue();
 	}
 
-	public I_C_PaySelection getC_PaySelection() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_PaySelection getC_PaySelection() throws RuntimeException
     {
-		return (I_C_PaySelection)MTable.get(getCtx(), I_C_PaySelection.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_PaySelection)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_PaySelection.Table_Name)
 			.getPO(getC_PaySelection_ID(), get_TrxName());	}
 
 	/** Set Payment Selection.
@@ -546,6 +546,34 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
 	public int getReversal_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_Reversal_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

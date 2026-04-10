@@ -37,7 +37,7 @@ public class X_M_ProductionBatch extends PO implements I_M_ProductionBatch, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260410L;
 
     /** Standard Constructor */
     public X_M_ProductionBatch (Properties ctx, int M_ProductionBatch_ID, String trxName)
@@ -50,10 +50,10 @@ public class X_M_ProductionBatch extends PO implements I_M_ProductionBatch, I_Pe
 			setCountOrder (0);
 			setDocumentNo (null);
 			setM_Locator_ID (0);
-			setM_Product_ID (0);
-			setM_ProductionBatch_ID (0);
 			setMovementDate (new Timestamp( System.currentTimeMillis() ));
 // @#Date@
+			setM_Product_ID (0);
+			setM_ProductionBatch_ID (0);
 			setPosted (false);
 // N
 			setProcessed (false);
@@ -174,6 +174,23 @@ public class X_M_ProductionBatch extends PO implements I_M_ProductionBatch, I_Pe
 		return ii.intValue();
 	}
 
+	/** Set Order Count.
+		@param CountOrder Order Count	  */
+	public void setCountOrder (int CountOrder)
+	{
+		set_Value (COLUMNNAME_CountOrder, Integer.valueOf(CountOrder));
+	}
+
+	/** Get Order Count.
+		@return Order Count	  */
+	public int getCountOrder () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_CountOrder);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
@@ -197,23 +214,6 @@ public class X_M_ProductionBatch extends PO implements I_M_ProductionBatch, I_Pe
 	public int getC_Project_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_Project_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set Order Count.
-		@param CountOrder Order Count	  */
-	public void setCountOrder (int CountOrder)
-	{
-		set_Value (COLUMNNAME_CountOrder, Integer.valueOf(CountOrder));
-	}
-
-	/** Get Order Count.
-		@return Order Count	  */
-	public int getCountOrder () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_CountOrder);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -415,6 +415,23 @@ public class X_M_ProductionBatch extends PO implements I_M_ProductionBatch, I_Pe
 		return ii.intValue();
 	}
 
+	/** Set Movement Date.
+		@param MovementDate 
+		Date a product was moved in or out of inventory
+	  */
+	public void setMovementDate (Timestamp MovementDate)
+	{
+		set_Value (COLUMNNAME_MovementDate, MovementDate);
+	}
+
+	/** Get Movement Date.
+		@return Date a product was moved in or out of inventory
+	  */
+	public Timestamp getMovementDate () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_MovementDate);
+	}
+
 	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
@@ -461,23 +478,6 @@ public class X_M_ProductionBatch extends PO implements I_M_ProductionBatch, I_Pe
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Movement Date.
-		@param MovementDate 
-		Date a product was moved in or out of inventory
-	  */
-	public void setMovementDate (Timestamp MovementDate)
-	{
-		set_Value (COLUMNNAME_MovementDate, MovementDate);
-	}
-
-	/** Get Movement Date.
-		@return Date a product was moved in or out of inventory
-	  */
-	public Timestamp getMovementDate () 
-	{
-		return (Timestamp)get_Value(COLUMNNAME_MovementDate);
 	}
 
 	/** Set Posted.
@@ -652,6 +652,34 @@ public class X_M_ProductionBatch extends PO implements I_M_ProductionBatch, I_Pe
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Target Quantity.
