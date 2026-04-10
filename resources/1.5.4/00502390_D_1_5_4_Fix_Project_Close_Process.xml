@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_Project_Close_Process" ReleaseNo="1.5.4" SeqNo="502390">
+    <Comments>Fix Project Close Process ClassName</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="284" Action="U" Record_ID="227" Table="AD_Process">
+        <Data AD_Column_ID="4656" Column="Classname" oldValue="org.compiere.process.ProjectClose">org.compiere.project.process.ProjectClose</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
