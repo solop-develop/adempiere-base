@@ -296,6 +296,19 @@ public interface I_M_Production
 
 	public I_M_Locator getM_Locator() throws RuntimeException;
 
+    /** Column name MovementDate */
+    public static final String COLUMNNAME_MovementDate = "MovementDate";
+
+	/** Set Movement Date.
+	  * Date a product was moved in or out of inventory
+	  */
+	public void setMovementDate (Timestamp MovementDate);
+
+	/** Get Movement Date.
+	  * Date a product was moved in or out of inventory
+	  */
+	public Timestamp getMovementDate();
+
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
 
@@ -311,6 +324,17 @@ public interface I_M_Production
 
 	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
 
+    /** Column name M_ProductionBatch_ID */
+    public static final String COLUMNNAME_M_ProductionBatch_ID = "M_ProductionBatch_ID";
+
+	/** Set Production Batch	  */
+	public void setM_ProductionBatch_ID (int M_ProductionBatch_ID);
+
+	/** Get Production Batch	  */
+	public int getM_ProductionBatch_ID();
+
+	public org.adempiere.core.domains.models.I_M_ProductionBatch getM_ProductionBatch() throws RuntimeException;
+
     /** Column name M_Production_ID */
     public static final String COLUMNNAME_M_Production_ID = "M_Production_ID";
 
@@ -323,30 +347,6 @@ public interface I_M_Production
 	  * Plan for producing a product
 	  */
 	public int getM_Production_ID();
-
-    /** Column name M_ProductionBatch_ID */
-    public static final String COLUMNNAME_M_ProductionBatch_ID = "M_ProductionBatch_ID";
-
-	/** Set Production Batch	  */
-	public void setM_ProductionBatch_ID (int M_ProductionBatch_ID);
-
-	/** Get Production Batch	  */
-	public int getM_ProductionBatch_ID();
-
-	public org.adempiere.core.domains.models.I_M_ProductionBatch getM_ProductionBatch() throws RuntimeException;
-
-    /** Column name MovementDate */
-    public static final String COLUMNNAME_MovementDate = "MovementDate";
-
-	/** Set Movement Date.
-	  * Date a product was moved in or out of inventory
-	  */
-	public void setMovementDate (Timestamp MovementDate);
-
-	/** Get Movement Date.
-	  * Date a product was moved in or out of inventory
-	  */
-	public Timestamp getMovementDate();
 
     /** Column name MustBeStocked */
     public static final String COLUMNNAME_MustBeStocked = "MustBeStocked";
@@ -455,6 +455,21 @@ public interface I_M_Production
 	public int getReversal_ID();
 
 	public org.adempiere.core.domains.models.I_M_Production getReversal() throws RuntimeException;
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
