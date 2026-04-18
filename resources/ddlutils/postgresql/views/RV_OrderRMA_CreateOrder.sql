@@ -1,8 +1,7 @@
---DROP VIEW RV_OrderRMA_CreateOrder;
 CREATE OR REPLACE VIEW RV_OrderRMA_CreateOrder AS
 --  From Order
 SELECT l.AD_Client_ID, l.AD_Org_ID, l.CreatedBy, l.Created, l.UpdatedBy, l.Updated, l.IsActive, l.C_OrderLine_ID AS RV_OrderRMA_CreateOrder_ID, l.Line,
-((CASE WHEN l.QtyOrdered = 0 THEN 0 ELSE l.QtyEntered / l.QtyOrdered END) * (l.QtyOrdered - SUM(COALESCE(ol.QtyOrdered, 0)))) QtyEntered, l.QtyOrdered, 
+((CASE WHEN l.QtyOrdered = 0 THEN 0 ELSE l.QtyEntered / l.QtyOrdered END) * (l.QtyOrdered - SUM(COALESCE(ol.QtyOrdered, 0)))) QtyEntered, l.QtyOrdered,
 l.C_UOM_ID, (l.QtyOrdered - SUM(COALESCE(ol.QtyOrdered, 0))) QtyToOrder,
 (CASE WHEN l.QtyOrdered = 0 THEN 0 ELSE l.QtyEntered / l.QtyOrdered END) Multiplier,
 COALESCE(p.Name, c.Name) AS Name, l.M_Product_ID, l.M_AttributeSetInstance_ID, l.C_Charge_ID, l.Description, po.VendorProductNo,
@@ -10,14 +9,23 @@ COALESCE(p.Name, c.Name) AS Name, l.M_Product_ID, l.M_AttributeSetInstance_ID, l
 o.C_Order_ID, 0 AS C_Invoice_ID, 0 AS M_InOut_ID, 0 AS M_RMA_ID, o.DateOrdered AS DateDoc, o.C_BPartner_ID, o.DocStatus
 FROM C_Order o
 INNER JOIN C_OrderLine l ON(l.C_Order_ID = o.C_Order_ID)
-LEFT JOIN M_Product_PO po ON (l.M_Product_ID = po.M_Product_ID AND l.C_BPartner_ID = po.C_BPartner_ID)
+LEFT JOIN LATERAL (
+    SELECT ppo.VendorProductNo
+    FROM M_Product_PO ppo
+    WHERE ppo.M_Product_ID = l.M_Product_ID
+      AND ppo.C_BPartner_ID = o.C_BPartner_ID
+      AND ppo.C_Currency_ID = o.C_Currency_ID
+      AND ppo.IsActive = 'Y'
+      AND ppo.AD_Org_ID IN (0, o.AD_Org_ID)
+    ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+) po ON true
 LEFT JOIN M_Product p ON (l.M_Product_ID = p.M_Product_ID)
 LEFT JOIN C_Charge c ON (l.C_Charge_ID = c.C_Charge_ID)
-LEFT JOIN (SELECT ol.Ref_OrderLine_ID, ol.QtyOrdered 
-					FROM C_Order o
-					INNER JOIN C_OrderLine ol ON(ol.C_Order_ID = o.C_Order_ID)
-					WHERE o.DocStatus NOT IN('VO', 'IN', 'IP', 'RE', 'CL')
-					AND ol.C_OrderLine_ID IS NOT NULL) ol ON(ol.Ref_OrderLine_ID = l.C_OrderLine_ID)
+LEFT JOIN (SELECT ol_sub.Ref_OrderLine_ID, ol_sub.QtyOrdered
+                FROM C_Order o_sub
+                INNER JOIN C_OrderLine ol_sub ON(ol_sub.C_Order_ID = o_sub.C_Order_ID)
+                WHERE o_sub.DocStatus NOT IN('VO', 'IN', 'IP', 'RE', 'CL')
+                AND ol_sub.C_OrderLine_ID IS NOT NULL) ol ON(ol.Ref_OrderLine_ID = l.C_OrderLine_ID)
 WHERE l.QtyOrdered <> 0
 GROUP BY l.AD_Client_ID, l.AD_Org_ID, l.CreatedBy, l.Created, l.UpdatedBy, l.Updated, l.IsActive, l.C_OrderLine_ID, l.Line,
 l.QtyOrdered, l.QtyEntered, l.C_UOM_ID, p.Name, c.Name, l.M_Product_ID,

@@ -15,8 +15,7 @@ ISACTIVE,
 DATEREQUIRED,
 M_PRODUCT_CATEGORY_ID,
 AMOUNT)
-
-AS 
+AS
  SELECT mrl.ad_client_id,
     mrl.ad_org_id,
     mrl.m_replenishplanline_id,
@@ -37,5 +36,12 @@ AS
    JOIN m_requisitionline rl ON rl.m_requisition_id = mrl.m_requisition_id AND rl.m_product_id = mrl.m_product_id
    JOIN m_requisition r ON r.m_requisition_id = rl.m_requisition_id
    JOIN m_product p ON p.m_product_id = rl.m_product_id
-   LEFT JOIN m_product_po po ON po.m_product_id = p.m_product_id AND po.c_bpartner_id = rl.c_bpartner_id
+   LEFT JOIN LATERAL (
+       SELECT ppo.vendorproductno
+       FROM m_product_po ppo
+       WHERE ppo.m_product_id = p.m_product_id
+         AND ppo.c_bpartner_id = rl.c_bpartner_id
+         AND ppo.ad_org_id IN (0, mrl.ad_org_id)
+       ORDER BY ppo.ad_org_id DESC LIMIT 1
+   ) po ON true
   ORDER BY r.m_requisition_id, rl.line;

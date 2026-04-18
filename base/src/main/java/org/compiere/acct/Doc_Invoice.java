@@ -586,8 +586,6 @@ public class Doc_Invoice extends Doc
 			if (serviceAmt.signum() != 0)
 				fact.createLine(null, MAccount.getValidCombination(getCtx(), payablesServicesId , getTrxName()),
 					getC_Currency_ID(), null, serviceAmt);
-			//
-			updateProductPO(acctSchema);	//	Only API
 		}
 		//  APC
 		else if (getDocumentType().equals(DOCTYPE_APCredit))
@@ -898,46 +896,5 @@ public class Doc_Invoice extends Doc
 		return true;
 	}	//	landedCosts
 
-	/**
-	 * 	Update ProductPO PriceLastInv
-	 *	@param as accounting schema
-	 */
-	private void updateProductPO (MAcctSchema as)
-	{
-		MClientInfo ci = MClientInfo.get(getCtx(), as.getAD_Client_ID(), getTrxName());
-		if (ci.getC_AcctSchema1_ID() != as.getC_AcctSchema_ID())
-			return;
-		
-		StringBuffer sql = new StringBuffer (
-			"UPDATE M_Product_PO po "
-			+ "SET PriceLastInv = "
-			//	select
-			+ "(SELECT currencyConvert(il.PriceActual,i.C_Currency_ID,po.C_Currency_ID,i.DateInvoiced,i.C_ConversionType_ID,i.AD_Client_ID,i.AD_Org_ID) "
-			+ "FROM C_Invoice i, C_InvoiceLine il "
-			+ "WHERE i.C_Invoice_ID=il.C_Invoice_ID"
-			+ " AND po.M_Product_ID=il.M_Product_ID AND po.C_BPartner_ID=i.C_BPartner_ID");
-			//jz + " AND ROWNUM=1 AND i.C_Invoice_ID=").append(get_ID()).append(") ")
-			if (DB.isOracle()) //jz
-			{
-				sql.append(" AND ROWNUM=1 ");
-			}
-			else 
-			{
-				sql.append(" AND il.C_InvoiceLine_ID = (SELECT MIN(il1.C_InvoiceLine_ID) "
-						+ "FROM C_Invoice i1, C_InvoiceLine il1 "
-						+ "WHERE i1.C_Invoice_ID=il1.C_Invoice_ID"
-						+ " AND po.M_Product_ID=il1.M_Product_ID AND po.C_BPartner_ID=i1.C_BPartner_ID")
-						.append("  AND i1.C_Invoice_ID=").append(get_ID()).append(") ");
-			}
-			sql.append("  AND i.C_Invoice_ID=").append(get_ID()).append(") ")
-			//	update
-			.append("WHERE EXISTS (SELECT * "
-			+ "FROM C_Invoice i, C_InvoiceLine il "
-			+ "WHERE i.C_Invoice_ID=il.C_Invoice_ID"
-			+ " AND po.M_Product_ID=il.M_Product_ID AND po.C_BPartner_ID=i.C_BPartner_ID"
-			+ " AND i.C_Invoice_ID=").append(get_ID()).append(")");
-		int no = DB.executeUpdate(sql.toString(), getTrxName());
-		log.fine("Updated=" + no);
-	}	//	updateProductPO
 
 }   //  Doc_Invoice

@@ -745,7 +745,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 					if (no == 0)		//	Insert PO
 					{
 
-						MProductPO productPO = new MProductPO(getCtx(), M_Product_ID,C_BPartner_ID, imp.getC_Currency_ID(), get_TrxName());
+						MProductPO productPO = new MProductPO(getCtx(), M_Product_ID,C_BPartner_ID, imp.getC_Currency_ID(), imp.getAD_Org_ID(), get_TrxName());
 						productPO.setC_UOM_ID(imp.getC_UOM_ID());
 						productPO.setUPC(imp.getUPC());
 						productPO.setPriceList(imp.getPriceList());

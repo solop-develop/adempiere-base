@@ -1,4 +1,3 @@
---DROP VIEW RV_Invoice_CreateFrom;
 CREATE OR REPLACE VIEW RV_Invoice_CreateFrom AS
 --  From Order
 SELECT l.AD_Client_ID, l.AD_Org_ID, l.CreatedBy, l.Created, l.UpdatedBy, l.Updated, l.IsActive, l.C_OrderLine_ID AS RV_Invoice_CreateFrom_ID, l.Line,
@@ -10,7 +9,15 @@ COALESCE(p.Name, c.Name) AS Name, l.M_Product_ID, l.M_AttributeSetInstance_ID, l
 o.C_Order_ID, 0 AS C_Invoice_ID, 0 AS M_InOut_ID, 0 AS M_RMA_ID, o.DateOrdered AS DateDoc, o.C_BPartner_ID, o.DocStatus, 'O' AS CreateFromType
 FROM C_Order o
 INNER JOIN C_OrderLine l ON(l.C_Order_ID = o.C_Order_ID)
-LEFT JOIN M_Product_PO po ON (l.M_Product_ID = po.M_Product_ID AND l.C_BPartner_ID = po.C_BPartner_ID)
+LEFT JOIN LATERAL (
+    SELECT ppo.VendorProductNo
+    FROM M_Product_PO ppo
+    WHERE ppo.M_Product_ID = l.M_Product_ID
+      AND ppo.C_BPartner_ID = o.C_BPartner_ID
+      AND ppo.IsActive = 'Y'
+      AND ppo.AD_Org_ID IN (0, o.AD_Org_ID)
+    ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+) po ON true
 LEFT JOIN M_MatchPO m ON (l.C_OrderLine_ID = m.C_OrderLine_ID AND m.C_InvoiceLine_ID IS NOT NULL)
 LEFT JOIN M_Product p ON (l.M_Product_ID = p.M_Product_ID)
 LEFT JOIN C_Charge c ON (l.C_Charge_ID = c.C_Charge_ID)
@@ -22,7 +29,6 @@ o.C_Order_ID, o.DateOrdered, o.C_BPartner_ID, o.DocStatus
 HAVING(l.QtyOrdered - SUM(COALESCE(m.Qty, 0)) <> 0)
 
 UNION ALL
-
 
 --  From InOut
 SELECT l.AD_Client_ID, l.AD_Org_ID, l.CreatedBy, l.Created, l.UpdatedBy, l.Updated, l.IsActive, l.M_InOutLine_ID AS RV_Invoice_CreateFrom_ID, l.Line,
@@ -36,7 +42,15 @@ FROM M_InOut io
 INNER JOIN M_InOutLine l ON (l.M_InOut_ID = io.M_InOut_ID)
 LEFT JOIN M_Product p ON (l.M_Product_ID = p.M_Product_ID)
 LEFT JOIN C_Charge c ON (l.C_Charge_ID = c.C_Charge_ID)
-LEFT JOIN M_Product_PO po ON (l.M_Product_ID = po.M_Product_ID AND io.C_BPartner_ID = po.C_BPartner_ID)
+LEFT JOIN LATERAL (
+    SELECT ppo.VendorProductNo
+    FROM M_Product_PO ppo
+    WHERE ppo.M_Product_ID = l.M_Product_ID
+      AND ppo.C_BPartner_ID = io.C_BPartner_ID
+      AND ppo.IsActive = 'Y'
+      AND ppo.AD_Org_ID IN (0, io.AD_Org_ID)
+    ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+) po ON true
 LEFT JOIN M_MatchInv m ON (l.M_InOutLine_ID = m.M_InOutLine_ID)
 AND l.MovementQty <> 0
 GROUP BY l.AD_Client_ID, l.AD_Org_ID, l.CreatedBy, l.Created, l.UpdatedBy, l.Updated, l.IsActive, l.M_InOutLine_ID, l.Line,
@@ -81,6 +95,14 @@ COALESCE(p.Name, c.Name) AS Name, l.M_Product_ID, l.M_AttributeSetInstance_ID, l
 0 C_Order_ID, i.C_Invoice_ID, 0 AS M_InOut_ID, 0 AS M_RMA_ID, i.DateInvoiced AS DateDoc, i.C_BPartner_ID, i.DocStatus, 'I' AS CreateFromType
 FROM C_Invoice i
 INNER JOIN C_InvoiceLine l ON(l.C_Invoice_ID = i.C_Invoice_ID)
-LEFT JOIN M_Product_PO po ON (l.M_Product_ID = po.M_Product_ID AND i.C_BPartner_ID = po.C_BPartner_ID)
+LEFT JOIN LATERAL (
+    SELECT ppo.VendorProductNo
+    FROM M_Product_PO ppo
+    WHERE ppo.M_Product_ID = l.M_Product_ID
+      AND ppo.C_BPartner_ID = i.C_BPartner_ID
+      AND ppo.IsActive = 'Y'
+      AND ppo.AD_Org_ID IN (0, i.AD_Org_ID)
+    ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+) po ON true
 LEFT JOIN M_Product p ON (l.M_Product_ID = p.M_Product_ID)
 LEFT JOIN C_Charge c ON (l.C_Charge_ID = c.C_Charge_ID);

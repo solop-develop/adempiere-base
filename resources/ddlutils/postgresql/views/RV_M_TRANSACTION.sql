@@ -9,6 +9,13 @@ SELECT t.AD_Client_ID,t.AD_Org_ID, t.MovementDate, t.MovementQty,
 	po.C_BPartner_ID, po.PricePO, po.PriceLastPO, po.PriceList, 
 	p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID
 FROM M_Transaction t
-  INNER JOIN M_Product p ON (t.M_Product_ID=p.M_Product_ID)
-  INNER JOIN M_Product_PO po ON (t.M_Product_ID=po.M_Product_ID)
-WHERE po.IsCurrentVendor='Y';
+  INNER JOIN M_Product p ON (t.M_Product_ID = p.M_Product_ID)
+  LEFT JOIN LATERAL (
+    SELECT po.C_BPartner_ID, po.PricePO, po.PriceLastPO, po.PriceList
+    FROM M_Product_PO po
+    WHERE po.M_Product_ID = t.M_Product_ID
+      AND po.IsCurrentVendor = 'Y'
+      AND po.AD_Org_ID IN (0, t.AD_Org_ID)
+    ORDER BY po.AD_Org_ID DESC
+    LIMIT 1
+  ) po ON true;

@@ -25,9 +25,11 @@ SELECT s.AD_Client_ID, s.AD_Org_ID,
 FROM M_Storage s
   INNER JOIN M_Locator l ON (s.M_Locator_ID=l.M_Locator_ID)
   INNER JOIN M_Product p ON (s.M_Product_ID=p.M_Product_ID)
-  LEFT JOIN M_Product_PO po ON(po.M_Product_ID = p.M_Product_ID)
+  LEFT JOIN M_Product_PO po ON (
+    po.M_Product_ID = p.M_Product_ID
+    AND po.AD_Org_ID IN (0, l.AD_Org_ID)
+  )
   LEFT JOIN C_BPartner bp ON(bp.C_BPartner_ID = po.C_BPartner_ID)
-  WHERE po.IsActive = 'Y'
   GROUP BY s.AD_Client_ID, s.AD_Org_ID,
     -- Product
     s.M_Product_ID, p.Value,p.Name, p.Description, p.UPC, p.SKU,

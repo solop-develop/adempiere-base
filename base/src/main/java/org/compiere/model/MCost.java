@@ -794,7 +794,7 @@ public class MCost extends X_M_Cost
 		}
 
 		//	Still nothing try ProductPO
-		MProductPO[] pos = MProductPO.getOfProduct(product.getCtx(), product.getM_Product_ID(), null);
+		MProductPO[] pos = MProductPO.getOfProductAndOrg(product.getCtx(), product.getM_Product_ID(), Org_ID,null);
 		for (int i = 0; i < pos.length; i++)
 		{
 			BigDecimal price = pos[i].getPricePO();

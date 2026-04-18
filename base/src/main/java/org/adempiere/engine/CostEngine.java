@@ -72,10 +72,10 @@ public class CostEngine {
      * @param trxName
      * @return
      */
-	public static BigDecimal getSeedCost(Properties context , int  productId ,  String trxName)
+	public static BigDecimal getSeedCost(Properties context , int  productId , int orgId, String trxName)
 	{
 		BigDecimal costThisLevel = Env.ZERO;
-		for (MProductPO productPO : MProductPO.getOfProduct(context,productId, trxName))
+		for (MProductPO productPO : MProductPO.getOfProductAndOrg(context,productId, orgId, trxName))
 		 {
 			 if (productPO.isCurrentVendor())
 			 { 
@@ -371,6 +371,7 @@ public class CostEngine {
 						costThisLevel = getSeedCost(
                                 transaction.getCtx(),
                                 transaction.getM_Product_ID(),
+								transaction.getAD_Org_ID(),
                                 transaction.get_TrxName());
 						
 				// Material Receipt for Production light
@@ -438,7 +439,7 @@ public class CostEngine {
 			}
 
             if (costThisLevel.signum() == 0 &&  MCostElement.COSTELEMENTTYPE_Material.equals(costElement.getCostElementType())) {
-                costThisLevel = getSeedCost(transaction.getCtx(), transaction.getM_Product_ID(), transaction.get_TrxName());
+                costThisLevel = getSeedCost(transaction.getCtx(), transaction.getM_Product_ID(), transaction.getAD_Org_ID(), transaction.get_TrxName());
                 if (costThisLevel.signum() == 0)
                     if (model instanceof  MInOutLine && !model.isSOTrx()) {
 							costThisLevel = convertCostToSchemaCurrency(accountSchema , model , model.getPriceActualCurrency());
