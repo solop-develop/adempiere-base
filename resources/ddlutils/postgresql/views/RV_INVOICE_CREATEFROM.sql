@@ -16,7 +16,7 @@ LEFT JOIN LATERAL (
       AND ppo.C_BPartner_ID = o.C_BPartner_ID
       AND ppo.IsActive = 'Y'
       AND ppo.AD_Org_ID IN (0, o.AD_Org_ID)
-    ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+     ORDER BY ppo.IsCurrentVendor DESC, ppo.AD_Org_ID DESC LIMIT 1
 ) po ON true
 LEFT JOIN M_MatchPO m ON (l.C_OrderLine_ID = m.C_OrderLine_ID AND m.C_InvoiceLine_ID IS NOT NULL)
 LEFT JOIN M_Product p ON (l.M_Product_ID = p.M_Product_ID)
@@ -49,7 +49,7 @@ LEFT JOIN LATERAL (
       AND ppo.C_BPartner_ID = io.C_BPartner_ID
       AND ppo.IsActive = 'Y'
       AND ppo.AD_Org_ID IN (0, io.AD_Org_ID)
-    ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+    ORDER BY ppo.IsCurrentVendor DESC, ppo.AD_Org_ID DESC LIMIT 1
 ) po ON true
 LEFT JOIN M_MatchInv m ON (l.M_InOutLine_ID = m.M_InOutLine_ID)
 AND l.MovementQty <> 0
@@ -102,7 +102,7 @@ LEFT JOIN LATERAL (
       AND ppo.C_BPartner_ID = i.C_BPartner_ID
       AND ppo.IsActive = 'Y'
       AND ppo.AD_Org_ID IN (0, i.AD_Org_ID)
-    ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+    ORDER BY ppo.IsCurrentVendor DESC, ppo.AD_Org_ID DESC LIMIT 1
 ) po ON true
 LEFT JOIN M_Product p ON (l.M_Product_ID = p.M_Product_ID)
 LEFT JOIN C_Charge c ON (l.C_Charge_ID = c.C_Charge_ID);
