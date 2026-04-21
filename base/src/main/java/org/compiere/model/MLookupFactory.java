@@ -50,6 +50,10 @@ import org.compiere.util.Util;
  * 			https://sourceforge.net/tracker/?func=detail&aid=2933367&group_id=176962&atid=879332
  * @author Carlos Ruiz, GlobalQSS
  *		<li>BF [ 2561593 ] Multi-tenant problem with webui
+ * @author Edwin Betancourt, EdwinBetanc0urt@outlook.com, https://github.com/EdwinBetanc0urt
+ * 		@see <a href="https://github.com/solop-develop/adempiere-base/issues/584">
+ * 		BR [ 584 ] Display column returns raw identifier instead of concatenated display when reference `IsDisplayIdentifier=Y`</a>
+ *
  */
 public class MLookupFactory
 {
@@ -112,12 +116,13 @@ public class MLookupFactory
 				IsParent = "Y".equals(rs.getString(3));
 				ValidationCode = rs.getString(4);
 			}
-			else
-				s_log.log(Level.SEVERE, "Column Not Found - AD_Column_ID=" + Column_ID);
+			else {
+				s_log.log(Level.WARNING, "Column Not Found - AD_Column_ID=" + Column_ID);
+			}
 		}
 		catch (SQLException ex)
 		{
-			s_log.log(Level.SEVERE, "create", ex);
+			s_log.log(Level.WARNING, "create", ex);
 		}
 		finally
 		{
@@ -206,8 +211,8 @@ public class MLookupFactory
 			needToAddSecurity = false;
 		}
 		//	Table or Search with Reference_Value
-		else if ((AD_Reference_ID == DisplayType.Table || AD_Reference_ID == DisplayType.Search)
-			&& AD_Reference_Value_ID != 0)
+		else if (AD_Reference_ID == DisplayType.Table || (AD_Reference_ID == DisplayType.Search
+			&& AD_Reference_Value_ID > 0))
 		{
 			info = getLookup_Table (ctx, language, WindowNo, AD_Reference_Value_ID);
 		}
@@ -430,9 +435,8 @@ public class MLookupFactory
 				loaded = true;
 			}
 		}
-		catch (SQLException e)
-		{
-			s_log.log(Level.SEVERE, sql0, e);
+		catch (SQLException e) {
+			s_log.log(Level.WARNING, sql0, e);
 			return null;
 		}
 		finally
@@ -442,9 +446,8 @@ public class MLookupFactory
 			pstmt = null;
 		}
 
-		if (!loaded)
-		{
-			s_log.log(Level.SEVERE, "No Table Reference Table ID=" + AD_Reference_Value_ID);
+		if (!loaded) {
+			s_log.log(Level.WARNING, "No Table Reference Table ID=" + AD_Reference_Value_ID);
 			return null;
 		}
 		
@@ -454,15 +457,17 @@ public class MLookupFactory
 		}
 
 		StringBuffer realSQL = new StringBuffer("SELECT ");
-		if (!KeyColumn.endsWith("_ID"))
+		if (KeyColumn != null && !KeyColumn.endsWith("_ID")) {
 			realSQL.append("NULL,");
+		}
 
 		//	Translated
 		if (IsTranslated && !Env.isBaseLanguage(language, TableName))
 		{
 			realSQL.append(TableName).append(".").append(KeyColumn).append(",");
-			if (KeyColumn.endsWith("_ID"))
+			if (KeyColumn != null && KeyColumn.endsWith("_ID")) {
 				realSQL.append("NULL,");
+			}
 			if ( !Util.isEmpty( displaySQL ))
 				realSQL.append("NVL(").append(displaySQL).append(",'-1')");
 			else 
@@ -486,8 +491,9 @@ public class MLookupFactory
 		else
 		{
 			realSQL.append(TableName).append(".").append(KeyColumn).append(",");
-			if (KeyColumn.endsWith("_ID"))
+			if (KeyColumn != null && KeyColumn.endsWith("_ID")) {
 				realSQL.append("NULL,");
+			}
 			if ( !Util.isEmpty( displaySQL ))
 				realSQL.append("NVL(").append(displaySQL).append(",'-1')");
 			else 
@@ -564,7 +570,7 @@ public class MLookupFactory
 	{
 		String sql = "SELECT t.TableName,ck.ColumnName AS KeyColumn,"
 			+ "cd.ColumnName AS DisplayColumn,rt.isValueDisplayed,cd.IsTranslated,"
-			+ "rt.DisplaySQL "
+			+ "rt.DisplaySQL, rt.IsDisplayIdentifier "
 			+ "FROM AD_Ref_Table rt"
 			+ " INNER JOIN AD_Table t ON (rt.AD_Table_ID=t.AD_Table_ID)"
 			+ " INNER JOIN AD_Column ck ON (rt.AD_Key=ck.AD_Column_ID)"
@@ -573,7 +579,7 @@ public class MLookupFactory
 			+ " AND rt.IsActive='Y' AND t.IsActive='Y'";
 		//
 		String	KeyColumn, DisplayColumn, TableName, TableNameAlias, displaySQL;
-		boolean IsTranslated, isValueDisplayed;
+		boolean IsTranslated, isValueDisplayed, isDisplayIdentifier;
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -582,9 +588,8 @@ public class MLookupFactory
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setInt(1, AD_Reference_Value_ID);
 			rs = pstmt.executeQuery();
-			if (!rs.next())
-			{
-				s_log.log(Level.SEVERE, "Cannot find Reference Table, ID=" + AD_Reference_Value_ID
+			if (!rs.next()) {
+				s_log.log(Level.WARNING, "Cannot find Reference Table, ID=" + AD_Reference_Value_ID
 					+ ", Base=" + BaseTable + "." + BaseColumn);
 				return null;
 			}
@@ -595,11 +600,10 @@ public class MLookupFactory
 			isValueDisplayed = rs.getString(4).equals("Y");
 			IsTranslated = rs.getString(5).equals("Y");
 			displaySQL = rs.getString(6);
-
+			isDisplayIdentifier = "Y".equals(rs.getString(7));
 		}
-		catch (SQLException e)
-		{
-			s_log.log(Level.SEVERE, sql, e);
+		catch (SQLException e) {
+			s_log.log(Level.WARNING, sql, e);
 			return null;
 		}
 		finally
@@ -607,6 +611,10 @@ public class MLookupFactory
 			DB.close(rs, pstmt);
 			rs = null;
 			pstmt = null;
+		}
+
+		if (isDisplayIdentifier && KeyColumn != null && KeyColumn.endsWith("_ID")) {
+			return getLookup_TableDirEmbed(language, KeyColumn, BaseTable, BaseColumn);
 		}
 
 		// If it's self referencing then use other alias - teo_sarca [ 1739544 ]
@@ -670,9 +678,8 @@ public class MLookupFactory
 	static private MLookupInfo getLookup_TableDir (Properties ctx, Language language,
 		int WindowNo, String ColumnName)
 	{
-		if (!ColumnName.endsWith("_ID"))
-		{
-			s_log.log(Level.SEVERE, "Key does not end with '_ID': " + ColumnName);
+		if (ColumnName == null || !ColumnName.endsWith("_ID")) {
+			s_log.log(Level.WARNING, "Key does not end with '_ID': " + ColumnName);
 			return null;
 		}
 
@@ -721,9 +728,8 @@ public class MLookupFactory
 				ZoomWindowPO = rs.getInt(6);
 			}
 		}
-		catch (SQLException e)
-		{
-			s_log.log(Level.SEVERE, sql0, e);
+		catch (SQLException e) {
+			s_log.log(Level.WARNING, sql0, e);
 			return null;
 		}
 		finally
@@ -734,9 +740,8 @@ public class MLookupFactory
 		}
 
 		//  Do we have columns ?
-		if (list.size() == 0)
-		{
-			s_log.log(Level.SEVERE, "No Identifier records found: " + ColumnName);
+		if (list == null || list.size() == 0) {
+			s_log.log(Level.WARNING, "No Identifier records found: " + ColumnName);
 			return null;
 		}
 
@@ -765,8 +770,8 @@ public class MLookupFactory
 			{
 				displayColumn.append(DB.TO_CHAR(columnSQL, ldc.DisplayType, language.getAD_Language()));
 			}
-			//  TableDir
-			else if ((ldc.DisplayType == DisplayType.TableDir || ldc.DisplayType == DisplayType.Search)
+			//  TableDir or Search
+			else if ((ldc.DisplayType == DisplayType.TableDir || (ldc.DisplayType == DisplayType.Search && ldc.AD_Reference_ID <= 0))
 				&& ldc.ColumnName.endsWith("_ID"))
 			{
 				String embeddedSQL;
@@ -777,8 +782,8 @@ public class MLookupFactory
 				if (embeddedSQL != null)
 					displayColumn.append("(").append(embeddedSQL).append(")");
 			}
-			//	Table
-			else if (ldc.DisplayType == DisplayType.Table && ldc.AD_Reference_ID != 0)
+			//	Table or Search
+			else if (ldc.DisplayType == DisplayType.Table || (ldc.DisplayType == DisplayType.Search && ldc.AD_Reference_ID > 0))
 			{
 				String embeddedSQL;
 				if (ldc.IsVirtual)
@@ -892,9 +897,8 @@ public class MLookupFactory
 					isTranslated = true;
 			}
 		}
-		catch (SQLException e)
-		{
-			s_log.log(Level.SEVERE, sql, e);
+		catch (SQLException e) {
+			s_log.log(Level.WARNING, sql, e);
 			return "";
 		}
 		finally
@@ -905,10 +909,13 @@ public class MLookupFactory
 		}
 
 		//  Do we have columns ?
-		if (list.size() == 0)
-		{
-			s_log.log(Level.SEVERE, "No Identifier records found: " + ColumnName);
-			return "";
+		if (list == null || list.size() == 0) {
+			s_log.log(Level.WARNING, "No Identifier records found: " + TableName + "." + ColumnName);
+			return "CASE "
+					+ "WHEN " + BaseTable + "." + ColumnName + " IS NULL THEN NULL "
+					+ "ELSE CONCAT('<', " + BaseTable + "." + ColumnName + ", '>') "
+				+ "END"
+			;
 		}
 
 		//
@@ -932,9 +939,9 @@ public class MLookupFactory
 			{
 				embedSQL.append("NVL(" + DB.TO_CHAR(columnSQL, ldc.DisplayType, language.getAD_Language()) + ",'')");
 			}
-			//  TableDir
-			else if ((ldc.DisplayType == DisplayType.TableDir || ldc.DisplayType == DisplayType.Search)
-			  && ldc.ColumnName.endsWith("_ID"))
+			//  TableDir or Search
+			else if ((ldc.DisplayType == DisplayType.TableDir || (ldc.DisplayType == DisplayType.Search && ldc.AD_Reference_ID <= 0))
+				&& ldc.ColumnName.endsWith("_ID"))
 			{
 				String embeddedSQL;
 				if (ldc.IsVirtual)
@@ -943,8 +950,8 @@ public class MLookupFactory
 					embeddedSQL = getLookup_TableDirEmbed(language, ldc.ColumnName, TableName);
 				embedSQL.append("NVL((").append(embeddedSQL).append("),'')");
 			}
-			//	Table - teo_sarca [ 1714261 ]
-			else if (ldc.DisplayType == DisplayType.Table && ldc.AD_Reference_ID != 0)
+			//	Table or Search - teo_sarca [ 1714261 ]
+			else if ((ldc.DisplayType == DisplayType.Search || ldc.DisplayType == DisplayType.Table) && ldc.AD_Reference_ID > 0)
 			{
 				String embeddedSQL;
 				if (ldc.IsVirtual)
@@ -990,4 +997,3 @@ public class MLookupFactory
 	}	//  getLookup_TableDirEmbed
 
 }   //  MLookupFactory
-
