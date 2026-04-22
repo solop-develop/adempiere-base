@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Default_Vendor_In_Views" ReleaseNo="1.5.6" SeqNo="502900">
+    <Comments>Add Default Vendor Column in views</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>DROP VIEW IF EXISTS RV_C_INVOICELINE;
+
+        CREATE OR REPLACE VIEW RV_C_INVOICELINE
+        (AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, CREATEDBY,
+        UPDATED, UPDATEDBY, C_INVOICELINE_ID, C_INVOICE_ID, SALESREP_ID,
+        C_BPARTNER_ID, C_BP_GROUP_ID, M_PRODUCT_ID, M_PRODUCT_CATEGORY_ID, DATEINVOICED,
+        DATEACCT, ISSOTRX, C_DOCTYPE_ID, DOCSTATUS, ISPAID,
+        C_CAMPAIGN_ID, C_PROJECT_ID, C_ACTIVITY_ID, C_PROJECTPHASE_ID, C_PROJECTTASK_ID,
+        QTYINVOICED, QTYENTERED, M_ATTRIBUTESETINSTANCE_ID, PRODUCTATTRIBUTE, M_ATTRIBUTESET_ID,
+        M_LOT_ID, GUARANTEEDATE, LOT, SERNO, PRICELIST,
+        PRICEACTUAL, PRICELIMIT, PRICEENTERED, DISCOUNT, MARGIN,
+        MARGINAMT, LINENETAMT, LINELISTAMT, LINELIMITAMT, LINEDISCOUNTAMT,
+        LINEOVERLIMITAMT, M_Product_Class_ID, M_Product_Group_ID, M_Product_Classification_ID, Description, LineDescription, C_DocTypeTarget_ID,
+        C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, C_SalesRegion_ID, Weight, Volume, DocBaseType, C_Currency_ID, DefaultVendor_ID)
+        AS
+        SELECT
+        il.AD_Client_ID, il.AD_Org_ID, il.IsActive, il.Created, il.CreatedBy, il.Updated, il.UpdatedBy,
+        il.C_InvoiceLine_ID, i.C_Invoice_ID, i.SalesRep_ID,
+        i.C_BPartner_ID, i.C_BP_Group_ID,
+        il.M_Product_ID, p.M_Product_Category_ID,
+        i.DateInvoiced, i.DateAcct, i.IsSOTrx, i.C_DocType_ID, i.DocStatus, i.IsPaid,
+        il.C_Campaign_ID, il.C_Project_ID, il.C_Activity_ID, il.C_ProjectPhase_ID, il.C_ProjectTask_ID,
+        --	Qty
+        il.QtyInvoiced*i.Multiplier AS QtyInvoiced,
+        il.QtyEntered*i.Multiplier AS QtyEntered,
+        -- Attributes
+        il.M_AttributeSetInstance_ID, productAttribute(il.M_AttributeSetInstance_ID) AS ProductAttribute,
+        pasi.M_AttributeSet_ID, pasi.M_Lot_ID, pasi.GuaranteeDate, pasi.Lot, pasi.SerNo,
+        --	Item Amounts
+        il.PriceList, il.PriceActual, il.PriceLimit, il.PriceEntered,
+        (CASE WHEN PriceList=0 THEN 0 ELSE
+        ROUND((PriceList-PriceActual)/PriceList*100,2) END) AS Discount,
+        (CASE WHEN PriceLimit=0 THEN 0 ELSE
+        ROUND((PriceActual-PriceLimit)/PriceLimit*100,2) END) AS Margin,
+        i.Multiplier * (CASE WHEN PriceLimit=0 THEN 0 ELSE
+        (PriceActual-PriceLimit)*QtyInvoiced END) AS MarginAmt,
+        --	Line Amounts
+        ROUND(i.Multiplier*LineNetAmt, 2) AS LineNetAmt,
+        ROUND(i.Multiplier*PriceList*QtyInvoiced, 2) AS LineListAmt,
+        CASE WHEN COALESCE(il.PriceLimit, 0)=0 THEN ROUND(i.Multiplier*LineNetAmt,2) ELSE
+        ROUND(i.Multiplier*PriceLimit*QtyInvoiced,2) END AS LineLimitAmt,
+        ROUND(i.Multiplier*PriceList*QtyInvoiced-LineNetAmt,2) AS LineDiscountAmt,
+        CASE WHEN COALESCE(il.PriceLimit,0)=0 THEN 0 ELSE
+        ROUND(i.Multiplier*LineNetAmt-PriceLimit*QtyInvoiced,2) END AS LineOverLimitAmt,
+        p.M_Product_Class_ID, p.M_PRoduct_Group_ID, p.M_Product_Classification_ID, i.Description,
+        il.Description AS LineDescription, i.C_DocTypeTarget_ID,
+        i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID,
+        i.C_SalesRegion_ID,
+        (i.Multiplier * p.Weight * il.QtyInvoiced) AS Weight,
+        (i.Multiplier * p.Volume * il.QtyInvoiced) AS Volume,
+        i.DocBaseType, i.C_Currency_ID, p.DefaultVendor_ID
+        FROM  RV_C_Invoice i
+        INNER JOIN C_InvoiceLine il ON (i.C_Invoice_ID=il.C_Invoice_ID)
+        LEFT OUTER JOIN M_Product p ON (il.M_Product_ID=p.M_Product_ID)
+        LEFT OUTER JOIN M_AttributeSetInstance pasi ON (il.M_AttributeSetInstance_ID=pasi.M_AttributeSetInstance_ID);
+
+      </SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS RV_C_INVOICELINE;
+
+        CREATE OR REPLACE VIEW RV_C_INVOICELINE
+        (AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, CREATEDBY,
+        UPDATED, UPDATEDBY, C_INVOICELINE_ID, C_INVOICE_ID, SALESREP_ID,
+        C_BPARTNER_ID, C_BP_GROUP_ID, M_PRODUCT_ID, M_PRODUCT_CATEGORY_ID, DATEINVOICED,
+        DATEACCT, ISSOTRX, C_DOCTYPE_ID, DOCSTATUS, ISPAID,
+        C_CAMPAIGN_ID, C_PROJECT_ID, C_ACTIVITY_ID, C_PROJECTPHASE_ID, C_PROJECTTASK_ID,
+        QTYINVOICED, QTYENTERED, M_ATTRIBUTESETINSTANCE_ID, PRODUCTATTRIBUTE, M_ATTRIBUTESET_ID,
+        M_LOT_ID, GUARANTEEDATE, LOT, SERNO, PRICELIST,
+        PRICEACTUAL, PRICELIMIT, PRICEENTERED, DISCOUNT, MARGIN,
+        MARGINAMT, LINENETAMT, LINELISTAMT, LINELIMITAMT, LINEDISCOUNTAMT,
+        LINEOVERLIMITAMT, M_Product_Class_ID, M_Product_Group_ID, M_Product_Classification_ID, Description, LineDescription, C_DocTypeTarget_ID,
+        C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, C_SalesRegion_ID, Weight, Volume, DocBaseType, C_Currency_ID)
+        AS
+        SELECT
+        il.AD_Client_ID, il.AD_Org_ID, il.IsActive, il.Created, il.CreatedBy, il.Updated, il.UpdatedBy,
+        il.C_InvoiceLine_ID, i.C_Invoice_ID, i.SalesRep_ID,
+        i.C_BPartner_ID, i.C_BP_Group_ID,
+        il.M_Product_ID, p.M_Product_Category_ID,
+        i.DateInvoiced, i.DateAcct, i.IsSOTrx, i.C_DocType_ID, i.DocStatus, i.IsPaid,
+        il.C_Campaign_ID, il.C_Project_ID, il.C_Activity_ID, il.C_ProjectPhase_ID, il.C_ProjectTask_ID,
+        --	Qty
+        il.QtyInvoiced*i.Multiplier AS QtyInvoiced,
+        il.QtyEntered*i.Multiplier AS QtyEntered,
+        -- Attributes
+        il.M_AttributeSetInstance_ID, productAttribute(il.M_AttributeSetInstance_ID) AS ProductAttribute,
+        pasi.M_AttributeSet_ID, pasi.M_Lot_ID, pasi.GuaranteeDate, pasi.Lot, pasi.SerNo,
+        --	Item Amounts
+        il.PriceList, il.PriceActual, il.PriceLimit, il.PriceEntered,
+        (CASE WHEN PriceList=0 THEN 0 ELSE
+        ROUND((PriceList-PriceActual)/PriceList*100,2) END) AS Discount,
+        (CASE WHEN PriceLimit=0 THEN 0 ELSE
+        ROUND((PriceActual-PriceLimit)/PriceLimit*100,2) END) AS Margin,
+        i.Multiplier * (CASE WHEN PriceLimit=0 THEN 0 ELSE
+        (PriceActual-PriceLimit)*QtyInvoiced END) AS MarginAmt,
+        --	Line Amounts
+        ROUND(i.Multiplier*LineNetAmt, 2) AS LineNetAmt,
+        ROUND(i.Multiplier*PriceList*QtyInvoiced, 2) AS LineListAmt,
+        CASE WHEN COALESCE(il.PriceLimit, 0)=0 THEN ROUND(i.Multiplier*LineNetAmt,2) ELSE
+        ROUND(i.Multiplier*PriceLimit*QtyInvoiced,2) END AS LineLimitAmt,
+        ROUND(i.Multiplier*PriceList*QtyInvoiced-LineNetAmt,2) AS LineDiscountAmt,
+        CASE WHEN COALESCE(il.PriceLimit,0)=0 THEN 0 ELSE
+        ROUND(i.Multiplier*LineNetAmt-PriceLimit*QtyInvoiced,2) END AS LineOverLimitAmt,
+        p.M_Product_Class_ID, p.M_PRoduct_Group_ID, p.M_Product_Classification_ID, i.Description,
+        il.Description AS LineDescription, i.C_DocTypeTarget_ID,
+        i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID,
+        i.C_SalesRegion_ID,
+        (i.Multiplier * p.Weight * il.QtyInvoiced) AS Weight,
+        (i.Multiplier * p.Volume * il.QtyInvoiced) AS Volume,
+        i.DocBaseType, i.C_Currency_ID
+        FROM  RV_C_Invoice i
+        INNER JOIN C_InvoiceLine il ON (i.C_Invoice_ID=il.C_Invoice_ID)
+        LEFT OUTER JOIN M_Product p ON (il.M_Product_ID=p.M_Product_ID)
+        LEFT OUTER JOIN M_AttributeSetInstance pasi ON (il.M_AttributeSetInstance_ID=pasi.M_AttributeSetInstance_ID);
+      </RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="20" StepType="SQL">
+      <SQLStatement>DROP VIEW IF EXISTS RV_M_TRANSACTION;
+
+        CREATE OR REPLACE VIEW RV_M_TRANSACTION
+        (AD_CLIENT_ID, AD_ORG_ID, MOVEMENTDATE, MOVEMENTQTY, M_PRODUCT_ID,
+        M_LOCATOR_ID, M_ATTRIBUTESETINSTANCE_ID, M_PRODUCT_CATEGORY_ID, VALUE, C_BPARTNER_ID,
+        PRICEPO, PRICELASTPO, PRICELIST, M_Product_Class_ID, M_Product_Classification_ID, M_Product_Group_ID, DefaultVendor_ID)
+        AS
+        SELECT t.AD_Client_ID,t.AD_Org_ID, t.MovementDate, t.MovementQty,
+        t.M_Product_ID, t.M_Locator_ID, t.M_AttributeSetInstance_ID,
+        p.M_Product_Category_ID, p.Value,
+        po.C_BPartner_ID, po.PricePO, po.PriceLastPO, po.PriceList,
+        p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID, p.DefaultVendor_ID
+        FROM M_Transaction t
+        INNER JOIN M_Product p ON (t.M_Product_ID = p.M_Product_ID)
+        LEFT JOIN LATERAL (
+        SELECT po.C_BPartner_ID, po.PricePO, po.PriceLastPO, po.PriceList
+        FROM M_Product_PO po
+        WHERE po.M_Product_ID = t.M_Product_ID
+        AND po.IsCurrentVendor = 'Y'
+        AND po.AD_Org_ID IN (0, t.AD_Org_ID)
+        ORDER BY po.AD_Org_ID DESC
+        LIMIT 1
+        ) po ON true;
+
+      </SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS RV_M_TRANSACTION;
+
+        CREATE OR REPLACE VIEW RV_M_TRANSACTION
+        (AD_CLIENT_ID, AD_ORG_ID, MOVEMENTDATE, MOVEMENTQTY, M_PRODUCT_ID,
+        M_LOCATOR_ID, M_ATTRIBUTESETINSTANCE_ID, M_PRODUCT_CATEGORY_ID, VALUE, C_BPARTNER_ID,
+        PRICEPO, PRICELASTPO, PRICELIST, M_Product_Class_ID, M_Product_Classification_ID, M_Product_Group_ID)
+        AS
+        SELECT t.AD_Client_ID,t.AD_Org_ID, t.MovementDate, t.MovementQty,
+        t.M_Product_ID, t.M_Locator_ID, t.M_AttributeSetInstance_ID,
+        p.M_Product_Category_ID, p.Value,
+        po.C_BPartner_ID, po.PricePO, po.PriceLastPO, po.PriceList,
+        p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID
+        FROM M_Transaction t
+        INNER JOIN M_Product p ON (t.M_Product_ID = p.M_Product_ID)
+        LEFT JOIN LATERAL (
+        SELECT po.C_BPartner_ID, po.PricePO, po.PriceLastPO, po.PriceList
+        FROM M_Product_PO po
+        WHERE po.M_Product_ID = t.M_Product_ID
+        AND po.IsCurrentVendor = 'Y'
+        AND po.AD_Org_ID IN (0, t.AD_Org_ID)
+        ORDER BY po.AD_Org_ID DESC
+        LIMIT 1
+        ) po ON true;
+      </RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="30" StepType="SQL">
+      <SQLStatement>DROP VIEW IF EXISTS RV_ORDERDETAIL;
+
+        CREATE OR REPLACE VIEW RV_ORDERDETAIL
+        (AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, CREATEDBY,
+        UPDATED, UPDATEDBY, C_ORDER_ID, DOCSTATUS, DOCACTION,
+        C_DOCTYPE_ID, ISAPPROVED, ISCREDITAPPROVED, SALESREP_ID, BILL_BPARTNER_ID,
+        BILL_LOCATION_ID, BILL_USER_ID, ISDROPSHIP, C_BPARTNER_ID, C_BPARTNER_LOCATION_ID,
+        AD_USER_ID, POREFERENCE, C_CURRENCY_ID, ISSOTRX, C_CAMPAIGN_ID,
+        C_PROJECT_ID, C_ACTIVITY_ID, C_PROJECTPHASE_ID, C_PROJECTTASK_ID, C_ORDERLINE_ID,
+        DATEORDERED, DATEPROMISED, M_PRODUCT_ID, M_WAREHOUSE_ID, M_ATTRIBUTESETINSTANCE_ID,
+        PRODUCTATTRIBUTE, M_ATTRIBUTESET_ID, M_LOT_ID, GUARANTEEDATE, LOT,
+        SERNO, C_UOM_ID, QTYENTERED, QTYORDERED, QTYRESERVED,
+        QTYDELIVERED, QTYINVOICED, PRICEACTUAL, PRICEENTERED, QTYTODELIVER,
+        QTYTOINVOICE, NETAMTTOINVOICE, QTYLOSTSALES, AMTLOSTSALES, DISCOUNT,
+        MARGIN, MARGINAMT, M_Product_Category_ID, M_Product_Class_ID, M_Product_Classification_ID, M_Product_Group_ID, C_Charge_ID, C_ChargeType_ID,
+        C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, C_SalesRegion_ID, Weight, Volume, DefaultVendor_ID)
+        AS
+        SELECT l.AD_Client_ID, l.AD_Org_ID,
+        l.IsActive, l.Created, l.CreatedBy, l.Updated, l.UpdatedBy,
+        o.C_Order_ID, o.DocStatus, o.DocAction, o.C_DocType_ID, o.IsApproved, o.IsCreditApproved,
+        o.SalesRep_ID,
+        o.Bill_BPartner_ID, o.Bill_Location_ID, o.Bill_User_ID, o.IsDropShip,
+        l.C_BPartner_ID, l.C_BPartner_Location_ID, o.AD_User_ID,
+        o.POReference, o.C_Currency_ID, o.IsSOTrx,
+        l.C_Campaign_ID, l.C_Project_ID, l.C_Activity_ID, l.C_ProjectPhase_ID, l.C_ProjectTask_ID,
+        l.C_OrderLine_ID, l.DateOrdered, l.DatePromised, l.M_Product_ID, l.M_Warehouse_ID,
+        l.M_AttributeSetInstance_ID, productAttribute(l.M_AttributeSetInstance_ID) AS ProductAttribute,
+        pasi.M_AttributeSet_ID, pasi.M_Lot_ID, pasi.GuaranteeDate, pasi.Lot, pasi.SerNo,
+        l.C_UOM_ID, l.QtyEntered, l.QtyOrdered, l.QtyReserved, l.QtyDelivered, l.QtyInvoiced,
+        l.PriceActual, l.PriceEntered,
+        l.QtyOrdered-l.QtyDelivered AS QtyToDeliver,
+        l.QtyOrdered-l.QtyInvoiced AS QtyToInvoice,
+        (l.QtyOrdered-l.QtyInvoiced)*l.PriceActual AS NetAmtToInvoice,
+        l.QtyLostSales, l.QtyLostSales*l.PriceActual AS AmtLostSales,
+        CASE WHEN PriceList=0 THEN 0 ELSE
+        ROUND((PriceList-PriceActual)/PriceList*100,2) END AS Discount,
+        CASE WHEN PriceLimit=0 THEN 0 ELSE
+        ROUND((PriceActual-PriceLimit)/PriceLimit*100,2) END AS Margin,
+        CASE WHEN PriceLimit=0 THEN 0 ELSE
+        (PriceActual-PriceLimit)*QtyDelivered END AS MarginAmt,
+        p.M_Product_Category_ID, p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID, l.C_Charge_ID, c.C_ChargeType_ID,
+        bp.C_BP_AccountType_ID, bp.C_BP_SalesGroup_ID, bp.C_BP_Segment_ID, bp.C_BP_IndustryType_ID,
+        o.C_SalesRegion_ID, p.Weight * l.QtyOrdered AS Weight, p.Volume * l.QtyOrdered AS Volume, p.DefaultVendor_ID
+        FROM C_Order o
+        INNER JOIN C_OrderLine l ON (o.C_Order_ID=l.C_Order_ID)
+        INNER JOIN C_BPartner bp ON(bp.C_BPartner_ID = l.C_BPartner_ID)
+        LEFT JOIN M_Product p ON(p.M_Product_ID = l.M_Product_ID)
+        LEFT JOIN C_Charge c ON(c.C_Charge_ID = l.C_Charge_ID)
+        LEFT OUTER JOIN M_AttributeSetInstance pasi ON (l.M_AttributeSetInstance_ID=pasi.M_AttributeSetInstance_ID);
+
+      </SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS RV_ORDERDETAIL;
+
+        CREATE OR REPLACE VIEW RV_ORDERDETAIL
+        (AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, CREATEDBY,
+        UPDATED, UPDATEDBY, C_ORDER_ID, DOCSTATUS, DOCACTION,
+        C_DOCTYPE_ID, ISAPPROVED, ISCREDITAPPROVED, SALESREP_ID, BILL_BPARTNER_ID,
+        BILL_LOCATION_ID, BILL_USER_ID, ISDROPSHIP, C_BPARTNER_ID, C_BPARTNER_LOCATION_ID,
+        AD_USER_ID, POREFERENCE, C_CURRENCY_ID, ISSOTRX, C_CAMPAIGN_ID,
+        C_PROJECT_ID, C_ACTIVITY_ID, C_PROJECTPHASE_ID, C_PROJECTTASK_ID, C_ORDERLINE_ID,
+        DATEORDERED, DATEPROMISED, M_PRODUCT_ID, M_WAREHOUSE_ID, M_ATTRIBUTESETINSTANCE_ID,
+        PRODUCTATTRIBUTE, M_ATTRIBUTESET_ID, M_LOT_ID, GUARANTEEDATE, LOT,
+        SERNO, C_UOM_ID, QTYENTERED, QTYORDERED, QTYRESERVED,
+        QTYDELIVERED, QTYINVOICED, PRICEACTUAL, PRICEENTERED, QTYTODELIVER,
+        QTYTOINVOICE, NETAMTTOINVOICE, QTYLOSTSALES, AMTLOSTSALES, DISCOUNT,
+        MARGIN, MARGINAMT, M_Product_Category_ID, M_Product_Class_ID, M_Product_Classification_ID, M_Product_Group_ID, C_Charge_ID, C_ChargeType_ID,
+        C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID)
+        AS
+        SELECT l.AD_Client_ID, l.AD_Org_ID,
+        l.IsActive, l.Created, l.CreatedBy, l.Updated, l.UpdatedBy,
+        o.C_Order_ID, o.DocStatus, o.DocAction, o.C_DocType_ID, o.IsApproved, o.IsCreditApproved,
+        o.SalesRep_ID,
+        o.Bill_BPartner_ID, o.Bill_Location_ID, o.Bill_User_ID, o.IsDropShip,
+        l.C_BPartner_ID, l.C_BPartner_Location_ID, o.AD_User_ID,
+        o.POReference, o.C_Currency_ID, o.IsSOTrx,
+        l.C_Campaign_ID, l.C_Project_ID, l.C_Activity_ID, l.C_ProjectPhase_ID, l.C_ProjectTask_ID,
+        l.C_OrderLine_ID, l.DateOrdered, l.DatePromised, l.M_Product_ID, l.M_Warehouse_ID,
+        l.M_AttributeSetInstance_ID, productAttribute(l.M_AttributeSetInstance_ID) AS ProductAttribute,
+        pasi.M_AttributeSet_ID, pasi.M_Lot_ID, pasi.GuaranteeDate, pasi.Lot, pasi.SerNo,
+        l.C_UOM_ID, l.QtyEntered, l.QtyOrdered, l.QtyReserved, l.QtyDelivered, l.QtyInvoiced,
+        l.PriceActual, l.PriceEntered,
+        l.QtyOrdered-l.QtyDelivered AS QtyToDeliver,
+        l.QtyOrdered-l.QtyInvoiced AS QtyToInvoice,
+        (l.QtyOrdered-l.QtyInvoiced)*l.PriceActual AS NetAmtToInvoice,
+        l.QtyLostSales, l.QtyLostSales*l.PriceActual AS AmtLostSales,
+        CASE WHEN PriceList=0 THEN 0 ELSE
+        ROUND((PriceList-PriceActual)/PriceList*100,2) END AS Discount,
+        CASE WHEN PriceLimit=0 THEN 0 ELSE
+        ROUND((PriceActual-PriceLimit)/PriceLimit*100,2) END AS Margin,
+        CASE WHEN PriceLimit=0 THEN 0 ELSE
+        (PriceActual-PriceLimit)*QtyDelivered END AS MarginAmt,
+        p.M_Product_Category_ID, p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID, l.C_Charge_ID, c.C_ChargeType_ID,
+        bp.C_BP_AccountType_ID, bp.C_BP_SalesGroup_ID, bp.C_BP_Segment_ID, bp.C_BP_IndustryType_ID
+        FROM C_Order o
+        INNER JOIN C_OrderLine l ON (o.C_Order_ID=l.C_Order_ID)
+        INNER JOIN C_BPartner bp ON(bp.C_BPartner_ID = l.C_BPartner_ID)
+        LEFT JOIN M_Product p ON(p.M_Product_ID = l.M_Product_ID)
+        LEFT JOIN C_Charge c ON(c.C_Charge_ID = l.C_Charge_ID)
+        LEFT OUTER JOIN M_AttributeSetInstance pasi ON (l.M_AttributeSetInstance_ID=pasi.M_AttributeSetInstance_ID);
+      </RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="40" StepType="SQL">
+      <SQLStatement>DROP VIEW IF EXISTS RV_STORAGE;
+
+        CREATE OR REPLACE VIEW RV_STORAGE
+        (AD_CLIENT_ID, AD_ORG_ID, M_PRODUCT_ID, VALUE, NAME,
+        DESCRIPTION, UPC, SKU, C_UOM_ID, M_PRODUCT_CATEGORY_ID,
+        CLASSIFICATION, WEIGHT, VOLUME, VERSIONNO, GUARANTEEDAYS,
+        GUARANTEEDAYSMIN, M_LOCATOR_ID, M_WAREHOUSE_ID, X, Y,
+        Z, QTYONHAND, QTYRESERVED, QTYAVAILABLE, QTYORDERED,
+        DATELASTINVENTORY, M_ATTRIBUTESETINSTANCE_ID, M_ATTRIBUTESET_ID, SERNO, LOT,
+        M_LOT_ID, GUARANTEEDATE, SHELFLIFEDAYS, GOODFORDAYS, SHELFLIFEREMAININGPCT, M_Product_Class_ID, M_Product_Classification_ID, M_Product_Group_ID, DefaultVendor_ID)
+        AS
+        SELECT s.AD_Client_ID, s.AD_Org_ID,
+        -- Product
+        s.M_Product_ID, p.Value,p.Name, p.Description, p.UPC, p.SKU,
+        p.C_UOM_ID, p.M_Product_Category_ID, p.Classification, p.Weight, p.Volume, p.VersionNo,
+        p.GuaranteeDays, p.GuaranteeDaysMin,
+        --  Locator
+        s.M_Locator_ID, l.M_Warehouse_ID, l.X, l.Y, l.Z,
+        -- Storage
+        s.QtyOnHand, s.QtyReserved, s.QtyOnHand-s.QtyReserved AS QtyAvailable,
+        s.QtyOrdered, s.DateLastInventory,
+        -- Instance
+        s.M_AttributeSetInstance_ID, asi.M_AttributeSet_ID, asi.SerNo, asi.Lot, asi.M_Lot_ID,
+        asi.GuaranteeDate,  -- see PAttributeInstance.java
+        daysBetween(asi.GuaranteeDate,getdate()) AS ShelfLifeDays,
+        daysBetween(asi.GuaranteeDate,getdate())-p.GuaranteeDaysMin AS GoodForDays,
+        CASE WHEN COALESCE(p.GuaranteeDays,0)>0
+        THEN ROUND((daysBetween(asi.GuaranteeDate,getdate())/p.GuaranteeDays)*100,0)
+        ELSE NULL
+        END AS ShelfLifeRemainingPct,
+        p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID, p.DefaultVendor_ID
+        FROM M_Storage s
+        INNER JOIN M_Locator l ON (s.M_Locator_ID=l.M_Locator_ID)
+        INNER JOIN M_Product p ON (s.M_Product_ID=p.M_Product_ID)
+        LEFT OUTER JOIN M_AttributeSetInstance asi ON (s.M_AttributeSetInstance_ID=asi.M_AttributeSetInstance_ID);
+
+      </SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS RV_STORAGE;
+
+        CREATE OR REPLACE VIEW RV_STORAGE
+        (AD_CLIENT_ID, AD_ORG_ID, M_PRODUCT_ID, VALUE, NAME,
+        DESCRIPTION, UPC, SKU, C_UOM_ID, M_PRODUCT_CATEGORY_ID,
+        CLASSIFICATION, WEIGHT, VOLUME, VERSIONNO, GUARANTEEDAYS,
+        GUARANTEEDAYSMIN, M_LOCATOR_ID, M_WAREHOUSE_ID, X, Y,
+        Z, QTYONHAND, QTYRESERVED, QTYAVAILABLE, QTYORDERED,
+        DATELASTINVENTORY, M_ATTRIBUTESETINSTANCE_ID, M_ATTRIBUTESET_ID, SERNO, LOT,
+        M_LOT_ID, GUARANTEEDATE, SHELFLIFEDAYS, GOODFORDAYS, SHELFLIFEREMAININGPCT, M_Product_Class_ID, M_Product_Classification_ID, M_Product_Group_ID)
+        AS
+        SELECT s.AD_Client_ID, s.AD_Org_ID,
+        -- Product
+        s.M_Product_ID, p.Value,p.Name, p.Description, p.UPC, p.SKU,
+        p.C_UOM_ID, p.M_Product_Category_ID, p.Classification, p.Weight, p.Volume, p.VersionNo,
+        p.GuaranteeDays, p.GuaranteeDaysMin,
+        --  Locator
+        s.M_Locator_ID, l.M_Warehouse_ID, l.X, l.Y, l.Z,
+        -- Storage
+        s.QtyOnHand, s.QtyReserved, s.QtyOnHand-s.QtyReserved AS QtyAvailable,
+        s.QtyOrdered, s.DateLastInventory,
+        -- Instance
+        s.M_AttributeSetInstance_ID, asi.M_AttributeSet_ID, asi.SerNo, asi.Lot, asi.M_Lot_ID,
+        asi.GuaranteeDate,  -- see PAttributeInstance.java
+        daysBetween(asi.GuaranteeDate,getdate()) AS ShelfLifeDays,
+        daysBetween(asi.GuaranteeDate,getdate())-p.GuaranteeDaysMin AS GoodForDays,
+        CASE WHEN COALESCE(p.GuaranteeDays,0)>0
+        THEN ROUND((daysBetween(asi.GuaranteeDate,getdate())/p.GuaranteeDays)*100,0)
+        ELSE NULL
+        END AS ShelfLifeRemainingPct,
+        p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID
+        FROM M_Storage s
+        INNER JOIN M_Locator l ON (s.M_Locator_ID=l.M_Locator_ID)
+        INNER JOIN M_Product p ON (s.M_Product_ID=p.M_Product_ID)
+        LEFT OUTER JOIN M_AttributeSetInstance asi ON (s.M_AttributeSetInstance_ID=asi.M_AttributeSetInstance_ID);
+      </RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="50" StepType="SQL">
+      <SQLStatement>DROP VIEW IF EXISTS rv_storage_per_product;
+
+        CREATE VIEW rv_storage_per_product (
+        ad_client_id,
+        ad_org_id,
+        m_product_id,
+        value,
+        name,
+        description,
+        upc,
+        sku,
+        c_uom_id,
+        m_product_category_id,
+        classification,
+        weight,
+        volume,
+        versionno,
+        guaranteedays,
+        guaranteedaysmin,
+        sumqtyonhand,
+        sumqtyreserved,
+        m_warehouse_id,
+        defaultvendor_id
+        ) AS
+        SELECT
+        strg.ad_client_id,
+        strg.ad_org_id,
+        p.m_product_id,
+        p.value,
+        p.name,
+        p.description,
+        p.upc,
+        p.sku,
+        p.c_uom_id,
+        p.m_product_category_id,
+        p.classification,
+        p.weight,
+        p.volume,
+        p.versionno,
+        p.guaranteedays,
+        p.guaranteedaysmin,
+        strg.sumqtyonhand,
+        strg.sumqtyreserved,
+        l.m_warehouse_id,
+        p.defaultvendor_id
+        FROM
+        m_product p
+        JOIN
+        (
+        SELECT
+        rv_storage.m_product_id,
+        rv_storage.m_locator_id,
+        SUM(rv_storage.qtyonhand) AS sumqtyonhand,
+        SUM(rv_storage.qtyreserved) AS sumqtyreserved,
+        rv_storage.ad_client_id,
+        rv_storage.ad_org_id
+        FROM
+        rv_storage
+        GROUP BY
+        rv_storage.m_product_id,
+        rv_storage.m_locator_id,
+        rv_storage.ad_client_id,
+        rv_storage.ad_org_id
+        ) strg
+        ON
+        p.m_product_id = strg.m_product_id
+        JOIN
+        m_locator l
+        ON
+        strg.m_locator_id = l.m_locator_id;
+
+      </SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS rv_storage_per_product;
+
+        CREATE VIEW rv_storage_per_product (
+        ad_client_id,
+        ad_org_id,
+        m_product_id,
+        value,
+        name,
+        description,
+        upc,
+        sku,
+        c_uom_id,
+        m_product_category_id,
+        classification,
+        weight,
+        volume,
+        versionno,
+        guaranteedays,
+        guaranteedaysmin,
+        sumqtyonhand,
+        sumqtyreserved,
+        m_warehouse_id
+        ) AS
+        SELECT
+        strg.ad_client_id,
+        strg.ad_org_id,
+        p.m_product_id,
+        p.value,
+        p.name,
+        p.description,
+        p.upc,
+        p.sku,
+        p.c_uom_id,
+        p.m_product_category_id,
+        p.classification,
+        p.weight,
+        p.volume,
+        p.versionno,
+        p.guaranteedays,
+        p.guaranteedaysmin,
+        strg.sumqtyonhand,
+        strg.sumqtyreserved,
+        l.m_warehouse_id
+        FROM
+        m_product p
+        JOIN
+        (
+        SELECT
+        rv_storage.m_product_id,
+        rv_storage.m_locator_id,
+        SUM(rv_storage.qtyonhand) AS sumqtyonhand,
+        SUM(rv_storage.qtyreserved) AS sumqtyreserved,
+        rv_storage.ad_client_id,
+        rv_storage.ad_org_id
+        FROM
+        rv_storage
+        GROUP BY
+        rv_storage.m_product_id,
+        rv_storage.m_locator_id,
+        rv_storage.ad_client_id,
+        rv_storage.ad_org_id
+        ) strg
+        ON
+        p.m_product_id = strg.m_product_id
+        JOIN
+        m_locator l
+        ON
+        strg.m_locator_id = l.m_locator_id;
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
