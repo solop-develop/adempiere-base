@@ -18,7 +18,8 @@ guaranteedays,
 guaranteedaysmin,
 sumqtyonhand,
 sumqtyreserved,
-m_warehouse_id
+m_warehouse_id,
+defaultvendor_id
 ) AS
 SELECT
 strg.ad_client_id,
@@ -39,7 +40,8 @@ p.guaranteedays,
 p.guaranteedaysmin,
 strg.sumqtyonhand,
 strg.sumqtyreserved,
-l.m_warehouse_id
+l.m_warehouse_id,
+p.defaultvendor_id
 FROM
 m_product p
 JOIN

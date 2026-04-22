@@ -5,7 +5,7 @@ CREATE OR REPLACE VIEW RV_STORAGE
  GUARANTEEDAYSMIN, M_LOCATOR_ID, M_WAREHOUSE_ID, X, Y, 
  Z, QTYONHAND, QTYRESERVED, QTYAVAILABLE, QTYORDERED, 
  DATELASTINVENTORY, M_ATTRIBUTESETINSTANCE_ID, M_ATTRIBUTESET_ID, SERNO, LOT, 
- M_LOT_ID, GUARANTEEDATE, SHELFLIFEDAYS, GOODFORDAYS, SHELFLIFEREMAININGPCT, M_Product_Class_ID, M_Product_Classification_ID, M_Product_Group_ID)
+ M_LOT_ID, GUARANTEEDATE, SHELFLIFEDAYS, GOODFORDAYS, SHELFLIFEREMAININGPCT, M_Product_Class_ID, M_Product_Classification_ID, M_Product_Group_ID, DefaultVendor_ID)
 AS 
 SELECT s.AD_Client_ID, s.AD_Org_ID,
     -- Product
@@ -26,7 +26,7 @@ SELECT s.AD_Client_ID, s.AD_Org_ID,
       THEN ROUND((daysBetween(asi.GuaranteeDate,getdate())/p.GuaranteeDays)*100,0) 
       ELSE NULL 
     END AS ShelfLifeRemainingPct,
-    p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID
+    p.M_Product_Class_ID, p.M_Product_Classification_ID, p.M_Product_Group_ID, p.DefaultVendor_ID
 FROM M_Storage s
   INNER JOIN M_Locator l ON (s.M_Locator_ID=l.M_Locator_ID)
   INNER JOIN M_Product p ON (s.M_Product_ID=p.M_Product_ID)
