@@ -16,7 +16,13 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_Order;
+import org.adempiere.core.domains.models.I_C_OrderLine;
+import org.adempiere.core.domains.models.I_M_InOutConfirm;
+import org.adempiere.core.domains.models.I_M_InOutLine;
+import org.adempiere.core.domains.models.I_WM_InOutBoundLine;
+import org.adempiere.core.domains.models.X_M_InOut;
+import org.adempiere.core.domains.models.X_WM_InOutBoundLine;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.print.ReportEngine;
@@ -24,6 +30,7 @@ import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
 import org.compiere.process.DocumentReversalEnabled;
 import org.compiere.util.DB;
+import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Util;
@@ -40,7 +47,17 @@ import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 
 /**
@@ -1123,6 +1140,27 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 		return true;
 	}	//	invalidateIt
 
+	private void validateOrderDate(List<MInOutLine> lines) {
+		Map<String, Timestamp> orderErrors = new HashMap<>();
+		SimpleDateFormat dateFormat = DisplayType.getDateFormat(DisplayType.Date);
+		lines.parallelStream()
+				.filter(receiptLine -> receiptLine.getC_OrderLine_ID() > 0)
+				.forEach(receiptLine -> {
+					MOrder order = new MOrder(getCtx(), receiptLine.getC_OrderLine().getC_Order_ID(), get_TrxName());
+					if(order.getDateAcct().after(getDateAcct())) {
+						if(!orderErrors.containsKey(order.getDocumentNo())) {
+							orderErrors.put(order.getDocumentNo(), order.getDateAcct());
+						}
+					}
+				});
+		if(!orderErrors.isEmpty()) {
+			StringBuilder errors = new StringBuilder();
+			errors.append("@InOutDateAcctBad@").append(Env.NL);;
+			orderErrors.forEach((key, value) -> errors.append(Env.NL).append(key).append(" - ").append(dateFormat.format(value)));
+			throw new AdempiereException(errors.toString());
+		}
+	}
+
 	/**
 	 *	Prepare Document
 	 * 	@return new status (In Progress or Invalid)
@@ -1190,6 +1228,8 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			processMsg = "@NoLines@";
 			return DocAction.STATUS_Invalid;
 		}
+		//	Validate if the dates is bad
+		validateOrderDate(Arrays.asList(lines));
 		BigDecimal Volume = Env.ZERO;
 		BigDecimal Weight = Env.ZERO;
 
@@ -1509,8 +1549,18 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 				if (isSOTrx()							//	PO is done by Matching
 					|| inOutLine.getM_Product_ID() == 0)	//	PO Charges, empty lines
 				{
-					if (isSOTrx())
+					if (isSOTrx()) {
 						orderLine.setQtyDelivered(orderLine.getQtyDelivered().subtract(quantity));
+						if (!orderLine.getParent().isReturnOrder() && !isReversal()) {
+							if (product == null || !product.isBulk()) {
+								if (orderLine.getQtyDelivered().compareTo(orderLine.getQtyOrdered()) > 0) {
+									processMsg = "@QtyDelivered@ > @QtyOrdered@ - @Line@: " + inOutLine.getLine()
+											+ (product != null ? " @M_Product_ID@: " + product.getValue() : "");
+									return DocAction.STATUS_Invalid;
+								}
+							}
+						}
+					}
 					else
 						orderLine.setQtyDelivered(orderLine.getQtyDelivered().add(quantity));
 				}
