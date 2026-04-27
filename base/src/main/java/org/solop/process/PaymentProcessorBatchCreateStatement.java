@@ -48,6 +48,7 @@ public class PaymentProcessorBatchCreateStatement extends PaymentProcessorBatchC
 			getSelectionKeys().forEach(key -> {
 				MPayment payment = new MPayment(getCtx(), key, get_TrxName());
 				MPPBatchLine paymentProcessorLine = new MPPBatchLine(getCtx(), 0, get_TrxName());
+				paymentProcessorLine.setIsManual(false);
 				MPaymentProcessorBatch batch = (MPaymentProcessorBatch) paymentProcessorLine.getC_PaymentProcessorBatch();
 				paymentProcessorLine.setC_PaymentProcessorBatch_ID(getRecord_ID());
 				paymentProcessorLine.setC_Payment_ID(payment.getC_Payment_ID());

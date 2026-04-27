@@ -18,15 +18,19 @@
 
 package org.eevolution.process;
 
+import org.adempiere.core.domains.models.I_M_InOutLine;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.MCostElement;
+import org.compiere.model.MInOut;
+import org.compiere.model.MInOutLine;
+import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MLandedCost;
+import org.compiere.model.MProduct;
+import org.compiere.model.Query;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
-
-import org.adempiere.core.domains.models.I_M_InOutLine;
-import org.compiere.model.MInOut;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MLandedCost;
-import org.compiere.model.Query;
 
 /**
  * Fill the Landed Cost based on Material Receipts Smart Browser Filter
@@ -42,6 +46,20 @@ public class GenerateLandedCost extends GenerateLandedCostAbstract {
      */
     protected void prepare() {
         super.prepare();
+        if(getRecord_ID() <= 0) {
+            throw new AdempiereException("@C_InvoiceLine_ID@ @NotFound@");
+        }
+        MInvoiceLine invoiceLine = new MInvoiceLine(getCtx(), getRecord_ID(), get_TrxName());
+        if(invoiceLine.getM_Product_ID() > 0) {
+            MProduct product = (MProduct) invoiceLine.getM_Product();
+            if(product.isStocked() || product.getProductType().equals(MProduct.PRODUCTTYPE_Item)) {
+                throw new AdempiereException("InvalidLandedCostAllocation");
+            }
+        }
+        MCostElement costElement = MCostElement.get(getCtx(), getCostElementId());
+        if(costElement.getCostElementType().equals(MCostElement.COSTELEMENTTYPE_Material)) {
+            throw new AdempiereException("InvalidMaterialLandedCost");
+        }
     }
 
     /**
