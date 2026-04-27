@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Remove_Year_From_Leave" ReleaseNo="1.5.4" SeqNo="502380">
+    <Comments>Add Forecast Comparison View</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>ALTER TABLE HR_Leave DROP COLUMN IF EXISTS C_Year_ID;
+        ALTER TABLE HR_LeaveAssign DROP COLUMN IF EXISTS C_Year_ID;</SQLStatement>
+    </Step>
+  </Migration>
+</Migrations>

@@ -16,7 +16,17 @@
 package org.solop.util;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
+import org.compiere.model.MInOutLine;
+import org.compiere.model.MLocator;
+import org.compiere.model.MMovementLine;
+import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
+import org.compiere.model.MProductionBatch;
+import org.compiere.model.MProductionBatchLine;
+import org.compiere.model.MProductionLine;
+import org.compiere.model.MReservation;
+import org.compiere.model.MStorage;
+import org.compiere.model.MWarehouse;
 import org.compiere.util.Env;
 import org.eevolution.distribution.model.MDDOrderLine;
 
@@ -82,7 +92,7 @@ public class ReservationBuilder {
             }
         }
         if(locatorId <= 0) {
-            throw new AdempiereException("@MLocator_ID@ @NotFound@");
+            throw new AdempiereException("@M_Locator_ID@ @NotFound@");
         }
         reservation.setM_Locator_ID(locatorId);
     }

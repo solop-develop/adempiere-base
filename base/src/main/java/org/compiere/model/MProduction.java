@@ -25,7 +25,12 @@ import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
 import org.compiere.process.DocumentReversalEnabled;
 import org.compiere.process.ProcessInfo;
-import org.compiere.util.*;
+import org.compiere.util.AdempiereUserError;
+import org.compiere.util.CLogger;
+import org.compiere.util.DisplayType;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.compiere.util.Util;
 import org.eevolution.services.dsl.ProcessBuilder;
 import org.solop.queue.storage.StorageUpdate;
 import org.solop.util.ReservationBuilder;
@@ -246,6 +251,11 @@ public class MProduction extends X_M_Production implements DocAction , DocumentR
 	 * Process Document from Production Plan
 	 */
 	private String processFromPlan() {
+		MProductionLine[] lines = getLines_OrderedByIsEndProduct();
+		//	Create Transaction
+		Arrays.asList(lines).forEach(productionLine -> createTransaction(productionLine));
+		//	Update Header
+		updateQtyHeader(false);
 		return null;
 	}
 
@@ -284,18 +294,20 @@ public class MProduction extends X_M_Production implements DocAction , DocumentR
 //								productionLine.getM_Product_ID(),
 //								ma.getM_AttributeSetInstance_ID(), 0,
 //								quantityMA.negate(),Env.ZERO, Env.ZERO, get_TrxName());
-						ReservationBuilder.newInstance(getCtx(), get_TrxName())
-								.withProductionLine(productionLine, ma.getM_AttributeSetInstance_ID(), quantityMA)
-								.build();
+						if(productionLine.get_ValueAsInt("M_ProductionBatchLine_ID") > 0) {
+							ReservationBuilder.newInstance(getCtx(), get_TrxName())
+									.withProductionLine(productionLine, ma.getM_AttributeSetInstance_ID(), quantityMA)
+									.build();
+							MProductionBatchLine pbLine = MProductionBatchLine.getbyProduct(getM_ProductionBatch_ID(), productionLine.getM_Product_ID(), getCtx(), get_TrxName());
+							BigDecimal quantityReserved = productionLine.getMovementQty();
+							pbLine.setQtyReserved(pbLine.getQtyReserved().add(quantityReserved));
+							pbLine.saveEx();
+						}
 						//	Transaction
 						transaction = new MTransaction (getCtx(), productionLine.getAD_Org_ID(), movementType,
 								productionLine.getM_Locator_ID(), productionLine.getM_Product_ID(), ma.getM_AttributeSetInstance_ID(),
 								quantityMA.negate(), productionLine.getParent().getMovementDate(), get_TrxName());
 						transaction.setM_ProductionLine_ID(productionLine.getM_ProductionLine_ID());
-						BigDecimal quantityReserved = productionLine.getMovementQty();
-						MProductionBatchLine pbLine = MProductionBatchLine.getbyProduct(getM_ProductionBatch_ID(), productionLine.getM_Product_ID(), getCtx(), get_TrxName());
-						pbLine.setQtyReserved(pbLine.getQtyReserved().add(quantityReserved));
-						pbLine.saveEx();
 						transaction.saveEx();
 					}	
 				}	
@@ -317,9 +329,15 @@ public class MProduction extends X_M_Production implements DocAction , DocumentR
 //							productionLine.getM_Product_ID(),
 //							transactionAttributeSetInstance_ID, reservationAttributeSetInstance_ID,
 //							quantity, Env.ZERO, Env.ZERO, get_TrxName());
-					ReservationBuilder.newInstance(getCtx(), get_TrxName())
-							.withProductionLine(productionLine)
-							.build();
+					if(productionLine.get_ValueAsInt("M_ProductionBatchLine_ID") > 0) {
+						ReservationBuilder.newInstance(getCtx(), get_TrxName())
+								.withProductionLine(productionLine)
+								.build();
+						BigDecimal qtyReserved = productionLine.isEndProduct()? productionLine.getMovementQty(): productionLine.getMovementQty().negate();
+						MProductionBatchLine pbLine = MProductionBatchLine.getbyProduct(getM_ProductionBatch_ID(), getM_Product_ID(), getCtx(), get_TrxName());
+						pbLine.setQtyReserved(pbLine.getQtyReserved().subtract(qtyReserved));
+						pbLine.saveEx();
+					}
 					//	FallBack: Create Transaction
 					transaction = new MTransaction (getCtx(), productionLine.getAD_Org_ID(),
 						movementType, productionLine.getM_Locator_ID(),
@@ -327,10 +345,6 @@ public class MProduction extends X_M_Production implements DocAction , DocumentR
 						quantity, productionLine.getParent().getMovementDate(), get_TrxName());
 					transaction.setM_ProductionLine_ID(productionLine.getM_ProductionLine_ID());
 					transaction.saveEx();
-					BigDecimal qtyreserved = productionLine.isEndProduct()? productionLine.getMovementQty(): productionLine.getMovementQty().negate();
-					MProductionBatchLine pbLine = MProductionBatchLine.getbyProduct(getM_ProductionBatch_ID(), getM_Product_ID(), getCtx(), get_TrxName());
-					pbLine.setQtyReserved(pbLine.getQtyReserved().subtract(qtyreserved));
-					pbLine.saveEx();
 				}
 			}
 		}	//	stock movement

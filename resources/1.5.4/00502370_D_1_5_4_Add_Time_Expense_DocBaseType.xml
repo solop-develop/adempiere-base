@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Time_Expense_DocBaseType" ReleaseNo="1.5.4" SeqNo="502370">
+    <Comments>Add Time Expense DocBaseType</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="104" Action="I" Record_ID="56582" Table="AD_Ref_List">
+        <Data AD_Column_ID="371" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="372" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="151" Column="AD_Reference_ID">183</Data>
+        <Data AD_Column_ID="148" Column="AD_Ref_List_ID">56582</Data>
+        <Data AD_Column_ID="564" Column="Created">2026-03-12 15:43:53.719</Data>
+        <Data AD_Column_ID="565" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="150" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="7712" Column="EntityType">D</Data>
+        <Data AD_Column_ID="563" Column="IsActive">true</Data>
+        <Data AD_Column_ID="149" Column="Name">Time Expense</Data>
+        <Data AD_Column_ID="566" Column="Updated">2026-03-12 15:43:53.719</Data>
+        <Data AD_Column_ID="567" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84390" Column="UUID">489b5a5b-7ab9-43cd-843d-acd98be76a34</Data>
+        <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
+        <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
+        <Data AD_Column_ID="200" Column="Value">TE1</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="136" Action="I" Record_ID="0" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="1215" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="337" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1216" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID">56582</Data>
+        <Data AD_Column_ID="707" Column="Created">2026-03-12 15:43:54.94</Data>
+        <Data AD_Column_ID="708" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="339" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="706" Column="IsActive">true</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="338" Column="Name">Time Expense</Data>
+        <Data AD_Column_ID="709" Column="Updated">2026-03-12 15:43:54.94</Data>
+        <Data AD_Column_ID="710" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84391" Column="UUID">26c3e016-5c08-4cfb-b3af-225f1c9f8ebc</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="136" Action="U" Record_ID="0" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="337" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID" oldValue="56582">56582</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="338" Column="Name" oldValue="Time Expense">Informe de Gasto</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="54810" Action="I" Record_ID="50050" Table="C_DocBaseType">
+        <Data AD_Column_ID="97944" Column="AccountingClassname" isNewNull="true"/>
+        <Data AD_Column_ID="97941" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="97942" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97943" Column="AD_Table_ID">486</Data>
+        <Data AD_Column_ID="97945" Column="C_DocBaseType_ID">50050</Data>
+        <Data AD_Column_ID="97946" Column="Created">2026-03-12 15:45:14.29</Data>
+        <Data AD_Column_ID="97947" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97948" Column="Description">Time Expense</Data>
+        <Data AD_Column_ID="97949" Column="DocBaseType">TE1</Data>
+        <Data AD_Column_ID="97950" Column="EntityType">D</Data>
+        <Data AD_Column_ID="97951" Column="Help">Use this for Time Expense</Data>
+        <Data AD_Column_ID="97952" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97953" Column="IsDefault">true</Data>
+        <Data AD_Column_ID="97954" Column="Name">Time Expense</Data>
+        <Data AD_Column_ID="97956" Column="Updated">2026-03-12 15:45:14.291</Data>
+        <Data AD_Column_ID="97957" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97955" Column="UUID">1ae6fe00-df7f-465a-90b5-8c18a9e5fe5a</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="54811" Action="I" Record_ID="0" Table="C_DocBaseType_Trl">
+        <Data AD_Column_ID="97958" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="97959" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="97960" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97961" Column="C_DocBaseType_ID">50050</Data>
+        <Data AD_Column_ID="97962" Column="Created">2026-03-12 15:45:15.271</Data>
+        <Data AD_Column_ID="97963" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97964" Column="Description">Time Expense</Data>
+        <Data AD_Column_ID="97965" Column="Help">Use this for Time Expense</Data>
+        <Data AD_Column_ID="97966" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97967" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="97968" Column="Name">Time Expense</Data>
+        <Data AD_Column_ID="97970" Column="Updated">2026-03-12 15:45:15.271</Data>
+        <Data AD_Column_ID="97971" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97969" Column="UUID">b4e0465b-479e-4abb-a7a9-c0ae7d1545c1</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="54811" Action="U" Record_ID="0" Table="C_DocBaseType_Trl">
+        <Data AD_Column_ID="97959" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="97961" Column="C_DocBaseType_ID" oldValue="50050">50050</Data>
+        <Data AD_Column_ID="97964" Column="Description" oldValue="Time Expense">Informe de Gasto</Data>
+        <Data AD_Column_ID="97965" Column="Help" oldValue="Use this for Time Expense">Usar esto para Informe de Gasto</Data>
+        <Data AD_Column_ID="97967" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="97968" Column="Name" oldValue="Time Expense">Informe de Gasto</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="108972" Table="AD_Field">
+        <Data AD_Column_ID="15013" Column="IsMandatory" isOldNull="true">Y</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

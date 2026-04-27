@@ -201,7 +201,7 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				"        COALESCE(r.ReplenishmentClass, w.ReplenishmentClass) AS ReplenishmentClass" +
 				"    FROM M_Replenish r" +
 				"    INNER JOIN M_Warehouse w ON(w.M_Warehouse_ID = r.M_Warehouse_ID)" +
-				"    LEFT JOIN M_Product_PO po ON(po.M_Product_ID = r.M_Product_ID AND po.IsActive = 'Y' AND po.IsCurrentVendor = 'Y')" +
+				"    LEFT JOIN LATERAL (SELECT po.C_BPartner_ID, po.Order_Min, po.Order_Pack FROM M_Product_PO po WHERE po.M_Product_ID = r.M_Product_ID AND po.IsActive = 'Y' AND po.IsCurrentVendor = 'Y' AND po.AD_Org_ID IN (0,w.AD_Org_ID) ORDER BY po.AD_Org_ID DESC LIMIT 1) po ON true " +
 				"    LEFT JOIN (SELECT s.M_Product_ID, s.M_Warehouse_ID," +
 				"                SUM(s.QtyOnHand) AS QtyOnHand," +
 				"                SUM(s.QtyOrdered) AS QtyOrdered," +
@@ -386,13 +386,6 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 		int no = DB.executeUpdateEx(sql, transactionName);
 		if (no != 0) {
 			log.fine("Corrected Max_Level=" + no);
-		}
-
-		//	Just to be sure
-		sql = "DELETE T_Replenish WHERE AD_PInstance_ID=" + getAD_PInstance_ID();
-		no = DB.executeUpdateEx(sql, transactionName);
-		if (no != 0) {
-			log.fine("Delete Existing Temp=" + no);
 		}
 	}	//	prepareTable
 

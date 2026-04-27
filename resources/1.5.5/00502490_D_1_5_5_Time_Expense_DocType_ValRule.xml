@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Time_Expense_DocType_ValRule" ReleaseNo="1.5.5" SeqNo="502490">
+    <Comments>Add ValRule for Time Expense Document Type</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="108" Action="I" Record_ID="53066" Table="AD_Val_Rule">
+        <Data AD_Column_ID="387" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="388" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="187" Column="AD_Val_Rule_ID">53066</Data>
+        <Data AD_Column_ID="193" Column="Code">C_DocType.DocBaseType = 'TE1'</Data>
+        <Data AD_Column_ID="584" Column="Created">2026-03-25 16:50:10.71</Data>
+        <Data AD_Column_ID="585" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="189" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="7715" Column="EntityType">D</Data>
+        <Data AD_Column_ID="583" Column="IsActive">true</Data>
+        <Data AD_Column_ID="188" Column="Name">C_DocType Time Expense</Data>
+        <Data AD_Column_ID="192" Column="Type">S</Data>
+        <Data AD_Column_ID="586" Column="Updated">2026-03-25 16:50:10.71</Data>
+        <Data AD_Column_ID="587" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84460" Column="UUID">efe2d224-d036-4b3e-942a-df3d07011a65</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="105697" Table="AD_Column">
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isOldNull="true">53066</Data>
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="22">10</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

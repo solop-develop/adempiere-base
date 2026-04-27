@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="BankStatement_Create_Payment_Remove_Partner_Parameter" ReleaseNo="1.5.4" SeqNo="502350">
+    <Comments>Remove BPartner Parameter from SB Create Payment From BankStatement for Payments Awaiting Invoice</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="57145" Table="AD_Process_Para">
+        <Data AD_Column_ID="56300" Column="DisplayLogic" oldValue="@TrxType@='O'|@TrxType@='A'">@TrxType@='O'</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

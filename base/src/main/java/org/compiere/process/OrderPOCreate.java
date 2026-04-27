@@ -171,17 +171,23 @@ public class OrderPOCreate extends OrderPOCreateAbstract {
 			+ "FROM M_Product_PO po"
 			+ " INNER JOIN C_OrderLine ol ON (po.M_Product_ID=ol.M_Product_ID) "
 			+ "WHERE ol.C_Order_ID=? AND po.IsCurrentVendor='Y' "
+			+ " AND po.AD_Org_ID IN (0, ?)"
 			+ ((getVendorId() > 0) ? " AND po.C_BPartner_ID=? " : "")
 			+ "GROUP BY po.M_Product_ID "
-			+ "ORDER BY 1";
+			+ "ORDER BY po.AD_Org_ID DESC, 1";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		MOrder purchaseOrder = null;
 		try {
 			pstmt = DB.prepareStatement (sql, get_TrxName());
 			pstmt.setInt(1, salesOrder.getC_Order_ID());
-			if (getVendorId() != 0)
+			if (getVendorId() != 0){
 				pstmt.setInt (2, getVendorId());
+				pstmt.setInt(3, salesOrder.getAD_Org_ID());
+			} else {
+				pstmt.setInt(2, salesOrder.getAD_Org_ID());
+			}
+
 			rs = pstmt.executeQuery ();
 			while (rs.next()) {
 				//	New Order

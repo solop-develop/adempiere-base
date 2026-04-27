@@ -160,52 +160,7 @@ public class ReplenishReportProduction extends SvrProcess
 		int no = DB.executeUpdate(sql, get_TrxName());
 		if (no != 0)
 			log.fine("Corrected Max_Level=" + no);
-		
-		//	Minimum Order should be 1
-		sql = "UPDATE M_Product_PO"
-			+ " SET Order_Min = 1 "
-			+ "WHERE Order_Min IS NULL OR Order_Min < 1";
-		no = DB.executeUpdate(sql, get_TrxName());
-		if (no != 0)
-			log.fine("Corrected Order Min=" + no);
-		
-		//	Pack should be 1
-		sql = "UPDATE M_Product_PO"
-			+ " SET Order_Pack = 1 "
-			+ "WHERE Order_Pack IS NULL OR Order_Pack < 1";
-		no = DB.executeUpdate(sql, get_TrxName());
-		if (no != 0)
-			log.fine("Corrected Order Pack=" + no);
 
-		//	Set Current Vendor where only one vendor
-		sql = "UPDATE M_Product_PO p"
-			+ " SET IsCurrentVendor='Y' "
-			+ "WHERE IsCurrentVendor<>'Y'"
-			+ " AND EXISTS (SELECT pp.M_Product_ID FROM M_Product_PO pp "
-				+ "WHERE p.M_Product_ID=pp.M_Product_ID "
-				+ "GROUP BY pp.M_Product_ID "
-				+ "HAVING COUNT(*) = 1)";
-		no = DB.executeUpdate(sql, get_TrxName());
-		if (no != 0)
-			log.fine("Corrected CurrentVendor(Y)=" + no);
-
-		//	More then one current vendor
-		sql = "UPDATE M_Product_PO p"
-			+ " SET IsCurrentVendor='N' "
-			+ "WHERE IsCurrentVendor = 'Y'"
-			+ " AND EXISTS (SELECT pp.M_Product_ID FROM M_Product_PO pp "
-				+ "WHERE p.M_Product_ID=pp.M_Product_ID AND pp.IsCurrentVendor='Y' "
-				+ "GROUP BY pp.M_Product_ID "
-				+ "HAVING COUNT(*) > 1)";
-		no = DB.executeUpdate(sql, get_TrxName());
-		if (no != 0)
-			log.fine("Corrected CurrentVendor(N)=" + no);
-		
-		//	Just to be sure
-		sql = "DELETE T_Replenish WHERE AD_PInstance_ID=" + getAD_PInstance_ID();
-		no = DB.executeUpdate(sql, get_TrxName());
-		if (no != 0)
-			log.fine("Delete Existing Temp=" + no);
 	}	//	prepareTable
 
 	/**
@@ -228,12 +183,22 @@ public class ReplenishReportProduction extends SvrProcess
 		else
 			sql += "'" + p_ReplenishmentCreate + "'";
 		sql += " FROM M_Replenish r"
-			+ " INNER JOIN M_Product_PO po ON (r.M_Product_ID=po.M_Product_ID) "
-			+ " INNER JOIN M_Product p ON (p.M_Product_ID=po.M_Product_ID) "
-			+ "WHERE po.IsCurrentVendor='Y'"	//	Only Current Vendor
-			+ " AND r.ReplenishType<>'0'"
-			+ " AND po.IsActive='Y' AND r.IsActive='Y'"
-			+ " AND r.M_Warehouse_ID=" + p_M_Warehouse_ID;
+			+ " INNER JOIN M_Warehouse w ON (r.M_Warehouse_ID = w.M_Warehouse_ID)"
+			+ " INNER JOIN M_Product p ON (p.M_Product_ID=r.M_Product_ID)"
+			+ " LEFT JOIN LATERAL ("
+			+ "     SELECT ppo.C_BPartner_ID, ppo.Order_Min, ppo.Order_Pack "
+			+ "     FROM M_Product_PO ppo "
+			+ "     WHERE ppo.M_Product_ID = r.M_Product_ID "
+			+ "       AND ppo.IsCurrentVendor='Y'"
+			+ "       AND ppo.IsActive = 'Y' "
+			+ "       AND ppo.AD_Org_ID IN (0, w.AD_Org_ID) "
+			+ "     ORDER BY ppo.AD_Org_ID DESC "
+			+ "     LIMIT 1"
+			+ " ) po ON true "
+			+ " WHERE r.ReplenishType<>'0'"
+			+ " AND r.IsActive='Y'"
+			+ " AND r.M_Warehouse_ID=" + p_M_Warehouse_ID
+			+ " AND po.C_BPartner_ID IS NOT NULL";
 		if (p_C_BPartner_ID != 0)
 			sql += " AND po.C_BPartner_ID=" + p_C_BPartner_ID;
 		if ( p_M_Product_Category_ID != 0 )

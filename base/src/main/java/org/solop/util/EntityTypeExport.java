@@ -18,6 +18,7 @@ import org.adempiere.core.domains.models.I_AD_Process_Para;
 import org.adempiere.core.domains.models.I_AD_Ref_List;
 import org.adempiere.core.domains.models.I_AD_Ref_Table;
 import org.adempiere.core.domains.models.I_AD_Reference;
+import org.adempiere.core.domains.models.I_AD_RelationType;
 import org.adempiere.core.domains.models.I_AD_ReportView;
 import org.adempiere.core.domains.models.I_AD_Rule;
 import org.adempiere.core.domains.models.I_AD_SubModule;
@@ -103,6 +104,8 @@ public class EntityTypeExport extends GenericPOHandler {
 		createColumns(packOut, document, entityType.getEntityType());
 		//	Reference
 		createReferenceListAndTable(packOut, document, entityType.getEntityType());
+		// Relation Type
+		createReferences(packOut, document, entityType.getEntityType(), I_AD_RelationType.Table_Name, false, null);
 		//	Tabs
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Tab.Table_Name, false, null);
 		//	Fields

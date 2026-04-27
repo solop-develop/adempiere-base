@@ -190,14 +190,16 @@ public class ImportProductPlanning extends SvrProcess {
 					"=? AND ");
 			whereClause.append(MProductPO.COLUMNNAME_C_BPartner_ID)
 					.append("=?");
+			whereClause.append(" AND AD_Org_ID in (0, ?)");
 			MProductPO productPO = new Query(getCtx(), MProductPO.Table_Name,
 					whereClause.toString(), get_TrxName())
 					.setClient_ID()
 					.setParameters(ipp.getM_Product_ID(),
-							ipp.getC_BPartner_ID()).first();
+							ipp.getC_BPartner_ID(), ipp.getAD_Org_ID()).setOrderBy("AD_Org_ID DESC").first();
 
 			if (productPO == null) {
 				productPO = new MProductPO(getCtx(), 0, get_TrxName());
+				productPO.setAD_Org_ID(ipp.getAD_Org_ID());
 				productPO.setM_Product_ID(ipp.getM_Product_ID());
 				productPO.setC_BPartner_ID(ipp.getC_BPartner_ID());
 

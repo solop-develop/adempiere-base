@@ -1523,7 +1523,7 @@ public class CalculateReplenishPlan extends CalculateReplenishPlanAbstract {
 	private MiniMRPProduct addProductToProcess(MReplenish replenish, Map<Integer, MiniMRPProduct> miniMrpProducts, Set<Integer> productIds) {
 		MProduct product = MProduct.get(getCtx(), replenish.getM_Product_ID());
 		//	Get current vendor
-		MProductPO[] productPO = MProductPO.getOfProduct(getCtx(), product.getM_Product_ID(), get_TrxName());
+		MProductPO[] productPO = MProductPO.getOfProductAndOrg(getCtx(), product.getM_Product_ID(), replenish.getM_Warehouse().getAD_Org_ID(), get_TrxName());
 		int bPartnerId = 0;
 		//	Get Business Partner
 		if(productPO.length > 0) {

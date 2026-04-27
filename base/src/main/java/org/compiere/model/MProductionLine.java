@@ -15,18 +15,18 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.I_C_DocType;
 import org.adempiere.core.domains.models.X_C_DocType;
 import org.adempiere.core.domains.models.X_M_ProductionLine;
 import org.adempiere.engine.IDocumentLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Contributed from Adaxa

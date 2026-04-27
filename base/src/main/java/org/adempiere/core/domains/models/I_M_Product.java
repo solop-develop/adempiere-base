@@ -150,6 +150,15 @@ public interface I_M_Product
 
 	public I_C_SubscriptionType getC_SubscriptionType() throws RuntimeException;
 
+	/** Column name IsBulk */
+	public static final String COLUMNNAME_IsBulk = "IsBulk";
+
+	/** Set Bulk Product	  */
+	public void setIsBulk (boolean IsBulk);
+
+	/** Get Bulk Product	  */
+	public boolean isBulk();
+
     /** Column name C_TaxCategory_ID */
     public static final String COLUMNNAME_C_TaxCategory_ID = "C_TaxCategory_ID";
 

@@ -373,7 +373,7 @@ public class RequisitionPOCreate extends RequisitionPOCreateAbstract
 		{
 			// Find Strategic Vendor for Product
 			// TODO: refactor
-			MProductPO[] pproductPurchaseInfo = MProductPO.getOfProduct(getCtx(), product.getM_Product_ID(), null);
+			MProductPO[] pproductPurchaseInfo = MProductPO.getOfProductAndOrg(getCtx(), product.getM_Product_ID(), requisitionLine.getAD_Org_ID(), null);
 			for (int i = 0; i < pproductPurchaseInfo.length; i++)
 			{
 				if (pproductPurchaseInfo[i].isCurrentVendor() && pproductPurchaseInfo[i].getC_BPartner_ID() != 0)

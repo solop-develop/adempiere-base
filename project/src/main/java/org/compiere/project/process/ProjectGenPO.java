@@ -93,7 +93,7 @@ public class ProjectGenPO extends ProjectGenPOAbstract
         }
 
         //	PO Record
-        List<MProductPO> productPurchaseList = MProductPO.getByPartner(getCtx(), getVendorId(), projectLine.getM_Product_ID(), get_TrxName());
+        List<MProductPO> productPurchaseList = MProductPO.getByPartnerAndOrg(getCtx(), getVendorId(), projectLine.getM_Product_ID(), projectLine.getAD_Org_ID(), get_TrxName());
         if (getVendorId() <= 0 && (productPurchaseList == null || productPurchaseList.size() == 0)) {
             addLog(projectLine.getLine(), null, null, "Product has no PO record");
             return;
@@ -101,7 +101,7 @@ public class ProjectGenPO extends ProjectGenPOAbstract
 
         MProductPO productPurchase = productPurchaseList.stream()
                 .findFirst()
-                .orElseGet(() -> new MProductPO(getCtx(), projectLine.getM_Product_ID(), getVendorId(), project.getC_Currency_ID(), get_TrxName())
+                .orElseGet(() -> new MProductPO(getCtx(), projectLine.getM_Product_ID(), getVendorId(), project.getC_Currency_ID(), projectLine.getAD_Org_ID(), get_TrxName())
                 );
 
         MOrder pruchaseOrder = orders.stream()

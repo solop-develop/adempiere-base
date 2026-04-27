@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Production_Window_changes" ReleaseNo="1.5.6" SeqNo="502580">
+    <Comments>Modify Production Window Tabs and Product Verify BOM</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="106" Action="U" Record_ID="320" Table="AD_Tab">
+        <Data AD_Column_ID="573" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="106" Action="U" Record_ID="321" Table="AD_Tab">
+        <Data AD_Column_ID="6654" Column="TabLevel" oldValue="2">1</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="3747" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="3747" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="999">750</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
