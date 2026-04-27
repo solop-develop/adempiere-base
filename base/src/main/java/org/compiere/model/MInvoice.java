@@ -751,6 +751,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					invoiceLineTo.setA_Asset_ID(0);
 					invoiceLineTo.setM_AttributeSetInstance_ID(0);
 					invoiceLineTo.setS_ResourceAssignment_ID(0);
+					invoiceLineTo.setWM_InOutBoundLine_ID(0);
 					//	New Tax
 					if (getC_BPartner_ID() != invoiceFrom.getC_BPartner_ID())
 						invoiceLineTo.setTax();    //	recalculate
@@ -1971,6 +1972,18 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 	}	//	rejectIt
 
 	/**
+	 * Transient instance flag: when true, completeIt skips the UPDATEs on
+	 * MBPartner (balance/credit/lifetime) and AD_User (LastContact/LastResult)
+	 * to avoid hot-row contention in bulk processes. The caller is responsible
+	 * for recomputing those values from DB afterwards
+	 * (e.g. by calling MBPartner.setTotalOpenBalance()).
+	 */
+	private transient boolean isBulkComplete = false;
+
+	public void setIsBulkComplete(boolean v) { this.isBulkComplete = v; }
+	public boolean isBulkComplete() { return isBulkComplete; }
+
+	/**
 	 * 	Complete Document
 	 * 	@return new status (Complete, In Progress, Invalid, Waiting ..)
 	 */
@@ -2137,71 +2150,74 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		if (matchOrders.get() > 0)
 			info.append(" @M_MatchPO_ID@#").append(matchOrders.get()).append(" ");
 
-		//	Update BP Statistics
-		MBPartner partner = new MBPartner (getCtx(), getC_BPartner_ID(), get_TrxName());
-		//	Update total revenue and balance / credit limit (reversed on AllocationLine.processIt)
-		BigDecimal invAmt = MConversionRate.convertBase(getCtx(), getGrandTotal(true),	//	CM adjusted
-			getC_Currency_ID(), getDateAcct(), getC_ConversionType_ID(), getAD_Client_ID(), getAD_Org_ID());
-		if (invAmt == null)
+		//	Update BP Statistics + AD_User (skipped when bulk, should be calculated by another process)
+		if (!isBulkComplete)
 		{
-			processMsg = MConversionRate.getErrorMessage(getCtx(), "ErrorConvertingInvoiceCurrencyToBaseCurrency",
-					getC_Currency_ID(), MClient.get(getCtx()).getC_Currency_ID(), getC_ConversionType_ID(), getDateAcct(), get_TrxName());
-			return DocAction.STATUS_Invalid;
-		}
-		//	Total Balance
-		BigDecimal newBalance = partner.getTotalOpenBalance(false);
-		if (newBalance == null)
-			newBalance = Env.ZERO;
-		if (isSOTrx())
-		{
-			newBalance = newBalance.add(invAmt);
-			//
-			if (partner.getFirstSale() == null)
-				partner.setFirstSale(getDateInvoiced());
-			BigDecimal newLifeAmt = partner.getActualLifeTimeValue();
-			if (newLifeAmt == null)
-				newLifeAmt = invAmt;
-			else
-				newLifeAmt = newLifeAmt.add(invAmt);
-			BigDecimal newCreditAmt = partner.getSO_CreditUsed();
-			if (newCreditAmt == null)
-				newCreditAmt = invAmt;
-			else
-				newCreditAmt = newCreditAmt.add(invAmt);
-			//
-			log.fine("GrandTotal=" + getGrandTotal(true) + "(" + invAmt
-				+ ") BP Life=" + partner.getActualLifeTimeValue() + "->" + newLifeAmt
-				+ ", Credit=" + partner.getSO_CreditUsed() + "->" + newCreditAmt
-				+ ", Balance=" + partner.getTotalOpenBalance(false) + " -> " + newBalance);
-			partner.setActualLifeTimeValue(newLifeAmt);
-			partner.setSO_CreditUsed(newCreditAmt);
-		}	//	SO
-		else
-		{
-			newBalance = newBalance.subtract(invAmt);
-			log.fine("GrandTotal=" + getGrandTotal(true) + "(" + invAmt
-				+ ") Balance=" + partner.getTotalOpenBalance(false) + " -> " + newBalance);
-		}
-		partner.setTotalOpenBalance(newBalance);
-		partner.setSOCreditStatus();
-		if (!partner.save(get_TrxName()))
-		{
-			processMsg = "Could not update Business Partner";
-			return DocAction.STATUS_Invalid;
-		}
-
-		//	User - Last Result/Contact
-		if (getAD_User_ID() != 0)
-		{
-			MUser user = new MUser (getCtx(), getAD_User_ID(), get_TrxName());
-			user.setLastContact(new Timestamp(System.currentTimeMillis()));
-			user.setLastResult(Msg.translate(getCtx(), "C_Invoice_ID") + ": " + getDocumentNo());
-			if (!user.save(get_TrxName()))
+			MBPartner partner = new MBPartner (getCtx(), getC_BPartner_ID(), get_TrxName());
+			//	Update total revenue and balance / credit limit (reversed on AllocationLine.processIt)
+			BigDecimal invAmt = MConversionRate.convertBase(getCtx(), getGrandTotal(true),	//	CM adjusted
+				getC_Currency_ID(), getDateAcct(), getC_ConversionType_ID(), getAD_Client_ID(), getAD_Org_ID());
+			if (invAmt == null)
 			{
-				processMsg = "Could not update Business Partner User";
+				processMsg = MConversionRate.getErrorMessage(getCtx(), "ErrorConvertingInvoiceCurrencyToBaseCurrency",
+						getC_Currency_ID(), MClient.get(getCtx()).getC_Currency_ID(), getC_ConversionType_ID(), getDateAcct(), get_TrxName());
 				return DocAction.STATUS_Invalid;
 			}
-		}	//	user
+			//	Total Balance
+			BigDecimal newBalance = partner.getTotalOpenBalance(false);
+			if (newBalance == null)
+				newBalance = Env.ZERO;
+			if (isSOTrx())
+			{
+				newBalance = newBalance.add(invAmt);
+				//
+				if (partner.getFirstSale() == null)
+					partner.setFirstSale(getDateInvoiced());
+				BigDecimal newLifeAmt = partner.getActualLifeTimeValue();
+				if (newLifeAmt == null)
+					newLifeAmt = invAmt;
+				else
+					newLifeAmt = newLifeAmt.add(invAmt);
+				BigDecimal newCreditAmt = partner.getSO_CreditUsed();
+				if (newCreditAmt == null)
+					newCreditAmt = invAmt;
+				else
+					newCreditAmt = newCreditAmt.add(invAmt);
+				//
+				log.fine("GrandTotal=" + getGrandTotal(true) + "(" + invAmt
+					+ ") BP Life=" + partner.getActualLifeTimeValue() + "->" + newLifeAmt
+					+ ", Credit=" + partner.getSO_CreditUsed() + "->" + newCreditAmt
+					+ ", Balance=" + partner.getTotalOpenBalance(false) + " -> " + newBalance);
+				partner.setActualLifeTimeValue(newLifeAmt);
+				partner.setSO_CreditUsed(newCreditAmt);
+			}	//	SO
+			else
+			{
+				newBalance = newBalance.subtract(invAmt);
+				log.fine("GrandTotal=" + getGrandTotal(true) + "(" + invAmt
+					+ ") Balance=" + partner.getTotalOpenBalance(false) + " -> " + newBalance);
+			}
+			partner.setTotalOpenBalance(newBalance);
+			partner.setSOCreditStatus();
+			if (!partner.save(get_TrxName()))
+			{
+				processMsg = "Could not update Business Partner";
+				return DocAction.STATUS_Invalid;
+			}
+
+			//	User - Last Result/Contact
+			if (getAD_User_ID() != 0)
+			{
+				MUser user = new MUser (getCtx(), getAD_User_ID(), get_TrxName());
+				user.setLastContact(new Timestamp(System.currentTimeMillis()));
+				user.setLastResult(Msg.translate(getCtx(), "C_Invoice_ID") + ": " + getDocumentNo());
+				if (!user.save(get_TrxName()))
+				{
+					processMsg = "Could not update Business Partner User";
+					return DocAction.STATUS_Invalid;
+				}
+			}	//	user
+		}	// !isBulkComplete
 
 		//	Update Project
 		if (isSOTrx() && getC_Project_ID() != 0)
@@ -2430,6 +2446,11 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			C_DocTypeTarget_ID, !isSOTrx(), true, false, get_TrxName(), true);
 		//
 		counter.setAD_Org_ID(counterAD_Org_ID);
+		if (!counter.isSOTrx()){
+			load(get_TrxName());
+			counter.setDocumentNo(getDocumentNo());
+		}
+
 	//	counter.setM_Warehouse_ID(counterOrgInfo.getM_Warehouse_ID());
 		//
 		counter.setBPartner(counterBP);

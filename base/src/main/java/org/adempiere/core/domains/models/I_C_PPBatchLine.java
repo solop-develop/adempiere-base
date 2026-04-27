@@ -204,6 +204,19 @@ public interface I_C_PPBatchLine
 	  */
 	public boolean isActive();
 
+    /** Column name IsManual */
+    public static final String COLUMNNAME_IsManual = "IsManual";
+
+	/** Set Manual.
+	  * This is a manual process
+	  */
+	public void setIsManual (boolean IsManual);
+
+	/** Get Manual.
+	  * This is a manual process
+	  */
+	public boolean isManual();
+
     /** Column name PayAmt */
     public static final String COLUMNNAME_PayAmt = "PayAmt";
 

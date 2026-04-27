@@ -16,13 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_AD_Session;
 import org.compiere.Adempiere;
 import org.compiere.util.CCache;
@@ -33,6 +26,17 @@ import org.compiere.util.Ini;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.compiere.util.Trx;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
 
 /**
  *	Session Model.
@@ -260,10 +264,32 @@ public class MSession extends X_AD_Session
 			log.info(TimeUtil.formatElapsed(getCreated(), getUpdated()));
 	}	//	logout
 	
+	private static final long KEEP_ALIVE_MIN_INTERVAL_NS =
+			TimeUnit.SECONDS.toNanos(30);
 	/**
-	 * Keep Alive Session
+	 * Last keepAlive timestamp per AD_Session_ID. Kept static so it survives
+	 * {@code s_sessions} cache resets (triggered often by ADempiere CacheReset events).
+	 */
+	private static final ConcurrentMap<Integer, AtomicLong> s_lastKeepAliveNanos =
+			new ConcurrentHashMap<>();
+
+	/**
+	 * Keep Alive Session.
+	 * Debounced to ~30s: if the last UPDATE happened less than that ago, returns
+	 * without hitting the database. Avoids hot-row contention on AD_Session when
+	 * several parallel workers save POs at the same time.
 	 */
 	public void keepAlive() {
+		int sessionId = getAD_Session_ID();
+		AtomicLong last = s_lastKeepAliveNanos.computeIfAbsent(sessionId, k -> new AtomicLong(0L));
+		long now = System.nanoTime();
+		long prev = last.get();
+		if (now - prev < KEEP_ALIVE_MIN_INTERVAL_NS) {
+			return;
+		}
+		if (!last.compareAndSet(prev, now)) {
+			return; // another thread won the race
+		}
 		Trx.run(trxName -> {
 			MSession session = new MSession(getCtx() , getAD_Session_ID() , trxName);
 			Timestamp lastAlive = new Timestamp(System.currentTimeMillis());

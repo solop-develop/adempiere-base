@@ -37,7 +37,7 @@ public class X_C_PPBatchLine extends PO implements I_C_PPBatchLine, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250827L;
+	private static final long serialVersionUID = 20260413L;
 
     /** Standard Constructor */
     public X_C_PPBatchLine (Properties ctx, int C_PPBatchLine_ID, String trxName)
@@ -277,6 +277,30 @@ public class X_C_PPBatchLine extends PO implements I_C_PPBatchLine, I_Persistent
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Manual.
+		@param IsManual 
+		This is a manual process
+	  */
+	public void setIsManual (boolean IsManual)
+	{
+		set_Value (COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
+	}
+
+	/** Get Manual.
+		@return This is a manual process
+	  */
+	public boolean isManual () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsManual);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Payment amount.
