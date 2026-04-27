@@ -48,7 +48,7 @@ public class MProductPO extends X_M_Product_PO
 	 * @param trxName
 	 * @return
 	 */
-	public static List<MProductPO> getByPartner(Properties ctx , Integer partnerId, Integer productId, String trxName)
+	public static List<MProductPO> getByPartnerAndOrg(Properties ctx , Integer partnerId, Integer productId, Integer orgId, String trxName)
 	{
 		List<Object> parameters = new ArrayList<>();
 		StringBuilder whereClause = new StringBuilder();
@@ -59,12 +59,13 @@ public class MProductPO extends X_M_Product_PO
 					parameters.add(Id);
 				});
 
-		whereClause.append(MProductPO.COLUMNNAME_M_Product_ID).append("=?");
+		whereClause.append(MProductPO.COLUMNNAME_M_Product_ID).append("=? AND AD_Org_ID IN (0, ?)");
 		parameters.add(productId);
+		parameters.add(orgId);
 		List<MProductPO> purchaseProducts = new Query(ctx, MProductPO.Table_Name, whereClause.toString() , trxName)
 				.setClient_ID()
 				.setParameters(parameters)
-				.setOrderBy(MProductPO.COLUMNNAME_IsCurrentVendor)
+				.setOrderBy(MProductPO.COLUMNNAME_IsCurrentVendor + ", " + MProductPO.COLUMNNAME_AD_Org_ID + " DESC")
 				.list();
 		if (purchaseProducts == null)
 			return new ArrayList<>();
@@ -80,16 +81,36 @@ public class MProductPO extends X_M_Product_PO
 	 *	@param trxName transaction
 	 *	@return PO - current vendor first
 	 */
-	public static MProductPO[] getOfProduct (Properties ctx, int M_Product_ID, String trxName)
+	public static MProductPO[] getOfProductAndOrg (Properties ctx, int M_Product_ID, int orgId,String trxName)
 	{
-		final String whereClause = "M_Product_ID=?";
+		final String whereClause = "M_Product_ID=? AND AD_Org_ID IN (0, ?)";
 		List<MProductPO> list = new Query(ctx, Table_Name, whereClause, trxName)
-									.setParameters(M_Product_ID)
+									.setParameters(M_Product_ID, orgId)
 									.setOnlyActiveRecords(true)
-									.setOrderBy("IsCurrentVendor DESC")
+									.setOrderBy("IsCurrentVendor DESC, AD_Org_ID DESC")
 									.list();
 		return list.toArray(new MProductPO[list.size()]);
 	}	//	getOfProduct
+
+
+	/**
+	 * 	Get current PO of Product
+	 * 	@param ctx context
+	 *	@param M_Product_ID product
+	 *	@param trxName transaction
+	 *	@return PO - current vendor first
+	 */
+	public static MProductPO[] getOfProduct (Properties ctx, int M_Product_ID,String trxName)
+	{
+		final String whereClause = "M_Product_ID=?";
+		List<MProductPO> list = new Query(ctx, Table_Name, whereClause, trxName)
+				.setParameters(M_Product_ID)
+				.setOnlyActiveRecords(true)
+				.setOrderBy("IsCurrentVendor DESC")
+				.list();
+		return list.toArray(new MProductPO[list.size()]);
+	}	//	getOfProduct
+
 
 	/**
 	 * 	Persistency Constructor
@@ -118,12 +139,15 @@ public class MProductPO extends X_M_Product_PO
 	 * @param partnerId
 	 * @param trxName
 	 */
-	public MProductPO(Properties ctx , int productId , int partnerId , int currencyId , String trxName)
+	public MProductPO(Properties ctx , int productId , int partnerId , int currencyId, int orgId, String trxName)
 	{
 		super(ctx, 0 , trxName);
 		setM_Product_ID(productId);
 		setC_BPartner_ID(partnerId);
 		setC_Currency_ID(currencyId);
+		if (orgId > 0){
+			setAD_Org_ID(orgId);
+		}
 		setIsCurrentVendor (true);
 	}
 	
@@ -149,7 +173,7 @@ public class MProductPO extends X_M_Product_PO
 		}
 		if(is_ValueChanged(COLUMNNAME_IsCurrentVendor)) {
 			if(isCurrentVendor()) {
-				getByProductWithCurrentVendor(getCtx(), getM_Product_ID(), get_TrxName())
+				getByProductWithCurrentVendorAndOrg(getCtx(), getM_Product_ID(), getAD_Org_ID(), get_TrxName())
 						.parallelStream()
 						.forEach(po -> {
 							po.setIsCurrentVendor(false);
@@ -157,9 +181,7 @@ public class MProductPO extends X_M_Product_PO
 						});
 			}
 		}
-		if(is_new()){
-			setAD_Org_ID(((MProduct) getM_Product()).getAD_Org_ID());
-		}
+
 		return super.beforeSave(newRecord);
 	}
 
@@ -168,6 +190,14 @@ public class MProductPO extends X_M_Product_PO
 				"AND IsCurrentVendor = 'Y'" , trxName)
 				.setClient_ID()
 				.setParameters(productId)
+				.list();
+	}
+
+	public static List<MProductPO> getByProductWithCurrentVendorAndOrg(Properties ctx, int productId, int orgId, String trxName) {
+		return new Query(ctx, MProductPO.Table_Name, "M_Product_ID = ? " +
+				"AND IsCurrentVendor = 'Y' AND AD_Org_ID = ?" , trxName)
+				.setClient_ID()
+				.setParameters(productId, orgId)
 				.list();
 	}
 }	//	MProductPO

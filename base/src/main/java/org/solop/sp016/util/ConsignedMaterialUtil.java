@@ -187,7 +187,7 @@ public class ConsignedMaterialUtil {
 		if(!invoiceLine.isProcessed()
 				&& invoiceLine.getM_Product_ID() > 0) {
 			MInvoice invoice = invoiceLine.getParent();
-			Optional<MProductPO> purchasedProduct = Arrays.asList(MProductPO.getOfProduct(invoiceLine.getCtx(), invoiceLine.getM_Product_ID(), invoiceLine.get_TrxName()))
+			Optional<MProductPO> purchasedProduct = Arrays.asList(MProductPO.getOfProductAndOrg(invoiceLine.getCtx(), invoiceLine.getM_Product_ID(), invoiceLine.getAD_Org_ID(), invoiceLine.get_TrxName()))
 				.stream()
 				.filter(purchase -> !purchase.isDiscontinued())
 				.sorted(Comparator.comparing(MProductPO::getUpdated).reversed())

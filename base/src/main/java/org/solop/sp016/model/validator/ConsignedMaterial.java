@@ -161,7 +161,7 @@ public class ConsignedMaterial implements ModelValidator, FactsValidator {
 					.stream()
 					.filter(orderLine -> orderLine.getM_Product_ID() > 0)
 					.forEach(orderLine -> {
-						List<MProductPO> purchaseProductList = MProductPO.getByPartner(orderLine.getCtx(), order.getC_BPartner_ID(), orderLine.getM_Product_ID(), order.get_TrxName());
+						List<MProductPO> purchaseProductList = MProductPO.getByPartnerAndOrg(orderLine.getCtx(), order.getC_BPartner_ID(), orderLine.getM_Product_ID(), order.getAD_Org_ID(), order.get_TrxName());
 						Optional<MProductPO> maybePurchaseProduct = purchaseProductList.stream().filter(puchaseProduct -> puchaseProduct.getC_Currency_ID() == order.getC_Currency_ID()).findFirst();
 						if(maybePurchaseProduct.isPresent()) {	//	Update Price
 							MProductPO purchaseProductToUpdate = maybePurchaseProduct.get();
@@ -173,7 +173,7 @@ public class ConsignedMaterial implements ModelValidator, FactsValidator {
 							purchaseProductToUpdate.saveEx();
 						} else {	//	Create New
 							MProduct product = MProduct.get(order.getCtx(), orderLine.getM_Product_ID());
-							MProductPO purchaseProductToCreate = new MProductPO(order.getCtx(), orderLine.getM_Product_ID(), order.getC_BPartner_ID(), order.getC_Currency_ID(), order.get_TrxName());
+							MProductPO purchaseProductToCreate = new MProductPO(order.getCtx(), orderLine.getM_Product_ID(), order.getC_BPartner_ID(), order.getC_Currency_ID(), order.getAD_Org_ID(), order.get_TrxName());
 							purchaseProductToCreate.setVendorProductNo(product.getValue());
 							purchaseProductToCreate.setC_UOM_ID(product.getC_UOM_ID());
 							purchaseProductToCreate.setUPC(product.getUPC());

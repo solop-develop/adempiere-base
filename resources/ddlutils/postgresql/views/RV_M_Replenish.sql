@@ -53,10 +53,10 @@ FROM (SELECT r.AD_Client_ID,
             WHEN r.ReplenishType = '1' THEN
                 CASE
                     WHEN COALESCE(s.QtyOnHand, 0) - COALESCE(s.QtyReserved, 0) + COALESCE(s.QtyOrdered, 0) <= r.Level_Min
-                    THEN r.Level_Max - COALESCE(s.QtyOnHand, 0) + COALESCE(s.QtyReserved, 0) - COALESCE(s.QtyOrdered, 0)
+                    THEN r.Level_Max - (COALESCE(s.QtyOnHand, 0) - COALESCE(s.QtyReserved, 0) + COALESCE(s.QtyOrdered, 0))
                     ELSE 0
                 END
-            WHEN r.ReplenishType = '2' THEN r.Level_Max - COALESCE(s.QtyOnHand, 0) + COALESCE(s.QtyReserved, 0) - COALESCE(s.QtyOrdered, 0)
+            WHEN r.ReplenishType = '2' THEN r.Level_Max - (COALESCE(s.QtyOnHand, 0) - COALESCE(s.QtyReserved, 0) + COALESCE(s.QtyOrdered, 0))
             ELSE 0
         END, 0) AS QtyToOrder,
         p.M_Product_Category_ID,
@@ -72,14 +72,23 @@ FROM (SELECT r.AD_Client_ID,
         COALESCE(po.Order_Pack, 0) AS Order_Pack
     FROM M_Replenish r
     INNER JOIN M_Product p ON(p.M_Product_ID = r.M_Product_ID)
-    LEFT JOIN M_Product_PO po ON(po.M_Product_ID = r.M_Product_ID AND po.IsActive = 'Y' AND po.IsCurrentVendor = 'Y')
-    LEFT JOIN (SELECT s.M_Product_ID,
-                SUM(s.QtyOnHand) AS QtyOnHand,
-                SUM(s.QtyOrdered) AS QtyOrdered,
-                SUM(s.QtyReserved) AS QtyReserved,
-                SUM(s.QtyAvailable) AS QtyAvailable
-            FROM RV_Storage s
-            GROUP BY s.M_Product_ID) s ON(s.M_Product_ID = p.M_Product_ID)
+    LEFT JOIN LATERAL (
+        SELECT ppo.C_BPartner_ID, ppo.Order_Min, ppo.Order_Pack
+        FROM M_Product_PO ppo
+        WHERE ppo.M_Product_ID = r.M_Product_ID
+          AND ppo.IsActive = 'Y'
+          AND ppo.IsCurrentVendor = 'Y'
+          AND ppo.AD_Org_ID IN (0, r.AD_Org_ID)
+        ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+    ) po ON true
+    LEFT JOIN (SELECT sto.M_Product_ID, sto.M_Warehouse_ID,
+                SUM(sto.QtyOnHand) AS QtyOnHand,
+                SUM(sto.QtyOrdered) AS QtyOrdered,
+                SUM(sto.QtyReserved) AS QtyReserved,
+                SUM(sto.QtyAvailable) AS QtyAvailable
+            FROM RV_Storage sto
+            GROUP BY sto.M_Product_ID, sto.M_Warehouse_ID) s
+            ON (s.M_Product_ID = r.M_Product_ID AND s.M_Warehouse_ID = r.M_Warehouse_ID)
     WHERE r.IsActive = 'Y' AND p.IsActive = 'Y') r
 WHERE (r.QtyToOrder > 0
 OR (r.ReplenishType IN('0', '9')));

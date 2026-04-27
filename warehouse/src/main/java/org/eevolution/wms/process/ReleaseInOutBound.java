@@ -278,7 +278,7 @@ public class ReleaseInOutBound extends ReleaseInOutBoundAbstract {
      * @param QtyPlanned   Qty Planned
      */
     private MRequisition createRequisition(MWMInOutBoundLine outboundLine, MProduct product, BigDecimal QtyPlanned) {
-        List<MProductPO> productPOs = Arrays.asList(MProductPO.getOfProduct(getCtx(), product.getM_Product_ID(), get_TrxName()));
+        List<MProductPO> productPOs = Arrays.asList(MProductPO.getOfProductAndOrg(getCtx(), product.getM_Product_ID(), outboundLine.getAD_Org_ID(), get_TrxName()));
         Optional<MProductPO> maybeProductPO = productPOs.stream().filter(productPO -> productPO.isCurrentVendor() && productPO.getC_BPartner_ID() > 0).findFirst();
         return maybeProductPO.map(productPO -> {
             final String sql = "SELECT COALESCE(bp." + MBPartner.COLUMNNAME_PO_PriceList_ID

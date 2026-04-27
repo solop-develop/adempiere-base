@@ -119,9 +119,9 @@ public class ValuationEffectiveDate extends ValuationEffectiveDateAbstract {
 		//  Update Prices
 		StringBuffer update = new StringBuffer("UPDATE T_InventoryValue iv "
 			+ "SET PricePO = "
-				+ "(SELECT MAX(currencyConvert (po.PricePO,po.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, po.AD_Client_ID,po.AD_Org_ID))"
+				+ "(SELECT currencyConvert (po.PricePO,po.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, po.AD_Client_ID,po.AD_Org_ID)"
 				+ " FROM M_Product_PO po WHERE po.M_Product_ID=iv.M_Product_ID"
-				+ " AND po.IsCurrentVendor='Y') ");
+				+ " AND po.IsCurrentVendor='Y' and po.AD_Org_ID IN (0, iv.AD_Org_ID) ORDER BY po.AD_Org_ID DESC LIMIT 1) ");
 			if(getPriceListVersionId() != 0) {
 				update.append(", PriceList = "
 				+ "(SELECT currencyConvert(pp.PriceList,pl.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, pl.AD_Client_ID,pl.AD_Org_ID)"

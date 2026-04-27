@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="RV_M_Replenish_View_Product_PO" ReleaseNo="1.5.6" SeqNo="502720">
+    <Comments>Add support for M_Product_PO Current Vendor for every Org in RV_M_Replenish View</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>DROP VIEW IF EXISTS RV_M_Replenish;
+
+        CREATE OR REPLACE VIEW RV_M_Replenish AS
+        SELECT r.AD_Client_ID,
+        r.AD_Org_ID,
+        r.M_Product_ID,
+        r.ReplenishType,
+        r.Level_Min,
+        r.Level_Max,
+        r.QtyAvailable,
+        r.QtyOnHand,
+        r.QtyReserved,
+        r.QtyOrdered,
+        CASE
+        WHEN r.Order_Pack &gt; 0 AND MOD(CASE
+        WHEN r.QtyToOrder &lt; r.Order_Min AND r.QtyToOrder &gt; 0
+        THEN r.Order_Min
+        ELSE r.QtyToOrder
+        END, r.Order_Pack) &lt;&gt; 0 AND r.QtyToOrder &gt; 0
+        THEN CASE
+        WHEN r.QtyToOrder &lt; r.Order_Min AND r.QtyToOrder &gt; 0
+        THEN r.Order_Min
+        ELSE r.QtyToOrder
+        END - MOD(CASE
+        WHEN r.QtyToOrder &lt; r.Order_Min AND r.QtyToOrder &gt; 0
+        THEN r.Order_Min
+        ELSE r.QtyToOrder
+        END, r.Order_Pack) + r.Order_Pack
+        ELSE r.QtyToOrder
+        END AS QtyToOrder,
+        r.M_Product_Category_ID,
+        r.M_Product_Group_ID,
+        r.M_Product_Class_ID,
+        r.M_Product_Classification_ID,
+        r.C_UOM_ID,
+        r.M_Locator_ID,
+        r.M_Warehouse_ID,
+        r.M_WarehouseSource_ID,
+        r.C_BPartner_ID,
+        r.Order_Min,
+        r.Order_Pack
+        FROM (SELECT r.AD_Client_ID,
+        r.AD_Org_ID,
+        r.M_Product_ID,
+        r.ReplenishType,
+        COALESCE(r.Level_Min, 0) AS Level_Min,
+        COALESCE(r.Level_Max, 0) AS Level_Max,
+        COALESCE(s.QtyAvailable, 0) AS QtyAvailable,
+        COALESCE(s.QtyOnHand, 0) AS QtyOnHand,
+        COALESCE(s.QtyReserved, 0) AS QtyReserved,
+        COALESCE(s.QtyOrdered, 0) AS QtyOrdered,
+        COALESCE(CASE
+        WHEN r.ReplenishType = '1' THEN
+        CASE
+        WHEN COALESCE(s.QtyOnHand, 0) - COALESCE(s.QtyReserved, 0) + COALESCE(s.QtyOrdered, 0) &lt;= r.Level_Min
+        THEN r.Level_Max - (COALESCE(s.QtyOnHand, 0) - COALESCE(s.QtyReserved, 0) + COALESCE(s.QtyOrdered, 0))
+        ELSE 0
+        END
+        WHEN r.ReplenishType = '2' THEN r.Level_Max - (COALESCE(s.QtyOnHand, 0) - COALESCE(s.QtyReserved, 0) + COALESCE(s.QtyOrdered, 0))
+        ELSE 0
+        END, 0) AS QtyToOrder,
+        p.M_Product_Category_ID,
+        p.M_Product_Group_ID,
+        p.M_Product_Class_ID,
+        p.M_Product_Classification_ID,
+        p.C_UOM_ID,
+        r.M_Locator_ID,
+        r.M_Warehouse_ID,
+        r.M_WarehouseSource_ID,
+        po.C_BPartner_ID,
+        COALESCE(po.Order_Min, 0) AS Order_Min,
+        COALESCE(po.Order_Pack, 0) AS Order_Pack
+        FROM M_Replenish r
+        INNER JOIN M_Product p ON(p.M_Product_ID = r.M_Product_ID)
+        LEFT JOIN LATERAL (
+        SELECT ppo.C_BPartner_ID, ppo.Order_Min, ppo.Order_Pack
+        FROM M_Product_PO ppo
+        WHERE ppo.M_Product_ID = r.M_Product_ID
+        AND ppo.IsActive = 'Y'
+        AND ppo.IsCurrentVendor = 'Y'
+        AND ppo.AD_Org_ID IN (0, r.AD_Org_ID)
+        ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+        ) po ON true
+        LEFT JOIN (SELECT sto.M_Product_ID, sto.M_Warehouse_ID,
+        SUM(sto.QtyOnHand) AS QtyOnHand,
+        SUM(sto.QtyOrdered) AS QtyOrdered,
+        SUM(sto.QtyReserved) AS QtyReserved,
+        SUM(sto.QtyAvailable) AS QtyAvailable
+        FROM RV_Storage sto
+        GROUP BY sto.M_Product_ID, sto.M_Warehouse_ID) s
+        ON (s.M_Product_ID = r.M_Product_ID AND s.M_Warehouse_ID = r.M_Warehouse_ID)
+        WHERE r.IsActive = 'Y' AND p.IsActive = 'Y') r
+        WHERE (r.QtyToOrder &gt; 0
+        OR (r.ReplenishType IN('0', '9')));</SQLStatement>
+      <RollbackStatement>DROP VIEW IF EXISTS RV_M_Replenish;
+        CREATE OR REPLACE VIEW RV_M_Replenish AS
+        SELECT r.AD_Client_ID,
+        r.AD_Org_ID,
+        r.M_Product_ID,
+        r.ReplenishType,
+        r.Level_Min,
+        r.Level_Max,
+        r.QtyAvailable,
+        r.QtyOnHand,
+        r.QtyReserved,
+        r.QtyOrdered,
+        CASE
+        WHEN r.Order_Pack &gt; 0 AND MOD(CASE
+        WHEN r.QtyToOrder &lt; r.Order_Min AND r.QtyToOrder &gt; 0
+        THEN r.Order_Min
+        ELSE r.QtyToOrder
+        END, r.Order_Pack) &lt;&gt; 0 AND r.QtyToOrder &gt; 0
+        THEN CASE
+        WHEN r.QtyToOrder &lt; r.Order_Min AND r.QtyToOrder &gt; 0
+        THEN r.Order_Min
+        ELSE r.QtyToOrder
+        END - MOD(CASE
+        WHEN r.QtyToOrder &lt; r.Order_Min AND r.QtyToOrder &gt; 0
+        THEN r.Order_Min
+        ELSE r.QtyToOrder
+        END, r.Order_Pack) + r.Order_Pack
+        ELSE r.QtyToOrder
+        END AS QtyToOrder,
+        r.M_Product_Category_ID,
+        r.M_Product_Group_ID,
+        r.M_Product_Class_ID,
+        r.M_Product_Classification_ID,
+        r.C_UOM_ID,
+        r.M_Locator_ID,
+        r.M_Warehouse_ID,
+        r.M_WarehouseSource_ID,
+        r.C_BPartner_ID,
+        r.Order_Min,
+        r.Order_Pack
+        FROM (SELECT r.AD_Client_ID,
+        r.AD_Org_ID,
+        r.M_Product_ID,
+        r.ReplenishType,
+        COALESCE(r.Level_Min, 0) AS Level_Min,
+        COALESCE(r.Level_Max, 0) AS Level_Max,
+        COALESCE(s.QtyAvailable, 0) AS QtyAvailable,
+        COALESCE(s.QtyOnHand, 0) AS QtyOnHand,
+        COALESCE(s.QtyReserved, 0) AS QtyReserved,
+        COALESCE(s.QtyOrdered, 0) AS QtyOrdered,
+        COALESCE(CASE
+        WHEN r.ReplenishType = '1' THEN
+        CASE
+        WHEN (COALESCE(s.QtyOnHand, 0) - COALESCE(s.QtyReserved, 0) + COALESCE(s.QtyOrdered, 0)) &lt;= r.Level_Min
+        THEN r.Level_Max - (COALESCE(s.QtyOnHand, 0) - COALESCE(s.QtyReserved, 0) + COALESCE(s.QtyOrdered, 0))
+        ELSE 0
+        END
+        WHEN r.ReplenishType = '2' THEN r.Level_Max - (COALESCE(s.QtyOnHand, 0) - COALESCE(s.QtyReserved, 0) + COALESCE(s.QtyOrdered, 0))
+        ELSE 0
+        END, 0) AS QtyToOrder,
+        p.M_Product_Category_ID,
+        p.M_Product_Group_ID,
+        p.M_Product_Class_ID,
+        p.M_Product_Classification_ID,
+        p.C_UOM_ID,
+        r.M_Locator_ID,
+        r.M_Warehouse_ID,
+        r.M_WarehouseSource_ID,
+        po.C_BPartner_ID,
+        COALESCE(po.Order_Min, 0) AS Order_Min,
+        COALESCE(po.Order_Pack, 0) AS Order_Pack
+        FROM M_Replenish r
+        INNER JOIN M_Product p ON(p.M_Product_ID = r.M_Product_ID)
+        LEFT JOIN M_Product_PO po ON(po.M_Product_ID = r.M_Product_ID AND po.IsActive = 'Y' AND po.IsCurrentVendor = 'Y')
+        LEFT JOIN (SELECT sto.M_Product_ID, sto.M_Warehouse_ID,
+        SUM(sto.QtyOnHand) AS QtyOnHand,
+        SUM(sto.QtyOrdered) AS QtyOrdered,
+        SUM(sto.QtyReserved) AS QtyReserved,
+        SUM(sto.QtyAvailable) AS QtyAvailable
+        FROM RV_Storage sto
+        GROUP BY sto.M_Product_ID, sto.M_Warehouse_ID) s
+        ON (s.M_Product_ID = r.M_Product_ID AND s.M_Warehouse_ID = r.M_Warehouse_ID)
+        WHERE r.IsActive = 'Y' AND p.IsActive = 'Y') r
+        WHERE (r.QtyToOrder &gt; 0
+        OR (r.ReplenishType IN('0', '9')));
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>

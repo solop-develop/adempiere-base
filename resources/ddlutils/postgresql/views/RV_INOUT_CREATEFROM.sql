@@ -11,7 +11,16 @@ o.C_Order_ID, 0 AS C_Invoice_ID, 0 AS M_RMA_ID, o.DateOrdered AS DateDoc, o.C_BP
 l.C_Activity_ID, l.C_Project_ID, l.C_Campaign_ID, l.User1_ID, l.User2_ID
 FROM C_Order o
 INNER JOIN C_OrderLine l ON(l.C_Order_ID = o.C_Order_ID)
-LEFT JOIN M_Product_PO po ON (l.M_Product_ID = po.M_Product_ID AND l.C_BPartner_ID = po.C_BPartner_ID)
+LEFT JOIN LATERAL (
+    SELECT ppo.VendorProductNo
+    FROM M_Product_PO ppo
+    WHERE ppo.M_Product_ID = l.M_Product_ID
+      AND ppo.C_BPartner_ID = o.C_BPartner_ID
+      AND ppo.C_Currency_ID = o.C_Currency_ID
+      AND ppo.IsActive = 'Y'
+      AND ppo.AD_Org_ID IN (0, o.AD_Org_ID)
+    ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+) po ON true
 LEFT JOIN M_MatchPO m ON (l.C_OrderLine_ID = m.C_OrderLine_ID AND m.M_InOutLine_ID IS NOT NULL)
 LEFT JOIN M_Product p ON (l.M_Product_ID = p.M_Product_ID)
 LEFT JOIN C_Charge c ON (l.C_Charge_ID = c.C_Charge_ID)
@@ -37,7 +46,16 @@ FROM C_Invoice inv
 INNER JOIN C_InvoiceLine l ON (l.C_Invoice_ID = inv.C_Invoice_ID)
 LEFT JOIN M_Product p ON (l.M_Product_ID = p.M_Product_ID)
 LEFT JOIN C_Charge c ON (l.C_Charge_ID = c.C_Charge_ID)
-LEFT JOIN M_Product_PO po ON (l.M_Product_ID = po.M_Product_ID AND inv.C_BPartner_ID = po.C_BPartner_ID)
+LEFT JOIN LATERAL (
+    SELECT ppo.VendorProductNo
+    FROM M_Product_PO ppo
+    WHERE ppo.M_Product_ID = l.M_Product_ID
+      AND ppo.C_BPartner_ID = inv.C_BPartner_ID
+      AND ppo.C_Currency_ID = inv.C_Currency_ID
+      AND ppo.IsActive = 'Y'
+      AND ppo.AD_Org_ID IN (0, inv.AD_Org_ID)
+    ORDER BY ppo.AD_Org_ID DESC LIMIT 1
+) po ON true
 LEFT JOIN M_MatchInv m ON (l.C_InvoiceLine_ID = m.C_InvoiceLine_ID)
 AND l.QtyInvoiced <> 0
 GROUP BY l.AD_Client_ID, l.AD_Org_ID, l.CreatedBy, l.Created, l.UpdatedBy, l.Updated, l.IsActive, l.C_InvoiceLine_ID, l.Line,

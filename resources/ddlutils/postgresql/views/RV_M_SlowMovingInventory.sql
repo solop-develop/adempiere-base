@@ -1,5 +1,3 @@
---DROP VIEW RV_M_SlowMovingInventory;
-
 CREATE VIEW RV_M_SlowMovingInventory AS
 SELECT
   p.AD_Client_ID,
@@ -85,10 +83,14 @@ SELECT
       LEFT JOIN M_Product_Classification pcls ON (
         p.M_Product_Classification_ID = pcls.M_Product_Classification_ID
       )
-      LEFT JOIN M_Product_PO ppo ON (
-        p.M_Product_ID = ppo.M_Product_ID
-        AND ppo.IsCurrentVendor = 'Y'
-      )
+      LEFT JOIN LATERAL (
+        SELECT xpo.PriceLastPO, xpo.PriceLastInv
+        FROM M_Product_PO xpo
+        WHERE xpo.M_Product_ID = p.M_Product_ID
+          AND xpo.IsCurrentVendor = 'Y'
+          AND xpo.AD_Org_ID IN (0, p.AD_Org_ID)
+        ORDER BY xpo.AD_Org_ID DESC LIMIT 1
+      ) ppo ON true
       LEFT JOIN M_ProductPrice pp ON (p.M_Product_ID = pp.M_Product_ID)
       LEFT JOIN M_PriceList_Version plv ON (
         pp.M_PriceList_Version_ID = plv.M_PriceList_Version_ID
