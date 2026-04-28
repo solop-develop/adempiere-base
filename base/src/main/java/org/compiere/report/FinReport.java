@@ -117,11 +117,13 @@ public class FinReport extends FinReportAbstract {
         log.fine("Report Lines = " + no);
         //	** Get Data	** Segment Values
         reportColumns = finReport.getColumnSet().getColumns();
-        if (reportColumns.length == 0)
+        if (reportColumns == null || reportColumns.length == 0) {
             throw new AdempiereUserError("@No@ @PA_ReportColumn_ID@");
+        }
         reportLines = finReport.getLineSet().getLines();
-        if (reportLines.length == 0)
+        if (reportLines == null || reportLines.length == 0) {
             throw new AdempiereUserError("@No@ @PA_ReportLine_ID@");
+        }
 
         //	for all lines
         for (MReportLine reportLine : reportLines) {
@@ -985,8 +987,10 @@ public class FinReport extends FinReportAbstract {
      */
     private void insertLineSource(MReportLine reportLine) {
         //	No source lines
-        if (reportLine == null || reportLine.getSources().length == 0)
+        if (reportLine == null || reportLine.getSources() == null || reportLine.getSources().length == 0) {
+            log.warning("No Source lines: " + reportLine);
             return;
+        }
         //	Log
         log.info("Line=" + reportLine.getSeqNo() + " - " + reportLine);
         //
@@ -1192,7 +1196,7 @@ public class FinReport extends FinReportAbstract {
             //	Set Name,Description
             StringBuilder updateNameAndDesc = new StringBuilder("UPDATE T_Report SET (Name,Description)=(");
             String sourceValueQuery = reportLine.getSourceValueQuery();
-            if (sourceValueQuery.length() == 0 && isCombination) {
+            if ((sourceValueQuery == null || sourceValueQuery.length() == 0) && isCombination) {
                 updateNameAndDesc.append("SELECT Combination , Description FROM C_ValidCombination WHERE C_ValidCombination_ID=").append(combinationId);
             } else {
                 updateNameAndDesc.append(sourceValueQuery);
