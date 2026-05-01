@@ -98,6 +98,9 @@ public class FinReport extends FinReportAbstract {
         setPeriods();
         financialReportInfo.append(" - C_Period_ID=").append(getPeriodId()).append(" - ").append(parameterWhere);
         ProcessInfoParameter[] pi = getProcessInfo().getParameter();
+        if (pi == null || pi.length == 0) {
+            throw new AdempiereUserError("@No@ @AD_Process_Para_ID@");
+        }
         pi[0].setParameter(getPeriodId());
         getProcessInfo().setParameter(pi);
         log.info(financialReportInfo.toString());
