@@ -180,37 +180,23 @@ public class MBPartner extends X_C_BPartner
 	public static BigDecimal getNotInvoicedAmt (int C_BPartner_ID)
 	{
 		BigDecimal retValue = null;
-		String sql = "SELECT COALESCE(SUM(COALESCE("
-			+ "currencyBase((ol.QtyDelivered-ol.QtyInvoiced)*ol.PriceActual,o.C_Currency_ID,o.DateOrdered, o.AD_Client_ID,o.AD_Org_ID) ,0)),0) "
-			+ "FROM C_OrderLine ol"
-			+ " INNER JOIN C_Order o ON (ol.C_Order_ID=o.C_Order_ID) "
-			+ "WHERE o.IsSOTrx='Y' AND Bill_BPartner_ID=?";			
-		PreparedStatement pstmt = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, null);
-			pstmt.setInt (1, C_BPartner_ID);
-			ResultSet rs = pstmt.executeQuery ();
-			if (rs.next ())
-				retValue = rs.getBigDecimal(1);
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			s_log.log(Level.SEVERE, sql, e);
-		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}
+		String sql = "SELECT SUM(currencyBase(Subtotal, C_Currency_ID, DateOrdered, AD_Client_ID, AD_Org_ID)) " +
+				"FROM ( " +
+				"    SELECT  " +
+				"        o.C_Currency_ID,  " +
+				"        o.DateOrdered,  " +
+				"        o.AD_Client_ID,  " +
+				"        o.AD_Org_ID, " +
+				"        SUM((ol.QtyDelivered - ol.QtyInvoiced) * ol.PriceActual) as Subtotal " +
+				"    FROM C_Order o  " +
+				"    INNER JOIN C_OrderLine ol ON (o.C_Order_ID = ol.C_Order_ID)  " +
+				"    WHERE o.DocStatus IN ('CO','CL')  " +
+				"      AND o.IsInvoiced = 'N'  " +
+				"      AND o.IsSOTrx = 'Y'  " +
+				"      AND o.Bill_BPartner_ID = ? " +
+				"    GROUP BY o.C_Currency_ID, o.DateOrdered, o.AD_Client_ID, o.AD_Org_ID " +
+				") AS balanceAmt; ";
+		retValue = DB.getSQLValueBD(null, sql, C_BPartner_ID);
 		return retValue;
 	}	//	getNotInvoicedAmt
 

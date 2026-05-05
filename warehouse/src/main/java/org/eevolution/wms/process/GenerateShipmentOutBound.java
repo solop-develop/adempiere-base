@@ -31,7 +31,15 @@ package org.eevolution.wms.process;
 
 import org.adempiere.core.domains.models.X_C_Order;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
+import org.compiere.model.MDocType;
+import org.compiere.model.MInOut;
+import org.compiere.model.MInOutLine;
+import org.compiere.model.MMovement;
+import org.compiere.model.MOrder;
+import org.compiere.model.MOrderLine;
+import org.compiere.model.MStorage;
+import org.compiere.model.PO;
+import org.compiere.model.Query;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.Trx;
 import org.eevolution.distribution.model.MDDOrder;
@@ -45,7 +53,18 @@ import org.eevolution.wms.model.MWMInOutBound;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -54,14 +73,28 @@ import java.util.concurrent.atomic.AtomicReference;
  * @version $Id: $
  */
 public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
-    private HashSet<String> shipmentsData;
+    private Set<String> shipmentsData;
 
     private HashMap<Integer, Integer> numberOfDocuments;
     private HashMap<String, List<MWMInOutBoundLine>> groupedOutBoundLinesForShipments;
     private HashMap<Integer, List<MWMInOutBoundLine>> groupedOutBoundLinesForMovements;
     private HashMap<Integer, List<MWMInOutBoundLine>> groupedOutBoundLinesForIssues;
-    private int documentCreated = 0;
+    private final AtomicInteger documentCreated = new AtomicInteger(0);
     private final AtomicInteger withError = new AtomicInteger(0);
+
+    private static int parallelism() {
+        return Math.max(4, Runtime.getRuntime().availableProcessors() * 2);
+    }
+
+    private static ForkJoinPool newWorkerPool(String workerPrefix) {
+        return new ForkJoinPool(parallelism(),
+                pool -> {
+                    ForkJoinWorkerThread t = ForkJoinPool.defaultForkJoinWorkerThreadFactory.newThread(pool);
+                    t.setName(workerPrefix + "-Worker-" + t.getPoolIndex());
+                    return t;
+                },
+                null, false);
+    }
 
     /**
      * Get Parameters
@@ -80,7 +113,7 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
         groupedOutBoundLinesForShipments = new HashMap<>();
         groupedOutBoundLinesForMovements = new HashMap<>();
         groupedOutBoundLinesForIssues = new HashMap<>();
-        shipmentsData = new HashSet<>();
+        shipmentsData = ConcurrentHashMap.newKeySet();
         // Overwrite table RV_WM_InOutBoundLine by WM_InOutBoundLine domain model
         getProcessInfo().setTableSelectionId(MWMInOutBoundLine.Table_ID);
         List<MWMInOutBoundLine> outBoundLines = null;
@@ -103,165 +136,220 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
 
         StringBuilder documentGenerated = new StringBuilder();
         shipmentsData.forEach(value -> documentGenerated.append(" , ").append(value));
-        return "@Created@ " + documentCreated + documentGenerated.toString() + (withError.get() > 0 ? " | @Error@ " + withError.get() : "");
+        return "@Created@ " + documentCreated.get() + documentGenerated.toString() + (withError.get() > 0 ? " | @Error@ " + withError.get() : "");
     }
 
     private void createAndProcessShipments() {
-        List<PO> documentsToPrint = new ArrayList<PO>();
-        groupedOutBoundLinesForShipments.entrySet().stream().filter(Objects::nonNull).forEach(entry -> {
-            try {
-                Trx.run(transactionName -> {
-                    List<MWMInOutBoundLine> lines = entry.getValue();
-                    AtomicReference<MInOut> maybeShipment = new AtomicReference<>();
-                    lines.forEach(outboundLine -> {
-                        MOrderLine orderLine = new MOrderLine(getCtx(), outboundLine.getC_OrderLine_ID(), transactionName);
-                        MInOut shipment = maybeShipment.get();
-                        if (shipment == null) {
-                            MOrder order = orderLine.getParent();
-                            MDocType orderDocumentType = (MDocType) order.getC_DocType();
-                            int docTypeId = orderDocumentType.getC_DocTypeShipment_ID();
-                            if (docTypeId == 0) {
-                                docTypeId = MDocType.getDocType(MDocType.DOCBASETYPE_MaterialDelivery, orderLine.getAD_Org_ID());
-                            }
-                            MWMInOutBound outbound = outboundLine.getParent();
-                            shipment = new MInOut(order, docTypeId, getMovementDate());
-                            shipment.set_TrxName(transactionName);
-                            shipment.setIsSOTrx(true);
-                            shipment.setM_Shipper_ID(outbound.getM_Shipper_ID());
-                            shipment.setDescription(outbound.getDescription());
-                            shipment.setM_FreightCategory_ID(outbound.getM_FreightCategory_ID());
-                            shipment.setFreightCostRule(outbound.getFreightCostRule());
-                            shipment.setFreightAmt(outbound.getFreightAmt());
-                            shipment.setDocAction(MInOut.DOCACTION_Complete);
-                            shipment.setDocStatus(MInOut.DOCSTATUS_Drafted);
-                            shipment.saveEx();
-                            maybeShipment.set(shipment);
-                        }
-                        BigDecimal qtyToDelivery = getSalesOrderQtyToDelivery(outboundLine);
-                        MInOutLine shipmentLine = new MInOutLine(outboundLine.getCtx(), 0, transactionName);
-                        shipmentLine.setAD_Org_ID(shipment.getAD_Org_ID());
-                        shipmentLine.setM_InOut_ID(shipment.getM_InOut_ID());
-                        shipmentLine.setM_Locator_ID(outboundLine.getM_LocatorTo_ID());
-                        shipmentLine.setM_Product_ID(outboundLine.getM_Product_ID());
-                        shipmentLine.setDescription(outboundLine.getDescription());
-                        shipmentLine.setC_UOM_ID(outboundLine.getC_UOM_ID());
-                        shipmentLine.setQtyEntered(qtyToDelivery);
-                        shipmentLine.setMovementQty(qtyToDelivery);
-                        shipmentLine.setC_OrderLine_ID(orderLine.getC_OrderLine_ID());
-                        shipmentLine.setM_Shipper_ID(outboundLine.getM_Shipper_ID());
-                        shipmentLine.setM_FreightCategory_ID(outboundLine.getM_FreightCategory_ID());
-                        shipmentLine.setFreightAmt(outboundLine.getFreightAmt());
-                        shipmentLine.setM_AttributeSetInstance_ID(outboundLine.getM_AttributeSetInstance_ID());
-                        shipmentLine.setWM_InOutBoundLine_ID(outboundLine.getWM_InOutBoundLine_ID());
-                        shipmentLine.saveEx();
-                    });
-                    MInOut shipment = maybeShipment.get();
-                    shipment.set_TrxName(transactionName);
-                    if (!shipment.processIt(getDocAction())) {
-                        addLog("@ProcessFailed@ : " + shipment.getProcessMsg());
-                        throw new AdempiereException("@ProcessFailed@ :" + shipment.getProcessMsg());
-                    }
-                    shipment.saveEx();
-                    shipmentsData.add(shipment.getDocumentInfo());
-                    documentCreated++;
-                    addLog(shipment.getDocumentInfo());
-                    documentsToPrint.add(shipment);
+        List<PO> documentsToPrint = Collections.synchronizedList(new ArrayList<PO>());
+        // Capture caller gRPC context so workers re-attach it and Env.getCtx() works.
+        final io.grpc.Context grpcCtx = io.grpc.Context.current();
+        // Re-group entries by C_BPartner_ID so a single worker processes
+        // sequentially every shipment of the same business partner. This
+        // subsumes per-order serialization (each order belongs to one BP)
+        // and avoids races on:
+        //  - C_OrderLine.QtyDelivered/QtyReserved (lost update)
+        //  - C_Order.IsDelivered (updateIsDelivered stale read)
+        //  - MBPartner.getNotInvoicedAmt-based credit check, which
+        //    aggregates QtyDelivered across all orders of the BP and
+        //    would otherwise miss in-flight updates from sibling workers.
+        Map<Integer, List<Map.Entry<String, List<MWMInOutBoundLine>>>> entriesByBPartner = new HashMap<>();
+        groupedOutBoundLinesForShipments.entrySet().stream()
+                .filter(Objects::nonNull)
+                .filter(e -> e.getValue() != null && !e.getValue().isEmpty())
+                .forEach(e -> {
+                    int bpId = e.getValue().get(0).getOrderLine().getC_BPartner_ID();
+                    entriesByBPartner.computeIfAbsent(bpId, k -> new ArrayList<>()).add(e);
                 });
-            } catch (Exception e) {
-                addLog(e.getLocalizedMessage());
-                withError.addAndGet(entry.getValue().size());
-                log.warning(e.getLocalizedMessage());
-            }
-        });
+        ForkJoinPool pool = newWorkerPool("GenShipOutBound-Ship");
+        try {
+            pool.submit(() ->
+                entriesByBPartner.values().parallelStream()
+                    .forEach(entriesForBPartner -> entriesForBPartner.forEach(entry -> {
+                        try {
+                            grpcCtx.wrap(() -> Trx.run(transactionName -> {
+                                List<MWMInOutBoundLine> lines = entry.getValue();
+                                AtomicReference<MInOut> maybeShipment = new AtomicReference<>();
+                                lines.forEach(outboundLine -> {
+                                    MOrderLine orderLine = new MOrderLine(getCtx(), outboundLine.getC_OrderLine_ID(), transactionName);
+                                    MInOut shipment = maybeShipment.get();
+                                    if (shipment == null) {
+                                        MOrder order = orderLine.getParent();
+                                        MDocType orderDocumentType = (MDocType) order.getC_DocType();
+                                        int docTypeId = orderDocumentType.getC_DocTypeShipment_ID();
+                                        if (docTypeId == 0) {
+                                            docTypeId = MDocType.getDocType(MDocType.DOCBASETYPE_MaterialDelivery, orderLine.getAD_Org_ID());
+                                        }
+                                        MWMInOutBound outbound = outboundLine.getParent();
+                                        shipment = new MInOut(order, docTypeId, getMovementDate());
+                                        shipment.set_TrxName(transactionName);
+                                        shipment.setIsSOTrx(true);
+                                        shipment.setM_Shipper_ID(outbound.getM_Shipper_ID());
+                                        shipment.setDescription(outbound.getDescription());
+                                        shipment.setM_FreightCategory_ID(outbound.getM_FreightCategory_ID());
+                                        shipment.setFreightCostRule(outbound.getFreightCostRule());
+                                        shipment.setFreightAmt(outbound.getFreightAmt());
+                                        shipment.setDocAction(MInOut.DOCACTION_Complete);
+                                        shipment.setDocStatus(MInOut.DOCSTATUS_Drafted);
+                                        shipment.saveEx();
+                                        maybeShipment.set(shipment);
+                                    }
+                                    BigDecimal qtyToDelivery = getSalesOrderQtyToDelivery(outboundLine);
+                                    MInOutLine shipmentLine = new MInOutLine(outboundLine.getCtx(), 0, transactionName);
+                                    shipmentLine.setAD_Org_ID(shipment.getAD_Org_ID());
+                                    shipmentLine.setM_InOut_ID(shipment.getM_InOut_ID());
+                                    shipmentLine.setM_Locator_ID(outboundLine.getM_LocatorTo_ID());
+                                    shipmentLine.setM_Product_ID(outboundLine.getM_Product_ID());
+                                    shipmentLine.setDescription(outboundLine.getDescription());
+                                    shipmentLine.setC_UOM_ID(outboundLine.getC_UOM_ID());
+                                    shipmentLine.setQtyEntered(qtyToDelivery);
+                                    shipmentLine.setMovementQty(qtyToDelivery);
+                                    shipmentLine.setC_OrderLine_ID(orderLine.getC_OrderLine_ID());
+                                    shipmentLine.setM_Shipper_ID(outboundLine.getM_Shipper_ID());
+                                    shipmentLine.setM_FreightCategory_ID(outboundLine.getM_FreightCategory_ID());
+                                    shipmentLine.setFreightAmt(outboundLine.getFreightAmt());
+                                    shipmentLine.setM_AttributeSetInstance_ID(outboundLine.getM_AttributeSetInstance_ID());
+                                    shipmentLine.setWM_InOutBoundLine_ID(outboundLine.getWM_InOutBoundLine_ID());
+                                    shipmentLine.saveEx();
+                                });
+                                MInOut shipment = maybeShipment.get();
+                                shipment.set_TrxName(transactionName);
+                                if (!shipment.processIt(getDocAction())) {
+                                    addLog("@ProcessFailed@ : " + shipment.getProcessMsg());
+                                    throw new AdempiereException("@ProcessFailed@ :" + shipment.getProcessMsg());
+                                }
+                                shipment.saveEx();
+                                shipmentsData.add(shipment.getDocumentInfo());
+                                documentCreated.incrementAndGet();
+                                addLog(shipment.getDocumentInfo());
+                                documentsToPrint.add(shipment);
+                            })).run();
+                        } catch (Exception e) {
+                            addLog(e.getLocalizedMessage());
+                            withError.addAndGet(entry.getValue().size());
+                            log.warning(e.getLocalizedMessage());
+                        }
+                    }))
+            ).get();
+        } catch (Exception e) {
+            log.warning(e.getLocalizedMessage());
+            throw new AdempiereException(e);
+        } finally {
+            pool.shutdown();
+        }
         printDocument(documentsToPrint, true);
     }
     private void createAndProcessMovements(){
-        List<PO> documentsToPrint = new ArrayList<PO>();
-        groupedOutBoundLinesForMovements.entrySet().stream().filter(Objects::nonNull).forEach(entry -> {
-            try {
-                Trx.run(transactionName -> {
-                    List<MWMInOutBoundLine> lines = entry.getValue();
-                    MDDOrder distributionOrder = new MDDOrder(getCtx(), entry.getKey(), transactionName);
-                    lines.forEach(outboundLine -> {
-                        MDDOrderLine distributionOrderLine = new MDDOrderLine(outboundLine.getCtx(), outboundLine.getDD_OrderLine_ID(), transactionName);
-                        distributionOrderLine.setAD_Org_ID(outboundLine.getAD_Org_ID());
-                        distributionOrderLine.setDescription(outboundLine.getDescription());
-                        distributionOrderLine.setConfirmedQty(getDistributionOrderQtyToDelivery(outboundLine, distributionOrderLine));
-                        distributionOrderLine.saveEx();
-                    });
-                    List<Integer> orderIds = new ArrayList<Integer>();
-                    orderIds.add(distributionOrder.getDD_Order_ID());
+        List<PO> documentsToPrint = Collections.synchronizedList(new ArrayList<PO>());
+        final io.grpc.Context grpcCtx = io.grpc.Context.current();
+        ForkJoinPool pool = newWorkerPool("GenShipOutBound-Mov");
+        try {
+            pool.submit(() ->
+                groupedOutBoundLinesForMovements.entrySet().parallelStream()
+                    .filter(Objects::nonNull)
+                    .forEach(entry -> {
+                        try {
+                            grpcCtx.wrap(() -> Trx.run(transactionName -> {
+                                List<MWMInOutBoundLine> lines = entry.getValue();
+                                MDDOrder distributionOrder = new MDDOrder(getCtx(), entry.getKey(), transactionName);
+                                lines.forEach(outboundLine -> {
+                                    MDDOrderLine distributionOrderLine = new MDDOrderLine(outboundLine.getCtx(), outboundLine.getDD_OrderLine_ID(), transactionName);
+                                    distributionOrderLine.setAD_Org_ID(outboundLine.getAD_Org_ID());
+                                    distributionOrderLine.setDescription(outboundLine.getDescription());
+                                    distributionOrderLine.setConfirmedQty(getDistributionOrderQtyToDelivery(outboundLine, distributionOrderLine));
+                                    distributionOrderLine.saveEx();
+                                });
+                                List<Integer> orderIds = new ArrayList<Integer>();
+                                orderIds.add(distributionOrder.getDD_Order_ID());
 
-                    ProcessInfo processInfo = ProcessBuilder.create(getCtx())
-                            .process(MovementGenerate.getProcessId())
-                            .withSelectedRecordsIds(MDDOrder.Table_ID, orderIds)
-                            .withParameter(MWMInOutBound.COLUMNNAME_M_Warehouse_ID, distributionOrder.getM_Warehouse_ID())
-                            .withParameter(MMovement.COLUMNNAME_MovementDate, getMovementDate())
-                            .withoutTransactionClose()
-                            .execute(transactionName);
-                    if (processInfo.isError()) {
-                        throw new AdempiereException(processInfo.getSummary());
-                    }
-                    addLog(processInfo.getSummary());
-                    Arrays.stream(processInfo.getIDs()).forEach(recordId -> {
-                        if (recordId <= 0) {
-                            return;
+                                ProcessInfo processInfo = ProcessBuilder.create(getCtx())
+                                        .process(MovementGenerate.getProcessId())
+                                        .withSelectedRecordsIds(MDDOrder.Table_ID, orderIds)
+                                        .withParameter(MWMInOutBound.COLUMNNAME_M_Warehouse_ID, distributionOrder.getM_Warehouse_ID())
+                                        .withParameter(MMovement.COLUMNNAME_MovementDate, getMovementDate())
+                                        .withoutTransactionClose()
+                                        .execute(transactionName);
+                                if (processInfo.isError()) {
+                                    throw new AdempiereException(processInfo.getSummary());
+                                }
+                                addLog(processInfo.getSummary());
+                                Arrays.stream(processInfo.getIDs()).forEach(recordId -> {
+                                    if (recordId <= 0) {
+                                        return;
+                                    }
+                                    MMovement movement = new MMovement(getCtx(), recordId, transactionName);
+                                    documentCreated.incrementAndGet();
+                                    documentsToPrint.add(movement);
+                                });
+                            })).run();
+                        } catch (Exception e) {
+                            addLog(e.getLocalizedMessage());
+                            withError.addAndGet(entry.getValue().size());
+                            log.warning(e.getLocalizedMessage());
                         }
-                        MMovement movement = new MMovement(getCtx(), recordId, transactionName);
-                        documentCreated++;
-                        documentsToPrint.add(movement);
-                    });
-                });
-            } catch (Exception e) {
-                addLog(e.getLocalizedMessage());
-                withError.addAndGet(entry.getValue().size());
-                log.warning(e.getLocalizedMessage());
-            }
-        });
+                    })
+            ).get();
+        } catch (Exception e) {
+            log.warning(e.getLocalizedMessage());
+            throw new AdempiereException(e);
+        } finally {
+            pool.shutdown();
+        }
         printDocument(documentsToPrint, true);
     }
     private void createAndProcessIssues() {
-        groupedOutBoundLinesForIssues.entrySet().stream().filter(Objects::nonNull).forEach(entry -> {
-            try {
-                Trx.run(transactionName -> {
-                    List<MWMInOutBoundLine> lines = entry.getValue();
+        final io.grpc.Context grpcCtx = io.grpc.Context.current();
+        ForkJoinPool pool = newWorkerPool("GenShipOutBound-Issue");
+        try {
+            pool.submit(() ->
+                groupedOutBoundLinesForIssues.entrySet().parallelStream()
+                    .filter(Objects::nonNull)
+                    .forEach(entry -> {
+                        try {
+                            grpcCtx.wrap(() -> Trx.run(transactionName -> {
+                                List<MWMInOutBoundLine> lines = entry.getValue();
 
-                    lines.forEach(outboundLine -> {
-                        MPPOrderBOMLine orderBOMLine = (MPPOrderBOMLine) outboundLine.getPP_Order_BOMLine();
-                        MStorage[] storage = MStorage.getAll(getCtx(), orderBOMLine.getM_Product_ID(), outboundLine.getM_LocatorTo_ID(), transactionName);
-                        BigDecimal qtyDelivered = getManufacturingOrderQtyToDelivery(outboundLine , orderBOMLine);
-                        List<MPPCostCollector> issues = MPPOrder.createIssue(
-                                orderBOMLine.getParent(),
-                                orderBOMLine,
-                                getMovementDate(),
-                                qtyDelivered,
-                                BigDecimal.ZERO,
-                                BigDecimal.ZERO,
-                                storage,
-                                true);
-                        if (issues != null) {
-                            issues.forEach(costCollector -> {
-                                costCollector.setDescription(outboundLine.getDescription());
-                                costCollector.saveEx();
-                                if (MPPCostCollector.DOCSTATUS_Drafted.equals(costCollector.getDocStatus())
-                                        || MPPCostCollector.DOCSTATUS_InProgress.equals(costCollector.getDocStatus())) {
-                                    if (!costCollector.processIt(MPPCostCollector.DOCACTION_Complete)) {
-                                        addLog("@ProcessFailed@ : " + costCollector.getDocumentInfo());
-                                        throw new AdempiereException("@ProcessFailed@ :" + costCollector.getDocumentInfo());
+                                lines.forEach(outboundLine -> {
+                                    MPPOrderBOMLine orderBOMLine = (MPPOrderBOMLine) outboundLine.getPP_Order_BOMLine();
+                                    MStorage[] storage = MStorage.getAll(getCtx(), orderBOMLine.getM_Product_ID(), outboundLine.getM_LocatorTo_ID(), transactionName);
+                                    BigDecimal qtyDelivered = getManufacturingOrderQtyToDelivery(outboundLine , orderBOMLine);
+                                    List<MPPCostCollector> issues = MPPOrder.createIssue(
+                                            orderBOMLine.getParent(),
+                                            orderBOMLine,
+                                            getMovementDate(),
+                                            qtyDelivered,
+                                            BigDecimal.ZERO,
+                                            BigDecimal.ZERO,
+                                            storage,
+                                            true);
+                                    if (issues != null) {
+                                        issues.forEach(costCollector -> {
+                                            costCollector.setDescription(outboundLine.getDescription());
+                                            costCollector.saveEx();
+                                            if (MPPCostCollector.DOCSTATUS_Drafted.equals(costCollector.getDocStatus())
+                                                    || MPPCostCollector.DOCSTATUS_InProgress.equals(costCollector.getDocStatus())) {
+                                                if (!costCollector.processIt(MPPCostCollector.DOCACTION_Complete)) {
+                                                    addLog("@ProcessFailed@ : " + costCollector.getDocumentInfo());
+                                                    throw new AdempiereException("@ProcessFailed@ :" + costCollector.getDocumentInfo());
+                                                }
+                                                costCollector.saveEx();
+                                            }
+                                        });
                                     }
-                                    costCollector.saveEx();
-                                }
-                            });
+                                });
+                            })).run();
+                        } catch (Exception e) {
+                            addLog(e.getLocalizedMessage());
+                            withError.addAndGet(entry.getValue().size());
+                            log.warning(e.getLocalizedMessage());
                         }
-                    });
-
-                });
-            } catch (Exception e) {
-                addLog(e.getLocalizedMessage());
-                withError.addAndGet(entry.getValue().size());
-                log.warning(e.getLocalizedMessage());
-            }
-        });
+                    })
+            ).get();
+        } catch (Exception e) {
+            log.warning(e.getLocalizedMessage());
+            throw new AdempiereException(e);
+        } finally {
+            pool.shutdown();
+        }
     }
 
     private BigDecimal getSalesOrderQtyToDelivery(MWMInOutBoundLine outboundLine) {

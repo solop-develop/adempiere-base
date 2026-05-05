@@ -2063,7 +2063,7 @@ public abstract class PO
 									.append(" FROM ").append(p_info.getTableName()).append("_Trl WHERE ")
 									.append(m_KeyColumns[0]).append("=?")
 									.append(" AND AD_Language=?");
-			retValue = DB.getSQLValueString(get_TrxName(), sql.toString(), ID, AD_Language);
+			retValue = DB.getSQLValueString(null, sql.toString(), ID, AD_Language);
 		}
 		//
 		// If no translation found or not translated, fallback to original:
