@@ -1191,12 +1191,12 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 		//	Credit Check
 		if (isSOTrx() && !isReversal())
 		{
+			MBPartner bp = new MBPartner (getCtx(), getC_BPartner_ID(), get_TrxName());
 			I_C_Order order = getC_Order();
 			if (order != null && MDocType.DOCSUBTYPESO_PrepayOrder.equals(order.getC_DocType().getDocSubTypeSO())
 					&& !MSysConfig.getBooleanValue("CHECK_CREDIT_ON_PREPAY_ORDER", true, getAD_Client_ID(), getAD_Org_ID())) {
 				// ignore -- don't validate Prepay Orders depending on sysconfig parameter
-			} else {
-				MBPartner bp = new MBPartner (getCtx(), getC_BPartner_ID(), get_TrxName());
+			} else if (!MBPartner.SOCREDITSTATUS_NoCreditCheck.equals(bp.getSOCreditStatus())) {
 				if (MBPartner.SOCREDITSTATUS_CreditStop.equals(bp.getSOCreditStatus()))
 				{
 					processMsg = "@BPartnerCreditStop@ - @TotalOpenBalance@="

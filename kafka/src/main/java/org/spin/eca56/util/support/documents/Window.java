@@ -17,15 +17,6 @@
  *****************************************************************************/
 package org.spin.eca56.util.support.documents;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.adempiere.core.domains.models.I_AD_ChangeLog;
 import org.adempiere.core.domains.models.I_AD_Element;
 import org.adempiere.core.domains.models.I_AD_Field;
@@ -47,6 +38,15 @@ import org.compiere.model.Query;
 import org.compiere.util.DisplayType;
 import org.compiere.wf.MWorkflow;
 import org.spin.eca56.util.support.DictionaryDocument;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 	the document class for Window senders
@@ -311,7 +311,7 @@ public class Window extends DictionaryDocument {
 					+ "SELECT 1 FROM AD_Field f "
 					+ "INNER JOIN AD_Column c ON(c.AD_Column_ID = f.AD_Column_ID) "
 					+ "WHERE c.AD_Process_ID = AD_Process.AD_Process_ID "
-					+ "AND f.IsDisplayed = 'Y' "
+					// + "AND f.IsDisplayed = 'Y' "
 					+ "AND f.AD_Tab_ID = ? " // #2
 					+ "AND f.IsActive = 'Y'"
 				+ ") "

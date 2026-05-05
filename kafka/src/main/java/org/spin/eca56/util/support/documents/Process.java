@@ -17,13 +17,6 @@
  *****************************************************************************/
 package org.spin.eca56.util.support.documents;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.adempiere.core.domains.models.I_AD_Element;
 import org.adempiere.core.domains.models.I_AD_Process;
 import org.adempiere.core.domains.models.I_AD_Process_Para;
@@ -40,6 +33,13 @@ import org.compiere.wf.MWorkflow;
 import org.spin.eca56.util.support.DictionaryDocument;
 import org.spin.util.AbstractExportFormat;
 import org.spin.util.ReportExportHandler;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 	the document class for Process senders

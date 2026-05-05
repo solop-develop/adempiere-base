@@ -14,17 +14,19 @@
  ************************************************************************************/
 package org.spin.eca56.util.support.documents;
 
-import java.util.Arrays;
-import java.util.List;
 
 import org.adempiere.core.domains.models.I_C_AcctSchema_Element;
 import org.adempiere.core.domains.models.I_C_ValidCombination;
 import org.adempiere.core.domains.models.X_C_AcctSchema_Element;
-// import org.compiere.model.MAcctSchema;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.compiere.model.MAcctSchemaElement;
 import org.compiere.model.MColumn;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
+
 
 public class AccountingUtils {
 

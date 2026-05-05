@@ -17,6 +17,7 @@
  *****************************************************************************/
 package org.spin.eca56.util.support.documents;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,7 @@ import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Language;
 import org.compiere.util.Util;
+
 
 /**
  * 	The util class for all documents

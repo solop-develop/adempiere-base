@@ -325,25 +325,54 @@ public class GenerateInvoiceFromBatch extends GenerateInvoiceFromBatchAbstract
 					// MInvoice.isBulkComplete == true.
 					int[] affectedBPs = DB.getIDsEx(null,
 							"SELECT DISTINCT i.C_BPartner_ID FROM C_Invoice i "
-							+ "WHERE i.C_Invoice_ID IN (SELECT DISTINCT C_Invoice_ID FROM C_InvoiceBatchLine "
-							+ "                         WHERE C_InvoiceBatch_ID = ? AND C_Invoice_ID IS NOT NULL)",
+							+ "JOIN C_InvoiceBatchLine l ON l.C_Invoice_ID = i.C_Invoice_ID "
+							+ "WHERE l.C_InvoiceBatch_ID = ?",
 							getRecord_ID());
-					for (int bpId : affectedBPs) {
-						// One transaction per BP so the parent process trx
-						// stays free of long-held locks.
-						Trx.run(trx -> {
-							MBPartner bp = new MBPartner(getCtx(), bpId, trx);
-							bp.setTotalOpenBalance();
-							bp.setActualLifeTimeValue();
-							if (bp.getFirstSale() == null) {
-								Timestamp firstSale = DB.getSQLValueTSEx(trx,
-										"SELECT MIN(DateInvoiced) FROM C_Invoice "
-										+ "WHERE C_BPartner_ID = ? AND IsSOTrx='Y' AND DocStatus IN ('CO','CL')",
-										bpId);
-								if (firstSale != null) bp.setFirstSale(firstSale);
-							}
-							bp.saveEx();
-						});
+					if (affectedBPs.length > 0) {
+						final io.grpc.Context bpGrpcCtx = io.grpc.Context.current();
+						int bpParallelism = Math.max(4, Runtime.getRuntime().availableProcessors() * 2);
+						ForkJoinPool bpPool = new ForkJoinPool(bpParallelism,
+								pool -> {
+									ForkJoinWorkerThread t = ForkJoinPool.defaultForkJoinWorkerThreadFactory.newThread(pool);
+									t.setName("GenInvBatch-BP-Worker-" + t.getPoolIndex());
+									return t;
+								},
+								null, false);
+						final AtomicInteger bpErr = new AtomicInteger();
+						try {
+							bpPool.submit(() -> java.util.Arrays.stream(affectedBPs).parallel().forEach(bpId -> {
+								try {
+									bpGrpcCtx.wrap(() -> Trx.run(trx -> {
+										// One transaction per BP so the parent process trx
+										// stays free of long-held locks.
+										MBPartner bp = new MBPartner(getCtx(), bpId, trx);
+										bp.setTotalOpenBalance();
+										bp.setActualLifeTimeValue();
+										if (bp.getFirstSale() == null) {
+											Timestamp firstSale = DB.getSQLValueTSEx(trx,
+													"SELECT MIN(DateInvoiced) FROM C_Invoice "
+													+ "WHERE C_BPartner_ID = ? AND IsSOTrx='Y' AND DocStatus IN ('CO','CL')",
+													bpId);
+											if (firstSale != null) bp.setFirstSale(firstSale);
+										}
+										bp.saveEx();
+									})).run();
+								} catch (Exception e) {
+									bpErr.incrementAndGet();
+									errorMsgMap.computeIfAbsent(
+											"@C_BPartner_ID@ " + e.getLocalizedMessage() + " @Qty@: ",
+											k -> new LongAdder()).increment();
+								}
+							})).get();
+						} catch (Exception e) {
+							throw new AdempiereException("BP recompute failed: " + e.getLocalizedMessage(), e);
+						} finally {
+							bpPool.shutdown();
+						}
+						if (bpErr.get() > 0) {
+							addLog(0, null, null,
+									"@Error@ @C_BPartner_ID@ @Qty@: " + bpErr.get());
+						}
 					}
 
 					// Close the batch only on a clean Complete run.
