@@ -17,13 +17,22 @@
  *****************************************************************************/
 package org.spin.eca56.util.support.documents;
 
+<<<<<<< feature/update-patch
+=======
+import java.util.List;
+import java.util.Optional;
+
+>>>>>>> develop
 import org.compiere.model.MLookupInfo;
 import org.compiere.model.MTable;
 import org.compiere.util.Env;
 
+<<<<<<< feature/update-patch
 import java.util.List;
 import java.util.Optional;
 
+=======
+>>>>>>> develop
 /**
  * 	The Stub class for reference
  * 	@author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
