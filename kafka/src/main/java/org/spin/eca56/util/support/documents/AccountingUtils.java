@@ -14,30 +14,20 @@
  ************************************************************************************/
 package org.spin.eca56.util.support.documents;
 
-<<<<<<< feature/update-patch
-import org.adempiere.core.domains.models.I_C_AcctSchema_Element;
-import org.adempiere.core.domains.models.I_C_ValidCombination;
-import org.adempiere.core.domains.models.X_C_AcctSchema_Element;
-=======
-import java.util.Arrays;
-import java.util.List;
 
 import org.adempiere.core.domains.models.I_C_AcctSchema_Element;
 import org.adempiere.core.domains.models.I_C_ValidCombination;
 import org.adempiere.core.domains.models.X_C_AcctSchema_Element;
-// import org.compiere.model.MAcctSchema;
->>>>>>> develop
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.compiere.model.MAcctSchemaElement;
 import org.compiere.model.MColumn;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 
-<<<<<<< feature/update-patch
-import java.util.Arrays;
-import java.util.List;
 
-=======
->>>>>>> develop
 public class AccountingUtils {
 
 	public static List<String> USER_LIST_COLUMNS = Arrays.asList(

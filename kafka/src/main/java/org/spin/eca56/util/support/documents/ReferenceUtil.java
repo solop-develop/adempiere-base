@@ -17,8 +17,7 @@
  *****************************************************************************/
 package org.spin.eca56.util.support.documents;
 
-<<<<<<< feature/update-patch
-=======
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +28,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
->>>>>>> develop
 import org.adempiere.core.domains.models.I_AD_Chart;
 import org.adempiere.core.domains.models.I_AD_Image;
 import org.adempiere.core.domains.models.I_AD_Ref_List;
@@ -50,15 +48,6 @@ import org.compiere.util.Env;
 import org.compiere.util.Language;
 import org.compiere.util.Util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * 	The util class for all documents
