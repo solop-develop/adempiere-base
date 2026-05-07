@@ -35,7 +35,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260507L;
 
     /** Standard Constructor */
     public X_C_ValidCombination (Properties ctx, int C_ValidCombination_ID, String trxName)
@@ -319,6 +319,31 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
 		return ii.intValue();
 	}
 
+	/** Set Combination.
+		@param Combination 
+		Unique combination of account elements
+	  */
+	public void setCombination (String Combination)
+	{
+		set_ValueNoCheck (COLUMNNAME_Combination, Combination);
+	}
+
+	/** Get Combination.
+		@return Unique combination of account elements
+	  */
+	public String getCombination () 
+	{
+		return (String)get_Value(COLUMNNAME_Combination);
+	}
+
+    /** Get Record ID/ColumnName
+        @return ID/ColumnName pair
+      */
+    public KeyNamePair getKeyNamePair() 
+    {
+        return new KeyNamePair(get_ID(), getCombination());
+    }
+
 	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
@@ -426,31 +451,6 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
 		return ii.intValue();
 	}
 
-	/** Set Combination.
-		@param Combination 
-		Unique combination of account elements
-	  */
-	public void setCombination (String Combination)
-	{
-		set_ValueNoCheck (COLUMNNAME_Combination, Combination);
-	}
-
-	/** Get Combination.
-		@return Unique combination of account elements
-	  */
-	public String getCombination () 
-	{
-		return (String)get_Value(COLUMNNAME_Combination);
-	}
-
-    /** Get Record ID/ColumnName
-        @return ID/ColumnName pair
-      */
-    public KeyNamePair getKeyNamePair() 
-    {
-        return new KeyNamePair(get_ID(), getCombination());
-    }
-
 	/** Set Description.
 		@param Description 
 		Optional short description of the record
@@ -515,6 +515,34 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
 	public int getM_Product_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
