@@ -124,6 +124,28 @@ public interface I_M_InventoryLine
 
 	public org.adempiere.core.domains.models.I_C_Charge getC_Charge() throws RuntimeException;
 
+    /** Column name CostStandard */
+    public static final String COLUMNNAME_CostStandard = "CostStandard";
+
+	/** Set Standard Cost.
+	  * Standard Costs
+	  */
+	public void setCostStandard (BigDecimal CostStandard);
+
+	/** Get Standard Cost.
+	  * Standard Costs
+	  */
+	public BigDecimal getCostStandard();
+
+    /** Column name CountEntered */
+    public static final String COLUMNNAME_CountEntered = "CountEntered";
+
+	/** Set Count Entered	  */
+	public void setCountEntered (boolean CountEntered);
+
+	/** Get Count Entered	  */
+	public boolean isCountEntered();
+
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
 
@@ -168,28 +190,6 @@ public interface I_M_InventoryLine
 	public int getC_ProjectTask_ID();
 
 	public org.adempiere.core.domains.models.I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
-
-    /** Column name CostStandard */
-    public static final String COLUMNNAME_CostStandard = "CostStandard";
-
-	/** Set Standard Cost.
-	  * Standard Costs
-	  */
-	public void setCostStandard (BigDecimal CostStandard);
-
-	/** Get Standard Cost.
-	  * Standard Costs
-	  */
-	public BigDecimal getCostStandard();
-
-    /** Column name CountEntered */
-    public static final String COLUMNNAME_CountEntered = "CountEntered";
-
-	/** Set Count Entered	  */
-	public void setCountEntered (boolean CountEntered);
-
-	/** Get Count Entered	  */
-	public boolean isCountEntered();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -306,6 +306,21 @@ public interface I_M_InventoryLine
 	  * Unique line for this document
 	  */
 	public int getLine();
+
+    /** Column name Link_OrderLine_ID */
+    public static final String COLUMNNAME_Link_OrderLine_ID = "Link_OrderLine_ID";
+
+	/** Set Linked Order Line.
+	  * This field links a sales order line to the purchase order line that is generated from it.
+	  */
+	public void setLink_OrderLine_ID (int Link_OrderLine_ID);
+
+	/** Get Linked Order Line.
+	  * This field links a sales order line to the purchase order line that is generated from it.
+	  */
+	public int getLink_OrderLine_ID();
+
+	public org.adempiere.core.domains.models.I_C_OrderLine getLink_OrderLine() throws RuntimeException;
 
     /** Column name LocatorValue */
     public static final String COLUMNNAME_LocatorValue = "LocatorValue";
@@ -490,6 +505,36 @@ public interface I_M_InventoryLine
 	public int getReversalLine_ID();
 
 	public org.adempiere.core.domains.models.I_M_InventoryLine getReversalLine() throws RuntimeException;
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
+
+    /** Column name S_ContractLine_ID */
+    public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
+
+	/** Set ContractLine.
+	  * ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID);
+
+	/** Get ContractLine.
+	  * ContractLine
+	  */
+	public int getS_ContractLine_ID();
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException;
 
     /** Column name SecondCountQty */
     public static final String COLUMNNAME_SecondCountQty = "SecondCountQty";

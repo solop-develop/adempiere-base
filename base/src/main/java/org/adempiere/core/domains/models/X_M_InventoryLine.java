@@ -37,7 +37,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260508L;
 
     /** Standard Constructor */
     public X_M_InventoryLine (Properties ctx, int M_InventoryLine_ID, String trxName)
@@ -200,6 +200,47 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
 		return ii.intValue();
 	}
 
+	/** Set Standard Cost.
+		@param CostStandard 
+		Standard Costs
+	  */
+	public void setCostStandard (BigDecimal CostStandard)
+	{
+		set_ValueNoCheck (COLUMNNAME_CostStandard, CostStandard);
+	}
+
+	/** Get Standard Cost.
+		@return Standard Costs
+	  */
+	public BigDecimal getCostStandard () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostStandard);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Count Entered.
+		@param CountEntered Count Entered	  */
+	public void setCountEntered (boolean CountEntered)
+	{
+		set_Value (COLUMNNAME_CountEntered, Boolean.valueOf(CountEntered));
+	}
+
+	/** Get Count Entered.
+		@return Count Entered	  */
+	public boolean isCountEntered () 
+	{
+		Object oo = get_Value(COLUMNNAME_CountEntered);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
@@ -282,47 +323,6 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Standard Cost.
-		@param CostStandard 
-		Standard Costs
-	  */
-	public void setCostStandard (BigDecimal CostStandard)
-	{
-		set_ValueNoCheck (COLUMNNAME_CostStandard, CostStandard);
-	}
-
-	/** Get Standard Cost.
-		@return Standard Costs
-	  */
-	public BigDecimal getCostStandard () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostStandard);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Count Entered.
-		@param CountEntered Count Entered	  */
-	public void setCountEntered (boolean CountEntered)
-	{
-		set_Value (COLUMNNAME_CountEntered, Boolean.valueOf(CountEntered));
-	}
-
-	/** Get Count Entered.
-		@return Count Entered	  */
-	public boolean isCountEntered () 
-	{
-		Object oo = get_Value(COLUMNNAME_CountEntered);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
 	}
 
 	/** Set Current Cost Price.
@@ -473,6 +473,34 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     {
         return new KeyNamePair(get_ID(), String.valueOf(getLine()));
     }
+
+	public org.adempiere.core.domains.models.I_C_OrderLine getLink_OrderLine() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_C_OrderLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_OrderLine.Table_Name)
+			.getPO(getLink_OrderLine_ID(), get_TrxName());	}
+
+	/** Set Linked Order Line.
+		@param Link_OrderLine_ID 
+		This field links a sales order line to the purchase order line that is generated from it.
+	  */
+	public void setLink_OrderLine_ID (int Link_OrderLine_ID)
+	{
+		if (Link_OrderLine_ID < 1) 
+			set_Value (COLUMNNAME_Link_OrderLine_ID, null);
+		else 
+			set_Value (COLUMNNAME_Link_OrderLine_ID, Integer.valueOf(Link_OrderLine_ID));
+	}
+
+	/** Get Linked Order Line.
+		@return This field links a sales order line to the purchase order line that is generated from it.
+	  */
+	public int getLink_OrderLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Link_OrderLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 
 	/** Set Locator Key.
 		@param LocatorValue 
@@ -782,6 +810,62 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
 	public int getReversalLine_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_ReversalLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_ContractLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ContractLine.Table_Name)
+			.getPO(getS_ContractLine_ID(), get_TrxName());	}
+
+	/** Set ContractLine.
+		@param S_ContractLine_ID 
+		ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID)
+	{
+		if (S_ContractLine_ID < 1) 
+			set_Value (COLUMNNAME_S_ContractLine_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ContractLine_ID, Integer.valueOf(S_ContractLine_ID));
+	}
+
+	/** Get ContractLine.
+		@return ContractLine
+	  */
+	public int getS_ContractLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ContractLine_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

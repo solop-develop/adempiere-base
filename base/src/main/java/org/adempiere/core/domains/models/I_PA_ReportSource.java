@@ -169,21 +169,6 @@ public interface I_PA_ReportSource
 
 	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
 
-    /** Column name C_SalesRegion_ID */
-    public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
-
-	/** Set Sales Region.
-	  * Sales coverage region
-	  */
-	public void setC_SalesRegion_ID (int C_SalesRegion_ID);
-
-	/** Get Sales Region.
-	  * Sales coverage region
-	  */
-	public int getC_SalesRegion_ID();
-
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
-
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -199,6 +184,21 @@ public interface I_PA_ReportSource
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name C_SalesRegion_ID */
+    public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
+
+	/** Set Sales Region.
+	  * Sales coverage region
+	  */
+	public void setC_SalesRegion_ID (int C_SalesRegion_ID);
+
+	/** Get Sales Region.
+	  * Sales coverage region
+	  */
+	public int getC_SalesRegion_ID();
+
+	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -570,6 +570,21 @@ public interface I_PA_ReportSource
 
 	public org.adempiere.core.domains.models.I_PA_ReportColumn getPA_ReportColumn() throws RuntimeException;
 
+    /** Column name PA_ReportColumnSet_ID */
+    public static final String COLUMNNAME_PA_ReportColumnSet_ID = "PA_ReportColumnSet_ID";
+
+	/** Set Report Column Set.
+	  * Collection of Columns for Report
+	  */
+	public void setPA_ReportColumnSet_ID (int PA_ReportColumnSet_ID);
+
+	/** Get Report Column Set.
+	  * Collection of Columns for Report
+	  */
+	public int getPA_ReportColumnSet_ID();
+
+	public org.adempiere.core.domains.models.I_PA_ReportColumnSet getPA_ReportColumnSet() throws RuntimeException;
+
     /** Column name PA_ReportLine_ID */
     public static final String COLUMNNAME_PA_ReportLine_ID = "PA_ReportLine_ID";
 
@@ -580,6 +595,17 @@ public interface I_PA_ReportSource
 	public int getPA_ReportLine_ID();
 
 	public org.adempiere.core.domains.models.I_PA_ReportLine getPA_ReportLine() throws RuntimeException;
+
+    /** Column name PA_ReportLineSet_ID */
+    public static final String COLUMNNAME_PA_ReportLineSet_ID = "PA_ReportLineSet_ID";
+
+	/** Set Report Line Set	  */
+	public void setPA_ReportLineSet_ID (int PA_ReportLineSet_ID);
+
+	/** Get Report Line Set	  */
+	public int getPA_ReportLineSet_ID();
+
+	public org.adempiere.core.domains.models.I_PA_ReportLineSet getPA_ReportLineSet() throws RuntimeException;
 
     /** Column name PA_ReportSource_ID */
     public static final String COLUMNNAME_PA_ReportSource_ID = "PA_ReportSource_ID";
@@ -593,6 +619,21 @@ public interface I_PA_ReportSource
 	  * Restriction of what will be shown in Report Line
 	  */
 	public int getPA_ReportSource_ID();
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
