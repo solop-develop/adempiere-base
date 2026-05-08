@@ -423,7 +423,7 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 	/** User List 4 = U4 */
 	public static final String ELEMENTTYPE_UserList4 = "U4";
 	/** Contract = CO */
-	public static final String ELEMENTTYPE_Contract = "CO";
+	public static final String ELEMENTTYPE_Contract = "CT";
 	/** Set Type.
 		@param ElementType 
 		Element Type (account or user defined)

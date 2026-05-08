@@ -73,7 +73,7 @@
         <Data AD_Column_ID="84390" Column="UUID">f12740fc-dd78-4002-84dd-ab50882e671e</Data>
         <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
         <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
-        <Data AD_Column_ID="200" Column="Value">CO</Data>
+        <Data AD_Column_ID="200" Column="Value">CT</Data>
       </PO>
     </Step>
     <Step SeqNo="40" StepType="AD">
