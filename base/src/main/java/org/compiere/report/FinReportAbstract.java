@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,7 +12,8 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 
 package org.compiere.report;
@@ -21,7 +22,7 @@ import org.compiere.process.SvrProcess;
 
 /** Generated Process for (Create Report)
  *  @author ADempiere (generated) 
- *  @version Release 3.9.0
+ *  @version Release 3.9.4
  */
 public abstract class FinReportAbstract extends SvrProcess {
 	/** Process Value 	*/
@@ -72,6 +73,8 @@ public abstract class FinReportAbstract extends SvrProcess {
 	public static final String PA_HIERARCHY_ID = "PA_Hierarchy_ID";
 	/**	Parameter Name for Report Cube	*/
 	public static final String PA_REPORTCUBE_ID = "PA_ReportCube_ID";
+	/**	Parameter Name for Contract	*/
+	public static final String S_CONTRACT_ID = "S_Contract_ID";
 	/**	Parameter Value for Period	*/
 	private int periodId;
 	/**	Parameter Value for Organization	*/
@@ -114,6 +117,8 @@ public abstract class FinReportAbstract extends SvrProcess {
 	private int hierarchyId;
 	/**	Parameter Value for Report Cube	*/
 	private int reportCubeId;
+	/**	Parameter Value for Contract	*/
+	private int contractId;
 
 	@Override
 	protected void prepare() {
@@ -138,6 +143,7 @@ public abstract class FinReportAbstract extends SvrProcess {
 		isDetailsSourceFirst = getParameterAsBoolean(DETAILSSOURCEFIRST);
 		hierarchyId = getParameterAsInt(PA_HIERARCHY_ID);
 		reportCubeId = getParameterAsInt(PA_REPORTCUBE_ID);
+		contractId = getParameterAsInt(S_CONTRACT_ID);
 	}
 
 	/**	 Getter Parameter Value for Period	*/
@@ -348,6 +354,16 @@ public abstract class FinReportAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Report Cube	*/
 	protected void setReportCubeId(int reportCubeId) {
 		this.reportCubeId = reportCubeId;
+	}
+
+	/**	 Getter Parameter Value for Contract	*/
+	protected int getContractId() {
+		return contractId;
+	}
+
+	/**	 Setter Parameter Value for Contract	*/
+	protected void setContractId(int contractId) {
+		this.contractId = contractId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

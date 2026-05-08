@@ -35,7 +35,7 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260508L;
 
     /** Standard Constructor */
     public X_C_AcctSchema_Element (Properties ctx, int C_AcctSchema_Element_ID, String trxName)
@@ -422,6 +422,8 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 	public static final String ELEMENTTYPE_UserList3 = "U3";
 	/** User List 4 = U4 */
 	public static final String ELEMENTTYPE_UserList4 = "U4";
+	/** Contract = CO */
+	public static final String ELEMENTTYPE_Contract = "CO";
 	/** Set Type.
 		@param ElementType 
 		Element Type (account or user defined)

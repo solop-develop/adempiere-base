@@ -37,7 +37,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260507L;
+	private static final long serialVersionUID = 20260508L;
 
     /** Standard Constructor */
     public X_GL_DistributionLine (Properties ctx, int GL_DistributionLine_ID, String trxName)
@@ -653,6 +653,30 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
 		return false;
 	}
 
+	/** Set Overwrite Contract.
+		@param OverwriteContract
+		Overwrite the account segment Contract with the value specified
+	  */
+	public void setOverwriteContract (boolean OverwriteContract)
+	{
+		set_Value (COLUMNNAME_OverwriteContract, Boolean.valueOf(OverwriteContract));
+	}
+
+	/** Get Overwrite Contract.
+		@return Overwrite the account segment Contract with the value specified
+	  */
+	public boolean isOverwriteContract ()
+	{
+		Object oo = get_Value(COLUMNNAME_OverwriteContract);
+		if (oo != null)
+		{
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Overwrite Location From.
 		@param OverwriteLocFrom 
 		Overwrite the account segment Location From with the value specified
@@ -997,21 +1021,21 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
 			.getPO(getS_Contract_ID(), get_TrxName());	}
 
 	/** Set Contract.
-		@param S_Contract_ID 
+		@param S_Contract_ID
 		Contract
 	  */
 	public void setS_Contract_ID (int S_Contract_ID)
 	{
-		if (S_Contract_ID < 1) 
+		if (S_Contract_ID < 1)
 			set_Value (COLUMNNAME_S_Contract_ID, null);
-		else 
+		else
 			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
 	}
 
 	/** Get Contract.
 		@return Contract
 	  */
-	public int getS_Contract_ID () 
+	public int getS_Contract_ID ()
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
 		if (ii == null)

@@ -393,6 +393,8 @@ public class X_PA_ReportSource extends PO implements I_PA_ReportSource, I_Persis
 	public static final String ELEMENTTYPE_UserList3 = "U3";
 	/** User List 4 = U4 */
 	public static final String ELEMENTTYPE_UserList4 = "U4";
+	/** Contract = CT */
+	public static final String ELEMENTTYPE_Contract = "CT";
 	/** Set Type.
 		@param ElementType 
 		Element Type (account or user defined)
@@ -482,6 +484,30 @@ public class X_PA_ReportSource extends PO implements I_PA_ReportSource, I_Persis
 	public boolean isIncludeNullsCampaign () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsIncludeNullsCampaign);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Include Nulls in Contract.
+		@param IsIncludeNullsContract 
+		Include nulls in the selection of the Contract
+	  */
+	public void setIsIncludeNullsContract (boolean IsIncludeNullsContract)
+	{
+		set_Value (COLUMNNAME_IsIncludeNullsContract, Boolean.valueOf(IsIncludeNullsContract));
+	}
+
+	/** Get Include Nulls in Contract.
+		@return Include nulls in the selection of the Contract
+	  */
+	public boolean isIncludeNullsContract () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsIncludeNullsContract);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
