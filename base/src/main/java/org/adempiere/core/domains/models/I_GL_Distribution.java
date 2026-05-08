@@ -146,6 +146,19 @@ public interface I_GL_Distribution
 	  */
 	public boolean isAnyCampaign();
 
+    /** Column name AnyContract */
+    public static final String COLUMNNAME_AnyContract = "AnyContract";
+
+	/** Set Any Contract.
+	  * Match any value of the Contract segment
+	  */
+	public void setAnyContract (boolean AnyContract);
+
+	/** Get Any Contract.
+	  * Match any value of the Contract segment
+	  */
+	public boolean isAnyContract();
+
     /** Column name AnyLocFrom */
     public static final String COLUMNNAME_AnyLocFrom = "AnyLocFrom";
 
@@ -394,6 +407,19 @@ public interface I_GL_Distribution
 
 	public org.adempiere.core.domains.models.I_C_Location getC_LocTo() throws RuntimeException;
 
+    /** Column name CopyFrom */
+    public static final String COLUMNNAME_CopyFrom = "CopyFrom";
+
+	/** Set Copy From.
+	  * Copy From Record
+	  */
+	public void setCopyFrom (String CopyFrom);
+
+	/** Get Copy From.
+	  * Copy From Record
+	  */
+	public String getCopyFrom();
+
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
 
@@ -408,34 +434,6 @@ public interface I_GL_Distribution
 	public int getC_Project_ID();
 
 	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
-
-    /** Column name C_SalesRegion_ID */
-    public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
-
-	/** Set Sales Region.
-	  * Sales coverage region
-	  */
-	public void setC_SalesRegion_ID (int C_SalesRegion_ID);
-
-	/** Get Sales Region.
-	  * Sales coverage region
-	  */
-	public int getC_SalesRegion_ID();
-
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
-
-    /** Column name CopyFrom */
-    public static final String COLUMNNAME_CopyFrom = "CopyFrom";
-
-	/** Set Copy From.
-	  * Copy From Record
-	  */
-	public void setCopyFrom (String CopyFrom);
-
-	/** Get Copy From.
-	  * Copy From Record
-	  */
-	public String getCopyFrom();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -452,6 +450,21 @@ public interface I_GL_Distribution
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name C_SalesRegion_ID */
+    public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
+
+	/** Set Sales Region.
+	  * Sales coverage region
+	  */
+	public void setC_SalesRegion_ID (int C_SalesRegion_ID);
+
+	/** Get Sales Region.
+	  * Sales coverage region
+	  */
+	public int getC_SalesRegion_ID();
+
+	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -608,6 +621,21 @@ public interface I_GL_Distribution
 
 	/** Get Process Now	  */
 	public boolean isProcessing();
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

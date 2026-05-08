@@ -278,6 +278,19 @@ public interface I_PA_ReportSource
 	  */
 	public boolean isIncludeNullsCampaign();
 
+    /** Column name IsIncludeNullsContract */
+    public static final String COLUMNNAME_IsIncludeNullsContract = "IsIncludeNullsContract";
+
+	/** Set Include Nulls in Contract.
+	  * Include nulls in the selection of the Contract
+	  */
+	public void setIsIncludeNullsContract (boolean IsIncludeNullsContract);
+
+	/** Get Include Nulls in Contract.
+	  * Include nulls in the selection of the Contract
+	  */
+	public boolean isIncludeNullsContract();
+
     /** Column name IsIncludeNullsElementValue */
     public static final String COLUMNNAME_IsIncludeNullsElementValue = "IsIncludeNullsElementValue";
 
