@@ -754,7 +754,7 @@
         <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
         <Data AD_Column_ID="169" Column="Description">Include nulls in the selection of the Contract</Data>
         <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
-        <Data AD_Column_ID="177" Column="DisplayLogic">@ElementType@=CO</Data>
+        <Data AD_Column_ID="177" Column="DisplayLogic">@ElementType@=CO | @ElementType@=CT</Data>
         <Data AD_Column_ID="105742" Column="DocBaseURL" isNewNull="true"/>
         <Data AD_Column_ID="7714" Column="EntityType">D</Data>
         <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
