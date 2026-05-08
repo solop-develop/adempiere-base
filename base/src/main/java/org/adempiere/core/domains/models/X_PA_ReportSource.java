@@ -35,7 +35,7 @@ public class X_PA_ReportSource extends PO implements I_PA_ReportSource, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260508L;
 
     /** Standard Constructor */
     public X_PA_ReportSource (Properties ctx, int PA_ReportSource_ID, String trxName)
@@ -1031,6 +1031,34 @@ public class X_PA_ReportSource extends PO implements I_PA_ReportSource, I_Persis
 		return ii.intValue();
 	}
 
+	public org.adempiere.core.domains.models.I_PA_ReportColumnSet getPA_ReportColumnSet() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_PA_ReportColumnSet)MTable.get(getCtx(), org.adempiere.core.domains.models.I_PA_ReportColumnSet.Table_Name)
+			.getPO(getPA_ReportColumnSet_ID(), get_TrxName());	}
+
+	/** Set Report Column Set.
+		@param PA_ReportColumnSet_ID 
+		Collection of Columns for Report
+	  */
+	public void setPA_ReportColumnSet_ID (int PA_ReportColumnSet_ID)
+	{
+		if (PA_ReportColumnSet_ID < 1) 
+			set_Value (COLUMNNAME_PA_ReportColumnSet_ID, null);
+		else 
+			set_Value (COLUMNNAME_PA_ReportColumnSet_ID, Integer.valueOf(PA_ReportColumnSet_ID));
+	}
+
+	/** Get Report Column Set.
+		@return Collection of Columns for Report
+	  */
+	public int getPA_ReportColumnSet_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_PA_ReportColumnSet_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.adempiere.core.domains.models.I_PA_ReportLine getPA_ReportLine() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_PA_ReportLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_PA_ReportLine.Table_Name)
@@ -1056,6 +1084,31 @@ public class X_PA_ReportSource extends PO implements I_PA_ReportSource, I_Persis
 		return ii.intValue();
 	}
 
+	public org.adempiere.core.domains.models.I_PA_ReportLineSet getPA_ReportLineSet() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_PA_ReportLineSet)MTable.get(getCtx(), org.adempiere.core.domains.models.I_PA_ReportLineSet.Table_Name)
+			.getPO(getPA_ReportLineSet_ID(), get_TrxName());	}
+
+	/** Set Report Line Set.
+		@param PA_ReportLineSet_ID Report Line Set	  */
+	public void setPA_ReportLineSet_ID (int PA_ReportLineSet_ID)
+	{
+		if (PA_ReportLineSet_ID < 1) 
+			set_Value (COLUMNNAME_PA_ReportLineSet_ID, null);
+		else 
+			set_Value (COLUMNNAME_PA_ReportLineSet_ID, Integer.valueOf(PA_ReportLineSet_ID));
+	}
+
+	/** Get Report Line Set.
+		@return Report Line Set	  */
+	public int getPA_ReportLineSet_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_PA_ReportLineSet_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Report Source.
 		@param PA_ReportSource_ID 
 		Restriction of what will be shown in Report Line
@@ -1074,6 +1127,34 @@ public class X_PA_ReportSource extends PO implements I_PA_ReportSource, I_Persis
 	public int getPA_ReportSource_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_PA_ReportSource_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

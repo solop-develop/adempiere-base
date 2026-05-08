@@ -109,6 +109,19 @@ public interface I_M_MovementLine
 
 	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException;
 
+    /** Column name ConfirmedQty */
+    public static final String COLUMNNAME_ConfirmedQty = "ConfirmedQty";
+
+	/** Set Confirmed Quantity.
+	  * Confirmation of a received quantity
+	  */
+	public void setConfirmedQty (BigDecimal ConfirmedQty);
+
+	/** Get Confirmed Quantity.
+	  * Confirmation of a received quantity
+	  */
+	public BigDecimal getConfirmedQty();
+
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
 
@@ -153,19 +166,6 @@ public interface I_M_MovementLine
 	public int getC_ProjectTask_ID();
 
 	public org.adempiere.core.domains.models.I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
-
-    /** Column name ConfirmedQty */
-    public static final String COLUMNNAME_ConfirmedQty = "ConfirmedQty";
-
-	/** Set Confirmed Quantity.
-	  * Confirmation of a received quantity
-	  */
-	public void setConfirmedQty (BigDecimal ConfirmedQty);
-
-	/** Get Confirmed Quantity.
-	  * Confirmation of a received quantity
-	  */
-	public BigDecimal getConfirmedQty();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -321,6 +321,19 @@ public interface I_M_MovementLine
 	  */
 	public int getM_MovementLine_ID();
 
+    /** Column name MovementQty */
+    public static final String COLUMNNAME_MovementQty = "MovementQty";
+
+	/** Set Movement Quantity.
+	  * Quantity of a product moved.
+	  */
+	public void setMovementQty (BigDecimal MovementQty);
+
+	/** Get Movement Quantity.
+	  * Quantity of a product moved.
+	  */
+	public BigDecimal getMovementQty();
+
     /** Column name M_Product_ID */
     public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
 
@@ -335,19 +348,6 @@ public interface I_M_MovementLine
 	public int getM_Product_ID();
 
 	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
-
-    /** Column name MovementQty */
-    public static final String COLUMNNAME_MovementQty = "MovementQty";
-
-	/** Set Movement Quantity.
-	  * Quantity of a product moved.
-	  */
-	public void setMovementQty (BigDecimal MovementQty);
-
-	/** Get Movement Quantity.
-	  * Quantity of a product moved.
-	  */
-	public BigDecimal getMovementQty();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
@@ -376,6 +376,36 @@ public interface I_M_MovementLine
 	public int getReversalLine_ID();
 
 	public org.adempiere.core.domains.models.I_M_MovementLine getReversalLine() throws RuntimeException;
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
+
+    /** Column name S_ContractLine_ID */
+    public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
+
+	/** Set ContractLine.
+	  * ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID);
+
+	/** Get ContractLine.
+	  * ContractLine
+	  */
+	public int getS_ContractLine_ID();
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException;
 
     /** Column name ScrappedQty */
     public static final String COLUMNNAME_ScrappedQty = "ScrappedQty";

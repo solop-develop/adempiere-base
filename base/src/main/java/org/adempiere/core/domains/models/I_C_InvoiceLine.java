@@ -91,15 +91,6 @@ public interface I_C_InvoiceLine
 	/** Get Create Asset	  */
 	public boolean isA_CreateAsset();
 
-    /** Column name A_Processed */
-    public static final String COLUMNNAME_A_Processed = "A_Processed";
-
-	/** Set Processed	  */
-	public void setA_Processed (boolean A_Processed);
-
-	/** Get Processed	  */
-	public boolean isA_Processed();
-
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
 
@@ -135,6 +126,15 @@ public interface I_C_InvoiceLine
 	public int getAD_OrgTrx_ID();
 
 	public org.adempiere.core.domains.models.I_AD_Org getAD_OrgTrx() throws RuntimeException;
+
+    /** Column name A_Processed */
+    public static final String COLUMNNAME_A_Processed = "A_Processed";
+
+	/** Set Processed	  */
+	public void setA_Processed (boolean A_Processed);
+
+	/** Get Processed	  */
+	public boolean isA_Processed();
 
     /** Column name C_Activity_ID */
     public static final String COLUMNNAME_C_Activity_ID = "C_Activity_ID";
@@ -239,6 +239,21 @@ public interface I_C_InvoiceLine
 
 	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
 
+    /** Column name C_ProjectLine_ID */
+    public static final String COLUMNNAME_C_ProjectLine_ID = "C_ProjectLine_ID";
+
+	/** Set Project Line.
+	  * Task or step in a project
+	  */
+	public void setC_ProjectLine_ID (int C_ProjectLine_ID);
+
+	/** Get Project Line.
+	  * Task or step in a project
+	  */
+	public int getC_ProjectLine_ID();
+
+	public org.adempiere.core.domains.models.I_C_ProjectLine getC_ProjectLine() throws RuntimeException;
+
     /** Column name C_ProjectPhase_ID */
     public static final String COLUMNNAME_C_ProjectPhase_ID = "C_ProjectPhase_ID";
 
@@ -269,6 +284,22 @@ public interface I_C_InvoiceLine
 
 	public org.adempiere.core.domains.models.I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
 
+    /** Column name Created */
+    public static final String COLUMNNAME_Created = "Created";
+
+	/** Get Created.
+	  * Date this record was created
+	  */
+	public Timestamp getCreated();
+
+    /** Column name CreatedBy */
+    public static final String COLUMNNAME_CreatedBy = "CreatedBy";
+
+	/** Get Created By.
+	  * User who created this records
+	  */
+	public int getCreatedBy();
+
     /** Column name C_Tax_ID */
     public static final String COLUMNNAME_C_Tax_ID = "C_Tax_ID";
 
@@ -298,22 +329,6 @@ public interface I_C_InvoiceLine
 	public int getC_UOM_ID();
 
 	public org.adempiere.core.domains.models.I_C_UOM getC_UOM() throws RuntimeException;
-
-    /** Column name Created */
-    public static final String COLUMNNAME_Created = "Created";
-
-	/** Get Created.
-	  * Date this record was created
-	  */
-	public Timestamp getCreated();
-
-    /** Column name CreatedBy */
-    public static final String COLUMNNAME_CreatedBy = "CreatedBy";
-
-	/** Get Created By.
-	  * User who created this records
-	  */
-	public int getCreatedBy();
 
     /** Column name DD_FreightLine_ID */
     public static final String COLUMNNAME_DD_FreightLine_ID = "DD_FreightLine_ID";
@@ -667,6 +682,36 @@ public interface I_C_InvoiceLine
 	  * Revenue Recognition Start Date
 	  */
 	public Timestamp getRRStartDate();
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
+
+    /** Column name S_ContractLine_ID */
+    public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
+
+	/** Set ContractLine.
+	  * ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID);
+
+	/** Get ContractLine.
+	  * ContractLine
+	  */
+	public int getS_ContractLine_ID();
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException;
 
     /** Column name S_ResourceAssignment_ID */
     public static final String COLUMNNAME_S_ResourceAssignment_ID = "S_ResourceAssignment_ID";

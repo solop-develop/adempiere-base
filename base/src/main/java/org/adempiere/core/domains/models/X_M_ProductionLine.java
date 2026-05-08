@@ -37,7 +37,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260508L;
 
     /** Standard Constructor */
     public X_M_ProductionLine (Properties ctx, int M_ProductionLine_ID, String trxName)
@@ -50,10 +50,10 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
 			setM_AttributeSetInstance_ID (0);
 			setM_Locator_ID (0);
 // @M_Locator_ID@
+			setMovementQty (Env.ZERO);
 			setM_Product_ID (0);
 			setM_Production_ID (0);
 			setM_ProductionLine_ID (0);
-			setMovementQty (Env.ZERO);
 			setProcessed (false);
         } */
     }
@@ -371,6 +371,26 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
 		return ii.intValue();
 	}
 
+	/** Set Movement Quantity.
+		@param MovementQty 
+		Quantity of a product moved.
+	  */
+	public void setMovementQty (BigDecimal MovementQty)
+	{
+		set_Value (COLUMNNAME_MovementQty, MovementQty);
+	}
+
+	/** Get Movement Quantity.
+		@return Quantity of a product moved.
+	  */
+	public BigDecimal getMovementQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_MovementQty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
@@ -484,26 +504,6 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Movement Quantity.
-		@param MovementQty 
-		Quantity of a product moved.
-	  */
-	public void setMovementQty (BigDecimal MovementQty)
-	{
-		set_Value (COLUMNNAME_MovementQty, MovementQty);
-	}
-
-	/** Get Movement Quantity.
-		@return Quantity of a product moved.
-	  */
-	public BigDecimal getMovementQty () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_MovementQty);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	/** Set Picked Qty.
@@ -643,6 +643,34 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
 	public int getReversalLine_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_ReversalLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

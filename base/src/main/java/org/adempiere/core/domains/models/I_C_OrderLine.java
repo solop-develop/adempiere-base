@@ -212,6 +212,21 @@ public interface I_C_OrderLine
 
 	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
 
+    /** Column name C_ProjectLine_ID */
+    public static final String COLUMNNAME_C_ProjectLine_ID = "C_ProjectLine_ID";
+
+	/** Set Project Line.
+	  * Task or step in a project
+	  */
+	public void setC_ProjectLine_ID (int C_ProjectLine_ID);
+
+	/** Get Project Line.
+	  * Task or step in a project
+	  */
+	public int getC_ProjectLine_ID();
+
+	public org.adempiere.core.domains.models.I_C_ProjectLine getC_ProjectLine() throws RuntimeException;
+
     /** Column name C_ProjectPhase_ID */
     public static final String COLUMNNAME_C_ProjectPhase_ID = "C_ProjectPhase_ID";
 
@@ -241,36 +256,6 @@ public interface I_C_OrderLine
 	public int getC_ProjectTask_ID();
 
 	public org.adempiere.core.domains.models.I_C_ProjectTask getC_ProjectTask() throws RuntimeException;
-
-    /** Column name C_Tax_ID */
-    public static final String COLUMNNAME_C_Tax_ID = "C_Tax_ID";
-
-	/** Set Tax.
-	  * Tax identifier
-	  */
-	public void setC_Tax_ID (int C_Tax_ID);
-
-	/** Get Tax.
-	  * Tax identifier
-	  */
-	public int getC_Tax_ID();
-
-	public org.adempiere.core.domains.models.I_C_Tax getC_Tax() throws RuntimeException;
-
-    /** Column name C_UOM_ID */
-    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
-
-	/** Set UOM.
-	  * Unit of Measure
-	  */
-	public void setC_UOM_ID (int C_UOM_ID);
-
-	/** Get UOM.
-	  * Unit of Measure
-	  */
-	public int getC_UOM_ID();
-
-	public org.adempiere.core.domains.models.I_C_UOM getC_UOM() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -313,6 +298,36 @@ public interface I_C_OrderLine
 	  * Create Shipment From Order Line
 	  */
 	public String getCreateShipment();
+
+    /** Column name C_Tax_ID */
+    public static final String COLUMNNAME_C_Tax_ID = "C_Tax_ID";
+
+	/** Set Tax.
+	  * Tax identifier
+	  */
+	public void setC_Tax_ID (int C_Tax_ID);
+
+	/** Get Tax.
+	  * Tax identifier
+	  */
+	public int getC_Tax_ID();
+
+	public org.adempiere.core.domains.models.I_C_Tax getC_Tax() throws RuntimeException;
+
+    /** Column name C_UOM_ID */
+    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
+
+	/** Set UOM.
+	  * Unit of Measure
+	  */
+	public void setC_UOM_ID (int C_UOM_ID);
+
+	/** Get UOM.
+	  * Unit of Measure
+	  */
+	public int getC_UOM_ID();
+
+	public org.adempiere.core.domains.models.I_C_UOM getC_UOM() throws RuntimeException;
 
     /** Column name DateDelivered */
     public static final String COLUMNNAME_DateDelivered = "DateDelivered";
@@ -391,6 +406,19 @@ public interface I_C_OrderLine
 	  * Discount in percent
 	  */
 	public BigDecimal getDiscount();
+
+    /** Column name EndDate */
+    public static final String COLUMNNAME_EndDate = "EndDate";
+
+	/** Set End Date.
+	  * Last effective date (inclusive)
+	  */
+	public void setEndDate (Timestamp EndDate);
+
+	/** Get End Date.
+	  * Last effective date (inclusive)
+	  */
+	public Timestamp getEndDate();
 
     /** Column name FreightAmt */
     public static final String COLUMNNAME_FreightAmt = "FreightAmt";
@@ -840,6 +868,36 @@ public interface I_C_OrderLine
 	  */
 	public Timestamp getRRStartDate();
 
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
+
+    /** Column name S_ContractLine_ID */
+    public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
+
+	/** Set ContractLine.
+	  * ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID);
+
+	/** Get ContractLine.
+	  * ContractLine
+	  */
+	public int getS_ContractLine_ID();
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException;
+
     /** Column name S_ResourceAssignment_ID */
     public static final String COLUMNNAME_S_ResourceAssignment_ID = "S_ResourceAssignment_ID";
 
@@ -852,6 +910,19 @@ public interface I_C_OrderLine
 	  * Resource Assignment
 	  */
 	public int getS_ResourceAssignment_ID();
+
+    /** Column name StartDate */
+    public static final String COLUMNNAME_StartDate = "StartDate";
+
+	/** Set Start Date.
+	  * First effective day (inclusive)
+	  */
+	public void setStartDate (Timestamp StartDate);
+
+	/** Get Start Date.
+	  * First effective day (inclusive)
+	  */
+	public Timestamp getStartDate();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

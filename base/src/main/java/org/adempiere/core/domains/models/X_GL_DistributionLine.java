@@ -37,7 +37,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260507L;
 
     /** Standard Constructor */
     public X_GL_DistributionLine (Properties ctx, int GL_DistributionLine_ID, String trxName)
@@ -989,6 +989,34 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
 	public String getPostingType () 
 	{
 		return (String)get_Value(COLUMNNAME_PostingType);
+	}
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	public org.adempiere.core.domains.models.I_C_ElementValue getUser1() throws RuntimeException

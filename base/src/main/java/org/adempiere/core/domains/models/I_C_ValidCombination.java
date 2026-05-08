@@ -197,6 +197,19 @@ public interface I_C_ValidCombination
 
 	public org.adempiere.core.domains.models.I_C_Location getC_LocTo() throws RuntimeException;
 
+    /** Column name Combination */
+    public static final String COLUMNNAME_Combination = "Combination";
+
+	/** Set Combination.
+	  * Unique combination of account elements
+	  */
+	public void setCombination (String Combination);
+
+	/** Get Combination.
+	  * Unique combination of account elements
+	  */
+	public String getCombination();
+
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
 
@@ -211,6 +224,22 @@ public interface I_C_ValidCombination
 	public int getC_Project_ID();
 
 	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
+
+    /** Column name Created */
+    public static final String COLUMNNAME_Created = "Created";
+
+	/** Get Created.
+	  * Date this record was created
+	  */
+	public Timestamp getCreated();
+
+    /** Column name CreatedBy */
+    public static final String COLUMNNAME_CreatedBy = "CreatedBy";
+
+	/** Get Created By.
+	  * User who created this records
+	  */
+	public int getCreatedBy();
 
     /** Column name C_SalesRegion_ID */
     public static final String COLUMNNAME_C_SalesRegion_ID = "C_SalesRegion_ID";
@@ -254,35 +283,6 @@ public interface I_C_ValidCombination
 	  * Valid Account Combination
 	  */
 	public int getC_ValidCombination_ID();
-
-    /** Column name Combination */
-    public static final String COLUMNNAME_Combination = "Combination";
-
-	/** Set Combination.
-	  * Unique combination of account elements
-	  */
-	public void setCombination (String Combination);
-
-	/** Get Combination.
-	  * Unique combination of account elements
-	  */
-	public String getCombination();
-
-    /** Column name Created */
-    public static final String COLUMNNAME_Created = "Created";
-
-	/** Get Created.
-	  * Date this record was created
-	  */
-	public Timestamp getCreated();
-
-    /** Column name CreatedBy */
-    public static final String COLUMNNAME_CreatedBy = "CreatedBy";
-
-	/** Get Created By.
-	  * User who created this records
-	  */
-	public int getCreatedBy();
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -337,6 +337,21 @@ public interface I_C_ValidCombination
 	public int getM_Product_ID();
 
 	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
+
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
