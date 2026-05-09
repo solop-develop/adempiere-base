@@ -332,7 +332,7 @@ public class InvoiceNGL extends SvrProcess
 				base.getC_LocFrom_ID(), base.getC_LocTo_ID(), base.getC_SalesRegion_ID(), 
 				base.getC_Project_ID(), base.getC_Campaign_ID(), base.getC_Activity_ID(),
 				base.getUser1_ID(), base.getUser2_ID() , base.getUser3_ID(), base.getUser4_ID(),
-				base.getUserElement1_ID(), base.getUserElement2_ID(), get_TrxName());
+				base.getUserElement1_ID(), base.getUserElement2_ID(), base.getS_Contract_ID() ,get_TrxName());
 			line.setDescription(Msg.getElement(getCtx(), "UnrealizedGain_Acct"));
 			line.setC_ValidCombination_ID(acct.getC_ValidCombination_ID());
 			line.setAmtSourceCr (debitTotal);
@@ -351,7 +351,7 @@ public class InvoiceNGL extends SvrProcess
 				base.getC_LocFrom_ID(), base.getC_LocTo_ID(), base.getC_SalesRegion_ID(), 
 				base.getC_Project_ID(), base.getC_Campaign_ID(), base.getC_Activity_ID(),
 				base.getUser1_ID(), base.getUser2_ID() , base.getUser3_ID(), base.getUser4_ID(),
-				base.getUserElement1_ID(), base.getUserElement2_ID(), get_TrxName());
+				base.getUserElement1_ID(), base.getUserElement2_ID(), base.getS_Contract_ID(), get_TrxName());
 			line.setDescription(Msg.getElement(getCtx(), "UnrealizedLoss_Acct"));
 			line.setC_ValidCombination_ID(acct.getC_ValidCombination_ID());
 			line.setAmtSourceDr (creditTotal);

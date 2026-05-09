@@ -413,6 +413,7 @@ public class GenerateNotRealizedGainLoss extends GenerateNotRealizedGainLossAbst
                 unrealizedGainLossBase.getUser4_ID(),
                 unrealizedGainLossBase.getUserElement1_ID(),
                 unrealizedGainLossBase.getUserElement2_ID(),
+                unrealizedGainLossBase.getS_Contract_ID(),
                 unrealizedGainLossBase.get_TrxName());
     }
 

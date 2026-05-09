@@ -16,24 +16,16 @@
  *****************************************************************************/
 package org.compiere.acct;
 
+import org.compiere.model.*;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
-
-import org.compiere.model.MAccount;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MCharge;
-import org.compiere.model.MCostDetail;
-import org.compiere.model.MCostType;
-import org.compiere.model.MCurrency;
-import org.compiere.model.MProduct;
-import org.compiere.model.PO;
-import org.compiere.model.ProductCost;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 /**
  *  Standard Document Line
@@ -1084,6 +1076,22 @@ public class DocLine
 		}
 		return 0;
 	}   //  getC_Activity_ID
+
+	/**
+	 * 	Get S_Contract_ID
+	 *	@return Campaign
+	 */
+	public int getS_Contract_ID()
+	{
+		int index = p_po.get_ColumnIndex("S_Contract_ID");
+		if (index != -1)
+		{
+			Integer ii = (Integer)p_po.get_Value(index);
+			if (ii != null)
+				return ii.intValue();
+		}
+		return 0;
+	}	//	S_Contract_ID
 
 	/**
 	 *  Get User 1

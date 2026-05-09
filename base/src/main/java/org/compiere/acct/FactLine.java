@@ -441,6 +441,10 @@ public final class FactLine extends X_Fact_Acct
 			setC_Activity_ID (m_docLine.getC_Activity_ID());
 		if (getC_Activity_ID() == 0)
 			setC_Activity_ID (m_doc.getC_Activity_ID());
+		if (m_docLine != null)
+			setS_Contract_ID(m_docLine.getS_Contract_ID());
+		if (getS_Contract_ID() == 0)
+			setS_Contract_ID(m_doc.getS_Contract_ID());
 		//	User List 1
 		if (m_docLine != null)
 			setUser1_ID (m_docLine.getUser1_ID());

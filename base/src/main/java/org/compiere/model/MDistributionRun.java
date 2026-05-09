@@ -16,14 +16,11 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_M_DistributionRun;
-import org.compiere.util.DB;
+
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
 
 /**
  *	Distribution Run Model
@@ -62,51 +59,27 @@ public class MDistributionRun extends X_M_DistributionRun
 	}	//	MDistributionRun
 	
 	/**	 Cached Lines					*/
-	private MDistributionRunLine[] 	m_lines = null;
+	private List<MDistributionRunLine> 	m_lines = null;
 	
 	/**
 	 * 	Get active, non zero lines
 	 *	@param reload true if reload
 	 *	@return lines
 	 */
-	public MDistributionRunLine[] getLines (boolean reload)
+	public List<MDistributionRunLine> getLines (boolean reload)
 	{
 		if (!reload && m_lines != null) {
-			set_TrxName(m_lines, get_TrxName());
+			set_TrxName(m_lines.toArray(new MDistributionRunLine[0]), get_TrxName());
 			return m_lines;
 		}
-		//
-		String sql = "SELECT * FROM M_DistributionRunLine "
-			+ "WHERE M_DistributionRun_ID=? AND IsActive='Y' AND TotalQty IS NOT NULL AND TotalQty<> 0 ORDER BY Line";
-		ArrayList<MDistributionRunLine> list = new ArrayList<MDistributionRunLine>();
-		PreparedStatement pstmt = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, get_TrxName());
-			pstmt.setInt (1, getM_DistributionRun_ID());
-			ResultSet rs = pstmt.executeQuery ();
-			while (rs.next ())
-				list.add (new MDistributionRunLine(getCtx(), rs, get_TrxName()));
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, sql, e);
-		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}
-		m_lines = new MDistributionRunLine[list.size()];
-		list.toArray (m_lines);
+		m_lines = new Query(getCtx(), MDistributionRunLine.Table_Name,
+			"M_DistributionRun_ID=? " +
+					"AND IsActive='Y' " +
+					"AND TotalQty IS NOT NULL " +
+					"AND TotalQty<> 0", get_TrxName())
+				.setParameters(getM_DistributionRun_ID())
+			.setOrderBy("Line")
+			.list();
 		return m_lines;
 	}	//	getLines
 	

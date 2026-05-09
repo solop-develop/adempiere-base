@@ -532,7 +532,9 @@ public class ImportAccount extends SvrProcess
 								expenseAccount.getUser3_ID(),
 								expenseAccount.getUser4_ID(),
 								expenseAccount.getUserElement1_ID(),
-								expenseAccount.getUserElement2_ID(), get_TrxName());
+								expenseAccount.getUserElement2_ID(),
+								expenseAccount.getS_Contract_ID(),
+								get_TrxName());
 						
 						chargeacct.setCh_Expense_Acct(account.getC_ValidCombination_ID());
 						
@@ -566,7 +568,9 @@ public class ImportAccount extends SvrProcess
 								revenueAccount.getUser3_ID(),
 								revenueAccount.getUser4_ID(),
 								revenueAccount.getUserElement1_ID(),
-								revenueAccount.getUserElement2_ID(), get_TrxName());
+								revenueAccount.getUserElement2_ID(),
+								revenueAccount.getS_Contract_ID(),
+								get_TrxName());
 						
 						chargeacct.setCh_Revenue_Acct(account.getC_ValidCombination_ID());
 					}

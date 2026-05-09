@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for PA_ReportSource
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getAD_OrgTrx_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Org getAD_OrgTrx() throws RuntimeException;
+	public I_AD_Org getAD_OrgTrx() throws RuntimeException;
 
     /** Column name C_Activity_ID */
     public static final String COLUMNNAME_C_Activity_ID = "C_Activity_ID";
@@ -92,7 +93,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getC_Activity_ID();
 
-	public org.adempiere.core.domains.models.I_C_Activity getC_Activity() throws RuntimeException;
+	public I_C_Activity getC_Activity() throws RuntimeException;
 
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
@@ -107,7 +108,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_Campaign_ID */
     public static final String COLUMNNAME_C_Campaign_ID = "C_Campaign_ID";
@@ -122,7 +123,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getC_Campaign_ID();
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException;
+	public I_C_Campaign getC_Campaign() throws RuntimeException;
 
     /** Column name C_ElementValue_ID */
     public static final String COLUMNNAME_C_ElementValue_ID = "C_ElementValue_ID";
@@ -137,7 +138,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getC_ElementValue_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getC_ElementValue() throws RuntimeException;
+	public I_C_ElementValue getC_ElementValue() throws RuntimeException;
 
     /** Column name C_Location_ID */
     public static final String COLUMNNAME_C_Location_ID = "C_Location_ID";
@@ -167,7 +168,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getC_Project_ID();
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
+	public I_C_Project getC_Project() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -198,7 +199,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getC_SalesRegion_ID();
 
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
+	public I_C_SalesRegion getC_SalesRegion() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -551,7 +552,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getM_Product_ID();
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException;
+	public I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name Org_ID */
     public static final String COLUMNNAME_Org_ID = "Org_ID";
@@ -566,7 +567,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getOrg_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Org getOrg() throws RuntimeException;
+	public I_AD_Org getOrg() throws RuntimeException;
 
     /** Column name PA_ReportColumn_ID */
     public static final String COLUMNNAME_PA_ReportColumn_ID = "PA_ReportColumn_ID";
@@ -581,7 +582,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getPA_ReportColumn_ID();
 
-	public org.adempiere.core.domains.models.I_PA_ReportColumn getPA_ReportColumn() throws RuntimeException;
+	public I_PA_ReportColumn getPA_ReportColumn() throws RuntimeException;
 
     /** Column name PA_ReportColumnSet_ID */
     public static final String COLUMNNAME_PA_ReportColumnSet_ID = "PA_ReportColumnSet_ID";
@@ -596,7 +597,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getPA_ReportColumnSet_ID();
 
-	public org.adempiere.core.domains.models.I_PA_ReportColumnSet getPA_ReportColumnSet() throws RuntimeException;
+	public I_PA_ReportColumnSet getPA_ReportColumnSet() throws RuntimeException;
 
     /** Column name PA_ReportLine_ID */
     public static final String COLUMNNAME_PA_ReportLine_ID = "PA_ReportLine_ID";
@@ -607,7 +608,7 @@ public interface I_PA_ReportSource
 	/** Get Report Line	  */
 	public int getPA_ReportLine_ID();
 
-	public org.adempiere.core.domains.models.I_PA_ReportLine getPA_ReportLine() throws RuntimeException;
+	public I_PA_ReportLine getPA_ReportLine() throws RuntimeException;
 
     /** Column name PA_ReportLineSet_ID */
     public static final String COLUMNNAME_PA_ReportLineSet_ID = "PA_ReportLineSet_ID";
@@ -618,7 +619,7 @@ public interface I_PA_ReportSource
 	/** Get Report Line Set	  */
 	public int getPA_ReportLineSet_ID();
 
-	public org.adempiere.core.domains.models.I_PA_ReportLineSet getPA_ReportLineSet() throws RuntimeException;
+	public I_PA_ReportLineSet getPA_ReportLineSet() throws RuntimeException;
 
     /** Column name PA_ReportSource_ID */
     public static final String COLUMNNAME_PA_ReportSource_ID = "PA_ReportSource_ID";
@@ -646,7 +647,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getS_Contract_ID();
 
-	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
+	public I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -677,7 +678,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getUser1_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser1() throws RuntimeException;
+	public I_C_ElementValue getUser1() throws RuntimeException;
 
     /** Column name User2_ID */
     public static final String COLUMNNAME_User2_ID = "User2_ID";
@@ -692,7 +693,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getUser2_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser2() throws RuntimeException;
+	public I_C_ElementValue getUser2() throws RuntimeException;
 
     /** Column name User3_ID */
     public static final String COLUMNNAME_User3_ID = "User3_ID";
@@ -707,7 +708,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getUser3_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser3() throws RuntimeException;
+	public I_C_ElementValue getUser3() throws RuntimeException;
 
     /** Column name User4_ID */
     public static final String COLUMNNAME_User4_ID = "User4_ID";
@@ -722,7 +723,7 @@ public interface I_PA_ReportSource
 	  */
 	public int getUser4_ID();
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getUser4() throws RuntimeException;
+	public I_C_ElementValue getUser4() throws RuntimeException;
 
     /** Column name UserElement1_ID */
     public static final String COLUMNNAME_UserElement1_ID = "UserElement1_ID";

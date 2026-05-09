@@ -16,16 +16,16 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_M_DistributionList;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.X_M_DistributionList;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
 
 /**
  *	Material Distribution List

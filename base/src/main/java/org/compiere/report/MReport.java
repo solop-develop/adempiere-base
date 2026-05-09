@@ -16,10 +16,10 @@
  *****************************************************************************/
 package org.compiere.report;
 
+import org.adempiere.core.domains.models.X_PA_Report;
+
 import java.sql.ResultSet;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.X_PA_Report;
 
 
 /**

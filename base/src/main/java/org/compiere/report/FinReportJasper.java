@@ -16,10 +16,6 @@
  *****************************************************************************/
 package org.compiere.report;
 
-import java.sql.CallableStatement;
-import java.util.ArrayList;
-import java.util.logging.Level;
-
 import org.adempiere.util.ProcessUtil;
 import org.compiere.model.MPInstance;
 import org.compiere.model.MProcess;
@@ -29,6 +25,10 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Trx;
+
+import java.sql.CallableStatement;
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 
 /**

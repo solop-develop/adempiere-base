@@ -16,10 +16,9 @@
  *****************************************************************************/
 package org.compiere.report;
 
-import java.sql.Timestamp;
-
-import org.compiere.model.MPeriod;
 import org.compiere.util.DB;
+
+import java.sql.Timestamp;
 
 /**
  *  Financial Report Periods

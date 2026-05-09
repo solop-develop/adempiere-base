@@ -16,15 +16,15 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.ResultSet;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.X_GL_DistributionLine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  *	GL Distribution Line Model
@@ -147,7 +147,7 @@ public class MDistributionLine extends X_GL_DistributionLine
 			isOverwriteUser3() ? getUser3_ID() : account.getUser3_ID(),
 			isOverwriteUser4() ? getUser4_ID() : account.getUser4_ID(),
 				account.getUserElement1_ID(),
-				account.getUserElement2_ID(), get_TrxName());
+				account.getUserElement2_ID(), account.getS_Contract_ID() ,get_TrxName());
 	}	//	setAccount
 
 	

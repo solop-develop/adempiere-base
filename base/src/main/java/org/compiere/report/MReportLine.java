@@ -16,20 +16,19 @@
  *****************************************************************************/
 package org.compiere.report;
 
-import java.awt.BasicStroke;
-import java.awt.Stroke;
+import org.adempiere.core.domains.models.I_PA_ReportSource;
+import org.adempiere.core.domains.models.X_PA_ReportLine;
+import org.compiere.model.MAcctSchemaElement;
+import org.compiere.model.Query;
+import org.compiere.util.Util;
+
+import java.awt.*;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_PA_ReportSource;
-import org.adempiere.core.domains.models.X_PA_ReportLine;
-import org.compiere.model.MAcctSchemaElement;
-import org.compiere.model.Query;
-import org.compiere.util.Util;
 
 /**
  *	Report Line Model

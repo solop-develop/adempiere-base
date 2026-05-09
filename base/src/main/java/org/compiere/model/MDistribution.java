@@ -16,14 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_GL_Distribution;
 import org.adempiere.core.domains.models.I_GL_DistributionLine;
 import org.adempiere.core.domains.models.X_GL_Distribution;
@@ -31,6 +23,14 @@ import org.compiere.util.CCache;
 import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *	GL Distribution Model
@@ -62,7 +62,7 @@ public class MDistribution extends X_GL_Distribution
 				account.getC_Activity_ID(), account.getAD_OrgTrx_ID(),
 				account.getC_SalesRegion_ID(), account.getC_LocTo_ID(),
 				account.getC_LocFrom_ID(), account.getUser1_ID(), account.getUser2_ID() ,
-				account.getUser3_ID() , account.getUser4_ID() ,accountDate);
+				account.getUser3_ID() , account.getUser4_ID(), account.getS_Contract_ID(), accountDate);
 	} // get
 
 	/**
@@ -93,10 +93,10 @@ public class MDistribution extends X_GL_Distribution
 			int accountId, int productId, int partnerId,
 			int projectId, int campaignId, int activityId,
 			int orgTrxId, int salesRegionId, int locToId,
-			int locFromId, int user1Id, int user2Id, int user3Id, int user4Id,
+			int locFromId, int user1Id, int user2Id, int user3Id, int user4Id, int contractId,
 			Timestamp accountDate) {
 		List<MDistribution> distributions = getDistributions(ctx,acctSchemaId);
-		if (distributions == null || distributions.size() == 0)
+		if (distributions == null || distributions.isEmpty())
 			return null;
 
 		List<MDistribution> distributionList = new ArrayList<>();
@@ -145,6 +145,8 @@ public class MDistribution extends X_GL_Distribution
 				continue;
 			if (!distribution.isAnyUser4() && distribution.getUser4_ID() != user4Id)
 				continue;
+			if (!distribution.isAnyContract() && distribution.getS_Contract_ID() != contractId)
+				continue;
 			//
 			distributionList.add (distribution);
 		}	//	 for all distributions with acct
@@ -154,7 +156,7 @@ public class MDistribution extends X_GL_Distribution
 	/**	Static Logger	*/
 	private static CLogger logger = CLogger.getCLogger (MDistribution.class);
 	/**	Distributions by Account			*/
-	private static CCache<Integer,List<MDistribution>> distributionCache = new CCache<>("GL_Distribution", 100);
+	private static final CCache<Integer,List<MDistribution>> distributionCache = new CCache<>("GL_Distribution", 100);
 	
 	
 	/**************************************************************************
@@ -184,6 +186,7 @@ public class MDistribution extends X_GL_Distribution
 			setAnySalesRegion (true);	// Y
 			setAnyUser1 (true);	// Y
 			setAnyUser2 (true);	// Y
+			setAnyContract(true);
 			//
 			setIsValid (false);	// N
 			setPercentTotal (Env.ZERO);
@@ -269,7 +272,7 @@ public class MDistribution extends X_GL_Distribution
 	{
 		String retValue = null;
 		getLines(true);
-		if (distributionLines.size() == 0)
+		if (distributionLines.isEmpty())
 			retValue = "@NoLines@";
 		else if (isPercentage && getPercentTotal().compareTo(Env.ONEHUNDRED) != 0)
 			retValue = "@PercentTotal@ <> 100";
@@ -288,10 +291,10 @@ public class MDistribution extends X_GL_Distribution
 				getAccount_ID(), getM_Product_ID(), getC_BPartner_ID(),
 				getC_Project_ID(), getC_Campaign_ID(), getC_Activity_ID(),
 				getAD_OrgTrx_ID(), getC_SalesRegion_ID(), getC_LocTo_ID(),
-				getC_LocFrom_ID(), getUser1_ID(), getUser2_ID() , getUser3_ID() , getUser4_ID());
+				getC_LocFrom_ID(), getUser1_ID(), getUser2_ID() , getUser3_ID(), getUser4_ID(), getS_Contract_ID());
 		
 
-	    if (distributions!= null && distributions.size() > 0) {
+	    if (distributions!= null && !distributions.isEmpty()) {
 			for (int i = 0; i < distributions.size(); i++) {
 				if (distributions.get(i).getGL_Distribution_ID() != get_ID()) {
 					
@@ -323,10 +326,10 @@ public class MDistribution extends X_GL_Distribution
 			int accountId, int productId, int partnerId,
 			int projectId, int campaignId, int activityId,
 			int orgTrxId, int salesRegionId, int locToId,
-			int locFromId, int user1Id, int user2Id ,  int user3Id, int user4Id ) {
+			int locFromId, int user1Id, int user2Id ,  int user3Id, int user4Id, int contractId) {
 
 		List<MDistribution> distributions = getDistributions(ctx, acctSchemaId);
-		if (distributions == null || distributions.size() == 0)
+		if (distributions == null || distributions.isEmpty())
 			return null;
 		//
 		List<MDistribution> list = new ArrayList<MDistribution>();
@@ -384,13 +387,9 @@ public class MDistribution extends X_GL_Distribution
 			if (!distribution.isAnyUser4()
 					&& distribution.getUser4_ID() != user4Id)
 				continue;
-			if (!distribution.isAnyUser3()
-					&& distribution.getUser3_ID() != user3Id)
+			if (!distribution.isAnyContract()
+					&& distribution.getS_Contract_ID() != contractId)
 				continue;
-			if (!distribution.isAnyUser4()
-					&& distribution.getUser4_ID() != user4Id)
-				continue;
-
 			list.add(distribution);
 		} // for all distributions with acct
 		return list;
@@ -404,7 +403,7 @@ public class MDistribution extends X_GL_Distribution
 	 * @return array of distributions
 	 */
 	public static List<MDistribution> getDistributions(Properties ctx, int acctSchemaId) {
-		Integer key = Integer.valueOf(acctSchemaId);
+		Integer key = acctSchemaId;
 		List<MDistribution> retValue = distributionCache.get(key);
 		if (retValue != null)
 			return retValue;
@@ -586,6 +585,8 @@ public class MDistribution extends X_GL_Distribution
 			setUser3_ID(0);
 		if (isAnyUser4() && getUser4_ID() != 0)
 			setUser4_ID(0);
+		if (isAnyContract() && getS_Contract_ID() != 0)
+			setS_Contract_ID(0);
 		return true;
 	}	//	beforeSave
 	

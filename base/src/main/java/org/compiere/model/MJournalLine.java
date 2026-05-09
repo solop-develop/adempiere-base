@@ -498,7 +498,8 @@ public class MJournalLine extends X_GL_JournalLine implements DocumentReversalLi
 					getUser3_ID(),
 					getUser4_ID(),
 					getUserElement1_ID(),
-					getUserElement2_ID() ,
+					getUserElement2_ID(),
+					0,
 					get_TrxName());
 
 			if (account != null)

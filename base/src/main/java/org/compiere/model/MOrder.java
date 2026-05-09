@@ -1494,7 +1494,7 @@ public class MOrder extends X_C_Order implements DocAction
 						getAD_Client_ID(), getAD_Org_ID(), schema.getC_AcctSchema_ID(), productRevenueAccount.getAccount_ID(), 0,
 						orderLine.getM_Product_ID(), getC_BPartner_ID(), getAD_OrgTrx_ID(), 0, 0, getC_SalesRegion_ID(),
 						getC_Project_ID(), getC_Campaign_ID(), getC_Activity_ID(),
-						getUser1_ID(), getUser2_ID() , getUser3_ID(), getUser4_ID(), 0, 0, null);
+						getUser1_ID(), getUser2_ID() , getUser3_ID(), getUser4_ID(), 0, 0, get_ValueAsInt("S_Contract_ID"), null);
 				if(revenue == null || revenue.get_ID() <= 0) {
 					throw new AdempiereException("@P_Revenue_Acct@ @NotFound@");
 				}

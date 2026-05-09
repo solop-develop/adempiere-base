@@ -18,13 +18,14 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_AcctSchema_Element
  *  @author Adempiere (generated) 
@@ -84,9 +85,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_AD_Column getAD_Column() throws RuntimeException
+	public I_AD_Column getAD_Column() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Column)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Column.Table_Name)
+		return (I_AD_Column)MTable.get(getCtx(), I_AD_Column.Table_Name)
 			.getPO(getAD_Column_ID(), get_TrxName());	}
 
 	/** Set Column.
@@ -132,9 +133,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_AcctSchema getC_AcctSchema() throws RuntimeException
+	public I_C_AcctSchema getC_AcctSchema() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_AcctSchema)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_AcctSchema.Table_Name)
+		return (I_C_AcctSchema)MTable.get(getCtx(), I_C_AcctSchema.Table_Name)
 			.getPO(getC_AcctSchema_ID(), get_TrxName());	}
 
 	/** Set Accounting Schema.
@@ -160,9 +161,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Activity getC_Activity() throws RuntimeException
+	public I_C_Activity getC_Activity() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Activity)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Activity.Table_Name)
+		return (I_C_Activity)MTable.get(getCtx(), I_C_Activity.Table_Name)
 			.getPO(getC_Activity_ID(), get_TrxName());	}
 
 	/** Set Activity.
@@ -188,9 +189,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -216,9 +217,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException
+	public I_C_Campaign getC_Campaign() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Campaign)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Campaign.Table_Name)
+		return (I_C_Campaign)MTable.get(getCtx(), I_C_Campaign.Table_Name)
 			.getPO(getC_Campaign_ID(), get_TrxName());	}
 
 	/** Set Campaign.
@@ -244,9 +245,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Element getC_Element() throws RuntimeException
+	public I_C_Element getC_Element() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Element)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Element.Table_Name)
+		return (I_C_Element)MTable.get(getCtx(), I_C_Element.Table_Name)
 			.getPO(getC_Element_ID(), get_TrxName());	}
 
 	/** Set Element.
@@ -272,9 +273,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_ElementValue getC_ElementValue() throws RuntimeException
+	public I_C_ElementValue getC_ElementValue() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_ElementValue)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getC_ElementValue_ID(), get_TrxName());	}
 
 	/** Set Account Element.
@@ -328,9 +329,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
+	public I_C_Project getC_Project() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
+		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
 			.getPO(getC_Project_ID(), get_TrxName());	}
 
 	/** Set Project.
@@ -356,9 +357,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_SalesRegion getC_SalesRegion() throws RuntimeException
+	public I_C_SalesRegion getC_SalesRegion() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_SalesRegion)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_SalesRegion.Table_Name)
+		return (I_C_SalesRegion)MTable.get(getCtx(), I_C_SalesRegion.Table_Name)
 			.getPO(getC_SalesRegion_ID(), get_TrxName());	}
 
 	/** Set Sales Region.
@@ -487,9 +488,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
 		return false;
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException
+	public I_M_Product getM_Product() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
 			.getPO(getM_Product_ID(), get_TrxName());	}
 
 	/** Set Product.
@@ -540,9 +541,9 @@ public class X_C_AcctSchema_Element extends PO implements I_C_AcctSchema_Element
         return new KeyNamePair(get_ID(), getName());
     }
 
-	public org.adempiere.core.domains.models.I_AD_Org getOrg() throws RuntimeException
+	public I_AD_Org getOrg() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Org)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Org.Table_Name)
+		return (I_AD_Org)MTable.get(getCtx(), I_AD_Org.Table_Name)
 			.getPO(getOrg_ID(), get_TrxName());	}
 
 	/** Set Organization.
