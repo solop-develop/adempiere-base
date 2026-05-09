@@ -16,12 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_C_AcctSchema_Element;
 import org.adempiere.core.domains.models.I_C_ValidCombination;
 import org.adempiere.core.domains.models.X_C_AcctSchema_Element;
@@ -29,6 +23,12 @@ import org.compiere.util.CCache;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Msg;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *  Account Schema Element Object
@@ -127,6 +127,8 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 			return I_C_ValidCombination.COLUMNNAME_UserElement1_ID;
 		else if (elementType.equals(ELEMENTTYPE_UserElement2))
 			return I_C_ValidCombination.COLUMNNAME_UserElement2_ID;
+		else if (elementType.equals(ELEMENTTYPE_Contract))
+			return I_C_ValidCombination.COLUMNNAME_S_Contract_ID;
 		//
 		return "";
 	}   //  getColumnName
@@ -166,6 +168,8 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 			return "SELECT Value,Name FROM C_ElementValue WHERE C_ElementValue_ID=";
 		else if (elementType.equals(ELEMENTTYPE_UserList2))
 			return "SELECT Value,Name FROM C_ElementValue WHERE C_ElementValue_ID=";
+		else if (elementType.equals(ELEMENTTYPE_Contract))
+			return "SELECT DocumentNo,Description FROM S_Contract WHERE S_Contract_ID=";
 		//
 		else if (elementType.equals(ELEMENTTYPE_UserElement1))
 			return null;
@@ -188,7 +192,7 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 	 * @param C_AcctSchema_Element_ID id
 	 * @param trxName transaction
 	 */
-	public MAcctSchemaElement (Properties ctx, int C_AcctSchema_Element_ID, String trxName)
+	public MAcctSchemaElement(Properties ctx, int C_AcctSchema_Element_ID, String trxName)
 	{
 		super (ctx, C_AcctSchema_Element_ID, trxName);
 		if (C_AcctSchema_Element_ID == 0)
@@ -211,7 +215,7 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 	 * @param rs result set
 	 * @param trxName transaction
 	 */	
-	public MAcctSchemaElement (Properties ctx, ResultSet rs, String trxName)
+	public MAcctSchemaElement(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MAcctSchemaElement
@@ -220,7 +224,7 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 	 * Parent Constructor
 	 * @param as accounting schema
 	 */
-	public MAcctSchemaElement (MAcctSchema as)
+	public MAcctSchemaElement(MAcctSchema as)
 	{
 		this (as.getCtx(), 0, as.get_TrxName());
 		setClientOrg(as);

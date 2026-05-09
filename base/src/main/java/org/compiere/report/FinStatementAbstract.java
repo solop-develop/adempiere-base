@@ -17,8 +17,9 @@
 
 package org.compiere.report;
 
-import java.sql.Timestamp;
 import org.compiere.process.SvrProcess;
+
+import java.sql.Timestamp;
 
 /** Generated Process for (Statement of Accounts)
  *  @author ADempiere (generated) 

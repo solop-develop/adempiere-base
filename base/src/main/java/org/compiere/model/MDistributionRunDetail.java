@@ -16,18 +16,15 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_T_DistributionRunDetail;
 import org.compiere.util.CLogger;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
 
 /**
  *	Distribution Run Detail
@@ -50,44 +47,16 @@ public class MDistributionRunDetail extends X_T_DistributionRunDetail
 	 *	@param trxName transaction
 	 *	@return array of details
 	 */
-	static public MDistributionRunDetail[] get (Properties ctx, int M_DistributionRun_ID, 
-		boolean orderBP, String trxName)
+	static public List<MDistributionRunDetail> get (Properties ctx, int M_DistributionRun_ID,
+	                                                boolean orderBP, String trxName)
 	{
-		ArrayList<MDistributionRunDetail> list = new ArrayList<MDistributionRunDetail>();
-		String sql = "SELECT * FROM T_DistributionRunDetail WHERE M_DistributionRun_ID=? ";
-		if (orderBP)
-			sql += "ORDER BY C_BPartner_ID, C_BPartner_Location_ID";
-		else
-			sql += "ORDER BY M_DistributionRunLine_ID";
-		PreparedStatement pstmt = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trxName);
-			pstmt.setInt (1, M_DistributionRun_ID);
-			ResultSet rs = pstmt.executeQuery ();
-			while (rs.next ())
-				list.add(new MDistributionRunDetail(ctx, rs, trxName));
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			s_log.log(Level.SEVERE, sql, e);
-		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}
-		MDistributionRunDetail[] retValue = new MDistributionRunDetail[list.size()];
-		list.toArray (retValue);
-		return retValue;
+		String orderBy = "C_BPartner_ID, C_BPartner_Location_ID";
+		if (!orderBP)
+			orderBy = "M_DistributionRunLine_ID";
+		return new Query(ctx, MDistributionRunDetail.Table_Name, "M_DistributionRun_ID=?", trxName)
+				.setParameters(M_DistributionRun_ID)
+				.setOrderBy(orderBy)
+				.list();
 	}	//	get
 	
 	/**	Static Logger	*/

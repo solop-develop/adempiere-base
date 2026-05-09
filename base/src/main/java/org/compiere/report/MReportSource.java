@@ -16,10 +16,10 @@
  *****************************************************************************/
 package org.compiere.report;
 
+import org.adempiere.core.domains.models.X_PA_ReportSource;
+
 import java.sql.ResultSet;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.X_PA_ReportSource;
 
 
 /**
@@ -67,7 +67,7 @@ public class MReportSource extends X_PA_ReportSource
 	 * 	@param hierarchyId hierarchy
 	 * 	@return where clause
 	 */
-	public String getWhereClause(int hierarchyId)
+	public String 	getWhereClause(int hierarchyId)
 	{
 		String elementType = getElementType();
 		//	ID for Tree Leaf Value
@@ -107,7 +107,10 @@ public class MReportSource extends X_PA_ReportSource
 			return "UserElement1_ID="+getUserElement1_ID(); // Not Tree
 		else if (MReportSource.ELEMENTTYPE_UserElement2.equals(elementType))
 			return "UserElement2_ID="+getUserElement2_ID(); // Not Tree
+		else if (MReportSource.ELEMENTTYPE_Contract.equals(elementType))
+//			return "S_Contract_ID="+getS_Contract_ID(); // Not Tree
 		// Financial Report Source with Type Combination
+			return getWhereCombination(hierarchyId);
 		else if (MReportSource.ELEMENTTYPE_Combination.equals(elementType))
 			return getWhereCombination(hierarchyId);
 
@@ -212,6 +215,17 @@ public class MReportSource extends X_PA_ReportSource
 			if (isIncludeNullsProject())
 				whcomb.append(" AND C_Project_ID IS NULL");
 
+		if (getS_Contract_ID() > 0) {
+			if (isIncludeNullsContract())
+				whcomb.append(" AND (S_Contract_ID IS NULL OR ").append("S_Contract_ID=").append(getS_Contract_ID()).append(")");
+			else
+				whcomb.append(" AND ").append("S_Contract_ID=").append(getS_Contract_ID());
+		} else {
+			if (isIncludeNullsContract()) {
+				whcomb.append(" AND S_Contract_ID IS NULL");
+			}
+		}
+
 		if (getC_SalesRegion_ID() > 0) {
 			String whtree = MReportTree.getWhereClause (getCtx(), hierarchyId, MReportSource.ELEMENTTYPE_SalesRegion, getC_SalesRegion_ID());
 			if (isIncludeNullsSalesRegion())
@@ -291,7 +305,6 @@ public class MReportSource extends X_PA_ReportSource
 		// drop the first " AND "
 		if (whcomb.length() > 5 && whcomb.toString().startsWith(" AND "))
 			whcomb.delete(0, 5);
-
 		return whcomb.toString();
 	}
 	

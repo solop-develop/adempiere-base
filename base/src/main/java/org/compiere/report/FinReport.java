@@ -256,7 +256,7 @@ public class FinReport extends FinReportAbstract {
         if (getUser2Id() != 0)
             parameterWhere.append(" AND ").append(
                     MReportTree.getWhereClause(getCtx(), getHierarchyId(), MAcctSchemaElement.ELEMENTTYPE_UserList2, getUser2Id()));
-        //	Optional User1_ID
+        //	Optional User3_ID
         if (getUser3Id() != 0)
             parameterWhere.append(" AND ").append(
                     MReportTree.getWhereClause(getCtx(), getHierarchyId(), MAcctSchemaElement.ELEMENTTYPE_UserList3, getUser3Id()));
@@ -270,6 +270,9 @@ public class FinReport extends FinReportAbstract {
         //  Optional UserElement2_ID
         if (getUserElement2Id() != 0)
             parameterWhere.append(" AND UserElement2_ID=").append(getUserElement2Id());
+        if(getContractId() > 0) {
+            parameterWhere.append(" AND S_Contract_ID=").append(getContractId());
+        }
     }
 
     /**
@@ -387,7 +390,7 @@ public class FinReport extends FinReportAbstract {
         //	Report Where
         String whereReport = finReport.getWhereClause();
         if (whereReport != null && whereReport.length() > 0) {
-            whereClause.append(" AND ").append(whereReport);
+//            whereClause.append(" AND ").append(whereReport);
             whereClause.append(getWhereClause());
         }
 
@@ -1041,7 +1044,9 @@ public class FinReport extends FinReportAbstract {
                         source.getUser3_ID(),
                         source.getUser4_ID(),
                         source.getUserElement1_ID(),
-                        source.getUserElement2_ID(), reportLine.get_TrxName()).getC_ValidCombination_ID();
+                        source.getUserElement2_ID(),
+                        source.getS_Contract_ID(),
+                        reportLine.get_TrxName()).getC_ValidCombination_ID();
             }
 
             //	WHERE (sources, posting type)
@@ -1204,7 +1209,7 @@ public class FinReport extends FinReportAbstract {
             //	Set Name,Description
             StringBuilder updateNameAndDesc = new StringBuilder("UPDATE T_Report SET (Name,Description)=(");
             String sourceValueQuery = reportLine.getSourceValueQuery();
-            if ((sourceValueQuery == null || sourceValueQuery.length() == 0) && isCombination) {
+            if ((sourceValueQuery == null || sourceValueQuery.isEmpty()) && isCombination) {
                 updateNameAndDesc.append("SELECT Combination , Description FROM C_ValidCombination WHERE C_ValidCombination_ID=").append(combinationId);
             } else {
                 updateNameAndDesc.append(sourceValueQuery);
@@ -1214,8 +1219,9 @@ public class FinReport extends FinReportAbstract {
             updateNameAndDesc.append(") WHERE Record_ID <> ? AND AD_PInstance_ID = ? ")    //.append(getAD_PInstance_ID())
                     .append(" AND PA_ReportLine_ID = ? ")//.append(reportLine.getPA_ReportLine_ID())
                     .append(" AND Fact_Acct_ID = ?");
-            if (isCombination)
+            if (isCombination) {
                 updateNameAndDesc.append(" AND C_ValidCombination_ID=").append(combinationId);
+            }
             int no = DB.executeUpdateEx(
                     updateNameAndDesc.toString(),
                     List.of(0, getAD_PInstance_ID(), reportLine.getPA_ReportLine_ID(), 0).toJavaArray(),

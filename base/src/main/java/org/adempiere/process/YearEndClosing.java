@@ -110,7 +110,7 @@ public class YearEndClosing extends YearEndClosingAbstract
 		0, 0, 0, 
 		0, 0, 0, 
 		0, 0, 0,
-		0, 0, 0,0,0,0, get_TrxName());
+		0, 0, 0,0,0,0,0, get_TrxName());
 		if (account == null)
 			return 0;
 		return account.get_ID();

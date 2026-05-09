@@ -16,23 +16,16 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.*;
+import org.compiere.Adempiere;
+import org.compiere.util.CLogger;
+import org.compiere.util.Env;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.I_C_ValidCombination;
-import org.adempiere.core.domains.models.X_C_Activity;
-import org.adempiere.core.domains.models.X_C_BPartner;
-import org.adempiere.core.domains.models.X_C_Campaign;
-import org.adempiere.core.domains.models.X_C_Project;
-import org.adempiere.core.domains.models.X_C_SubAcct;
-import org.adempiere.core.domains.models.X_C_ValidCombination;
-import org.adempiere.core.domains.models.X_Fact_Acct;
-import org.adempiere.core.domains.models.X_M_Product;
-import org.compiere.util.CLogger;
-import org.compiere.util.Env;
 
 /**
  *  Account Object Entity to maintain all segment values.
@@ -51,88 +44,6 @@ public class MAccount extends X_C_ValidCombination
 	 * 
 	 */
 	private static final long serialVersionUID = -1936396369349550834L;
-
-	
-	
-	/**
-	 * 	Get existing Account or create it 
-	 *	@param ctx context
-	 *	@param clientId
-	 *	@param orgId
-	 *	@param acctSchemaId
-	 *	@param accountId
-	 *	@param subAcctId
-	 *	@param productId
-	 *	@param partnerId
-	 *	@param orgTrxId
-	 *	@param locFromId
-	 *	@param locToId
-	 *	@param salesRegionId
-	 *	@param projectId
-	 *	@param campaignId
-	 *	@param activityId
-	 *	@param user1Id
-	 *	@param User2Id
-	 *	@param userElement1Id
-	 *	@param userElement2Id
-	 *	@return account or null
-	 * @deprecated Use {@link #get(Properties,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,String)} instead
-	 */
-	@Deprecated
-	public static MAccount get (Properties ctx,
-		int AD_Client_ID, int AD_Org_ID, int C_AcctSchema_ID, 
-		int Account_ID, int C_SubAcct_ID,
-		int M_Product_ID, int C_BPartner_ID, int AD_OrgTrx_ID, 
-		int C_LocFrom_ID, int C_LocTo_ID, int C_SalesRegion_ID, 
-		int C_Project_ID, int C_Campaign_ID, int C_Activity_ID,
-		int User1_ID, int User2_ID, int UserElement1_ID, int UserElement2_ID)
-	{
-		return get(ctx, AD_Client_ID, AD_Org_ID, C_AcctSchema_ID, Account_ID,
-				C_SubAcct_ID, M_Product_ID, C_BPartner_ID, AD_OrgTrx_ID,
-				C_LocFrom_ID, C_LocTo_ID, C_SalesRegion_ID, C_Project_ID,
-				C_Campaign_ID, C_Activity_ID, User1_ID, User2_ID, 0 , 0 ,
-				UserElement1_ID, UserElement2_ID, null);
-	}	//	get
-
-	/**
-	 * Get Account
-	 * @param ctx
-	 * @param AD_Client_ID
-	 * @param AD_Org_ID
-	 * @param C_AcctSchema_ID
-	 * @param Account_ID
-	 * @param C_SubAcct_ID
-	 * @param M_Product_ID
-	 * @param C_BPartner_ID
-	 * @param AD_OrgTrx_ID
-	 * @param C_LocFrom_ID
-	 * @param C_LocTo_ID
-	 * @param C_SalesRegion_ID
-	 * @param C_Project_ID
-	 * @param C_Campaign_ID
-	 * @param C_Activity_ID
-	 * @param User1_ID
-	 * @param User2_ID
-	 * @param UserElement1_ID
-	 * @param UserElement2_ID
-	 * @param trxName
-	 * @return
-	 */
-	@Deprecated
-	public static MAccount get (Properties ctx,
-								int AD_Client_ID, int AD_Org_ID, int C_AcctSchema_ID,
-								int Account_ID, int C_SubAcct_ID,
-								int M_Product_ID, int C_BPartner_ID, int AD_OrgTrx_ID,
-								int C_LocFrom_ID, int C_LocTo_ID, int C_SalesRegion_ID,
-								int C_Project_ID, int C_Campaign_ID, int C_Activity_ID,
-								int User1_ID, int User2_ID , int UserElement1_ID, int UserElement2_ID, String trxName)
-	{
-		return MAccount.get(ctx, AD_Client_ID , AD_Org_ID , C_AcctSchema_ID ,
-				Account_ID , C_SubAcct_ID ,
-				M_Product_ID , C_BPartner_ID , AD_OrgTrx_ID ,
-				C_LocFrom_ID , C_LocTo_ID , C_SalesRegion_ID ,
-				C_Project_ID, C_Campaign_ID , C_Activity_ID, User1_ID , User2_ID , 0 , 0 , UserElement1_ID , UserElement2_ID, trxName);
-	}
 
 	/**
 	 * 	Get existing Account or create it 
@@ -155,8 +66,9 @@ public class MAccount extends X_C_ValidCombination
 	 * @param User2_ID
 	 * @param User3_ID
 	 * @param User4_ID
-	 * @param UserElement1_ID
+	 * @param acctSchemaId
 	 * @param UserElement2_ID
+	 * @param S_Contract_ID
 	 * @param trxName TODO
 	 *	@return account or null
 	 */
@@ -166,7 +78,7 @@ public class MAccount extends X_C_ValidCombination
 		int productId, int partnerId, int orgTrxId,
 		int locFromId, int locToId, int salesRegionId,
 		int projectId, int campaignId, int activityId,
-		int user1Id, int User2Id, int user3Id, int user4Id , int userElement1Id, int userElement2Id, String trxName)
+		int user1Id, int User2Id, int user3Id, int user4Id , int userElement1Id, int userElement2Id, int contractId, String trxName)
 	{
 		StringBuffer info = new StringBuffer();
 		info.append("AD_Client_ID=").append(clientId).append(",AD_Org_ID=").append(orgId);
@@ -298,6 +210,13 @@ public class MAccount extends X_C_ValidCombination
 			whereClause.append(" AND UserElement2_ID=?");
 			params.add(userElement2Id);
 		}
+		if (contractId == 0)
+			whereClause.append(" AND S_Contract_ID IS NULL");
+		else
+		{
+			whereClause.append(" AND S_Contract_ID=?");
+			params.add(contractId);
+		}
 		//	whereClause.append(" ORDER BY IsFullyQualified DESC");
 		
 		MAccount existingAccount = new Query(ctx, MAccount.Table_Name, whereClause.toString(), trxName)
@@ -373,7 +292,7 @@ public class MAccount extends X_C_ValidCombination
 			factAcct.getC_LocFrom_ID(), factAcct.getC_LocTo_ID(), factAcct.getC_SalesRegion_ID(),
 			factAcct.getC_Project_ID(), factAcct.getC_Campaign_ID(), factAcct.getC_Activity_ID(),
 			factAcct.getUser1_ID(), factAcct.getUser2_ID(), factAcct.getUser3_ID() , factAcct.getUser4_ID(),
-			factAcct.getUserElement1_ID(), factAcct.getUserElement2_ID(), factAcct.get_TrxName());
+			factAcct.getUserElement1_ID(), factAcct.getUserElement2_ID(), factAcct.getS_Contract_ID(), factAcct.get_TrxName());
 		return account;
 	}	//	get
 	
@@ -510,7 +429,7 @@ public class MAccount extends X_C_ValidCombination
 	 *  @param validCombinationId combination
 	 *	@param trxName transaction
 	 */
-	public MAccount (Properties ctx, int validCombinationId, String trxName)
+	public MAccount(Properties ctx, int validCombinationId, String trxName)
 	{
 		super (ctx, validCombinationId, trxName);
 		if (validCombinationId == 0)
@@ -527,7 +446,7 @@ public class MAccount extends X_C_ValidCombination
 	 *  @param rs result set
 	 *	@param trxName transaction
 	 */
-	public MAccount (Properties ctx, ResultSet rs, String trxName)
+	public MAccount(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}   //  MAccount
@@ -536,7 +455,7 @@ public class MAccount extends X_C_ValidCombination
 	 * 	Parent Constructor
 	 *	@param as account schema
 	 */
-	public MAccount (MAcctSchema as)
+	public MAccount(MAcctSchema as)
 	{
 		this (as.getCtx(), 0, as.get_TrxName());
 		setClientOrg(as);
@@ -962,15 +881,15 @@ public class MAccount extends X_C_ValidCombination
 	 */
 	public static void main (String[] args)
 	{
-		org.compiere.Adempiere.startup(true);
+		Adempiere.startup(true);
 		MAccount acct = get (Env.getCtx(), 11, 11, 101, 600, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0, null);
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, null);
 		System.out.println(acct);
 		System.out.println(acct.get_xmlString(new StringBuffer ("xxxx")));
 		
 		//
 		MAccount acct2 = get (Env.getCtx(), 11, 12, 101, 600, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 , null);
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null);
 		System.out.println(acct2);
 		
 	}	//	main

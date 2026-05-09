@@ -83,9 +83,9 @@ public class DistributionRun extends SvrProcess
 	/**	Distribution Run			*/
 	private MDistributionRun		m_run = null;
 	/**	Distribution Run Lines		*/
-	private MDistributionRunLine[]	m_runLines = null;
+	private List<MDistributionRunLine>	m_runLines = null;
 	/** Distribution Run Details	*/
-	private MDistributionRunDetail[]	m_details = null;
+	private List<MDistributionRunDetail>	m_details = null;
 
 	/**	Date Ordered			*/
 	private Timestamp			m_DateOrdered = null;
@@ -150,7 +150,7 @@ public class DistributionRun extends SvrProcess
 		if (m_run.get_ID() == 0)
 			throw new Exception ("Distribution Run not found -  M_DistributionRun_ID=" +  p_M_DistributionRun_ID);
 		m_runLines = m_run.getLines(true);
-		if (m_runLines == null || m_runLines.length == 0)
+		if (m_runLines == null || m_runLines.size() == 0)
 			throw new Exception ("No active, non-zero Distribution Run Lines found");
 		
 		//	Document Type
@@ -272,18 +272,10 @@ public class DistributionRun extends SvrProcess
 	private void addAllocations ()
 	{
 		//	Reset
-		for (int j = 0; j < m_runLines.length; j++)
-		{
-			MDistributionRunLine runLine = m_runLines[j];
-			runLine.resetCalculations();
-		}
+		m_runLines.forEach(MDistributionRunLine::resetCalculations);
 		//	Add Up
-		for (int i = 0; i < m_details.length; i++)
-		{
-			MDistributionRunDetail detail = m_details[i];
-			for (int j = 0; j < m_runLines.length; j++)
-			{
-				MDistributionRunLine runLine = m_runLines[j];
+		m_details.forEach(detail -> {
+			for (MDistributionRunLine runLine : m_runLines) {
 				if (runLine.getM_DistributionRunLine_ID() == detail.getM_DistributionRunLine_ID())
 				{
 					//	Round
@@ -294,22 +286,17 @@ public class DistributionRun extends SvrProcess
 					runLine.addActualAllocation(detail.getActualAllocation());
 					runLine.setMaxAllocation(detail.getActualAllocation(), false);
 					//
-					log.fine("RunLine=" + runLine.getLine() 
-						+ ": BP_ID=" + detail.getC_BPartner_ID() 
-						+ ", Min=" + detail.getMinQty()
-						+ ", Qty=" + detail.getQty()
-						+ ", Allocation=" + detail.getActualAllocation());
+					log.fine("RunLine=" + runLine.getLine()
+							+ ": BP_ID=" + detail.getC_BPartner_ID()
+							+ ", Min=" + detail.getMinQty()
+							+ ", Qty=" + detail.getQty()
+							+ ", Allocation=" + detail.getActualAllocation());
 					continue;
 				}
 			}
-		}	//	for all detail lines
-		
+		});
 		//	Info
-		for (int j = 0; j < m_runLines.length; j++)
-		{
-			MDistributionRunLine runLine = m_runLines[j];
-			log.fine("Run - " + runLine.getInfo());
-		}
+		m_runLines.forEach(runLine -> log.fine("Run - " + runLine.getInfo()));
 	}	//	addAllocations
 	
 	
@@ -322,9 +309,7 @@ public class DistributionRun extends SvrProcess
 	{
 		boolean allocationEqTotal = true;
 		//	Check total min qty & delta
-		for (int j = 0; j < m_runLines.length; j++)
-		{
-			MDistributionRunLine runLine = m_runLines[j];
+		for (MDistributionRunLine runLine : m_runLines) {
 			if (runLine.isActualMinGtTotal())
 				throw new Exception ("Line " + runLine.getLine() 
 					+ " Sum of Min Qty=" + runLine.getActualMin() 
@@ -343,8 +328,7 @@ public class DistributionRun extends SvrProcess
 	 */
 	private void adjustAllocation() throws Exception
 	{
-		for (int j = 0; j < m_runLines.length; j++)
-			adjustAllocation(j);
+		m_runLines.forEach(this::adjustAllocation);
 	}	//	adjustAllocation
 	
 	/**
@@ -352,9 +336,8 @@ public class DistributionRun extends SvrProcess
 	 * 	@param index run line index
 	 * 	@throws Exception
 	 */
-	private void adjustAllocation(int index) throws Exception
+	private void adjustAllocation(MDistributionRunLine runLine)
 	{
-		MDistributionRunLine runLine = m_runLines[index];
 		BigDecimal difference = runLine.getActualAllocationDiff();
 		if (difference.compareTo(Env.ZERO) == 0)
 			return;
@@ -366,9 +349,7 @@ public class DistributionRun extends SvrProcess
 		//	Adjust Biggest Amount
 		if (adjustBiggest)
 		{
-			for (int i = 0; i < m_details.length; i++)
-			{
-				MDistributionRunDetail detail = m_details[i];
+			for (MDistributionRunDetail detail : m_details) {
 				if (runLine.getM_DistributionRunLine_ID() == detail.getM_DistributionRunLine_ID())
 				{
 					log.fine("Biggest - DetailAllocation=" + detail.getActualAllocation()
@@ -383,16 +364,14 @@ public class DistributionRun extends SvrProcess
 					}
 				}
 			}	//	for all detail lines
-			throw new Exception ("Cannot adjust Difference = " + difference 
+			throw new RuntimeException("Cannot adjust Difference = " + difference
 				+ " - You need to change Total Qty or Min Qty");
 		}
 		else	//	Distibute
 		{
 			//	New Total Ratio
 			BigDecimal ratioTotal = Env.ZERO;
-			for (int i = 0; i < m_details.length; i++)
-			{
-				MDistributionRunDetail detail = m_details[i];
+			for (MDistributionRunDetail detail : m_details) {
 				if (runLine.getM_DistributionRunLine_ID() == detail.getM_DistributionRunLine_ID())
 				{
 					if (detail.isCanAdjust())
@@ -400,12 +379,10 @@ public class DistributionRun extends SvrProcess
 				}
 			}
 			if (ratioTotal.compareTo(Env.ZERO) == 0)
-				throw new Exception ("Cannot distribute Difference = " + difference 
+				throw new RuntimeException("Cannot distribute Difference = " + difference
 					+ " - You need to change Total Qty or Min Qty");
 			//	Distribute
-			for (int i = 0; i < m_details.length; i++)
-			{
-				MDistributionRunDetail detail = m_details[i];
+			for (MDistributionRunDetail detail : m_details) {
 				if (runLine.getM_DistributionRunLine_ID() == detail.getM_DistributionRunLine_ID())
 				{
 					if (detail.isCanAdjust())
@@ -485,10 +462,7 @@ public class DistributionRun extends SvrProcess
 		int lastC_BPartner_Location_ID = 0;
 		MOrder order = null;
 		//	For all lines
-		for (int i = 0; i < m_details.length; i++)
-		{
-			MDistributionRunDetail detail = m_details[i];
-			
+		for (MDistributionRunDetail detail : m_details) {
 			//	Create Order Header
 			if (m_run.isCreateSingleOrder())
 				order = singleOrder;
@@ -773,9 +747,7 @@ public class DistributionRun extends SvrProcess
 				M_Warehouse_ID = p_M_Warehouse_ID;
 			
 			//			For all lines
-			for (int i = 0; i < m_details.length; i++)
-			{
-				MDistributionRunDetail detail = m_details[i];
+			for (MDistributionRunDetail detail : m_details) {
 				
 				X_DD_OrderLine distributionOrderLine = new Query(getCtx(), I_DD_OrderLine.Table_Name, "M_Product_ID = ? AND DatePromised <= ?"
 						+ " AND EXISTS(SELECT 1 FROM DD_Order o WHERE o.DD_Order_ID = DD_OrderLine.DD_Order_ID AND o.DocStatus IN('DR','IN') AND o.C_BPartner_ID = ?)"
@@ -870,9 +842,7 @@ public class DistributionRun extends SvrProcess
 
 		
 		//	For all lines
-		for (int i = 0; i < m_details.length; i++)
-		{
-			MDistributionRunDetail detail = m_details[i];
+		for (MDistributionRunDetail detail : m_details) {
 			
 			//	Create Order Header
 			if (m_run.isCreateSingleOrder())

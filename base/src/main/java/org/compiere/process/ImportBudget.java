@@ -608,6 +608,7 @@ public class ImportBudget extends ImportBudgetAbstract {
                         importBudget.getUser4_ID(),
                         importBudget.getUserElement1_ID(),
                         importBudget.getUserElement2_ID(),
+                        0,
                         journal.get_TrxName());
                 account.saveEx();
                 journalLine.setAlias_ValidCombination_ID(account.getC_ValidCombination_ID());

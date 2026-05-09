@@ -16,22 +16,16 @@
  *****************************************************************************/
 package org.compiere.acct;
 
+import org.adempiere.core.domains.models.I_C_BankStatement;
+import org.compiere.model.*;
+import org.compiere.util.CLogger;
+import org.compiere.util.Env;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import org.adempiere.core.domains.models.I_C_BankStatement;
-import org.compiere.model.MAccount;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MAcctSchemaElement;
-import org.compiere.model.MDistribution;
-import org.compiere.model.MDistributionLine;
-import org.compiere.model.MElementValue;
-import org.compiere.model.MFactAcct;
-import org.compiere.util.CLogger;
-import org.compiere.util.Env;
 
 /**
  *  Accounting Fact
@@ -88,7 +82,7 @@ public final class Fact
 	private boolean		    m_converted = false;
 
 	/** Lines               */
-	private ArrayList<FactLine>	m_lines = new ArrayList<>();
+	private ArrayList<FactLine> lines = new ArrayList<>();
 
 
 	/**
@@ -96,9 +90,9 @@ public final class Fact
 	 */
 	public void dispose()
 	{
-		if(m_lines != null) {
-			m_lines.clear();
-			m_lines = null;
+		if(lines != null) {
+			lines.clear();
+			lines = null;
 		}
 	}   //  dispose
 
@@ -165,7 +159,7 @@ public final class Fact
 	 */
 	public void add (FactLine line)
 	{
-		m_lines.add(line);
+		lines.add(line);
 	}   //  add
 
 	/**
@@ -174,7 +168,7 @@ public final class Fact
 	 */
 	public void remove (FactLine line)
 	{
-		m_lines.remove(line);
+		lines.remove(line);
 	}   //  remove
 
 	/**
@@ -254,7 +248,7 @@ public final class Fact
 		//AZ Goodwill
 		//  Multi-Currency documents are source balanced by definition
 		//  No lines -> balanced
-		if (m_lines.size() == 0 || m_doc.isMultiCurrency())
+		if (lines.isEmpty() || m_doc.isMultiCurrency())
 			return true;
 		BigDecimal balance = getSourceBalance();
 		boolean retValue = balance.signum() == 0;
@@ -272,9 +266,9 @@ public final class Fact
 	public BigDecimal getSourceBalance()
 	{
 		BigDecimal result = Env.ZERO;
-		for (int i = 0; i < m_lines.size(); i++)
+		for (int i = 0; i < lines.size(); i++)
 		{
-			FactLine line = (FactLine)m_lines.get(i);
+			FactLine line = (FactLine) lines.get(i);
 			result = result.add (line.getSourceBalance());
 		}
 	//	log.fine("getSourceBalance - " + result.toString());
@@ -314,7 +308,7 @@ public final class Fact
 		line.convert();
 		//
 		log.fine(line.toString());
-		m_lines.add(line);
+		lines.add(line);
 		return line;
 	}   //  balancingSource
 
@@ -328,7 +322,7 @@ public final class Fact
 		//AZ Goodwill
 		//  Multi-Currency documents are source balanced by definition
 		//  No lines -> balanced
-		if (m_lines.size() == 0 || m_doc.isMultiCurrency())
+		if (lines.size() == 0 || m_doc.isMultiCurrency())
 			return true;
 
 		MAcctSchemaElement[] elements = m_acctSchema.getAcctSchemaElements();
@@ -355,9 +349,9 @@ public final class Fact
 		{
 			HashMap<Integer,BigDecimal> map = new HashMap<Integer,BigDecimal>();
 			//  Add up values by key
-			for (int i = 0; i < m_lines.size(); i++)
+			for (int i = 0; i < lines.size(); i++)
 			{
-				FactLine line = (FactLine)m_lines.get(i);
+				FactLine line = (FactLine) lines.get(i);
 				Integer key = Integer.valueOf(line.getAD_Org_ID());
 				BigDecimal bal = line.getSourceBalance();
 				BigDecimal oldBal = (BigDecimal)map.get(key);
@@ -412,7 +406,7 @@ public final class Fact
 	private void balanceSegment (String elementType)
 	{
 		//  no lines -> balanced
-		if (m_lines.size() == 0)
+		if (lines.size() == 0)
 			return;
 
 		log.fine ("(" + elementType + ") - " + toString());
@@ -422,9 +416,9 @@ public final class Fact
 		{
 			HashMap<Integer,Balance> map = new HashMap<Integer,Balance>();
 			//  Add up values by key
-			for (int i = 0; i < m_lines.size(); i++)
+			for (int i = 0; i < lines.size(); i++)
 			{
-				FactLine line = (FactLine)m_lines.get(i);
+				FactLine line = (FactLine) lines.get(i);
 				Integer key = Integer.valueOf(line.getAD_Org_ID());
 			//	BigDecimal balance = line.getSourceBalance();
 				Balance oldBalance = (Balance)map.get(key);
@@ -483,7 +477,7 @@ public final class Fact
 					line.convert();
 					line.setAD_Org_ID(key.intValue());
 					//
-					m_lines.add(line);
+					lines.add(line);
 					log.fine("(" + elementType + ") - " + line);
 				}
 			}
@@ -499,7 +493,7 @@ public final class Fact
 	public boolean isAcctBalanced()
 	{
 		//  no lines -> balanced
-		if (m_lines.size() == 0)
+		if (lines.size() == 0)
 			return true;
 		BigDecimal balance = getAcctBalance();
 		boolean retValue = balance.signum() == 0;
@@ -517,9 +511,9 @@ public final class Fact
 	public BigDecimal getAcctBalance()
 	{
 		BigDecimal result = Env.ZERO;
-		for (int i = 0; i < m_lines.size(); i++)
+		for (int i = 0; i < lines.size(); i++)
 		{
-			FactLine line = (FactLine)m_lines.get(i);
+			FactLine line = (FactLine) lines.get(i);
 			result = result.add(line.getAcctBalance());
 		}
 	//	log.fine(result.toString());
@@ -550,9 +544,9 @@ public final class Fact
 		FactLine PLline = null;
 
 		//  Find line biggest BalanceSheet or P&L line
-		for (int i = 0; i < m_lines.size(); i++)
+		for (int i = 0; i < lines.size(); i++)
 		{
-			FactLine l = (FactLine)m_lines.get(i);
+			FactLine l = (FactLine) lines.get(i);
 			BigDecimal amt = l.getAcctBalance().abs();
 			if (l.isBalanceSheet() && amt.compareTo(BSamount) > 0)
 			{
@@ -602,7 +596,7 @@ public final class Fact
 			}
 			line.setAmtAcct(drAmt, crAmt);
 			log.fine(line.toString());
-			m_lines.add(line);
+			lines.add(line);
 		}
 		else	//  Adjust biggest (Balance Sheet) line amount
 		{
@@ -630,13 +624,13 @@ public final class Fact
 	public boolean checkAccounts()
 	{
 		//  no lines -> nothing to distribute
-		if (m_lines.size() == 0)
+		if (lines.size() == 0)
 			return true;
 		
 		//	For all fact lines
-		for (int i = 0; i < m_lines.size(); i++)
+		for (int i = 0; i < lines.size(); i++)
 		{
-			FactLine line = (FactLine)m_lines.get(i);
+			FactLine line = (FactLine) lines.get(i);
 			MAccount account = line.getAccount();
 			if (account == null)
 			{
@@ -678,14 +672,14 @@ public final class Fact
 	public boolean distribute()
 	{
 		//  no lines -> nothing to distribute
-		if (m_lines.size() == 0)
+		if (lines.isEmpty())
 			return true;
 		
 		ArrayList<FactLine> newLines = new ArrayList<FactLine>();
 		//	For all fact lines
-		for (int i = 0; i < m_lines.size(); i++)
+		for (int i = 0; i < lines.size(); i++)
 		{
-			FactLine factLineSource = (FactLine)m_lines.get(i);
+			FactLine factLineSource = (FactLine) lines.get(i);
 			List<MDistribution> distributions = MDistribution.get (
 					factLineSource.getCtx(),
 					factLineSource.getC_AcctSchema_ID(),
@@ -695,9 +689,10 @@ public final class Fact
 					factLineSource.getC_Campaign_ID(), factLineSource.getC_Activity_ID(), factLineSource.getAD_OrgTrx_ID(),
 					factLineSource.getC_SalesRegion_ID(), factLineSource.getC_LocTo_ID(), factLineSource.getC_LocFrom_ID(),
 					factLineSource.getUser1_ID(), factLineSource.getUser2_ID(),
-					factLineSource.getUser3_ID(), factLineSource.getUser4_ID() ,
+					factLineSource.getUser3_ID(), factLineSource.getUser4_ID(),
+					factLineSource.getS_Contract_ID(),
 					factLineSource.getDateAcct());
-				if (distributions == null || distributions.size() == 0)
+				if (distributions == null || distributions.isEmpty())
 					continue;
 
 			//end AZ
@@ -730,7 +725,7 @@ public final class Fact
 						;
 					else {
 						// delete the line being distributed
-						m_lines.remove(i);    // or it could be m_lines.remove(dLine);
+						lines.remove(i);    // or it could be m_lines.remove(dLine);
 						i--;
 					}
 				}		
@@ -779,7 +774,8 @@ public final class Fact
 					factLine.setC_LocTo_ID(factLineSource.getC_LocTo_ID());
 				if (factLine.getC_Tax_ID() <= 0 && factLineSource.getC_Tax_ID() > 0)
 					factLine.setC_Tax_ID(factLineSource.getC_Tax_ID());
-
+				if (factLine.getS_Contract_ID() <= 0 && factLineSource.getS_Contract_ID() > 0)
+					factLine.setS_Contract_ID(factLineSource.getS_Contract_ID());
 				factLine.setPostingType(m_postingType);
 				if (distributionLine.isOverwritePostingType()
 						&& distributionLine.getPostingType() != null
@@ -817,6 +813,8 @@ public final class Fact
 					factLine.setUser3_ID(distributionLine.getUser3_ID());
 				if(distributionLine.isOverwriteUser4())
 					factLine.setUser4_ID(distributionLine.getUser4_ID());
+				if(distributionLine.isOverwriteContract())
+					factLine.setS_Contract_ID(distributionLine.getS_Contract_ID());
 
 				// F3P end
 
@@ -871,7 +869,7 @@ public final class Fact
 		
 		//	Add Lines
 		for (int i = 0; i < newLines.size(); i++)
-			m_lines.add(newLines.get(i));
+			lines.add(newLines.get(i));
 		
 		return true;
 	}	//	distribute	
@@ -896,8 +894,8 @@ public final class Fact
 	 */
 	public FactLine[] getLines()
 	{
-		FactLine[] temp = new FactLine[m_lines.size()];
-		m_lines.toArray(temp);
+		FactLine[] temp = new FactLine[lines.size()];
+		lines.toArray(temp);
 		return temp;
 	}	//	getLines
 
@@ -910,9 +908,9 @@ public final class Fact
 	{
 		m_trxName = trxName;
 		//  save Lines
-		for (int i = 0; i < m_lines.size(); i++)
+		for (int i = 0; i < lines.size(); i++)
 		{
-			FactLine fl = (FactLine)m_lines.get(i);
+			FactLine fl = (FactLine) lines.get(i);
 		//	log.fine("save - " + fl);
 			if (!fl.save(trxName))  //  abort on first error
 				return false;

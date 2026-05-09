@@ -16,14 +16,14 @@
  *****************************************************************************/
 package org.compiere.report;
 
+import org.adempiere.core.domains.models.X_PA_ReportColumnSet;
+import org.compiere.util.DB;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import org.adempiere.core.domains.models.X_PA_ReportColumnSet;
-import org.compiere.util.DB;
 
 
 /**

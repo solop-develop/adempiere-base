@@ -2271,6 +2271,22 @@ public abstract class Doc
 	}	//	setC_LocTo_ID
 
 	/**
+	 * 	Get S_Contract_ID
+	 *	@return Campaign
+	 */
+	public int getS_Contract_ID()
+	{
+		int index = p_po.get_ColumnIndex("S_Contract_ID");
+		if (index != -1)
+		{
+			Integer ii = (Integer)p_po.get_Value(index);
+			if (ii != null)
+				return ii.intValue();
+		}
+		return 0;
+	}	//	S_Contract_ID
+
+	/**
 	 * 	Get User1_ID
 	 *	@return Campaign
 	 */
