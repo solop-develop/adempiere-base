@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Workflow_Report_Allow_Send_Notifications" ReleaseNo="1.5.8" SeqNo="503010">
+    <Comments>Allow WorkFlow Report to Send Notifications of the Report
+This notifications can be Mails, Notes, or Social Media, depending on the User NotificationType Configuration</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="12615" Table="AD_Field">
+        <Data AD_Column_ID="177" Column="DisplayLogic" oldValue="@Action@=M">@Action@=M|@Action@=R</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="12614" Table="AD_Field">
+        <Data AD_Column_ID="177" Column="DisplayLogic" oldValue="@Action@=M">@Action@=M|@Action@=R</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="12616" Table="AD_Field">
+        <Data AD_Column_ID="177" Column="DisplayLogic" oldValue="@Action@=M">@Action@=M|@Action@=R</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
