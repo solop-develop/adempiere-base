@@ -168,17 +168,17 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation implements I
 		setC_InvoiceLine_ID(parent.getC_InvoiceLine_ID());
 		setM_CostElement_ID(M_CostElement_ID);
 	}	//	MLandedCostAllocation
-	
+
 	/**
 	 * 	Set Amt
 	 *	@param Amt amount
 	 *	@param precision precision
 	 */
-	public void setAmt (double Amt, int precision)
+	public void setAmt (BigDecimal bd, int precision)
 	{
-		BigDecimal bd = new BigDecimal(Amt);
-		if (bd.scale() > precision)
-			bd = bd.setScale(precision, BigDecimal.ROUND_HALF_UP);
+		if (bd.scale() > precision) {
+			bd = bd.setScale(precision, RoundingMode.HALF_UP);
+		}
 		super.setAmt(bd);
 	}	//	setAmt
 

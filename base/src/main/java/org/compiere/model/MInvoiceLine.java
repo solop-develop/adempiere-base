@@ -21,20 +21,17 @@ import org.adempiere.core.domains.models.I_M_InOutLine;
 import org.adempiere.core.domains.models.X_C_InvoiceLine;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.process.DocumentReversalLineEnable;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 
@@ -723,34 +720,9 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 				+ " LEFT OUTER JOIN M_Product p ON (il.M_Product_ID=p.M_Product_ID)"
 				+ " LEFT OUTER JOIN C_Charge C ON (il.C_Charge_ID=c.C_Charge_ID) "
 				+ "WHERE C_InvoiceLine_ID=?";
-			PreparedStatement pstmt = null;
-			try
-			{
-				pstmt = DB.prepareStatement(sql, get_TrxName());
-				pstmt.setInt(1, getC_InvoiceLine_ID());
-				ResultSet rs = pstmt.executeQuery();
-				if (rs.next())
-					m_name = rs.getString(1);
-				rs.close();
-				pstmt.close();
-				pstmt = null;
-				if (m_name == null)
-					m_name = "??";
-			}
-			catch (Exception e)
-			{
-				log.log(Level.SEVERE, "getName", e);
-			}
-			finally
-			{
-				try
-				{
-					if (pstmt != null)
-						pstmt.close ();
-				}
-				catch (Exception e)
-				{}
-				pstmt = null;
+			m_name = DB.getSQLValueStringEx(get_TrxName(), sql, getC_InvoiceLine_ID());
+			if (m_name == null) {
+				m_name = "??";
 			}
 		}
 		return m_name;
@@ -1020,6 +992,19 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
     	return inOutLineId;
     }
 
+	private String getErrorMessage(String landedCostDistribution) {
+		if(landedCostDistribution.equals(MLandedCost.LANDEDCOSTDISTRIBUTION_Costs)) {
+			return Msg.getMsg(getCtx(), "LandedCostNoInvoiceError");
+		} else if(landedCostDistribution.equals(MLandedCost.LANDEDCOSTDISTRIBUTION_Quantity)) {
+			return Msg.getMsg(getCtx(), "LandedCostZeroQtyError");
+		} else if(landedCostDistribution.equals(MLandedCost.LANDEDCOSTDISTRIBUTION_Weight)) {
+			return Msg.getMsg(getCtx(), "LandedCostNoWeightError");
+		} else if(landedCostDistribution.equals(MLandedCost.LANDEDCOSTDISTRIBUTION_Volume)) {
+			return Msg.getMsg(getCtx(), "LandedCostNoVolumeError");
+		}
+		return "";
+	}
+
 	/**************************************************************************
 	 * 	Allocate Landed Costs
 	 *	@return error message or ""
@@ -1038,13 +1023,14 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 			getParent().saveEx();
 		}
 
-		String sql = "DELETE M_CostDetail WHERE C_landedcostallocation_ID in " +
-				"(select c_landedCostAllocation_ID from c_landedcostAllocation where c_invoiceline_ID=" + getC_InvoiceLine_ID() + ")";
-		int no = DB.executeUpdate(sql, get_TrxName());
+		String sql = "DELETE M_CostDetail WHERE EXISTS(SELECT 1 FROM C_LandedCostAllocation lca " +
+				"WHERE lca.C_LandedCostAllocation_ID = M_CostDetail.C_LandedCostAllocation_ID " +
+				"AND lca.C_InvoiceLine_ID = ?)";
+		int no = DB.executeUpdateEx(sql, new Object[]{getC_InvoiceLine_ID()}, get_TrxName());
 		if (no != 0)
 			log.info("Deleted #" + no);
 		sql = "DELETE C_LandedCostAllocation WHERE C_InvoiceLine_ID=" + getC_InvoiceLine_ID();
-		 no = DB.executeUpdate(sql, get_TrxName());
+		 no = DB.executeUpdateEx(sql, get_TrxName());
 		if (no != 0)
 			log.info("Deleted #" + no);
 
@@ -1071,8 +1057,8 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 						|| lc.getM_Product_ID() == lines[i].getM_Product_ID())
 						list.add(lines[i]);
 				}
-				if (list.size() == 0)
-					return "No Matching Lines (with Product) in Shipment";
+				if (list.isEmpty())
+					return Msg.getMsg(getCtx(), "LandedCostNoMatchError");
 				//	Calculate total & base
 				BigDecimal total = Env.ZERO;
 				for (int i = 0; i < list.size(); i++)
@@ -1080,8 +1066,9 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 					MInOutLine iol = (MInOutLine)list.get(i);
 					total = total.add(iol.getBase(lc.getLandedCostDistribution()));
 				}
-				if (total.signum() == 0)
-					return "Total of Base values is 0 - " + lc.getLandedCostDistribution();
+				if (total.signum() == 0) {
+					return getErrorMessage(lc.getLandedCostDistribution());
+				}
 				//	Create Allocations
 				for (int i = 0; i < list.size(); i++)
 				{
@@ -1097,14 +1084,13 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 					// add set Qty from InOutLine
 					lca.setQty(iol.getMovementQty());
 					// end MZ
-					if (base.signum() != 0)
-					{
-						double result = getLineNetAmt().multiply(base).doubleValue();
-						result /= total.doubleValue();
+					if (base.signum() != 0) {
+						BigDecimal result = getLineNetAmt()
+								.multiply(base)
+								.divide(total, MathContext.DECIMAL128);
 						lca.setAmt(result, getPrecision());
 					}
-					if (!lca.save())
-						return "Cannot save line Allocation = " + lca;
+					lca.saveEx();
 					inserted++;
 				}
 				log.info("Inserted " + inserted);
@@ -1116,7 +1102,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 			{
 				MInOutLine iol = new MInOutLine (getCtx(), lc.getM_InOutLine_ID(), get_TrxName());
 				if (iol.isDescription() || iol.getM_Product_ID() == 0)
-					return "Invalid Receipt Line - " + iol;
+					return Msg.getMsg(getCtx(), "LandedCostInvalidLineErr");
 				MLandedCostAllocation lca = new MLandedCostAllocation (this, lc.getM_CostElement_ID());
 				lca.setM_Product_ID(iol.getM_Product_ID());
 				lca.setM_InOutLine_ID(lc.getM_InOutLine_ID());
@@ -1129,9 +1115,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 				// add set Qty from InOutLine
 				lca.setQty(iol.getMovementQty());
 				// end MZ
-				if (lca.save())
-					return "";
-				return "Cannot save single line Allocation = " + lc;
+				lca.saveEx();
 			}
 			//	Single Product
 			else if (lc.getM_Product_ID() != 0)
@@ -1140,12 +1124,10 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 				lca.setM_Product_ID(lc.getM_Product_ID());	//	No ASI
 				lca.setC_LandedCostType_ID(lc.getC_LandedCostType_ID());
 				lca.setAmt(getLineNetAmt());
-				if (lca.save())
-					return "";
-				return "Cannot save Product Allocation = " + lc;
+				lca.saveEx();
 			}
 			else
-				return "No Reference for " + lc;
+				return Msg.getMsg(getCtx(), "LandedCostNoRefErr");
 		}
 
 		//	*** Multiple Criteria ***
@@ -1155,11 +1137,11 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 		{
 			MLandedCost lc = lcs[i];
 			if (!LandedCostDistribution.equals(lc.getLandedCostDistribution()))
-				return "Multiple Landed Cost Rules must have consistent Landed Cost Distribution";
+				return Msg.getMsg(getCtx(), "LandedCostInconsistentDist");
 			if (lc.getM_Product_ID() != 0 && lc.getM_InOut_ID() == 0 && lc.getM_InOutLine_ID() == 0)
-				return "Multiple Landed Cost Rules cannot directly allocate to a Product";
+				return Msg.getMsg(getCtx(), "LandedCostProductDirectErr");
 			if (M_CostElement_ID != lc.getM_CostElement_ID())
-				return "Multiple Landed Cost Rules cannot different Cost Elements";
+				return Msg.getMsg(getCtx(), "LandedCostDiffElementErr");
 		}
 		//	Create List
 		ArrayList<MInOutLine> list = new ArrayList<MInOutLine>();
@@ -1187,8 +1169,8 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 					list.add(iol);
 			}
 		}
-		if (list.size() == 0)
-			return "No Matching Lines (with Product)";
+		if (list.isEmpty())
+			return Msg.getMsg(getCtx(), "LandedCostNoMatchError");
 		//	Calculate total & base
 		BigDecimal total = Env.ZERO;
 		for (int i = 0; i < list.size(); i++)
@@ -1197,7 +1179,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 			total = total.add(iol.getBase(LandedCostDistribution));
 		}
 		if (total.signum() == 0)
-			return "Total of Base values is 0 - " + LandedCostDistribution;
+			return getErrorMessage(LandedCostDistribution);
 		//	Create Allocations
 		for (int i = 0; i < list.size(); i++)
 		{
@@ -1213,14 +1195,13 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 			// add set Qty from InOutLine
 			lca.setQty(iol.getMovementQty());
 			// end MZ
-			if (base.signum() != 0)
-			{
-				double result = getLineNetAmt().multiply(base).doubleValue();
-				result /= total.doubleValue();
+			if (base.signum() != 0) {
+				BigDecimal result = getLineNetAmt()
+						.multiply(base)
+						.divide(total, MathContext.DECIMAL128);
 				lca.setAmt(result, getPrecision());
 			}
-			if (!lca.save())
-				return "Cannot save line Allocation = " + lca;
+			lca.saveEx();
 			inserted++;
 		}
 
@@ -1263,47 +1244,12 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 	 * 	@param whereClause starting with AND
 	 * 	@return landedCost
 	 */
-	public MLandedCost[] getLandedCost (String whereClause)
+	public List<MLandedCost> getLandedCost (String whereClause)
 	{
-		ArrayList<MLandedCost> list = new ArrayList<MLandedCost>();
-		String sql = "SELECT * FROM C_LandedCost WHERE C_InvoiceLine_ID=? ";
-		if (whereClause != null)
-			sql += whereClause;
-		PreparedStatement pstmt = null;
-		try
-		{
-			pstmt = DB.prepareStatement(sql, get_TrxName());
-			pstmt.setInt(1, getC_InvoiceLine_ID());
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next())
-			{
-				MLandedCost lc = new MLandedCost(getCtx(), rs, get_TrxName());
-				list.add(lc);
-			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, "getLandedCost", e);
-		}
-		finally
-		{
-			try
-			{
-				if (pstmt != null)
-					pstmt.close ();
-			}
-			catch (Exception e)
-			{}
-			pstmt = null;
-		}
-
-		//
-		MLandedCost[] landedCost = new MLandedCost[list.size()];
-		list.toArray(landedCost);
-		return landedCost;
+		return new Query(getCtx(), MLandedCost.Table_Name, "C_InvoiceLine_ID = ?", get_TrxName())
+				.setParameters(getC_InvoiceLine_ID())
+				.setOnlyActiveRecords(true)
+				.list();
 	}	//	getLandedCost
 
 	/**
@@ -1315,21 +1261,20 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 	{
 		if (otherInvoiceLine == null)
 			return 0;
-		MLandedCost[] fromLandedCosts = otherInvoiceLine.getLandedCost(null);
-		int count = 0;
-		for (int i = 0; i < fromLandedCosts.length; i++)
-		{
+		List<MLandedCost> fromLandedCosts = otherInvoiceLine.getLandedCost(null);
+		AtomicInteger count = new AtomicInteger();
+		fromLandedCosts.forEach(fromLandedCost -> {
 			MLandedCost landedCost = new MLandedCost (getCtx(), 0, get_TrxName());
-			MLandedCost fromLandedCost = fromLandedCosts[i];
 			PO.copyValues (fromLandedCost, landedCost, fromLandedCost.getAD_Client_ID(), fromLandedCost.getAD_Org_ID());
 			landedCost.setC_InvoiceLine_ID(getC_InvoiceLine_ID());
 			landedCost.set_ValueNoCheck ("C_LandedCost_ID", I_ZERO);	// new
-			if (landedCost.save(get_TrxName()))
-				count++;
-		}
-		if (fromLandedCosts.length != count)
-			log.log(Level.SEVERE, "LandedCost difference - From=" + fromLandedCosts.length + " <> Saved=" + count);
-		return count;
+			if (landedCost.save(get_TrxName())) {
+				count.incrementAndGet();
+			}
+		});
+		if (fromLandedCosts.size() != count.get())
+			log.log(Level.SEVERE, "LandedCost difference - From=" + fromLandedCosts.size() + " <> Saved=" + count);
+		return count.get();
 	}	//	copyLinesFrom
 	// end MZ
 
