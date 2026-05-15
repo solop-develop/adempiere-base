@@ -254,13 +254,30 @@ public class MSession extends X_AD_Session
 	}	//	toString
 
 	/**
+	 * Keep the local cache in sync with the row's current state on every save.
+	 * Any caller in this JVM that later does {@link #get(Properties, boolean, boolean)}
+	 * sees up-to-date column values (including {@code Processed}) without an
+	 * extra DB hit. We deliberately keep processed sessions cached so callers
+	 * that need them (audit/changelog, keepalive on closing sessions) still get
+	 * the row — it is the caller's responsibility to check {@code isProcessed()}.
+	 * Cross-JVM invalidation still requires the distributed cache (pending as Redis).
+	 */
+	@Override
+	protected boolean afterSave(boolean newRecord, boolean success)
+	{
+		if (success && getAD_Session_ID() > 0) {
+			s_sessions.put(getAD_Session_ID(), this);
+		}
+		return success;
+	}
+
+	/**
 	 * 	Session Logout
 	 */
 	public void logout()
 	{
 			setProcessed(true);
 			saveEx();
-			s_sessions.remove(getAD_Session_ID());
 			log.info(TimeUtil.formatElapsed(getCreated(), getUpdated()));
 	}	//	logout
 	
