@@ -15,6 +15,10 @@
  *************************************************************************************/
 package org.spin.service.grpc.authentication;
 
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +32,9 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import javax.crypto.Mac;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.adempiere.core.domains.models.I_AD_Language;
 import org.adempiere.core.domains.models.I_AD_Session;
@@ -36,6 +42,7 @@ import org.adempiere.core.domains.models.I_AD_User_Authentication;
 import org.adempiere.core.domains.models.I_C_ConversionType;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.MUserAuthentication;
+import org.compiere.db.CConnection;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MClient;
 import org.compiere.model.MClientInfo;
@@ -82,6 +89,9 @@ public class SessionManager {
 
 	/**	Logger			*/
 	private static CLogger log = CLogger.getCLogger(SessionManager.class);
+
+	/** JWT claim identifying the tenant (opaque SHA-256 hash of the database name). */
+	private static final String CLAIM_TENANT_ID = "tenant_id";
 
 	public static class SessionData {
 		public int sessionId = -1;
@@ -264,6 +274,10 @@ public class SessionManager {
 		boolean isNewSession = false;
 		int sessionId = getSessionIdByOpenID(tokenValue);
 		SessionData sessionData = new SessionData();
+		// Claims captured from the JWT (when applicable) for cross-validation
+		// against the AD_Session row actually loaded from the current database.
+		Integer jwtClientId = null;
+		Integer jwtUserId = null;
 		if (sessionId <= 0) {
 			SecretKey secretKey = getJWT_SecretKey();
 			//	Validate if is token based
@@ -272,6 +286,13 @@ public class SessionManager {
 				.build()
 			;
 			Jws<Claims> claims = parser.parseSignedClaims(tokenValue);
+			// Reject tokens issued for a different tenant/installation.
+			String tokenTenantId = claims.getPayload().get(CLAIM_TENANT_ID, String.class);
+			String currentTenantId = getTenantId();
+			if (tokenTenantId == null || !tokenTenantId.equals(currentTenantId)) {
+				log.warning("JWT tenant_id mismatch");
+				throw new AdempiereException("@Invalid@ @AD_Session_ID@");
+			}
 			sessionId = NumberManager.getIntFromString(
 				claims.getPayload().getId()
 			);
@@ -280,6 +301,8 @@ public class SessionManager {
 					claims.getPayload(),
 					sessionData
 				);
+				jwtUserId = sessionData.userId;
+				jwtClientId = claims.getPayload().get("AD_Client_ID", Integer.class);
 			} else {
 				MADToken token = createSessionFromToken(tokenValue);
 				if(Optional.ofNullable(token).isPresent()) {
@@ -327,6 +350,30 @@ public class SessionManager {
 		MSession session = MSession.get(context, isNewSession);
 		if(session == null || session.getAD_Session_ID() <= 0) {
 			throw new AdempiereException("@AD_Session_ID@ @NotFound@");
+		}
+		// Reject the token if the JWT claims do not match the AD_Session row loaded
+		// from this database — the AD_Session_ID may have collided with a session
+		// from another installation.
+		if (jwtUserId != null && (
+			jwtUserId.intValue() != session.getCreatedBy()
+			|| (jwtClientId != null && jwtClientId.intValue() != session.getAD_Client_ID())
+		)) {
+			log.warning(
+				"JWT claims mismatch AD_Session: jwt.User=" + jwtUserId
+				+ " session.CreatedBy=" + session.getCreatedBy()
+				+ " jwt.Client=" + jwtClientId
+				+ " session.Client=" + session.getAD_Client_ID()
+			);
+			throw new AdempiereException("@Invalid@ @AD_Session_ID@");
+		}
+		// Reject reused tokens whose AD_Session was already closed (server-side logout).
+		// A residual JWT in client storage must not reopen a finished session.
+		if (jwtUserId != null && !isNewSession && session.isProcessed()) {
+			log.warning(
+				"JWT references a processed AD_Session: sessionId=" + session.getAD_Session_ID()
+				+ " user=" + session.getCreatedBy()
+			);
+			throw new AdempiereException("@Invalid@ @AD_Session_ID@");
 		}
 		//	Load preferences
 		loadDefaultSessionValues(context, sessionData.language);
@@ -388,7 +435,12 @@ public class SessionManager {
 
 		// Update session preferences
 		PreferenceUtil.saveSessionPreferences(
-			userId, language, session.getAD_Role_ID(), session.getAD_Client_ID(), session.getAD_Org_ID(), warehouseId
+			userId,
+			language,
+			session.getAD_Role_ID(),
+			session.getAD_Client_ID(),
+			session.getAD_Org_ID(),
+			warehouseId
 		);
 
 		return bearerToken;
@@ -474,11 +526,62 @@ public class SessionManager {
 		return secretKey;
 	}
 	private static SecretKey getJWT_SecretKey() {
-		byte[] keyBytes = Base64.getDecoder().decode(
+		byte[] baseKeyBytes = Base64.getDecoder().decode(
 			getJWT_SecretKeyAsString()
 		);
-		SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
-		return secretKey;
+		byte[] fingerprintBytes = getDatabaseFingerprint().getBytes(StandardCharsets.UTF_8);
+		try {
+			// Bind the signing key to the current database so tokens signed against
+			// another installation cannot validate here, even if both share the same
+			// configured ECA52_JWT_SECRET_KEY.
+			Mac mac = Mac.getInstance("HmacSHA256");
+			mac.init(new SecretKeySpec(baseKeyBytes, "HmacSHA256"));
+			byte[] derivedKey = mac.doFinal(fingerprintBytes);
+			return Keys.hmacShaKeyFor(derivedKey);
+		} catch (NoSuchAlgorithmException | InvalidKeyException e) {
+			throw new AdempiereException("Failed to derive JWT key: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Get a stable, per-installation identifier (the configured database name)
+	 * used to bind the JWT signing key to the current database.
+	 */
+	private static String getDatabaseFingerprint() {
+		String dbName = null;
+		try {
+			CConnection connection = CConnection.get();
+			if (connection != null) {
+				dbName = connection.getDbName();
+			}
+		} catch (Exception e) {
+			log.log(Level.WARNING, "Failed to read DB name for JWT key derivation", e);
+		}
+		if (Util.isEmpty(dbName, true)) {
+			throw new AdempiereException("@DBName@ @NotFound@ — required for JWT signing");
+		}
+		return dbName;
+	}
+
+	/**
+	 * Opaque tenant identifier embedded in the JWT — SHA-256 hex of the database
+	 * fingerprint. Keeps the per-installation binding without leaking the actual
+	 * database name to anyone who decodes the token client-side.
+	 */
+	private static String getTenantId() {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] hash = digest.digest(
+				getDatabaseFingerprint().getBytes(StandardCharsets.UTF_8)
+			);
+			StringBuilder hex = new StringBuilder(hash.length * 2);
+			for (byte byteItem : hash) {
+				hex.append(String.format("%02x", byteItem));
+			}
+			return hex.toString();
+		} catch (NoSuchAlgorithmException e) {
+			throw new AdempiereException("SHA-256 unavailable: " + e.getMessage());
+		}
 	}
 
 
@@ -503,6 +606,7 @@ public class SessionManager {
 			.claim("AD_User_ID", session.getCreatedBy())
 			.claim("M_Warehouse_ID", warehouseId)
 			.claim("AD_Language", language)
+			.claim(CLAIM_TENANT_ID, getTenantId())
 			.issuedAt(
 				new Date()
 			)

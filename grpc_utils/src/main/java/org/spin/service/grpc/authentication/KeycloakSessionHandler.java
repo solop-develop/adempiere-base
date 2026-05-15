@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MPreference;
+import org.compiere.model.MRole;
 import org.compiere.model.MSession;
 import org.compiere.util.CCache;
 import org.compiere.util.CLogger;
@@ -100,6 +101,17 @@ public class KeycloakSessionHandler {
 			return null;
 		}
 
+		// The Keycloak flow tags AD_Session.WebSession with "keycloak:<sid>" so the
+		// DB-fallback lookup can find it. A reused AD_Session_ID with a different
+		// tag means another flow created the row — likely the sid-cache mapping
+		// got corrupted and we are about to load the wrong user's session.
+		String webSession = session.getWebSession();
+		if (webSession == null || !webSession.startsWith("keycloak:")) {
+			log.warning("Keycloak session resolve loaded AD_Session_ID=" + sessionId
+				+ " with unexpected WebSession='" + webSession + "' — refusing reuse");
+			return null;
+		}
+
 		Properties context = (Properties) Env.getCtx().clone();
 		DB.validateSupportedUUIDFromDB();
 
@@ -111,6 +123,12 @@ public class KeycloakSessionHandler {
 		Env.setContext(context, "#AD_Client_ID", session.getAD_Client_ID());
 		Env.setContext(context, "#AD_Org_ID", session.getAD_Org_ID());
 		Env.setContext(context, "#Date", new Timestamp(System.currentTimeMillis()));
+
+		// Force-reload the role so its cached access SQL is rebuilt with the
+		// current tenant context — protects against role instances cached with
+		// a stale #AD_Client_ID (e.g. left over from a System → Company switch).
+		MRole.removeFromCache(session.getAD_Role_ID(), session.getCreatedBy());
+		MRole.get(context, session.getAD_Role_ID(), session.getCreatedBy(), true);
 
 		int orgId = session.getAD_Org_ID();
 
