@@ -30,6 +30,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 
 import javax.crypto.Mac;
@@ -286,12 +287,19 @@ public class SessionManager {
 				.build()
 			;
 			Jws<Claims> claims = parser.parseSignedClaims(tokenValue);
-			// Reject tokens issued for a different tenant/installation.
+			// Opportunistic validation: if the token carries a tenant_id claim
+			// (issued by a build with ECA52_JWT_BIND_TO_DATABASE=Y), require it
+			// to match this installation's tenant. Tokens without the claim
+			// (pre-2026-05-14 builds) are allowed through — the rest of the
+			// flow still cross-validates the JWT user/client against the
+			// AD_Session row loaded from DB.
 			String tokenTenantId = claims.getPayload().get(CLAIM_TENANT_ID, String.class);
-			String currentTenantId = getTenantId();
-			if (tokenTenantId == null || !tokenTenantId.equals(currentTenantId)) {
-				log.warning("JWT tenant_id mismatch");
-				throw new AdempiereException("@Invalid@ @AD_Session_ID@");
+			if (tokenTenantId != null) {
+				String currentTenantId = getTenantId();
+				if (!tokenTenantId.equals(currentTenantId)) {
+					log.warning("JWT tenant_id mismatch");
+					throw new AdempiereException("@Invalid@ @AD_Session_ID@");
+				}
 			}
 			sessionId = NumberManager.getIntFromString(
 				claims.getPayload().getId()
@@ -426,12 +434,7 @@ public class SessionManager {
 	public static String createSessionAndGetToken(String clientVersion, String language, int roleId, int userId, int organizationId, int warehouseId, boolean isOpenID) {
 		MSession session = createSession(clientVersion, language, roleId, userId, organizationId, warehouseId);
 
-		String bearerToken = null;
-		if (isOpenID) {
-			bearerToken = getOpenIDToken(session);
-		} else {
-			bearerToken = createAndGetBearerToken(session, warehouseId, Env.getAD_Language(session.getCtx()));
-		}
+		String bearerToken = createTokenFromSession(session, isOpenID);
 
 		// Update session preferences
 		PreferenceUtil.saveSessionPreferences(
@@ -444,6 +447,29 @@ public class SessionManager {
 		);
 
 		return bearerToken;
+	}
+
+	/**
+	 * Issue a bearer token for an already-existing {@link MSession}. Useful for
+	 * callers that need to control session creation separately from token
+	 * issuance (e.g. change-role / change-organization flows that hold the
+	 * MSession reference before minting the JWT).
+	 *
+	 * @param session  the persisted session
+	 * @param isOpenID if {@code true}, returns the persisted OpenID access
+	 *                 token; otherwise issues a fresh HMAC-signed JWT
+	 * @return the bearer token string
+	 */
+	public static String createTokenFromSession(MSession session, boolean isOpenID) {
+		if (session == null || session.getAD_Session_ID() <= 0) {
+			throw new AdempiereException("@AD_Session_ID@ @NotFound@");
+		}
+		if (isOpenID) {
+			return getOpenIDToken(session);
+		}
+		int warehouseId = Env.getContextAsInt(session.getCtx(), "#M_Warehouse_ID");
+		String language = Env.getAD_Language(session.getCtx());
+		return createAndGetBearerToken(session, warehouseId, language);
 	}
 
 
@@ -525,10 +551,41 @@ public class SessionManager {
 		}
 		return secretKey;
 	}
+	/**
+	 * Optional flag that gates the per-database HMAC derivation and the
+	 * {@code tenant_id} claim emission/validation. Disabled by default for
+	 * backward compatibility with services running pre-2026-05-14 builds.
+	 * <p>
+	 * Operators flip it to {@code Y} in {@code AD_SysConfig} (or via
+	 * {@code Ini}) once every service connected to the database has been
+	 * upgraded. Existing JWTs in circulation become invalid at that point.
+	 */
+	private static boolean isDatabaseBindingEnabled() {
+		String value = null;
+		try {
+			value = MSysConfig.getValue(
+				"ECA52_JWT_BIND_TO_DATABASE",
+				Env.getAD_Client_ID(Env.getCtx())
+			);
+		} catch (Exception ignored) {
+			// Context not initialized — fall back to Ini.
+		}
+		if (Util.isEmpty(value, true)) {
+			value = Ini.getProperty("ECA52_JWT_BIND_TO_DATABASE");
+		}
+		return "Y".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value);
+	}
+
 	private static SecretKey getJWT_SecretKey() {
 		byte[] baseKeyBytes = Base64.getDecoder().decode(
 			getJWT_SecretKeyAsString()
 		);
+		if (!isDatabaseBindingEnabled()) {
+			// Backward-compatible mode: sign and verify with the configured
+			// secret directly, like pre-2026-05-14 builds. JWTs interoperate
+			// with any service that has not yet flipped the flag.
+			return Keys.hmacShaKeyFor(baseKeyBytes);
+		}
 		byte[] fingerprintBytes = getDatabaseFingerprint().getBytes(StandardCharsets.UTF_8);
 		try {
 			// Bind the signing key to the current database so tokens signed against
@@ -544,10 +601,45 @@ public class SessionManager {
 	}
 
 	/**
-	 * Get a stable, per-installation identifier (the configured database name)
-	 * used to bind the JWT signing key to the current database.
+	 * Pluggable resolver for the current database name, used to bind the JWT
+	 * signing key to the right per-request tenant in multi-tenant deployments
+	 * (e.g. Sabana). Single-tenant services (grpc-server, report-engine) leave
+	 * this {@code null} and fall back to {@link CConnection#getDbName()}.
+	 * <p>
+	 * Integrators register their tenant-aware resolver once at startup, for
+	 * example by reading {@code Connection.getCatalog()} of the current
+	 * {@code DataSource} bound to the request thread.
+	 */
+	private static volatile Supplier<String> databaseNameResolver = null;
+
+	/**
+	 * Register a tenant-aware database name resolver. Must be called once at
+	 * application startup. Passing {@code null} restores the default
+	 * {@code CConnection} fallback.
+	 */
+	public static void setDatabaseNameResolver(Supplier<String> resolver) {
+		databaseNameResolver = resolver;
+	}
+
+	/**
+	 * Get a stable, per-installation identifier (the database name) used to
+	 * bind the JWT signing key to the database the request is targeting.
 	 */
 	private static String getDatabaseFingerprint() {
+		// Prefer the pluggable resolver — multi-tenant integrators rely on it
+		// to return the per-request tenant DB name, which the JVM-wide
+		// CConnection singleton cannot provide reliably.
+		Supplier<String> resolver = databaseNameResolver;
+		if (resolver != null) {
+			try {
+				String name = resolver.get();
+				if (!Util.isEmpty(name, true)) {
+					return name;
+				}
+			} catch (Exception e) {
+				log.log(Level.WARNING, "Custom databaseNameResolver failed; falling back to CConnection", e);
+			}
+		}
 		String dbName = null;
 		try {
 			CConnection connection = CConnection.get();
@@ -606,7 +698,14 @@ public class SessionManager {
 			.claim("AD_User_ID", session.getCreatedBy())
 			.claim("M_Warehouse_ID", warehouseId)
 			.claim("AD_Language", language)
-			.claim(CLAIM_TENANT_ID, getTenantId())
+		;
+		// Only stamp the opaque tenant identifier when the operator has opted
+		// into per-database binding; older services would reject the token
+		// otherwise because their signing key still uses the raw secret.
+		if (isDatabaseBindingEnabled()) {
+			jwtBuilder.claim(CLAIM_TENANT_ID, getTenantId());
+		}
+		jwtBuilder
 			.issuedAt(
 				new Date()
 			)
