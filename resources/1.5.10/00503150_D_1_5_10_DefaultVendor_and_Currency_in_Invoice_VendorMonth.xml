@@ -252,31 +252,5 @@
         <Data AD_Column_ID="84386" Column="UUID">cf3759d3-2fef-4675-b72f-604ef1e09cc6</Data>
       </PO>
     </Step>
-    <Step SeqNo="260" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="607" Table="AD_Process_Para">
-        <Data AD_Column_ID="2823" Column="Description" oldValue="Identifies a Business Partner">Use this Vendor for pricing and stock replenishment</Data>
-        <Data AD_Column_ID="2824" Column="Help" oldValue="A Business Partner is anyone with whom you transact.  This can include Vendor, Customer, Employee or Salesperson">The Current Vendor indicates if prices are used and Product is reordered from this vendor</Data>
-        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained" oldValue="true">false</Data>
-        <Data AD_Column_ID="2822" Column="Name" oldValue="Business Partner ">Current vendor</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="270" StepType="AD">
-      <PO AD_Table_ID="286" Action="U" Record_ID="0" Table="AD_Process_Para_Trl">
-        <Data AD_Column_ID="2832" Column="AD_Language" oldValue="es_MX">es_MX</Data>
-        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID" oldValue="607">607</Data>
-        <Data AD_Column_ID="2842" Column="IsTranslated" oldValue="true">false</Data>
-        <Data AD_Column_ID="84386" Column="UUID" isOldNull="true">61f7859a-21de-4a2b-bc34-fca5b47eb2f6</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="280" StepType="AD">
-      <PO AD_Table_ID="286" Action="U" Record_ID="0" Table="AD_Process_Para_Trl">
-        <Data AD_Column_ID="2832" Column="AD_Language" oldValue="es_MX">es_MX</Data>
-        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID" oldValue="607">607</Data>
-        <Data AD_Column_ID="2841" Column="Description" oldValue="Identifica un Socio del Negocio">Use este proveedor para el cálculo de precio y reabastecimiento de inventario.</Data>
-        <Data AD_Column_ID="3743" Column="Help" oldValue="Un Socio del Negocio es cualquiera con quien usted realiza transacciones. Este puede incluir Proveedores; Clientes; Empleados o Vendedores.">El proveedor actual indica si los precios son usados y los productos reordenados desde este proveedor.</Data>
-        <Data AD_Column_ID="2842" Column="IsTranslated" oldValue="false">true</Data>
-        <Data AD_Column_ID="2840" Column="Name" oldValue="Socio del Negocio">Proveedor Actual</Data>
-      </PO>
-    </Step>
   </Migration>
 </Migrations>
