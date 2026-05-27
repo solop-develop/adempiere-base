@@ -252,91 +252,6 @@
         <Data AD_Column_ID="84386" Column="UUID">cf3759d3-2fef-4675-b72f-604ef1e09cc6</Data>
       </PO>
     </Step>
-    <Step SeqNo="90" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="59934" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="190">30</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="100" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="607" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="30">40</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="110" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="59933" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="180">50</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="120" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="56083" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="40">60</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="130" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="56081" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="50">70</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="140" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="150" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="60">80</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="150" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="56082" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="70">90</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="160" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="608" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="80">100</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="170" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="56087" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="90">110</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="180" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="56086" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="100">120</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="190" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="56085" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="110">130</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="200" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="57272" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="120">140</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="210" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="57273" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="130">150</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="220" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="57274" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="140">160</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="230" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="57275" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="150">170</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="240" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="57511" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="160">180</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="250" StepType="AD">
-      <PO AD_Table_ID="285" Action="U" Record_ID="59781" Table="AD_Process_Para">
-        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="170">190</Data>
-      </PO>
-    </Step>
     <Step SeqNo="260" StepType="AD">
       <PO AD_Table_ID="285" Action="U" Record_ID="607" Table="AD_Process_Para">
         <Data AD_Column_ID="2823" Column="Description" oldValue="Identifies a Business Partner">Use this Vendor for pricing and stock replenishment</Data>
@@ -351,6 +266,16 @@
         <Data AD_Column_ID="2831" Column="AD_Process_Para_ID" oldValue="607">607</Data>
         <Data AD_Column_ID="2842" Column="IsTranslated" oldValue="true">false</Data>
         <Data AD_Column_ID="84386" Column="UUID" isOldNull="true">61f7859a-21de-4a2b-bc34-fca5b47eb2f6</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="280" StepType="AD">
+      <PO AD_Table_ID="286" Action="U" Record_ID="0" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2832" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID" oldValue="607">607</Data>
+        <Data AD_Column_ID="2841" Column="Description" oldValue="Identifica un Socio del Negocio">Use este proveedor para el cálculo de precio y reabastecimiento de inventario.</Data>
+        <Data AD_Column_ID="3743" Column="Help" oldValue="Un Socio del Negocio es cualquiera con quien usted realiza transacciones. Este puede incluir Proveedores; Clientes; Empleados o Vendedores.">El proveedor actual indica si los precios son usados y los productos reordenados desde este proveedor.</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="2840" Column="Name" oldValue="Socio del Negocio">Proveedor Actual</Data>
       </PO>
     </Step>
   </Migration>
