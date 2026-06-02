@@ -402,6 +402,19 @@ public interface I_GL_DistributionLine
 	  */
 	public boolean isOverwriteCampaign();
 
+    /** Column name OverwriteContract */
+    public static final String COLUMNNAME_OverwriteContract = "OverwriteContract";
+
+	/** Set Overwrite Contract.
+	  * Overwrite the account segment Contract with the value specified
+	  */
+	public void setOverwriteContract (boolean OverwriteContract);
+
+	/** Get Overwrite Contract.
+	  * Overwrite the account segment Contract with the value specified
+	  */
+	public boolean isOverwriteContract();
+
     /** Column name OverwriteLocFrom */
     public static final String COLUMNNAME_OverwriteLocFrom = "OverwriteLocFrom";
 
