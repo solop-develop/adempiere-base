@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_BPartner
  *  @author Adempiere (generated) 
@@ -90,19 +91,6 @@ public interface I_C_BPartner
 	  */
 	public String getAD_Language();
 
-    /** Column name AD_Org_ID */
-    public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";
-
-	/** Set Organization.
-	  * Organizational entity within client
-	  */
-	public void setAD_Org_ID (int AD_Org_ID);
-
-	/** Get Organization.
-	  * Organizational entity within client
-	  */
-	public int getAD_Org_ID();
-
     /** Column name AD_OrgBP_ID */
     public static final String COLUMNNAME_AD_OrgBP_ID = "AD_OrgBP_ID";
 
@@ -115,6 +103,19 @@ public interface I_C_BPartner
 	  * The Business Partner is another Organization for explicit Inter-Org transactions
 	  */
 	public String getAD_OrgBP_ID();
+
+    /** Column name AD_Org_ID */
+    public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";
+
+	/** Set Organization.
+	  * Organizational entity within client
+	  */
+	public void setAD_Org_ID (int AD_Org_ID);
+
+	/** Get Organization.
+	  * Organizational entity within client
+	  */
+	public int getAD_Org_ID();
 
     /** Column name APEnquiry */
     public static final String COLUMNNAME_APEnquiry = "APEnquiry";
@@ -169,7 +170,7 @@ public interface I_C_BPartner
 	  */
 	public int getBPartner_Parent_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getBPartner_Parent() throws RuntimeException;
+	public I_C_BPartner getBPartner_Parent() throws RuntimeException;
 
     /** Column name C_BP_AccountType_ID */
     public static final String COLUMNNAME_C_BP_AccountType_ID = "C_BP_AccountType_ID";
@@ -184,67 +185,7 @@ public interface I_C_BPartner
 	  */
 	public int getC_BP_AccountType_ID();
 
-	public org.adempiere.core.domains.models.I_C_BP_AccountType getC_BP_AccountType() throws RuntimeException;
-
-    /** Column name C_BP_Group_ID */
-    public static final String COLUMNNAME_C_BP_Group_ID = "C_BP_Group_ID";
-
-	/** Set Business Partner Group.
-	  * Business Partner Group
-	  */
-	public void setC_BP_Group_ID (int C_BP_Group_ID);
-
-	/** Get Business Partner Group.
-	  * Business Partner Group
-	  */
-	public int getC_BP_Group_ID();
-
-	public org.adempiere.core.domains.models.I_C_BP_Group getC_BP_Group() throws RuntimeException;
-
-    /** Column name C_BP_IndustryType_ID */
-    public static final String COLUMNNAME_C_BP_IndustryType_ID = "C_BP_IndustryType_ID";
-
-	/** Set Industry Type.
-	  * Business Partner Industry Type or classification
-	  */
-	public void setC_BP_IndustryType_ID (int C_BP_IndustryType_ID);
-
-	/** Get Industry Type.
-	  * Business Partner Industry Type or classification
-	  */
-	public int getC_BP_IndustryType_ID();
-
-	public org.adempiere.core.domains.models.I_C_BP_IndustryType getC_BP_IndustryType() throws RuntimeException;
-
-    /** Column name C_BP_SalesGroup_ID */
-    public static final String COLUMNNAME_C_BP_SalesGroup_ID = "C_BP_SalesGroup_ID";
-
-	/** Set Sales Group.
-	  * Sales Group
-	  */
-	public void setC_BP_SalesGroup_ID (int C_BP_SalesGroup_ID);
-
-	/** Get Sales Group.
-	  * Sales Group
-	  */
-	public int getC_BP_SalesGroup_ID();
-
-	public org.adempiere.core.domains.models.I_C_BP_SalesGroup getC_BP_SalesGroup() throws RuntimeException;
-
-    /** Column name C_BP_Segment_ID */
-    public static final String COLUMNNAME_C_BP_Segment_ID = "C_BP_Segment_ID";
-
-	/** Set Segment.
-	  * Business Partner Segment
-	  */
-	public void setC_BP_Segment_ID (int C_BP_Segment_ID);
-
-	/** Get Segment.
-	  * Business Partner Segment
-	  */
-	public int getC_BP_Segment_ID();
-
-	public org.adempiere.core.domains.models.I_C_BP_Segment getC_BP_Segment() throws RuntimeException;
+	public I_C_BP_AccountType getC_BP_AccountType() throws RuntimeException;
 
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
@@ -259,6 +200,66 @@ public interface I_C_BPartner
 	  */
 	public int getC_BPartner_ID();
 
+    /** Column name C_BP_Group_ID */
+    public static final String COLUMNNAME_C_BP_Group_ID = "C_BP_Group_ID";
+
+	/** Set Business Partner Group.
+	  * Business Partner Group
+	  */
+	public void setC_BP_Group_ID (int C_BP_Group_ID);
+
+	/** Get Business Partner Group.
+	  * Business Partner Group
+	  */
+	public int getC_BP_Group_ID();
+
+	public I_C_BP_Group getC_BP_Group() throws RuntimeException;
+
+    /** Column name C_BP_IndustryType_ID */
+    public static final String COLUMNNAME_C_BP_IndustryType_ID = "C_BP_IndustryType_ID";
+
+	/** Set Industry Type.
+	  * Business Partner Industry Type or classification
+	  */
+	public void setC_BP_IndustryType_ID (int C_BP_IndustryType_ID);
+
+	/** Get Industry Type.
+	  * Business Partner Industry Type or classification
+	  */
+	public int getC_BP_IndustryType_ID();
+
+	public I_C_BP_IndustryType getC_BP_IndustryType() throws RuntimeException;
+
+    /** Column name C_BP_SalesGroup_ID */
+    public static final String COLUMNNAME_C_BP_SalesGroup_ID = "C_BP_SalesGroup_ID";
+
+	/** Set Sales Group.
+	  * Sales Group
+	  */
+	public void setC_BP_SalesGroup_ID (int C_BP_SalesGroup_ID);
+
+	/** Get Sales Group.
+	  * Sales Group
+	  */
+	public int getC_BP_SalesGroup_ID();
+
+	public I_C_BP_SalesGroup getC_BP_SalesGroup() throws RuntimeException;
+
+    /** Column name C_BP_Segment_ID */
+    public static final String COLUMNNAME_C_BP_Segment_ID = "C_BP_Segment_ID";
+
+	/** Set Segment.
+	  * Business Partner Segment
+	  */
+	public void setC_BP_Segment_ID (int C_BP_Segment_ID);
+
+	/** Get Segment.
+	  * Business Partner Segment
+	  */
+	public int getC_BP_Segment_ID();
+
+	public I_C_BP_Segment getC_BP_Segment() throws RuntimeException;
+
     /** Column name C_Dunning_ID */
     public static final String COLUMNNAME_C_Dunning_ID = "C_Dunning_ID";
 
@@ -272,7 +273,18 @@ public interface I_C_BPartner
 	  */
 	public int getC_Dunning_ID();
 
-	public org.adempiere.core.domains.models.I_C_Dunning getC_Dunning() throws RuntimeException;
+	public I_C_Dunning getC_Dunning() throws RuntimeException;
+
+    /** Column name C_DunningInterestType_ID */
+    public static final String COLUMNNAME_C_DunningInterestType_ID = "C_DunningInterestType_ID";
+
+	/** Set Dunning Interest Type	  */
+	public void setC_DunningInterestType_ID (int C_DunningInterestType_ID);
+
+	/** Get Dunning Interest Type	  */
+	public int getC_DunningInterestType_ID();
+
+	public I_C_DunningInterestType getC_DunningInterestType() throws RuntimeException;
 
     /** Column name C_Greeting_ID */
     public static final String COLUMNNAME_C_Greeting_ID = "C_Greeting_ID";
@@ -287,7 +299,7 @@ public interface I_C_BPartner
 	  */
 	public int getC_Greeting_ID();
 
-	public org.adempiere.core.domains.models.I_C_Greeting getC_Greeting() throws RuntimeException;
+	public I_C_Greeting getC_Greeting() throws RuntimeException;
 
     /** Column name C_InvoiceSchedule_ID */
     public static final String COLUMNNAME_C_InvoiceSchedule_ID = "C_InvoiceSchedule_ID";
@@ -302,7 +314,7 @@ public interface I_C_BPartner
 	  */
 	public int getC_InvoiceSchedule_ID();
 
-	public org.adempiere.core.domains.models.I_C_InvoiceSchedule getC_InvoiceSchedule() throws RuntimeException;
+	public I_C_InvoiceSchedule getC_InvoiceSchedule() throws RuntimeException;
 
     /** Column name C_PaymentTerm_ID */
     public static final String COLUMNNAME_C_PaymentTerm_ID = "C_PaymentTerm_ID";
@@ -317,18 +329,7 @@ public interface I_C_BPartner
 	  */
 	public int getC_PaymentTerm_ID();
 
-	public org.adempiere.core.domains.models.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException;
-
-    /** Column name C_TaxGroup_ID */
-    public static final String COLUMNNAME_C_TaxGroup_ID = "C_TaxGroup_ID";
-
-	/** Set Tax Group	  */
-	public void setC_TaxGroup_ID (int C_TaxGroup_ID);
-
-	/** Get Tax Group	  */
-	public int getC_TaxGroup_ID();
-
-	public org.adempiere.core.domains.models.I_C_TaxGroup getC_TaxGroup() throws RuntimeException;
+	public I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -345,6 +346,17 @@ public interface I_C_BPartner
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name C_TaxGroup_ID */
+    public static final String COLUMNNAME_C_TaxGroup_ID = "C_TaxGroup_ID";
+
+	/** Set Tax Group	  */
+	public void setC_TaxGroup_ID (int C_TaxGroup_ID);
+
+	/** Get Tax Group	  */
+	public int getC_TaxGroup_ID();
+
+	public I_C_TaxGroup getC_TaxGroup() throws RuntimeException;
 
     /** Column name CustomerOpenInvoices */
     public static final String COLUMNNAME_CustomerOpenInvoices = "CustomerOpenInvoices";
@@ -503,7 +515,7 @@ public interface I_C_BPartner
 	  */
 	public int getInvoice_PrintFormat_ID();
 
-	public org.adempiere.core.domains.models.I_AD_PrintFormat getInvoice_PrintFormat() throws RuntimeException;
+	public I_AD_PrintFormat getInvoice_PrintFormat() throws RuntimeException;
 
     /** Column name InvoiceRule */
     public static final String COLUMNNAME_InvoiceRule = "InvoiceRule";
@@ -679,6 +691,15 @@ public interface I_C_BPartner
 	/** Get Logo	  */
 	public int getLogo_ID();
 
+    /** Column name MaritalStatus */
+    public static final String COLUMNNAME_MaritalStatus = "MaritalStatus";
+
+	/** Set Marital Status	  */
+	public void setMaritalStatus (String MaritalStatus);
+
+	/** Get Marital Status	  */
+	public String getMaritalStatus();
+
     /** Column name M_DiscountSchema_ID */
     public static final String COLUMNNAME_M_DiscountSchema_ID = "M_DiscountSchema_ID";
 
@@ -692,7 +713,7 @@ public interface I_C_BPartner
 	  */
 	public int getM_DiscountSchema_ID();
 
-	public org.adempiere.core.domains.models.I_M_DiscountSchema getM_DiscountSchema() throws RuntimeException;
+	public I_M_DiscountSchema getM_DiscountSchema() throws RuntimeException;
 
     /** Column name M_PriceList_ID */
     public static final String COLUMNNAME_M_PriceList_ID = "M_PriceList_ID";
@@ -707,16 +728,7 @@ public interface I_C_BPartner
 	  */
 	public int getM_PriceList_ID();
 
-	public org.adempiere.core.domains.models.I_M_PriceList getM_PriceList() throws RuntimeException;
-
-    /** Column name MaritalStatus */
-    public static final String COLUMNNAME_MaritalStatus = "MaritalStatus";
-
-	/** Set Marital Status	  */
-	public void setMaritalStatus (String MaritalStatus);
-
-	/** Get Marital Status	  */
-	public String getMaritalStatus();
+	public I_M_PriceList getM_PriceList() throws RuntimeException;
 
     /** Column name NAICS */
     public static final String COLUMNNAME_NAICS = "NAICS";
@@ -833,7 +845,7 @@ public interface I_C_BPartner
 	  */
 	public int getPO_DiscountSchema_ID();
 
-	public org.adempiere.core.domains.models.I_M_DiscountSchema getPO_DiscountSchema() throws RuntimeException;
+	public I_M_DiscountSchema getPO_DiscountSchema() throws RuntimeException;
 
     /** Column name PO_PaymentTerm_ID */
     public static final String COLUMNNAME_PO_PaymentTerm_ID = "PO_PaymentTerm_ID";
@@ -848,7 +860,7 @@ public interface I_C_BPartner
 	  */
 	public int getPO_PaymentTerm_ID();
 
-	public org.adempiere.core.domains.models.I_C_PaymentTerm getPO_PaymentTerm() throws RuntimeException;
+	public I_C_PaymentTerm getPO_PaymentTerm() throws RuntimeException;
 
     /** Column name PO_PriceList_ID */
     public static final String COLUMNNAME_PO_PriceList_ID = "PO_PriceList_ID";
@@ -863,7 +875,7 @@ public interface I_C_BPartner
 	  */
 	public int getPO_PriceList_ID();
 
-	public org.adempiere.core.domains.models.I_M_PriceList getPO_PriceList() throws RuntimeException;
+	public I_M_PriceList getPO_PriceList() throws RuntimeException;
 
     /** Column name POReference */
     public static final String COLUMNNAME_POReference = "POReference";
@@ -930,7 +942,7 @@ public interface I_C_BPartner
 	  */
 	public int getSalesRep_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+	public I_AD_User getSalesRep() throws RuntimeException;
 
     /** Column name SalesVolume */
     public static final String COLUMNNAME_SalesVolume = "SalesVolume";
@@ -997,6 +1009,19 @@ public interface I_C_BPartner
 	  */
 	public BigDecimal getSO_CreditLimit();
 
+    /** Column name SOCreditStatus */
+    public static final String COLUMNNAME_SOCreditStatus = "SOCreditStatus";
+
+	/** Set Credit Status.
+	  * Business Partner Credit Status
+	  */
+	public void setSOCreditStatus (String SOCreditStatus);
+
+	/** Get Credit Status.
+	  * Business Partner Credit Status
+	  */
+	public String getSOCreditStatus();
+
     /** Column name SO_CreditUsed */
     public static final String COLUMNNAME_SO_CreditUsed = "SO_CreditUsed";
 
@@ -1023,18 +1048,6 @@ public interface I_C_BPartner
 	  */
 	public String getSO_Description();
 
-    /** Column name SOCreditStatus */
-    public static final String COLUMNNAME_SOCreditStatus = "SOCreditStatus";
-
-	/** Set Credit Status.
-	  * Business Partner Credit Status
-	  */
-	public void setSOCreditStatus (String SOCreditStatus);
-
-	/** Get Credit Status.
-	  * Business Partner Credit Status
-	  */
-	public String getSOCreditStatus();
 
     /** Column name TaxID */
     public static final String COLUMNNAME_TaxID = "TaxID";

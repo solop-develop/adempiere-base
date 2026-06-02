@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for C_DunningRunLine
  *  @author Adempiere (generated) 
@@ -37,7 +38,7 @@ public class X_C_DunningRunLine extends PO implements I_C_DunningRunLine, I_Pers
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260515L;
 
     /** Standard Constructor */
     public X_C_DunningRunLine (Properties ctx, int C_DunningRunLine_ID, String trxName)
@@ -108,9 +109,84 @@ public class X_C_DunningRunLine extends PO implements I_C_DunningRunLine, I_Pers
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_C_DunningRunEntry getC_DunningRunEntry() throws RuntimeException
+	public I_C_DunningInterestRate getC_DunningInterestRate() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DunningRunEntry)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DunningRunEntry.Table_Name)
+		return (I_C_DunningInterestRate)MTable.get(getCtx(), I_C_DunningInterestRate.Table_Name)
+			.getPO(getC_DunningInterestRate_ID(), get_TrxName());	}
+
+	/** Set Dunning Interes Rate.
+		@param C_DunningInterestRate_ID Dunning Interes Rate	  */
+	public void setC_DunningInterestRate_ID (int C_DunningInterestRate_ID)
+	{
+		if (C_DunningInterestRate_ID < 1) 
+			set_Value (COLUMNNAME_C_DunningInterestRate_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DunningInterestRate_ID, Integer.valueOf(C_DunningInterestRate_ID));
+	}
+
+	/** Get Dunning Interes Rate.
+		@return Dunning Interes Rate	  */
+	public int getC_DunningInterestRate_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DunningInterestRate_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DunningInterestType getC_DunningInterestType() throws RuntimeException
+    {
+		return (I_C_DunningInterestType)MTable.get(getCtx(), I_C_DunningInterestType.Table_Name)
+			.getPO(getC_DunningInterestType_ID(), get_TrxName());	}
+
+	/** Set Dunning Interest Type.
+		@param C_DunningInterestType_ID Dunning Interest Type	  */
+	public void setC_DunningInterestType_ID (int C_DunningInterestType_ID)
+	{
+		if (C_DunningInterestType_ID < 1) 
+			set_Value (COLUMNNAME_C_DunningInterestType_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DunningInterestType_ID, Integer.valueOf(C_DunningInterestType_ID));
+	}
+
+	/** Get Dunning Interest Type.
+		@return Dunning Interest Type	  */
+	public int getC_DunningInterestType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DunningInterestType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DunningInterestVersion getC_DunningInterestVersion() throws RuntimeException
+    {
+		return (I_C_DunningInterestVersion)MTable.get(getCtx(), I_C_DunningInterestVersion.Table_Name)
+			.getPO(getC_DunningInterestVersion_ID(), get_TrxName());	}
+
+	/** Set Dunning Interest Version.
+		@param C_DunningInterestVersion_ID Dunning Interest Version	  */
+	public void setC_DunningInterestVersion_ID (int C_DunningInterestVersion_ID)
+	{
+		if (C_DunningInterestVersion_ID < 1) 
+			set_Value (COLUMNNAME_C_DunningInterestVersion_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DunningInterestVersion_ID, Integer.valueOf(C_DunningInterestVersion_ID));
+	}
+
+	/** Get Dunning Interest Version.
+		@return Dunning Interest Version	  */
+	public int getC_DunningInterestVersion_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DunningInterestVersion_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DunningRunEntry getC_DunningRunEntry() throws RuntimeException
+    {
+		return (I_C_DunningRunEntry)MTable.get(getCtx(), I_C_DunningRunEntry.Table_Name)
 			.getPO(getC_DunningRunEntry_ID(), get_TrxName());	}
 
 	/** Set Dunning Run Entry.
@@ -131,6 +207,34 @@ public class X_C_DunningRunLine extends PO implements I_C_DunningRunLine, I_Pers
 	public int getC_DunningRunEntry_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_DunningRunEntry_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DunningRun getC_DunningRun() throws RuntimeException
+    {
+		return (I_C_DunningRun)MTable.get(getCtx(), I_C_DunningRun.Table_Name)
+			.getPO(getC_DunningRun_ID(), get_TrxName());	}
+
+	/** Set Dunning Run.
+		@param C_DunningRun_ID 
+		Dunning Run
+	  */
+	public void setC_DunningRun_ID (int C_DunningRun_ID)
+	{
+		if (C_DunningRun_ID < 1) 
+			set_Value (COLUMNNAME_C_DunningRun_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DunningRun_ID, Integer.valueOf(C_DunningRun_ID));
+	}
+
+	/** Get Dunning Run.
+		@return Dunning Run
+	  */
+	public int getC_DunningRun_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DunningRun_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -159,9 +263,9 @@ public class X_C_DunningRunLine extends PO implements I_C_DunningRunLine, I_Pers
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Invoice getC_Invoice() throws RuntimeException
+	public I_C_Invoice getC_Invoice() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Invoice)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Invoice.Table_Name)
+		return (I_C_Invoice)MTable.get(getCtx(), I_C_Invoice.Table_Name)
 			.getPO(getC_Invoice_ID(), get_TrxName());	}
 
 	/** Set Invoice.
@@ -195,9 +299,9 @@ public class X_C_DunningRunLine extends PO implements I_C_DunningRunLine, I_Pers
         return new KeyNamePair(get_ID(), String.valueOf(getC_Invoice_ID()));
     }
 
-	public org.adempiere.core.domains.models.I_C_InvoicePaySchedule getC_InvoicePaySchedule() throws RuntimeException
+	public I_C_InvoicePaySchedule getC_InvoicePaySchedule() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_InvoicePaySchedule)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_InvoicePaySchedule.Table_Name)
+		return (I_C_InvoicePaySchedule)MTable.get(getCtx(), I_C_InvoicePaySchedule.Table_Name)
 			.getPO(getC_InvoicePaySchedule_ID(), get_TrxName());	}
 
 	/** Set Invoice Payment Schedule.
@@ -223,9 +327,29 @@ public class X_C_DunningRunLine extends PO implements I_C_DunningRunLine, I_Pers
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Order getC_Order() throws RuntimeException
+	/** Set Converted Amount.
+		@param ConvertedAmt 
+		Converted Amount
+	  */
+	public void setConvertedAmt (BigDecimal ConvertedAmt)
+	{
+		set_Value (COLUMNNAME_ConvertedAmt, ConvertedAmt);
+	}
+
+	/** Get Converted Amount.
+		@return Converted Amount
+	  */
+	public BigDecimal getConvertedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ConvertedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public I_C_Order getC_Order() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Order)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Order.Table_Name)
+		return (I_C_Order)MTable.get(getCtx(), I_C_Order.Table_Name)
 			.getPO(getC_Order_ID(), get_TrxName());	}
 
 	/** Set Order.
@@ -251,9 +375,9 @@ public class X_C_DunningRunLine extends PO implements I_C_DunningRunLine, I_Pers
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Payment getC_Payment() throws RuntimeException
+	public I_C_Payment getC_Payment() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Payment)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Payment.Table_Name)
+		return (I_C_Payment)MTable.get(getCtx(), I_C_Payment.Table_Name)
 			.getPO(getC_Payment_ID(), get_TrxName());	}
 
 	/** Set Payment.
@@ -277,26 +401,6 @@ public class X_C_DunningRunLine extends PO implements I_C_DunningRunLine, I_Pers
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Converted Amount.
-		@param ConvertedAmt 
-		Converted Amount
-	  */
-	public void setConvertedAmt (BigDecimal ConvertedAmt)
-	{
-		set_Value (COLUMNNAME_ConvertedAmt, ConvertedAmt);
-	}
-
-	/** Get Converted Amount.
-		@return Converted Amount
-	  */
-	public BigDecimal getConvertedAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ConvertedAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	/** Set Days due.
@@ -425,6 +529,26 @@ public class X_C_DunningRunLine extends PO implements I_C_DunningRunLine, I_Pers
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Rate.
+		@param Rate 
+		Rate or Tax or Exchange
+	  */
+	public void setRate (BigDecimal Rate)
+	{
+		set_Value (COLUMNNAME_Rate, Rate);
+	}
+
+	/** Get Rate.
+		@return Rate or Tax or Exchange
+	  */
+	public BigDecimal getRate () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Rate);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Times Dunned.

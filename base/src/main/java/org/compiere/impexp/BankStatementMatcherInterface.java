@@ -16,10 +16,11 @@
  *****************************************************************************/
 package org.compiere.impexp;
 
-import java.util.List;
-
 import org.adempiere.core.domains.models.X_I_BankStatement;
 import org.compiere.model.MBankStatementLine;
+import org.compiere.model.MBankStatementMatcher;
+
+import java.util.List;
 
 /**
  *	Bank Statement Matcher Algorithm Interface
@@ -46,5 +47,15 @@ public interface BankStatementMatcherInterface
 	 *	@return found matches or null
 	 */
 	public BankStatementMatchInfo findMatch (X_I_BankStatement ibs, List<Integer> includedPayments, List<Integer> exludedPayments);
+
+	/**
+	 * 	Configure the matcher with its persistent definition.
+	 *  Called once by the framework after instantiation, before findMatch().
+	 *  Default implementation is a no-op for backward compatibility.
+	 *	@param definition the MBankStatementMatcher record that defines this matcher
+	 */
+	default void configure(MBankStatementMatcher definition) {
+		// no-op by default
+	}
 
 }

@@ -16,12 +16,16 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_S_ResourceAssignment;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.util.DisplayType;
+import org.compiere.util.Msg;
+
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.X_S_ResourceAssignment;
 
 
 /**
@@ -65,6 +69,39 @@ public class MResourceAssignment extends X_S_ResourceAssignment
 	{
 		super(ctx, rs, trxName);
 	}	//	MResourceAssignment
+
+	/**
+	 * 	Before Save
+	 *	@param newRecord new
+	 *	@return true
+	 */
+	@Override
+	protected boolean beforeSave (boolean newRecord)
+	{
+		if (newRecord || is_ValueChanged(COLUMNNAME_AssignDateFrom) || is_ValueChanged(COLUMNNAME_AssignDateTo) || is_ValueChanged(COLUMNNAME_S_Resource_ID)) {
+			String whereClause = " ? < AssignDateTo " +
+					" AND ? > AssignDateFrom " +
+					" AND S_Resource_ID = ?" +
+					" AND S_ResourceAssignment_ID <> ?";
+			MResourceAssignment overlappingAssignment = new Query(getCtx(), Table_Name, whereClause, get_TrxName())
+				.setParameters(getAssignDateFrom(), getAssignDateTo(), getS_Resource_ID(), getS_ResourceAssignment_ID())
+				.setOnlyActiveRecords(true)
+				.first();
+			if (overlappingAssignment != null) {
+				MResource resource = (MResource) getS_Resource();
+				String timeFromFormated = DisplayType.getDateFormat(DisplayType.DateTime).format(getAssignDateFrom());
+				String timeToFormated = DisplayType.getDateFormat(DisplayType.DateTime).format(getAssignDateTo());
+				String message = Msg.parseTranslation(getCtx(), "@Assignment.Overlap@");
+				String errorMessage = MessageFormat.format(message,
+						resource.getName(),
+						timeFromFormated,
+						timeToFormated
+				);
+				throw new AdempiereException(errorMessage);
+			}
+		}
+		return super.beforeSave(newRecord);
+	}	//	beforeSave
 	
 	
 	/**

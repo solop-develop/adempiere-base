@@ -16,7 +16,11 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_AllocationHdr;
+import org.adempiere.core.domains.models.I_C_Invoice;
+import org.adempiere.core.domains.models.I_C_Payment;
+import org.adempiere.core.domains.models.X_C_AllocationHdr;
+import org.adempiere.core.domains.models.X_C_Invoice;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.process.DocAction;
@@ -33,7 +37,13 @@ import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -139,6 +149,43 @@ public final class MAllocationHdr extends X_C_AllocationHdr implements DocAction
 		list.toArray(retValue);
 		return retValue;
 	}	//	getOfInvoice
+
+	/**
+	 * 	Get Allocations of Invoice
+	 *	@param ctx context
+	 *	@param C_Invoice_ID payment
+	 *	@return allocations of payment
+	 *	@param trxName transaction
+	 */
+	public static MAllocationHdr[] getOfInvoice (Properties ctx, int C_Invoice_ID, String where, String orderBy, String trxName)
+	{
+		String sql = "SELECT * FROM C_AllocationHdr h "
+				+ "WHERE IsActive='Y'"
+				+ " AND EXISTS (SELECT * FROM C_AllocationLine l "
+				+ "WHERE h.C_AllocationHdr_ID=l.C_AllocationHdr_ID AND l.C_Invoice_ID=?) " + where + orderBy;
+		ArrayList<MAllocationHdr> list = new ArrayList<MAllocationHdr>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sql, trxName);
+			pstmt.setInt(1, C_Invoice_ID);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+				list.add (new MAllocationHdr(ctx, rs, trxName));
+		}
+		catch (Exception e)
+		{
+			logger.log(Level.SEVERE, sql, e);
+		}
+		finally
+		{
+			DB.close(rs, pstmt);
+		}
+		MAllocationHdr[] retValue = new MAllocationHdr[list.size()];
+		list.toArray(retValue);
+		return retValue;
+	}
 
 	//FR [ 1866214 ]
 	/**

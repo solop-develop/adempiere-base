@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,7 +12,8 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
@@ -24,7 +25,7 @@ import java.sql.Timestamp;
 
 /** Generated Interface for S_TimeExpenseLine
  *  @author Adempiere (generated) 
- *  @version Release 3.9.3
+ *  @version Release 3.9.4
  */
 public interface I_S_TimeExpenseLine 
 {
@@ -596,17 +597,28 @@ public interface I_S_TimeExpenseLine
     /** Column name S_ContractLine_ID */
     public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
 
-	/** Set Contract Line.
-	  * Contract Line
+	/** Set ContractLine.
+	  * ContractLine
 	  */
 	public void setS_ContractLine_ID (int S_ContractLine_ID);
 
-	/** Get Contract Line.
-	  * Contract Line
+	/** Get ContractLine.
+	  * ContractLine
 	  */
 	public int getS_ContractLine_ID();
 
 	public I_S_ContractLine getS_ContractLine() throws RuntimeException;
+
+    /** Column name Source_Invoice_ID */
+    public static final String COLUMNNAME_Source_Invoice_ID = "Source_Invoice_ID";
+
+	/** Set Source Invoice	  */
+	public void setSource_Invoice_ID (int Source_Invoice_ID);
+
+	/** Get Source Invoice	  */
+	public int getSource_Invoice_ID();
+
+	public I_C_Invoice getSource_Invoice() throws RuntimeException;
 
     /** Column name S_ResourceAssignment_ID */
     public static final String COLUMNNAME_S_ResourceAssignment_ID = "S_ResourceAssignment_ID";

@@ -706,6 +706,19 @@ public interface I_C_Order
 
 	public I_FM_Agreement getFM_Agreement() throws RuntimeException;
 
+	/** Column name FlatDiscount */
+	public static final String COLUMNNAME_FlatDiscount = "FlatDiscount";
+
+	/** Set Flat Discount %.
+	 * Flat discount percentage
+	 */
+	public void setFlatDiscount (BigDecimal FlatDiscount);
+
+	/** Get Flat Discount %.
+	 * Flat discount percentage
+	 */
+	public BigDecimal getFlatDiscount();
+
     /** Column name FreightAmt */
     public static final String COLUMNNAME_FreightAmt = "FreightAmt";
 

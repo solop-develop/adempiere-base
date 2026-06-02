@@ -16,12 +16,6 @@
  *****************************************************************************/
 package org.compiere;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.compiere.db.CConnection;
 import org.compiere.model.MClient;
 import org.compiere.model.MSystem;
@@ -36,6 +30,12 @@ import org.compiere.util.Login;
 import org.compiere.util.SecureEngine;
 import org.compiere.util.SecureInterface;
 import org.compiere.util.Util;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *  Adempiere Control Class
@@ -63,21 +63,21 @@ public final class Adempiere
 	static public String	DB_VERSION		= "2023-01-24";
 
 	/** Product Name            */
-	static public final String	NAME 			= "ADempiere\u00AE";
+	static public final String	NAME 			= "Solop\u00AE";
 	/** URL of Product          */
-	static public final String	URL				= "www.adempiere.io";
+	static public final String	URL				= "https://solopsoftware.com";
 	/** Support Email           */
 	static private String		s_supportEmail	= "";
 
 	/** Subtitle                */
 	static public final String	SUB_TITLE		= "Smart Suite ERP,CRM and SCM";
-	static public final String	ADEMPIERE_R		= "Powered by ADempiere ERP\u00AE";
-	static public final String	COPYRIGHT		= "\u00A9 1999-2023 ADempiere\u00AE";
+	static public final String	ADEMPIERE_R		= "Powered by Solop ERP\u00AE";
+	static public final String	COPYRIGHT		= "\u00A9 1999-2026 Solop\u00AE";
 
 	static private String		s_ImplementationVersion = null;
 	static private String		s_ImplementationVendor = null;
 	
-	static private final String ONLINE_HELP_URL = "http://wiki.adempiere.io/Manual";
+	static private final String ONLINE_HELP_URL = "https://docs.solopsoftware.com/";
 	/**	Reset Password	*/
 	static private final String RESTORE_PASSWORD_PATH = ":8888/webui";
 
@@ -166,8 +166,8 @@ public final class Adempiere
 		s_ImplementationVersion = adempierePackage.getImplementationVersion();
 		if (s_ImplementationVendor == null)
 		{
-			s_ImplementationVendor = "Supported by ADempiere community";
-			s_ImplementationVersion = "ADempiere";
+			s_ImplementationVendor = "Supported by Solop Software";
+			s_ImplementationVersion = "Solop";
 		}
 	}	//	setPackageInfo
 

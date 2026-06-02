@@ -18,13 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
+import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for HR_EmployeeType
  *  @author Adempiere (generated) 
@@ -35,7 +38,7 @@ public class X_HR_EmployeeType extends PO implements I_HR_EmployeeType, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260505L;
 
     /** Standard Constructor */
     public X_HR_EmployeeType (Properties ctx, int HR_EmployeeType_ID, String trxName)
@@ -118,9 +121,9 @@ public class X_HR_EmployeeType extends PO implements I_HR_EmployeeType, I_Persis
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_Payroll getHR_Payroll() throws RuntimeException
+	public I_HR_Payroll getHR_Payroll() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_Payroll)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_Payroll.Table_Name)
+		return (I_HR_Payroll)MTable.get(getCtx(), I_HR_Payroll.Table_Name)
 			.getPO(getHR_Payroll_ID(), get_TrxName());	}
 
 	/** Set Payroll.
@@ -167,6 +170,23 @@ public class X_HR_EmployeeType extends PO implements I_HR_EmployeeType, I_Persis
     {
         return new KeyNamePair(get_ID(), getName());
     }
+
+	/** Set Total Daily Hours.
+		@param TotalDailyHours Total Daily Hours	  */
+	public void setTotalDailyHours (BigDecimal TotalDailyHours)
+	{
+		set_Value (COLUMNNAME_TotalDailyHours, TotalDailyHours);
+	}
+
+	/** Get Total Daily Hours.
+		@return Total Daily Hours	  */
+	public BigDecimal getTotalDailyHours () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_TotalDailyHours);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
 
 	/** Set Immutable Universally Unique Identifier.
 		@param UUID 

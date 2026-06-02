@@ -23,24 +23,24 @@ import org.compiere.util.KeyNamePair;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/** Generated Interface for C_BankStatementMatcher
+/** Generated Interface for C_DunningInterestRate
  *  @author Adempiere (generated) 
  *  @version Release 3.9.4
  */
-public interface I_C_BankStatementMatcher 
+public interface I_C_DunningInterestRate 
 {
 
-    /** TableName=C_BankStatementMatcher */
-    public static final String Table_Name = "C_BankStatementMatcher";
+    /** TableName=C_DunningInterestRate */
+    public static final String Table_Name = "C_DunningInterestRate";
 
-    /** AD_Table_ID=658 */
+    /** AD_Table_ID=55138 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
-    /** AccessLevel = 2 - Client 
+    /** AccessLevel = 3 - Client - Org 
      */
-    BigDecimal accessLevel = BigDecimal.valueOf(2);
+    BigDecimal accessLevel = BigDecimal.valueOf(3);
 
     /** Load Meta Data */
 
@@ -65,31 +65,40 @@ public interface I_C_BankStatementMatcher
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name C_BankStatementMatcher_ID */
-    public static final String COLUMNNAME_C_BankStatementMatcher_ID = "C_BankStatementMatcher_ID";
+    /** Column name C_Currency_ID */
+    public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
 
-	/** Set Bank Statement Matcher.
-	  * Algorithm to match Bank Statement Info to Business Partners, Invoices and Payments
+	/** Set Currency.
+	  * The Currency for this record
 	  */
-	public void setC_BankStatementMatcher_ID (int C_BankStatementMatcher_ID);
+	public void setC_Currency_ID (int C_Currency_ID);
 
-	/** Get Bank Statement Matcher.
-	  * Algorithm to match Bank Statement Info to Business Partners, Invoices and Payments
+	/** Get Currency.
+	  * The Currency for this record
 	  */
-	public int getC_BankStatementMatcher_ID();
+	public int getC_Currency_ID();
 
-    /** Column name Classname */
-    public static final String COLUMNNAME_Classname = "Classname";
+	public I_C_Currency getC_Currency() throws RuntimeException;
 
-	/** Set Classname.
-	  * Java Classname
-	  */
-	public void setClassname (String Classname);
+    /** Column name C_DunningInterestRate_ID */
+    public static final String COLUMNNAME_C_DunningInterestRate_ID = "C_DunningInterestRate_ID";
 
-	/** Get Classname.
-	  * Java Classname
-	  */
-	public String getClassname();
+	/** Set Dunning Interes Rate	  */
+	public void setC_DunningInterestRate_ID (int C_DunningInterestRate_ID);
+
+	/** Get Dunning Interes Rate	  */
+	public int getC_DunningInterestRate_ID();
+
+    /** Column name C_DunningInterestVersion_ID */
+    public static final String COLUMNNAME_C_DunningInterestVersion_ID = "C_DunningInterestVersion_ID";
+
+	/** Set Dunning Interest Version	  */
+	public void setC_DunningInterestVersion_ID (int C_DunningInterestVersion_ID);
+
+	/** Get Dunning Interest Version	  */
+	public int getC_DunningInterestVersion_ID();
+
+	public I_C_DunningInterestVersion getC_DunningInterestVersion() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -107,18 +116,23 @@ public interface I_C_BankStatementMatcher
 	  */
 	public int getCreatedBy();
 
-    /** Column name Description */
-    public static final String COLUMNNAME_Description = "Description";
+    /** Column name DaysFrom */
+    public static final String COLUMNNAME_DaysFrom = "DaysFrom";
 
-	/** Set Description.
-	  * Optional short description of the record
-	  */
-	public void setDescription (String Description);
+	/** Set Days From	  */
+	public void setDaysFrom (int DaysFrom);
 
-	/** Get Description.
-	  * Optional short description of the record
-	  */
-	public String getDescription();
+	/** Get Days From	  */
+	public int getDaysFrom();
+
+    /** Column name DaysTo */
+    public static final String COLUMNNAME_DaysTo = "DaysTo";
+
+	/** Set Days To	  */
+	public void setDaysTo (int DaysTo);
+
+	/** Get Days To	  */
+	public int getDaysTo();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -133,42 +147,18 @@ public interface I_C_BankStatementMatcher
 	  */
 	public boolean isActive();
 
-    /** Column name MatchTolerance */
-    public static final String COLUMNNAME_MatchTolerance = "MatchTolerance";
+    /** Column name Rate */
+    public static final String COLUMNNAME_Rate = "Rate";
 
-	/** Set Match Tolerance	  */
-	public void setMatchTolerance (BigDecimal MatchTolerance);
-
-	/** Get Match Tolerance	  */
-	public BigDecimal getMatchTolerance();
-
-    /** Column name Name */
-    public static final String COLUMNNAME_Name = "Name";
-
-	/** Set Name.
-	  * Alphanumeric identifier of the entity
+	/** Set Rate.
+	  * Rate or Tax or Exchange
 	  */
-	public void setName (String Name);
+	public void setRate (BigDecimal Rate);
 
-	/** Get Name.
-	  * Alphanumeric identifier of the entity
+	/** Get Rate.
+	  * Rate or Tax or Exchange
 	  */
-	public String getName();
-
-    /** Column name SeqNo */
-    public static final String COLUMNNAME_SeqNo = "SeqNo";
-
-	/** Set Sequence.
-	  * Method of ordering records;
- lowest number comes first
-	  */
-	public void setSeqNo (int SeqNo);
-
-	/** Get Sequence.
-	  * Method of ordering records;
- lowest number comes first
-	  */
-	public int getSeqNo();
+	public BigDecimal getRate();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

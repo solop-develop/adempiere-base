@@ -18,16 +18,17 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for C_BPartner
  *  @author Adempiere (generated) 
@@ -38,7 +39,7 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260514L;
 
     /** Standard Constructor */
     public X_C_BPartner (Properties ctx, int C_BPartner_ID, String trxName)
@@ -46,8 +47,8 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
       super (ctx, C_BPartner_ID, trxName);
       /** if (C_BPartner_ID == 0)
         {
-			setC_BP_Group_ID (0);
 			setC_BPartner_ID (0);
+			setC_BP_Group_ID (0);
 			setIsCustomer (false);
 			setIsEmployee (false);
 			setIsOneTime (false);
@@ -248,9 +249,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return (String)get_Value(COLUMNNAME_BloodGroup);
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getBPartner_Parent() throws RuntimeException
+	public I_C_BPartner getBPartner_Parent() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getBPartner_Parent_ID(), get_TrxName());	}
 
 	/** Set Partner Parent.
@@ -276,9 +277,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BP_AccountType getC_BP_AccountType() throws RuntimeException
+	public I_C_BP_AccountType getC_BP_AccountType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BP_AccountType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BP_AccountType.Table_Name)
+		return (I_C_BP_AccountType)MTable.get(getCtx(), I_C_BP_AccountType.Table_Name)
 			.getPO(getC_BP_AccountType_ID(), get_TrxName());	}
 
 	/** Set Account Type.
@@ -299,118 +300,6 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 	public int getC_BP_AccountType_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_AccountType_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_BP_Group getC_BP_Group() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_BP_Group)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BP_Group.Table_Name)
-			.getPO(getC_BP_Group_ID(), get_TrxName());	}
-
-	/** Set Business Partner Group.
-		@param C_BP_Group_ID 
-		Business Partner Group
-	  */
-	public void setC_BP_Group_ID (int C_BP_Group_ID)
-	{
-		if (C_BP_Group_ID < 1) 
-			set_Value (COLUMNNAME_C_BP_Group_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_BP_Group_ID, Integer.valueOf(C_BP_Group_ID));
-	}
-
-	/** Get Business Partner Group.
-		@return Business Partner Group
-	  */
-	public int getC_BP_Group_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_Group_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_BP_IndustryType getC_BP_IndustryType() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_BP_IndustryType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BP_IndustryType.Table_Name)
-			.getPO(getC_BP_IndustryType_ID(), get_TrxName());	}
-
-	/** Set Industry Type.
-		@param C_BP_IndustryType_ID 
-		Business Partner Industry Type or classification
-	  */
-	public void setC_BP_IndustryType_ID (int C_BP_IndustryType_ID)
-	{
-		if (C_BP_IndustryType_ID < 1) 
-			set_Value (COLUMNNAME_C_BP_IndustryType_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_BP_IndustryType_ID, Integer.valueOf(C_BP_IndustryType_ID));
-	}
-
-	/** Get Industry Type.
-		@return Business Partner Industry Type or classification
-	  */
-	public int getC_BP_IndustryType_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_IndustryType_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_BP_SalesGroup getC_BP_SalesGroup() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_BP_SalesGroup)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BP_SalesGroup.Table_Name)
-			.getPO(getC_BP_SalesGroup_ID(), get_TrxName());	}
-
-	/** Set Sales Group.
-		@param C_BP_SalesGroup_ID 
-		Sales Group
-	  */
-	public void setC_BP_SalesGroup_ID (int C_BP_SalesGroup_ID)
-	{
-		if (C_BP_SalesGroup_ID < 1) 
-			set_Value (COLUMNNAME_C_BP_SalesGroup_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_BP_SalesGroup_ID, Integer.valueOf(C_BP_SalesGroup_ID));
-	}
-
-	/** Get Sales Group.
-		@return Sales Group
-	  */
-	public int getC_BP_SalesGroup_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_SalesGroup_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_BP_Segment getC_BP_Segment() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_BP_Segment)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BP_Segment.Table_Name)
-			.getPO(getC_BP_Segment_ID(), get_TrxName());	}
-
-	/** Set Segment.
-		@param C_BP_Segment_ID 
-		Business Partner Segment
-	  */
-	public void setC_BP_Segment_ID (int C_BP_Segment_ID)
-	{
-		if (C_BP_Segment_ID < 1) 
-			set_Value (COLUMNNAME_C_BP_Segment_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_BP_Segment_ID, Integer.valueOf(C_BP_Segment_ID));
-	}
-
-	/** Get Segment.
-		@return Business Partner Segment
-	  */
-	public int getC_BP_Segment_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_Segment_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -439,9 +328,121 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Dunning getC_Dunning() throws RuntimeException
+	public I_C_BP_Group getC_BP_Group() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Dunning)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Dunning.Table_Name)
+		return (I_C_BP_Group)MTable.get(getCtx(), I_C_BP_Group.Table_Name)
+			.getPO(getC_BP_Group_ID(), get_TrxName());	}
+
+	/** Set Business Partner Group.
+		@param C_BP_Group_ID 
+		Business Partner Group
+	  */
+	public void setC_BP_Group_ID (int C_BP_Group_ID)
+	{
+		if (C_BP_Group_ID < 1) 
+			set_Value (COLUMNNAME_C_BP_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_BP_Group_ID, Integer.valueOf(C_BP_Group_ID));
+	}
+
+	/** Get Business Partner Group.
+		@return Business Partner Group
+	  */
+	public int getC_BP_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_BP_IndustryType getC_BP_IndustryType() throws RuntimeException
+    {
+		return (I_C_BP_IndustryType)MTable.get(getCtx(), I_C_BP_IndustryType.Table_Name)
+			.getPO(getC_BP_IndustryType_ID(), get_TrxName());	}
+
+	/** Set Industry Type.
+		@param C_BP_IndustryType_ID 
+		Business Partner Industry Type or classification
+	  */
+	public void setC_BP_IndustryType_ID (int C_BP_IndustryType_ID)
+	{
+		if (C_BP_IndustryType_ID < 1) 
+			set_Value (COLUMNNAME_C_BP_IndustryType_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_BP_IndustryType_ID, Integer.valueOf(C_BP_IndustryType_ID));
+	}
+
+	/** Get Industry Type.
+		@return Business Partner Industry Type or classification
+	  */
+	public int getC_BP_IndustryType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_IndustryType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_BP_SalesGroup getC_BP_SalesGroup() throws RuntimeException
+    {
+		return (I_C_BP_SalesGroup)MTable.get(getCtx(), I_C_BP_SalesGroup.Table_Name)
+			.getPO(getC_BP_SalesGroup_ID(), get_TrxName());	}
+
+	/** Set Sales Group.
+		@param C_BP_SalesGroup_ID 
+		Sales Group
+	  */
+	public void setC_BP_SalesGroup_ID (int C_BP_SalesGroup_ID)
+	{
+		if (C_BP_SalesGroup_ID < 1) 
+			set_Value (COLUMNNAME_C_BP_SalesGroup_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_BP_SalesGroup_ID, Integer.valueOf(C_BP_SalesGroup_ID));
+	}
+
+	/** Get Sales Group.
+		@return Sales Group
+	  */
+	public int getC_BP_SalesGroup_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_SalesGroup_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_BP_Segment getC_BP_Segment() throws RuntimeException
+    {
+		return (I_C_BP_Segment)MTable.get(getCtx(), I_C_BP_Segment.Table_Name)
+			.getPO(getC_BP_Segment_ID(), get_TrxName());	}
+
+	/** Set Segment.
+		@param C_BP_Segment_ID 
+		Business Partner Segment
+	  */
+	public void setC_BP_Segment_ID (int C_BP_Segment_ID)
+	{
+		if (C_BP_Segment_ID < 1) 
+			set_Value (COLUMNNAME_C_BP_Segment_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_BP_Segment_ID, Integer.valueOf(C_BP_Segment_ID));
+	}
+
+	/** Get Segment.
+		@return Business Partner Segment
+	  */
+	public int getC_BP_Segment_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_BP_Segment_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Dunning getC_Dunning() throws RuntimeException
+    {
+		return (I_C_Dunning)MTable.get(getCtx(), I_C_Dunning.Table_Name)
 			.getPO(getC_Dunning_ID(), get_TrxName());	}
 
 	/** Set Dunning.
@@ -467,9 +468,34 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Greeting getC_Greeting() throws RuntimeException
+	public I_C_DunningInterestType getC_DunningInterestType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Greeting)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Greeting.Table_Name)
+		return (I_C_DunningInterestType)MTable.get(getCtx(), I_C_DunningInterestType.Table_Name)
+			.getPO(getC_DunningInterestType_ID(), get_TrxName());	}
+
+	/** Set Dunning Interest Type.
+		@param C_DunningInterestType_ID Dunning Interest Type	  */
+	public void setC_DunningInterestType_ID (int C_DunningInterestType_ID)
+	{
+		if (C_DunningInterestType_ID < 1) 
+			set_Value (COLUMNNAME_C_DunningInterestType_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DunningInterestType_ID, Integer.valueOf(C_DunningInterestType_ID));
+	}
+
+	/** Get Dunning Interest Type.
+		@return Dunning Interest Type	  */
+	public int getC_DunningInterestType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DunningInterestType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Greeting getC_Greeting() throws RuntimeException
+    {
+		return (I_C_Greeting)MTable.get(getCtx(), I_C_Greeting.Table_Name)
 			.getPO(getC_Greeting_ID(), get_TrxName());	}
 
 	/** Set Greeting.
@@ -495,9 +521,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_InvoiceSchedule getC_InvoiceSchedule() throws RuntimeException
+	public I_C_InvoiceSchedule getC_InvoiceSchedule() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_InvoiceSchedule)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_InvoiceSchedule.Table_Name)
+		return (I_C_InvoiceSchedule)MTable.get(getCtx(), I_C_InvoiceSchedule.Table_Name)
 			.getPO(getC_InvoiceSchedule_ID(), get_TrxName());	}
 
 	/** Set Invoice Schedule.
@@ -523,9 +549,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException
+	public I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_PaymentTerm)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_PaymentTerm.Table_Name)
+		return (I_C_PaymentTerm)MTable.get(getCtx(), I_C_PaymentTerm.Table_Name)
 			.getPO(getC_PaymentTerm_ID(), get_TrxName());	}
 
 	/** Set Payment Term.
@@ -551,9 +577,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_TaxGroup getC_TaxGroup() throws RuntimeException
+	public I_C_TaxGroup getC_TaxGroup() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_TaxGroup)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_TaxGroup.Table_Name)
+		return (I_C_TaxGroup)MTable.get(getCtx(), I_C_TaxGroup.Table_Name)
 			.getPO(getC_TaxGroup_ID(), get_TrxName());	}
 
 	/** Set Tax Group.
@@ -819,9 +845,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return (String)get_Value(COLUMNNAME_Gender);
 	}
 
-	public org.adempiere.core.domains.models.I_AD_PrintFormat getInvoice_PrintFormat() throws RuntimeException
+	public I_AD_PrintFormat getInvoice_PrintFormat() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_PrintFormat)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_PrintFormat.Table_Name)
+		return (I_AD_PrintFormat)MTable.get(getCtx(), I_AD_PrintFormat.Table_Name)
 			.getPO(getInvoice_PrintFormat_ID(), get_TrxName());	}
 
 	/** Set Invoice Print Format.
@@ -1156,9 +1182,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_DiscountSchema getM_DiscountSchema() throws RuntimeException
+	public I_M_DiscountSchema getM_DiscountSchema() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_DiscountSchema)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_DiscountSchema.Table_Name)
+		return (I_M_DiscountSchema)MTable.get(getCtx(), I_M_DiscountSchema.Table_Name)
 			.getPO(getM_DiscountSchema_ID(), get_TrxName());	}
 
 	/** Set Discount Schema.
@@ -1184,9 +1210,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_PriceList getM_PriceList() throws RuntimeException
+	public I_M_PriceList getM_PriceList() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_PriceList)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_PriceList.Table_Name)
+		return (I_M_PriceList)MTable.get(getCtx(), I_M_PriceList.Table_Name)
 			.getPO(getM_PriceList_ID(), get_TrxName());	}
 
 	/** Set Price List.
@@ -1434,9 +1460,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_DiscountSchema getPO_DiscountSchema() throws RuntimeException
+	public I_M_DiscountSchema getPO_DiscountSchema() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_DiscountSchema)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_DiscountSchema.Table_Name)
+		return (I_M_DiscountSchema)MTable.get(getCtx(), I_M_DiscountSchema.Table_Name)
 			.getPO(getPO_DiscountSchema_ID(), get_TrxName());	}
 
 	/** Set PO Discount Schema.
@@ -1462,9 +1488,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_PaymentTerm getPO_PaymentTerm() throws RuntimeException
+	public I_C_PaymentTerm getPO_PaymentTerm() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_PaymentTerm)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_PaymentTerm.Table_Name)
+		return (I_C_PaymentTerm)MTable.get(getCtx(), I_C_PaymentTerm.Table_Name)
 			.getPO(getPO_PaymentTerm_ID(), get_TrxName());	}
 
 	/** Set PO Payment Term.
@@ -1490,9 +1516,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_PriceList getPO_PriceList() throws RuntimeException
+	public I_M_PriceList getPO_PriceList() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_PriceList)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_PriceList.Table_Name)
+		return (I_M_PriceList)MTable.get(getCtx(), I_M_PriceList.Table_Name)
 			.getPO(getPO_PriceList_ID(), get_TrxName());	}
 
 	/** Set Purchase Pricelist.
@@ -1589,9 +1615,9 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return (String)get_Value(COLUMNNAME_ReferenceNo);
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
+	public I_AD_User getSalesRep() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSalesRep_ID(), get_TrxName());	}
 
 	/** Set Sales Representative.

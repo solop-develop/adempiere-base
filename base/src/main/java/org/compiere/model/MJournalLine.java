@@ -16,17 +16,16 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_GL_JournalLine;
+import org.compiere.process.DocumentReversalLineEnable;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.X_GL_JournalLine;
-import org.compiere.process.DocumentReversalLineEnable;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
 
 /**
  *  Journal Line Model
@@ -382,31 +381,32 @@ public class MJournalLine extends X_GL_JournalLine implements DocumentReversalLi
 	 */
 	private boolean updateJournalTotal()
 	{
-		//	Update Journal Total
-		String sql = "UPDATE GL_Journal j"
-			+ " SET (TotalDr, TotalCr) = (SELECT COALESCE(SUM(AmtAcctDr),0), COALESCE(SUM(AmtAcctCr),0)" // croo Bug# 1789935
-				+ " FROM GL_JournalLine jl WHERE jl.IsActive='Y' AND j.GL_Journal_ID=jl.GL_Journal_ID) "
-			+ "WHERE GL_Journal_ID=" + getGL_Journal_ID();
-		int no = DB.executeUpdate(sql, get_TrxName());
-		if (no != 1)
-			log.warning("afterSave - Update Journal #" + no);
-		
-		//	Update Batch Total
-		int GL_JournalBatch_ID = DB.getSQLValue(get_TrxName(),"SELECT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=?",
-				getGL_Journal_ID());
-		if (GL_JournalBatch_ID != 0) { // idempiere 344 - nmicoud
-			StringBuilder sql2 = new StringBuilder("UPDATE GL_JournalBatch jb")
-			.append(" SET (TotalDr, TotalCr) = (SELECT COALESCE(SUM(TotalDr),0), COALESCE(SUM(TotalCr),0)")
-			.append(" FROM GL_Journal j WHERE jb.GL_JournalBatch_ID=j.GL_JournalBatch_ID) ")
-			.append("WHERE GL_JournalBatch_ID=")
-			.append("(SELECT DISTINCT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=")
-			.append(getGL_Journal_ID()).append(")");
-			
-			no = DB.executeUpdate(sql2.toString(), get_TrxName());
-			if (no != 1)
-				log.warning("Update Batch #" + no);
-		}
-		return no == 1;
+		return true;
+//		//	Update Journal Total
+//		String sql = "UPDATE GL_Journal j"
+//			+ " SET (TotalDr, TotalCr) = (SELECT COALESCE(SUM(AmtAcctDr),0), COALESCE(SUM(AmtAcctCr),0)" // croo Bug# 1789935
+//				+ " FROM GL_JournalLine jl WHERE jl.IsActive='Y' AND j.GL_Journal_ID=jl.GL_Journal_ID) "
+//			+ "WHERE GL_Journal_ID=" + getGL_Journal_ID();
+//		int no = DB.executeUpdate(sql, get_TrxName());
+//		if (no != 1)
+//			log.warning("afterSave - Update Journal #" + no);
+//
+//		//	Update Batch Total
+//		int GL_JournalBatch_ID = DB.getSQLValue(get_TrxName(),"SELECT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=?",
+//				getGL_Journal_ID());
+//		if (GL_JournalBatch_ID != 0) { // idempiere 344 - nmicoud
+//			StringBuilder sql2 = new StringBuilder("UPDATE GL_JournalBatch jb")
+//			.append(" SET (TotalDr, TotalCr) = (SELECT COALESCE(SUM(TotalDr),0), COALESCE(SUM(TotalCr),0)")
+//			.append(" FROM GL_Journal j WHERE jb.GL_JournalBatch_ID=j.GL_JournalBatch_ID) ")
+//			.append("WHERE GL_JournalBatch_ID=")
+//			.append("(SELECT DISTINCT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=")
+//			.append(getGL_Journal_ID()).append(")");
+//
+//			no = DB.executeUpdate(sql2.toString(), get_TrxName());
+//			if (no != 1)
+//				log.warning("Update Batch #" + no);
+//		}
+//		return no == 1;
 	}	//	updateJournalTotal
 	
 	/** Update combination and optionally **/

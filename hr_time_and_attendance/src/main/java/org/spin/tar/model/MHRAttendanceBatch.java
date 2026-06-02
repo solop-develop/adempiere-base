@@ -15,18 +15,10 @@
  *************************************************************************************/
 package org.spin.tar.model;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_HR_AttendanceRecord;
 import org.adempiere.core.domains.models.X_HR_AttendanceBatch;
 import org.adempiere.core.domains.models.X_HR_ShiftIncidence;
+import org.adempiere.core.domains.models.X_S_ServicePlan;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MDocType;
@@ -50,6 +42,15 @@ import org.eevolution.hr.model.MHRPayroll;
 import org.eevolution.hr.model.MHRWorkGroup;
 import org.eevolution.hr.model.MHRWorkShift;
 import org.spin.hr.util.TNAUtil;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * 	Class added for handle Attendance batch
@@ -89,13 +90,13 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 			+ Env.NL + "import java.sql.*;");
 
     /** Standard Constructor */
-    public MHRAttendanceBatch (Properties ctx, int HR_AttendanceBatch_ID, String trxName)
+    public MHRAttendanceBatch(Properties ctx, int HR_AttendanceBatch_ID, String trxName)
     {
       super (ctx, HR_AttendanceBatch_ID, trxName);
     }
 
     /** Load Constructor */
-    public MHRAttendanceBatch (Properties ctx, ResultSet rs, String trxName)
+    public MHRAttendanceBatch(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -239,6 +240,15 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 			//	Set Document Type
 			if(getC_DocType_ID() == 0) {
 				setC_DocType_ID();
+			}
+			if (getS_ServiceSchedule_ID() > 0 && getS_Contract_ID() <= 0) {
+				String whereClause = " EXISTS (SELECT 1 FROM S_ServiceSchedule s WHERE s.S_ServicePlan_ID = S_ServicePlan.S_ServicePlan_ID AND s.S_ServiceSchedule_ID = ?)";
+				X_S_ServicePlan servicePlan = new Query(getCtx(), X_S_ServicePlan.Table_Name, whereClause, get_TrxName())
+					.setParameters(getS_ServiceSchedule_ID())
+					.first();
+				if (servicePlan.getS_Contract_ID() > 0) {
+					setS_Contract_ID(servicePlan.getS_Contract_ID());
+				}
 			}
 		}
 		return super.beforeSave(newRecord);

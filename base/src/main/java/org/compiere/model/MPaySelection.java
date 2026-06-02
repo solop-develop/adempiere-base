@@ -16,15 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.I_C_PaySelection;
 import org.adempiere.core.domains.models.I_C_PaySelectionLine;
 import org.adempiere.core.domains.models.X_C_PaySelection;
@@ -37,6 +28,15 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
 import org.compiere.util.Util;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
 
 /**
  *	AP Payment Selection
@@ -66,7 +66,7 @@ public class MPaySelection extends X_C_PaySelection implements DocAction, DocOpt
 	 *	@param paySelectionId id
 	 *	@param trxName transaction
 	 */
-	public MPaySelection (Properties ctx, int paySelectionId, String trxName)
+	public MPaySelection(Properties ctx, int paySelectionId, String trxName)
 	{
 		super(ctx, paySelectionId, trxName);
 		if (paySelectionId == 0)
@@ -334,12 +334,19 @@ public class MPaySelection extends X_C_PaySelection implements DocAction, DocOpt
 			processMessage = "@TotalAmt@ = 0";
 			return DocAction.STATUS_Invalid;
 		}
-		//	Validate conversion
-		String erroMsg = validateConversion();
+		//	Validate Lines
+		String erroMsg = validateLines();
 		if(erroMsg != null) {
 			processMessage = erroMsg;
 			return DocAction.STATUS_Invalid;
 		}
+		//	Validate conversion
+		 erroMsg = validateConversion();
+		if(erroMsg != null) {
+			processMessage = erroMsg;
+			return DocAction.STATUS_Invalid;
+		}
+
 		//	Create Checks
 		createChecks();
 		//	User Validation
@@ -356,6 +363,22 @@ public class MPaySelection extends X_C_PaySelection implements DocAction, DocOpt
 		setDocAction(DOCACTION_Close);
 		return DocAction.STATUS_Completed;
 	}	//	completeIt
+
+	private String validateLines() {
+		StringBuffer errorMsg = new StringBuffer();
+		getLines(true).stream()
+				.filter(paySelectionLine -> paySelectionLine != null && !paySelectionLine.isProcessed())
+				.forEach(paySelectionLine -> {
+			if (paySelectionLine.getPayAmt().signum() == 0) {
+				if (errorMsg.length() > 0)
+					errorMsg.append(Env.NL);
+				errorMsg.append("@PayAmt@ = 0 [@Line@ ").append(paySelectionLine.getLine()).append("]");
+			}
+		});
+		if (errorMsg.length() > 0)
+			return errorMsg.toString();
+		return null;
+	}
 	
 	/**
 	 * Set Processed to Line and header
