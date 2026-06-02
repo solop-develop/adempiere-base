@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_Nuxt_Form_WebPaths" ReleaseNo="1.5.8" SeqNo="503020">
+    <Comments>Fix Nuxt form webpaths</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="55093" Table="AD_Menu">
+        <Data AD_Column_ID="104730" Column="WebPath" oldValue="module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@">nuxt/module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="55105" Table="AD_Menu">
+        <Data AD_Column_ID="104730" Column="WebPath" oldValue="module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@">nuxt/module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="55117" Table="AD_Menu">
+        <Data AD_Column_ID="104730" Column="WebPath" oldValue="module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@">nuxt/module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="55116" Table="AD_Menu">
+        <Data AD_Column_ID="104730" Column="WebPath" oldValue="module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@">nuxt/module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="55115" Table="AD_Menu">
+        <Data AD_Column_ID="104730" Column="WebPath" oldValue="module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@">nuxt/module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

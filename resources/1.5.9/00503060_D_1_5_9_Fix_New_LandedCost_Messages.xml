@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_New_LandedCost_Messages" ReleaseNo="1.5.9" SeqNo="503060">
+    <Comments>Fix new LandedCost Messages</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53834" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="The &quot;Cost&quot; distribution for product {0} requires an associated purchase invoice.">The "Cost" distribution method requires an associated purchase invoice for the selected receipt.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53834">53834</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="La distribución por &quot;Costo&quot; para el producto {0} requiere una factura de compra asociada.">El método de distribución por "Costo" requiere que el recibo seleccionado tenga una factura de compra asociada.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53835" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="Product {0} cannot be processed because the received quantity is zero.">The "Quantity" distribution method cannot be processed because the total received quantity is zero.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53835">53835</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="El producto {0} no puede procesarse porque la cantidad recepcionada es cero.">El método de distribución por "Cantidad" no se puede procesar porque la cantidad total recepcionada es cero.</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53835">53835</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53836" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="Product {0} does not have a weight configured for &quot;Weight&quot; distribution.">The "Weight" distribution method failed. Ensure products in the receipt have weight configured.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53836">53836</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53836">53836</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="El producto {0} no tiene un peso configurado para la distribución por &quot;Peso&quot;.">La distribución por "Peso" falló. Asegúrese de que los productos del recibo tengan un peso configurado.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53837" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="Product {0} does not have a volume configured for &quot;Volume&quot; distribution.">The "Volume" distribution method failed. Ensure products in the receipt have volume configured.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53837">53837</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53837">53837</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="El producto {0} no tiene un volumen configurado para la distribución por &quot;Volumen&quot;.">La distribución por "Volumen" falló. Asegúrese de que los productos del recibo tengan un volumen configurado.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53838" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="No matching lines with products found for reference: {0}.">No matching lines with products found for the selected reference.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53838">53838</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53838">53838</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="No se encontraron líneas coincidentes con productos para la referencia: {0}.">No se encontraron líneas coincidentes con productos para la referencia seleccionada.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53840" Table="AD_Message">
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53840</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="589" Column="Created">2026-05-14 18:30:03.827</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">D</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="198" Column="MsgText">Multiple Landed Cost Rules cannot directly allocate to a Product.</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="591" Column="Updated">2026-05-14 18:30:03.827</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84346" Column="UUID">bee00add-dbd6-4c93-a90b-2a549444240f</Data>
+        <Data AD_Column_ID="6766" Column="Value">LandedCostProductDirectErr</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53840</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="609" Column="Created">2026-05-14 18:30:05.134</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="342" Column="MsgText">Multiple Landed Cost Rules cannot directly allocate to a Product.</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="611" Column="Updated">2026-05-14 18:30:05.134</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84347" Column="UUID">e298cbc2-fa85-489b-a3ea-8c5b13ad92b5</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53840">53840</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Multiple Landed Cost Rules cannot directly allocate to a Product.">Las reglas de Costos de Importación múltiples no pueden asignarse directamente a un Producto.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53841" Table="AD_Message">
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53841</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="589" Column="Created">2026-05-14 18:50:05.576</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">D</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="198" Column="MsgText">Multiple Landed Cost Rules cannot use different Cost Elements.</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="591" Column="Updated">2026-05-14 18:50:05.576</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84346" Column="UUID">177799f8-9987-4b6b-8959-c2b4b0eac326</Data>
+        <Data AD_Column_ID="6766" Column="Value">LandedCostDiffElementErr</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53841</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="609" Column="Created">2026-05-14 18:50:06.702</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="342" Column="MsgText">Multiple Landed Cost Rules cannot use different Cost Elements.</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="611" Column="Updated">2026-05-14 18:50:06.702</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84347" Column="UUID">6f4c8c3b-ecc6-4e00-9e6c-2efee1e521aa</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53841">53841</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Multiple Landed Cost Rules cannot use different Cost Elements.">Las reglas de Costos de Importación múltiples no pueden usar diferentes Elementos de Costo.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53842" Table="AD_Message">
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53842</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="589" Column="Created">2026-05-14 18:50:21.016</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">D</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="198" Column="MsgText">Invalid Receipt Line or line without product.</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="591" Column="Updated">2026-05-14 18:50:21.016</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84346" Column="UUID">41d95ec4-c30a-4d9f-96f6-eba243ee3656</Data>
+        <Data AD_Column_ID="6766" Column="Value">LandedCostInvalidLineErr</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53842</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="609" Column="Created">2026-05-14 18:50:21.742</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="342" Column="MsgText">Invalid Receipt Line or line without product.</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="611" Column="Updated">2026-05-14 18:50:21.742</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84347" Column="UUID">35154ba1-b249-4aae-a323-eea8ade2f8c8</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53842">53842</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Invalid Receipt Line or line without product.">Línea de recibo inválida o línea sin producto definido.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53843" Table="AD_Message">
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53843</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="589" Column="Created">2026-05-14 18:53:54.842</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">D</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="198" Column="MsgText">No valid reference found for the Landed Cost rule.</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="197" Column="MsgType">I</Data>
+        <Data AD_Column_ID="591" Column="Updated">2026-05-14 18:53:54.842</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84346" Column="UUID">63cb013f-73c1-4cec-b385-e9ead251564b</Data>
+        <Data AD_Column_ID="6766" Column="Value">LandedCostNoRefErr</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="250" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53843</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="609" Column="Created">2026-05-14 18:53:58.936</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="342" Column="MsgText">No valid reference found for the Landed Cost rule.</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="611" Column="Updated">2026-05-14 18:53:58.936</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84347" Column="UUID">c39d6201-76cc-430e-a7c2-2169314136e0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="260" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="0" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53843">53843</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="No valid reference found for the Landed Cost rule.">No se encontró una referencia válida para la regla de Costo de Importación.</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
