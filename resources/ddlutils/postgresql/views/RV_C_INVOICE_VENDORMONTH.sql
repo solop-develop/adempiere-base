@@ -20,16 +20,19 @@ SELECT il.AD_Client_ID, po.AD_Org_ID,
 	  100-ROUND((SUM(LineNetAmt)-SUM(LineOverLimitAmt))/SUM(LineNetAmt)*100,2) END AS LineOverLimit,
 	SUM(QtyInvoiced) AS QtyInvoiced, IsSOTrx,
  C_BP_Group_ID, C_DocTypeTarget_ID, DocStatus, 
- M_Product_Class_ID, M_Product_Group_ID, M_Product_Classification_ID,
+ p.M_Product_Class_ID, p.M_Product_Group_ID, p.M_Product_Classification_ID,
  C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, il.C_SalesRegion_ID,
  SUM(il.Weight) AS Weight,
  SUM(il.Volume) AS Volume,
- il.M_Product_ID
+ il.M_Product_ID,
+ p.DefaultVendor_ID,
+ il.C_Currency_ID
 FROM RV_C_InvoiceLine il
     INNER JOIN M_Product_PO po ON (il.M_Product_ID=po.M_Product_ID AND po.AD_Org_ID = il.AD_Org_ID)
+    INNER JOIN M_Product p ON (il.M_Product_ID = p.M_Product_ID)
 WHERE po.IsCurrentVendor = 'Y'
 GROUP BY il.AD_Client_ID, po.AD_Org_ID, po.C_BPartner_ID, il.M_Product_Category_ID,
 	firstOf(il.DateInvoiced, 'MM'), IsSOTrx,
- C_BP_Group_ID, C_DocTypeTarget_ID, DocStatus, 
- M_Product_Class_ID, M_Product_Group_ID, M_Product_Classification_ID,
- C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, il.C_SalesRegion_ID, il.M_Product_ID;
+ C_BP_Group_ID, C_DocTypeTarget_ID, DocStatus,
+ p.M_Product_Class_ID, p.M_Product_Group_ID, p.M_Product_Classification_ID,
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, il.C_SalesRegion_ID, il.M_Product_ID, p.DefaultVendor_ID, il.C_Currency_ID;
