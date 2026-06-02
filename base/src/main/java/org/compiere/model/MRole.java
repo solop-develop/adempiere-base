@@ -207,6 +207,20 @@ public final class MRole extends X_AD_Role
 		
 	/** Role/User Cache			*/
 	private static CCache<String,MRole> s_roles = new CCache<String,MRole>("AD_Role", 5);
+
+	/**
+	 * Evict cached MRole entry for the given (role, user) pair so the next
+	 * {@link #get(Properties, int, int, boolean)} reloads from DB and rebuilds
+	 * access SQL. Call this after operations that change the user's effective
+	 * tenant or org access (e.g. change-role).
+	 */
+	public static void removeFromCache(int roleId, int userId)
+	{
+		if (roleId < 0 || userId < 0) {
+			return;
+		}
+		s_roles.remove(roleId + "_" + userId);
+	}
 	/** Log						*/ 
 	private static CLogger			s_log = CLogger.getCLogger(MRole.class);
 	
