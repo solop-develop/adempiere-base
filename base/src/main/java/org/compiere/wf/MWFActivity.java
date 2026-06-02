@@ -23,12 +23,31 @@ package org.compiere.wf;
 import org.adempiere.core.domains.models.I_AD_Process;
 import org.adempiere.core.domains.models.X_AD_WF_Activity;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
-import org.compiere.print.ReportEngine;
+import org.compiere.model.MBPartner;
+import org.compiere.model.MColumn;
+import org.compiere.model.MConversionRate;
+import org.compiere.model.MMailText;
+import org.compiere.model.MOrg;
+import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPInstance;
+import org.compiere.model.MPInstancePara;
+import org.compiere.model.MProcess;
+import org.compiere.model.MRefList;
+import org.compiere.model.MRole;
+import org.compiere.model.MTable;
+import org.compiere.model.MUser;
+import org.compiere.model.MUserRoles;
+import org.compiere.model.PO;
+import org.compiere.model.Query;
 import org.compiere.process.DocAction;
 import org.compiere.process.ProcessInfo;
 import org.compiere.process.StateEngine;
-import org.compiere.util.*;
+import org.compiere.util.DisplayType;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.compiere.util.Trace;
+import org.compiere.util.Trx;
+import org.compiere.util.Util;
 import org.spin.queue.notification.DefaultNotifier;
 import org.spin.queue.util.QueueLoader;
 
@@ -39,7 +58,12 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 /**
@@ -871,40 +895,30 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 		else if (MWFNode.ACTION_AppsReport.equals(action))
 		{
 			log.fine("Report:AD_Process_ID=" + m_node.getAD_Process_ID());
-			//	Process
 			MProcess process = MProcess.get(getCtx(), m_node.getAD_Process_ID());
-			process.set_TrxName(trx != null ? trx.getTrxName() : null);
-			if (!process.isReport() || process.getAD_ReportView_ID() == 0) {
+			if (!process.isReport() || (process.getAD_ReportView_ID() == 0 && Util.isEmpty(process.getJasperReport()))) {
 				log.warning("Not a Report AD_Process_ID=" + m_node.getAD_Process_ID());
 				throw new IllegalStateException("@WFA.NotReport@ @AD_Process_ID@: " + process.get_Translation(I_AD_Process.COLUMNNAME_Name));
 			}
-			//
-			ProcessInfo pi = new ProcessInfo (m_node.getName(true), m_node.getAD_Process_ID(),
-				getAD_Table_ID(), getRecord_ID());
-			pi.setAD_User_ID(getAD_User_ID());
-			pi.setAD_Client_ID(getAD_Client_ID());
-			MPInstance pInstance = new MPInstance(process, getRecord_ID());
-			pInstance.set_TrxName(trx != null ? trx.getTrxName() : null);
-			fillParameter(pInstance, trx);
-			pi.setAD_PInstance_ID(pInstance.getAD_PInstance_ID());
-			//	Report
-			ReportEngine re = ReportEngine.get(getCtx(), pi);
-			if (re == null) {
+			String trxName = trx != null ? trx.getTrxName() : null;
+			org.eevolution.services.dsl.ProcessBuilder builder = org.eevolution.services.dsl.ProcessBuilder.create(getCtx())
+					.process(m_node.getAD_Process_ID())
+					.withRecordId(getAD_Table_ID(), getRecord_ID())
+					.withoutPrintPreview()
+					.withoutBatchMode()
+					.withWindowNo(0)
+					.withoutTransactionClose()
+					.withReportExportFormat("pdf");
+			applyNodeParameters(builder);
+			ProcessInfo info = builder.execute(trxName);
+			File report = info.getPDFReport();
+			if (report == null) {
 				log.warning("Cannot create Report AD_Process_ID=" + m_node.getAD_Process_ID());
 				throw new IllegalStateException("@WFA.CannotCreateReport@ @AD_Process_ID@: " + process.get_Translation(I_AD_Process.COLUMNNAME_Name));
 			}
-			File report = re.getPDF();
-			//	Notice
-			MNote note = new MNote(getCtx(), "WorkflowResult", getAD_User_ID(), trx.getTrxName());
-			note.setTextMsg(m_node.getName(true));
-			note.setDescription(m_node.getDescription(true));
-			note.setRecord(getAD_Table_ID(), getRecord_ID());
-			note.saveEx();
-			//	Attachment
-			MAttachment attachment = new MAttachment (getCtx(), MNote.Table_ID, note.getAD_Note_ID(), trx.getTrxName());
-			attachment.addEntry(report);
-			attachment.setTextMsg(m_node.getName(true));
-			attachment.saveEx();
+			//	Route through DefaultNotifier so MUser.NotificationType is honored
+			//	and AD_WF_Node.EMailRecipient resolves destinatarios igual que action='M'.
+			sendReportNotification(report);
 			return true;
 		}
 		
@@ -1277,6 +1291,59 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 	
 
 	/**
+	 * Push AD_WF_Node_Para entries into a {@link org.eevolution.services.dsl.ProcessBuilder}
+	 * resolving @ColumnName@ tokens against the current PO and falling back to
+	 * environment context. Type conversion is delegated to ProcessBuilder.
+	 *
+	 * @param builder ProcessBuilder being configured for the report run
+	 */
+	private void applyNodeParameters(org.eevolution.services.dsl.ProcessBuilder builder) {
+		getPO(null);
+		MWFNodePara[] parameters = m_node.getParameters();
+		for (MWFNodePara parameter : parameters) {
+			String variable = parameter.getAttributeValue();
+			Object value = resolveParaValue(variable);
+			if (value == null) {
+				if (parameter.isMandatory())
+					log.warning(parameter.getAttributeName() + " - empty - mandatory!");
+				else
+					log.fine(parameter.getAttributeName() + " - empty");
+				continue;
+			}
+			log.fine(parameter.getAttributeName() + " = " + variable + " (=" + value + "=)");
+			builder.withParameter(parameter.getAttributeName(), value);
+		}
+	}	//	applyNodeParameters
+
+	/**
+	 * Resolve a single AD_WF_Node_Para AttributeValue: empty -> null,
+	 * @ColumnName@ -> PO value or Env context, otherwise literal constant.
+	 */
+	private Object resolveParaValue(String variable) {
+		if (variable == null || variable.length() == 0)
+			return null;
+		if (variable.indexOf('@') == -1 || m_po == null)
+			return variable;
+		int from = variable.indexOf('@');
+		String rest = variable.substring(from + 1);
+		int to = rest.indexOf('@');
+		if (to == -1) {
+			log.warning("Cannot evaluate variable: " + variable);
+			return null;
+		}
+		String columnName = rest.substring(0, to);
+		int idx = m_po.get_ColumnIndex(columnName);
+		if (idx != -1)
+			return m_po.get_Value(idx);
+		String env = Env.getContext(getCtx(), columnName);
+		if (env == null || env.length() == 0) {
+			log.warning("Not column nor environment: " + columnName + " (" + variable + ")");
+			return null;
+		}
+		return env;
+	}	//	resolveParaValue
+
+	/**
 	 * 	Fill Parameter
 	 *	@param pInstance process instance
 	 * 	@param trx transaction
@@ -1435,60 +1502,68 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 		String message = text.getMailText(true)
 			+ Env.NL + "-----" + Env.NL + documentInfo
 			+ Env.NL + documentSummary;
-		//	Explicit EMail
-		sendNotification(0, m_node.getEMail(), subject, message, pdf);
+		dispatchToWorkflowRecipients(userId, subject, message, pdf);
+	}	//	sendEMail
+
+	/**
+	 * Resolve the workflow node recipients (explicit EMail + EMailRecipient cascade)
+	 * and hand off each one to {@link #sendNotification(int, String, String, String, File)}.
+	 * Shared by action='M' (EMail) and action='R' (AppsReport) so both observe
+	 * the same destinatario rules and MUser.NotificationType.
+	 *
+	 * @param userId   the document owner / fallback user id
+	 * @param subject  notification subject
+	 * @param message  notification body
+	 * @param pdf      attachment (PDF) — already produced by the caller
+	 */
+	private void dispatchToWorkflowRecipients(int userId, String subject, String message, File pdf) {
+		//	Explicit EMail address set on the node
+		if (m_node.getEMail() != null && m_node.getEMail().length() > 0)
+			sendNotification(0, m_node.getEMail(), subject, message, pdf);
 		//	Recipient Type
 		String recipient = m_node.getEMailRecipient();
-		//	email to document user
-		if (recipient == null || recipient.length() == 0)
-			sendNotification(userId, null, subject, message, pdf); 
-		else if (recipient.equals(MWFNode.EMAILRECIPIENT_DocumentBusinessPartner))
-		{
+		//	Default: document owner
+		if (recipient == null || recipient.length() == 0) {
+			sendNotification(userId, null, subject, message, pdf);
+		}
+		else if (recipient.equals(MWFNode.EMAILRECIPIENT_DocumentBusinessPartner)) {
 			int index = m_po.get_ColumnIndex("AD_User_ID");
-			if (index > 0)
-			{
+			if (index > 0) {
 				Object oo = m_po.get_Value(index);
-				if (oo instanceof Integer)
-				{
-					int AD_User_ID = ((Integer)oo).intValue();
+				if (oo instanceof Integer) {
+					int AD_User_ID = ((Integer) oo).intValue();
 					if (AD_User_ID != 0)
 						sendNotification(AD_User_ID, null, subject, message, pdf);
 					else
 						log.fine("No User in Document");
-				}
-				else
+				} else
 					log.fine("Empty User in Document");
-			}
-			else
+			} else
 				log.fine("No User Field in Document");
 		}
-		else if (recipient.equals(MWFNode.EMAILRECIPIENT_DocumentOwner))
+		else if (recipient.equals(MWFNode.EMAILRECIPIENT_DocumentOwner)) {
 			sendNotification(userId, null, subject, message, pdf);
+		}
 		else if (recipient.equals(MWFNode.EMAILRECIPIENT_SupervisorOfDocumentOwner) && userId > 0) {
-			MUser documentUser = new MUser(getCtx() , userId, get_TrxName());
-			if (documentUser.getSupervisor_ID() > 0 )
+			MUser documentUser = new MUser(getCtx(), userId, get_TrxName());
+			if (documentUser.getSupervisor_ID() > 0)
 				sendNotification(documentUser.getSupervisor_ID(), null, subject, message, pdf);
 		}
-		else if (recipient.equals(MWFNode.EMAILRECIPIENT_WFResponsible))
-		{
+		else if (recipient.equals(MWFNode.EMAILRECIPIENT_WFResponsible)) {
 			MWFResponsible resp = getResponsible();
-			if (resp.isInvoker())
-				sendNotification(userId, null, subject, message, pdf); 
-			else if (resp.isHuman())
-				sendNotification(resp.getAD_User_ID(), null, subject, message, pdf); 
-			else if (resp.isRole())
-			{
+			if (resp.isInvoker()) {
+				sendNotification(userId, null, subject, message, pdf);
+			} else if (resp.isHuman()) {
+				sendNotification(resp.getAD_User_ID(), null, subject, message, pdf);
+			} else if (resp.isRole()) {
 				MRole role = resp.getRole();
-				if (role != null)
-				{
+				if (role != null) {
 					MUser[] users = MUser.getWithRole(role);
 					for (int i = 0; i < users.length; i++) {
-						sendNotification(users[i].getAD_User_ID(), null, subject, message, pdf); 
+						sendNotification(users[i].getAD_User_ID(), null, subject, message, pdf);
 					}
 				}
-			}
-			else if (resp.isOrganization())
-			{
+			} else if (resp.isOrganization()) {
 				MOrgInfo org = MOrgInfo.get(getCtx(), m_po.getAD_Org_ID(), get_TrxName());
 				if (org.getSupervisor_ID() == 0)
 					log.fine("No Supervisor for AD_Org_ID=" + m_po.getAD_Org_ID());
@@ -1496,25 +1571,21 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 					sendNotification(org.getSupervisor_ID(), null, subject, message, pdf);
 			}
 		}
-		else if (recipient.equals(MWFNode.EMAILRECIPIENT_SupervisorOfWFResponsible))
-		{
+		else if (recipient.equals(MWFNode.EMAILRECIPIENT_SupervisorOfWFResponsible)) {
 			MWFResponsible resp = getResponsible();
 			if (resp.isInvoker()) {
-				MUser documentUser = new MUser(getCtx() , userId, get_TrxName());
+				MUser documentUser = new MUser(getCtx(), userId, get_TrxName());
 				if (documentUser.getSupervisor_ID() > 0)
 					sendNotification(documentUser.getSupervisor_ID(), null, subject, message, pdf);
-
 			}
 			else if (resp.isHuman()) {
-				MUser documentUser = new MUser(getCtx() , resp.getAD_User_ID() , get_TrxName());
+				MUser documentUser = new MUser(getCtx(), resp.getAD_User_ID(), get_TrxName());
 				if (documentUser.getSupervisor_ID() > 0)
 					sendNotification(documentUser.getSupervisor_ID(), null, subject, message, pdf);
 			}
-			else if (resp.isRole())
-			{
+			else if (resp.isRole()) {
 				MRole role = resp.getRole();
-				if (role != null)
-				{
+				if (role != null) {
 					MUser[] users = MUser.getWithRole(role);
 					for (int i = 0; i < users.length; i++) {
 						if (users[i].getSupervisor_ID() > 0) {
@@ -1523,20 +1594,58 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable
 					}
 				}
 			}
-			else if (resp.isOrganization())
-			{
+			else if (resp.isOrganization()) {
 				MOrgInfo org = MOrgInfo.get(getCtx(), m_po.getAD_Org_ID(), get_TrxName());
 				if (org.getSupervisor_ID() == 0)
 					log.fine("No Supervisor for AD_Org_ID=" + m_po.getAD_Org_ID());
 				else {
-					MUser user = new MUser(getCtx() , org.getSupervisor_ID() , get_TrxName());
+					MUser user = new MUser(getCtx(), org.getSupervisor_ID(), get_TrxName());
 					if (user.getSupervisor_ID() > 0)
-						sendNotification(user.getSupervisor_ID() , null, subject, message, pdf);
+						sendNotification(user.getSupervisor_ID(), null, subject, message, pdf);
 				}
 			}
 		}
-	}	//	sendEMail
-	
+	}	//	dispatchToWorkflowRecipients
+
+	/**
+	 * Route an AppsReport-generated PDF through DefaultNotifier so that
+	 * MUser.NotificationType (E/N/B/A/F/M/S/X) is honored and the same
+	 * AD_WF_Node.EMailRecipient resolution as action='M' is applied.
+	 * Subject/body come from R_MailText_ID if present, otherwise from the
+	 * node Name/Description plus the document info when m_po is a DocAction.
+	 * @param reportPdf PDF produced by ReportEngine for this activity
+	 */
+	private void sendReportNotification(File reportPdf) {
+		int userId;
+		String documentInfo = "";
+		String documentSummary = "";
+		if (m_po instanceof DocAction) {
+			DocAction doc = (DocAction) m_po;
+			userId = doc.getDoc_User_ID();
+			documentInfo = doc.getDocumentInfo() != null ? doc.getDocumentInfo() : "";
+			documentSummary = doc.getSummary() != null ? doc.getSummary() : "";
+		} else {
+			userId = m_po.getCreatedBy();
+		}
+		//	Subject/body with fallback when R_MailText_ID is empty (Report nodes typically don't set it)
+		String subject;
+		String message;
+		String docTail = (documentInfo.isEmpty() && documentSummary.isEmpty())
+				? ""
+				: Env.NL + "-----" + Env.NL + documentInfo + Env.NL + documentSummary;
+		if (m_node.getR_MailText_ID() > 0) {
+			MMailText text = new MMailText(getCtx(), m_node.getR_MailText_ID(), null);
+			text.setPO(m_po, true);
+			subject = (documentInfo.isEmpty() ? "" : documentInfo + ": ") + text.getMailHeader();
+			message = text.getMailText(true) + docTail;
+		} else {
+			subject = (documentInfo.isEmpty() ? "" : documentInfo + ": ") + m_node.getName(true);
+			String desc = m_node.getDescription(true);
+			message = (desc != null ? desc : "") + docTail;
+		}
+		dispatchToWorkflowRecipients(userId, subject, message, reportPdf);
+	}	//	sendReportNotification
+
 	/**
 	 * 	Send actual EMail
 	 *	@param userId user

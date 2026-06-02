@@ -1121,6 +1121,18 @@ public class MOrder extends X_C_Order implements DocAction
 			setIsManualDocument(getC_DocTypeTarget().isGenerateManualDocument());
 		}
 
+		if (!newRecord && is_ValueChanged(COLUMNNAME_FlatDiscount)) {
+			if (isProcessed()) {
+				log.saveError("Error", Msg.parseTranslation(getCtx(),
+						"@FlatDiscount@: @Processed@"));
+				return false;
+			}
+			for (MOrderLine line : getLines(true, null)) {
+				line.setDiscount(getFlatDiscount());
+				line.saveEx();
+			}
+		}
+
 		return true;
 	}	//	beforeSave
 	

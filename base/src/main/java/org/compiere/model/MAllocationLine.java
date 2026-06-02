@@ -16,12 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_C_AllocationLine;
 import org.compiere.process.DocumentReversalLineEnable;
 import org.compiere.util.CLogger;
@@ -29,10 +23,16 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
+import java.util.logging.Level;
+
 
 /**
  *	Allocation Line Model
- *	
+ *
  *  @author Jorg Janke
  *  @author eEvolution author Victor Perez <victor.perez@e-evolution.com> http://www.e-evolution.com
  *  <li>Implement Reverse Accrual for all document https://github.com/adempiere/adempiere/issues/1348</>
@@ -40,7 +40,7 @@ import org.compiere.util.Msg;
 public class MAllocationLine extends X_C_AllocationLine implements DocumentReversalLineEnable
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 5532305715886380749L;
 
@@ -50,17 +50,17 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 	 *	@param C_AllocationLine_ID id
 	 *	@param trxName name
 	 */
-	public MAllocationLine (Properties ctx, int C_AllocationLine_ID, String trxName)
+	public MAllocationLine(Properties ctx, int C_AllocationLine_ID, String trxName)
 	{
 		super (ctx, C_AllocationLine_ID, trxName);
 		if (C_AllocationLine_ID == 0)
 		{
-		//	setC_AllocationHdr_ID (0);
+			//	setC_AllocationHdr_ID (0);
 			setAmount (Env.ZERO);
 			setDiscountAmt (Env.ZERO);
 			setWriteOffAmt (Env.ZERO);
 			setOverUnderAmt(Env.ZERO);
-		}	
+		}
 	}	//	MAllocationLine
 
 	/**
@@ -69,7 +69,7 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MAllocationLine (Properties ctx, ResultSet rs, String trxName)
+	public MAllocationLine(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MAllocationLine
@@ -78,7 +78,7 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 	 * 	Parent Constructor
 	 *	@param parent parent
 	 */
-	public MAllocationLine (MAllocationHdr parent)
+	public MAllocationLine(MAllocationHdr parent)
 	{
 		this (parent.getCtx(), 0, parent.get_TrxName());
 		setClientOrg(parent);
@@ -95,8 +95,8 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 	 *	@param WriteOffAmt optional write off
 	 *	@param OverUnderAmt over/underpayment
 	 */
-	public MAllocationLine (MAllocationHdr parent, BigDecimal Amount, 
-		BigDecimal DiscountAmt, BigDecimal WriteOffAmt, BigDecimal OverUnderAmt)
+	public MAllocationLine(MAllocationHdr parent, BigDecimal Amount,
+						   BigDecimal DiscountAmt, BigDecimal WriteOffAmt, BigDecimal OverUnderAmt)
 	{
 		this (parent);
 		setAmount (Amount);
@@ -104,14 +104,14 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 		setWriteOffAmt (WriteOffAmt == null ? Env.ZERO : WriteOffAmt);
 		setOverUnderAmt (OverUnderAmt == null ? Env.ZERO : OverUnderAmt);
 	}	//	MAllocationLine
-	
+
 	/**	Static Logger	*/
 	private static CLogger	s_log	= CLogger.getCLogger (MAllocationLine.class);
 	/**	Invoice info			*/
-	private MInvoice		m_invoice = null; 
+	private MInvoice		m_invoice = null;
 	/** Allocation Header		*/
 	private MAllocationHdr	m_parent = null;
-	
+
 	/**
 	 * 	Get Parent
 	 *	@return parent
@@ -122,7 +122,7 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 			m_parent = new MAllocationHdr (getCtx(), getC_AllocationHdr_ID(), get_TrxName());
 		return m_parent;
 	}	//	getParent
-	
+
 	/**
 	 * 	Set Parent
 	 *	@param parent parent
@@ -131,7 +131,7 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 	{
 		m_parent = parent;
 	}	//	setParent
-	
+
 	/**
 	 * 	Get Parent Trx Date
 	 *	@return date trx
@@ -140,7 +140,7 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 	{
 		return getParent().getDateTrx ();
 	}	//	getDateTrx
-	
+
 	/**
 	 * 	Set Document Info
 	 *	@param C_BPartner_ID partner
@@ -153,7 +153,7 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 		setC_Order_ID(C_Order_ID);
 		setC_Invoice_ID(C_Invoice_ID);
 	}	//	setDocInfo
-	
+
 	/**
 	 * 	Set Payment Info
 	 *	@param C_Payment_ID payment
@@ -178,7 +178,7 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 		return m_invoice;
 	}	//	getInvoice
 
-	
+
 	/**************************************************************************
 	 * 	Before Save
 	 *	@param newRecord
@@ -190,23 +190,23 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 			log.saveError("ParentComplete", Msg.translate(getCtx(), "C_AllocationLine"));
 			return false;
 		}
-		if (!newRecord  
-			&& (is_ValueChanged("C_BPartner_ID") || is_ValueChanged("C_Invoice_ID")))
+		if (!newRecord
+				&& (is_ValueChanged("C_BPartner_ID") || is_ValueChanged("C_Invoice_ID")))
 		{
 			log.severe ("Cannot Change Business Partner or Invoice");
 			return false;
 		}
-		
+
 		//	Set BPartner/Order from Invoice
 		if (getC_BPartner_ID() == 0 && getInvoice() != null)
-			setC_BPartner_ID(getInvoice().getC_BPartner_ID()); 
+			setC_BPartner_ID(getInvoice().getC_BPartner_ID());
 		if (getC_Order_ID() == 0 && getInvoice() != null)
 			setC_Order_ID(getInvoice().getC_Order_ID());
 		//
 		return true;
 	}	//	beforeSave
 
-	
+
 	/**
 	 * 	Before Delete
 	 *	@return true if reversed
@@ -217,7 +217,7 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 		processIt(true);
 		return true;
 	}	//	beforeDelete
-	
+
 	/**
 	 * 	String Representation
 	 *	@return info
@@ -235,13 +235,13 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 		if (getC_BPartner_ID() != 0)
 			sb.append(",C_BPartner_ID=").append(getC_BPartner_ID());
 		sb.append(", Amount=").append(getAmount())
-			.append(",Discount=").append(getDiscountAmt())
-			.append(",WriteOff=").append(getWriteOffAmt())
-			.append(",OverUnder=").append(getOverUnderAmt());
+				.append(",Discount=").append(getDiscountAmt())
+				.append(",WriteOff=").append(getWriteOffAmt())
+				.append(",OverUnder=").append(getOverUnderAmt());
 		sb.append ("]");
 		return sb.toString ();
 	}	//	toString
-	
+
 	/**************************************************************************
 	 * 	Process Allocation (does not update line).
 	 * 	- Update and Link Invoice/Payment/Cash
@@ -253,13 +253,13 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 		log.fine("Reverse=" + isReverse + " - " + toString());
 		int invoiceId = getC_Invoice_ID();
 		MInvoice invoice = getInvoice();
-		if (invoice != null 
-			&& getC_BPartner_ID() != invoice.getC_BPartner_ID())
+		if (invoice != null
+				&& getC_BPartner_ID() != invoice.getC_BPartner_ID())
 			setC_BPartner_ID(invoice.getC_BPartner_ID());
 		//
 		int paymentId = getC_Payment_ID();
 		int cashLineId = getC_CashLine_ID();
-		
+
 		//	Update Payment
 		if (paymentId != 0)
 		{
@@ -267,14 +267,16 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 			if (getC_BPartner_ID() != payment.getC_BPartner_ID())
 				log.warning("C_BPartner_ID different - Invoice=" + getC_BPartner_ID() + " - Payment=" + payment.getC_BPartner_ID());
 			if (isReverse) {
+
 				payment.setIsAllocated(false);
 				payment.saveEx();
+
 			} else {
 				if (payment.testAllocation())
 					payment.saveEx();
 			}
 		}
-		
+
 		//	Payment - Invoice
 		if (paymentId != 0 && invoice != null)
 		{
@@ -283,27 +285,27 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 			{
 				invoice.setC_Payment_ID(0);
 				log.fine("C_Payment_ID=" + paymentId
-					+ " Unlinked from C_Invoice_ID=" + invoiceId);
+						+ " Unlinked from C_Invoice_ID=" + invoiceId);
 			}
 			else if (invoice.isPaid())
 			{
 				invoice.setC_Payment_ID(paymentId);
 				log.fine("C_Payment_ID=" + paymentId
-					+ " Linked to C_Invoice_ID=" + invoiceId);
+						+ " Linked to C_Invoice_ID=" + invoiceId);
 			}
-			
+
 			//	Link to Order
 			String update = "UPDATE C_Order o "
-				+ "SET C_Payment_ID=" 
+					+ "SET C_Payment_ID="
 					+ (isReverse ? "NULL " : "(SELECT C_Payment_ID FROM C_Invoice WHERE C_Invoice_ID=" + invoiceId + ") ")
-				+ "WHERE o.C_Order_ID = (SELECT i.C_Order_ID FROM C_Invoice i "
+					+ "WHERE o.C_Order_ID = (SELECT i.C_Order_ID FROM C_Invoice i "
 					+ "WHERE i.C_Invoice_ID=" + invoiceId + ")";
 			if (DB.executeUpdate(update, get_TrxName()) > 0)
 				log.fine("C_Payment_ID=" + paymentId
-					+ (isReverse ? " UnLinked from" : " Linked to")
-					+ " order of C_Invoice_ID=" + invoiceId);
+						+ (isReverse ? " UnLinked from" : " Linked to")
+						+ " order of C_Invoice_ID=" + invoiceId);
 		}
-		
+
 		//	Cash - Invoice
 		if (cashLineId != 0 && invoice != null)
 		{
@@ -312,36 +314,56 @@ public class MAllocationLine extends X_C_AllocationLine implements DocumentRever
 			{
 				invoice.setC_CashLine_ID(0);
 				log.fine("C_CashLine_ID=" + cashLineId
-					+ " Unlinked from C_Invoice_ID=" + invoiceId);
+						+ " Unlinked from C_Invoice_ID=" + invoiceId);
 			}
 			else
 			{
 				invoice.setC_CashLine_ID(cashLineId);
 				log.fine("C_CashLine_ID=" + cashLineId
-					+ " Linked to C_Invoice_ID=" + invoiceId);
+						+ " Linked to C_Invoice_ID=" + invoiceId);
 			}
-			
+
 			//	Link to Order
 			String update = "UPDATE C_Order o "
-				+ "SET C_CashLine_ID="
+					+ "SET C_CashLine_ID="
 					+ (isReverse ? "NULL " : "(SELECT C_CashLine_ID FROM C_Invoice WHERE C_Invoice_ID=" + invoiceId + ") ")
-				+ "WHERE o.C_Order_ID = (SELECT i.C_Order_ID FROM C_Invoice i "
+					+ "WHERE o.C_Order_ID = (SELECT i.C_Order_ID FROM C_Invoice i "
 					+ "WHERE i.C_Invoice_ID=" + invoiceId + ")";
 			if (DB.executeUpdate(update, get_TrxName()) > 0)
 				log.fine("C_CashLine_ID=" + cashLineId
-					+ (isReverse ? " UnLinked from" : " Linked to")
-					+ " order of C_Invoice_ID=" + invoiceId);
-		}		
-		
+						+ (isReverse ? " UnLinked from" : " Linked to")
+						+ " order of C_Invoice_ID=" + invoiceId);
+		}
+
 		//	Update Balance / Credit used - Counterpart of MInvoice.completeIt
 		if (invoice != null)
 		{
 			if (invoice.testAllocation()
-				&& !invoice.save())
+					&& !invoice.save())
 				log.log(Level.SEVERE, "Invoice not updated - " + invoice);
+
+			if (invoice.getC_DocType().getDocBaseType().equals(MDocType.DOCBASETYPE_ARInvoice)) {
+
+				MAllocationHdr hdr = getParent();
+
+				if (!isReverse) {
+
+					String sql = "SELECT COALESCE(daysBetween('" + hdr.getDateTrx() + "',ips.DueDate),"
+						+ " paymentTermDueDays(i.C_PaymentTerm_ID,i.DateInvoiced,'" + hdr.getDateTrx() + "'))"
+						+ " FROM C_Invoice_v i"
+						+ " LEFT OUTER JOIN C_InvoicePaySchedule ips ON (i.C_InvoicePaySchedule_ID=ips.C_InvoicePaySchedule_ID)"
+						+ " WHERE i.C_Invoice_ID = " + invoice.get_ID();
+
+					int daysDue = DB.getSQLValueEx(get_TrxName(), sql);
+					if(invoice.isPaid()){
+						DB.executeUpdateEx("UPDATE C_Invoice SET DaysDue = " + daysDue + " WHERE C_Invoice_ID = " + invoice.get_ID(), get_TrxName());
+					}
+					DB.executeUpdateEx("UPDATE C_AllocationLine SET DaysDue = " + daysDue + " WHERE C_AllocationLine_ID = " + get_ID(), get_TrxName());
+				}
+			}
 		}
-		
+
 		return getC_BPartner_ID();
 	}	//	processIt
-	
+
 }	//	MAllocationLine

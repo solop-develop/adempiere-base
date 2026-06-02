@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_DunningRunLine
  *  @author Adempiere (generated) 
@@ -77,6 +78,39 @@ public interface I_C_DunningRunLine
 	  */
 	public BigDecimal getAmt();
 
+    /** Column name C_DunningInterestRate_ID */
+    public static final String COLUMNNAME_C_DunningInterestRate_ID = "C_DunningInterestRate_ID";
+
+	/** Set Dunning Interes Rate	  */
+	public void setC_DunningInterestRate_ID (int C_DunningInterestRate_ID);
+
+	/** Get Dunning Interes Rate	  */
+	public int getC_DunningInterestRate_ID();
+
+	public I_C_DunningInterestRate getC_DunningInterestRate() throws RuntimeException;
+
+    /** Column name C_DunningInterestType_ID */
+    public static final String COLUMNNAME_C_DunningInterestType_ID = "C_DunningInterestType_ID";
+
+	/** Set Dunning Interest Type	  */
+	public void setC_DunningInterestType_ID (int C_DunningInterestType_ID);
+
+	/** Get Dunning Interest Type	  */
+	public int getC_DunningInterestType_ID();
+
+	public I_C_DunningInterestType getC_DunningInterestType() throws RuntimeException;
+
+    /** Column name C_DunningInterestVersion_ID */
+    public static final String COLUMNNAME_C_DunningInterestVersion_ID = "C_DunningInterestVersion_ID";
+
+	/** Set Dunning Interest Version	  */
+	public void setC_DunningInterestVersion_ID (int C_DunningInterestVersion_ID);
+
+	/** Get Dunning Interest Version	  */
+	public int getC_DunningInterestVersion_ID();
+
+	public I_C_DunningInterestVersion getC_DunningInterestVersion() throws RuntimeException;
+
     /** Column name C_DunningRunEntry_ID */
     public static final String COLUMNNAME_C_DunningRunEntry_ID = "C_DunningRunEntry_ID";
 
@@ -90,7 +124,22 @@ public interface I_C_DunningRunLine
 	  */
 	public int getC_DunningRunEntry_ID();
 
-	public org.adempiere.core.domains.models.I_C_DunningRunEntry getC_DunningRunEntry() throws RuntimeException;
+	public I_C_DunningRunEntry getC_DunningRunEntry() throws RuntimeException;
+
+    /** Column name C_DunningRun_ID */
+    public static final String COLUMNNAME_C_DunningRun_ID = "C_DunningRun_ID";
+
+	/** Set Dunning Run.
+	  * Dunning Run
+	  */
+	public void setC_DunningRun_ID (int C_DunningRun_ID);
+
+	/** Get Dunning Run.
+	  * Dunning Run
+	  */
+	public int getC_DunningRun_ID();
+
+	public I_C_DunningRun getC_DunningRun() throws RuntimeException;
 
     /** Column name C_DunningRunLine_ID */
     public static final String COLUMNNAME_C_DunningRunLine_ID = "C_DunningRunLine_ID";
@@ -118,7 +167,7 @@ public interface I_C_DunningRunLine
 	  */
 	public int getC_Invoice_ID();
 
-	public org.adempiere.core.domains.models.I_C_Invoice getC_Invoice() throws RuntimeException;
+	public I_C_Invoice getC_Invoice() throws RuntimeException;
 
     /** Column name C_InvoicePaySchedule_ID */
     public static final String COLUMNNAME_C_InvoicePaySchedule_ID = "C_InvoicePaySchedule_ID";
@@ -133,7 +182,20 @@ public interface I_C_DunningRunLine
 	  */
 	public int getC_InvoicePaySchedule_ID();
 
-	public org.adempiere.core.domains.models.I_C_InvoicePaySchedule getC_InvoicePaySchedule() throws RuntimeException;
+	public I_C_InvoicePaySchedule getC_InvoicePaySchedule() throws RuntimeException;
+
+    /** Column name ConvertedAmt */
+    public static final String COLUMNNAME_ConvertedAmt = "ConvertedAmt";
+
+	/** Set Converted Amount.
+	  * Converted Amount
+	  */
+	public void setConvertedAmt (BigDecimal ConvertedAmt);
+
+	/** Get Converted Amount.
+	  * Converted Amount
+	  */
+	public BigDecimal getConvertedAmt();
 
     /** Column name C_Order_ID */
     public static final String COLUMNNAME_C_Order_ID = "C_Order_ID";
@@ -148,7 +210,7 @@ public interface I_C_DunningRunLine
 	  */
 	public int getC_Order_ID();
 
-	public org.adempiere.core.domains.models.I_C_Order getC_Order() throws RuntimeException;
+	public I_C_Order getC_Order() throws RuntimeException;
 
     /** Column name C_Payment_ID */
     public static final String COLUMNNAME_C_Payment_ID = "C_Payment_ID";
@@ -163,20 +225,7 @@ public interface I_C_DunningRunLine
 	  */
 	public int getC_Payment_ID();
 
-	public org.adempiere.core.domains.models.I_C_Payment getC_Payment() throws RuntimeException;
-
-    /** Column name ConvertedAmt */
-    public static final String COLUMNNAME_ConvertedAmt = "ConvertedAmt";
-
-	/** Set Converted Amount.
-	  * Converted Amount
-	  */
-	public void setConvertedAmt (BigDecimal ConvertedAmt);
-
-	/** Get Converted Amount.
-	  * Converted Amount
-	  */
-	public BigDecimal getConvertedAmt();
+	public I_C_Payment getC_Payment() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -284,6 +333,19 @@ public interface I_C_DunningRunLine
 	  * The document has been processed
 	  */
 	public boolean isProcessed();
+
+    /** Column name Rate */
+    public static final String COLUMNNAME_Rate = "Rate";
+
+	/** Set Rate.
+	  * Rate or Tax or Exchange
+	  */
+	public void setRate (BigDecimal Rate);
+
+	/** Get Rate.
+	  * Rate or Tax or Exchange
+	  */
+	public BigDecimal getRate();
 
     /** Column name TimesDunned */
     public static final String COLUMNNAME_TimesDunned = "TimesDunned";

@@ -509,6 +509,19 @@ public interface I_C_Invoice
 	  */
 	public Timestamp getDatePrinted();
 
+    /** Column name DaysDue */
+    public static final String COLUMNNAME_DaysDue = "DaysDue";
+
+	/** Set Days due.
+	  * Number of days due (negative: due in number of days)
+	  */
+	public void setDaysDue (int DaysDue);
+
+	/** Get Days due.
+	  * Number of days due (negative: due in number of days)
+	  */
+	public int getDaysDue();
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -816,6 +829,19 @@ public interface I_C_Invoice
 	public int getM_RMA_ID();
 
 	public I_M_RMA getM_RMA() throws RuntimeException;
+
+    /** Column name PayDate */
+    public static final String COLUMNNAME_PayDate = "PayDate";
+
+	/** Set Payment date.
+	  * Date Payment made
+	  */
+	public void setPayDate (Timestamp PayDate);
+
+	/** Get Payment date.
+	  * Date Payment made
+	  */
+	public Timestamp getPayDate();
 
     /** Column name PaymentRule */
     public static final String COLUMNNAME_PaymentRule = "PaymentRule";

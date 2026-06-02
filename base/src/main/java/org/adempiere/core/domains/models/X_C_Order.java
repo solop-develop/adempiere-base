@@ -39,10 +39,10 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260519L;
 
     /** Standard Constructor */
-    public X_C_Order(Properties ctx, int C_Order_ID, String trxName)
+    public X_C_Order (Properties ctx, int C_Order_ID, String trxName)
     {
       super (ctx, C_Order_ID, trxName);
       /** if (C_Order_ID == 0)
@@ -108,7 +108,7 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
     }
 
     /** Load Constructor */
-    public X_C_Order(Properties ctx, ResultSet rs, String trxName)
+    public X_C_Order (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -161,6 +161,26 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Flat Discount %.
+	 @param FlatDiscount
+	 Flat discount percentage
+	 */
+	public void setFlatDiscount (BigDecimal FlatDiscount)
+	{
+		set_Value (COLUMNNAME_FlatDiscount, FlatDiscount);
+	}
+
+	/** Get Flat Discount %.
+	 @return Flat discount percentage
+	 */
+	public BigDecimal getFlatDiscount ()
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_FlatDiscount);
+		if (bd == null)
+			return Env.ZERO;
+		return bd;
 	}
 
 	public I_AD_User getAD_User() throws RuntimeException
@@ -226,7 +246,7 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 	}
 
 	public I_C_BPartner getBill_BPartner() throws RuntimeException
-    {
+	{
 		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getBill_BPartner_ID(), get_TrxName());	}
 
@@ -420,7 +440,7 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 	/** Get Automatic Discount Applied.
 	 @return Automatic Discount Applied	  */
 	public boolean isAutoDiscountApplied ()
-	{
+    {
 		Object oo = get_Value(COLUMNNAME_IsAutoDiscountApplied);
 		if (oo != null)
 		{
@@ -628,7 +648,7 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 	}
 
 	public I_C_Opportunity getC_Opportunity() throws RuntimeException
-    {
+	{
 		return (I_C_Opportunity)MTable.get(getCtx(), I_C_Opportunity.Table_Name)
 			.getPO(getC_Opportunity_ID(), get_TrxName());	}
 
@@ -1270,7 +1290,7 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 	}
 
 	public I_FM_Account getFM_Account() throws RuntimeException
-    {
+	{
 		return (I_FM_Account)MTable.get(getCtx(), I_FM_Account.Table_Name)
 			.getPO(getFM_Account_ID(), get_TrxName());	}
 
@@ -1746,7 +1766,7 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 	}
 
 	public I_M_Freight getM_Freight() throws RuntimeException
-    {
+	{
 		return (I_M_Freight)MTable.get(getCtx(), I_M_Freight.Table_Name)
 			.getPO(getM_Freight_ID(), get_TrxName());	}
 
@@ -1992,8 +2012,6 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 	public static final String PAYMENTRULE_DirectDebit = "D";
 	/** Mixed = M */
 	public static final String PAYMENTRULE_Mixed = "M";
-	/** Gift Card = G */
-	public static final String PAYMENTRULE_GiftCard = "G";
 	/** Set Payment Rule.
 		@param PaymentRule 
 		How you pay the invoice

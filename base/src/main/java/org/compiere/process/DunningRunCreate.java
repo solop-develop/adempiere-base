@@ -16,17 +16,11 @@
  *****************************************************************************/
 package org.compiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_C_Dunning;
+import org.adempiere.core.domains.models.X_C_DunningInterestRate;
 import org.adempiere.exceptions.BPartnerNoAddressException;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MCurrency;
 import org.compiere.model.MDunning;
 import org.compiere.model.MDunningLevel;
 import org.compiere.model.MDunningRun;
@@ -37,6 +31,15 @@ import org.compiere.model.MPayment;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.solop.util.DunningInterestResolver;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.logging.Level;
 
 
 /**
@@ -365,9 +368,49 @@ public class DunningRunCreate extends DunningRunCreateAbstract {
 		if(orderId != 0) {
 			line.setC_Order_ID(orderId);
 		}
+		applyDunningInterestInfo(line, run, invoiceId, currencyId, open, daysDue);
 		line.saveEx();
 		return true;
 	}	//	createInvoiceLine
+
+	/**
+	 * Enrich a {@link MDunningRunLine} with the overdue interest
+	 * calculation (description and, if columns are present, dunning
+	 * interest type/version/rate references). Computes the interest
+	 * over the still-open amount with the given days-due. Silent no-op
+	 * when the BPartner has no {@code C_DunningInterestType_ID}, no
+	 * version is in force, or no rate row applies.
+	 */
+	private void applyDunningInterestInfo(MDunningRunLine line, MDunningRun run,
+			int invoiceId, int currencyId, BigDecimal openAmt, int daysDueInt) {
+		try {
+			MInvoice invoice = MInvoice.get(getCtx(), invoiceId);
+			DunningInterestResolver interestResolver = DunningInterestResolver.newBuilder(getCtx(), get_TrxName())
+					.setInvoice(invoice)
+					.setDateDoc(run.getDunningDate())
+					.setStrict(false)
+					.build();
+			if (!interestResolver.isApplicable())
+				return;
+
+			X_C_DunningInterestRate rate = interestResolver.getRate(currencyId, daysDueInt);
+			if (rate == null)
+				return;
+
+			BigDecimal daysDue = new BigDecimal(daysDueInt);
+			BigDecimal finalRate = DunningInterestResolver.computeFinalRate(daysDue, rate.getRate());
+			int currencyPrecision = MCurrency.getStdPrecision(getCtx(), currencyId);
+			BigDecimal dunning = DunningInterestResolver.computeDunningAmount(openAmt, finalRate, currencyPrecision);
+
+			line.setInterestAmt(dunning);
+			line.setC_DunningInterestType_ID(interestResolver.getType().getC_DunningInterestType_ID());
+			line.setC_DunningInterestVersion_ID(interestResolver.getVersion().getC_DunningInterestVersion_ID());
+			line.setC_DunningInterestRate_ID(rate.getC_DunningInterestRate_ID());
+			line.setRate(finalRate);
+		} catch (Exception e) {
+			log.log(Level.WARNING, "applyDunningInterestInfo failed for invoice " + invoiceId, e);
+		}
+	}
 
 	
 	/**************************************************************************

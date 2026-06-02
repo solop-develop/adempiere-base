@@ -502,33 +502,32 @@ public final class DisplayType
 			if (displayType == DisplayType.Image 	//	FIXTHIS
 				&& columnName.equals("BinaryData")) {
 				return "BLOB";
-			} 
+			}
 			//	For columns with reference value
-			else if(referenceValueId > 0) {
+			if (referenceValueId > 0) {
 				MRefTable reference = MRefTable.getById(Env.getCtx(), referenceValueId);
 				// get Reference
-				if(reference != null) {
+				if (reference != null) {
 					MColumn column = MColumn.get(Env.getCtx(), reference.getAD_Key());
-					return getSQLDataType(column.getAD_Reference_ID(), 
+					return getSQLDataType(column.getAD_Reference_ID(),
 							column.getColumnName(), column.getFieldLength(), column.getAD_Reference_Value_ID());
 				}
+				//	AD_Ref_Table not yet present (e.g. inserted later in the same migration) — fall through to name-based resolution
 			}
 			//	ID, CreatedBy/UpdatedBy, Acct
-			else if (columnName.endsWith("_ID") 
+			if (columnName.endsWith("_ID")
 				|| columnName.endsWith("_ID_To")
 				|| columnName.equals("AD_Key")
 				|| columnName.equals("AD_Display")
-				|| columnName.endsWith("tedBy") 
+				|| columnName.endsWith("tedBy")
 				|| columnName.endsWith("_Acct")) {
 				return "NUMBER(10)";
 			}
-			else if (fieldLength < 4) {
+			if (fieldLength < 4) {
 				return "CHAR(" + fieldLength + ")";
 			}
 			//	EntityType, AD_Language	fallback
-			else {
-				return "VARCHAR2(" + fieldLength + ")";
-			}
+			return "VARCHAR2(" + fieldLength + ")";
 		}
 		//
 		if (displayType == DisplayType.Integer)

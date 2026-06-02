@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,7 +12,8 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
@@ -31,14 +32,14 @@ import java.util.Properties;
 
 /** Generated Model for S_TimeExpenseLine
  *  @author Adempiere (generated) 
- *  @version Release 3.9.3 - $Id$ */
-public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Persistent
+ *  @version Release 3.9.4 - $Id$ */
+public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200405L;
+	private static final long serialVersionUID = 20260514L;
 
     /** Standard Constructor */
     public X_S_TimeExpenseLine (Properties ctx, int S_TimeExpenseLine_ID, String trxName)
@@ -164,7 +165,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (I_C_BPartner) MTable.get(getCtx(), I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -192,7 +193,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_C_Campaign getC_Campaign() throws RuntimeException
     {
-		return (I_C_Campaign) MTable.get(getCtx(), I_C_Campaign.Table_Name)
+		return (I_C_Campaign)MTable.get(getCtx(), I_C_Campaign.Table_Name)
 			.getPO(getC_Campaign_ID(), get_TrxName());	}
 
 	/** Set Campaign.
@@ -220,7 +221,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_C_Currency getC_Currency() throws RuntimeException
     {
-		return (I_C_Currency) MTable.get(getCtx(), I_C_Currency.Table_Name)
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
 			.getPO(getC_Currency_ID(), get_TrxName());	}
 
 	/** Set Currency.
@@ -248,7 +249,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException
     {
-		return (I_C_InvoiceLine) MTable.get(getCtx(), I_C_InvoiceLine.Table_Name)
+		return (I_C_InvoiceLine)MTable.get(getCtx(), I_C_InvoiceLine.Table_Name)
 			.getPO(getC_InvoiceLine_ID(), get_TrxName());	}
 
 	/** Set Invoice Line.
@@ -296,7 +297,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_C_OrderLine getC_OrderLine() throws RuntimeException
     {
-		return (I_C_OrderLine) MTable.get(getCtx(), I_C_OrderLine.Table_Name)
+		return (I_C_OrderLine)MTable.get(getCtx(), I_C_OrderLine.Table_Name)
 			.getPO(getC_OrderLine_ID(), get_TrxName());	}
 
 	/** Set Sales Order Line.
@@ -324,7 +325,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_C_Project getC_Project() throws RuntimeException
     {
-		return (I_C_Project) MTable.get(getCtx(), I_C_Project.Table_Name)
+		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
 			.getPO(getC_Project_ID(), get_TrxName());	}
 
 	/** Set Project.
@@ -352,7 +353,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException
     {
-		return (I_C_ProjectPhase) MTable.get(getCtx(), I_C_ProjectPhase.Table_Name)
+		return (I_C_ProjectPhase)MTable.get(getCtx(), I_C_ProjectPhase.Table_Name)
 			.getPO(getC_ProjectPhase_ID(), get_TrxName());	}
 
 	/** Set Project Phase.
@@ -380,7 +381,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_C_ProjectTask getC_ProjectTask() throws RuntimeException
     {
-		return (I_C_ProjectTask) MTable.get(getCtx(), I_C_ProjectTask.Table_Name)
+		return (I_C_ProjectTask)MTable.get(getCtx(), I_C_ProjectTask.Table_Name)
 			.getPO(getC_ProjectTask_ID(), get_TrxName());	}
 
 	/** Set Project Task.
@@ -408,7 +409,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_C_Tax getC_Tax() throws RuntimeException
     {
-		return (I_C_Tax) MTable.get(getCtx(), I_C_Tax.Table_Name)
+		return (I_C_Tax)MTable.get(getCtx(), I_C_Tax.Table_Name)
 			.getPO(getC_Tax_ID(), get_TrxName());	}
 
 	/** Set Tax.
@@ -436,7 +437,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_C_UOM getC_UOM() throws RuntimeException
     {
-		return (I_C_UOM) MTable.get(getCtx(), I_C_UOM.Table_Name)
+		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
 			.getPO(getC_UOM_ID(), get_TrxName());	}
 
 	/** Set UOM.
@@ -698,7 +699,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_M_Product getM_Product() throws RuntimeException
     {
-		return (I_M_Product) MTable.get(getCtx(), I_M_Product.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
 			.getPO(getM_Product_ID(), get_TrxName());	}
 
 	/** Set Product.
@@ -951,12 +952,12 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_S_ContractLine getS_ContractLine() throws RuntimeException
     {
-		return (I_S_ContractLine) MTable.get(getCtx(), I_S_ContractLine.Table_Name)
+		return (I_S_ContractLine)MTable.get(getCtx(), I_S_ContractLine.Table_Name)
 			.getPO(getS_ContractLine_ID(), get_TrxName());	}
 
-	/** Set Contract Line.
+	/** Set ContractLine.
 		@param S_ContractLine_ID 
-		Contract Line
+		ContractLine
 	  */
 	public void setS_ContractLine_ID (int S_ContractLine_ID)
 	{
@@ -966,12 +967,37 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 			set_Value (COLUMNNAME_S_ContractLine_ID, Integer.valueOf(S_ContractLine_ID));
 	}
 
-	/** Get Contract Line.
-		@return Contract Line
+	/** Get ContractLine.
+		@return ContractLine
 	  */
 	public int getS_ContractLine_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_S_ContractLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_Invoice getSource_Invoice() throws RuntimeException
+    {
+		return (I_C_Invoice)MTable.get(getCtx(), I_C_Invoice.Table_Name)
+			.getPO(getSource_Invoice_ID(), get_TrxName());	}
+
+	/** Set Source Invoice.
+		@param Source_Invoice_ID Source Invoice	  */
+	public void setSource_Invoice_ID (int Source_Invoice_ID)
+	{
+		if (Source_Invoice_ID < 1) 
+			set_Value (COLUMNNAME_Source_Invoice_ID, null);
+		else 
+			set_Value (COLUMNNAME_Source_Invoice_ID, Integer.valueOf(Source_Invoice_ID));
+	}
+
+	/** Get Source Invoice.
+		@return Source Invoice	  */
+	public int getSource_Invoice_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Source_Invoice_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -1002,7 +1028,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_S_TimeExpense getS_TimeExpense() throws RuntimeException
     {
-		return (I_S_TimeExpense) MTable.get(getCtx(), I_S_TimeExpense.Table_Name)
+		return (I_S_TimeExpense)MTable.get(getCtx(), I_S_TimeExpense.Table_Name)
 			.getPO(getS_TimeExpense_ID(), get_TrxName());	}
 
 	/** Set Expense Report.
@@ -1053,7 +1079,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
 
 	public I_S_TimeType getS_TimeType() throws RuntimeException
     {
-		return (I_S_TimeType) MTable.get(getCtx(), I_S_TimeType.Table_Name)
+		return (I_S_TimeType)MTable.get(getCtx(), I_S_TimeType.Table_Name)
 			.getPO(getS_TimeType_ID(), get_TrxName());	}
 
 	/** Set Time Type.

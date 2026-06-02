@@ -441,6 +441,7 @@ class CalloutContract extends CalloutEngine {
           }
         }
     }
+    tax(context, windowNo, gridTab, gridField, value)
     ""
   }
 

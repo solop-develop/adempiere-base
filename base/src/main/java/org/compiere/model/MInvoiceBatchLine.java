@@ -16,14 +16,12 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.X_C_InvoiceBatchLine;
+import org.compiere.util.Env;
+
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.X_C_InvoiceBatchLine;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
 
 
 /**
@@ -45,8 +43,8 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine
 	 *	@param C_InvoiceBatchLine_ID id
 	 *	@param trxName trx
 	 */
-	public MInvoiceBatchLine (Properties ctx, int C_InvoiceBatchLine_ID,
-		String trxName)
+	public MInvoiceBatchLine(Properties ctx, int C_InvoiceBatchLine_ID,
+                             String trxName)
 	{
 		super (ctx, C_InvoiceBatchLine_ID, trxName);
 		if (C_InvoiceBatchLine_ID == 0)
@@ -79,7 +77,7 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine
 	 *	@param rs result set
 	 *	@param trxName trx
 	 */
-	public MInvoiceBatchLine (Properties ctx, ResultSet rs, String trxName)
+	public MInvoiceBatchLine(Properties ctx, ResultSet rs, String trxName)
 	{
 		super (ctx, rs, trxName);
 	}	//	MInvoiceBatchLine
@@ -104,14 +102,14 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine
 	 */
 	protected boolean afterSave (boolean newRecord, boolean success)
 	{
-		if (success)
-		{
-			String sql = "UPDATE C_InvoiceBatch h "
-				+ "SET DocumentAmt = NVL((SELECT SUM(LineTotalAmt) FROM C_InvoiceBatchLine l "
-					+ "WHERE h.C_InvoiceBatch_ID=l.C_InvoiceBatch_ID AND l.IsActive='Y'),0) "
-				+ "WHERE C_InvoiceBatch_ID=" + getC_InvoiceBatch_ID();
-			DB.executeUpdate(sql, get_TrxName());
-		}
+//		if (success)
+//		{
+//			String sql = "UPDATE C_InvoiceBatch h "
+//				+ "SET DocumentAmt = NVL((SELECT SUM(LineTotalAmt) FROM C_InvoiceBatchLine l "
+//					+ "WHERE h.C_InvoiceBatch_ID=l.C_InvoiceBatch_ID AND l.IsActive='Y'),0) "
+//				+ "WHERE C_InvoiceBatch_ID=" + getC_InvoiceBatch_ID();
+//			DB.executeUpdate(sql, get_TrxName());
+//		}
 		return success;
 	}	//	afterSave
 	

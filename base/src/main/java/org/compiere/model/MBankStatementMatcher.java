@@ -16,16 +16,16 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_C_BankStatementMatcher;
 import org.compiere.impexp.BankStatementMatcherInterface;
 import org.compiere.util.CCache;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
+
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *	Bank Statement Matcher Algorithm
@@ -149,6 +149,7 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
 		{
 			Class matcherClass = Class.forName(className);
 			m_matcher = (BankStatementMatcherInterface)matcherClass.newInstance();
+			m_matcher.configure(this);
 			m_matcherValid = Boolean.TRUE;
 		}
 		catch (Exception e)

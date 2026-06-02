@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for HR_EmployeeType
  *  @author Adempiere (generated) 
@@ -115,7 +116,7 @@ public interface I_HR_EmployeeType
 	/** Get Payroll	  */
 	public int getHR_Payroll_ID();
 
-	public org.adempiere.core.domains.models.I_HR_Payroll getHR_Payroll() throws RuntimeException;
+	public I_HR_Payroll getHR_Payroll() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -142,6 +143,15 @@ public interface I_HR_EmployeeType
 	  * Alphanumeric identifier of the entity
 	  */
 	public String getName();
+
+    /** Column name TotalDailyHours */
+    public static final String COLUMNNAME_TotalDailyHours = "TotalDailyHours";
+
+	/** Set Total Daily Hours	  */
+	public void setTotalDailyHours (BigDecimal TotalDailyHours);
+
+	/** Get Total Daily Hours	  */
+	public BigDecimal getTotalDailyHours();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

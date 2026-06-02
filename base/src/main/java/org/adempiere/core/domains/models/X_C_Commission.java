@@ -18,14 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for C_Commission
  *  @author Adempiere (generated) 
@@ -36,7 +37,7 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260416L;
 
     /** Standard Constructor */
     public X_C_Commission (Properties ctx, int C_Commission_ID, String trxName)
@@ -86,9 +87,9 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -114,9 +115,9 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Charge getC_Charge() throws RuntimeException
+	public I_C_Charge getC_Charge() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Charge)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Charge.Table_Name)
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
 			.getPO(getC_Charge_ID(), get_TrxName());	}
 
 	/** Set Charge.
@@ -137,6 +138,31 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
 	public int getC_Charge_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_Charge_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_CommissionGroup getC_CommissionGroup() throws RuntimeException
+    {
+		return (I_C_CommissionGroup)MTable.get(getCtx(), I_C_CommissionGroup.Table_Name)
+			.getPO(getC_CommissionGroup_ID(), get_TrxName());	}
+
+	/** Set Commission Group.
+		@param C_CommissionGroup_ID Commission Group	  */
+	public void setC_CommissionGroup_ID (int C_CommissionGroup_ID)
+	{
+		if (C_CommissionGroup_ID < 1) 
+			set_Value (COLUMNNAME_C_CommissionGroup_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_CommissionGroup_ID, Integer.valueOf(C_CommissionGroup_ID));
+	}
+
+	/** Get Commission Group.
+		@return Commission Group	  */
+	public int getC_CommissionGroup_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_CommissionGroup_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -165,34 +191,9 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_CommissionGroup getC_CommissionGroup() throws RuntimeException
+	public I_C_CommissionType getC_CommissionType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_CommissionGroup)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_CommissionGroup.Table_Name)
-			.getPO(getC_CommissionGroup_ID(), get_TrxName());	}
-
-	/** Set Commission Group.
-		@param C_CommissionGroup_ID Commission Group	  */
-	public void setC_CommissionGroup_ID (int C_CommissionGroup_ID)
-	{
-		if (C_CommissionGroup_ID < 1) 
-			set_Value (COLUMNNAME_C_CommissionGroup_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_CommissionGroup_ID, Integer.valueOf(C_CommissionGroup_ID));
-	}
-
-	/** Get Commission Group.
-		@return Commission Group	  */
-	public int getC_CommissionGroup_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_CommissionGroup_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.adempiere.core.domains.models.I_C_CommissionType getC_CommissionType() throws RuntimeException
-    {
-		return (org.adempiere.core.domains.models.I_C_CommissionType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_CommissionType.Table_Name)
+		return (I_C_CommissionType)MTable.get(getCtx(), I_C_CommissionType.Table_Name)
 			.getPO(getC_CommissionType_ID(), get_TrxName());	}
 
 	/** Set Commission Type.
@@ -218,9 +219,9 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException
+	public I_C_Currency getC_Currency() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Currency)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Currency.Table_Name)
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
 			.getPO(getC_Currency_ID(), get_TrxName());	}
 
 	/** Set Currency.
@@ -241,6 +242,34 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
 	public int getC_Currency_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_Currency_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DocType getC_DocTypeInvoice() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getC_DocTypeInvoice_ID(), get_TrxName());	}
+
+	/** Set Document Type for Invoice.
+		@param C_DocTypeInvoice_ID 
+		Document type used for invoices generated from this sales document
+	  */
+	public void setC_DocTypeInvoice_ID (int C_DocTypeInvoice_ID)
+	{
+		if (C_DocTypeInvoice_ID < 1) 
+			set_Value (COLUMNNAME_C_DocTypeInvoice_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DocTypeInvoice_ID, Integer.valueOf(C_DocTypeInvoice_ID));
+	}
+
+	/** Get Document Type for Invoice.
+		@return Document type used for invoices generated from this sales document
+	  */
+	public int getC_DocTypeInvoice_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocTypeInvoice_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -421,6 +450,27 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
 	public boolean isTotallyPaid () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsTotallyPaid);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Use Document Currency.
+		@param IsUseDocumentCurrency Use Document Currency	  */
+	public void setIsUseDocumentCurrency (boolean IsUseDocumentCurrency)
+	{
+		set_Value (COLUMNNAME_IsUseDocumentCurrency, Boolean.valueOf(IsUseDocumentCurrency));
+	}
+
+	/** Get Use Document Currency.
+		@return Use Document Currency	  */
+	public boolean isUseDocumentCurrency () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsUseDocumentCurrency);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 

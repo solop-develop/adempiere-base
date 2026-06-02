@@ -39,10 +39,10 @@ public class X_C_Invoice extends PO implements I_C_Invoice, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20250827L;
+	private static final long serialVersionUID = 20260514L;
 
     /** Standard Constructor */
-    public X_C_Invoice(Properties ctx, int C_Invoice_ID, String trxName)
+    public X_C_Invoice (Properties ctx, int C_Invoice_ID, String trxName)
     {
       super (ctx, C_Invoice_ID, trxName);
       /** if (C_Invoice_ID == 0)
@@ -91,7 +91,7 @@ public class X_C_Invoice extends PO implements I_C_Invoice, I_Persistent
     }
 
     /** Load Constructor */
-    public X_C_Invoice(Properties ctx, ResultSet rs, String trxName)
+    public X_C_Invoice (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -865,6 +865,26 @@ public class X_C_Invoice extends PO implements I_C_Invoice, I_Persistent
 		return (Timestamp)get_Value(COLUMNNAME_DatePrinted);
 	}
 
+	/** Set Days due.
+		@param DaysDue 
+		Number of days due (negative: due in number of days)
+	  */
+	public void setDaysDue (int DaysDue)
+	{
+		set_Value (COLUMNNAME_DaysDue, Integer.valueOf(DaysDue));
+	}
+
+	/** Get Days due.
+		@return Number of days due (negative: due in number of days)
+	  */
+	public int getDaysDue () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DaysDue);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Description.
 		@param Description 
 		Optional short description of the record
@@ -1127,27 +1147,6 @@ public class X_C_Invoice extends PO implements I_C_Invoice, I_Persistent
 	{
 		return (String)get_Value(COLUMNNAME_InvoiceCollectionType);
 	}
-	/** Set Manual Document.
-	 @param IsManualDocument Manual Document	  */
-	public void setIsManualDocument (boolean IsManualDocument)
-	{
-		set_Value (COLUMNNAME_IsManualDocument, Boolean.valueOf(IsManualDocument));
-	}
-
-	/** Get Manual Document.
-	 @return Manual Document	  */
-	public boolean isManualDocument ()
-	{
-		Object oo = get_Value(COLUMNNAME_IsManualDocument);
-		if (oo != null)
-		{
-			if (oo instanceof Boolean)
-				return ((Boolean)oo).booleanValue();
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
 
 	/** Set Approved.
 		@param IsApproved 
@@ -1236,6 +1235,27 @@ public class X_C_Invoice extends PO implements I_C_Invoice, I_Persistent
 	public boolean isInDispute () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsInDispute);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Manual Document.
+		@param IsManualDocument Manual Document	  */
+	public void setIsManualDocument (boolean IsManualDocument)
+	{
+		set_Value (COLUMNNAME_IsManualDocument, Boolean.valueOf(IsManualDocument));
+	}
+
+	/** Get Manual Document.
+		@return Manual Document	  */
+	public boolean isManualDocument () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsManualDocument);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -1467,6 +1487,23 @@ public class X_C_Invoice extends PO implements I_C_Invoice, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Payment date.
+		@param PayDate 
+		Date Payment made
+	  */
+	public void setPayDate (Timestamp PayDate)
+	{
+		set_Value (COLUMNNAME_PayDate, PayDate);
+	}
+
+	/** Get Payment date.
+		@return Date Payment made
+	  */
+	public Timestamp getPayDate () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_PayDate);
 	}
 
 	/** PaymentRule AD_Reference_ID=195 */

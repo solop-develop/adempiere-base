@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for C_Commission
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_C_Commission
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_Charge_ID */
     public static final String COLUMNNAME_C_Charge_ID = "C_Charge_ID";
@@ -92,7 +93,18 @@ public interface I_C_Commission
 	  */
 	public int getC_Charge_ID();
 
-	public org.adempiere.core.domains.models.I_C_Charge getC_Charge() throws RuntimeException;
+	public I_C_Charge getC_Charge() throws RuntimeException;
+
+    /** Column name C_CommissionGroup_ID */
+    public static final String COLUMNNAME_C_CommissionGroup_ID = "C_CommissionGroup_ID";
+
+	/** Set Commission Group	  */
+	public void setC_CommissionGroup_ID (int C_CommissionGroup_ID);
+
+	/** Get Commission Group	  */
+	public int getC_CommissionGroup_ID();
+
+	public I_C_CommissionGroup getC_CommissionGroup() throws RuntimeException;
 
     /** Column name C_Commission_ID */
     public static final String COLUMNNAME_C_Commission_ID = "C_Commission_ID";
@@ -107,17 +119,6 @@ public interface I_C_Commission
 	  */
 	public int getC_Commission_ID();
 
-    /** Column name C_CommissionGroup_ID */
-    public static final String COLUMNNAME_C_CommissionGroup_ID = "C_CommissionGroup_ID";
-
-	/** Set Commission Group	  */
-	public void setC_CommissionGroup_ID (int C_CommissionGroup_ID);
-
-	/** Get Commission Group	  */
-	public int getC_CommissionGroup_ID();
-
-	public org.adempiere.core.domains.models.I_C_CommissionGroup getC_CommissionGroup() throws RuntimeException;
-
     /** Column name C_CommissionType_ID */
     public static final String COLUMNNAME_C_CommissionType_ID = "C_CommissionType_ID";
 
@@ -131,7 +132,7 @@ public interface I_C_Commission
 	  */
 	public int getC_CommissionType_ID();
 
-	public org.adempiere.core.domains.models.I_C_CommissionType getC_CommissionType() throws RuntimeException;
+	public I_C_CommissionType getC_CommissionType() throws RuntimeException;
 
     /** Column name C_Currency_ID */
     public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
@@ -146,7 +147,22 @@ public interface I_C_Commission
 	  */
 	public int getC_Currency_ID();
 
-	public org.adempiere.core.domains.models.I_C_Currency getC_Currency() throws RuntimeException;
+	public I_C_Currency getC_Currency() throws RuntimeException;
+
+    /** Column name C_DocTypeInvoice_ID */
+    public static final String COLUMNNAME_C_DocTypeInvoice_ID = "C_DocTypeInvoice_ID";
+
+	/** Set Document Type for Invoice.
+	  * Document type used for invoices generated from this sales document
+	  */
+	public void setC_DocTypeInvoice_ID (int C_DocTypeInvoice_ID);
+
+	/** Get Document Type for Invoice.
+	  * Document type used for invoices generated from this sales document
+	  */
+	public int getC_DocTypeInvoice_ID();
+
+	public I_C_DocType getC_DocTypeInvoice() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -276,6 +292,15 @@ public interface I_C_Commission
 	  * The document is totally paid
 	  */
 	public boolean isTotallyPaid();
+
+    /** Column name IsUseDocumentCurrency */
+    public static final String COLUMNNAME_IsUseDocumentCurrency = "IsUseDocumentCurrency";
+
+	/** Set Use Document Currency	  */
+	public void setIsUseDocumentCurrency (boolean IsUseDocumentCurrency);
+
+	/** Get Use Document Currency	  */
+	public boolean isUseDocumentCurrency();
 
     /** Column name ListDetails */
     public static final String COLUMNNAME_ListDetails = "ListDetails";

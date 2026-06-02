@@ -23,24 +23,24 @@ import org.compiere.util.KeyNamePair;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-/** Generated Interface for C_BankStatementMatcher
+/** Generated Interface for C_DunningInterestVersion
  *  @author Adempiere (generated) 
  *  @version Release 3.9.4
  */
-public interface I_C_BankStatementMatcher 
+public interface I_C_DunningInterestVersion 
 {
 
-    /** TableName=C_BankStatementMatcher */
-    public static final String Table_Name = "C_BankStatementMatcher";
+    /** TableName=C_DunningInterestVersion */
+    public static final String Table_Name = "C_DunningInterestVersion";
 
-    /** AD_Table_ID=658 */
+    /** AD_Table_ID=55139 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
-    /** AccessLevel = 2 - Client 
+    /** AccessLevel = 3 - Client - Org 
      */
-    BigDecimal accessLevel = BigDecimal.valueOf(2);
+    BigDecimal accessLevel = BigDecimal.valueOf(3);
 
     /** Load Meta Data */
 
@@ -65,31 +65,25 @@ public interface I_C_BankStatementMatcher
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name C_BankStatementMatcher_ID */
-    public static final String COLUMNNAME_C_BankStatementMatcher_ID = "C_BankStatementMatcher_ID";
+    /** Column name C_DunningInterestType_ID */
+    public static final String COLUMNNAME_C_DunningInterestType_ID = "C_DunningInterestType_ID";
 
-	/** Set Bank Statement Matcher.
-	  * Algorithm to match Bank Statement Info to Business Partners, Invoices and Payments
-	  */
-	public void setC_BankStatementMatcher_ID (int C_BankStatementMatcher_ID);
+	/** Set Dunning Interest Type	  */
+	public void setC_DunningInterestType_ID (int C_DunningInterestType_ID);
 
-	/** Get Bank Statement Matcher.
-	  * Algorithm to match Bank Statement Info to Business Partners, Invoices and Payments
-	  */
-	public int getC_BankStatementMatcher_ID();
+	/** Get Dunning Interest Type	  */
+	public int getC_DunningInterestType_ID();
 
-    /** Column name Classname */
-    public static final String COLUMNNAME_Classname = "Classname";
+	public I_C_DunningInterestType getC_DunningInterestType() throws RuntimeException;
 
-	/** Set Classname.
-	  * Java Classname
-	  */
-	public void setClassname (String Classname);
+    /** Column name C_DunningInterestVersion_ID */
+    public static final String COLUMNNAME_C_DunningInterestVersion_ID = "C_DunningInterestVersion_ID";
 
-	/** Get Classname.
-	  * Java Classname
-	  */
-	public String getClassname();
+	/** Set Dunning Interest Version	  */
+	public void setC_DunningInterestVersion_ID (int C_DunningInterestVersion_ID);
+
+	/** Get Dunning Interest Version	  */
+	public int getC_DunningInterestVersion_ID();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -133,15 +127,6 @@ public interface I_C_BankStatementMatcher
 	  */
 	public boolean isActive();
 
-    /** Column name MatchTolerance */
-    public static final String COLUMNNAME_MatchTolerance = "MatchTolerance";
-
-	/** Set Match Tolerance	  */
-	public void setMatchTolerance (BigDecimal MatchTolerance);
-
-	/** Get Match Tolerance	  */
-	public BigDecimal getMatchTolerance();
-
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
 
@@ -154,21 +139,6 @@ public interface I_C_BankStatementMatcher
 	  * Alphanumeric identifier of the entity
 	  */
 	public String getName();
-
-    /** Column name SeqNo */
-    public static final String COLUMNNAME_SeqNo = "SeqNo";
-
-	/** Set Sequence.
-	  * Method of ordering records;
- lowest number comes first
-	  */
-	public void setSeqNo (int SeqNo);
-
-	/** Get Sequence.
-	  * Method of ordering records;
- lowest number comes first
-	  */
-	public int getSeqNo();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -198,4 +168,30 @@ public interface I_C_BankStatementMatcher
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name ValidFrom */
+    public static final String COLUMNNAME_ValidFrom = "ValidFrom";
+
+	/** Set Valid from.
+	  * Valid from including this date (first day)
+	  */
+	public void setValidFrom (Timestamp ValidFrom);
+
+	/** Get Valid from.
+	  * Valid from including this date (first day)
+	  */
+	public Timestamp getValidFrom();
+
+    /** Column name ValidTo */
+    public static final String COLUMNNAME_ValidTo = "ValidTo";
+
+	/** Set Valid to.
+	  * Valid to including this date (last day)
+	  */
+	public void setValidTo (Timestamp ValidTo);
+
+	/** Get Valid to.
+	  * Valid to including this date (last day)
+	  */
+	public Timestamp getValidTo();
 }
