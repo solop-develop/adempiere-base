@@ -828,6 +828,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 				.forEach(orderLine -> {
 			orderLine.orderedStock();
 			orderLine.reserveStock();
+			orderLine.setQtyReserved(orderLine.getQtyReserved().add(orderLine.getCalculateQtyReserved()));
 			orderLine.saveEx();
 		});
 		updateVolume();

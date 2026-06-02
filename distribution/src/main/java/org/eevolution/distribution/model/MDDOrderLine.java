@@ -16,6 +16,14 @@
  *****************************************************************************/
 package org.eevolution.distribution.model;
 
+import org.adempiere.core.domains.models.X_DD_OrderLine;
+import org.compiere.model.*;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
+import org.solop.util.ReservationBuilder;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.ResultSet;
@@ -23,14 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-
-import org.adempiere.core.domains.models.X_DD_OrderLine;
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.*;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
 
 /**
  *  Order Line Model.
@@ -99,7 +99,7 @@ public class MDDOrderLine extends X_DD_OrderLine
 	 *  @param  C_OrderLine_ID  order line to load
 	 *  @param trxName trx name
 	 */
-	public MDDOrderLine (Properties ctx, int C_OrderLine_ID, String trxName)
+	public MDDOrderLine(Properties ctx, int C_OrderLine_ID, String trxName)
 	{
 		super (ctx, C_OrderLine_ID, trxName);
 		if (C_OrderLine_ID == 0)
@@ -145,7 +145,7 @@ public class MDDOrderLine extends X_DD_OrderLine
 			ol.saveEx();
 	 *  @param  order parent order
 	 */
-	public MDDOrderLine (MDDOrder order)
+	public MDDOrderLine(MDDOrder order)
 	{
 		this (order.getCtx(), 0, order.get_TrxName());
 		if (order.get_ID() == 0)
@@ -160,7 +160,7 @@ public class MDDOrderLine extends X_DD_OrderLine
 	 *  @param rs result set record
 	 *  @param trxName transaction
 	 */
-	public MDDOrderLine (Properties ctx, ResultSet rs, String trxName)
+	public MDDOrderLine(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MDDOrderLine
@@ -668,12 +668,13 @@ public class MDDOrderLine extends X_DD_OrderLine
 				+ " - Ordered=" + getQtyOrdered()
 				+ ",Reserved=" + getQtyReserved() + ",Delivered=" + getQtyDelivered());
 			//	Update Storage
-		MStorage.add(getCtx(), locatorTo.getM_Warehouse_ID(), locatorTo.getM_Locator_ID(),
-				getM_Product_ID(),
-				getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
-				Env.ZERO, Env.ZERO , getCalculateQtyReserved() , get_TrxName());
-		//	update line
-		setQtyReserved(getQtyReserved().add(getCalculateQtyReserved()));
+//		MStorage.add(getCtx(), locatorTo.getM_Warehouse_ID(), locatorTo.getM_Locator_ID(),
+//				getM_Product_ID(),
+//				getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
+//				Env.ZERO, Env.ZERO , getCalculateQtyReserved() , get_TrxName());
+		ReservationBuilder.newInstance(getCtx(), get_TrxName())
+				.withDistributionOrderLine(this, getQtyReserved(), true, false)
+				.build();
 	}
 
 	public void reserveStock() {
@@ -681,11 +682,12 @@ public class MDDOrderLine extends X_DD_OrderLine
 		log.fine("Line=" + getLine()
 				+ " - Ordered=" + getQtyOrdered()
 				+ ",Reserved=" + getQtyReserved() + ",Delivered=" + getQtyDelivered());
-		MStorage.add(getCtx(), locatorFrom.getM_Warehouse_ID(), locatorFrom.getM_Locator_ID(),
-				getM_Product_ID(),
-				getM_AttributeSetInstanceTo_ID(), getM_AttributeSetInstance_ID(),
-				Env.ZERO, getCalculateQtyReserved(), Env.ZERO , get_TrxName());
-
-		setQtyReserved(getQtyReserved().add(getCalculateQtyReserved()));
+//		MStorage.add(getCtx(), locatorFrom.getM_Warehouse_ID(), locatorFrom.getM_Locator_ID(),
+//				getM_Product_ID(),
+//				getM_AttributeSetInstanceTo_ID(), getM_AttributeSetInstance_ID(),
+//				Env.ZERO, getCalculateQtyReserved(), Env.ZERO , get_TrxName());
+		ReservationBuilder.newInstance(getCtx(), get_TrxName())
+				.withDistributionOrderLine(this, getQtyReserved(), false, false)
+				.build();
 	}
 }	//	MDDOrderLine
