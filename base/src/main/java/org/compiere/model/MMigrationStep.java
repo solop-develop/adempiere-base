@@ -16,18 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.I_AD_Column;
 import org.adempiere.core.domains.models.I_AD_Table;
 import org.adempiere.core.domains.models.X_AD_MigrationStep;
@@ -40,6 +28,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
 
 /**
  * @author paul
@@ -78,7 +78,7 @@ public class MMigrationStep extends X_AD_MigrationStep {
 	 * @param trxName
 	 */
 	public MMigrationStep(Properties ctx, int AD_MigrationStep_ID,
-			String trxName) {
+                          String trxName) {
 		super(ctx, AD_MigrationStep_ID, trxName);
 		getData();
 	}
@@ -461,6 +461,9 @@ public class MMigrationStep extends X_AD_MigrationStep {
 		PO po = null;
 		if (table.isSingleKey() && getRecord_ID() > 0) {
 			po = table.getPO( getRecord_ID(), get_TrxName() );
+			if(po != null && po.get_ID() != getRecord_ID() && getRecord_ID() > 0 ){
+				po = null;
+			}
 		} else {
 			String where = "";
 			ArrayList<Object> params = new ArrayList<Object>();
