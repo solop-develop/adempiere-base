@@ -16,13 +16,12 @@
  *****************************************************************************/
 package org.spin.eca62.support;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.adempiere.exceptions.AdempiereException;
 import org.spin.util.support.webdav.IWebDavResource;
 
-import com.amazonaws.services.s3.model.S3ObjectSummary;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Resource wrapper for Amazon S3 API

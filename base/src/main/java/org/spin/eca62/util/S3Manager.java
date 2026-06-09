@@ -17,9 +17,6 @@
  *****************************************************************************/
 package org.spin.eca62.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MClientInfo;
 import org.compiere.util.Env;
@@ -28,6 +25,9 @@ import org.spin.eca62.support.ResourceMetadata;
 import org.spin.model.MADAppRegistration;
 import org.spin.util.support.AppSupportHandler;
 import org.spin.util.support.IAppSupport;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 /**
  * Handle S3 Util Manager

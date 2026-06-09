@@ -17,6 +17,7 @@
  *****************************************************************************/
 package org.spin.eca62.support;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
@@ -36,6 +37,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -360,6 +362,40 @@ public class S3 implements IWebDav, IS3 {
 			throw new AdempiereException(e);
 		}
 		return fileNames;
+	}
+
+	@Override
+	public String getUploadPresignedUrl(ResourceMetadata resourceMetadata, String contentType, int expirationSeconds) throws Exception {
+		AmazonS3 s3Client = getS3Instance();
+		String key = resourceMetadata.getResourceFileName();
+		Date expiration = new Date(System.currentTimeMillis() + (expirationSeconds * 1000L));
+		GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(getBucketName(), key, HttpMethod.PUT)
+			.withExpiration(expiration);
+		if(!Util.isEmpty(contentType, true)) {
+			request.setContentType(contentType);
+		}
+		return s3Client.generatePresignedUrl(request).toString();
+	}
+
+	@Override
+	public String getDownloadPresignedUrl(ResourceMetadata resourceMetadata, int expirationSeconds) throws Exception {
+		AmazonS3 s3Client = getS3Instance();
+		String key = resourceMetadata.getResourceFileName();
+		Date expiration = new Date(System.currentTimeMillis() + (expirationSeconds * 1000L));
+		GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(getBucketName(), key, HttpMethod.GET)
+			.withExpiration(expiration);
+		return s3Client.generatePresignedUrl(request).toString();
+	}
+
+	@Override
+	public void deleteResource(ResourceMetadata resourceMetadata) throws Exception {
+		AmazonS3 s3Client = getS3Instance();
+		s3Client.deleteObject(new DeleteObjectRequest(getBucketName(), resourceMetadata.getResourceFileName()));
+	}
+
+	@Override
+	public boolean exists(ResourceMetadata resourceMetadata) throws Exception {
+		return getS3Instance().doesObjectExist(getBucketName(), resourceMetadata.getResourceFileName());
 	}
 
 }
