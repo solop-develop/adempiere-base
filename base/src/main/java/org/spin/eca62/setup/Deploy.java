@@ -16,14 +16,14 @@
  *****************************************************************************/
 package org.spin.eca62.setup;
 
-import java.util.Properties;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MClientInfo;
 import org.compiere.util.Env;
 import org.spin.model.MADAppRegistration;
 import org.spin.model.MADAppSupport;
 import org.spin.util.ISetupDefinition;
+
+import java.util.Properties;
 
 /**
  * Create App Registration to Connect to local minio
