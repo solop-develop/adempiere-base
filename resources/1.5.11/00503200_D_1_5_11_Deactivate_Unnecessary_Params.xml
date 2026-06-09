@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Deactivate_Unnecessary_Params" ReleaseNo="1.5.11" SeqNo="503200">
+    <Comments>Deactivate unnecessary params in generate Element Charge Process</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59935" Table="AD_Process_Para">
+        <Data AD_Column_ID="2817" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59936" Table="AD_Process_Para">
+        <Data AD_Column_ID="2817" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59937" Table="AD_Process_Para">
+        <Data AD_Column_ID="2817" Column="IsActive" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="287" Action="U" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="2844" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID" oldValue="54965">54965</Data>
+        <Data AD_Column_ID="2855" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="2852" Column="Name" oldValue="Generate Element Charge">Generar Cargo desde Elemento</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="63900" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="63900">63900</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Generate Element Charge">Generar Cargo desde Elemento</Data>
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Generate Element Charge">Generar Cargo desde Elemento</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

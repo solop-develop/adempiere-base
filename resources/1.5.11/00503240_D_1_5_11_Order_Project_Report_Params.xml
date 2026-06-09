@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Order_Project_Report_Params" ReleaseNo="1.5.11" SeqNo="503240">
+    <Comments>Order Project Report Params</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59952" Table="AD_Process_Para">
+        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="90">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59953" Table="AD_Process_Para">
+        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="100">20</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59945" Table="AD_Process_Para">
+        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="20">30</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59944" Table="AD_Process_Para">
+        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="10">50</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59946" Table="AD_Process_Para">
+        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="30">60</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59948" Table="AD_Process_Para">
+        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="50">70</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59949" Table="AD_Process_Para">
+        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="60">80</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59950" Table="AD_Process_Para">
+        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="70">90</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59951" Table="AD_Process_Para">
+        <Data AD_Column_ID="2826" Column="SeqNo" oldValue="80">100</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="GenerateElementCharge_Mandatory_Params" ReleaseNo="1.5.11" SeqNo="503210">
+    <Comments>Make mandatory params for GenerateElementCharge</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59938" Table="AD_Process_Para">
+        <Data AD_Column_ID="3738" Column="IsMandatory" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="59939" Table="AD_Process_Para">
+        <Data AD_Column_ID="3738" Column="IsMandatory" oldValue="false">true</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
