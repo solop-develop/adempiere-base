@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for W_Store
  *  @author Adempiere (generated) 
@@ -64,6 +65,17 @@ public interface I_W_Store
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name C_DocType_SalesOrder_ID */
+    public static final String COLUMNNAME_C_DocType_SalesOrder_ID = "C_DocType_SalesOrder_ID";
+
+	/** Set DocType Sales Order	  */
+	public void setC_DocType_SalesOrder_ID (int C_DocType_SalesOrder_ID);
+
+	/** Get DocType Sales Order	  */
+	public int getC_DocType_SalesOrder_ID();
+
+	public I_C_DocType getC_DocType_SalesOrder() throws RuntimeException;
+
     /** Column name C_PaymentTerm_ID */
     public static final String COLUMNNAME_C_PaymentTerm_ID = "C_PaymentTerm_ID";
 
@@ -77,7 +89,7 @@ public interface I_W_Store
 	  */
 	public int getC_PaymentTerm_ID();
 
-	public org.adempiere.core.domains.models.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException;
+	public I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException;
 
     /** Column name C_TemplateBPartner_ID */
     public static final String COLUMNNAME_C_TemplateBPartner_ID = "C_TemplateBPartner_ID";
@@ -92,7 +104,7 @@ public interface I_W_Store
 	  */
 	public int getC_TemplateBPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_TemplateBPartner() throws RuntimeException;
+	public I_C_BPartner getC_TemplateBPartner() throws RuntimeException;
 
     /** Column name CacheServerProvider_ID */
     public static final String COLUMNNAME_CacheServerProvider_ID = "CacheServerProvider_ID";
@@ -107,7 +119,7 @@ public interface I_W_Store
 	  */
 	public int getCacheServerProvider_ID();
 
-	public org.adempiere.core.domains.models.I_AD_AppRegistration getCacheServerProvider() throws RuntimeException;
+	public I_AD_AppRegistration getCacheServerProvider() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -138,7 +150,7 @@ public interface I_W_Store
 	  */
 	public int getCustomerRole_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Role getCustomerRole() throws RuntimeException;
+	public I_AD_Role getCustomerRole() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -152,6 +164,21 @@ public interface I_W_Store
 	  * Optional short description of the record
 	  */
 	public String getDescription();
+
+    /** Column name DropShip_Warehouse_ID */
+    public static final String COLUMNNAME_DropShip_Warehouse_ID = "DropShip_Warehouse_ID";
+
+	/** Set Drop Ship Warehouse.
+	  * The (logical) warehouse to use for recording drop ship receipts and shipments.
+	  */
+	public void setDropShip_Warehouse_ID (int DropShip_Warehouse_ID);
+
+	/** Get Drop Ship Warehouse.
+	  * The (logical) warehouse to use for recording drop ship receipts and shipments.
+	  */
+	public int getDropShip_Warehouse_ID();
+
+	public I_M_Warehouse getDropShip_Warehouse() throws RuntimeException;
 
     /** Column name EMailFooter */
     public static final String COLUMNNAME_EMailFooter = "EMailFooter";
@@ -361,7 +388,7 @@ public interface I_W_Store
 	  */
 	public int getM_PriceList_ID();
 
-	public org.adempiere.core.domains.models.I_M_PriceList getM_PriceList() throws RuntimeException;
+	public I_M_PriceList getM_PriceList() throws RuntimeException;
 
     /** Column name M_Warehouse_ID */
     public static final String COLUMNNAME_M_Warehouse_ID = "M_Warehouse_ID";
@@ -376,7 +403,7 @@ public interface I_W_Store
 	  */
 	public int getM_Warehouse_ID();
 
-	public org.adempiere.core.domains.models.I_M_Warehouse getM_Warehouse() throws RuntimeException;
+	public I_M_Warehouse getM_Warehouse() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -404,7 +431,7 @@ public interface I_W_Store
 	  */
 	public int getSalesRep_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+	public I_AD_User getSalesRep() throws RuntimeException;
 
     /** Column name Stylesheet */
     public static final String COLUMNNAME_Stylesheet = "Stylesheet";
