@@ -464,12 +464,12 @@ public class MRevenueRecognitionRun extends X_C_RevenueRecognition_Run implement
 
 	public MRevenueRecognitionRun reverseIt(Timestamp date) {
 		MRevenueRecognitionRun reverse = new MRevenueRecognitionRun(getCtx(), 0, get_TrxName());
+		PO.copyValues(this, reverse);
 		if(date != null) {
 			reverse.setDateDoc(date);
 		} else {
 			reverse.setDateDoc(getDateDoc());
 		}
-		PO.copyValues(this, reverse);
 		reverse.setRecognizedAmt(getRecognizedAmt().negate());
 		reverse.setSourceRecognizedAmt(getSourceRecognizedAmt().negate());
 		reverse.setReversal(true);
