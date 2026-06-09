@@ -18,13 +18,14 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for W_Store
  *  @author Adempiere (generated) 
@@ -35,7 +36,7 @@ public class X_W_Store extends PO implements I_W_Store, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260608L;
 
     /** Standard Constructor */
     public X_W_Store (Properties ctx, int W_Store_ID, String trxName)
@@ -70,8 +71,8 @@ public class X_W_Store extends PO implements I_W_Store, I_Persistent
 			setName (null);
 			setSalesRep_ID (0);
 			setURL (null);
-			setW_Store_ID (0);
 			setWebContext (null);
+			setW_Store_ID (0);
         } */
     }
 
@@ -103,9 +104,34 @@ public class X_W_Store extends PO implements I_W_Store, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException
+	public I_C_DocType getC_DocType_SalesOrder() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_PaymentTerm)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_PaymentTerm.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getC_DocType_SalesOrder_ID(), get_TrxName());	}
+
+	/** Set DocType Sales Order.
+		@param C_DocType_SalesOrder_ID DocType Sales Order	  */
+	public void setC_DocType_SalesOrder_ID (int C_DocType_SalesOrder_ID)
+	{
+		if (C_DocType_SalesOrder_ID < 1) 
+			set_Value (COLUMNNAME_C_DocType_SalesOrder_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DocType_SalesOrder_ID, Integer.valueOf(C_DocType_SalesOrder_ID));
+	}
+
+	/** Get DocType Sales Order.
+		@return DocType Sales Order	  */
+	public int getC_DocType_SalesOrder_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_SalesOrder_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException
+    {
+		return (I_C_PaymentTerm)MTable.get(getCtx(), I_C_PaymentTerm.Table_Name)
 			.getPO(getC_PaymentTerm_ID(), get_TrxName());	}
 
 	/** Set Payment Term.
@@ -131,9 +157,9 @@ public class X_W_Store extends PO implements I_W_Store, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_TemplateBPartner() throws RuntimeException
+	public I_C_BPartner getC_TemplateBPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_TemplateBPartner_ID(), get_TrxName());	}
 
 	/** Set Template BPartner.
@@ -159,9 +185,9 @@ public class X_W_Store extends PO implements I_W_Store, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_AppRegistration getCacheServerProvider() throws RuntimeException
+	public I_AD_AppRegistration getCacheServerProvider() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_AppRegistration)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_AppRegistration.Table_Name)
+		return (I_AD_AppRegistration)MTable.get(getCtx(), I_AD_AppRegistration.Table_Name)
 			.getPO(getCacheServerProvider_ID(), get_TrxName());	}
 
 	/** Set Cache Server Provider.
@@ -187,9 +213,9 @@ public class X_W_Store extends PO implements I_W_Store, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Role getCustomerRole() throws RuntimeException
+	public I_AD_Role getCustomerRole() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Role)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Role.Table_Name)
+		return (I_AD_Role)MTable.get(getCtx(), I_AD_Role.Table_Name)
 			.getPO(getCustomerRole_ID(), get_TrxName());	}
 
 	/** Set Customer Role.
@@ -230,6 +256,34 @@ public class X_W_Store extends PO implements I_W_Store, I_Persistent
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	public I_M_Warehouse getDropShip_Warehouse() throws RuntimeException
+    {
+		return (I_M_Warehouse)MTable.get(getCtx(), I_M_Warehouse.Table_Name)
+			.getPO(getDropShip_Warehouse_ID(), get_TrxName());	}
+
+	/** Set Drop Ship Warehouse.
+		@param DropShip_Warehouse_ID 
+		The (logical) warehouse to use for recording drop ship receipts and shipments.
+	  */
+	public void setDropShip_Warehouse_ID (int DropShip_Warehouse_ID)
+	{
+		if (DropShip_Warehouse_ID < 1) 
+			set_Value (COLUMNNAME_DropShip_Warehouse_ID, null);
+		else 
+			set_Value (COLUMNNAME_DropShip_Warehouse_ID, Integer.valueOf(DropShip_Warehouse_ID));
+	}
+
+	/** Get Drop Ship Warehouse.
+		@return The (logical) warehouse to use for recording drop ship receipts and shipments.
+	  */
+	public int getDropShip_Warehouse_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DropShip_Warehouse_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set EMail Footer.
@@ -547,9 +601,9 @@ public class X_W_Store extends PO implements I_W_Store, I_Persistent
 		return false;
 	}
 
-	public org.adempiere.core.domains.models.I_M_PriceList getM_PriceList() throws RuntimeException
+	public I_M_PriceList getM_PriceList() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_PriceList)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_PriceList.Table_Name)
+		return (I_M_PriceList)MTable.get(getCtx(), I_M_PriceList.Table_Name)
 			.getPO(getM_PriceList_ID(), get_TrxName());	}
 
 	/** Set Price List.
@@ -575,9 +629,9 @@ public class X_W_Store extends PO implements I_W_Store, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_M_Warehouse getM_Warehouse() throws RuntimeException
+	public I_M_Warehouse getM_Warehouse() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Warehouse)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Warehouse.Table_Name)
+		return (I_M_Warehouse)MTable.get(getCtx(), I_M_Warehouse.Table_Name)
 			.getPO(getM_Warehouse_ID(), get_TrxName());	}
 
 	/** Set Warehouse.
@@ -628,9 +682,9 @@ public class X_W_Store extends PO implements I_W_Store, I_Persistent
         return new KeyNamePair(get_ID(), getName());
     }
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
+	public I_AD_User getSalesRep() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSalesRep_ID(), get_TrxName());	}
 
 	/** Set Sales Representative.

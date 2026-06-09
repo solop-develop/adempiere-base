@@ -1374,4 +1374,19 @@ public interface I_C_Order
 	  * Weight of a product
 	  */
 	public BigDecimal getWeight();
+
+	/** Column name W_Store_ID */
+	public static final String COLUMNNAME_W_Store_ID = "W_Store_ID";
+
+	/** Set Web Store.
+	 * A Web Store of the Client
+	 */
+	public void setW_Store_ID (int W_Store_ID);
+
+	/** Get Web Store.
+	 * A Web Store of the Client
+	 */
+	public int getW_Store_ID();
+
+	public I_W_Store getW_Store() throws RuntimeException;
 }

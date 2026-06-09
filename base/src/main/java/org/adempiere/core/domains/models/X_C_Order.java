@@ -2479,4 +2479,32 @@ public class X_C_Order extends PO implements I_C_Order, I_Persistent
 			 return Env.ZERO;
 		return bd;
 	}
+
+	public I_W_Store getW_Store() throws RuntimeException
+	{
+		return (I_W_Store)MTable.get(getCtx(), I_W_Store.Table_Name)
+				.getPO(getW_Store_ID(), get_TrxName());	}
+
+	/** Set Web Store.
+	 @param W_Store_ID
+	 A Web Store of the Client
+	 */
+	public void setW_Store_ID (int W_Store_ID)
+	{
+		if (W_Store_ID < 1)
+			set_Value (COLUMNNAME_W_Store_ID, null);
+		else
+			set_Value (COLUMNNAME_W_Store_ID, Integer.valueOf(W_Store_ID));
+	}
+
+	/** Get Web Store.
+	 @return A Web Store of the Client
+	 */
+	public int getW_Store_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_W_Store_ID);
+		if (ii == null)
+			return 0;
+		return ii.intValue();
+	}
 }
