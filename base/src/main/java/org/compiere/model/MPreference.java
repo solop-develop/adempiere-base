@@ -20,6 +20,8 @@ import java.sql.ResultSet;
 import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_AD_Preference;
+import org.compiere.util.DB;
+import org.compiere.util.Util;
 
 /**
  *	Preference Model
@@ -78,6 +80,9 @@ public class MPreference extends X_AD_Preference
 		setValue (Value);
 	}	//	MPreference
 
+	/** Attribute name that stores the user's preferred language. */
+	private static final String ATTRIBUTE_LANGUAGE = "Language";
+
 	/**
 	 * 	Before Save
 	 *	@param newRecord
@@ -90,8 +95,70 @@ public class MPreference extends X_AD_Preference
 			value = "";
 		if (value.equals("-1"))
 			setValue("");
+		// Defense-in-depth: any preference row holding the user's language
+		// must store a valid AD_Language code (e.g. "es_MX"), never a
+		// localized display name (e.g. "Español (MX)"). Legacy ZK UI
+		// flows persisted the display name directly, which downstream
+		// consumers then forwarded as an identifier — breaking the menu
+		// API, Elasticsearch index resolution, and print engines.
+		if (ATTRIBUTE_LANGUAGE.equals(getAttribute()) && !Util.isEmpty(getValue(), true)) {
+			String normalized = normalizeLanguageCode(getValue());
+			if (!Util.isEmpty(normalized, true)) {
+				setValue(normalized);
+			}
+		}
 		return true;
 	}	//	beforeSave
+
+	/**
+	 * Resolve any language string into a canonical {@code AD_Language}
+	 * code by a tiered lookup against {@code AD_Language}. The input
+	 * length picks the column to match:
+	 * <ol>
+	 *   <li><b>2-char ISO</b> ({@code "es"}, {@code "en"}) → matched
+	 *       against {@code LanguageISO}, returning the system/base
+	 *       AD_Language for that ISO.</li>
+	 *   <li><b>Exact AD_Language code</b> ({@code "es_MX"}, {@code
+	 *       "en_US"}) → matched against {@code AD_Language}.</li>
+	 *   <li><b>Anything else</b> (display names like {@code "Español
+	 *       (MX)"}) → matched against {@code Name} or {@code PrintName}.</li>
+	 * </ol>
+	 * Returns null when no tier produces a match — the caller leaves the
+	 * raw value in place so legacy data is not destroyed.
+	 */
+	public static String normalizeLanguageCode(String input) {
+		if (Util.isEmpty(input, true)) {
+			return null;
+		}
+		String trimmed = input.trim();
+		if (trimmed.length() == 2) {
+			return DB.getSQLValueString(
+				null,
+				"SELECT AD_Language FROM AD_Language "
+					+ "WHERE UPPER(LanguageISO) = UPPER(?) "
+					+ "AND (IsSystemLanguage = 'Y' OR IsBaseLanguage = 'Y') "
+					+ "AND ROWNUM = 1",
+				trimmed
+			);
+		}
+		String code = DB.getSQLValueString(
+			null,
+			"SELECT AD_Language FROM AD_Language "
+				+ "WHERE UPPER(AD_Language) = UPPER(?) "
+				+ "AND ROWNUM = 1",
+			trimmed
+		);
+		if (!Util.isEmpty(code, true)) {
+			return code;
+		}
+		return DB.getSQLValueString(
+			null,
+			"SELECT AD_Language FROM AD_Language "
+				+ "WHERE (UPPER(Name) = UPPER(?) OR UPPER(PrintName) = UPPER(?)) "
+				+ "AND ROWNUM = 1",
+			trimmed, trimmed
+		);
+	}
 
 	/**
 	 * 	String Representation

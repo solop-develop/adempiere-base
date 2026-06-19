@@ -76,6 +76,127 @@ public class PreferenceUtil {
 
 
 	/**
+	 * Get the most recent value of a single preference for a user.
+	 * Returns null if the preference is not set or invalid input.
+	 *
+	 * @param userId AD_User_ID owner of the preference
+	 * @param attributeName one of the P_* constants in this class
+	 * @return raw string value of the preference, or null
+	 */
+	public static String getPreferenceValue(int userId, String attributeName) {
+		if (userId <= 0 || Util.isEmpty(attributeName, true)) {
+			return null;
+		}
+		MPreference preference = new Query(
+			Env.getCtx(),
+			I_AD_Preference.Table_Name,
+			"AD_User_ID = ? AND Attribute = ? AND AD_Window_ID Is NULL",
+			null
+		)
+			.setOrderBy(I_AD_Preference.COLUMNNAME_Created + " DESC")
+			.setParameters(userId, attributeName)
+			.<MPreference>first()
+		;
+		if (preference == null) {
+			return null;
+		}
+		return preference.getValue();
+	}
+
+
+	/**
+	 * Parse a preference value into a positive AD_*_ID, or return -1 when the
+	 * value is missing or non-numeric. Callers use the -1 sentinel to fall back
+	 * to a system default and to avoid trusting unparseable preference data.
+	 */
+	private static int parseIdOrNegative(String value) {
+		if (Util.isEmpty(value, true)) {
+			return -1;
+		}
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return -1;
+		}
+	}
+
+
+	/**
+	 * Get the user's preferred language as a valid {@code AD_Language} code
+	 * (e.g. {@code es_VE}). Returns null when the preference is missing,
+	 * blank, or when the stored value does not normalise to any row in
+	 * {@code AD_Language} — this last case protects against legacy data
+	 * where the human-readable name (e.g. "Español (MX)") was saved into
+	 * {@code AD_Preference.Value} instead of the language code, which
+	 * downstream services then forward as a query parameter and break.
+	 *
+	 * 2-char ISO codes (e.g. {@code "es"}, {@code "en"}) are accepted and
+	 * resolved to the matching system/base AD_Language.
+	 */
+	public static String getLanguagePreference(int userId) {
+		return normalizeLanguageCode(
+			getPreferenceValue(userId, P_LANGUAGE)
+		);
+	}
+
+
+	/**
+	 * Thin wrapper around {@link MPreference#normalizeLanguageCode(String)}
+	 * so the tiered lookup against {@code AD_Language} lives in a single
+	 * place. Returns the canonical {@code AD_Language} code, or null when
+	 * the input does not match any row.
+	 */
+	private static String normalizeLanguageCode(String input) {
+		return MPreference.normalizeLanguageCode(input);
+	}
+
+
+	/**
+	 * Get the user's preferred AD_Role_ID, or -1 if no preference is set.
+	 * Callers MUST validate that the user still has access to this role
+	 * before using it (privilege-escalation defense).
+	 */
+	public static int getRolePreference(int userId) {
+		return parseIdOrNegative(
+			getPreferenceValue(userId, P_ROLE)
+		);
+	}
+
+
+	/**
+	 * Get the user's preferred AD_Client_ID, or -1 if no preference is set.
+	 * Normally derived from the preferred role; kept for traceability.
+	 */
+	public static int getClientPreference(int userId) {
+		return parseIdOrNegative(
+			getPreferenceValue(userId, P_CLIENT)
+		);
+	}
+
+
+	/**
+	 * Get the user's preferred AD_Org_ID, or -1 if no preference is set.
+	 * Callers MUST validate that the (user, role) combination still has
+	 * access to this organization (privilege-escalation defense).
+	 */
+	public static int getOrganizationPreference(int userId) {
+		return parseIdOrNegative(
+			getPreferenceValue(userId, P_ORG)
+		);
+	}
+
+
+	/**
+	 * Get the user's preferred M_Warehouse_ID, or -1 if no preference is set.
+	 */
+	public static int getWarehousePreference(int userId) {
+		return parseIdOrNegative(
+			getPreferenceValue(userId, P_WAREHOUSE)
+		);
+	}
+
+
+	/**
 	 * Save Session Preferences
 	 * @param userId
 	 * @param language
@@ -139,9 +260,16 @@ public class PreferenceUtil {
 					String.valueOf(warehouseId)
 				);
 			} else if (attributeName.equals(PreferenceUtil.P_LANGUAGE)) {
-				preference.setValue(
-					language
-				);
+				String normalized = normalizeLanguageCode(language);
+				if (Util.isEmpty(normalized, true)) {
+					// Caller passed a value that is not a recognised
+					// AD_Language code (typically the human-readable
+					// display name like "Español (MX)"). Skip the save so
+					// we do not overwrite the existing row with junk —
+					// the next login falls back to the system default.
+					continue;
+				}
+				preference.setValue(normalized);
 			}
 			preference.save();
 		}
