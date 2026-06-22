@@ -11,6 +11,7 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
 import org.adempiere.core.domains.models.X_AD_Package_Exp_Detail;
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.pipo.IDFinder;
 import org.adempiere.pipo.PackIn;
 import org.adempiere.pipo.handler.PrintFormatElementHandler;
@@ -101,22 +102,20 @@ public class ImpExpUtil {
 		// clear cache of previous runs
 		IDFinder.clearIDCache();
 		PackIn packIn = new PackIn();
+		Trx trx = Trx.get(trxName, true);
 		try {
 			String msg = packIn.importXML(arxml.getAbsolutePath(), Env.getCtx(), trxName);
 			log.fine(msg);
+			trx.commit(true);
+			return true;
 		} catch (Exception e) {
 			log.severe(e.getMessage());
-			return false;
+			trx.rollback();
+			throw new AdempiereException(e);
+		} finally {
+			trx.close();
+			Env.getCtx().remove("TrxName");
 		}
-		Env.getCtx().remove("TrxName");
-		try {
-			DB.commit(true, trxName);
-		} catch (Exception e) {
-			log.severe(e.getMessage());
-		}
-		Trx x = Trx.get(trxName, false);
-		x.close();
-		return true;
 	}
 
 }
