@@ -413,5 +413,53 @@ public class Secure implements SecureInterface
 			.append ("]");
 		return sb.toString ();
 	}	//	toString
-	
+
+	/**
+	 * 	Is the stored value a BCrypt hash (starts with the $2 version prefix).
+	 */
+	@Override
+	public boolean isPasswordHashEncrypted (String storedHash)
+	{
+		return storedHash != null && storedHash.startsWith("$2");
+	}
+
+	/**
+	 * 	Legacy provider: no self-contained password hash. Returns null so the caller
+	 * 	uses the SHA-512 + AD_User.Salt mechanism.
+	 */
+	@Override
+	public String getPasswordHash (String plainPassword)
+	{
+		return null;
+	}
+
+	/**
+	 * 	Verify against the legacy SHA-512 + AD_User.Salt format.
+	 */
+	@Override
+	public boolean isValidPasswordHash (String plainPassword, String storedHash, String storedSalt)
+	{
+		if (plainPassword == null || storedHash == null)
+			return false;
+		//	SHA-512 hash requires the salt stored alongside it
+		if (storedSalt != null)
+		{
+			try {
+				return getSHA512Hash(1000, plainPassword, convertHexString(storedSalt)).equals(storedHash);
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 	Verify against a self-contained stored hash (no separate salt).
+	 */
+	@Override
+	public boolean isValidPasswordHash (String plainPassword, String storedHash)
+	{
+		return isValidPasswordHash(plainPassword, storedHash, null);
+	}
+
 }   //  Secure

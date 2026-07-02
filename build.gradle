@@ -123,6 +123,8 @@ dependencies {
     api 'net.minidev:json-smart:2.4.8'
     // https://mvnrepository.com/artifact/net.minidev/accessors-smart
     api 'net.minidev:accessors-smart:2.4.8'
+    //  Password hashing compatible with Spring Boot (Sabana): same BCryptPasswordEncoder
+    api 'org.springframework.security:spring-security-crypto:6.5.7'
     //  Service
     api "org.scala-lang:scala3-library_3:3.0.1"
     api "commons-collections:commons-collections:3.2.2"
