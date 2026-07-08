@@ -209,7 +209,8 @@ public class SequenceCheck extends SvrProcess
 		if (onlyADSequence) {
 			whereClause += " AND AD_Sequence_ID = 16"; // HARDCODED: AD_Sequence  #284
 		}
-		List<Integer> sequenceIds = new Query(ctx, I_AD_Sequence.Table_Name, whereClause, sp.get_TrxName())
+		String trxName = (sp != null) ? sp.get_TrxName() : null;
+		List<Integer> sequenceIds = new Query(ctx, I_AD_Sequence.Table_Name, whereClause, trxName)
 				.setOrderBy(I_AD_Sequence.COLUMNNAME_Name)
 				.setOnlyActiveRecords(true)
 				.getIDsAsList();
@@ -234,16 +235,20 @@ public class SequenceCheck extends SvrProcess
 						if (seq.getCurrentNext() != old) {
 							String msg = seq.getName() + " ID  "
 									+ old + " -> " + seq.getCurrentNext();
-                            sp.addLog(0, null, null, msg);
+							if (sp != null) {
+								sp.addLog(0, null, null, msg);
+							}
 						}
 						if (seq.getCurrentNextSys() != oldSys) {
 							String msg = seq.getName() + " Sys "
 									+ oldSys + " -> " + seq.getCurrentNextSys();
-							sp.addLog(0, null, null, msg);
+							if (sp != null) {
+								sp.addLog(0, null, null, msg);
+							}
 						}
 						seq.saveEx();
 						if(isNewSequence) {
-							if(createMissingNativeSequence(seq, transactionName)) {
+							if(sp != null && createMissingNativeSequence(seq, transactionName)) {
 								sp.addLog("Native Sequence Created => " + seq.getName());
 							}
 						}
@@ -254,7 +259,7 @@ public class SequenceCheck extends SvrProcess
 						seq.saveEx();
 						seq.setDescription(originalDescription);
 						seq.saveEx();
-						if(createMissingNativeSequence(seq, transactionName)) {
+						if(sp != null && createMissingNativeSequence(seq, transactionName)) {
 							sp.addLog("Native Sequence Created => " + seq.getName());
 						}
 					}
