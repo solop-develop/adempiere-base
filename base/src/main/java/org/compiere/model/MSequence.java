@@ -1066,6 +1066,29 @@ public class MSequence extends X_AD_Sequence
 		setCurrentNextSys(StartNo/10);
 	}	//	MSequence;
 
+	/**
+	 * 	Before Save
+	 *	@param newRecord new record
+	 *	@return true if it can be saved
+	 */
+	@Override
+	protected boolean beforeSave(boolean newRecord)
+	{
+		// A Table ID sequence (IsTableID='Y') name must be a valid SQL identifier, because the
+		// native sequence is created as <Name>_SEQ. A name with spaces or special chars
+		// (typically a document sequence mis-flagged as IsTableID='Y') breaks "CREATE SEQUENCE"
+		// and would never be consumed. Reject it to keep the data correct.
+		if (isTableID()) {
+			String name = getName();
+			if (name == null || !name.matches("[A-Za-z_][A-Za-z0-9_]*")) {
+				throw new AdempiereException(
+					Msg.parseTranslation(getCtx(), "@Name@ (@IsTableID@='Y'): '" + name + "'")
+				);
+			}
+		}
+		return true;
+	}	//	beforeSave
+
 
 	/**************************************************************************
 	 * 	Get Next No and increase current next
