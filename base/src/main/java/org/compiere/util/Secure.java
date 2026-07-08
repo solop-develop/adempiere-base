@@ -16,6 +16,9 @@
  *****************************************************************************/
 package org.compiere.util;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.AlgorithmParameters;
@@ -24,10 +27,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 
 /**
  * Security Services.

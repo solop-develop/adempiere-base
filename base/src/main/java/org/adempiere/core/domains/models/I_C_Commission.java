@@ -164,6 +164,28 @@ public interface I_C_Commission
 
 	public I_C_DocType getC_DocTypeInvoice() throws RuntimeException;
 
+    /** Column name C_DocTypeOrder_ID */
+    public static final String COLUMNNAME_C_DocTypeOrder_ID = "C_DocTypeOrder_ID";
+
+	/** Set Document Type For Order	  */
+	public void setC_DocTypeOrder_ID (int C_DocTypeOrder_ID);
+
+	/** Get Document Type For Order	  */
+	public int getC_DocTypeOrder_ID();
+
+	public I_C_DocType getC_DocTypeOrder() throws RuntimeException;
+
+    /** Column name C_DocTypeReverse_ID */
+    public static final String COLUMNNAME_C_DocTypeReverse_ID = "C_DocTypeReverse_ID";
+
+	/** Set DocType Reverse	  */
+	public void setC_DocTypeReverse_ID (int C_DocTypeReverse_ID);
+
+	/** Get DocType Reverse	  */
+	public int getC_DocTypeReverse_ID();
+
+	public I_C_DocType getC_DocTypeReverse() throws RuntimeException;
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -336,6 +358,58 @@ public interface I_C_Commission
 
 	/** Get Process Now	  */
 	public boolean isProcessing();
+
+    /** Column name SP011_CommissionForSalesReps */
+    public static final String COLUMNNAME_SP011_CommissionForSalesReps = "SP011_CommissionForSalesReps";
+
+	/** Set Commission For Sales Reps	  */
+	public void setSP011_CommissionForSalesReps (boolean SP011_CommissionForSalesReps);
+
+	/** Get Commission For Sales Reps	  */
+	public boolean isSP011_CommissionForSalesReps();
+
+    /** Column name SP027_Charge_ID */
+    public static final String COLUMNNAME_SP027_Charge_ID = "SP027_Charge_ID";
+
+	/** Set Charge.
+	  * Additional document charges
+	  */
+	public void setSP027_Charge_ID (int SP027_Charge_ID);
+
+	/** Get Charge.
+	  * Additional document charges
+	  */
+	public int getSP027_Charge_ID();
+
+	public I_C_Charge getSP027_Charge() throws RuntimeException;
+
+    /** Column name SP027_IsTaxIncluded */
+    public static final String COLUMNNAME_SP027_IsTaxIncluded = "SP027_IsTaxIncluded";
+
+	/** Set Price includes Tax.
+	  * Tax is included in the price 
+	  */
+	public void setSP027_IsTaxIncluded (boolean SP027_IsTaxIncluded);
+
+	/** Get Price includes Tax.
+	  * Tax is included in the price 
+	  */
+	public boolean isSP027_IsTaxIncluded();
+
+    /** Column name SP027_Product_ID */
+    public static final String COLUMNNAME_SP027_Product_ID = "SP027_Product_ID";
+
+	/** Set Product.
+	  * Product, Service, Item
+	  */
+	public void setSP027_Product_ID (int SP027_Product_ID);
+
+	/** Get Product.
+	  * Product, Service, Item
+	  */
+	public int getSP027_Product_ID();
+
+	public I_M_Product getSP027_Product() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

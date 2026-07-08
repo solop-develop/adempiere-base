@@ -99,6 +99,7 @@ public class GenerateSalesOrderFromProject extends GenerateSalesOrderFromProject
 				orderLine.setPriceList(projectLine.getPlannedPrice());
 			}
 			orderLine.setDiscount();
+			orderLine.setCost(projectLine.getCost());
 			orderLine.setTax();
 			orderLine.setC_Project_ID(projectId);
 			orderLine.setC_ProjectPhase_ID(projectLine.getC_ProjectPhase_ID());

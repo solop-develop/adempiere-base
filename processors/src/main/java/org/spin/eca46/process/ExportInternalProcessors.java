@@ -17,42 +17,9 @@
 
 package org.spin.eca46.process;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.adempiere.core.domains.models.I_AD_AlertProcessor;
-import org.adempiere.core.domains.models.I_AD_Role;
-import org.adempiere.core.domains.models.I_AD_Scheduler;
-import org.adempiere.core.domains.models.I_AD_WorkflowProcessor;
-import org.adempiere.core.domains.models.I_C_AcctProcessor;
-import org.adempiere.core.domains.models.I_C_ProjectProcessor;
-import org.adempiere.core.domains.models.I_R_RequestProcessor;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MAcctProcessor;
-import org.compiere.model.MAlertProcessor;
-import org.compiere.model.MRequestProcessor;
-import org.compiere.model.MScheduler;
-import org.compiere.model.Query;
-import org.compiere.util.Env;
-import org.compiere.util.Util;
-import org.compiere.wf.MWorkflowProcessor;
-import org.eevolution.model.MProjectProcessor;
-import org.spin.eca46.util.support.Accounting;
-import org.spin.eca46.util.support.Alert;
-import org.spin.eca46.util.support.IExternalProcessor;
-import org.spin.eca46.util.support.IProcessorEntity;
-import org.spin.eca46.util.support.Project;
-import org.spin.eca46.util.support.Request;
-import org.spin.eca46.util.support.Schedule;
-import org.spin.eca46.util.support.Workflow;
-import org.spin.model.MADAppRegistration;
-import org.spin.model.MADTokenDefinition;
-import org.spin.util.IThirdPartyAccessGenerator;
-import org.spin.util.ITokenGenerator;
-import org.spin.util.TokenGeneratorHandler;
-import org.spin.util.support.AppSupportHandler;
-import org.spin.util.support.IAppSupport;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /** Generated Process for (Export Internal Processors)
  *  @author ADempiere (generated) 
@@ -64,6 +31,9 @@ public class ExportInternalProcessors extends ExportInternalProcessorsAbstract {
 	
 	@Override
 	protected String doIt() throws Exception {
+		throw	new AdempiereException("Not Implemented");
+		//TODO: This process should implement correctly the new way to generate Token with scopes
+		/*
 		List<IProcessorEntity> processorsList = new ArrayList<>();
 		//	For Accounting Processor
 		new Query(getCtx(), I_C_AcctProcessor.Table_Name, null, get_TrxName())
@@ -120,9 +90,13 @@ public class ExportInternalProcessors extends ExportInternalProcessorsAbstract {
 			});
 		}
 		return "@Created@: " + counter.get();
+		*/
 	}
 	
 	private String getToken() {
+		throw	new AdempiereException("Not Implemented");
+		//TODO: This process should implement correctly the new way to generate Token with scopes
+		/*
 		try {
 			//	Validate user and password match
 			boolean match = new Query(getCtx(), I_AD_Role.Table_Name, 
@@ -144,9 +118,11 @@ public class ExportInternalProcessors extends ExportInternalProcessorsAbstract {
 			}
 			//	Generate
 			IThirdPartyAccessGenerator thirdPartyAccessGenerator = ((IThirdPartyAccessGenerator) generator);
-			return thirdPartyAccessGenerator.generateToken(getUserId(), getRoleId());
+			//	No token profile here: relies on a Full Access token definition (scope="all")
+			return thirdPartyAccessGenerator.generateToken(getUserId(), getRoleId(), 0);
 		} catch (Exception e) {
 			throw new AdempiereException(e);
 		}
+		*/
 	}
 }

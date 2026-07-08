@@ -16,17 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_Invoice;
-import org.adempiere.core.domains.models.I_C_OrderLine;
-import org.adempiere.core.domains.models.I_C_OrderTax;
-import org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan;
-import org.adempiere.core.domains.models.I_M_InOut;
-import org.adempiere.core.domains.models.I_M_RMA;
-import org.adempiere.core.domains.models.I_PP_Product_Planning;
-import org.adempiere.core.domains.models.X_C_Order;
-import org.adempiere.core.domains.models.X_PP_Product_BOM;
-import org.adempiere.core.domains.models.X_PP_Product_BOMLine;
-import org.adempiere.core.domains.models.X_PP_Product_Planning;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoBillToAddressException;
 import org.adempiere.exceptions.BPartnerNoShipToAddressException;
@@ -34,11 +24,7 @@ import org.adempiere.exceptions.FillMandatoryException;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 import org.solop.queue.ForecastComparisonProcessor;
 import org.solop.queue.storage.StorageUpdate;
 import org.solop.util.DocumentDateUtil;
@@ -51,11 +37,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -1492,8 +1474,16 @@ public class MOrder extends X_C_Order implements DocAction
 		List<Integer> orderRecognitionLines = getRecognitionOrderLinesIds();
 		List<MRecognitionSetup> recognitionSetups = MRecognitionSetup.getSetupsFromOrder(this);
 		schemas.forEach(schema -> {
-			int unearnedRevenueRecognitionAccount = MRevenueRecognitionPlan.getUnearnedRevenueAccountId(getCtx(), businessPartnerGroupId, schema.getC_AcctSchema_ID());
-			if(unearnedRevenueRecognitionAccount <= 0) {
+			int unearnedRevenueRecognitionAccountId = MRevenueRecognitionPlan.getUnearnedRevenueAccountId(getCtx(), businessPartnerGroupId, schema.getC_AcctSchema_ID());
+			if(unearnedRevenueRecognitionAccountId <= 0) {
+				throw new AdempiereException("@UnEarnedRevenue_Acct@ @NotFound@");
+			}
+			MAccount unearnedRevenueRecognitionAccount =  MAccount.get(getCtx(),
+					getAD_Client_ID(), getAD_Org_ID(), schema.getC_AcctSchema_ID(), unearnedRevenueRecognitionAccountId, 0,
+					0, getC_BPartner_ID(), getAD_OrgTrx_ID(), 0, 0, getC_SalesRegion_ID(),
+					getC_Project_ID(), getC_Campaign_ID(), getC_Activity_ID(),
+					getUser1_ID(), getUser2_ID() , getUser3_ID(), getUser4_ID(), 0, 0, get_ValueAsInt("S_Contract_ID"), null);
+			if (unearnedRevenueRecognitionAccount == null || unearnedRevenueRecognitionAccount.get_ID() <= 0) {
 				throw new AdempiereException("@UnEarnedRevenue_Acct@ @NotFound@");
 			}
 			orderRecognitionLines.forEach(orderLineId -> {
@@ -1514,7 +1504,7 @@ public class MOrder extends X_C_Order implements DocAction
 				plan.setClientOrg(orderLine);
 				plan.setC_RevenueRecognition_ID (product.getC_RevenueRecognition_ID());
 				plan.setC_AcctSchema_ID (schema.getC_AcctSchema_ID());
-				plan.setUnEarnedRevenue_Acct (unearnedRevenueRecognitionAccount);
+				plan.setUnEarnedRevenue_Acct (unearnedRevenueRecognitionAccount.get_ID());
 				plan.setP_Revenue_Acct (revenue.get_ID());
 				plan.setC_Currency_ID (getC_Currency_ID());
 				plan.setM_Product_ID(orderLine.getM_Product_ID());
@@ -2054,6 +2044,13 @@ public class MOrder extends X_C_Order implements DocAction
 		createDropShipmentOrder();
 		processRecognitionPlans();
 
+		//	Refresh project line summarization for linked project lines
+		java.util.Set<Integer> projectLineIds = new java.util.HashSet<Integer>();
+		for (MOrderLine orderLine : getLines())
+			if (orderLine.get_ValueAsInt("C_ProjectLine_ID") > 0)
+				projectLineIds.add(orderLine.get_ValueAsInt("C_ProjectLine_ID"));
+		MProjectLine.recalculateProjectLines(getCtx(), projectLineIds, get_TrxName(), Table_Name, isSOTrx());
+
 		setProcessed(true);
 		m_processMsg = info.toString();
 		//
@@ -2154,6 +2151,9 @@ public class MOrder extends X_C_Order implements DocAction
 			poLine.setDescription(line.getDescription());
 			poLine.setDatePromised(line.getDatePromised());
 			poLine.setPrice();
+			if (line.getCost().signum() != 0) {
+				poLine.setPrice(line.getCost());
+			}
 			poLine.saveEx();
 			//	Set link to source
 			line.setLink_OrderLine_ID(poLine.getC_OrderLine_ID());

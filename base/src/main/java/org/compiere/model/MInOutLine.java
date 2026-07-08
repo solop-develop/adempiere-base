@@ -16,13 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.I_C_InvoiceLine;
 import org.adempiere.core.domains.models.I_M_MatchPO;
 import org.adempiere.core.domains.models.X_M_InOutLine;
@@ -30,11 +23,14 @@ import org.adempiere.engine.IDocumentLine;
 import org.adempiere.exceptions.FillMandatoryException;
 import org.adempiere.exceptions.WarehouseLocatorConflictException;
 import org.compiere.process.DocumentReversalLineEnable;
-import org.compiere.util.CCache;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.Util;
+import org.compiere.util.*;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * 	InOut Line
@@ -237,6 +233,7 @@ implements IDocumentLine , DocumentReversalLineEnable
 		setFreightAmt(oLine.getFreightAmt());
 		//
 		setC_Project_ID(oLine.getC_Project_ID());
+		set_ValueOfColumn("C_ProjectLine_ID", oLine.get_ValueAsInt("C_ProjectLine_ID"));
 		setC_ProjectPhase_ID(oLine.getC_ProjectPhase_ID());
 		setC_ProjectTask_ID(oLine.getC_ProjectTask_ID());
 		setC_Activity_ID(oLine.getC_Activity_ID());
@@ -281,6 +278,7 @@ implements IDocumentLine , DocumentReversalLineEnable
 		setIsDescription(iLine.isDescription());
 		//
 		setC_Project_ID(iLine.getC_Project_ID());
+		set_ValueOfColumn("C_ProjectLine_ID", iLine.get_ValueAsInt("C_ProjectLine_ID"));
 		setC_ProjectPhase_ID(iLine.getC_ProjectPhase_ID());
 		setC_ProjectTask_ID(iLine.getC_ProjectTask_ID());
 		setC_Activity_ID(iLine.getC_Activity_ID());

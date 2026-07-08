@@ -23,13 +23,15 @@ package org.spin.util;
 public interface IThirdPartyAccessGenerator extends ITokenGenerator {
 
 	/**
-	 * Generate Token
+	 * Generate Token with a Token Profile for scope resolution
 	 * @param userId
 	 * @param roleId
+	 * @param tokenProfileId
+	 * @param tokenClaimSetId optional claim set whose items are added as custom claims
 	 * @return
 	 */
-	public String generateToken(int userId, int roleId);
-	
+	public String generateToken(int userId, int roleId, int tokenProfileId, int tokenClaimSetId);
+
 	/**
 	 * Validate Token
 	 * @param token

@@ -265,6 +265,87 @@ public interface I_C_Project
 	  */
 	public String getCopyFrom();
 
+    /** Column name CostConsumedAmt */
+    public static final String COLUMNNAME_CostConsumedAmt = "CostConsumedAmt";
+
+	/** Set Cost Consumed Amount	  */
+	public void setCostConsumedAmt (BigDecimal CostConsumedAmt);
+
+	/** Get Cost Consumed Amount	  */
+	public BigDecimal getCostConsumedAmt();
+
+    /** Column name CostConsumedQty */
+    public static final String COLUMNNAME_CostConsumedQty = "CostConsumedQty";
+
+	/** Set Cost Consumed Quantity	  */
+	public void setCostConsumedQty (BigDecimal CostConsumedQty);
+
+	/** Get Cost Consumed Quantity	  */
+	public BigDecimal getCostConsumedQty();
+
+    /** Column name CostInvoicedAmt */
+    public static final String COLUMNNAME_CostInvoicedAmt = "CostInvoicedAmt";
+
+	/** Set Cost Invoiced Amount	  */
+	public void setCostInvoicedAmt (BigDecimal CostInvoicedAmt);
+
+	/** Get Cost Invoiced Amount	  */
+	public BigDecimal getCostInvoicedAmt();
+
+    /** Column name CostInvoicedQty */
+    public static final String COLUMNNAME_CostInvoicedQty = "CostInvoicedQty";
+
+	/** Set Cost Invoiced Quantity	  */
+	public void setCostInvoicedQty (BigDecimal CostInvoicedQty);
+
+	/** Get Cost Invoiced Quantity	  */
+	public BigDecimal getCostInvoicedQty();
+
+    /** Column name CostOrderedAmt */
+    public static final String COLUMNNAME_CostOrderedAmt = "CostOrderedAmt";
+
+	/** Set Cost Ordered Amount	  */
+	public void setCostOrderedAmt (BigDecimal CostOrderedAmt);
+
+	/** Get Cost Ordered Amount	  */
+	public BigDecimal getCostOrderedAmt();
+
+    /** Column name CostOrderedQty */
+    public static final String COLUMNNAME_CostOrderedQty = "CostOrderedQty";
+
+	/** Set Cost Ordered Quantity	  */
+	public void setCostOrderedQty (BigDecimal CostOrderedQty);
+
+	/** Get Cost Ordered Quantity	  */
+	public BigDecimal getCostOrderedQty();
+
+    /** Column name CostPlannedAmt */
+    public static final String COLUMNNAME_CostPlannedAmt = "CostPlannedAmt";
+
+	/** Set Cost Planned Amount	  */
+	public void setCostPlannedAmt (BigDecimal CostPlannedAmt);
+
+	/** Get Cost Planned Amount	  */
+	public BigDecimal getCostPlannedAmt();
+
+    /** Column name CostReceivedAmt */
+    public static final String COLUMNNAME_CostReceivedAmt = "CostReceivedAmt";
+
+	/** Set Cost Received Amount	  */
+	public void setCostReceivedAmt (BigDecimal CostReceivedAmt);
+
+	/** Get Cost Received Amount	  */
+	public BigDecimal getCostReceivedAmt();
+
+    /** Column name CostReceivedQty */
+    public static final String COLUMNNAME_CostReceivedQty = "CostReceivedQty";
+
+	/** Set Cost Received Quantity	  */
+	public void setCostReceivedQty (BigDecimal CostReceivedQty);
+
+	/** Get Cost Received Quantity	  */
+	public BigDecimal getCostReceivedQty();
+
     /** Column name C_PaymentTerm_ID */
     public static final String COLUMNNAME_C_PaymentTerm_ID = "C_PaymentTerm_ID";
 
@@ -529,6 +610,15 @@ public interface I_C_Project
 	  */
 	public Timestamp getDateStartSchedule();
 
+    /** Column name DeliveredAmt */
+    public static final String COLUMNNAME_DeliveredAmt = "DeliveredAmt";
+
+	/** Set Delivered Amount	  */
+	public void setDeliveredAmt (BigDecimal DeliveredAmt);
+
+	/** Get Delivered Amount	  */
+	public BigDecimal getDeliveredAmt();
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -668,6 +758,19 @@ public interface I_C_Project
 	/** Get Cost Based	  */
 	public boolean isCostBased();
 
+    /** Column name IsCustomerApproved */
+    public static final String COLUMNNAME_IsCustomerApproved = "IsCustomerApproved";
+
+	/** Set Customer Approved.
+	  * Customer Approved
+	  */
+	public void setIsCustomerApproved (boolean IsCustomerApproved);
+
+	/** Get Customer Approved.
+	  * Customer Approved
+	  */
+	public boolean isCustomerApproved();
+
     /** Column name IsIndefinite */
     public static final String COLUMNNAME_IsIndefinite = "IsIndefinite";
 
@@ -694,6 +797,32 @@ public interface I_C_Project
 	  */
 	public boolean isSummary();
 
+    /** Column name ManageCustomerApproval */
+    public static final String COLUMNNAME_ManageCustomerApproval = "ManageCustomerApproval";
+
+	/** Set Manage Customer Approval.
+	  * Manage Customer Approval
+	  */
+	public void setManageCustomerApproval (boolean ManageCustomerApproval);
+
+	/** Get Manage Customer Approval.
+	  * Manage Customer Approval
+	  */
+	public boolean isManageCustomerApproval();
+
+    /** Column name Margin */
+    public static final String COLUMNNAME_Margin = "Margin";
+
+	/** Set Margin %.
+	  * Margin for a product as a percentage
+	  */
+	public void setMargin (BigDecimal Margin);
+
+	/** Get Margin %.
+	  * Margin for a product as a percentage
+	  */
+	public BigDecimal getMargin();
+
     /** Column name M_PriceList_Version_ID */
     public static final String COLUMNNAME_M_PriceList_Version_ID = "M_PriceList_Version_ID";
 
@@ -708,21 +837,6 @@ public interface I_C_Project
 	public int getM_PriceList_Version_ID();
 
 	public I_M_PriceList_Version getM_PriceList_Version() throws RuntimeException;
-
-    /** Column name M_Product_ID */
-    public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
-
-	/** Set Product.
-	  * Product, Service, Item
-	  */
-	public void setM_Product_ID (int M_Product_ID);
-
-	/** Get Product.
-	  * Product, Service, Item
-	  */
-	public int getM_Product_ID();
-
-	public I_M_Product getM_Product() throws RuntimeException;
 
     /** Column name M_Warehouse_ID */
     public static final String COLUMNNAME_M_Warehouse_ID = "M_Warehouse_ID";
@@ -764,6 +878,15 @@ public interface I_C_Project
 	  * Optional additional user defined information
 	  */
 	public String getNote();
+
+    /** Column name OrderedAmt */
+    public static final String COLUMNNAME_OrderedAmt = "OrderedAmt";
+
+	/** Set Ordered Amount	  */
+	public void setOrderedAmt (BigDecimal OrderedAmt);
+
+	/** Get Ordered Amount	  */
+	public BigDecimal getOrderedAmt();
 
     /** Column name ParentProject_ID */
     public static final String COLUMNNAME_ParentProject_ID = "ParentProject_ID";
@@ -867,6 +990,32 @@ public interface I_C_Project
 	/** Get Process Now	  */
 	public boolean isProcessing();
 
+    /** Column name ProfitPlannedAmt */
+    public static final String COLUMNNAME_ProfitPlannedAmt = "ProfitPlannedAmt";
+
+	/** Set Planned Profit.
+	  * Planned profit amount
+	  */
+	public void setProfitPlannedAmt (BigDecimal ProfitPlannedAmt);
+
+	/** Get Planned Profit.
+	  * Planned profit amount
+	  */
+	public BigDecimal getProfitPlannedAmt();
+
+    /** Column name ProfitRealizedAmt */
+    public static final String COLUMNNAME_ProfitRealizedAmt = "ProfitRealizedAmt";
+
+	/** Set Realized Profit.
+	  * Realized profit amount
+	  */
+	public void setProfitRealizedAmt (BigDecimal ProfitRealizedAmt);
+
+	/** Get Realized Profit.
+	  * Realized profit amount
+	  */
+	public BigDecimal getProfitRealizedAmt();
+
     /** Column name ProjectBalanceAmt */
     public static final String COLUMNNAME_ProjectBalanceAmt = "ProjectBalanceAmt";
 
@@ -942,6 +1091,32 @@ public interface I_C_Project
 	  * Invoice Rule for the project
 	  */
 	public String getProjInvoiceRule();
+
+    /** Column name QtyDelivered */
+    public static final String COLUMNNAME_QtyDelivered = "QtyDelivered";
+
+	/** Set Delivered Quantity.
+	  * Delivered Quantity
+	  */
+	public void setQtyDelivered (BigDecimal QtyDelivered);
+
+	/** Get Delivered Quantity.
+	  * Delivered Quantity
+	  */
+	public BigDecimal getQtyDelivered();
+
+    /** Column name QtyOrdered */
+    public static final String COLUMNNAME_QtyOrdered = "QtyOrdered";
+
+	/** Set Ordered Quantity.
+	  * Ordered Quantity
+	  */
+	public void setQtyOrdered (BigDecimal QtyOrdered);
+
+	/** Get Ordered Quantity.
+	  * Ordered Quantity
+	  */
+	public BigDecimal getQtyOrdered();
 
     /** Column name SalesRep_ID */
     public static final String COLUMNNAME_SalesRep_ID = "SalesRep_ID";

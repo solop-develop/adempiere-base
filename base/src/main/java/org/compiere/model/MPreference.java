@@ -16,12 +16,12 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.ResultSet;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.X_AD_Preference;
 import org.compiere.util.DB;
 import org.compiere.util.Util;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  *	Preference Model

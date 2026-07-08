@@ -37,7 +37,7 @@ public class X_R_Milestone extends PO implements I_R_Milestone, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251226L;
+	private static final long serialVersionUID = 20260624L;
 
     /** Standard Constructor */
     public X_R_Milestone (Properties ctx, int R_Milestone_ID, String trxName)
@@ -185,5 +185,22 @@ public class X_R_Milestone extends PO implements I_R_Milestone, I_Persistent
 	public String getUUID () 
 	{
 		return (String)get_Value(COLUMNNAME_UUID);
+	}
+
+	/** Set Search Key.
+		@param Value 
+		Search key for the record in the format required - must be unique
+	  */
+	public void setValue (String Value)
+	{
+		set_Value (COLUMNNAME_Value, Value);
+	}
+
+	/** Get Search Key.
+		@return Search key for the record in the format required - must be unique
+	  */
+	public String getValue () 
+	{
+		return (String)get_Value(COLUMNNAME_Value);
 	}
 }

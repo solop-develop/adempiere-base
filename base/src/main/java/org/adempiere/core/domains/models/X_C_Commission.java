@@ -37,7 +37,7 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260416L;
+	private static final long serialVersionUID = 20260703L;
 
     /** Standard Constructor */
     public X_C_Commission (Properties ctx, int C_Commission_ID, String trxName)
@@ -270,6 +270,56 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
 	public int getC_DocTypeInvoice_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocTypeInvoice_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DocType getC_DocTypeOrder() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getC_DocTypeOrder_ID(), get_TrxName());	}
+
+	/** Set Document Type For Order.
+		@param C_DocTypeOrder_ID Document Type For Order	  */
+	public void setC_DocTypeOrder_ID (int C_DocTypeOrder_ID)
+	{
+		if (C_DocTypeOrder_ID < 1) 
+			set_Value (COLUMNNAME_C_DocTypeOrder_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DocTypeOrder_ID, Integer.valueOf(C_DocTypeOrder_ID));
+	}
+
+	/** Get Document Type For Order.
+		@return Document Type For Order	  */
+	public int getC_DocTypeOrder_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocTypeOrder_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_DocType getC_DocTypeReverse() throws RuntimeException
+    {
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
+			.getPO(getC_DocTypeReverse_ID(), get_TrxName());	}
+
+	/** Set DocType Reverse.
+		@param C_DocTypeReverse_ID DocType Reverse	  */
+	public void setC_DocTypeReverse_ID (int C_DocTypeReverse_ID)
+	{
+		if (C_DocTypeReverse_ID < 1) 
+			set_Value (COLUMNNAME_C_DocTypeReverse_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DocTypeReverse_ID, Integer.valueOf(C_DocTypeReverse_ID));
+	}
+
+	/** Get DocType Reverse.
+		@return DocType Reverse	  */
+	public int getC_DocTypeReverse_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocTypeReverse_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -548,6 +598,107 @@ public class X_C_Commission extends PO implements I_C_Commission, I_Persistent
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Commission For Sales Reps.
+		@param SP011_CommissionForSalesReps Commission For Sales Reps	  */
+	public void setSP011_CommissionForSalesReps (boolean SP011_CommissionForSalesReps)
+	{
+		set_Value (COLUMNNAME_SP011_CommissionForSalesReps, Boolean.valueOf(SP011_CommissionForSalesReps));
+	}
+
+	/** Get Commission For Sales Reps.
+		@return Commission For Sales Reps	  */
+	public boolean isSP011_CommissionForSalesReps () 
+	{
+		Object oo = get_Value(COLUMNNAME_SP011_CommissionForSalesReps);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	public I_C_Charge getSP027_Charge() throws RuntimeException
+    {
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
+			.getPO(getSP027_Charge_ID(), get_TrxName());	}
+
+	/** Set Charge.
+		@param SP027_Charge_ID 
+		Additional document charges
+	  */
+	public void setSP027_Charge_ID (int SP027_Charge_ID)
+	{
+		if (SP027_Charge_ID < 1) 
+			set_Value (COLUMNNAME_SP027_Charge_ID, null);
+		else 
+			set_Value (COLUMNNAME_SP027_Charge_ID, Integer.valueOf(SP027_Charge_ID));
+	}
+
+	/** Get Charge.
+		@return Additional document charges
+	  */
+	public int getSP027_Charge_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SP027_Charge_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Price includes Tax.
+		@param SP027_IsTaxIncluded 
+		Tax is included in the price 
+	  */
+	public void setSP027_IsTaxIncluded (boolean SP027_IsTaxIncluded)
+	{
+		set_Value (COLUMNNAME_SP027_IsTaxIncluded, Boolean.valueOf(SP027_IsTaxIncluded));
+	}
+
+	/** Get Price includes Tax.
+		@return Tax is included in the price 
+	  */
+	public boolean isSP027_IsTaxIncluded () 
+	{
+		Object oo = get_Value(COLUMNNAME_SP027_IsTaxIncluded);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	public I_M_Product getSP027_Product() throws RuntimeException
+    {
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
+			.getPO(getSP027_Product_ID(), get_TrxName());	}
+
+	/** Set Product.
+		@param SP027_Product_ID 
+		Product, Service, Item
+	  */
+	public void setSP027_Product_ID (int SP027_Product_ID)
+	{
+		if (SP027_Product_ID < 1) 
+			set_Value (COLUMNNAME_SP027_Product_ID, null);
+		else 
+			set_Value (COLUMNNAME_SP027_Product_ID, Integer.valueOf(SP027_Product_ID));
+	}
+
+	/** Get Product.
+		@return Product, Service, Item
+	  */
+	public int getSP027_Product_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SP027_Product_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Immutable Universally Unique Identifier.

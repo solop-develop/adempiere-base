@@ -14,17 +14,17 @@
  ************************************************************************************/
 package org.spin.service.grpc.util.base;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import org.adempiere.core.domains.models.I_AD_Preference;
 import org.compiere.model.MPreference;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Util;
 import org.spin.service.grpc.util.value.NumberManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class PreferenceUtil {
 	/** Language			*/

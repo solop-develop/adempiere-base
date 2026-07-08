@@ -16,26 +16,23 @@
  *****************************************************************************/
 package org.compiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_I_Product;
 import org.adempiere.core.domains.models.X_M_Product_Class;
 import org.adempiere.core.domains.models.X_M_Product_Classification;
 import org.adempiere.core.domains.models.X_M_Product_Group;
 import org.adempiere.model.ImportValidator;
 import org.adempiere.process.ImportProcess;
-import org.compiere.model.MProduct;
-import org.compiere.model.MProductPO;
-import org.compiere.model.MProductPrice;
-import org.compiere.model.MTable;
-import org.compiere.model.ModelValidationEngine;
+import org.compiere.model.*;
 import org.compiere.util.DB;
 import org.compiere.util.Util;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  *	Import Products from I_Product
@@ -90,7 +87,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 	 *  @return Message
 	 *  @throws Exception
 	 */
-	protected String doIt() throws java.lang.Exception
+	protected String doIt() throws Exception
 	{
 		StringBuffer sql = null;
 		int no = 0;
@@ -658,14 +655,14 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 				else					//	Update Product
 				{
 					String sqlt = "UPDATE M_PRODUCT "
-						+ "SET (Value,Name,Description,DocumentNote,Help,"
+						+ "SET (Name,Description,DocumentNote,Help,"
 						+ "UPC,SKU,C_UOM_ID,M_Product_Category_ID,Classification,ProductType,"
 						+ "M_Product_Class_ID, M_Product_Classification_ID, M_Product_Group_ID,"
 						+ "Volume,Weight,ShelfWidth,ShelfHeight,ShelfDepth,UnitsPerPallet,"
 						+ "Discontinued,DiscontinuedBy, DiscontinuedAt, Updated,UpdatedBy, "
 						+ "M_Brand_ID, M_Industry_Sector_ID, M_Material_Group_ID, M_Material_Type_ID,"
 						+ "M_PartType_ID, M_Purchase_Group_ID, M_Sales_Group_ID)= "
-						+ "(SELECT Value,Name,Description,DocumentNote,Help,"
+						+ "(SELECT Name,Description,DocumentNote,Help,"
 						+ "UPC,SKU,C_UOM_ID,M_Product_Category_ID,Classification,ProductType,"
 						+ "M_Product_Class_ID, M_Product_Classification_ID, M_Product_Group_ID,"
 						+ "Volume,Weight,ShelfWidth,ShelfHeight,ShelfDepth,UnitsPerPallet,"
@@ -704,43 +701,50 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 					//	If Product existed, Try to Update first
 					if (!newProduct)
 					{
-						String sqlt = "UPDATE M_Product_PO "
-							+ "SET (IsCurrentVendor,C_UOM_ID,C_Currency_ID,UPC,"
-							+ "PriceList,PricePO,RoyaltyAmt,PriceEffective,"
-							+ "VendorProductNo,VendorCategory,Manufacturer,"
-							+ "Discontinued,DiscontinuedBy, DiscontinuedAt, Order_Min,Order_Pack,"
-							+ "CostPerOrder,DeliveryTime_Promised,Updated,UpdatedBy)= "
-							+ "(SELECT CAST('Y' AS CHAR),C_UOM_ID,C_Currency_ID,UPC,"    //jz fix EDB unknown datatype error
-							+ "PriceList,PricePO,RoyaltyAmt,PriceEffective,"
-							+ "VendorProductNo,VendorCategory,Manufacturer,"
-							+ "Discontinued,DiscontinuedBy, DiscontinuedAt, Order_Min,Order_Pack,"
-							+ "CostPerOrder,DeliveryTime_Promised,SysDate,UpdatedBy"
-							+ " FROM I_Product"
-							+ " WHERE I_Product_ID="+I_Product_ID+") "
-							+ "WHERE M_Product_ID="+M_Product_ID+" AND C_BPartner_ID="+C_BPartner_ID;
-						PreparedStatement pstmt_updateProductPO = DB.prepareStatement
-							(sqlt, get_TrxName());
-						//jz pstmt_updateProductPO.setInt(1, I_Product_ID);
-						// pstmt_updateProductPO.setInt(2, M_Product_ID);
-						// pstmt_updateProductPO.setInt(3, C_BPartner_ID);
-						try
+						//	Look for an existing Product_PO of the same partner, product and import Org
+						List<MProductPO> existingPOs = MProductPO.getByPartnerAndOrg(getCtx(),
+							C_BPartner_ID, M_Product_ID, imp.getAD_Org_ID(), get_TrxName());
+						if (!existingPOs.isEmpty())
 						{
-							no = pstmt_updateProductPO.executeUpdate();
-							log.finer("Update Product_PO = " + no);
-							noUpdatePO++;
+							//	Update only the first one found
+							MProductPO productPO = existingPOs.get(0);
+							productPO.setIsCurrentVendor(true);
+							productPO.setC_UOM_ID(imp.getC_UOM_ID());
+							productPO.setC_Currency_ID(imp.getC_Currency_ID());
+							productPO.setUPC(imp.getUPC());
+							productPO.setPriceList(imp.getPriceList());
+							productPO.setPricePO(imp.getPricePO());
+							productPO.setRoyaltyAmt(imp.getRoyaltyAmt());
+							productPO.setPriceEffective(imp.getPriceEffective());
+							productPO.setVendorProductNo(imp.getVendorProductNo());
+							productPO.setVendorCategory(imp.getVendorCategory());
+							productPO.setManufacturer(imp.getManufacturer());
+							productPO.setDiscontinued(imp.isDiscontinued());
+							productPO.setDiscontinuedBy(imp.getDiscontinuedBy());
+							productPO.setDiscontinuedAt(imp.getDiscontinuedAt());
+							productPO.setOrder_Min(BigDecimal.valueOf(imp.getOrder_Min()));
+							productPO.setOrder_Pack(BigDecimal.valueOf(imp.getOrder_Pack()));
+							productPO.setCostPerOrder(imp.getCostPerOrder());
+							productPO.setDeliveryTime_Promised(imp.getDeliveryTime_Promised());
+							try
+							{
+								productPO.saveEx();
+								no = 1;
+								log.finer("Update Product_PO = " + no);
+								noUpdatePO++;
+							}
+							catch (Exception ex)
+							{
+								log.warning("Update Product_PO - " + ex.toString());
+								noUpdate--;
+								rollback();
+								StringBuffer sql0 = new StringBuffer ("UPDATE I_Product i "
+									+ "SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||").append(DB.TO_STRING("Update Product_PO: " + ex.toString()))
+									.append("WHERE I_Product_ID=").append(I_Product_ID);
+								DB.executeUpdate(sql0.toString(), get_TrxName());
+								continue;
+							}
 						}
-						catch (SQLException ex)
-						{
-							log.warning("Update Product_PO - " + ex.toString());
-							noUpdate--;
-							rollback();
-							StringBuffer sql0 = new StringBuffer ("UPDATE I_Product i "
-								+ "SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||").append(DB.TO_STRING("Update Product_PO: " + ex.toString()))
-								.append("WHERE I_Product_ID=").append(I_Product_ID);
-							DB.executeUpdate(sql0.toString(), get_TrxName());
-							continue;
-						}
-						pstmt_updateProductPO.close();
 					}
 					if (no == 0)		//	Insert PO
 					{

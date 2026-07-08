@@ -14,14 +14,14 @@
  ************************************************************************************/
 package org.solop.security;
 
+import org.compiere.util.Secure;
+import org.compiere.util.SecureInterface;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
-
-import org.compiere.util.Secure;
-import org.compiere.util.SecureInterface;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Security provider that hashes user passwords with BCrypt, so ADempiere stores

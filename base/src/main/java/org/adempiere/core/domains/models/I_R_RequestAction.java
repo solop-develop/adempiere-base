@@ -403,6 +403,24 @@ public interface I_R_RequestAction
 	  */
 	public Timestamp getDateCompletePlanTo();
 
+    /** Column name DateInternalDelivery */
+    public static final String COLUMNNAME_DateInternalDelivery = "DateInternalDelivery";
+
+	/** Set End of Execution Date	  */
+	public void setDateInternalDelivery (Timestamp DateInternalDelivery);
+
+	/** Get End of Execution Date	  */
+	public Timestamp getDateInternalDelivery();
+
+    /** Column name DateInternalDeliveryTo */
+    public static final String COLUMNNAME_DateInternalDeliveryTo = "DateInternalDeliveryTo";
+
+	/** Set End of Execution Date To	  */
+	public void setDateInternalDeliveryTo (Timestamp DateInternalDeliveryTo);
+
+	/** Get End of Execution Date To	  */
+	public Timestamp getDateInternalDeliveryTo();
+
     /** Column name DateNextAction */
     public static final String COLUMNNAME_DateNextAction = "DateNextAction";
 
@@ -454,6 +472,50 @@ public interface I_R_RequestAction
 	  * Planned Start Date
 	  */
 	public Timestamp getDateStartPlanTo();
+
+    /** Column name Discord_Thread_ID */
+    public static final String COLUMNNAME_Discord_Thread_ID = "Discord_Thread_ID";
+
+	/** Set Discord Thread ID.
+	  * Discord thread identifier mapping the thread to the request/issue.
+	  */
+	public void setDiscord_Thread_ID (String Discord_Thread_ID);
+
+	/** Get Discord Thread ID.
+	  * Discord thread identifier mapping the thread to the request/issue.
+	  */
+	public String getDiscord_Thread_ID();
+
+    /** Column name Discord_ThreadTo_ID */
+    public static final String COLUMNNAME_Discord_ThreadTo_ID = "Discord_ThreadTo_ID";
+
+	/** Set Discord Thread ID To	  */
+	public void setDiscord_ThreadTo_ID (String Discord_ThreadTo_ID);
+
+	/** Get Discord Thread ID To	  */
+	public String getDiscord_ThreadTo_ID();
+
+    /** Column name Discord_URL */
+    public static final String COLUMNNAME_Discord_URL = "Discord_URL";
+
+	/** Set Discord URL.
+	  * Link to the Discord thread.
+	  */
+	public void setDiscord_URL (String Discord_URL);
+
+	/** Get Discord URL.
+	  * Link to the Discord thread.
+	  */
+	public String getDiscord_URL();
+
+    /** Column name Discord_URLTo */
+    public static final String COLUMNNAME_Discord_URLTo = "Discord_URLTo";
+
+	/** Set Discord URL To	  */
+	public void setDiscord_URLTo (String Discord_URLTo);
+
+	/** Get Discord URL To	  */
+	public String getDiscord_URLTo();
 
     /** Column name DurationInMillis */
     public static final String COLUMNNAME_DurationInMillis = "DurationInMillis";
@@ -522,12 +584,12 @@ public interface I_R_RequestAction
 	/** Set Escalated To.
 	  * This request has been escalated
 	  */
-	public void setIsEscalatedTo (boolean IsEscalatedTo);
+	public void setIsEscalatedTo (String IsEscalatedTo);
 
 	/** Get Escalated To.
 	  * This request has been escalated
 	  */
-	public boolean isEscalatedTo();
+	public String getIsEscalatedTo();
 
     /** Column name IsInvoiced */
     public static final String COLUMNNAME_IsInvoiced = "IsInvoiced";
@@ -548,12 +610,12 @@ public interface I_R_RequestAction
 	/** Set Invoiced To.
 	  * Is this invoiced?
 	  */
-	public void setIsInvoicedTo (boolean IsInvoicedTo);
+	public void setIsInvoicedTo (String IsInvoicedTo);
 
 	/** Get Invoiced To.
 	  * Is this invoiced?
 	  */
-	public boolean isInvoicedTo();
+	public String getIsInvoicedTo();
 
     /** Column name IsSelfService */
     public static final String COLUMNNAME_IsSelfService = "IsSelfService";
@@ -574,12 +636,52 @@ public interface I_R_RequestAction
 	/** Set Self-Service To.
 	  * This is a Self-Service entry or this entry can be changed via Self-Service
 	  */
-	public void setIsSelfServiceTo (boolean IsSelfServiceTo);
+	public void setIsSelfServiceTo (String IsSelfServiceTo);
 
 	/** Get Self-Service To.
 	  * This is a Self-Service entry or this entry can be changed via Self-Service
 	  */
-	public boolean isSelfServiceTo();
+	public String getIsSelfServiceTo();
+
+    /** Column name IssueID */
+    public static final String COLUMNNAME_IssueID = "IssueID";
+
+	/** Set Issue ID.
+	  * External issue number.
+	  */
+	public void setIssueID (int IssueID);
+
+	/** Get Issue ID.
+	  * External issue number.
+	  */
+	public int getIssueID();
+
+    /** Column name IssueTo_ID */
+    public static final String COLUMNNAME_IssueTo_ID = "IssueTo_ID";
+
+	/** Set Issue ID To	  */
+	public void setIssueTo_ID (int IssueTo_ID);
+
+	/** Get Issue ID To	  */
+	public int getIssueTo_ID();
+
+    /** Column name IssueURL */
+    public static final String COLUMNNAME_IssueURL = "IssueURL";
+
+	/** Set Issue URL	  */
+	public void setIssueURL (String IssueURL);
+
+	/** Get Issue URL	  */
+	public String getIssueURL();
+
+    /** Column name IssueURLTo */
+    public static final String COLUMNNAME_IssueURLTo = "IssueURLTo";
+
+	/** Set Issue URL To	  */
+	public void setIssueURLTo (String IssueURLTo);
+
+	/** Get Issue URL To	  */
+	public String getIssueURLTo();
 
     /** Column name M_InOut_ID */
     public static final String COLUMNNAME_M_InOut_ID = "M_InOut_ID";
@@ -859,6 +961,32 @@ public interface I_R_RequestAction
 
 	public I_R_Category getR_CategoryTo() throws RuntimeException;
 
+    /** Column name Responsible_ID */
+    public static final String COLUMNNAME_Responsible_ID = "Responsible_ID";
+
+	/** Set Responsible.
+	  * Responsible
+	  */
+	public void setResponsible_ID (int Responsible_ID);
+
+	/** Get Responsible.
+	  * Responsible
+	  */
+	public int getResponsible_ID();
+
+	public I_AD_User getResponsible() throws RuntimeException;
+
+    /** Column name ResponsibleTo_ID */
+    public static final String COLUMNNAME_ResponsibleTo_ID = "ResponsibleTo_ID";
+
+	/** Set Responsible To	  */
+	public void setResponsibleTo_ID (int ResponsibleTo_ID);
+
+	/** Get Responsible To	  */
+	public int getResponsibleTo_ID();
+
+	public I_AD_User getResponsibleTo() throws RuntimeException;
+
     /** Column name R_Group_ID */
     public static final String COLUMNNAME_R_Group_ID = "R_Group_ID";
 
@@ -888,6 +1016,72 @@ public interface I_R_RequestAction
 	public int getR_GroupTo_ID();
 
 	public I_R_Group getR_GroupTo() throws RuntimeException;
+
+    /** Column name R_Iteration_ID */
+    public static final String COLUMNNAME_R_Iteration_ID = "R_Iteration_ID";
+
+	/** Set Iteration	  */
+	public void setR_Iteration_ID (int R_Iteration_ID);
+
+	/** Get Iteration	  */
+	public int getR_Iteration_ID();
+
+	public I_R_Iteration getR_Iteration() throws RuntimeException;
+
+    /** Column name R_IterationTo_ID */
+    public static final String COLUMNNAME_R_IterationTo_ID = "R_IterationTo_ID";
+
+	/** Set Iteration To	  */
+	public void setR_IterationTo_ID (int R_IterationTo_ID);
+
+	/** Get Iteration To	  */
+	public int getR_IterationTo_ID();
+
+	public I_R_Iteration getR_IterationTo() throws RuntimeException;
+
+    /** Column name R_Milestone_ID */
+    public static final String COLUMNNAME_R_Milestone_ID = "R_Milestone_ID";
+
+	/** Set Milestone	  */
+	public void setR_Milestone_ID (int R_Milestone_ID);
+
+	/** Get Milestone	  */
+	public int getR_Milestone_ID();
+
+	public I_R_Milestone getR_Milestone() throws RuntimeException;
+
+    /** Column name R_MilestoneTo_ID */
+    public static final String COLUMNNAME_R_MilestoneTo_ID = "R_MilestoneTo_ID";
+
+	/** Set Milestone To	  */
+	public void setR_MilestoneTo_ID (int R_MilestoneTo_ID);
+
+	/** Get Milestone To	  */
+	public int getR_MilestoneTo_ID();
+
+	public I_R_Milestone getR_MilestoneTo() throws RuntimeException;
+
+    /** Column name R_Release_ID */
+    public static final String COLUMNNAME_R_Release_ID = "R_Release_ID";
+
+	/** Set Release	  */
+	public void setR_Release_ID (int R_Release_ID);
+
+	/** Get Release	  */
+	public int getR_Release_ID();
+
+	public I_R_Release getR_Release() throws RuntimeException;
+
+    /** Column name R_ReleaseTo_ID */
+    public static final String COLUMNNAME_R_ReleaseTo_ID = "R_ReleaseTo_ID";
+
+	/** Set Release To	  */
+	public void setR_ReleaseTo_ID (int R_ReleaseTo_ID);
+
+	/** Get Release To	  */
+	public int getR_ReleaseTo_ID();
+
+	public I_R_Release getR_ReleaseTo() throws RuntimeException;
 
     /** Column name R_RequestAction_ID */
     public static final String COLUMNNAME_R_RequestAction_ID = "R_RequestAction_ID";
@@ -1130,6 +1324,32 @@ public interface I_R_RequestAction
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
+
+    /** Column name URL */
+    public static final String COLUMNNAME_URL = "URL";
+
+	/** Set URL.
+	  * Full URL address - e.g. http://www.adempiere.org
+	  */
+	public void setURL (String URL);
+
+	/** Get URL.
+	  * Full URL address - e.g. http://www.adempiere.org
+	  */
+	public String getURL();
+
+    /** Column name URLTo */
+    public static final String COLUMNNAME_URLTo = "URLTo";
+
+	/** Set URL To.
+	  * Full URL address - e.g. http://www.adempiere.org
+	  */
+	public void setURLTo (String URLTo);
+
+	/** Get URL To.
+	  * Full URL address - e.g. http://www.adempiere.org
+	  */
+	public String getURLTo();
 
     /** Column name UUID */
     public static final String COLUMNNAME_UUID = "UUID";

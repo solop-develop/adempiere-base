@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,7 +12,8 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
@@ -24,7 +25,7 @@ import java.sql.Timestamp;
 
 /** Generated Interface for C_ProjectLine
  *  @author Adempiere (generated) 
- *  @version Release 3.9.3
+ *  @version Release 3.9.4
  */
 public interface I_C_ProjectLine 
 {
@@ -147,6 +148,87 @@ public interface I_C_ProjectLine
 	  * Cost information
 	  */
 	public BigDecimal getCost();
+
+    /** Column name CostConsumedAmt */
+    public static final String COLUMNNAME_CostConsumedAmt = "CostConsumedAmt";
+
+	/** Set Cost Consumed Amount	  */
+	public void setCostConsumedAmt (BigDecimal CostConsumedAmt);
+
+	/** Get Cost Consumed Amount	  */
+	public BigDecimal getCostConsumedAmt();
+
+    /** Column name CostConsumedQty */
+    public static final String COLUMNNAME_CostConsumedQty = "CostConsumedQty";
+
+	/** Set Cost Consumed Quantity	  */
+	public void setCostConsumedQty (BigDecimal CostConsumedQty);
+
+	/** Get Cost Consumed Quantity	  */
+	public BigDecimal getCostConsumedQty();
+
+    /** Column name CostInvoicedAmt */
+    public static final String COLUMNNAME_CostInvoicedAmt = "CostInvoicedAmt";
+
+	/** Set Cost Invoiced Amount	  */
+	public void setCostInvoicedAmt (BigDecimal CostInvoicedAmt);
+
+	/** Get Cost Invoiced Amount	  */
+	public BigDecimal getCostInvoicedAmt();
+
+    /** Column name CostInvoicedQty */
+    public static final String COLUMNNAME_CostInvoicedQty = "CostInvoicedQty";
+
+	/** Set Cost Invoiced Quantity	  */
+	public void setCostInvoicedQty (BigDecimal CostInvoicedQty);
+
+	/** Get Cost Invoiced Quantity	  */
+	public BigDecimal getCostInvoicedQty();
+
+    /** Column name CostOrderedAmt */
+    public static final String COLUMNNAME_CostOrderedAmt = "CostOrderedAmt";
+
+	/** Set Cost Ordered Amount	  */
+	public void setCostOrderedAmt (BigDecimal CostOrderedAmt);
+
+	/** Get Cost Ordered Amount	  */
+	public BigDecimal getCostOrderedAmt();
+
+    /** Column name CostOrderedQty */
+    public static final String COLUMNNAME_CostOrderedQty = "CostOrderedQty";
+
+	/** Set Cost Ordered Quantity	  */
+	public void setCostOrderedQty (BigDecimal CostOrderedQty);
+
+	/** Get Cost Ordered Quantity	  */
+	public BigDecimal getCostOrderedQty();
+
+    /** Column name CostPlannedAmt */
+    public static final String COLUMNNAME_CostPlannedAmt = "CostPlannedAmt";
+
+	/** Set Cost Planned Amount	  */
+	public void setCostPlannedAmt (BigDecimal CostPlannedAmt);
+
+	/** Get Cost Planned Amount	  */
+	public BigDecimal getCostPlannedAmt();
+
+    /** Column name CostReceivedAmt */
+    public static final String COLUMNNAME_CostReceivedAmt = "CostReceivedAmt";
+
+	/** Set Cost Received Amount	  */
+	public void setCostReceivedAmt (BigDecimal CostReceivedAmt);
+
+	/** Get Cost Received Amount	  */
+	public BigDecimal getCostReceivedAmt();
+
+    /** Column name CostReceivedQty */
+    public static final String COLUMNNAME_CostReceivedQty = "CostReceivedQty";
+
+	/** Set Cost Received Quantity	  */
+	public void setCostReceivedQty (BigDecimal CostReceivedQty);
+
+	/** Get Cost Received Quantity	  */
+	public BigDecimal getCostReceivedQty();
 
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
@@ -289,6 +371,21 @@ public interface I_C_ProjectLine
 
 	public I_C_StandardProjectLine getC_StandardProjectLine() throws RuntimeException;
 
+    /** Column name C_UOM_ID */
+    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
+
+	/** Set UOM.
+	  * Unit of Measure
+	  */
+	public void setC_UOM_ID (int C_UOM_ID);
+
+	/** Get UOM.
+	  * Unit of Measure
+	  */
+	public int getC_UOM_ID();
+
+	public I_C_UOM getC_UOM() throws RuntimeException;
+
     /** Column name DateDeadline */
     public static final String COLUMNNAME_DateDeadline = "DateDeadline";
 
@@ -341,6 +438,19 @@ public interface I_C_ProjectLine
 	  */
 	public Timestamp getDateNextRun();
 
+    /** Column name DatePromised */
+    public static final String COLUMNNAME_DatePromised = "DatePromised";
+
+	/** Set Date Promised.
+	  * Date Order was promised
+	  */
+	public void setDatePromised (Timestamp DatePromised);
+
+	/** Get Date Promised.
+	  * Date Order was promised
+	  */
+	public Timestamp getDatePromised();
+
     /** Column name DateStartSchedule */
     public static final String COLUMNNAME_DateStartSchedule = "DateStartSchedule";
 
@@ -353,6 +463,15 @@ public interface I_C_ProjectLine
 	  * Scheduled start date for this Order
 	  */
 	public Timestamp getDateStartSchedule();
+
+    /** Column name DeliveredAmt */
+    public static final String COLUMNNAME_DeliveredAmt = "DeliveredAmt";
+
+	/** Set Delivered Amount	  */
+	public void setDeliveredAmt (BigDecimal DeliveredAmt);
+
+	/** Get Delivered Amount	  */
+	public BigDecimal getDeliveredAmt();
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -375,6 +494,36 @@ public interface I_C_ProjectLine
 
 	/** Get Pricing	  */
 	public String getDoPricing();
+
+    /** Column name DropShip_BPartner_ID */
+    public static final String COLUMNNAME_DropShip_BPartner_ID = "DropShip_BPartner_ID";
+
+	/** Set Drop Shipment Partner.
+	  * Business Partner to ship to
+	  */
+	public void setDropShip_BPartner_ID (int DropShip_BPartner_ID);
+
+	/** Get Drop Shipment Partner.
+	  * Business Partner to ship to
+	  */
+	public int getDropShip_BPartner_ID();
+
+	public I_C_BPartner getDropShip_BPartner() throws RuntimeException;
+
+    /** Column name DropShip_Location_ID */
+    public static final String COLUMNNAME_DropShip_Location_ID = "DropShip_Location_ID";
+
+	/** Set Drop Shipment Location.
+	  * Business Partner Location for shipping to
+	  */
+	public void setDropShip_Location_ID (int DropShip_Location_ID);
+
+	/** Get Drop Shipment Location.
+	  * Business Partner Location for shipping to
+	  */
+	public int getDropShip_Location_ID();
+
+	public I_C_BPartner_Location getDropShip_Location() throws RuntimeException;
 
     /** Column name DurationEstimated */
     public static final String COLUMNNAME_DurationEstimated = "DurationEstimated";
@@ -449,6 +598,19 @@ public interface I_C_ProjectLine
 	  * Frequency of event
 	  */
 	public String getFrequencyType();
+
+    /** Column name GenerateOrder */
+    public static final String COLUMNNAME_GenerateOrder = "GenerateOrder";
+
+	/** Set Generate Order.
+	  * Generate Order
+	  */
+	public void setGenerateOrder (String GenerateOrder);
+
+	/** Get Generate Order.
+	  * Generate Order
+	  */
+	public String getGenerateOrder();
 
     /** Column name Help */
     public static final String COLUMNNAME_Help = "Help";
@@ -536,6 +698,32 @@ public interface I_C_ProjectLine
 
 	/** Get Cost Based	  */
 	public boolean isCostBased();
+
+    /** Column name IsCustomerApproved */
+    public static final String COLUMNNAME_IsCustomerApproved = "IsCustomerApproved";
+
+	/** Set Customer Approved.
+	  * Customer Approved
+	  */
+	public void setIsCustomerApproved (boolean IsCustomerApproved);
+
+	/** Get Customer Approved.
+	  * Customer Approved
+	  */
+	public boolean isCustomerApproved();
+
+    /** Column name IsDropShip */
+    public static final String COLUMNNAME_IsDropShip = "IsDropShip";
+
+	/** Set Drop Shipment.
+	  * Drop Shipments are sent from the Vendor directly to the Customer
+	  */
+	public void setIsDropShip (boolean IsDropShip);
+
+	/** Get Drop Shipment.
+	  * Drop Shipments are sent from the Vendor directly to the Customer
+	  */
+	public boolean isDropShip();
 
     /** Column name IsIndefinite */
     public static final String COLUMNNAME_IsIndefinite = "IsIndefinite";
@@ -680,6 +868,15 @@ public interface I_C_ProjectLine
 	  */
 	public String getName();
 
+    /** Column name OrderedAmt */
+    public static final String COLUMNNAME_OrderedAmt = "OrderedAmt";
+
+	/** Set Ordered Amount	  */
+	public void setOrderedAmt (BigDecimal OrderedAmt);
+
+	/** Get Ordered Amount	  */
+	public BigDecimal getOrderedAmt();
+
     /** Column name Parent_ID */
     public static final String COLUMNNAME_Parent_ID = "Parent_ID";
 
@@ -708,50 +905,7 @@ public interface I_C_ProjectLine
 	  */
 	public BigDecimal getPercentageCompleted();
 
-	/** Column name Ref_BPartner_ID */
-	public static final String COLUMNNAME_Ref_BPartner_ID = "Ref_BPartner_ID";
-
-	/** Set Employee Reference.
-	 * Employee Reference
-	 */
-	public void setRef_BPartner_ID (int Ref_BPartner_ID);
-
-	/** Get Employee Reference.
-	 * Employee Reference
-	 */
-	public int getRef_BPartner_ID();
-
-	public I_C_BPartner getRef_BPartner() throws RuntimeException;
-
-
-	/** Column name S_ResourceType_ID */
-	public static final String COLUMNNAME_S_ResourceType_ID = "S_ResourceType_ID";
-
-	/** Set Resource Type	  */
-	public void setS_ResourceType_ID (int S_ResourceType_ID);
-
-	/** Get Resource Type	  */
-	public int getS_ResourceType_ID();
-
-	public I_S_ResourceType getS_ResourceType() throws RuntimeException;
-
-	/** Column name C_UOM_ID */
-	public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
-
-	/** Set UOM.
-	 * Unit of Measure
-	 */
-	public void setC_UOM_ID (int C_UOM_ID);
-
-	/** Get UOM.
-	 * Unit of Measure
-	 */
-	public int getC_UOM_ID();
-
-	public I_C_UOM getC_UOM() throws RuntimeException;
-
-
-	/** Column name PlannedAmt */
+    /** Column name PlannedAmt */
     public static final String COLUMNNAME_PlannedAmt = "PlannedAmt";
 
 	/** Set Planned Amount.
@@ -833,6 +987,19 @@ public interface I_C_ProjectLine
 
 	public I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException;
 
+    /** Column name PriceEntered */
+    public static final String COLUMNNAME_PriceEntered = "PriceEntered";
+
+	/** Set Price.
+	  * Price Entered - the price based on the selected/base UoM
+	  */
+	public void setPriceEntered (BigDecimal PriceEntered);
+
+	/** Get Price.
+	  * Price Entered - the price based on the selected/base UoM
+	  */
+	public BigDecimal getPriceEntered();
+
     /** Column name PriorityRule */
     public static final String COLUMNNAME_PriorityRule = "PriorityRule";
 
@@ -859,6 +1026,41 @@ public interface I_C_ProjectLine
 	  */
 	public boolean isProcessed();
 
+    /** Column name ProfitPlannedAmt */
+    public static final String COLUMNNAME_ProfitPlannedAmt = "ProfitPlannedAmt";
+
+	/** Set Planned Profit.
+	  * Planned profit amount
+	  */
+	public void setProfitPlannedAmt (BigDecimal ProfitPlannedAmt);
+
+	/** Get Planned Profit.
+	  * Planned profit amount
+	  */
+	public BigDecimal getProfitPlannedAmt();
+
+    /** Column name ProfitRealizedAmt */
+    public static final String COLUMNNAME_ProfitRealizedAmt = "ProfitRealizedAmt";
+
+	/** Set Realized Profit.
+	  * Realized profit amount
+	  */
+	public void setProfitRealizedAmt (BigDecimal ProfitRealizedAmt);
+
+	/** Get Realized Profit.
+	  * Realized profit amount
+	  */
+	public BigDecimal getProfitRealizedAmt();
+
+    /** Column name ProjectLineType */
+    public static final String COLUMNNAME_ProjectLineType = "ProjectLineType";
+
+	/** Set Line Type	  */
+	public void setProjectLineType (String ProjectLineType);
+
+	/** Get Line Type	  */
+	public String getProjectLineType();
+
     /** Column name ProjInvoiceRule */
     public static final String COLUMNNAME_ProjInvoiceRule = "ProjInvoiceRule";
 
@@ -871,6 +1073,60 @@ public interface I_C_ProjectLine
 	  * Invoice Rule for the project
 	  */
 	public String getProjInvoiceRule();
+
+    /** Column name QtyDelivered */
+    public static final String COLUMNNAME_QtyDelivered = "QtyDelivered";
+
+	/** Set Delivered Quantity.
+	  * Delivered Quantity
+	  */
+	public void setQtyDelivered (BigDecimal QtyDelivered);
+
+	/** Get Delivered Quantity.
+	  * Delivered Quantity
+	  */
+	public BigDecimal getQtyDelivered();
+
+    /** Column name QtyEntered */
+    public static final String COLUMNNAME_QtyEntered = "QtyEntered";
+
+	/** Set Quantity.
+	  * The Quantity Entered is based on the selected UoM
+	  */
+	public void setQtyEntered (BigDecimal QtyEntered);
+
+	/** Get Quantity.
+	  * The Quantity Entered is based on the selected UoM
+	  */
+	public BigDecimal getQtyEntered();
+
+    /** Column name QtyOrdered */
+    public static final String COLUMNNAME_QtyOrdered = "QtyOrdered";
+
+	/** Set Ordered Quantity.
+	  * Ordered Quantity
+	  */
+	public void setQtyOrdered (BigDecimal QtyOrdered);
+
+	/** Get Ordered Quantity.
+	  * Ordered Quantity
+	  */
+	public BigDecimal getQtyOrdered();
+
+    /** Column name Ref_BPartner_ID */
+    public static final String COLUMNNAME_Ref_BPartner_ID = "Ref_BPartner_ID";
+
+	/** Set Employee Reference.
+	  * Employee Reference
+	  */
+	public void setRef_BPartner_ID (int Ref_BPartner_ID);
+
+	/** Get Employee Reference.
+	  * Employee Reference
+	  */
+	public int getRef_BPartner_ID();
+
+	public I_C_BPartner getRef_BPartner() throws RuntimeException;
 
     /** Column name Responsible_ID */
     public static final String COLUMNNAME_Responsible_ID = "Responsible_ID";
@@ -925,6 +1181,17 @@ public interface I_C_ProjectLine
 	  * Resource Assignment
 	  */
 	public int getS_ResourceAssignment_ID();
+
+    /** Column name S_ResourceType_ID */
+    public static final String COLUMNNAME_S_ResourceType_ID = "S_ResourceType_ID";
+
+	/** Set Resource Type	  */
+	public void setS_ResourceType_ID (int S_ResourceType_ID);
+
+	/** Get Resource Type	  */
+	public int getS_ResourceType_ID();
+
+	public I_S_ResourceType getS_ResourceType() throws RuntimeException;
 
     /** Column name StartDate */
     public static final String COLUMNNAME_StartDate = "StartDate";

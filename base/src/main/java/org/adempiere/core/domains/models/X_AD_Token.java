@@ -18,13 +18,14 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for AD_Token
  *  @author Adempiere (generated) 
@@ -35,7 +36,7 @@ public class X_AD_Token extends PO implements I_AD_Token, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260625L;
 
     /** Standard Constructor */
     public X_AD_Token (Properties ctx, int AD_Token_ID, String trxName)
@@ -43,8 +44,8 @@ public class X_AD_Token extends PO implements I_AD_Token, I_Persistent
       super (ctx, AD_Token_ID, trxName);
       /** if (AD_Token_ID == 0)
         {
-			setAD_Token_ID (0);
 			setAD_TokenDefinition_ID (0);
+			setAD_Token_ID (0);
         } */
     }
 
@@ -76,9 +77,9 @@ public class X_AD_Token extends PO implements I_AD_Token, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_AD_Role getAD_Role() throws RuntimeException
+	public I_AD_Role getAD_Role() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Role)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Role.Table_Name)
+		return (I_AD_Role)MTable.get(getCtx(), I_AD_Role.Table_Name)
 			.getPO(getAD_Role_ID(), get_TrxName());	}
 
 	/** Set Role.
@@ -99,6 +100,34 @@ public class X_AD_Token extends PO implements I_AD_Token, I_Persistent
 	public int getAD_Role_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AD_Role_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_AD_TokenDefinition getAD_TokenDefinition() throws RuntimeException
+    {
+		return (I_AD_TokenDefinition)MTable.get(getCtx(), I_AD_TokenDefinition.Table_Name)
+			.getPO(getAD_TokenDefinition_ID(), get_TrxName());	}
+
+	/** Set Token Definition.
+		@param AD_TokenDefinition_ID 
+		Token Definition, used for define generator class for token
+	  */
+	public void setAD_TokenDefinition_ID (int AD_TokenDefinition_ID)
+	{
+		if (AD_TokenDefinition_ID < 1) 
+			set_Value (COLUMNNAME_AD_TokenDefinition_ID, null);
+		else 
+			set_Value (COLUMNNAME_AD_TokenDefinition_ID, Integer.valueOf(AD_TokenDefinition_ID));
+	}
+
+	/** Get Token Definition.
+		@return Token Definition, used for define generator class for token
+	  */
+	public int getAD_TokenDefinition_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_TokenDefinition_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -127,37 +156,34 @@ public class X_AD_Token extends PO implements I_AD_Token, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_TokenDefinition getAD_TokenDefinition() throws RuntimeException
+	public I_AD_TokenProfile getAD_TokenProfile() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_TokenDefinition)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_TokenDefinition.Table_Name)
-			.getPO(getAD_TokenDefinition_ID(), get_TrxName());	}
+		return (I_AD_TokenProfile)MTable.get(getCtx(), I_AD_TokenProfile.Table_Name)
+			.getPO(getAD_TokenProfile_ID(), get_TrxName());	}
 
-	/** Set Token Definition.
-		@param AD_TokenDefinition_ID 
-		Token Definition, used for define generator class for token
-	  */
-	public void setAD_TokenDefinition_ID (int AD_TokenDefinition_ID)
+	/** Set Token Profile.
+		@param AD_TokenProfile_ID Token Profile	  */
+	public void setAD_TokenProfile_ID (int AD_TokenProfile_ID)
 	{
-		if (AD_TokenDefinition_ID < 1) 
-			set_Value (COLUMNNAME_AD_TokenDefinition_ID, null);
+		if (AD_TokenProfile_ID < 1) 
+			set_Value (COLUMNNAME_AD_TokenProfile_ID, null);
 		else 
-			set_Value (COLUMNNAME_AD_TokenDefinition_ID, Integer.valueOf(AD_TokenDefinition_ID));
+			set_Value (COLUMNNAME_AD_TokenProfile_ID, Integer.valueOf(AD_TokenProfile_ID));
 	}
 
-	/** Get Token Definition.
-		@return Token Definition, used for define generator class for token
-	  */
-	public int getAD_TokenDefinition_ID () 
+	/** Get Token Profile.
+		@return Token Profile	  */
+	public int getAD_TokenProfile_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AD_TokenDefinition_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_TokenProfile_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getAD_User() throws RuntimeException
+	public I_AD_User getAD_User() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getAD_User_ID(), get_TrxName());	}
 
 	/** Set User/Contact.
@@ -195,6 +221,64 @@ public class X_AD_Token extends PO implements I_AD_Token, I_Persistent
 	public Timestamp getExpireDate () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_ExpireDate);
+	}
+
+	/** Set Revoked.
+		@param IsRevoked 
+		Indicates the token has been revoked
+	  */
+	public void setIsRevoked (boolean IsRevoked)
+	{
+		set_Value (COLUMNNAME_IsRevoked, Boolean.valueOf(IsRevoked));
+	}
+
+	/** Get Revoked.
+		@return Indicates the token has been revoked
+	  */
+	public boolean isRevoked () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsRevoked);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Revoked Reason.
+		@param RevokedReason 
+		Reason the token was revoked
+	  */
+	public void setRevokedReason (String RevokedReason)
+	{
+		set_Value (COLUMNNAME_RevokedReason, RevokedReason);
+	}
+
+	/** Get Revoked Reason.
+		@return Reason the token was revoked
+	  */
+	public String getRevokedReason () 
+	{
+		return (String)get_Value(COLUMNNAME_RevokedReason);
+	}
+
+	/** Set Scope.
+		@param Scope 
+		Resolved scope string for the token
+	  */
+	public void setScope (String Scope)
+	{
+		set_Value (COLUMNNAME_Scope, Scope);
+	}
+
+	/** Get Scope.
+		@return Resolved scope string for the token
+	  */
+	public String getScope () 
+	{
+		return (String)get_Value(COLUMNNAME_Scope);
 	}
 
 	/** Set Token Value.

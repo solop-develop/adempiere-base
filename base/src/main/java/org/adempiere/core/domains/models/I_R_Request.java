@@ -22,6 +22,7 @@ import org.compiere.util.KeyNamePair;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 /** Generated Interface for R_Request
  *  @author Adempiere (generated) 
@@ -403,6 +404,24 @@ public interface I_R_Request
 	  */
 	public Timestamp getDateCompletePlan();
 
+    /** Column name DateInternalDelivery */
+    public static final String COLUMNNAME_DateInternalDelivery = "DateInternalDelivery";
+
+	/** Set End of Execution Date	  */
+	public void setDateInternalDelivery (Timestamp DateInternalDelivery);
+
+	/** Get End of Execution Date	  */
+	public Timestamp getDateInternalDelivery();
+
+    /** Column name DateInternalReject */
+    public static final String COLUMNNAME_DateInternalReject = "DateInternalReject";
+
+	/** Set Date Internal Reject	  */
+	public void setDateInternalReject (Timestamp DateInternalReject);
+
+	/** Get Date Internal Reject	  */
+	public Timestamp getDateInternalReject();
+
     /** Column name DateLastAction */
     public static final String COLUMNNAME_DateLastAction = "DateLastAction";
 
@@ -476,6 +495,32 @@ public interface I_R_Request
 	public int getDD_OrderLine_ID();
 
 	public I_DD_OrderLine getDD_OrderLine() throws RuntimeException;
+
+    /** Column name Discord_Thread_ID */
+    public static final String COLUMNNAME_Discord_Thread_ID = "Discord_Thread_ID";
+
+	/** Set Discord Thread ID.
+	  * Discord thread identifier mapping the thread to the request/issue.
+	  */
+	public void setDiscord_Thread_ID (String Discord_Thread_ID);
+
+	/** Get Discord Thread ID.
+	  * Discord thread identifier mapping the thread to the request/issue.
+	  */
+	public String getDiscord_Thread_ID();
+
+    /** Column name Discord_URL */
+    public static final String COLUMNNAME_Discord_URL = "Discord_URL";
+
+	/** Set Discord URL.
+	  * Link to the Discord thread.
+	  */
+	public void setDiscord_URL (String Discord_URL);
+
+	/** Get Discord URL.
+	  * Link to the Discord thread.
+	  */
+	public String getDiscord_URL();
 
     /** Column name DocumentNo */
     public static final String COLUMNNAME_DocumentNo = "DocumentNo";
@@ -580,6 +625,37 @@ public interface I_R_Request
 	  * This is a Self-Service entry or this entry can be changed via Self-Service
 	  */
 	public boolean isSelfService();
+
+    /** Column name IssueID */
+    public static final String COLUMNNAME_IssueID = "IssueID";
+
+	/** Set Issue ID.
+	  * External issue number.
+	  */
+	public void setIssueID (int IssueID);
+
+	/** Get Issue ID.
+	  * External issue number.
+	  */
+	public int getIssueID();
+
+    /** Column name IssueURL */
+    public static final String COLUMNNAME_IssueURL = "IssueURL";
+
+	/** Set Issue URL	  */
+	public void setIssueURL (String IssueURL);
+
+	/** Get Issue URL	  */
+	public String getIssueURL();
+
+    /** Column name Labels */
+    public static final String COLUMNNAME_Labels = "Labels";
+
+	/** Set Labels	  */
+	public void setLabels (List Labels);
+
+	/** Get Labels	  */
+	public List getLabels();
 
     /** Column name LastResult */
     public static final String COLUMNNAME_LastResult = "LastResult";
@@ -837,6 +913,24 @@ public interface I_R_Request
 	  */
 	public boolean isProcessed();
 
+    /** Column name QtyInternalDelivery */
+    public static final String COLUMNNAME_QtyInternalDelivery = "QtyInternalDelivery";
+
+	/** Set Qty Internal Delivery	  */
+	public void setQtyInternalDelivery (BigDecimal QtyInternalDelivery);
+
+	/** Get Qty Internal Delivery	  */
+	public BigDecimal getQtyInternalDelivery();
+
+    /** Column name QtyInternalReject */
+    public static final String COLUMNNAME_QtyInternalReject = "QtyInternalReject";
+
+	/** Set Qty Internal Reject	  */
+	public void setQtyInternalReject (BigDecimal QtyInternalReject);
+
+	/** Get Qty Internal Reject	  */
+	public BigDecimal getQtyInternalReject();
+
     /** Column name QtyInvoiced */
     public static final String COLUMNNAME_QtyInvoiced = "QtyInvoiced";
 
@@ -904,6 +998,15 @@ public interface I_R_Request
 	  */
 	public int getRecord_ID();
 
+    /** Column name RejectDelivery */
+    public static final String COLUMNNAME_RejectDelivery = "RejectDelivery";
+
+	/** Set Reject Delivery	  */
+	public void setRejectDelivery (String RejectDelivery);
+
+	/** Get Reject Delivery	  */
+	public String getRejectDelivery();
+
     /** Column name RequestAmt */
     public static final String COLUMNNAME_RequestAmt = "RequestAmt";
 
@@ -929,6 +1032,21 @@ public interface I_R_Request
 	  * Types of Information for Requests or Tickets
 	  */
 	public String getRequestInfoType();
+
+    /** Column name Responsible_ID */
+    public static final String COLUMNNAME_Responsible_ID = "Responsible_ID";
+
+	/** Set Responsible.
+	  * Responsible
+	  */
+	public void setResponsible_ID (int Responsible_ID);
+
+	/** Get Responsible.
+	  * Responsible
+	  */
+	public int getResponsible_ID();
+
+	public I_AD_User getResponsible() throws RuntimeException;
 
     /** Column name Result */
     public static final String COLUMNNAME_Result = "Result";
@@ -1318,4 +1436,17 @@ public interface I_R_Request
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name Value */
+    public static final String COLUMNNAME_Value = "Value";
+
+	/** Set Search Key.
+	  * Search key for the record in the format required - must be unique
+	  */
+	public void setValue (String Value);
+
+	/** Get Search Key.
+	  * Search key for the record in the format required - must be unique
+	  */
+	public String getValue();
 }

@@ -24,8 +24,10 @@ import org.eevolution.hr.model.MHREmployee;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -45,6 +47,7 @@ public class MProjectLine extends X_C_ProjectLine
 	 * 
 	 */
 	private static final long serialVersionUID = 2668549463273628848L;
+
 
 	/**
 	 * 	Standard Constructor
@@ -324,9 +327,26 @@ public class MProjectLine extends X_C_ProjectLine
 				setPlannedAmt(getPlannedQty().multiply(calculatedAmt));
 			}
 		} else {
-			setPlannedAmt(getPlannedQty().multiply(getPlannedPrice()));
+			//	Margin <-> Planned Price interdependency, anchored on the fixed Cost (#2843)
+			if (!isSummary() && getCost() != null && getCost().signum() > 0) {
+				if (is_ValueChanged(COLUMNNAME_PlannedPrice)) {
+					//	Price edited -> derive Margin %
+					BigDecimal margin = getPlannedPrice().subtract(getCost())
+						.divide(getCost(), 4, RoundingMode.HALF_UP)
+						.multiply(Env.ONEHUNDRED);
+					setMargin(margin);
+				} else if (is_ValueChanged(COLUMNNAME_Margin)) {
+					//	Margin edited -> derive Planned Price
+					BigDecimal price = getCost().multiply(Env.ONEHUNDRED.add(getMargin()))
+						.divide(Env.ONEHUNDRED, 4, RoundingMode.HALF_UP);
+					setPlannedPrice(price);
+				}
+			}
+			//	Summary lines keep the rolled-up PlannedAmt; do not recompute from price (#2843)
+			if (!isSummary())
+				setPlannedAmt(getPlannedQty().multiply(getPlannedPrice()));
 		}
-		
+
 		//	Planned Margin
 		if (is_ValueChanged("M_Product_ID") || is_ValueChanged("M_Product_Category_ID")
 			|| is_ValueChanged("PlannedQty") || is_ValueChanged("PlannedPrice"))
@@ -343,7 +363,14 @@ public class MProjectLine extends X_C_ProjectLine
 				setPlannedMarginAmt(marginEach.multiply(getPlannedQty()));
 			}
 		}
-		
+
+		//	Planned cost / planned profit are document-independent: keep them in sync with the
+		//	line's own planned qty, cost and amount on every leaf save (#2843)
+		if (!isSummary()) {
+			setCostPlannedAmt(getPlannedQty().multiply(getCost()));
+			setProfitPlannedAmt(getPlannedAmt().subtract(getCostPlannedAmt()));
+		}
+
 		//	Phase/Task
 		if (is_ValueChanged("C_ProjectTask_ID") && getC_ProjectTask_ID() != 0)
 		{
@@ -367,7 +394,14 @@ public class MProjectLine extends X_C_ProjectLine
 			else
 				setC_Project_ID(pp.getC_Project_ID());
 		}
-		
+
+		//	Project Issue just linked to this line -> recalculate only the Issue block
+		//	(Delivered/Consumed + ProfitRealized) in this same save (#2843)
+		if (!isSummary() && getC_ProjectIssue_ID() > 0
+			&& (newRecord || is_ValueChanged(COLUMNNAME_C_ProjectIssue_ID))) {
+			recalculateFromDocument(MProjectIssue.Table_Name, false);
+		}
+
 		return true;
 	}	//	beforeSave
 	
@@ -410,10 +444,26 @@ public class MProjectLine extends X_C_ProjectLine
 		String sql = "UPDATE C_Project p "
 			+ "SET (PlannedAmt,PlannedQty,PlannedMarginAmt,"
 				+ "	CommittedAmt,CommittedQty,"
-				+ " InvoicedAmt, InvoicedQty) = "
+				+ " InvoicedAmt,InvoicedQty,"
+				+ " OrderedAmt,QtyOrdered,"
+				+ " DeliveredAmt,QtyDelivered,"
+				+ " CostPlannedAmt,"
+				+ " CostOrderedAmt,CostOrderedQty,"
+				+ " CostInvoicedAmt,CostInvoicedQty,"
+				+ " CostReceivedAmt,CostReceivedQty,"
+				+ " CostConsumedAmt,CostConsumedQty,"
+				+ " ProfitPlannedAmt,ProfitRealizedAmt) = "
 				+ "(SELECT COALESCE(SUM(pl.PlannedAmt),0),COALESCE(SUM(pl.PlannedQty),0),COALESCE(SUM(pl.PlannedMarginAmt),0),"
 				+ " COALESCE(SUM(pl.CommittedAmt),0),COALESCE(SUM(pl.CommittedQty),0),"
-				+ " COALESCE(SUM(pl.InvoicedAmt),0), COALESCE(SUM(pl.InvoicedQty),0) "
+				+ " COALESCE(SUM(pl.InvoicedAmt),0),COALESCE(SUM(pl.InvoicedQty),0),"
+				+ " COALESCE(SUM(pl.OrderedAmt),0),COALESCE(SUM(pl.QtyOrdered),0),"
+				+ " COALESCE(SUM(pl.DeliveredAmt),0),COALESCE(SUM(pl.QtyDelivered),0),"
+				+ " COALESCE(SUM(pl.CostPlannedAmt),0),"
+				+ " COALESCE(SUM(pl.CostOrderedAmt),0),COALESCE(SUM(pl.CostOrderedQty),0),"
+				+ " COALESCE(SUM(pl.CostInvoicedAmt),0),COALESCE(SUM(pl.CostInvoicedQty),0),"
+				+ " COALESCE(SUM(pl.CostReceivedAmt),0),COALESCE(SUM(pl.CostReceivedQty),0),"
+				+ " COALESCE(SUM(pl.CostConsumedAmt),0),COALESCE(SUM(pl.CostConsumedQty),0),"
+				+ " COALESCE(SUM(pl.ProfitPlannedAmt),0),COALESCE(SUM(pl.ProfitRealizedAmt),0) "
 				+ "FROM C_ProjectLine pl "
 				+ "WHERE pl.C_Project_ID=p.C_Project_ID AND pl.IsActive='Y' AND pl.Parent_ID IS NULL) "
 			+ "WHERE C_Project_ID=" + getC_Project_ID();
@@ -457,17 +507,230 @@ public class MProjectLine extends X_C_ProjectLine
 	} // updateHeader
 
 
+	/**
+	 *	Roll up every summarization column from the children into the parent
+	 *	(Phase/Milestone) line. Saving the parent re-fires its own afterSave, so any
+	 *	additional levels and the project header are propagated automatically. (#2843)
+	 */
 	private void updateSummaryLine() {
 		MProjectLine summaryLine = (MProjectLine) getParent();
-		BigDecimal plannedAmt = BigDecimal.ZERO;
+		if (summaryLine == null)
+			return;
 
-		for (Integer childId : summaryLine.getChildrenIds()) {
-			MProjectLine child = new MProjectLine(getCtx(), childId, get_TrxName());
+		BigDecimal plannedAmt = Env.ZERO, plannedQty = Env.ZERO, plannedMarginAmt = Env.ZERO;
+		BigDecimal committedAmt = Env.ZERO, committedQty = Env.ZERO;
+		BigDecimal invoicedAmt = Env.ZERO, invoicedQty = Env.ZERO;
+		BigDecimal orderedAmt = Env.ZERO, qtyOrdered = Env.ZERO;
+		BigDecimal deliveredAmt = Env.ZERO, qtyDelivered = Env.ZERO;
+		BigDecimal costPlannedAmt = Env.ZERO;
+		BigDecimal costOrderedAmt = Env.ZERO, costOrderedQty = Env.ZERO;
+		BigDecimal costInvoicedAmt = Env.ZERO, costInvoicedQty = Env.ZERO;
+		BigDecimal costReceivedAmt = Env.ZERO, costReceivedQty = Env.ZERO;
+		BigDecimal costConsumedAmt = Env.ZERO, costConsumedQty = Env.ZERO;
+		BigDecimal profitPlannedAmt = Env.ZERO, profitRealizedAmt = Env.ZERO;
+
+		for (MProjectLine child : summaryLine.getChildren()) {
+			if (!child.isActive())
+				continue;
 			plannedAmt = plannedAmt.add(child.getPlannedAmt());
+			plannedQty = plannedQty.add(child.getPlannedQty());
+			plannedMarginAmt = plannedMarginAmt.add(child.getPlannedMarginAmt());
+			committedAmt = committedAmt.add(child.getCommittedAmt());
+			committedQty = committedQty.add(child.getCommittedQty());
+			invoicedAmt = invoicedAmt.add(child.getInvoicedAmt());
+			invoicedQty = invoicedQty.add(child.getInvoicedQty());
+			orderedAmt = orderedAmt.add(child.getOrderedAmt());
+			qtyOrdered = qtyOrdered.add(child.getQtyOrdered());
+			deliveredAmt = deliveredAmt.add(child.getDeliveredAmt());
+			qtyDelivered = qtyDelivered.add(child.getQtyDelivered());
+			costPlannedAmt = costPlannedAmt.add(child.getCostPlannedAmt());
+			costOrderedAmt = costOrderedAmt.add(child.getCostOrderedAmt());
+			costOrderedQty = costOrderedQty.add(child.getCostOrderedQty());
+			costInvoicedAmt = costInvoicedAmt.add(child.getCostInvoicedAmt());
+			costInvoicedQty = costInvoicedQty.add(child.getCostInvoicedQty());
+			costReceivedAmt = costReceivedAmt.add(child.getCostReceivedAmt());
+			costReceivedQty = costReceivedQty.add(child.getCostReceivedQty());
+			costConsumedAmt = costConsumedAmt.add(child.getCostConsumedAmt());
+			costConsumedQty = costConsumedQty.add(child.getCostConsumedQty());
+			profitPlannedAmt = profitPlannedAmt.add(child.getProfitPlannedAmt());
+			profitRealizedAmt = profitRealizedAmt.add(child.getProfitRealizedAmt());
 		}
 		summaryLine.setPlannedAmt(plannedAmt);
+		summaryLine.setPlannedQty(plannedQty);
+		summaryLine.setPlannedMarginAmt(plannedMarginAmt);
+		summaryLine.setCommittedAmt(committedAmt);
+		summaryLine.setCommittedQty(committedQty);
+		summaryLine.setInvoicedAmt(invoicedAmt);
+		summaryLine.setInvoicedQty(invoicedQty);
+		summaryLine.setOrderedAmt(orderedAmt);
+		summaryLine.setQtyOrdered(qtyOrdered);
+		summaryLine.setDeliveredAmt(deliveredAmt);
+		summaryLine.setQtyDelivered(qtyDelivered);
+		summaryLine.setCostPlannedAmt(costPlannedAmt);
+		summaryLine.setCostOrderedAmt(costOrderedAmt);
+		summaryLine.setCostOrderedQty(costOrderedQty);
+		summaryLine.setCostInvoicedAmt(costInvoicedAmt);
+		summaryLine.setCostInvoicedQty(costInvoicedQty);
+		summaryLine.setCostReceivedAmt(costReceivedAmt);
+		summaryLine.setCostReceivedQty(costReceivedQty);
+		summaryLine.setCostConsumedAmt(costConsumedAmt);
+		summaryLine.setCostConsumedQty(costConsumedQty);
+		summaryLine.setProfitPlannedAmt(profitPlannedAmt);
+		summaryLine.setProfitRealizedAmt(profitRealizedAmt);
 		summaryLine.saveEx();
 	}
+
+	/**
+	 *	Recalculate ONLY the summarization columns that depend on the given document type,
+	 *	matched strictly by C_ProjectLine_ID, completed/closed only. Each block runs a single
+	 *	aggregation and only sets its fields; the caller's save triggers the roll up. (#2843)
+	 *	@param tableName source document table (MOrder/MInvoice/MInOut/MProjectIssue Table_Name)
+	 *	@param isSOTrx sales (true) vs purchase (false) side of the document
+	 */
+	public void recalculateFromDocument(String tableName, boolean isSOTrx)
+	{
+		if (isSummary())
+			return;
+		if (MOrder.Table_Name.equals(tableName)) {
+			if (isSOTrx)
+				recalculateSalesOrdered();
+			else
+				recalculateCostOrdered();
+		} else if (MInvoice.Table_Name.equals(tableName)) {
+			if (isSOTrx)
+				recalculateSalesInvoiced();
+			else
+				recalculateCostInvoiced();
+		} else if (MInOut.Table_Name.equals(tableName)) {
+			//	Sales shipment does not map to a column; the "delivered" goes through the Issue
+			if (!isSOTrx)
+				recalculateCostReceived();
+		} else if (MProjectIssue.Table_Name.equals(tableName)) {
+			recalculateIssue();
+		}
+	}	//	recalculateFromDocument
+
+	/**	Ordered (sales): OrderedAmt, QtyOrdered from completed SO lines	*/
+	private void recalculateSalesOrdered()
+	{
+		BigDecimal[] amtQty = getDocumentAmtQty(
+			"SELECT COALESCE(SUM(ol.LineNetAmt),0), COALESCE(SUM(ol.QtyOrdered),0) "
+			+ "FROM " + MOrderLine.Table_Name + " ol JOIN " + MOrder.Table_Name + " o ON o.C_Order_ID=ol.C_Order_ID "
+			+ "WHERE ol.C_ProjectLine_ID=? AND o.IsSOTrx='Y' AND o.DocStatus IN ('CO','CL')", getC_ProjectLine_ID());
+		setOrderedAmt(amtQty[0]);
+		setQtyOrdered(amtQty[1]);
+	}	//	recalcSalesOrdered
+
+	/**	Ordered (purchase): CostOrderedAmt, CostOrderedQty from completed PO lines	*/
+	private void recalculateCostOrdered()
+	{
+		BigDecimal[] amtQty = getDocumentAmtQty(
+			"SELECT COALESCE(SUM(ol.LineNetAmt),0), COALESCE(SUM(ol.QtyOrdered),0) "
+			+ "FROM " + MOrderLine.Table_Name + " ol JOIN " + MOrder.Table_Name + " o ON o.C_Order_ID=ol.C_Order_ID "
+			+ "WHERE ol.C_ProjectLine_ID=? AND o.IsSOTrx='N' AND o.DocStatus IN ('CO','CL')", getC_ProjectLine_ID());
+		setCostOrderedAmt(amtQty[0]);
+		setCostOrderedQty(amtQty[1]);
+	}	//	recalcCostOrdered
+
+	/**	Invoiced (sales/AR): InvoicedAmt, InvoicedQty from completed AR lines	*/
+	private void recalculateSalesInvoiced()
+	{
+		BigDecimal[] amtQty = getDocumentAmtQty(
+			"SELECT COALESCE(SUM(il.LineNetAmt),0), COALESCE(SUM(il.QtyInvoiced),0) "
+			+ "FROM " + MInvoiceLine.Table_Name + " il JOIN " + MInvoice.Table_Name + " i ON i.C_Invoice_ID=il.C_Invoice_ID "
+			+ "WHERE il.C_ProjectLine_ID=? AND i.IsSOTrx='Y' AND i.DocStatus IN ('CO','CL')", getC_ProjectLine_ID());
+		setInvoicedAmt(amtQty[0]);
+		setInvoicedQty(amtQty[1]);
+	}	//	recalcSalesInvoiced
+
+	/**	Invoiced (purchase/AP): CostInvoicedAmt, CostInvoicedQty from completed AP lines	*/
+	private void recalculateCostInvoiced()
+	{
+		BigDecimal[] amtQty = getDocumentAmtQty(
+			"SELECT COALESCE(SUM(il.LineNetAmt),0), COALESCE(SUM(il.QtyInvoiced),0) "
+			+ "FROM " + MInvoiceLine.Table_Name + " il JOIN " + MInvoice.Table_Name + " i ON i.C_Invoice_ID=il.C_Invoice_ID "
+			+ "WHERE il.C_ProjectLine_ID=? AND i.IsSOTrx='N' AND i.DocStatus IN ('CO','CL')", getC_ProjectLine_ID());
+		setCostInvoicedAmt(amtQty[0]);
+		setCostInvoicedQty(amtQty[1]);
+	}	//	recalcCostInvoiced
+
+	/**	Received (purchase receipt): CostReceivedAmt, CostReceivedQty; amount from the linked PO line price	*/
+	private void recalculateCostReceived()
+	{
+		BigDecimal[] amtQty = getDocumentAmtQty(
+			"SELECT COALESCE(SUM(iol.MovementQty*COALESCE(ol.PriceActual,0)),0), COALESCE(SUM(iol.MovementQty),0) "
+			+ "FROM " + MInOutLine.Table_Name + " iol JOIN " + MInOut.Table_Name + " io ON io.M_InOut_ID=iol.M_InOut_ID "
+			+ "LEFT JOIN " + MOrderLine.Table_Name + " ol ON ol.C_OrderLine_ID=iol.C_OrderLine_ID "
+			+ "WHERE iol.C_ProjectLine_ID=? AND io.IsSOTrx='N' AND io.DocStatus IN ('CO','CL')", getC_ProjectLine_ID());
+		setCostReceivedAmt(amtQty[0]);
+		setCostReceivedQty(amtQty[1]);
+	}	//	recalcCostReceived
+
+	/**
+	 *	Realized via Project Issue: Delivered (sale) and Consumed (cost). The issue stores no price,
+	 *	so the amount comes from the line's own PlannedPrice / Cost. Updates ProfitRealizedAmt.
+	 */
+	private void recalculateIssue()
+	{
+		BigDecimal issuedQty = Env.ZERO;
+		if (getC_ProjectIssue_ID() > 0) {
+			issuedQty = DB.getSQLValueBD(get_TrxName(),
+				"SELECT COALESCE(SUM(pi.MovementQty),0) FROM " + MProjectIssue.Table_Name + " pi "
+				+ "WHERE pi.C_ProjectIssue_ID=? AND pi.Processed='Y'", getC_ProjectIssue_ID());
+			if (issuedQty == null)
+				issuedQty = Env.ZERO;
+		}
+		setQtyDelivered(issuedQty);
+		setDeliveredAmt(issuedQty.multiply(getPlannedPrice()));
+		setCostConsumedQty(issuedQty);
+		setCostConsumedAmt(issuedQty.multiply(getCost()));
+		setProfitRealizedAmt(getDeliveredAmt().subtract(getCostConsumedAmt()));
+	}	//	recalcIssue
+
+	/**
+	 *	Run a two-column (amount, quantity) aggregation bound to one C_ProjectLine_ID.
+	 *	@return BigDecimal[]{amount, qty}, never null, zero-filled
+	 */
+	private BigDecimal[] getDocumentAmtQty(String sql, int projectLineId)
+	{
+		BigDecimal[] result = new BigDecimal[] { Env.ZERO, Env.ZERO };
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = DB.prepareStatement(sql, get_TrxName());
+			pstmt.setInt(1, projectLineId);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result[0] = Optional.ofNullable(rs.getBigDecimal(1)).orElse(Env.ZERO);
+				result[1] = Optional.ofNullable(rs.getBigDecimal(2)).orElse(Env.ZERO);
+			}
+		} catch (Exception e) {
+			log.log(Level.SEVERE, sql, e);
+		} finally {
+			DB.close(rs, pstmt);
+		}
+		return result;
+	}	//	getDocumentAmtQty
+
+	/**
+	 *	Recalculate the given leaf project lines for the block that depends on the source document
+	 *	and save them, propagating the roll up. Used by document completion. (#2843)
+	 */
+	public static void recalculateProjectLines(Properties ctx, Collection<Integer> projectLineIds,
+		String trxName, String tableName, boolean isSOTrx)
+	{
+		if (projectLineIds == null || projectLineIds.isEmpty())
+			return;
+		for (Integer projectLineId : projectLineIds) {
+			if (projectLineId == null || projectLineId <= 0)
+				continue;
+			MProjectLine projectLine = new MProjectLine(ctx, projectLineId, trxName);
+			if (projectLine.get_ID() != projectLineId || projectLine.isSummary())
+				continue;
+			projectLine.recalculateFromDocument(tableName, isSOTrx);
+			projectLine.saveEx();
+		}
+	}	//	recalculateProjectLines
 
 	protected Optional<I_C_ProjectTask> projectTask = Optional.empty();
 	protected Optional<I_C_ProjectPhase> projectPhase = Optional.empty();

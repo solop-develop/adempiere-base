@@ -16,20 +16,10 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_ProjectPhase;
-import org.adempiere.core.domains.models.I_C_ProjectTask;
-import org.adempiere.core.domains.models.I_R_RequestAction;
-import org.adempiere.core.domains.models.I_R_RequestUpdate;
-import org.adempiere.core.domains.models.X_C_BP_Group;
-import org.adempiere.core.domains.models.X_R_Request;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.DBException;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 import org.spin.model.MRNoticeTemplate;
 import org.spin.model.MRNoticeTemplateEvent;
 import org.spin.queue.notification.DefaultNotifier;
@@ -993,6 +983,15 @@ public class MRequest extends X_R_Request
 		updateOrCreateRequestAction(COLUMNNAME_R_Milestone_ID, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_R_Release_ID, newRecord);
 		updateOrCreateRequestAction(COLUMNNAME_R_Iteration_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_Discord_Thread_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_IssueID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_Responsible_ID, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_DateInternalDelivery, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_Discord_URL, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_DateInternalReject, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_QtyInternalDelivery, newRecord);
+		updateOrCreateRequestAction(COLUMNNAME_QtyInternalReject, newRecord);
+
 	}
 
 	/**

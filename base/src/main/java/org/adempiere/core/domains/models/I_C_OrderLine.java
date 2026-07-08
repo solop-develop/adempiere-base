@@ -198,6 +198,19 @@ public interface I_C_OrderLine
 	  */
 	public int getC_OrderLine_ID();
 
+    /** Column name Cost */
+    public static final String COLUMNNAME_Cost = "Cost";
+
+	/** Set Cost.
+	  * Cost information
+	  */
+	public void setCost (BigDecimal Cost);
+
+	/** Get Cost.
+	  * Cost information
+	  */
+	public BigDecimal getCost();
+
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
 
@@ -408,6 +421,7 @@ public interface I_C_OrderLine
 	  */
 	public BigDecimal getDiscount();
 
+
     /** Column name EndDate */
     public static final String COLUMNNAME_EndDate = "EndDate";
 
@@ -472,6 +486,7 @@ public interface I_C_OrderLine
 	  * if true, the line is just description and no transaction
 	  */
 	public boolean isDescription();
+
 
     /** Column name Line */
     public static final String COLUMNNAME_Line = "Line";
