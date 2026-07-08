@@ -220,7 +220,9 @@ public class SequenceCheck extends SvrProcess
 					MSequence seq = new MSequence (ctx, sequenceId, transactionName);
 					int old = seq.getCurrentNext();
 					int oldSys = seq.getCurrentNextSys();
-					boolean isNewSequence = seq.getCreated().equals(seq.getUpdated());
+					// Created may be null for some sequences; guard against NPE so the
+					// sequence is still validated below.
+					boolean isNewSequence = seq.getCreated() != null && seq.getCreated().equals(seq.getUpdated());
 					if (seq.validateTableIDValue()) {
 						if (seq.getCurrentNext() != old) {
 							String msg = seq.getName() + " ID  "
@@ -317,4 +319,5 @@ public class SequenceCheck extends SvrProcess
 		
 		System.out.println("Process=" + pi.getTitle() + " Error="+pi.isError() + " Summary=" + pi.getSummary());
 	}
+
 }	//	SequenceCheck
