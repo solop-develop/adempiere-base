@@ -3,7 +3,6 @@ package org.spin.service.grpc.authentication;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MPreference;
 import org.compiere.model.MRole;
 import org.compiere.model.MSession;
 import org.compiere.util.CCache;
@@ -15,7 +14,6 @@ import org.spin.service.grpc.util.base.PreferenceUtil;
 
 import java.sql.Timestamp;
 import java.util.Base64;
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -167,17 +165,13 @@ public class KeycloakSessionHandler {
 		// Load language and warehouse from saved preferences (written by setSessionAttribute / runChangeRole)
 		// Cannot rely on session.getCtx() because MSession has no AD_Language column —
 		// getCtx() returns the global context, not the session-specific one.
+		// getLanguagePreference normalises legacy display-name values like
+		// "Español (MX)" (left in AD_Preference by the ZK UI login flow) back
+		// into a real AD_Language code such as "es_MX", so the downstream
+		// services receive a code that they can use as a query parameter.
 		int userId = session.getCreatedBy();
-		String language = null;
-		int warehouseId = -1;
-		List<MPreference> preferences = PreferenceUtil.getSessionPreferences(userId);
-		for (MPreference pref : preferences) {
-			if (PreferenceUtil.P_LANGUAGE.equals(pref.getAttribute())) {
-				language = pref.getValue();
-			} else if (PreferenceUtil.P_WAREHOUSE.equals(pref.getAttribute())) {
-				warehouseId = Integer.parseInt(pref.getValue());
-			}
-		}
+		String language = PreferenceUtil.getLanguagePreference(userId);
+		int warehouseId = PreferenceUtil.getWarehousePreference(userId);
 		if (Util.isEmpty(language, true)) {
 			language = SessionManager.getDefaultLanguage(null);
 		}
@@ -228,12 +222,21 @@ public class KeycloakSessionHandler {
 			orgId = 0;
 		}
 
-		int warehouseId = SessionManager.getDefaultWarehouseId(orgId);
+		// Read previously-saved language/warehouse preferences for the user so
+		// a new Keycloak session does not silently fall back to the client/
+		// system default. Mirrors loadExistingSessionContext so the same user
+		// gets the same language whether the session is created or recovered.
+		String language = PreferenceUtil.getLanguagePreference(userId);
+		int warehouseId = PreferenceUtil.getWarehousePreference(userId);
+		if (Util.isEmpty(language, true)) {
+			language = SessionManager.getDefaultLanguage(null);
+		}
+		if (warehouseId < 0) {
+			warehouseId = SessionManager.getDefaultWarehouseId(orgId);
+		}
 		if (warehouseId < 0) {
 			warehouseId = 0;
 		}
-
-		String language = SessionManager.getDefaultLanguage(null);
 
 		// Create session using SessionManager
 		MSession session = SessionManager.createSession(
@@ -251,6 +254,21 @@ public class KeycloakSessionHandler {
 
 		// Cache the mapping: Keycloak sid -> ADempiere session ID
 		keycloakSessionCache.put(claims.sessionId, session.getAD_Session_ID());
+
+		// Seed AD_Preference for first-time Keycloak users so the next
+		// login restores the same language/role/warehouse without waiting
+		// for a manual role change. Mirrors the ZK UI flow, where the
+		// first successful role-selection persists all five attributes.
+		if (PreferenceUtil.getSessionPreferences(userId).isEmpty()) {
+			PreferenceUtil.saveSessionPreferences(
+				userId,
+				language,
+				session.getAD_Role_ID(),
+				session.getAD_Client_ID(),
+				orgId,
+				warehouseId
+			);
+		}
 
 		// Build context following getSessionFromToken pattern
 		Properties context = session.getCtx();
