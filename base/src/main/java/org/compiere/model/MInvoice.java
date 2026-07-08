@@ -1553,8 +1553,16 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		List<Integer> invoiceRecognitionLines = getRecognitionInvoiceLinesIds();
 		List<MRecognitionSetup> recognitionSetups = MRecognitionSetup.getSetupsFromInvoice(this);
 		schemas.forEach(schema -> {
-			int unearnedRevenueRecognitionAccount = MRevenueRecognitionPlan.getUnearnedRevenueAccountId(getCtx(), businessPartnerGroupId, schema.getC_AcctSchema_ID());
-			if(unearnedRevenueRecognitionAccount <= 0) {
+			int unearnedRevenueRecognitionAccountId = MRevenueRecognitionPlan.getUnearnedRevenueAccountId(getCtx(), businessPartnerGroupId, schema.getC_AcctSchema_ID());
+			if(unearnedRevenueRecognitionAccountId <= 0) {
+				throw new AdempiereException("@UnEarnedRevenue_Acct@ @NotFound@");
+			}
+			MAccount unearnedRevenueRecognitionAccount =  MAccount.get(getCtx(),
+					getAD_Client_ID(), getAD_Org_ID(), schema.getC_AcctSchema_ID(), unearnedRevenueRecognitionAccountId, 0,
+					0, getC_BPartner_ID(), getAD_OrgTrx_ID(), 0, 0, getC_SalesRegion_ID(),
+					getC_Project_ID(), getC_Campaign_ID(), getC_Activity_ID(),
+					getUser1_ID(), getUser2_ID() , getUser3_ID(), getUser4_ID(), 0, 0, get_ValueAsInt("S_Contract_ID"), null);
+			if (unearnedRevenueRecognitionAccount == null || unearnedRevenueRecognitionAccount.get_ID() <= 0) {
 				throw new AdempiereException("@UnEarnedRevenue_Acct@ @NotFound@");
 			}
 			invoiceRecognitionLines.forEach(invoiceLineId -> {
@@ -1587,7 +1595,7 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 					plan.setClientOrg(invoiceLine);
 					plan.setC_RevenueRecognition_ID (product.getC_RevenueRecognition_ID());
 					plan.setC_AcctSchema_ID (schema.getC_AcctSchema_ID());
-					plan.setUnEarnedRevenue_Acct (unearnedRevenueRecognitionAccount);
+					plan.setUnEarnedRevenue_Acct (unearnedRevenueRecognitionAccount.get_ID());
 					plan.setP_Revenue_Acct (revenue.get_ID());
 					plan.setC_Currency_ID (getC_Currency_ID());
 					plan.setM_Product_ID(invoiceLine.getM_Product_ID());
@@ -2312,6 +2320,14 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		for (MInvoiceLine invoiceLine:getLines()){
 		    generateCostDetail(invoiceLine);
         }
+
+		//	Refresh project line summarization for linked project lines (#2843)
+		Set<Integer> projectLineIds = new HashSet<Integer>();
+		for (MInvoiceLine invoiceLine : getLines())
+			if (invoiceLine.get_ValueAsInt("C_ProjectLine_ID") > 0)
+				projectLineIds.add(invoiceLine.get_ValueAsInt("C_ProjectLine_ID"));
+		MProjectLine.recalculateProjectLines(getCtx(), projectLineIds, get_TrxName(), Table_Name, isSOTrx());
+
 		processMsg = info.toString().trim();
 		setProcessed(true);
 		if (hasAllocation) {

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Discord_Thread_Index" ReleaseNo="1.5.10" SeqNo="503470">
+    <Comments>Remove PrintFormat Name Index</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_r_request_discord_thread_id ON r_request (Discord_Thread_ID);
+      </SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_r_request_discord_thread_id;
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>

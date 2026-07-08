@@ -39,7 +39,7 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260514L;
+	private static final long serialVersionUID = 20260624L;
 
     /** Standard Constructor */
     public X_C_BPartner (Properties ctx, int C_BPartner_ID, String trxName)
@@ -51,11 +51,15 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 			setC_BP_Group_ID (0);
 			setIsCustomer (false);
 			setIsEmployee (false);
+			setIsLargeTaxpayer (false);
+// N
 			setIsOneTime (false);
 			setIsPOTaxExempt (false);
 // N
 			setIsProspect (false);
 			setIsSalesRep (false);
+			setIsSelfWithholding (false);
+// N
 			setIsSummary (false);
 			setIsVendor (false);
 			setName (null);
@@ -949,6 +953,30 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return false;
 	}
 
+	/** Set Drop Shipment.
+		@param IsDropShip 
+		Drop Shipments are sent from the Vendor directly to the Customer
+	  */
+	public void setIsDropShip (boolean IsDropShip)
+	{
+		set_Value (COLUMNNAME_IsDropShip, Boolean.valueOf(IsDropShip));
+	}
+
+	/** Get Drop Shipment.
+		@return Drop Shipments are sent from the Vendor directly to the Customer
+	  */
+	public boolean isDropShip () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsDropShip);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Employee.
 		@param IsEmployee 
 		Indicates if  this Business Partner is an employee
@@ -972,6 +1000,7 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		}
 		return false;
 	}
+
 
 	/** Set Is Manufacturer.
 		@param IsManufacturer 
@@ -1090,6 +1119,7 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return false;
 	}
 
+
 	/** Set Summary Level.
 		@param IsSummary 
 		This is a summary entity
@@ -1162,6 +1192,7 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return false;
 	}
 
+
 	/** Set Logo.
 		@param Logo_ID Logo	  */
 	public void setLogo_ID (int Logo_ID)
@@ -1180,6 +1211,35 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** MaritalStatus AD_Reference_ID=53614 */
+	public static final int MARITALSTATUS_AD_Reference_ID=53614;
+	/** Divorced = D */
+	public static final String MARITALSTATUS_Divorced = "D";
+	/** Live-in = L */
+	public static final String MARITALSTATUS_Live_In = "L";
+	/** Married = M */
+	public static final String MARITALSTATUS_Married = "M";
+	/** Single = S */
+	public static final String MARITALSTATUS_Single = "S";
+	/** Widow = W */
+	public static final String MARITALSTATUS_Widow = "W";
+	/** Windower = X */
+	public static final String MARITALSTATUS_Windower = "X";
+	/** Set Marital Status.
+		@param MaritalStatus Marital Status	  */
+	public void setMaritalStatus (String MaritalStatus)
+	{
+
+		set_Value (COLUMNNAME_MaritalStatus, MaritalStatus);
+	}
+
+	/** Get Marital Status.
+		@return Marital Status	  */
+	public String getMaritalStatus () 
+	{
+		return (String)get_Value(COLUMNNAME_MaritalStatus);
 	}
 
 	public I_M_DiscountSchema getM_DiscountSchema() throws RuntimeException
@@ -1236,35 +1296,6 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** MaritalStatus AD_Reference_ID=53614 */
-	public static final int MARITALSTATUS_AD_Reference_ID=53614;
-	/** Divorced = D */
-	public static final String MARITALSTATUS_Divorced = "D";
-	/** Live-in = L */
-	public static final String MARITALSTATUS_Live_In = "L";
-	/** Married = M */
-	public static final String MARITALSTATUS_Married = "M";
-	/** Single = S */
-	public static final String MARITALSTATUS_Single = "S";
-	/** Widow = W */
-	public static final String MARITALSTATUS_Widow = "W";
-	/** Windower = X */
-	public static final String MARITALSTATUS_Windower = "X";
-	/** Set Marital Status.
-		@param MaritalStatus Marital Status	  */
-	public void setMaritalStatus (String MaritalStatus)
-	{
-
-		set_Value (COLUMNNAME_MaritalStatus, MaritalStatus);
-	}
-
-	/** Get Marital Status.
-		@return Marital Status	  */
-	public String getMaritalStatus () 
-	{
-		return (String)get_Value(COLUMNNAME_MaritalStatus);
 	}
 
 	/** Set NAICS/SIC.
@@ -1747,6 +1778,36 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return bd;
 	}
 
+	/** SOCreditStatus AD_Reference_ID=289 */
+	public static final int SOCREDITSTATUS_AD_Reference_ID=289;
+	/** Credit Stop = S */
+	public static final String SOCREDITSTATUS_CreditStop = "S";
+	/** Credit Hold = H */
+	public static final String SOCREDITSTATUS_CreditHold = "H";
+	/** Credit Watch = W */
+	public static final String SOCREDITSTATUS_CreditWatch = "W";
+	/** No Credit Check = X */
+	public static final String SOCREDITSTATUS_NoCreditCheck = "X";
+	/** Credit OK = O */
+	public static final String SOCREDITSTATUS_CreditOK = "O";
+	/** Set Credit Status.
+		@param SOCreditStatus 
+		Business Partner Credit Status
+	  */
+	public void setSOCreditStatus (String SOCreditStatus)
+	{
+
+		set_Value (COLUMNNAME_SOCreditStatus, SOCreditStatus);
+	}
+
+	/** Get Credit Status.
+		@return Business Partner Credit Status
+	  */
+	public String getSOCreditStatus () 
+	{
+		return (String)get_Value(COLUMNNAME_SOCreditStatus);
+	}
+
 	/** Set Credit Used.
 		@param SO_CreditUsed 
 		Current open balance
@@ -1784,34 +1845,20 @@ public class X_C_BPartner extends PO implements I_C_BPartner, I_Persistent
 		return (String)get_Value(COLUMNNAME_SO_Description);
 	}
 
-	/** SOCreditStatus AD_Reference_ID=289 */
-	public static final int SOCREDITSTATUS_AD_Reference_ID=289;
-	/** Credit Stop = S */
-	public static final String SOCREDITSTATUS_CreditStop = "S";
-	/** Credit Hold = H */
-	public static final String SOCREDITSTATUS_CreditHold = "H";
-	/** Credit Watch = W */
-	public static final String SOCREDITSTATUS_CreditWatch = "W";
-	/** No Credit Check = X */
-	public static final String SOCREDITSTATUS_NoCreditCheck = "X";
-	/** Credit OK = O */
-	public static final String SOCREDITSTATUS_CreditOK = "O";
-	/** Set Credit Status.
-		@param SOCreditStatus 
-		Business Partner Credit Status
-	  */
-	public void setSOCreditStatus (String SOCreditStatus)
-	{
 
-		set_Value (COLUMNNAME_SOCreditStatus, SOCreditStatus);
+
+	/** Set Support Reference Value.
+		@param SupportReferenceValue Support Reference Value	  */
+	public void setSupportReferenceValue (String SupportReferenceValue)
+	{
+		set_Value (COLUMNNAME_SupportReferenceValue, SupportReferenceValue);
 	}
 
-	/** Get Credit Status.
-		@return Business Partner Credit Status
-	  */
-	public String getSOCreditStatus () 
+	/** Get Support Reference Value.
+		@return Support Reference Value	  */
+	public String getSupportReferenceValue () 
 	{
-		return (String)get_Value(COLUMNNAME_SOCreditStatus);
+		return (String)get_Value(COLUMNNAME_SupportReferenceValue);
 	}
 
 	/** Set Tax ID.

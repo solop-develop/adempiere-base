@@ -17,12 +17,16 @@
 
 package org.spin.queue.process;
 
+import org.adempiere.core.domains.models.I_AD_NotificationRecipient;
+import org.adempiere.core.domains.models.I_AD_NotificationUpdates;
 import org.adempiere.core.domains.models.I_AD_Queue;
+import org.compiere.model.MAttachment;
 import org.compiere.model.Query;
 import org.compiere.util.Trx;
 import org.compiere.util.Util;
 import org.spin.queue.model.MADQueue;
 import org.spin.queue.model.MADQueueType;
+import org.spin.queue.notification.model.MADNotificationQueue;
 import org.spin.queue.util.QueueLoader;
 import org.spin.queue.util.QueueManager;
 
@@ -58,6 +62,9 @@ public class FlushSystemQueue extends FlushSystemQueueAbstract {
 			Timestamp now = new Timestamp(System.currentTimeMillis());
 			whereClause.append(" AND ").append(I_AD_Queue.COLUMNNAME_Updated).append(" < ?");
 			parameters.add(now);
+			//	Skip notifications still in draft
+			whereClause.append(" AND NOT EXISTS (SELECT 1 FROM AD_NotificationQueue nq")
+					.append(" WHERE nq.AD_Queue_ID = AD_Queue.AD_Queue_ID AND nq.IsDraft = 'Y')");
 			//	For batch
 			MADQueueType queueType = MADQueueType.getById(getCtx(), getQueueTypeId(), null);
 			if(queueType.isParallelProcessing()) {
@@ -102,6 +109,7 @@ public class FlushSystemQueue extends FlushSystemQueueAbstract {
 					.withTransactionName(transactionName);
 			try {
 					queueManager.process(queueToProcess, isDeleteAfterProcess());
+				handleDeleteOnSent(queueId, transactionName);
 				counter.incrementAndGet();
 			} catch (Exception e) {
 				errors.incrementAndGet();
@@ -109,6 +117,48 @@ public class FlushSystemQueue extends FlushSystemQueueAbstract {
 				log.severe(queueToProcess + ": " + e.getLocalizedMessage());
 			}
 		}
+	}
+
+	/**
+	 * Delete a notification and its attachments after a successful send when DeleteOnSent is set
+	 * @param queueId queue id linked to the notification
+	 * @param transactionName transaction name
+	 */
+	private void handleDeleteOnSent(int queueId, String transactionName) {
+		MADNotificationQueue notification = new Query(getCtx(), "AD_NotificationQueue",
+				"AD_Queue_ID = ? AND DeleteOnSent = 'Y' AND Processed = 'Y'", transactionName)
+				.setParameters(queueId)
+				.first();
+		if (notification == null) {
+			return;
+		}
+		//	MAttachment.beforeDelete removes the external-store objects and references
+		MAttachment attachment = notification.getAttachment(true);
+		if (attachment != null) {
+			attachment.delete(true);
+		}
+		deleteNotificationChildren(I_AD_NotificationUpdates.Table_Name, notification.getAD_NotificationQueue_ID(), transactionName);
+		deleteNotificationChildren(I_AD_NotificationRecipient.Table_Name, notification.getAD_NotificationQueue_ID(), transactionName);
+		notification.delete(true);
+		MADQueue queue = new MADQueue(getCtx(), queueId, transactionName);
+		if (queue.get_ID() > 0) {
+			queue.delete(true);
+		}
+	}
+
+	/**
+	 * Delete all rows of a notification child table referenced by a notification queue.
+	 * Active and inactive rows are removed to avoid leaving orphan references.
+	 * @param tableName child table name
+	 * @param notificationQueueId notification queue id
+	 * @param transactionName transaction name
+	 */
+	private void deleteNotificationChildren(String tableName, int notificationQueueId, String transactionName) {
+		new Query(getCtx(), tableName,
+				I_AD_NotificationRecipient.COLUMNNAME_AD_NotificationQueue_ID + " = ?", transactionName)
+				.setParameters(notificationQueueId)
+				.list()
+				.forEach(child -> child.delete(true));
 	}
 
 	/**

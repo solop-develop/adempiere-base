@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for AD_User
  *  @author Adempiere (generated) 
@@ -60,7 +61,7 @@ public interface I_AD_User
 	/** Get EMail Configuration	  */
 	public int getAD_EMailConfig_ID();
 
-	public org.adempiere.core.domains.models.I_AD_EMailConfig getAD_EMailConfig() throws RuntimeException;
+	public I_AD_EMailConfig getAD_EMailConfig() throws RuntimeException;
 
     /** Column name AD_Org_ID */
     public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";
@@ -88,7 +89,7 @@ public interface I_AD_User
 	  */
 	public int getAD_OrgTrx_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Org getAD_OrgTrx() throws RuntimeException;
+	public I_AD_Org getAD_OrgTrx() throws RuntimeException;
 
     /** Column name AD_User_ID */
     public static final String COLUMNNAME_AD_User_ID = "AD_User_ID";
@@ -153,7 +154,7 @@ public interface I_AD_User
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_BPartner_Location_ID */
     public static final String COLUMNNAME_C_BPartner_Location_ID = "C_BPartner_Location_ID";
@@ -168,7 +169,7 @@ public interface I_AD_User
 	  */
 	public int getC_BPartner_Location_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
+	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
 
     /** Column name C_Campaign_ID */
     public static final String COLUMNNAME_C_Campaign_ID = "C_Campaign_ID";
@@ -183,7 +184,7 @@ public interface I_AD_User
 	  */
 	public int getC_Campaign_ID();
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException;
+	public I_C_Campaign getC_Campaign() throws RuntimeException;
 
     /** Column name C_Greeting_ID */
     public static final String COLUMNNAME_C_Greeting_ID = "C_Greeting_ID";
@@ -198,7 +199,7 @@ public interface I_AD_User
 	  */
 	public int getC_Greeting_ID();
 
-	public org.adempiere.core.domains.models.I_C_Greeting getC_Greeting() throws RuntimeException;
+	public I_C_Greeting getC_Greeting() throws RuntimeException;
 
     /** Column name C_Job_ID */
     public static final String COLUMNNAME_C_Job_ID = "C_Job_ID";
@@ -213,7 +214,7 @@ public interface I_AD_User
 	  */
 	public int getC_Job_ID();
 
-	public org.adempiere.core.domains.models.I_C_Job getC_Job() throws RuntimeException;
+	public I_C_Job getC_Job() throws RuntimeException;
 
     /** Column name C_Location_ID */
     public static final String COLUMNNAME_C_Location_ID = "C_Location_ID";
@@ -228,7 +229,7 @@ public interface I_AD_User
 	  */
 	public int getC_Location_ID();
 
-	public org.adempiere.core.domains.models.I_C_Location getC_Location() throws RuntimeException;
+	public I_C_Location getC_Location() throws RuntimeException;
 
     /** Column name Comments */
     public static final String COLUMNNAME_Comments = "Comments";
@@ -271,6 +272,17 @@ public interface I_AD_User
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name DD_Driver_ID */
+    public static final String COLUMNNAME_DD_Driver_ID = "DD_Driver_ID";
+
+	/** Set Driver	  */
+	public void setDD_Driver_ID (int DD_Driver_ID);
+
+	/** Get Driver	  */
+	public int getDD_Driver_ID();
+
+	public I_DD_Driver getDD_Driver() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -362,6 +374,19 @@ public interface I_AD_User
 	  * Facsimile number
 	  */
 	public String getFax();
+
+    /** Column name Github_User */
+    public static final String COLUMNNAME_Github_User = "Github_User";
+
+	/** Set Github User.
+	  * Collaborator GitHub username.
+	  */
+	public void setGithub_User (String Github_User);
+
+	/** Get Github User.
+	  * Collaborator GitHub username.
+	  */
+	public String getGithub_User();
 
     /** Column name HasRole */
     public static final String COLUMNNAME_HasRole = "HasRole";
@@ -733,7 +758,7 @@ public interface I_AD_User
 	  */
 	public int getSalesRep_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+	public I_AD_User getSalesRep() throws RuntimeException;
 
     /** Column name Salt */
     public static final String COLUMNNAME_Salt = "Salt";
@@ -761,7 +786,16 @@ public interface I_AD_User
 	  */
 	public int getSupervisor_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSupervisor() throws RuntimeException;
+	public I_AD_User getSupervisor() throws RuntimeException;
+
+    /** Column name SupportReferenceValue */
+    public static final String COLUMNNAME_SupportReferenceValue = "SupportReferenceValue";
+
+	/** Set Support Reference Value	  */
+	public void setSupportReferenceValue (String SupportReferenceValue);
+
+	/** Get Support Reference Value	  */
+	public String getSupportReferenceValue();
 
     /** Column name Title */
     public static final String COLUMNNAME_Title = "Title";

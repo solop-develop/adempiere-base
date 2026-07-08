@@ -28,6 +28,7 @@ import org.compiere.util.KeyNamePair;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Properties;
 
 /** Generated Model for R_Request
@@ -39,10 +40,10 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251223L;
+	private static final long serialVersionUID = 20260629L;
 
     /** Standard Constructor */
-    public X_R_Request(Properties ctx, int R_Request_ID, String trxName)
+    public X_R_Request (Properties ctx, int R_Request_ID, String trxName)
     {
       super (ctx, R_Request_ID, trxName);
       /** if (R_Request_ID == 0)
@@ -71,7 +72,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
     }
 
     /** Load Constructor */
-    public X_R_Request(Properties ctx, ResultSet rs, String trxName)
+    public X_R_Request (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -692,6 +693,34 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		return (Timestamp)get_Value(COLUMNNAME_DateCompletePlan);
 	}
 
+	/** Set End of Execution Date.
+		@param DateInternalDelivery End of Execution Date	  */
+	public void setDateInternalDelivery (Timestamp DateInternalDelivery)
+	{
+		set_Value (COLUMNNAME_DateInternalDelivery, DateInternalDelivery);
+	}
+
+	/** Get End of Execution Date.
+		@return End of Execution Date	  */
+	public Timestamp getDateInternalDelivery () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateInternalDelivery);
+	}
+
+	/** Set Date Internal Reject.
+		@param DateInternalReject Date Internal Reject	  */
+	public void setDateInternalReject (Timestamp DateInternalReject)
+	{
+		set_ValueNoCheck (COLUMNNAME_DateInternalReject, DateInternalReject);
+	}
+
+	/** Get Date Internal Reject.
+		@return Date Internal Reject	  */
+	public Timestamp getDateInternalReject () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateInternalReject);
+	}
+
 	/** Set Date last action.
 		@param DateLastAction 
 		Date this request was last acted on
@@ -808,6 +837,40 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Discord Thread ID.
+		@param Discord_Thread_ID 
+		Discord thread identifier mapping the thread to the request/issue.
+	  */
+	public void setDiscord_Thread_ID (String Discord_Thread_ID)
+	{
+		set_Value (COLUMNNAME_Discord_Thread_ID, Discord_Thread_ID);
+	}
+
+	/** Get Discord Thread ID.
+		@return Discord thread identifier mapping the thread to the request/issue.
+	  */
+	public String getDiscord_Thread_ID () 
+	{
+		return (String)get_Value(COLUMNNAME_Discord_Thread_ID);
+	}
+
+	/** Set Discord URL.
+		@param Discord_URL 
+		Link to the Discord thread.
+	  */
+	public void setDiscord_URL (String Discord_URL)
+	{
+		set_Value (COLUMNNAME_Discord_URL, Discord_URL);
+	}
+
+	/** Get Discord URL.
+		@return Link to the Discord thread.
+	  */
+	public String getDiscord_URL () 
+	{
+		return (String)get_Value(COLUMNNAME_Discord_URL);
 	}
 
 	/** Set Document No.
@@ -968,6 +1031,54 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Issue ID.
+		@param IssueID 
+		External issue number.
+	  */
+	public void setIssueID (int IssueID)
+	{
+		set_Value (COLUMNNAME_IssueID, Integer.valueOf(IssueID));
+	}
+
+	/** Get Issue ID.
+		@return External issue number.
+	  */
+	public int getIssueID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_IssueID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Issue URL.
+		@param IssueURL Issue URL	  */
+	public void setIssueURL (String IssueURL)
+	{
+		set_Value (COLUMNNAME_IssueURL, IssueURL);
+	}
+
+	/** Get Issue URL.
+		@return Issue URL	  */
+	public String getIssueURL () 
+	{
+		return (String)get_Value(COLUMNNAME_IssueURL);
+	}
+
+	/** Set Labels.
+		@param Labels Labels	  */
+	public void setLabels (List Labels)
+	{
+		set_Value (COLUMNNAME_Labels, Labels);
+	}
+
+	/** Get Labels.
+		@return Labels	  */
+	public List getLabels () 
+	{
+		return (List)get_Value(COLUMNNAME_Labels);
 	}
 
 	/** Set Last Result.
@@ -1456,6 +1567,40 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		return false;
 	}
 
+	/** Set Qty Internal Delivery.
+		@param QtyInternalDelivery Qty Internal Delivery	  */
+	public void setQtyInternalDelivery (BigDecimal QtyInternalDelivery)
+	{
+		set_ValueNoCheck (COLUMNNAME_QtyInternalDelivery, QtyInternalDelivery);
+	}
+
+	/** Get Qty Internal Delivery.
+		@return Qty Internal Delivery	  */
+	public BigDecimal getQtyInternalDelivery () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyInternalDelivery);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Qty Internal Reject.
+		@param QtyInternalReject Qty Internal Reject	  */
+	public void setQtyInternalReject (BigDecimal QtyInternalReject)
+	{
+		set_ValueNoCheck (COLUMNNAME_QtyInternalReject, QtyInternalReject);
+	}
+
+	/** Get Qty Internal Reject.
+		@return Qty Internal Reject	  */
+	public BigDecimal getQtyInternalReject () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyInternalReject);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Quantity Invoiced.
 		@param QtyInvoiced 
 		Invoiced Quantity
@@ -1567,6 +1712,20 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Reject Delivery.
+		@param RejectDelivery Reject Delivery	  */
+	public void setRejectDelivery (String RejectDelivery)
+	{
+		set_Value (COLUMNNAME_RejectDelivery, RejectDelivery);
+	}
+
+	/** Get Reject Delivery.
+		@return Reject Delivery	  */
+	public String getRejectDelivery () 
+	{
+		return (String)get_Value(COLUMNNAME_RejectDelivery);
+	}
+
 	/** Set Request Amount.
 		@param RequestAmt 
 		Amount associated with this request
@@ -1615,6 +1774,34 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 	public String getRequestInfoType () 
 	{
 		return (String)get_Value(COLUMNNAME_RequestInfoType);
+	}
+
+	public I_AD_User getResponsible() throws RuntimeException
+    {
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
+			.getPO(getResponsible_ID(), get_TrxName());	}
+
+	/** Set Responsible.
+		@param Responsible_ID 
+		Responsible
+	  */
+	public void setResponsible_ID (int Responsible_ID)
+	{
+		if (Responsible_ID < 1) 
+			set_Value (COLUMNNAME_Responsible_ID, null);
+		else 
+			set_Value (COLUMNNAME_Responsible_ID, Integer.valueOf(Responsible_ID));
+	}
+
+	/** Get Responsible.
+		@return Responsible
+	  */
+	public int getResponsible_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Responsible_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Result.
@@ -2282,5 +2469,22 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent
 	public String getUUID () 
 	{
 		return (String)get_Value(COLUMNNAME_UUID);
+	}
+
+	/** Set Search Key.
+		@param Value 
+		Search key for the record in the format required - must be unique
+	  */
+	public void setValue (String Value)
+	{
+		set_Value (COLUMNNAME_Value, Value);
+	}
+
+	/** Get Search Key.
+		@return Search key for the record in the format required - must be unique
+	  */
+	public String getValue () 
+	{
+		return (String)get_Value(COLUMNNAME_Value);
 	}
 }

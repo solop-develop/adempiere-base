@@ -1,5 +1,7 @@
 package org.solop.queue.storage;
+
 import org.adempiere.core.domains.models.*;
+import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.util.CLogger;
@@ -87,6 +89,42 @@ public class StorageUpdate extends QueueManager {
                 queue.saveEx();
             }
         }
+        //	Chain the same document into every queue configured in AD_StorageUpdateQueue,
+        //	resolving the queue manager by the AD_QueueType_ID stored on each record.
+        enqueueConfiguredQueues(tableId, recordId);
+    }
+
+    /**
+     * Enqueue the current document on each queue type configured in AD_StorageUpdateQueue, so that
+     * downstream queues (e.g. the publication updater) can react to the storage change.
+     * Only configs whose organization is the original document's org (or org 0, meaning all orgs)
+     * are enqueued.
+     */
+    private void enqueueConfiguredQueues(int tableId, int recordId) {
+        PO document = MTable.get(getContext(), tableId).getPO(recordId, getTransactionName());
+        int documentOrgId = document != null ? document.getAD_Org_ID() : 0;
+        MTable storageUpdateQueueTable = MTable.get(getContext(), I_AD_StorageUpdateQueue.Table_Name);
+        new Query(getContext(), I_AD_StorageUpdateQueue.Table_Name, null, getTransactionName())
+                .setClient_ID()
+                .setOnlyActiveRecords(true)
+                .getIDsAsList()
+                .forEach(id -> {
+                    PO config = storageUpdateQueueTable.getPO(id, getTransactionName());
+                    int queueTypeId = config.get_ValueAsInt(I_AD_StorageUpdateQueue.COLUMNNAME_AD_QueueType_ID);
+                    if(queueTypeId <= 0) {
+                        return;
+                    }
+                    //	Skip configs scoped to a different organization than the document
+                    int configOrgId = config.getAD_Org_ID();
+                    if(configOrgId != 0 && configOrgId != documentOrgId) {
+                        return;
+                    }
+                    QueueLoader.getInstance().getQueueManager(queueTypeId)
+                            .withContext(getContext())
+                            .withTransactionName(getTransactionName())
+                            .withEntity(tableId, recordId)
+                            .addToQueue();
+                });
     }
 
     public static void addDocumentToQueue(PO document) {

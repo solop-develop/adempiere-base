@@ -18,15 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
-import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for AD_TokenDefinition
  *  @author Adempiere (generated) 
@@ -37,7 +37,7 @@ public class X_AD_TokenDefinition extends PO implements I_AD_TokenDefinition, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260625L;
 
     /** Standard Constructor */
     public X_AD_TokenDefinition (Properties ctx, int AD_TokenDefinition_ID, String trxName)
@@ -80,6 +80,30 @@ public class X_AD_TokenDefinition extends PO implements I_AD_TokenDefinition, I_
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	/** AD_TokenAccessType AD_Reference_ID=54720 */
+	public static final int AD_TOKENACCESSTYPE_AD_Reference_ID=54720;
+	/** Full Access = F */
+	public static final String AD_TOKENACCESSTYPE_FullAccess = "F";
+	/** Scoped = S */
+	public static final String AD_TOKENACCESSTYPE_Scoped = "S";
+	/** Set Token Access Type.
+		@param AD_TokenAccessType 
+		Access type for the token definition
+	  */
+	public void setAD_TokenAccessType (String AD_TokenAccessType)
+	{
+
+		set_Value (COLUMNNAME_AD_TokenAccessType, AD_TokenAccessType);
+	}
+
+	/** Get Token Access Type.
+		@return Access type for the token definition
+	  */
+	public String getAD_TokenAccessType () 
+	{
+		return (String)get_Value(COLUMNNAME_AD_TokenAccessType);
+	}
 
 	/** Set Token Definition.
 		@param AD_TokenDefinition_ID 

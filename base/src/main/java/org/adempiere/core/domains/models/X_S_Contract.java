@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,11 +12,16 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
+import org.compiere.model.I_Persistent;
+import org.compiere.model.MTable;
+import org.compiere.model.PO;
+import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
 
@@ -27,14 +32,14 @@ import java.util.Properties;
 
 /** Generated Model for S_Contract
  *  @author Adempiere (generated) 
- *  @version Release 3.9.3 - $Id$ */
-public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract, org.compiere.model.I_Persistent 
+ *  @version Release 3.9.4 - $Id$ */
+public class X_S_Contract extends PO implements I_S_Contract, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200405L;
+	private static final long serialVersionUID = 20260629L;
 
     /** Standard Constructor */
     public X_S_Contract (Properties ctx, int S_Contract_ID, String trxName)
@@ -116,9 +121,9 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
     }
 
     /** Load Meta Data */
-    protected org.compiere.model.POInfo initPO (Properties ctx)
+    protected POInfo initPO (Properties ctx)
     {
-      org.compiere.model.POInfo poi = org.compiere.model.POInfo.getPOInfo (ctx, Table_ID, get_TrxName());
+      POInfo poi = POInfo.getPOInfo (ctx, Table_ID, get_TrxName());
       return poi;
     }
 
@@ -131,7 +136,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_AD_Org getAD_OrgTrx() throws RuntimeException
     {
-		return (I_AD_Org) org.compiere.model.MTable.get(getCtx(), I_AD_Org.Table_Name)
+		return (I_AD_Org)MTable.get(getCtx(), I_AD_Org.Table_Name)
 			.getPO(getAD_OrgTrx_ID(), get_TrxName());	}
 
 	/** Set Trx Organization.
@@ -159,7 +164,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_AD_User getAD_User() throws RuntimeException
     {
-		return (I_AD_User) org.compiere.model.MTable.get(getCtx(), I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getAD_User_ID(), get_TrxName());	}
 
 	/** Set User/Contact.
@@ -187,7 +192,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_BPartner getBill_BPartner() throws RuntimeException
     {
-		return (I_C_BPartner) org.compiere.model.MTable.get(getCtx(), I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getBill_BPartner_ID(), get_TrxName());	}
 
 	/** Set Invoice Partner.
@@ -215,7 +220,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_BPartner_Location getBill_Location() throws RuntimeException
     {
-		return (I_C_BPartner_Location) org.compiere.model.MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
+		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
 			.getPO(getBill_Location_ID(), get_TrxName());	}
 
 	/** Set Invoice Location.
@@ -243,7 +248,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_AD_User getBill_User() throws RuntimeException
     {
-		return (I_AD_User) org.compiere.model.MTable.get(getCtx(), I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getBill_User_ID(), get_TrxName());	}
 
 	/** Set Invoice Contact.
@@ -271,7 +276,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_Activity getC_Activity() throws RuntimeException
     {
-		return (I_C_Activity) org.compiere.model.MTable.get(getCtx(), I_C_Activity.Table_Name)
+		return (I_C_Activity)MTable.get(getCtx(), I_C_Activity.Table_Name)
 			.getPO(getC_Activity_ID(), get_TrxName());	}
 
 	/** Set Activity.
@@ -299,7 +304,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (I_C_BPartner) org.compiere.model.MTable.get(getCtx(), I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -327,7 +332,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException
     {
-		return (I_C_BPartner_Location) org.compiere.model.MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
+		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
 			.getPO(getC_BPartner_Location_ID(), get_TrxName());	}
 
 	/** Set Partner Location.
@@ -355,7 +360,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_Campaign getC_Campaign() throws RuntimeException
     {
-		return (I_C_Campaign) org.compiere.model.MTable.get(getCtx(), I_C_Campaign.Table_Name)
+		return (I_C_Campaign)MTable.get(getCtx(), I_C_Campaign.Table_Name)
 			.getPO(getC_Campaign_ID(), get_TrxName());	}
 
 	/** Set Campaign.
@@ -383,7 +388,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_Charge getC_Charge() throws RuntimeException
     {
-		return (I_C_Charge) org.compiere.model.MTable.get(getCtx(), I_C_Charge.Table_Name)
+		return (I_C_Charge)MTable.get(getCtx(), I_C_Charge.Table_Name)
 			.getPO(getC_Charge_ID(), get_TrxName());	}
 
 	/** Set Charge.
@@ -411,7 +416,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_ConversionType getC_ConversionType() throws RuntimeException
     {
-		return (I_C_ConversionType) org.compiere.model.MTable.get(getCtx(), I_C_ConversionType.Table_Name)
+		return (I_C_ConversionType)MTable.get(getCtx(), I_C_ConversionType.Table_Name)
 			.getPO(getC_ConversionType_ID(), get_TrxName());	}
 
 	/** Set Currency Type.
@@ -439,7 +444,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_Currency getC_Currency() throws RuntimeException
     {
-		return (I_C_Currency) org.compiere.model.MTable.get(getCtx(), I_C_Currency.Table_Name)
+		return (I_C_Currency)MTable.get(getCtx(), I_C_Currency.Table_Name)
 			.getPO(getC_Currency_ID(), get_TrxName());	}
 
 	/** Set Currency.
@@ -467,7 +472,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_DocType getC_DocType() throws RuntimeException
     {
-		return (I_C_DocType) org.compiere.model.MTable.get(getCtx(), I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocType_ID(), get_TrxName());	}
 
 	/** Set Document Type.
@@ -555,7 +560,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_Opportunity getC_Opportunity() throws RuntimeException
     {
-		return (I_C_Opportunity) org.compiere.model.MTable.get(getCtx(), I_C_Opportunity.Table_Name)
+		return (I_C_Opportunity)MTable.get(getCtx(), I_C_Opportunity.Table_Name)
 			.getPO(getC_Opportunity_ID(), get_TrxName());	}
 
 	/** Set Sales Opportunity.
@@ -597,7 +602,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException
     {
-		return (I_C_PaymentTerm) org.compiere.model.MTable.get(getCtx(), I_C_PaymentTerm.Table_Name)
+		return (I_C_PaymentTerm)MTable.get(getCtx(), I_C_PaymentTerm.Table_Name)
 			.getPO(getC_PaymentTerm_ID(), get_TrxName());	}
 
 	/** Set Payment Term.
@@ -625,7 +630,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_Project getC_Project() throws RuntimeException
     {
-		return (I_C_Project) org.compiere.model.MTable.get(getCtx(), I_C_Project.Table_Name)
+		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
 			.getPO(getC_Project_ID(), get_TrxName());	}
 
 	/** Set Project.
@@ -1069,7 +1074,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_BPartner getDropShip_BPartner() throws RuntimeException
     {
-		return (I_C_BPartner) org.compiere.model.MTable.get(getCtx(), I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getDropShip_BPartner_ID(), get_TrxName());	}
 
 	/** Set Drop Shipment Partner.
@@ -1097,7 +1102,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_BPartner_Location getDropShip_Location() throws RuntimeException
     {
-		return (I_C_BPartner_Location) org.compiere.model.MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
+		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
 			.getPO(getDropShip_Location_ID(), get_TrxName());	}
 
 	/** Set Drop Shipment Location.
@@ -1125,7 +1130,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_AD_User getDropShip_User() throws RuntimeException
     {
-		return (I_AD_User) org.compiere.model.MTable.get(getCtx(), I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getDropShip_User_ID(), get_TrxName());	}
 
 	/** Set Drop Shipment Contact.
@@ -1680,7 +1685,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_S_Contract getLink_Contract() throws RuntimeException
     {
-		return (I_S_Contract) org.compiere.model.MTable.get(getCtx(), Table_Name)
+		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
 			.getPO(getLink_Contract_ID(), get_TrxName());	}
 
 	/** Set Linked Contract.
@@ -1708,7 +1713,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_M_FreightCategory getM_FreightCategory() throws RuntimeException
     {
-		return (I_M_FreightCategory) org.compiere.model.MTable.get(getCtx(), I_M_FreightCategory.Table_Name)
+		return (I_M_FreightCategory)MTable.get(getCtx(), I_M_FreightCategory.Table_Name)
 			.getPO(getM_FreightCategory_ID(), get_TrxName());	}
 
 	/** Set Freight Category.
@@ -1736,7 +1741,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_M_PriceList getM_PriceList() throws RuntimeException
     {
-		return (I_M_PriceList) org.compiere.model.MTable.get(getCtx(), I_M_PriceList.Table_Name)
+		return (I_M_PriceList)MTable.get(getCtx(), I_M_PriceList.Table_Name)
 			.getPO(getM_PriceList_ID(), get_TrxName());	}
 
 	/** Set Price List.
@@ -1764,7 +1769,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_M_Shipper getM_Shipper() throws RuntimeException
     {
-		return (I_M_Shipper) org.compiere.model.MTable.get(getCtx(), I_M_Shipper.Table_Name)
+		return (I_M_Shipper)MTable.get(getCtx(), I_M_Shipper.Table_Name)
 			.getPO(getM_Shipper_ID(), get_TrxName());	}
 
 	/** Set Shipper.
@@ -1792,7 +1797,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_M_Warehouse getM_Warehouse() throws RuntimeException
     {
-		return (I_M_Warehouse) org.compiere.model.MTable.get(getCtx(), I_M_Warehouse.Table_Name)
+		return (I_M_Warehouse)MTable.get(getCtx(), I_M_Warehouse.Table_Name)
 			.getPO(getM_Warehouse_ID(), get_TrxName());	}
 
 	/** Set Warehouse.
@@ -1820,7 +1825,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_BPartner getPay_BPartner() throws RuntimeException
     {
-		return (I_C_BPartner) org.compiere.model.MTable.get(getCtx(), I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getPay_BPartner_ID(), get_TrxName());	}
 
 	/** Set Payment BPartner.
@@ -1848,7 +1853,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_BPartner_Location getPay_Location() throws RuntimeException
     {
-		return (I_C_BPartner_Location) org.compiere.model.MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
+		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
 			.getPO(getPay_Location_ID(), get_TrxName());	}
 
 	/** Set Payment Location.
@@ -1890,8 +1895,6 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 	public static final String PAYMENTRULE_DirectDebit = "D";
 	/** Mixed = M */
 	public static final String PAYMENTRULE_Mixed = "M";
-	/** Gift Card = G */
-	public static final String PAYMENTRULE_GiftCard = "G";
 	/** Set Payment Rule.
 		@param PaymentRule 
 		How you pay the invoice
@@ -1993,7 +1996,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_PP_Calendar getPP_Calendar() throws RuntimeException
     {
-		return (I_PP_Calendar) org.compiere.model.MTable.get(getCtx(), I_PP_Calendar.Table_Name)
+		return (I_PP_Calendar)MTable.get(getCtx(), I_PP_Calendar.Table_Name)
 			.getPO(getPP_Calendar_ID(), get_TrxName());	}
 
 	/** Set Operational Calendar.
@@ -2020,30 +2023,30 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 	}
 
 	public I_PP_PeriodDefinition getPP_PeriodDefinition() throws RuntimeException
-    {
+	{
 		return (I_PP_PeriodDefinition) org.compiere.model.MTable.get(getCtx(), I_PP_PeriodDefinition.Table_Name)
-			.getPO(getPP_PeriodDefinition_ID(), get_TrxName());	}
+				.getPO(getPP_PeriodDefinition_ID(), get_TrxName());	}
 
 	/** Set Current Period.
-		@param PP_PeriodDefinition_ID 
-		Period Definition, allows to define time cycles for the Operational Calendar
-	  */
+	 @param PP_PeriodDefinition_ID
+	 Period Definition, allows to define time cycles for the Operational Calendar
+	 */
 	public void setPP_PeriodDefinition_ID (int PP_PeriodDefinition_ID)
 	{
-		if (PP_PeriodDefinition_ID < 1) 
+		if (PP_PeriodDefinition_ID < 1)
 			set_Value (COLUMNNAME_PP_PeriodDefinition_ID, null);
-		else 
+		else
 			set_Value (COLUMNNAME_PP_PeriodDefinition_ID, Integer.valueOf(PP_PeriodDefinition_ID));
 	}
 
 	/** Get Current Period.
-		@return Period Definition, allows to define time cycles for the Operational Calendar
-	  */
-	public int getPP_PeriodDefinition_ID () 
+	 @return Period Definition, allows to define time cycles for the Operational Calendar
+	 */
+	public int getPP_PeriodDefinition_ID ()
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_PP_PeriodDefinition_ID);
 		if (ii == null)
-			 return 0;
+			return 0;
 		return ii.intValue();
 	}
 
@@ -2161,7 +2164,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_S_Contract getRef_Contract() throws RuntimeException
     {
-		return (I_S_Contract) org.compiere.model.MTable.get(getCtx(), Table_Name)
+		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
 			.getPO(getRef_Contract_ID(), get_TrxName());	}
 
 	/** Set Referenced Contract.
@@ -2189,7 +2192,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_AD_User getSalesRep() throws RuntimeException
     {
-		return (I_AD_User) org.compiere.model.MTable.get(getCtx(), I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSalesRep_ID(), get_TrxName());	}
 
 	/** Set Sales Representative.
@@ -2262,6 +2265,20 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 		return false;
 	}
 
+	/** Set Support Reference Value.
+		@param SupportReferenceValue Support Reference Value	  */
+	public void setSupportReferenceValue (String SupportReferenceValue)
+	{
+		set_Value (COLUMNNAME_SupportReferenceValue, SupportReferenceValue);
+	}
+
+	/** Get Support Reference Value.
+		@return Support Reference Value	  */
+	public String getSupportReferenceValue () 
+	{
+		return (String)get_Value(COLUMNNAME_SupportReferenceValue);
+	}
+
 	/** Set Total Lines.
 		@param TotalLines 
 		Total of all document lines
@@ -2284,7 +2301,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_ElementValue getUser1() throws RuntimeException
     {
-		return (I_C_ElementValue) org.compiere.model.MTable.get(getCtx(), I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser1_ID(), get_TrxName());	}
 
 	/** Set User List 1.
@@ -2312,7 +2329,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_ElementValue getUser2() throws RuntimeException
     {
-		return (I_C_ElementValue) org.compiere.model.MTable.get(getCtx(), I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser2_ID(), get_TrxName());	}
 
 	/** Set User List 2.
@@ -2340,7 +2357,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_ElementValue getUser3() throws RuntimeException
     {
-		return (I_C_ElementValue) org.compiere.model.MTable.get(getCtx(), I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser3_ID(), get_TrxName());	}
 
 	/** Set User List 3.
@@ -2368,7 +2385,7 @@ public class X_S_Contract extends org.compiere.model.PO implements I_S_Contract,
 
 	public I_C_ElementValue getUser4() throws RuntimeException
     {
-		return (I_C_ElementValue) org.compiere.model.MTable.get(getCtx(), I_C_ElementValue.Table_Name)
+		return (I_C_ElementValue)MTable.get(getCtx(), I_C_ElementValue.Table_Name)
 			.getPO(getUser4_ID(), get_TrxName());	}
 
 	/** Set User List 4.

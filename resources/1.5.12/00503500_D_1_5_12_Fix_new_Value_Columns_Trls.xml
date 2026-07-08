@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_new_Value_Columns_Trls" ReleaseNo="1.5.12" SeqNo="503500">
+    <Comments>Add Value Column to Request Type Table</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="107304" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">107304</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12960" Column="Created">2026-06-26 14:25:14.509</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Search Key</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2026-06-26 14:25:14.509</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84310" Column="UUID">fb6ca9db-4ee9-47fb-b191-64f125bda7c4</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110088" Table="AD_Field_Trl">
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110088</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-06-26 14:25:31.558</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="287" Column="Description">Search key for the record in the format required - must be unique</Data>
+        <Data AD_Column_ID="288" Column="Help">A search key allows you a fast method of finding a particular record.
+If you leave the search key empty, the system automatically creates a numeric number.  The document sequence used for this fallback number is defined in the "Maintain Sequence" window with the name "DocumentNo_&lt;TableName&gt;", where TableName is the actual name of the table (e.g. C_Order).</Data>
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Search Key</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-06-26 14:25:31.558</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84323" Column="UUID">a1d90e0a-da20-4401-856d-3cb9883ffa4b</Data>
+      </PO>
+    </Step>
+      <Step SeqNo="30" StepType="AD">
+          <PO AD_Table_ID="752" Action="I" Record_ID="107303" Table="AD_Column_Trl">
+              <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+              <Data AD_Column_ID="12955" Column="AD_Column_ID">107303</Data>
+              <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+              <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+              <Data AD_Column_ID="12960" Column="Created">2026-06-26 14:25:14.509</Data>
+              <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+              <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+              <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+              <Data AD_Column_ID="12957" Column="Name">Search Key</Data>
+              <Data AD_Column_ID="12952" Column="Updated">2026-06-26 14:25:14.509</Data>
+              <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+              <Data AD_Column_ID="84310" Column="UUID">5568b2a5-5896-44bb-8610-5a85bdf87c59</Data>
+          </PO>
+      </Step>
+      <Step SeqNo="40" StepType="AD">
+          <PO AD_Table_ID="127" Action="I" Record_ID="110087" Table="AD_Field_Trl">
+              <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+              <Data AD_Column_ID="284" Column="AD_Field_ID">110087</Data>
+              <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+              <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+              <Data AD_Column_ID="672" Column="Created">2026-06-26 14:25:31.558</Data>
+              <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+              <Data AD_Column_ID="287" Column="Description">Search key for the record in the format required - must be unique</Data>
+              <Data AD_Column_ID="288" Column="Help">A search key allows you a fast method of finding a particular record.
+                  If you leave the search key empty, the system automatically creates a numeric number.  The document sequence used for this fallback number is defined in the "Maintain Sequence" window with the name "DocumentNo_&lt;TableName&gt;", where TableName is the actual name of the table (e.g. C_Order).</Data>
+              <Data AD_Column_ID="671" Column="IsActive">true</Data>
+              <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+              <Data AD_Column_ID="286" Column="Name">Search Key</Data>
+              <Data AD_Column_ID="674" Column="Updated">2026-06-26 14:25:31.558</Data>
+              <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+              <Data AD_Column_ID="84323" Column="UUID">22f2059a-6f33-4405-8bc3-26328163b7d1</Data>
+          </PO>
+      </Step>
+      <Step SeqNo="50" StepType="AD">
+          <PO AD_Table_ID="752" Action="I" Record_ID="107302" Table="AD_Column_Trl">
+              <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+              <Data AD_Column_ID="12955" Column="AD_Column_ID">107302</Data>
+              <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+              <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+              <Data AD_Column_ID="12960" Column="Created">2026-06-26 14:25:14.509</Data>
+              <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+              <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+              <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+              <Data AD_Column_ID="12957" Column="Name">Search Key</Data>
+              <Data AD_Column_ID="12952" Column="Updated">2026-06-26 14:25:14.509</Data>
+              <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+              <Data AD_Column_ID="84310" Column="UUID">d83b526a-717c-4137-b349-7448c817d4d3</Data>
+          </PO>
+      </Step>
+      <Step SeqNo="60" StepType="AD">
+          <PO AD_Table_ID="127" Action="I" Record_ID="110086" Table="AD_Field_Trl">
+              <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+              <Data AD_Column_ID="284" Column="AD_Field_ID">110086</Data>
+              <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+              <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+              <Data AD_Column_ID="672" Column="Created">2026-06-26 14:25:31.558</Data>
+              <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+              <Data AD_Column_ID="287" Column="Description">Search key for the record in the format required - must be unique</Data>
+              <Data AD_Column_ID="288" Column="Help">A search key allows you a fast method of finding a particular record.
+                  If you leave the search key empty, the system automatically creates a numeric number.  The document sequence used for this fallback number is defined in the "Maintain Sequence" window with the name "DocumentNo_&lt;TableName&gt;", where TableName is the actual name of the table (e.g. C_Order).</Data>
+              <Data AD_Column_ID="671" Column="IsActive">true</Data>
+              <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+              <Data AD_Column_ID="286" Column="Name">Search Key</Data>
+              <Data AD_Column_ID="674" Column="Updated">2026-06-26 14:25:31.558</Data>
+              <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+              <Data AD_Column_ID="84323" Column="UUID">3e1206b7-b3ea-4ac3-8c27-8c91b0dbd1e7</Data>
+          </PO>
+      </Step>
+      <Step SeqNo="50" StepType="AD">
+          <PO AD_Table_ID="752" Action="I" Record_ID="107292" Table="AD_Column_Trl">
+              <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+              <Data AD_Column_ID="12955" Column="AD_Column_ID">107292</Data>
+              <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+              <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+              <Data AD_Column_ID="12960" Column="Created">2026-06-26 14:25:14.509</Data>
+              <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+              <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+              <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+              <Data AD_Column_ID="12957" Column="Name">Discord Thread</Data>
+              <Data AD_Column_ID="12952" Column="Updated">2026-06-26 14:25:14.509</Data>
+              <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+              <Data AD_Column_ID="84310" Column="UUID">4f148f58-59fa-450a-93b2-cde7e871506a</Data>
+          </PO>
+      </Step>
+      <Step SeqNo="50" StepType="AD">
+          <PO AD_Table_ID="752" Action="I" Record_ID="107295" Table="AD_Column_Trl">
+              <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+              <Data AD_Column_ID="12955" Column="AD_Column_ID">107295</Data>
+              <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+              <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+              <Data AD_Column_ID="12960" Column="Created">2026-06-26 14:25:14.509</Data>
+              <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+              <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+              <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+              <Data AD_Column_ID="12957" Column="Name">Discord URL</Data>
+              <Data AD_Column_ID="12952" Column="Updated">2026-06-26 14:25:14.509</Data>
+              <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+              <Data AD_Column_ID="84310" Column="UUID">825db663-2878-4df1-bda1-b0c3e554b7db</Data>
+          </PO>
+      </Step>
+  </Migration>
+</Migrations>

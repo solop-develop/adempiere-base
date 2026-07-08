@@ -39,7 +39,7 @@ public class X_C_OrderLine extends PO implements I_C_OrderLine, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260508L;
+	private static final long serialVersionUID = 20260701L;
 
     /** Standard Constructor */
     public X_C_OrderLine (Properties ctx, int C_OrderLine_ID, String trxName)
@@ -366,6 +366,26 @@ public class X_C_OrderLine extends PO implements I_C_OrderLine, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Cost.
+		@param Cost 
+		Cost information
+	  */
+	public void setCost (BigDecimal Cost)
+	{
+		set_Value (COLUMNNAME_Cost, Cost);
+	}
+
+	/** Get Cost.
+		@return Cost information
+	  */
+	public BigDecimal getCost () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Cost);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	public I_C_Project getC_Project() throws RuntimeException
     {
 		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
@@ -673,6 +693,7 @@ public class X_C_OrderLine extends PO implements I_C_OrderLine, I_Persistent
 		return bd;
 	}
 
+
 	/** Set End Date.
 		@param EndDate 
 		Last effective date (inclusive)
@@ -757,6 +778,7 @@ public class X_C_OrderLine extends PO implements I_C_OrderLine, I_Persistent
 		}
 		return false;
 	}
+
 
 	/** Set Line No.
 		@param Line 
@@ -1503,6 +1525,7 @@ public class X_C_OrderLine extends PO implements I_C_OrderLine, I_Persistent
 			 return 0;
 		return ii.intValue();
 	}
+
 
 	/** Set Resource Assignment.
 		@param S_ResourceAssignment_ID 

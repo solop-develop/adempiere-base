@@ -81,6 +81,15 @@ public interface I_R_Release
 	  */
 	public int getCreatedBy();
 
+    /** Column name DatePublished */
+    public static final String COLUMNNAME_DatePublished = "DatePublished";
+
+	/** Set Date Published	  */
+	public void setDatePublished (Timestamp DatePublished);
+
+	/** Get Date Published	  */
+	public Timestamp getDatePublished();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -106,6 +115,32 @@ public interface I_R_Release
 	  * Memo Text
 	  */
 	public String getMemo();
+
+    /** Column name Processed */
+    public static final String COLUMNNAME_Processed = "Processed";
+
+	/** Set Processed.
+	  * The document has been processed
+	  */
+	public void setProcessed (boolean Processed);
+
+	/** Get Processed.
+	  * The document has been processed
+	  */
+	public boolean isProcessed();
+
+    /** Column name ProcessRelease */
+    public static final String COLUMNNAME_ProcessRelease = "ProcessRelease";
+
+	/** Set Process Release.
+	  * Process the release: close linked requests and mark as processed
+	  */
+	public void setProcessRelease (String ProcessRelease);
+
+	/** Get Process Release.
+	  * Process the release: close linked requests and mark as processed
+	  */
+	public String getProcessRelease();
 
     /** Column name ReleaseType */
     public static final String COLUMNNAME_ReleaseType = "ReleaseType";
@@ -166,4 +201,17 @@ public interface I_R_Release
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name Value */
+    public static final String COLUMNNAME_Value = "Value";
+
+	/** Set Search Key.
+	  * Search key for the record in the format required - must be unique
+	  */
+	public void setValue (String Value);
+
+	/** Get Search Key.
+	  * Search key for the record in the format required - must be unique
+	  */
+	public String getValue();
 }

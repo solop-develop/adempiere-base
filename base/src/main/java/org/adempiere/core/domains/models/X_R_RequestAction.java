@@ -38,10 +38,10 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251229L;
+	private static final long serialVersionUID = 20260624L;
 
     /** Standard Constructor */
-    public X_R_RequestAction(Properties ctx, int R_RequestAction_ID, String trxName)
+    public X_R_RequestAction (Properties ctx, int R_RequestAction_ID, String trxName)
     {
       super (ctx, R_RequestAction_ID, trxName);
       /** if (R_RequestAction_ID == 0)
@@ -52,7 +52,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
     }
 
     /** Load Constructor */
-    public X_R_RequestAction(Properties ctx, ResultSet rs, String trxName)
+    public X_R_RequestAction (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -673,6 +673,34 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (Timestamp)get_Value(COLUMNNAME_DateCompletePlanTo);
 	}
 
+	/** Set End of Execution Date.
+		@param DateInternalDelivery End of Execution Date	  */
+	public void setDateInternalDelivery (Timestamp DateInternalDelivery)
+	{
+		set_Value (COLUMNNAME_DateInternalDelivery, DateInternalDelivery);
+	}
+
+	/** Get End of Execution Date.
+		@return End of Execution Date	  */
+	public Timestamp getDateInternalDelivery () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateInternalDelivery);
+	}
+
+	/** Set End of Execution Date To.
+		@param DateInternalDeliveryTo End of Execution Date To	  */
+	public void setDateInternalDeliveryTo (Timestamp DateInternalDeliveryTo)
+	{
+		set_Value (COLUMNNAME_DateInternalDeliveryTo, DateInternalDeliveryTo);
+	}
+
+	/** Get End of Execution Date To.
+		@return End of Execution Date To	  */
+	public Timestamp getDateInternalDeliveryTo () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateInternalDeliveryTo);
+	}
+
 	/** Set Date next action.
 		@param DateNextAction 
 		Date that this request should be acted on
@@ -739,6 +767,68 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	public Timestamp getDateStartPlanTo () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_DateStartPlanTo);
+	}
+
+	/** Set Discord Thread ID.
+		@param Discord_Thread_ID 
+		Discord thread identifier mapping the thread to the request/issue.
+	  */
+	public void setDiscord_Thread_ID (String Discord_Thread_ID)
+	{
+		set_Value (COLUMNNAME_Discord_Thread_ID, Discord_Thread_ID);
+	}
+
+	/** Get Discord Thread ID.
+		@return Discord thread identifier mapping the thread to the request/issue.
+	  */
+	public String getDiscord_Thread_ID () 
+	{
+		return (String)get_Value(COLUMNNAME_Discord_Thread_ID);
+	}
+
+	/** Set Discord Thread ID To.
+		@param Discord_ThreadTo_ID Discord Thread ID To	  */
+	public void setDiscord_ThreadTo_ID (String Discord_ThreadTo_ID)
+	{
+		set_Value (COLUMNNAME_Discord_ThreadTo_ID, Discord_ThreadTo_ID);
+	}
+
+	/** Get Discord Thread ID To.
+		@return Discord Thread ID To	  */
+	public String getDiscord_ThreadTo_ID () 
+	{
+		return (String)get_Value(COLUMNNAME_Discord_ThreadTo_ID);
+	}
+
+	/** Set Discord URL.
+		@param Discord_URL 
+		Link to the Discord thread.
+	  */
+	public void setDiscord_URL (String Discord_URL)
+	{
+		set_Value (COLUMNNAME_Discord_URL, Discord_URL);
+	}
+
+	/** Get Discord URL.
+		@return Link to the Discord thread.
+	  */
+	public String getDiscord_URL () 
+	{
+		return (String)get_Value(COLUMNNAME_Discord_URL);
+	}
+
+	/** Set Discord URL To.
+		@param Discord_URLTo Discord URL To	  */
+	public void setDiscord_URLTo (String Discord_URLTo)
+	{
+		set_Value (COLUMNNAME_Discord_URLTo, Discord_URLTo);
+	}
+
+	/** Get Discord URL To.
+		@return Discord URL To	  */
+	public String getDiscord_URLTo () 
+	{
+		return (String)get_Value(COLUMNNAME_Discord_URLTo);
 	}
 
 	/** Set Duration in Milliseconds.
@@ -816,28 +906,28 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (String)get_Value(COLUMNNAME_IsEscalated);
 	}
 
+	/** IsEscalatedTo AD_Reference_ID=319 */
+	public static final int ISESCALATEDTO_AD_Reference_ID=319;
+	/** Yes = Y */
+	public static final String ISESCALATEDTO_Yes = "Y";
+	/** No = N */
+	public static final String ISESCALATEDTO_No = "N";
 	/** Set Escalated To.
 		@param IsEscalatedTo 
 		This request has been escalated
 	  */
-	public void setIsEscalatedTo (boolean IsEscalatedTo)
+	public void setIsEscalatedTo (String IsEscalatedTo)
 	{
-		set_Value (COLUMNNAME_IsEscalatedTo, Boolean.valueOf(IsEscalatedTo));
+
+		set_Value (COLUMNNAME_IsEscalatedTo, IsEscalatedTo);
 	}
 
 	/** Get Escalated To.
 		@return This request has been escalated
 	  */
-	public boolean isEscalatedTo () 
+	public String getIsEscalatedTo () 
 	{
-		Object oo = get_Value(COLUMNNAME_IsEscalatedTo);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
+		return (String)get_Value(COLUMNNAME_IsEscalatedTo);
 	}
 
 	/** IsInvoiced AD_Reference_ID=319 */
@@ -864,28 +954,28 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (String)get_Value(COLUMNNAME_IsInvoiced);
 	}
 
+	/** IsInvoicedTo AD_Reference_ID=319 */
+	public static final int ISINVOICEDTO_AD_Reference_ID=319;
+	/** Yes = Y */
+	public static final String ISINVOICEDTO_Yes = "Y";
+	/** No = N */
+	public static final String ISINVOICEDTO_No = "N";
 	/** Set Invoiced To.
 		@param IsInvoicedTo 
 		Is this invoiced?
 	  */
-	public void setIsInvoicedTo (boolean IsInvoicedTo)
+	public void setIsInvoicedTo (String IsInvoicedTo)
 	{
-		set_Value (COLUMNNAME_IsInvoicedTo, Boolean.valueOf(IsInvoicedTo));
+
+		set_Value (COLUMNNAME_IsInvoicedTo, IsInvoicedTo);
 	}
 
 	/** Get Invoiced To.
 		@return Is this invoiced?
 	  */
-	public boolean isInvoicedTo () 
+	public String getIsInvoicedTo () 
 	{
-		Object oo = get_Value(COLUMNNAME_IsInvoicedTo);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
+		return (String)get_Value(COLUMNNAME_IsInvoicedTo);
 	}
 
 	/** IsSelfService AD_Reference_ID=319 */
@@ -912,28 +1002,96 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return (String)get_Value(COLUMNNAME_IsSelfService);
 	}
 
+	/** IsSelfServiceTo AD_Reference_ID=319 */
+	public static final int ISSELFSERVICETO_AD_Reference_ID=319;
+	/** Yes = Y */
+	public static final String ISSELFSERVICETO_Yes = "Y";
+	/** No = N */
+	public static final String ISSELFSERVICETO_No = "N";
 	/** Set Self-Service To.
 		@param IsSelfServiceTo 
 		This is a Self-Service entry or this entry can be changed via Self-Service
 	  */
-	public void setIsSelfServiceTo (boolean IsSelfServiceTo)
+	public void setIsSelfServiceTo (String IsSelfServiceTo)
 	{
-		set_Value (COLUMNNAME_IsSelfServiceTo, Boolean.valueOf(IsSelfServiceTo));
+
+		set_Value (COLUMNNAME_IsSelfServiceTo, IsSelfServiceTo);
 	}
 
 	/** Get Self-Service To.
 		@return This is a Self-Service entry or this entry can be changed via Self-Service
 	  */
-	public boolean isSelfServiceTo () 
+	public String getIsSelfServiceTo () 
 	{
-		Object oo = get_Value(COLUMNNAME_IsSelfServiceTo);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
+		return (String)get_Value(COLUMNNAME_IsSelfServiceTo);
+	}
+
+	/** Set Issue ID.
+		@param IssueID 
+		External issue number.
+	  */
+	public void setIssueID (int IssueID)
+	{
+		set_Value (COLUMNNAME_IssueID, Integer.valueOf(IssueID));
+	}
+
+	/** Get Issue ID.
+		@return External issue number.
+	  */
+	public int getIssueID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_IssueID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Issue ID To.
+		@param IssueTo_ID Issue ID To	  */
+	public void setIssueTo_ID (int IssueTo_ID)
+	{
+		if (IssueTo_ID < 1) 
+			set_Value (COLUMNNAME_IssueTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_IssueTo_ID, Integer.valueOf(IssueTo_ID));
+	}
+
+	/** Get Issue ID To.
+		@return Issue ID To	  */
+	public int getIssueTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_IssueTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Issue URL.
+		@param IssueURL Issue URL	  */
+	public void setIssueURL (String IssueURL)
+	{
+		set_Value (COLUMNNAME_IssueURL, IssueURL);
+	}
+
+	/** Get Issue URL.
+		@return Issue URL	  */
+	public String getIssueURL () 
+	{
+		return (String)get_Value(COLUMNNAME_IssueURL);
+	}
+
+	/** Set Issue URL To.
+		@param IssueURLTo Issue URL To	  */
+	public void setIssueURLTo (String IssueURLTo)
+	{
+		set_Value (COLUMNNAME_IssueURLTo, IssueURLTo);
+	}
+
+	/** Get Issue URL To.
+		@return Issue URL To	  */
+	public String getIssueURLTo () 
+	{
+		return (String)get_Value(COLUMNNAME_IssueURLTo);
 	}
 
 	public I_M_InOut getM_InOut() throws RuntimeException
@@ -1445,6 +1603,59 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 		return ii.intValue();
 	}
 
+	public I_AD_User getResponsible() throws RuntimeException
+    {
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
+			.getPO(getResponsible_ID(), get_TrxName());	}
+
+	/** Set Responsible.
+		@param Responsible_ID 
+		Responsible
+	  */
+	public void setResponsible_ID (int Responsible_ID)
+	{
+		if (Responsible_ID < 1) 
+			set_Value (COLUMNNAME_Responsible_ID, null);
+		else 
+			set_Value (COLUMNNAME_Responsible_ID, Integer.valueOf(Responsible_ID));
+	}
+
+	/** Get Responsible.
+		@return Responsible
+	  */
+	public int getResponsible_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Responsible_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_AD_User getResponsibleTo() throws RuntimeException
+    {
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
+			.getPO(getResponsibleTo_ID(), get_TrxName());	}
+
+	/** Set Responsible To.
+		@param ResponsibleTo_ID Responsible To	  */
+	public void setResponsibleTo_ID (int ResponsibleTo_ID)
+	{
+		if (ResponsibleTo_ID < 1) 
+			set_Value (COLUMNNAME_ResponsibleTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_ResponsibleTo_ID, Integer.valueOf(ResponsibleTo_ID));
+	}
+
+	/** Get Responsible To.
+		@return Responsible To	  */
+	public int getResponsibleTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_ResponsibleTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public I_R_Group getR_Group() throws RuntimeException
     {
 		return (I_R_Group)MTable.get(getCtx(), I_R_Group.Table_Name)
@@ -1496,6 +1707,156 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	public int getR_GroupTo_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_R_GroupTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Iteration getR_Iteration() throws RuntimeException
+    {
+		return (I_R_Iteration)MTable.get(getCtx(), I_R_Iteration.Table_Name)
+			.getPO(getR_Iteration_ID(), get_TrxName());	}
+
+	/** Set Iteration.
+		@param R_Iteration_ID Iteration	  */
+	public void setR_Iteration_ID (int R_Iteration_ID)
+	{
+		if (R_Iteration_ID < 1) 
+			set_Value (COLUMNNAME_R_Iteration_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_Iteration_ID, Integer.valueOf(R_Iteration_ID));
+	}
+
+	/** Get Iteration.
+		@return Iteration	  */
+	public int getR_Iteration_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_Iteration_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Iteration getR_IterationTo() throws RuntimeException
+    {
+		return (I_R_Iteration)MTable.get(getCtx(), I_R_Iteration.Table_Name)
+			.getPO(getR_IterationTo_ID(), get_TrxName());	}
+
+	/** Set Iteration To.
+		@param R_IterationTo_ID Iteration To	  */
+	public void setR_IterationTo_ID (int R_IterationTo_ID)
+	{
+		if (R_IterationTo_ID < 1) 
+			set_Value (COLUMNNAME_R_IterationTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_IterationTo_ID, Integer.valueOf(R_IterationTo_ID));
+	}
+
+	/** Get Iteration To.
+		@return Iteration To	  */
+	public int getR_IterationTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_IterationTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Milestone getR_Milestone() throws RuntimeException
+    {
+		return (I_R_Milestone)MTable.get(getCtx(), I_R_Milestone.Table_Name)
+			.getPO(getR_Milestone_ID(), get_TrxName());	}
+
+	/** Set Milestone.
+		@param R_Milestone_ID Milestone	  */
+	public void setR_Milestone_ID (int R_Milestone_ID)
+	{
+		if (R_Milestone_ID < 1) 
+			set_Value (COLUMNNAME_R_Milestone_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_Milestone_ID, Integer.valueOf(R_Milestone_ID));
+	}
+
+	/** Get Milestone.
+		@return Milestone	  */
+	public int getR_Milestone_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_Milestone_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Milestone getR_MilestoneTo() throws RuntimeException
+    {
+		return (I_R_Milestone)MTable.get(getCtx(), I_R_Milestone.Table_Name)
+			.getPO(getR_MilestoneTo_ID(), get_TrxName());	}
+
+	/** Set Milestone To.
+		@param R_MilestoneTo_ID Milestone To	  */
+	public void setR_MilestoneTo_ID (int R_MilestoneTo_ID)
+	{
+		if (R_MilestoneTo_ID < 1) 
+			set_Value (COLUMNNAME_R_MilestoneTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_MilestoneTo_ID, Integer.valueOf(R_MilestoneTo_ID));
+	}
+
+	/** Get Milestone To.
+		@return Milestone To	  */
+	public int getR_MilestoneTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_MilestoneTo_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Release getR_Release() throws RuntimeException
+    {
+		return (I_R_Release)MTable.get(getCtx(), I_R_Release.Table_Name)
+			.getPO(getR_Release_ID(), get_TrxName());	}
+
+	/** Set Release.
+		@param R_Release_ID Release	  */
+	public void setR_Release_ID (int R_Release_ID)
+	{
+		if (R_Release_ID < 1) 
+			set_Value (COLUMNNAME_R_Release_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_Release_ID, Integer.valueOf(R_Release_ID));
+	}
+
+	/** Get Release.
+		@return Release	  */
+	public int getR_Release_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_Release_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_R_Release getR_ReleaseTo() throws RuntimeException
+    {
+		return (I_R_Release)MTable.get(getCtx(), I_R_Release.Table_Name)
+			.getPO(getR_ReleaseTo_ID(), get_TrxName());	}
+
+	/** Set Release To.
+		@param R_ReleaseTo_ID Release To	  */
+	public void setR_ReleaseTo_ID (int R_ReleaseTo_ID)
+	{
+		if (R_ReleaseTo_ID < 1) 
+			set_Value (COLUMNNAME_R_ReleaseTo_ID, null);
+		else 
+			set_Value (COLUMNNAME_R_ReleaseTo_ID, Integer.valueOf(R_ReleaseTo_ID));
+	}
+
+	/** Get Release To.
+		@return Release To	  */
+	public int getR_ReleaseTo_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_R_ReleaseTo_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -1918,6 +2279,40 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
 	public String getTaskStatusTo () 
 	{
 		return (String)get_Value(COLUMNNAME_TaskStatusTo);
+	}
+
+	/** Set URL.
+		@param URL 
+		Full URL address - e.g. http://www.adempiere.org
+	  */
+	public void setURL (String URL)
+	{
+		set_Value (COLUMNNAME_URL, URL);
+	}
+
+	/** Get URL.
+		@return Full URL address - e.g. http://www.adempiere.org
+	  */
+	public String getURL () 
+	{
+		return (String)get_Value(COLUMNNAME_URL);
+	}
+
+	/** Set URL To.
+		@param URLTo 
+		Full URL address - e.g. http://www.adempiere.org
+	  */
+	public void setURLTo (String URLTo)
+	{
+		set_Value (COLUMNNAME_URLTo, URLTo);
+	}
+
+	/** Get URL To.
+		@return Full URL address - e.g. http://www.adempiere.org
+	  */
+	public String getURLTo () 
+	{
+		return (String)get_Value(COLUMNNAME_URLTo);
 	}
 
 	/** Set Immutable Universally Unique Identifier.

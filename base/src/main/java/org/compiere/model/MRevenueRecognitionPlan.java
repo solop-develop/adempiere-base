@@ -16,10 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_BP_Group_Acct;
-import org.adempiere.core.domains.models.I_C_RevenueRecognition_Plan;
-import org.adempiere.core.domains.models.I_C_RevenueRecognition_Run;
-import org.adempiere.core.domains.models.X_C_RevenueRecognition_Plan;
+import org.adempiere.core.domains.models.*;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.TimeUtil;
@@ -50,7 +47,7 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 	 *	@param ctx context
 	 *	@param C_RevenueRecognition_Plan_ID id
 	 */
-	public MRevenueRecognitionPlan (Properties ctx, int C_RevenueRecognition_Plan_ID, String trxName)
+	public MRevenueRecognitionPlan(Properties ctx, int C_RevenueRecognition_Plan_ID, String trxName)
 	{
 		super (ctx, C_RevenueRecognition_Plan_ID, trxName);
 		if (C_RevenueRecognition_Plan_ID == 0)
@@ -72,7 +69,7 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 	 *	@param ctx context
 	 *	@param rs result set
 	 */
-	public MRevenueRecognitionPlan (Properties ctx, ResultSet rs, String trxName)
+	public MRevenueRecognitionPlan(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MRevenueRecognitionPlan
@@ -258,7 +255,8 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan
 				.setOnlyActiveRecords(true)
 				.first();
 		if(groupAccount != null) {
-			return groupAccount.getUnEarnedRevenue_Acct();
+			I_C_ValidCombination combination = groupAccount.getUnEarnedRevenue_A();
+			return combination.getAccount_ID();
 		}
 		return -1;
 	}

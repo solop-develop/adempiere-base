@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,7 +12,8 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
@@ -22,7 +23,6 @@ import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
-import org.compiere.util.KeyNamePair;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -31,14 +31,14 @@ import java.util.Properties;
 
 /** Generated Model for C_ProjectLine
  *  @author Adempiere (generated) 
- *  @version Release 3.9.3 - $Id$ */
-public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
+ *  @version Release 3.9.4 - $Id$ */
+public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20210707L;
+	private static final long serialVersionUID = 20260616L;
 
     /** Standard Constructor */
     public X_C_ProjectLine (Properties ctx, int C_ProjectLine_ID, String trxName)
@@ -95,7 +95,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 
 	public I_AD_Workflow getAD_Workflow() throws RuntimeException
     {
-		return (I_AD_Workflow) MTable.get(getCtx(), I_AD_Workflow.Table_Name)
+		return (I_AD_Workflow)MTable.get(getCtx(), I_AD_Workflow.Table_Name)
 			.getPO(getAD_Workflow_ID(), get_TrxName());	}
 
 	/** Set Workflow.
@@ -232,6 +232,159 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 	public BigDecimal getCost () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Cost);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Consumed Amount.
+		@param CostConsumedAmt Cost Consumed Amount	  */
+	public void setCostConsumedAmt (BigDecimal CostConsumedAmt)
+	{
+		set_Value (COLUMNNAME_CostConsumedAmt, CostConsumedAmt);
+	}
+
+	/** Get Cost Consumed Amount.
+		@return Cost Consumed Amount	  */
+	public BigDecimal getCostConsumedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostConsumedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Consumed Quantity.
+		@param CostConsumedQty Cost Consumed Quantity	  */
+	public void setCostConsumedQty (BigDecimal CostConsumedQty)
+	{
+		set_Value (COLUMNNAME_CostConsumedQty, CostConsumedQty);
+	}
+
+	/** Get Cost Consumed Quantity.
+		@return Cost Consumed Quantity	  */
+	public BigDecimal getCostConsumedQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostConsumedQty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Invoiced Amount.
+		@param CostInvoicedAmt Cost Invoiced Amount	  */
+	public void setCostInvoicedAmt (BigDecimal CostInvoicedAmt)
+	{
+		set_Value (COLUMNNAME_CostInvoicedAmt, CostInvoicedAmt);
+	}
+
+	/** Get Cost Invoiced Amount.
+		@return Cost Invoiced Amount	  */
+	public BigDecimal getCostInvoicedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostInvoicedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Invoiced Quantity.
+		@param CostInvoicedQty Cost Invoiced Quantity	  */
+	public void setCostInvoicedQty (BigDecimal CostInvoicedQty)
+	{
+		set_Value (COLUMNNAME_CostInvoicedQty, CostInvoicedQty);
+	}
+
+	/** Get Cost Invoiced Quantity.
+		@return Cost Invoiced Quantity	  */
+	public BigDecimal getCostInvoicedQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostInvoicedQty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Ordered Amount.
+		@param CostOrderedAmt Cost Ordered Amount	  */
+	public void setCostOrderedAmt (BigDecimal CostOrderedAmt)
+	{
+		set_Value (COLUMNNAME_CostOrderedAmt, CostOrderedAmt);
+	}
+
+	/** Get Cost Ordered Amount.
+		@return Cost Ordered Amount	  */
+	public BigDecimal getCostOrderedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostOrderedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Ordered Quantity.
+		@param CostOrderedQty Cost Ordered Quantity	  */
+	public void setCostOrderedQty (BigDecimal CostOrderedQty)
+	{
+		set_Value (COLUMNNAME_CostOrderedQty, CostOrderedQty);
+	}
+
+	/** Get Cost Ordered Quantity.
+		@return Cost Ordered Quantity	  */
+	public BigDecimal getCostOrderedQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostOrderedQty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Planned Amount.
+		@param CostPlannedAmt Cost Planned Amount	  */
+	public void setCostPlannedAmt (BigDecimal CostPlannedAmt)
+	{
+		set_Value (COLUMNNAME_CostPlannedAmt, CostPlannedAmt);
+	}
+
+	/** Get Cost Planned Amount.
+		@return Cost Planned Amount	  */
+	public BigDecimal getCostPlannedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostPlannedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Received Amount.
+		@param CostReceivedAmt Cost Received Amount	  */
+	public void setCostReceivedAmt (BigDecimal CostReceivedAmt)
+	{
+		set_Value (COLUMNNAME_CostReceivedAmt, CostReceivedAmt);
+	}
+
+	/** Get Cost Received Amount.
+		@return Cost Received Amount	  */
+	public BigDecimal getCostReceivedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostReceivedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Received Quantity.
+		@param CostReceivedQty Cost Received Quantity	  */
+	public void setCostReceivedQty (BigDecimal CostReceivedQty)
+	{
+		set_Value (COLUMNNAME_CostReceivedQty, CostReceivedQty);
+	}
+
+	/** Get Cost Received Quantity.
+		@return Cost Received Quantity	  */
+	public BigDecimal getCostReceivedQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostReceivedQty);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
@@ -453,86 +606,6 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 		return ii.intValue();
 	}
 
-	public I_C_BPartner getRef_BPartner() throws RuntimeException
-	{
-		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
-				.getPO(getRef_BPartner_ID(), get_TrxName());	}
-
-	/** Set Employee Reference.
-	 @param Ref_BPartner_ID
-	 Employee Reference
-	 */
-	public void setRef_BPartner_ID (int Ref_BPartner_ID)
-	{
-		if (Ref_BPartner_ID < 1)
-			set_Value (COLUMNNAME_Ref_BPartner_ID, null);
-		else
-			set_Value (COLUMNNAME_Ref_BPartner_ID, Integer.valueOf(Ref_BPartner_ID));
-	}
-
-	/** Get Employee Reference.
-	 @return Employee Reference
-	 */
-	public int getRef_BPartner_ID ()
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_Ref_BPartner_ID);
-		if (ii == null)
-			return 0;
-		return ii.intValue();
-	}
-
-	public I_S_ResourceType getS_ResourceType() throws RuntimeException
-	{
-		return (I_S_ResourceType)MTable.get(getCtx(), I_S_ResourceType.Table_Name)
-				.getPO(getS_ResourceType_ID(), get_TrxName());	}
-
-	/** Set Resource Type.
-	 @param S_ResourceType_ID Resource Type	  */
-	public void setS_ResourceType_ID (int S_ResourceType_ID)
-	{
-		if (S_ResourceType_ID < 1)
-			set_Value (COLUMNNAME_S_ResourceType_ID, null);
-		else
-			set_Value (COLUMNNAME_S_ResourceType_ID, Integer.valueOf(S_ResourceType_ID));
-	}
-
-	/** Get Resource Type.
-	 @return Resource Type	  */
-	public int getS_ResourceType_ID ()
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_S_ResourceType_ID);
-		if (ii == null)
-			return 0;
-		return ii.intValue();
-	}
-	public I_C_UOM getC_UOM() throws RuntimeException
-	{
-		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
-				.getPO(getC_UOM_ID(), get_TrxName());	}
-
-	/** Set UOM.
-	 @param C_UOM_ID
-	 Unit of Measure
-	 */
-	public void setC_UOM_ID (int C_UOM_ID)
-	{
-		if (C_UOM_ID < 1)
-			set_Value (COLUMNNAME_C_UOM_ID, null);
-		else
-			set_Value (COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
-	}
-
-	/** Get UOM.
-	 @return Unit of Measure
-	 */
-	public int getC_UOM_ID ()
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_UOM_ID);
-		if (ii == null)
-			return 0;
-		return ii.intValue();
-	}
-
 	public I_C_StandardProjectLine getC_StandardProjectLine() throws RuntimeException
     {
 		return (I_C_StandardProjectLine)MTable.get(getCtx(), I_C_StandardProjectLine.Table_Name)
@@ -553,6 +626,34 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 	public int getC_StandardProjectLine_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_StandardProjectLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_UOM getC_UOM() throws RuntimeException
+    {
+		return (I_C_UOM)MTable.get(getCtx(), I_C_UOM.Table_Name)
+			.getPO(getC_UOM_ID(), get_TrxName());	}
+
+	/** Set UOM.
+		@param C_UOM_ID 
+		Unit of Measure
+	  */
+	public void setC_UOM_ID (int C_UOM_ID)
+	{
+		if (C_UOM_ID < 1) 
+			set_Value (COLUMNNAME_C_UOM_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
+	}
+
+	/** Get UOM.
+		@return Unit of Measure
+	  */
+	public int getC_UOM_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_UOM_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -626,6 +727,23 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 		return (Timestamp)get_Value(COLUMNNAME_DateNextRun);
 	}
 
+	/** Set Date Promised.
+		@param DatePromised 
+		Date Order was promised
+	  */
+	public void setDatePromised (Timestamp DatePromised)
+	{
+		set_Value (COLUMNNAME_DatePromised, DatePromised);
+	}
+
+	/** Get Date Promised.
+		@return Date Order was promised
+	  */
+	public Timestamp getDatePromised () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DatePromised);
+	}
+
 	/** Set Start Schedule.
 		@param DateStartSchedule 
 		Scheduled start date for this Order
@@ -641,6 +759,23 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 	public Timestamp getDateStartSchedule () 
 	{
 		return (Timestamp)get_Value(COLUMNNAME_DateStartSchedule);
+	}
+
+	/** Set Delivered Amount.
+		@param DeliveredAmt Delivered Amount	  */
+	public void setDeliveredAmt (BigDecimal DeliveredAmt)
+	{
+		set_Value (COLUMNNAME_DeliveredAmt, DeliveredAmt);
+	}
+
+	/** Get Delivered Amount.
+		@return Delivered Amount	  */
+	public BigDecimal getDeliveredAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_DeliveredAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Description.
@@ -672,6 +807,62 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 	public String getDoPricing () 
 	{
 		return (String)get_Value(COLUMNNAME_DoPricing);
+	}
+
+	public I_C_BPartner getDropShip_BPartner() throws RuntimeException
+    {
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
+			.getPO(getDropShip_BPartner_ID(), get_TrxName());	}
+
+	/** Set Drop Shipment Partner.
+		@param DropShip_BPartner_ID 
+		Business Partner to ship to
+	  */
+	public void setDropShip_BPartner_ID (int DropShip_BPartner_ID)
+	{
+		if (DropShip_BPartner_ID < 1) 
+			set_Value (COLUMNNAME_DropShip_BPartner_ID, null);
+		else 
+			set_Value (COLUMNNAME_DropShip_BPartner_ID, Integer.valueOf(DropShip_BPartner_ID));
+	}
+
+	/** Get Drop Shipment Partner.
+		@return Business Partner to ship to
+	  */
+	public int getDropShip_BPartner_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DropShip_BPartner_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_C_BPartner_Location getDropShip_Location() throws RuntimeException
+    {
+		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
+			.getPO(getDropShip_Location_ID(), get_TrxName());	}
+
+	/** Set Drop Shipment Location.
+		@param DropShip_Location_ID 
+		Business Partner Location for shipping to
+	  */
+	public void setDropShip_Location_ID (int DropShip_Location_ID)
+	{
+		if (DropShip_Location_ID < 1) 
+			set_Value (COLUMNNAME_DropShip_Location_ID, null);
+		else 
+			set_Value (COLUMNNAME_DropShip_Location_ID, Integer.valueOf(DropShip_Location_ID));
+	}
+
+	/** Get Drop Shipment Location.
+		@return Business Partner Location for shipping to
+	  */
+	public int getDropShip_Location_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DropShip_Location_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Estimated Duration.
@@ -820,6 +1011,23 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 		return (String)get_Value(COLUMNNAME_FrequencyType);
 	}
 
+	/** Set Generate Order.
+		@param GenerateOrder 
+		Generate Order
+	  */
+	public void setGenerateOrder (String GenerateOrder)
+	{
+		set_Value (COLUMNNAME_GenerateOrder, GenerateOrder);
+	}
+
+	/** Get Generate Order.
+		@return Generate Order
+	  */
+	public String getGenerateOrder () 
+	{
+		return (String)get_Value(COLUMNNAME_GenerateOrder);
+	}
+
 	/** Set Comment/Help.
 		@param Help 
 		Comment or Hint
@@ -936,6 +1144,54 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 	public boolean isCostBased () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsCostBased);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Customer Approved.
+		@param IsCustomerApproved 
+		Customer Approved
+	  */
+	public void setIsCustomerApproved (boolean IsCustomerApproved)
+	{
+		set_Value (COLUMNNAME_IsCustomerApproved, Boolean.valueOf(IsCustomerApproved));
+	}
+
+	/** Get Customer Approved.
+		@return Customer Approved
+	  */
+	public boolean isCustomerApproved () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsCustomerApproved);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Drop Shipment.
+		@param IsDropShip 
+		Drop Shipments are sent from the Vendor directly to the Customer
+	  */
+	public void setIsDropShip (boolean IsDropShip)
+	{
+		set_Value (COLUMNNAME_IsDropShip, Boolean.valueOf(IsDropShip));
+	}
+
+	/** Get Drop Shipment.
+		@return Drop Shipments are sent from the Vendor directly to the Customer
+	  */
+	public boolean isDropShip () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsDropShip);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -1105,31 +1361,23 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 		return ii.intValue();
 	}
 
-    /** Get Record ID/ColumnName
-        @return ID/ColumnName pair
-      */
-    public KeyNamePair getKeyNamePair() 
-    {
-        return new KeyNamePair(get_ID(), String.valueOf(getLine()));
-    }
-
 	/** Set Margin %.
-	 @param Margin
-	 Margin for a product as a percentage
-	 */
+		@param Margin 
+		Margin for a product as a percentage
+	  */
 	public void setMargin (BigDecimal Margin)
 	{
 		set_Value (COLUMNNAME_Margin, Margin);
 	}
 
 	/** Get Margin %.
-	 @return Margin for a product as a percentage
-	 */
-	public BigDecimal getMargin ()
+		@return Margin for a product as a percentage
+	  */
+	public BigDecimal getMargin () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Margin);
 		if (bd == null)
-			return Env.ZERO;
+			 return Env.ZERO;
 		return bd;
 	}
 
@@ -1204,6 +1452,23 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 	public String getName () 
 	{
 		return (String)get_Value(COLUMNNAME_Name);
+	}
+
+	/** Set Ordered Amount.
+		@param OrderedAmt Ordered Amount	  */
+	public void setOrderedAmt (BigDecimal OrderedAmt)
+	{
+		set_Value (COLUMNNAME_OrderedAmt, OrderedAmt);
+	}
+
+	/** Get Ordered Amount.
+		@return Ordered Amount	  */
+	public BigDecimal getOrderedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_OrderedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	public I_C_ProjectLine getParent() throws RuntimeException
@@ -1390,6 +1655,26 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Price.
+		@param PriceEntered 
+		Price Entered - the price based on the selected/base UoM
+	  */
+	public void setPriceEntered (BigDecimal PriceEntered)
+	{
+		set_Value (COLUMNNAME_PriceEntered, PriceEntered);
+	}
+
+	/** Get Price.
+		@return Price Entered - the price based on the selected/base UoM
+	  */
+	public BigDecimal getPriceEntered () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PriceEntered);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** PriorityRule AD_Reference_ID=154 */
 	public static final int PRIORITYRULE_AD_Reference_ID=154;
 	/** High = 3 */
@@ -1444,6 +1729,71 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 		return false;
 	}
 
+	/** Set Planned Profit.
+		@param ProfitPlannedAmt 
+		Planned profit amount
+	  */
+	public void setProfitPlannedAmt (BigDecimal ProfitPlannedAmt)
+	{
+		set_Value (COLUMNNAME_ProfitPlannedAmt, ProfitPlannedAmt);
+	}
+
+	/** Get Planned Profit.
+		@return Planned profit amount
+	  */
+	public BigDecimal getProfitPlannedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ProfitPlannedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Realized Profit.
+		@param ProfitRealizedAmt 
+		Realized profit amount
+	  */
+	public void setProfitRealizedAmt (BigDecimal ProfitRealizedAmt)
+	{
+		set_Value (COLUMNNAME_ProfitRealizedAmt, ProfitRealizedAmt);
+	}
+
+	/** Get Realized Profit.
+		@return Realized profit amount
+	  */
+	public BigDecimal getProfitRealizedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ProfitRealizedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** ProjectLineType AD_Reference_ID=54361 */
+	public static final int PROJECTLINETYPE_AD_Reference_ID=54361;
+	/** Task = T */
+	public static final String PROJECTLINETYPE_Task = "T";
+	/** Phase = P */
+	public static final String PROJECTLINETYPE_Phase = "P";
+	/** Milestone = M */
+	public static final String PROJECTLINETYPE_Milestone = "M";
+	/** Resource = R */
+	public static final String PROJECTLINETYPE_Resource = "R";
+	/** Set Line Type.
+		@param ProjectLineType Line Type	  */
+	public void setProjectLineType (String ProjectLineType)
+	{
+
+		set_Value (COLUMNNAME_ProjectLineType, ProjectLineType);
+	}
+
+	/** Get Line Type.
+		@return Line Type	  */
+	public String getProjectLineType () 
+	{
+		return (String)get_Value(COLUMNNAME_ProjectLineType);
+	}
+
 	/** ProjInvoiceRule AD_Reference_ID=383 */
 	public static final int PROJINVOICERULE_AD_Reference_ID=383;
 	/** None = - */
@@ -1472,6 +1822,94 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 	public String getProjInvoiceRule () 
 	{
 		return (String)get_Value(COLUMNNAME_ProjInvoiceRule);
+	}
+
+	/** Set Delivered Quantity.
+		@param QtyDelivered 
+		Delivered Quantity
+	  */
+	public void setQtyDelivered (BigDecimal QtyDelivered)
+	{
+		set_Value (COLUMNNAME_QtyDelivered, QtyDelivered);
+	}
+
+	/** Get Delivered Quantity.
+		@return Delivered Quantity
+	  */
+	public BigDecimal getQtyDelivered () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyDelivered);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Quantity.
+		@param QtyEntered 
+		The Quantity Entered is based on the selected UoM
+	  */
+	public void setQtyEntered (BigDecimal QtyEntered)
+	{
+		set_Value (COLUMNNAME_QtyEntered, QtyEntered);
+	}
+
+	/** Get Quantity.
+		@return The Quantity Entered is based on the selected UoM
+	  */
+	public BigDecimal getQtyEntered () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyEntered);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Ordered Quantity.
+		@param QtyOrdered 
+		Ordered Quantity
+	  */
+	public void setQtyOrdered (BigDecimal QtyOrdered)
+	{
+		set_Value (COLUMNNAME_QtyOrdered, QtyOrdered);
+	}
+
+	/** Get Ordered Quantity.
+		@return Ordered Quantity
+	  */
+	public BigDecimal getQtyOrdered () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyOrdered);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public I_C_BPartner getRef_BPartner() throws RuntimeException
+    {
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
+			.getPO(getRef_BPartner_ID(), get_TrxName());	}
+
+	/** Set Employee Reference.
+		@param Ref_BPartner_ID 
+		Employee Reference
+	  */
+	public void setRef_BPartner_ID (int Ref_BPartner_ID)
+	{
+		if (Ref_BPartner_ID < 1) 
+			set_Value (COLUMNNAME_Ref_BPartner_ID, null);
+		else 
+			set_Value (COLUMNNAME_Ref_BPartner_ID, Integer.valueOf(Ref_BPartner_ID));
+	}
+
+	/** Get Employee Reference.
+		@return Employee Reference
+	  */
+	public int getRef_BPartner_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Ref_BPartner_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	public I_AD_User getResponsible() throws RuntimeException
@@ -1560,6 +1998,31 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
 	public int getS_ResourceAssignment_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_S_ResourceAssignment_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public I_S_ResourceType getS_ResourceType() throws RuntimeException
+    {
+		return (I_S_ResourceType)MTable.get(getCtx(), I_S_ResourceType.Table_Name)
+			.getPO(getS_ResourceType_ID(), get_TrxName());	}
+
+	/** Set Resource Type.
+		@param S_ResourceType_ID Resource Type	  */
+	public void setS_ResourceType_ID (int S_ResourceType_ID)
+	{
+		if (S_ResourceType_ID < 1) 
+			set_Value (COLUMNNAME_S_ResourceType_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ResourceType_ID, Integer.valueOf(S_ResourceType_ID));
+	}
+
+	/** Get Resource Type.
+		@return Resource Type	  */
+	public int getS_ResourceType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ResourceType_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

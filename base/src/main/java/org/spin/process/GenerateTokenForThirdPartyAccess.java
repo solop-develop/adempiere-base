@@ -17,9 +17,6 @@
 
 package org.spin.process;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.adempiere.core.domains.models.I_AD_Role;
 import org.adempiere.core.domains.models.I_AD_Token;
 import org.adempiere.core.domains.models.I_AD_User;
@@ -27,9 +24,12 @@ import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.Query;
 import org.spin.model.MADToken;
 import org.spin.model.MADTokenDefinition;
-import org.spin.util.TokenGeneratorHandler;
 import org.spin.util.IThirdPartyAccessGenerator;
 import org.spin.util.ITokenGenerator;
+import org.spin.util.TokenGeneratorHandler;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /** 
  * 	Generate Token for Third Party Access
@@ -86,9 +86,13 @@ public class GenerateTokenForThirdPartyAccess extends GenerateTokenForThirdParty
 			if(!IThirdPartyAccessGenerator.class.isAssignableFrom(generator.getClass())) {
 				throw new AdempiereException("@AD_TokenDefinition_ID@ @Invalid@");	
 			}
+			//	Token Profile is mandatory for scope resolution
+			if(getTokenProfileId() <= 0) {
+				throw new AdempiereException("@AD_TokenProfile_ID@ @NotFound@");
+			}
 			//	Generate
 			IThirdPartyAccessGenerator thirdPartyAccessGenerator = ((IThirdPartyAccessGenerator) generator);
-			String token = thirdPartyAccessGenerator.generateToken(getUserId(), getRoleId());
+			String token = thirdPartyAccessGenerator.generateToken(getUserId(), getRoleId(), getTokenProfileId(), getTokenClaimSetId());
 			return "@TokenValue@: " + token;
 		}
 	}

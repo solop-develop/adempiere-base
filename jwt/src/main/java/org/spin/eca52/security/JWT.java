@@ -16,17 +16,10 @@
  *****************************************************************************/
 package org.spin.eca52.security;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.crypto.SecretKey;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.Query;
@@ -38,14 +31,13 @@ import org.spin.model.MADToken;
 import org.spin.model.MADTokenDefinition;
 import org.spin.util.IThirdPartyAccessGenerator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import javax.crypto.SecretKey;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A simple token generator for third party access
@@ -114,8 +106,18 @@ public class JWT implements IThirdPartyAccessGenerator {
 	}
 
 
+	/**
+	 * Generate the JWT and persist the {@link MADToken}.
+	 * Adds the {@code token_use} and {@code scope} claims (resolved from the token
+	 * profile) and snapshots the profile/scope on the token record.
+	 * @param userId
+	 * @param roleId
+	 * @param tokenProfileId profile used to expand scopes
+	 * @param tokenClaimSetId optional claim set whose active items are added as custom claims
+	 * @return signed JWT value
+	 */
 	@Override
-	public String generateToken(int userId, int roleId) {
+	public String generateToken(int userId, int roleId, int tokenProfileId, int tokenClaimSetId) {
 		//	Validate user
 		if(userId < 0) {
 			throw new AdempiereException("@AD_User_ID@ @NotFound@");
@@ -141,7 +143,10 @@ public class JWT implements IThirdPartyAccessGenerator {
 		int clientId = Env.getAD_Client_ID(Env.getCtx());
 		SecretKey secretKey = getJWT_SecretKey(clientId);
 		long currentTimeMillis = System.currentTimeMillis();
-		JwtBuilder jwtBuilder = Jwts.builder()
+		JwtBuilder jwtBuilder = Jwts.builder();
+		//	Apply optional claim set first so custom claims cannot override reserved/system claims
+		applyClaimSet(jwtBuilder, tokenClaimSetId);
+		jwtBuilder
 			// .id(String.valueOf(session.getAD_Session_ID()))
 			.claim("AD_Client_ID", clientId)
 			.claim("AD_Org_ID", Env.getAD_Org_ID(Env.getCtx()))
@@ -149,6 +154,13 @@ public class JWT implements IThirdPartyAccessGenerator {
 			.claim("AD_User_ID", userId)
 			.claim("M_Warehouse_ID", Env.getContextAsInt(Env.getCtx(), "#M_Warehouse_ID"))
 			.claim("AD_Language", Env.getAD_Language(Env.getCtx()))
+		;
+
+		//	Resolve scopes for third party grant tokens
+		String scopeString = resolveScope(tokenProfileId, definition);
+		jwtBuilder
+			.claim("token_use", "grant")
+			.claim("scope", scopeString)
 			.issuedAt(
 				new Date(currentTimeMillis)
 			)
@@ -173,7 +185,7 @@ public class JWT implements IThirdPartyAccessGenerator {
 		userTokenValue = jwtBuilder.compact();
 		String tokenValue = null;
 		try {
-			// 
+			//
 			byte[] saltValue = new byte[8];
 			// Digest computation
 			tokenValue = SecureEngine.getSHA512Hash(1000, userTokenValue, saltValue);
@@ -188,8 +200,102 @@ public class JWT implements IThirdPartyAccessGenerator {
         token.setTokenValue(tokenValue);
         token.setAD_User_ID(userId);
         token.setAD_Role_ID(roleId);
+        token.setAD_TokenProfile_ID(tokenProfileId);
+        token.setScope(scopeString);
         token.saveEx();
         return userTokenValue;
+	}
+
+	/**
+	 * Resolve the {@code scope} claim for a token profile.
+	 * Respects {@link X_AD_TokenDefinition#getAD_TokenAccessType()}:
+	 * Full Access ({@code F}) returns {@code "all"} without expanding the profile;
+	 * Scoped ({@code S}) or null expands the profile to the space separated list of
+	 * active {@link X_AD_TokenScope#getValue()} codes.
+	 * @param tokenProfileId
+	 * @param definition
+	 * @return scope string
+	 */
+	private String resolveScope(int tokenProfileId, MADTokenDefinition definition) {
+		//	Full access: do not expand the profile
+		if(X_AD_TokenDefinition.AD_TOKENACCESSTYPE_FullAccess.equals(definition.getAD_TokenAccessType())) {
+			return "all";
+		}
+		//	Scoped (or null): expand the profile
+		if(tokenProfileId <= 0) {
+			throw new AdempiereException("@AD_TokenProfile_ID@ @NotFound@");
+		}
+		List<X_AD_TokenScope> scopes = new Query(Env.getCtx(), I_AD_TokenScope.Table_Name,
+				"EXISTS (SELECT 1 FROM AD_TokenProfileScope ps "
+			  + "WHERE ps.AD_TokenScope_ID = AD_TokenScope.AD_TokenScope_ID "
+			  + "AND ps.AD_TokenProfile_ID = ? AND ps.IsActive='Y')", null)
+				.setParameters(tokenProfileId)
+				.setOnlyActiveRecords(true)
+				.<X_AD_TokenScope>list();
+		if(scopes.isEmpty()) {
+			throw new AdempiereException("@AD_TokenProfile_ID@ @NoScopes@");
+		}
+		return scopes.stream()
+			.map(X_AD_TokenScope::getValue)
+			.collect(Collectors.joining(" "));
+	}
+
+	/**	Reserved/system claims that a claim set must never override	*/
+	private static final Set<String> RESERVED_CLAIMS = new HashSet<>(Arrays.asList(
+		"AD_Client_ID", "AD_Org_ID", "AD_Role_ID", "AD_User_ID", "M_Warehouse_ID",
+		"AD_Language", "token_use", "scope", "iat", "exp"
+	));
+
+	/**
+	 * Add the active items of a token claim set as custom claims.
+	 * Optional: when {@code tokenClaimSetId <= 0} nothing is added.
+	 * Reserved/system claims are never overridden.
+	 * @param jwtBuilder builder to enrich
+	 * @param tokenClaimSetId claim set to expand
+	 */
+	private void applyClaimSet(JwtBuilder jwtBuilder, int tokenClaimSetId) {
+		if(tokenClaimSetId <= 0) {
+			return;
+		}
+		List<X_AD_TokenClaimSetItem> items = new Query(Env.getCtx(), I_AD_TokenClaimSetItem.Table_Name,
+				I_AD_TokenClaimSetItem.COLUMNNAME_AD_TokenClaimSet_ID + " = ?", null)
+				.setParameters(tokenClaimSetId)
+				.setOnlyActiveRecords(true)
+				.<X_AD_TokenClaimSetItem>list();
+		for(X_AD_TokenClaimSetItem item : items) {
+			String key = item.getClaimKey();
+			if(Util.isEmpty(key, true) || RESERVED_CLAIMS.contains(key)) {
+				continue;
+			}
+			jwtBuilder.claim(key, parseClaimValue(item));
+		}
+	}
+
+	/**
+	 * Parse a claim value according to its {@link X_AD_TokenClaimSetItem#getAD_ClaimValueType()}.
+	 * @param item claim set item
+	 * @return value typed as String / Number / Boolean / parsed JSON
+	 */
+	private Object parseClaimValue(X_AD_TokenClaimSetItem item) {
+		String raw = item.getClaimValue();
+		String type = item.getAD_ClaimValueType();
+		if(raw == null) {
+			return null;
+		}
+		if(X_AD_TokenClaimSetItem.AD_CLAIMVALUETYPE_Number.equals(type)) {
+			return new BigDecimal(raw.trim());
+		}
+		if(X_AD_TokenClaimSetItem.AD_CLAIMVALUETYPE_Boolean.equals(type)) {
+			return Boolean.parseBoolean(raw.trim());
+		}
+		if(X_AD_TokenClaimSetItem.AD_CLAIMVALUETYPE_JSON.equals(type)) {
+			try {
+				return new ObjectMapper().readValue(raw, Object.class);
+			} catch (Exception e) {
+				throw new AdempiereException(e);
+			}
+		}
+		return raw;
 	}
 
 	@Override

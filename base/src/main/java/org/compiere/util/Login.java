@@ -16,6 +16,20 @@
  *****************************************************************************/
 package org.compiere.util;
 
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+import io.vavr.Tuple4;
+import io.vavr.collection.List;
+import io.vavr.control.Try;
+import org.adempiere.core.domains.models.I_AD_User;
+import org.adempiere.core.domains.models.I_AD_User_Roles;
+import org.adempiere.core.domains.models.I_M_Warehouse;
+import org.compiere.Adempiere;
+import org.compiere.db.CConnection;
+import org.compiere.model.*;
+
+import javax.swing.*;
 import java.security.Principal;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -24,34 +38,6 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
-
-import javax.swing.JOptionPane;
-
-import io.vavr.Tuple;
-import io.vavr.Tuple2;
-import io.vavr.Tuple3;
-import io.vavr.Tuple4;
-import io.vavr.collection.List;
-import io.vavr.control.Try;
-
-import org.adempiere.core.domains.models.I_AD_User;
-import org.adempiere.core.domains.models.I_AD_User_Roles;
-import org.adempiere.core.domains.models.I_M_Warehouse;
-import org.compiere.Adempiere;
-import org.compiere.db.CConnection;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MAcctSchemaElement;
-import org.compiere.model.MClientInfo;
-import org.compiere.model.MColumn;
-import org.compiere.model.MCountry;
-import org.compiere.model.MPreference;
-import org.compiere.model.MRole;
-import org.compiere.model.MSystem;
-import org.compiere.model.MTree;
-import org.compiere.model.MUser;
-import org.compiere.model.M_Element;
-import org.compiere.model.ModelValidationEngine;
-import org.compiere.model.Query;
 
 
 /**
@@ -143,7 +129,7 @@ public class Login
 		//
 		if (isClient)
 			JOptionPane.showMessageDialog(null, msg.toString(),
-				org.compiere.Adempiere.getName() + " - Java Version Check",
+				Adempiere.getName() + " - Java Version Check",
 				ok ? JOptionPane.WARNING_MESSAGE : JOptionPane.ERROR_MESSAGE);
 		else
 			log.severe(msg.toString());
@@ -304,7 +290,7 @@ public class Login
 		}
 
 		AtomicReference<Tuple3<Integer, String, String>> authenticatedUserTupleReference = new AtomicReference<>();
-		Try<Void> authenticatedUserInfo = DB.runResultSetFunction.apply(null, sql.toString() , io.vavr.collection.List.ofAll(parameters), resultSet -> {
+		Try<Void> authenticatedUserInfo = DB.runResultSetFunction.apply(null, sql.toString() , List.ofAll(parameters), resultSet -> {
 			if(resultSet.next()) {
 				authenticatedUserTupleReference.set(
 						Tuple.of(
@@ -762,7 +748,7 @@ public class Login
 	 *	@param Summary_Org_ID summary org
 	 *	@param Summary_Name name
 	 *	@param role role
-	 *	@see org.compiere.model.MRole#loadOrgAccessAdd
+	 *	@see MRole#loadOrgAccessAdd
 	 */
 	private void getOrgsAddSummary (ArrayList<KeyNamePair> list, int Summary_Org_ID, 
 		String Summary_Name, MRole role)

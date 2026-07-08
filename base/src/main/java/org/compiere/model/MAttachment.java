@@ -16,23 +16,14 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.zip.Deflater;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
+import org.adempiere.core.domains.models.I_AD_Attachment;
+import org.adempiere.core.domains.models.X_AD_Attachment;
+import org.compiere.util.Env;
+import org.compiere.util.MimeType;
+import org.spin.util.AttachmentUtil;
+import org.spin.util.XMLUtils;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,19 +34,17 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.adempiere.core.domains.models.I_AD_Attachment;
-import org.adempiere.core.domains.models.X_AD_Attachment;
-import org.compiere.util.Env;
-import org.compiere.util.MimeType;
-import org.spin.util.AttachmentUtil;
-import org.spin.util.XMLUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import java.io.*;
+import java.nio.channels.FileChannel;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.zip.Deflater;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 
 /**
@@ -356,7 +345,7 @@ public class MAttachment extends X_AD_Attachment
 	 */
 	public MAttachmentEntry getEntry (int index)
 	{
-		if (items == null)
+		if (items == null || items.isEmpty())
 			loadLOBData();
 		if (index < 0 || index >= items.size())
 			return null;
@@ -369,7 +358,7 @@ public class MAttachment extends X_AD_Attachment
 	 */
 	public MAttachmentEntry[] getEntries ()
 	{
-		if (items == null)
+		if (items == null|| items.isEmpty())
 			loadLOBData();
 		MAttachmentEntry[] retValue = new MAttachmentEntry[items.size()];
 		items.toArray (retValue);
@@ -939,19 +928,25 @@ public class MAttachment extends X_AD_Attachment
 	 */
 	protected boolean beforeDelete () {
 		if(AttachmentUtil.getInstance().isValidForClient(getAD_Client_ID())) {
-			items.stream().forEach(item -> {
-				try {
-					AttachmentUtil.getInstance()
-						.clear()
-						.withAttachmentId(getAD_Attachment_ID())
-						.withFileName(item.getName())
-						.withClientId(getAD_Client_ID())
-						.withTansactionName(get_TrxName())
-						.deleteAttachment();
-				} catch (Exception e) {
-					log.warning("Error deleting attachment: " + e.getLocalizedMessage());
-				}
-			});
+			AttachmentUtil.getInstance()
+				.clear()
+				.withAttachmentId(getAD_Attachment_ID())
+				.withClientId(getAD_Client_ID())
+				.withTansactionName(get_TrxName())
+				.getFileNameListFromAttachment()
+				.forEach(fileName -> {
+					try {
+						AttachmentUtil.getInstance()
+							.clear()
+							.withAttachmentId(getAD_Attachment_ID())
+							.withFileName(fileName)
+							.withClientId(getAD_Client_ID())
+							.withTansactionName(get_TrxName())
+							.deleteAttachment();
+					} catch (Exception e) {
+						log.warning("Error deleting attachment: " + e.getLocalizedMessage());
+					}
+				});
 			return true;
 		} else {
 			if (isStoreAttachmentsOnFileSystem) {

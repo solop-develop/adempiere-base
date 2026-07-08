@@ -21,13 +21,7 @@ package org.solop.project.process;
 import org.adempiere.core.domains.models.I_C_Order;
 import org.adempiere.core.domains.models.I_C_ProjectLine;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MDocType;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MProduct;
-import org.compiere.model.MProject;
-import org.compiere.model.MProjectLine;
-import org.compiere.model.MUOMConversion;
+import org.compiere.model.*;
 import org.compiere.util.Env;
 import org.compiere.util.TimeUtil;
 import org.compiere.util.Trx;
@@ -177,6 +171,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 					}
 					orderLine.setDiscount();
 					orderLine.setTax();
+					orderLine.setCost(projectLine.getCost());
 					orderLine.setC_Project_ID(project.getC_Project_ID());
 					orderLine.setC_ProjectPhase_ID(projectLine.getC_ProjectPhase_ID());
 					if (projectLine.getDatePromised() != null) {

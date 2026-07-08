@@ -16,6 +16,15 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_AD_User;
+import org.adempiere.core.domains.models.X_AD_User;
+import org.adempiere.core.domains.models.X_AD_UserBPAccess;
+import org.adempiere.core.domains.models.X_C_BPartner;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.util.*;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -28,22 +37,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-
-import org.adempiere.core.domains.models.I_AD_User;
-import org.adempiere.core.domains.models.X_AD_User;
-import org.adempiere.core.domains.models.X_AD_UserBPAccess;
-import org.adempiere.core.domains.models.X_C_BPartner;
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.util.CCache;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Secure;
-import org.compiere.util.SecureEngine;
-import org.compiere.util.Util;
 
 /**
  *  User Model
@@ -405,11 +398,7 @@ public class MUser extends X_AD_User
 	 */
 	public boolean authenticateHash (String password)  {
 		// Accepts both BCrypt (new) and legacy SHA-512 + salt hashes
-		return SecureEngine.isValidPasswordHash(
-			password,
-			getPassword(),
-			getSalt()
-		);
+		return SecureEngine.isValidPasswordHash(password, getPassword(), getSalt());
 	}
 	
 	/**

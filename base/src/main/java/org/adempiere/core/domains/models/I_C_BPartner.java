@@ -569,6 +569,19 @@ public interface I_C_BPartner
 	  */
 	public boolean isDiscountPrinted();
 
+    /** Column name IsDropShip */
+    public static final String COLUMNNAME_IsDropShip = "IsDropShip";
+
+	/** Set Drop Shipment.
+	  * Drop Shipments are sent from the Vendor directly to the Customer
+	  */
+	public void setIsDropShip (boolean IsDropShip);
+
+	/** Get Drop Shipment.
+	  * Drop Shipments are sent from the Vendor directly to the Customer
+	  */
+	public boolean isDropShip();
+
     /** Column name IsEmployee */
     public static final String COLUMNNAME_IsEmployee = "IsEmployee";
 
@@ -581,6 +594,7 @@ public interface I_C_BPartner
 	  * Indicates if  this Business Partner is an employee
 	  */
 	public boolean isEmployee();
+
 
     /** Column name IsManufacturer */
     public static final String COLUMNNAME_IsManufacturer = "IsManufacturer";
@@ -643,6 +657,7 @@ public interface I_C_BPartner
 	  */
 	public boolean isSalesRep();
 
+
     /** Column name IsSummary */
     public static final String COLUMNNAME_IsSummary = "IsSummary";
 
@@ -681,6 +696,7 @@ public interface I_C_BPartner
 	  * Indicates if this Business Partner is a Vendor
 	  */
 	public boolean isVendor();
+
 
     /** Column name Logo_ID */
     public static final String COLUMNNAME_Logo_ID = "Logo_ID";
@@ -1048,6 +1064,16 @@ public interface I_C_BPartner
 	  */
 	public String getSO_Description();
 
+
+
+    /** Column name SupportReferenceValue */
+    public static final String COLUMNNAME_SupportReferenceValue = "SupportReferenceValue";
+
+	/** Set Support Reference Value	  */
+	public void setSupportReferenceValue (String SupportReferenceValue);
+
+	/** Get Support Reference Value	  */
+	public String getSupportReferenceValue();
 
     /** Column name TaxID */
     public static final String COLUMNNAME_TaxID = "TaxID";

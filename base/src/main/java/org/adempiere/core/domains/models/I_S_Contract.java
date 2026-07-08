@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,10 +12,12 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
+import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
 import java.math.BigDecimal;
@@ -23,7 +25,7 @@ import java.sql.Timestamp;
 
 /** Generated Interface for S_Contract
  *  @author Adempiere (generated) 
- *  @version Release 3.9.3
+ *  @version Release 3.9.4
  */
 public interface I_S_Contract 
 {
@@ -32,7 +34,7 @@ public interface I_S_Contract
     public static final String Table_Name = "S_Contract";
 
     /** AD_Table_ID=54441 */
-    public static final int Table_ID = org.compiere.model.MTable.getTable_ID(Table_Name);
+    public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
@@ -1131,22 +1133,22 @@ public interface I_S_Contract
 
 	public I_PP_Calendar getPP_Calendar() throws RuntimeException;
 
-    /** Column name PP_PeriodDefinition_ID */
-    public static final String COLUMNNAME_PP_PeriodDefinition_ID = "PP_PeriodDefinition_ID";
+	/** Column name PP_PeriodDefinition_ID */
+	public static final String COLUMNNAME_PP_PeriodDefinition_ID = "PP_PeriodDefinition_ID";
 
 	/** Set Current Period.
-	  * Period Definition, allows to define time cycles for the Operational Calendar
-	  */
+	 * Period Definition, allows to define time cycles for the Operational Calendar
+	 */
 	public void setPP_PeriodDefinition_ID (int PP_PeriodDefinition_ID);
 
 	/** Get Current Period.
-	  * Period Definition, allows to define time cycles for the Operational Calendar
-	  */
+	 * Period Definition, allows to define time cycles for the Operational Calendar
+	 */
 	public int getPP_PeriodDefinition_ID();
 
 	public I_PP_PeriodDefinition getPP_PeriodDefinition() throws RuntimeException;
 
-    /** Column name PriorityRule */
+	/** Column name PriorityRule */
     public static final String COLUMNNAME_PriorityRule = "PriorityRule";
 
 	/** Set Priority.
@@ -1262,6 +1264,15 @@ public interface I_S_Contract
 	  * Enable sending Document EMail
 	  */
 	public boolean isSendEMail();
+
+    /** Column name SupportReferenceValue */
+    public static final String COLUMNNAME_SupportReferenceValue = "SupportReferenceValue";
+
+	/** Set Support Reference Value	  */
+	public void setSupportReferenceValue (String SupportReferenceValue);
+
+	/** Get Support Reference Value	  */
+	public String getSupportReferenceValue();
 
     /** Column name TotalLines */
     public static final String COLUMNNAME_TotalLines = "TotalLines";

@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for AD_TokenDefinition
  *  @author Adempiere (generated) 
@@ -63,6 +64,19 @@ public interface I_AD_TokenDefinition
 	  * Organizational entity within client
 	  */
 	public int getAD_Org_ID();
+
+    /** Column name AD_TokenAccessType */
+    public static final String COLUMNNAME_AD_TokenAccessType = "AD_TokenAccessType";
+
+	/** Set Token Access Type.
+	  * Access type for the token definition
+	  */
+	public void setAD_TokenAccessType (String AD_TokenAccessType);
+
+	/** Get Token Access Type.
+	  * Access type for the token definition
+	  */
+	public String getAD_TokenAccessType();
 
     /** Column name AD_TokenDefinition_ID */
     public static final String COLUMNNAME_AD_TokenDefinition_ID = "AD_TokenDefinition_ID";

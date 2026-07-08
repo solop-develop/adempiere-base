@@ -16,24 +16,14 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_Order;
-import org.adempiere.core.domains.models.I_C_OrderLine;
-import org.adempiere.core.domains.models.I_M_InOutConfirm;
-import org.adempiere.core.domains.models.I_M_InOutLine;
-import org.adempiere.core.domains.models.I_WM_InOutBoundLine;
-import org.adempiere.core.domains.models.X_M_InOut;
-import org.adempiere.core.domains.models.X_WM_InOutBoundLine;
+import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
 import org.compiere.process.DocumentReversalEnabled;
-import org.compiere.util.DB;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 import org.solop.queue.ForecastComparisonProcessor;
 import org.solop.queue.storage.StorageUpdate;
@@ -48,16 +38,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -1699,6 +1680,13 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 		}
 		//	Add to Storage Queue
 		StorageUpdate.addDocumentToQueue(this);
+
+		//	Refresh project line summarization for linked project lines (#2843)
+		Set<Integer> projectLineIds = new java.util.HashSet<Integer>();
+		for (MInOutLine inOutLine : getLines())
+			if (inOutLine.get_ValueAsInt("C_ProjectLine_ID") > 0)
+				projectLineIds.add(inOutLine.get_ValueAsInt("C_ProjectLine_ID"));
+		MProjectLine.recalculateProjectLines(getCtx(), projectLineIds, get_TrxName(), Table_Name, isSOTrx());
 
 		processMsg = info.toString();
 		setProcessed(true);

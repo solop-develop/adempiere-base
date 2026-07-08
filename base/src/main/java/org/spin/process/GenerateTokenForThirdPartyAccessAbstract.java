@@ -3,7 +3,7 @@
  * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
  * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
- * or (at your option) any later version.										*
+ * or (at your option) any later version.                                     *
  * by the Free Software Foundation. This program is distributed in the hope   *
  * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
@@ -12,7 +12,8 @@
  * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * or via info@adempiere.net or http://www.adempiere.net/license.html         *
+ * or via info@adempiere.net                                                  *
+ * or https://github.com/adempiere/adempiere/blob/develop/license.html        *
  *****************************************************************************/
 
 package org.spin.process;
@@ -21,7 +22,7 @@ import org.compiere.process.SvrProcess;
 
 /** Generated Process for (Generate Token for Third Party Access)
  *  @author ADempiere (generated) 
- *  @version Release 3.9.3
+ *  @version Release 3.9.4
  */
 public abstract class GenerateTokenForThirdPartyAccessAbstract extends SvrProcess {
 	/** Process Value 	*/
@@ -36,18 +37,28 @@ public abstract class GenerateTokenForThirdPartyAccessAbstract extends SvrProces
 	public static final String AD_ROLE_ID = "AD_Role_ID";
 	/**	Parameter Name for Revoke All Tokens	*/
 	public static final String ISREVOKEALLTOKENS = "IsRevokeAllTokens";
+	/**	Parameter Name for Token Profile	*/
+	public static final String AD_TOKENPROFILE_ID = "AD_TokenProfile_ID";
+	/**	Parameter Name for Token Claim Set	*/
+	public static final String AD_TOKENCLAIMSET_ID = "AD_TokenClaimSet_ID";
 	/**	Parameter Value for User/Contact	*/
 	private int userId;
 	/**	Parameter Value for Role	*/
 	private int roleId;
 	/**	Parameter Value for Revoke All Tokens	*/
 	private boolean isRevokeAllTokens;
+	/**	Parameter Value for Token Profile	*/
+	private int tokenProfileId;
+	/**	Parameter Value for Token Claim Set	*/
+	private int tokenClaimSetId;
 
 	@Override
 	protected void prepare() {
 		userId = getParameterAsInt(AD_USER_ID);
 		roleId = getParameterAsInt(AD_ROLE_ID);
 		isRevokeAllTokens = getParameterAsBoolean(ISREVOKEALLTOKENS);
+		tokenProfileId = getParameterAsInt(AD_TOKENPROFILE_ID);
+		tokenClaimSetId = getParameterAsInt(AD_TOKENCLAIMSET_ID);
 	}
 
 	/**	 Getter Parameter Value for User/Contact	*/
@@ -78,6 +89,26 @@ public abstract class GenerateTokenForThirdPartyAccessAbstract extends SvrProces
 	/**	 Setter Parameter Value for Revoke All Tokens	*/
 	protected void setIsRevokeAllTokens(boolean isRevokeAllTokens) {
 		this.isRevokeAllTokens = isRevokeAllTokens;
+	}
+
+	/**	 Getter Parameter Value for Token Profile	*/
+	protected int getTokenProfileId() {
+		return tokenProfileId;
+	}
+
+	/**	 Setter Parameter Value for Token Profile	*/
+	protected void setTokenProfileId(int tokenProfileId) {
+		this.tokenProfileId = tokenProfileId;
+	}
+
+	/**	 Getter Parameter Value for Token Claim Set	*/
+	protected int getTokenClaimSetId() {
+		return tokenClaimSetId;
+	}
+
+	/**	 Setter Parameter Value for Token Claim Set	*/
+	protected void setTokenClaimSetId(int tokenClaimSetId) {
+		this.tokenClaimSetId = tokenClaimSetId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

@@ -18,14 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for AD_User
  *  @author Adempiere (generated) 
@@ -36,7 +37,7 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260624L;
 
     /** Standard Constructor */
     public X_AD_User (Properties ctx, int AD_User_ID, String trxName)
@@ -85,9 +86,9 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_AD_EMailConfig getAD_EMailConfig() throws RuntimeException
+	public I_AD_EMailConfig getAD_EMailConfig() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_EMailConfig)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_EMailConfig.Table_Name)
+		return (I_AD_EMailConfig)MTable.get(getCtx(), I_AD_EMailConfig.Table_Name)
 			.getPO(getAD_EMailConfig_ID(), get_TrxName());	}
 
 	/** Set EMail Configuration.
@@ -110,9 +111,9 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Org getAD_OrgTrx() throws RuntimeException
+	public I_AD_Org getAD_OrgTrx() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Org)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Org.Table_Name)
+		return (I_AD_Org)MTable.get(getCtx(), I_AD_Org.Table_Name)
 			.getPO(getAD_OrgTrx_ID(), get_TrxName());	}
 
 	/** Set Trx Organization.
@@ -220,9 +221,9 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 		return (String)get_Value(COLUMNNAME_BPName);
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -248,9 +249,9 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException
+	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner_Location)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner_Location.Table_Name)
+		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
 			.getPO(getC_BPartner_Location_ID(), get_TrxName());	}
 
 	/** Set Partner Location.
@@ -276,9 +277,9 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Campaign getC_Campaign() throws RuntimeException
+	public I_C_Campaign getC_Campaign() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Campaign)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Campaign.Table_Name)
+		return (I_C_Campaign)MTable.get(getCtx(), I_C_Campaign.Table_Name)
 			.getPO(getC_Campaign_ID(), get_TrxName());	}
 
 	/** Set Campaign.
@@ -304,9 +305,9 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Greeting getC_Greeting() throws RuntimeException
+	public I_C_Greeting getC_Greeting() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Greeting)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Greeting.Table_Name)
+		return (I_C_Greeting)MTable.get(getCtx(), I_C_Greeting.Table_Name)
 			.getPO(getC_Greeting_ID(), get_TrxName());	}
 
 	/** Set Greeting.
@@ -332,9 +333,9 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Job getC_Job() throws RuntimeException
+	public I_C_Job getC_Job() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Job)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Job.Table_Name)
+		return (I_C_Job)MTable.get(getCtx(), I_C_Job.Table_Name)
 			.getPO(getC_Job_ID(), get_TrxName());	}
 
 	/** Set Position.
@@ -360,9 +361,9 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Location getC_Location() throws RuntimeException
+	public I_C_Location getC_Location() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Location)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Location.Table_Name)
+		return (I_C_Location)MTable.get(getCtx(), I_C_Location.Table_Name)
 			.getPO(getC_Location_ID(), get_TrxName());	}
 
 	/** Set Address.
@@ -431,6 +432,31 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 	public String getConnectionProfile () 
 	{
 		return (String)get_Value(COLUMNNAME_ConnectionProfile);
+	}
+
+	public I_DD_Driver getDD_Driver() throws RuntimeException
+    {
+		return (I_DD_Driver)MTable.get(getCtx(), I_DD_Driver.Table_Name)
+			.getPO(getDD_Driver_ID(), get_TrxName());	}
+
+	/** Set Driver.
+		@param DD_Driver_ID Driver	  */
+	public void setDD_Driver_ID (int DD_Driver_ID)
+	{
+		if (DD_Driver_ID < 1) 
+			set_Value (COLUMNNAME_DD_Driver_ID, null);
+		else 
+			set_Value (COLUMNNAME_DD_Driver_ID, Integer.valueOf(DD_Driver_ID));
+	}
+
+	/** Get Driver.
+		@return Driver	  */
+	public int getDD_Driver_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DD_Driver_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Description.
@@ -550,6 +576,23 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 	public String getFax () 
 	{
 		return (String)get_Value(COLUMNNAME_Fax);
+	}
+
+	/** Set Github User.
+		@param Github_User 
+		Collaborator GitHub username.
+	  */
+	public void setGithub_User (String Github_User)
+	{
+		set_Value (COLUMNNAME_Github_User, Github_User);
+	}
+
+	/** Get Github User.
+		@return Collaborator GitHub username.
+	  */
+	public String getGithub_User () 
+	{
+		return (String)get_Value(COLUMNNAME_Github_User);
 	}
 
 	/** Set HasRole.
@@ -1155,9 +1198,9 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
+	public I_AD_User getSalesRep() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSalesRep_ID(), get_TrxName());	}
 
 	/** Set Sales Representative.
@@ -1200,9 +1243,10 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 		return (String)get_Value(COLUMNNAME_Salt);
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getSupervisor() throws RuntimeException
+
+	public I_AD_User getSupervisor() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSupervisor_ID(), get_TrxName());	}
 
 	/** Set Supervisor.
@@ -1226,6 +1270,20 @@ public class X_AD_User extends PO implements I_AD_User, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Support Reference Value.
+		@param SupportReferenceValue Support Reference Value	  */
+	public void setSupportReferenceValue (String SupportReferenceValue)
+	{
+		set_Value (COLUMNNAME_SupportReferenceValue, SupportReferenceValue);
+	}
+
+	/** Get Support Reference Value.
+		@return Support Reference Value	  */
+	public String getSupportReferenceValue () 
+	{
+		return (String)get_Value(COLUMNNAME_SupportReferenceValue);
 	}
 
 	/** Set Title.
