@@ -24,6 +24,7 @@ import org.compiere.util.*;
 import org.spin.cash.model.MCBankAccountWithdrawal;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;

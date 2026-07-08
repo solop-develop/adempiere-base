@@ -209,7 +209,8 @@ public class SequenceCheck extends SvrProcess
 		if (onlyADSequence) {
 			whereClause += " AND AD_Sequence_ID = 16"; // HARDCODED: AD_Sequence  #284
 		}
-		List<Integer> sequenceIds = new Query(ctx, I_AD_Sequence.Table_Name, whereClause, sp.get_TrxName())
+		String trxName = (sp != null) ? sp.get_TrxName() : null;
+		List<Integer> sequenceIds = new Query(ctx, I_AD_Sequence.Table_Name, whereClause, trxName)
 				.setOrderBy(I_AD_Sequence.COLUMNNAME_Name)
 				.setOnlyActiveRecords(true)
 				.getIDsAsList();
@@ -225,6 +226,16 @@ public class SequenceCheck extends SvrProcess
 						s_log.warning("AD_Sequence_ID=" + sequenceId + " could not be loaded, skipping");
 						return;
 					}
+					// If the name is invalid (e.g. spaces) but its canonical form (spaces -> '_')
+					// matches a real table, it was a typo: fix the stored name so it becomes a
+					// valid table-ID sequence and gets validated/created below.
+					String fixedName = fixTableSequenceName(seq);
+					if (fixedName != null) {
+						seq.saveEx();
+						if (sp != null) {
+							sp.addLog(0, null, null, "Sequence name fixed => " + fixedName);
+						}
+					}
 					int old = seq.getCurrentNext();
 					int oldSys = seq.getCurrentNextSys();
 					// Created may be null for some sequences; guard against NPE so the
@@ -234,16 +245,20 @@ public class SequenceCheck extends SvrProcess
 						if (seq.getCurrentNext() != old) {
 							String msg = seq.getName() + " ID  "
 									+ old + " -> " + seq.getCurrentNext();
-                            sp.addLog(0, null, null, msg);
+							if (sp != null) {
+								sp.addLog(0, null, null, msg);
+							}
 						}
 						if (seq.getCurrentNextSys() != oldSys) {
 							String msg = seq.getName() + " Sys "
 									+ oldSys + " -> " + seq.getCurrentNextSys();
-							sp.addLog(0, null, null, msg);
+							if (sp != null) {
+								sp.addLog(0, null, null, msg);
+							}
 						}
 						seq.saveEx();
 						if(isNewSequence) {
-							if(createMissingNativeSequence(seq, transactionName)) {
+							if(sp != null && createMissingNativeSequence(seq, transactionName)) {
 								sp.addLog("Native Sequence Created => " + seq.getName());
 							}
 						}
@@ -254,7 +269,7 @@ public class SequenceCheck extends SvrProcess
 						seq.saveEx();
 						seq.setDescription(originalDescription);
 						seq.saveEx();
-						if(createMissingNativeSequence(seq, transactionName)) {
+						if(sp != null && createMissingNativeSequence(seq, transactionName)) {
 							sp.addLog("Native Sequence Created => " + seq.getName());
 						}
 					}
@@ -267,15 +282,65 @@ public class SequenceCheck extends SvrProcess
 	}	//	checkTableID
 
 	/**
+	 * Fix the name of a table-ID sequence stored with an invalid identifier (e.g. spaces).
+	 * If the canonical form (whitespace collapsed to '_') matches a real table that has a
+	 * &lt;canonical&gt;_ID column, the name was a typo: it is corrected on the PO (not saved
+	 * here) and the new name is returned. Otherwise (name already valid, or no matching
+	 * table) returns null and the caller leaves it for the skip+warning path.
+	 * @param sequence sequence to inspect/fix
+	 * @return the corrected name, or null if no correction applies
+	 */
+	private static String fixTableSequenceName(MSequence sequence) {
+		if (!sequence.isTableID()) {
+			return null;
+		}
+		String name = sequence.getName();
+		if (name == null || name.matches("[A-Za-z_][A-Za-z0-9_]*")) {
+			return null; // null or already a valid identifier
+		}
+		String canonical = name.trim().replaceAll("\\s+", "_");
+		if (!canonical.matches("[A-Za-z_][A-Za-z0-9_]*")) {
+			return null; // still invalid after normalization (other special chars)
+		}
+		// Match the table case-insensitively but fetch the REAL TableName so the stored name
+		// matches AD_Table exactly: validateTableIDValue() and the native sequence rely on the
+		// exact (case-sensitive) name.
+		String realTableName = DB.getSQLValueString(
+			sequence.get_TrxName(),
+			"SELECT t.TableName FROM AD_Table t"
+			+ " INNER JOIN AD_Column c ON (t.AD_Table_ID=c.AD_Table_ID)"
+			+ " WHERE UPPER(t.TableName)=UPPER(?) AND UPPER(c.ColumnName)=UPPER(?)",
+			canonical, canonical + "_ID"
+		);
+		if (realTableName == null || realTableName.isEmpty()) {
+			return null; // not a real table -> leave for skip+warn
+		}
+		sequence.setName(realTableName);
+		return realTableName;
+	}
+
+	/**
 	 * Create Native sequence if not exists
 	 */
 	private static boolean createMissingNativeSequence(MSequence sequence, String transactionName) {
 		if(!sequence.isTableID()) {
 			return false;
 		}
+		String name = sequence.getName();
+		// A table-ID sequence name must be a valid SQL identifier (a real table name), because
+		// the native sequence is created as <name>_SEQ. Names with spaces or special chars
+		// (typically a document sequence mis-flagged as IsTableID='Y') break "CREATE SEQUENCE"
+		// and would never be consumed, so skip them and surface the misconfiguration.
+		if(name == null || !name.matches("[A-Za-z_][A-Za-z0-9_]*")) {
+			s_log.warning(
+				"Native sequence skipped, invalid name for IsTableID='Y': '"
+				+ name + "' (AD_Sequence_ID=" + sequence.getAD_Sequence_ID() + ")"
+			);
+			return false;
+		}
 		boolean SYSTEM_NATIVE_SEQUENCE = MSysConfig.getBooleanValue("SYSTEM_NATIVE_SEQUENCE",false);
 		if(SYSTEM_NATIVE_SEQUENCE) {
-			CConnection.get().getDatabase().createSequence(sequence.getName()+"_SEQ", 1, 0 , 99999999,  sequence.getNextID(), transactionName);
+			CConnection.get().getDatabase().createSequence(name+"_SEQ", 1, 0 , 99999999,  sequence.getNextID(), transactionName);
 		}
 		return true;
 	}
