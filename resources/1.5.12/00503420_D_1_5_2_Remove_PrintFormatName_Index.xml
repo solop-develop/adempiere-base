@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Remove_PrintFormatName_Index" ReleaseNo="1.5.10" SeqNo="503420">
+    <Comments>Remove PrintFormat Name Index</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>DROP INDEX IF EXISTS adempiere.ad_printformat_name
+      </SQLStatement>
+      <RollbackStatement>CREATE UNIQUE INDEX IF NOT EXISTS ad_printformat_name ON adempiere.ad_printformat USING btree (ad_client_id, ad_table_id, name)
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
