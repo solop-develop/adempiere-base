@@ -338,25 +338,55 @@ public class Login
 	        if(app_pwd == null) {
 	        	return -1;
 	        }
-			//	
-	        if(userSalt == null) {
-	        	if(app_pwd.equals(userPwd)) {
-					authenticatedUserId = userId;
-	        		return userId;
-	        	}
-	        }
-	        //	Match Password
-			if (userSalt != null && MUser.authenticateHash(app_pwd, userPwd , userSalt)) {
+			//	Match password: BCrypt (Sabana) or legacy SHA-512 + salt
+			if (SecureEngine.isValidPasswordHash(app_pwd, userPwd, userSalt)) {
+				upgradePasswordHashOnLogin(userId, app_pwd, isEncrypted, userPwd);
 				authenticatedUserId = userId;
 				return userId;
 			}
-			//	
+			//	Legacy plain text fallback (no salt, not hashed)
+			if (userSalt == null && app_pwd.equals(userPwd)) {
+				upgradePasswordHashOnLogin(userId, app_pwd, isEncrypted, userPwd);
+				authenticatedUserId = userId;
+				return userId;
+			}
+			//
 			return -1;
         }
 		authenticatedUserId = userId;
         return userId;
 	}
-	
+
+	/**
+	 * Lazily upgrade a stored password that is not in the active provider's format
+	 * (legacy SHA-512 + salt, or plain text) to that format (BCrypt with SecureBCrypt)
+	 * after a successful login. No-op when the column is data-storage encrypted, the
+	 * stored value is already self-contained ($2...), or the active provider has no
+	 * self-contained hashing (e.g. the legacy Secure provider).
+	 * @param userId AD_User_ID
+	 * @param plainPassword the plain password just verified
+	 * @param isEncrypted whether AD_User.Password uses column data-storage encryption
+	 * @param storedHash the value currently stored in AD_User.Password
+	 */
+	private void upgradePasswordHashOnLogin(int userId, String plainPassword, boolean isEncrypted, String storedHash) {
+		if (isEncrypted || SecureEngine.isPasswordHashEncrypted(storedHash)) {
+			return;
+		}
+		//	Only upgrade when the active provider produces a self-contained hash (BCrypt)
+		if (SecureEngine.getPasswordHash(plainPassword) == null) {
+			return;
+		}
+		try {
+			MUser user = MUser.get(m_ctx, userId);
+			if (user != null) {
+				user.setPassword(plainPassword);
+				user.saveEx();
+			}
+		} catch (Exception e) {
+			log.warning("Could not upgrade password hash for AD_User_ID=" + userId + ": " + e.getMessage());
+		}
+	}	//	upgradePasswordHashOnLogin
+
 	/**
 	 *  Actual DB login procedure.
 	 *  @param app_user user

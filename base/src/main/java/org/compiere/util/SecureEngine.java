@@ -89,6 +89,59 @@ public class SecureEngine
 	}	//	getDigest
 	
 	/**
+	 *  Self-contained password hash from the active provider (e.g. BCrypt).
+	 *  @param plainPassword plain text password
+	 *  @return self-contained hash, or null when the provider uses legacy SHA-512 + salt
+	 */
+	public static String getPasswordHash(String plainPassword)
+	{
+		if (s_engine == null) {
+			init(System.getProperties());
+		}
+		return s_engine.implementation.getPasswordHash(plainPassword);
+	}	//	getPasswordHash
+
+	/**
+	 *  Verify a plain password against the stored hash (BCrypt or legacy SHA-512 + salt).
+	 *  @param plainPassword plain text password
+	 *  @param storedHash value stored in AD_User.Password
+	 *  @param storedSalt value stored in AD_User.Salt (may be null for BCrypt)
+	 *  @return true when the password matches
+	 */
+	public static boolean isValidPasswordHash(String plainPassword, String storedHash, String storedSalt)
+	{
+		if (s_engine == null) {
+			init(System.getProperties());
+		}
+		return s_engine.implementation.isValidPasswordHash(plainPassword, storedHash, storedSalt);
+	}	//	isValidPasswordHash
+
+	/**
+	 *  Verify a plain password against a self-contained stored hash (e.g. BCrypt),
+	 *  i.e. when there is no separate salt.
+	 *  @param plainPassword plain text password
+	 *  @param storedHash value stored in AD_User.Password
+	 *  @return true when the password matches
+	 */
+	public static boolean isValidPasswordHash(String plainPassword, String storedHash)
+	{
+		return isValidPasswordHash(plainPassword, storedHash, null);
+	}	//	isValidPasswordHash
+
+	/**
+	 *  Is the stored value a BCrypt hash (starts with the $2 version prefix).
+	 *  @param storedHash value stored in AD_User.Password
+	 *  @return true when it is a BCrypt hash
+	 */
+	public static boolean isPasswordHashEncrypted (String storedHash)
+	{
+		if (s_engine == null) {
+			init(System.getProperties());
+		}
+		return s_engine.implementation.isPasswordHashEncrypted(storedHash);
+	}	//	isPasswordHashEncrypted
+
+	/**
 	 *  Convert String to Digest.
 	 *  JavaScript version see - http://pajhome.org.uk/crypt/md5/index.html
 	 *
@@ -188,8 +241,8 @@ public class SecureEngine
 		Exception cause = null;
 		try
 		{
-			Class clazz = Class.forName(realClass);
-			implementation = (SecureInterface)clazz.newInstance();
+			Class<?> clazz = Class.forName(realClass);
+			implementation = (SecureInterface) clazz.getDeclaredConstructor().newInstance();
 		}
 		catch (Exception e)
 		{
@@ -197,7 +250,7 @@ public class SecureEngine
 		}
 		if (implementation == null)
 		{
-			String msg = "Could not initialize: " + realClass + " - " + cause.toString()
+			String msg = "Could not initialize: " + realClass + " - " + (cause != null ? cause.toString() : "Unknown error")
 				+ "\nCheck start script parameter ADEMPIERE_SECURE"; 
 			log.severe(msg);
 			System.err.println(msg);

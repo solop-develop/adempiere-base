@@ -323,7 +323,11 @@ public class MUser extends X_AD_User
 	}	//	setValue
 	
 	/**
-	 * Convert Password to SHA-512 hash with salt * 1000 iterations https://www.owasp.org/index.php/Hashing_Java
+	 * Hash the password using the active Secure provider. With the default provider
+	 * (SecureBCrypt) it stores a self-contained BCrypt hash (matching Sabana / Spring
+	 * Boot) and clears AD_User.Salt. If the active provider has no self-contained
+	 * hashing (getPasswordHash returns null), it falls back to the legacy SHA-512 hash
+	 * with a salt * 1000 iterations.
 	 * @param password -- plain text password
 	 */
 	@Override
@@ -339,8 +343,16 @@ public class MUser extends X_AD_User
 			return;
 		
 		hashed = true;   // prevents double call from beforeSave
-		
-		// Uses a secure Random not a simple Random
+
+		//	Self-contained hash from the active Secure provider (BCrypt with SecureBCrypt, Sabana-compatible)
+		String selfContainedHash = SecureEngine.getPasswordHash(password);
+		if (selfContainedHash != null) {
+			super.setPassword(selfContainedHash);
+			setSalt(null);
+			return;
+		}
+
+		//	Legacy SHA-512 hash with salt * 1000 iterations https://www.owasp.org/index.php/Hashing_Java
 		SecureRandom random;
 		try {
 			random = SecureRandom.getInstance("SHA1PRNG");
@@ -348,10 +360,8 @@ public class MUser extends X_AD_User
 			byte[] bSalt = new byte[8];
 			random.nextBytes(bSalt);
 			// Digest computation
-			String hash;
-			hash = SecureEngine.getSHA512Hash(1000,password,bSalt);
-
-	        String sSalt = Secure.convertToHexString(bSalt);
+			String hash = SecureEngine.getSHA512Hash(1000, password, bSalt);
+			String sSalt = Secure.convertToHexString(bSalt);
 			super.setPassword(hash);
 			setSalt(sSalt);
 		} catch (NoSuchAlgorithmException e) {
@@ -394,20 +404,12 @@ public class MUser extends X_AD_User
 	 * check if hashed password matches
 	 */
 	public boolean authenticateHash (String password)  {
-
-		String hash = null;
-		String salt = null;
-
-		hash = getPassword();
-		salt = getSalt();
-
-		// always do calculation to prevent timing based attacks
-		if ( hash == null )
-			hash = "0000000000000000";
-		if ( salt == null )
-			salt = "0000000000000000";
-
-        return MUser.authenticateHash(password, hash , salt);		
+		// Accepts both BCrypt (new) and legacy SHA-512 + salt hashes
+		return SecureEngine.isValidPasswordHash(
+			password,
+			getPassword(),
+			getSalt()
+		);
 	}
 	
 	/**
