@@ -22,6 +22,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MBankStatement;
 import org.compiere.model.MBankStatementLine;
+import org.compiere.model.MDocType;
 import org.compiere.model.MOrder;
 import org.compiere.model.MPOS;
 import org.compiere.model.MPayment;
@@ -37,6 +38,7 @@ import org.compiere.util.Util;
 import org.spin.cash.model.MCBankAccountWithdrawal;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -228,13 +230,14 @@ public class CashManagementUtil {
 		paymentBankFrom.processIt(MPayment.DOCACTION_Complete);
 		paymentBankFrom.saveEx();
 		log.fine("@C_Payment_ID@ @IsReceipt@: ");
-		//	Add to current bank statement for account
+		//	Add the withdrawal as a line of the bank statement being closed, so the cash register nets to zero in the same document
 		if(isReconciled) {
-			MBankStatementLine bsl = MBankStatement.addPayment(paymentBankFrom);
+			MBankStatementLine bsl = addPaymentToBankStatement(bankStatement, paymentBankFrom);
 			if(bsl != null) {
-				//	Set POS organization on bank statement line and its bank statement
+				//	Set POS organization on the bank statement line
 				if(posOrgId > 0) {
-					updateBankStatementOrg(bsl, posOrgId);
+					bsl.setAD_Org_ID(posOrgId);
+					bsl.saveEx();
 				}
 				log.fine("@C_Payment_ID@: " + paymentBankFrom.getDocumentNo()
 						+ " @Added@ @to@ [@AccountNo@ " + paymentBankFrom.getC_BankAccount().getAccountNo()
@@ -254,14 +257,16 @@ public class CashManagementUtil {
 				sourcePayment.saveEx();
 			});
 		}
-		//	Add to current bank statement for account
+		//	Add to current cash deposit (bank statement) for account
 		if(isReconciled) {
 			MBankStatementLine bsl = MBankStatement.addPayment(paymentBankTo);
 			if(bsl != null) {
-				//	Set POS organization on bank statement line and its bank statement
+				//	Set POS organization on the bank statement line
 				if(posOrgId > 0) {
 					updateBankStatementOrg(bsl, posOrgId);
 				}
+				//	Name the generated statement by its document type (e.g. Recibo de Caja Generado: dd/mm/yyyy)
+				applyGeneratedStatementName(bsl, paymentBankTo);
 				log.fine("@C_Payment_ID@: " + paymentBankTo.getDocumentNo()
 						+ " @Added@ @to@ [@AccountNo@ " + paymentBankTo.getC_BankAccount().getAccountNo()
 						+ " @C_BankStatement_ID@ " + bsl.getC_BankStatement().getName() + "]");
@@ -269,6 +274,28 @@ public class CashManagementUtil {
 		}
 		//	Return
 		log.fine("@Created@ (1) @From@ " + mBankFrom.getAccountNo()+ " @To@ " + mBankTo.getAccountNo() + " @Amt@ " + DisplayType.getNumberFormat(DisplayType.Amount).format(amount));
+	}
+
+	/**
+	 * Add a payment as a line of the given bank statement (the one being closed), instead of
+	 * generating a separate statement. Keeps the withdrawal inside the cash closing so its
+	 * balance nets to zero in the same document.
+	 * @param bankStatement statement being closed
+	 * @param payment payment to reconcile
+	 * @return created (or existing) statement line
+	 */
+	private static MBankStatementLine addPaymentToBankStatement(MBankStatement bankStatement, MPayment payment) {
+		//	Avoid duplicating if the payment is already on a statement
+		MBankStatementLine existingLine = payment.getBankStatementLine();
+		if(existingLine != null && existingLine.getC_BankStatement_ID() > 0) {
+			return existingLine;
+		}
+		MBankStatementLine bankStatementLine = new MBankStatementLine(bankStatement);
+		bankStatementLine.setPayment(payment);
+		bankStatementLine.setStatementLineDate(payment.getDateAcct());
+		bankStatementLine.setDateAcct(payment.getDateAcct());
+		bankStatementLine.saveEx();
+		return bankStatementLine;
 	}
 
 	/**
@@ -282,6 +309,32 @@ public class CashManagementUtil {
 		MBankStatement parentBankStatement = new MBankStatement(bankStatementLine.getCtx(), bankStatementLine.getC_BankStatement_ID(), bankStatementLine.get_TrxName());
 		if(parentBankStatement.getAD_Org_ID() != orgId) {
 			parentBankStatement.setAD_Org_ID(orgId);
+			parentBankStatement.saveEx();
+		}
+	}
+
+	/**
+	 * Prefix the auto-generated bank statement name with the payment document type, so
+	 * withdrawals and receipts are easy to tell apart (e.g. "Retiro de Caja Generado: dd/mm/yyyy").
+	 * Only upgrades the default "Generado:" name; custom names are left untouched.
+	 * @param bankStatementLine generated statement line
+	 * @param payment payment just reconciled
+	 */
+	private static void applyGeneratedStatementName(MBankStatementLine bankStatementLine, MPayment payment) {
+		if(payment.getC_DocType_ID() <= 0) {
+			return;
+		}
+		MDocType documentType = MDocType.get(payment.getCtx(), payment.getC_DocType_ID());
+		if(documentType == null || documentType.getC_DocType_ID() <= 0) {
+			return;
+		}
+		SimpleDateFormat format = DisplayType.getDateFormat(DisplayType.Date);
+		String generatedLabel = Msg.parseTranslation(payment.getCtx(), "@Generate@: ") + format.format(payment.getDateAcct());
+		String desiredName = documentType.getName() + " " + generatedLabel;
+		MBankStatement parentBankStatement = new MBankStatement(bankStatementLine.getCtx(), bankStatementLine.getC_BankStatement_ID(), bankStatementLine.get_TrxName());
+		//	Only rename the default generated name to keep idempotency and avoid clobbering custom names
+		if(generatedLabel.equals(parentBankStatement.getName()) && !desiredName.equals(parentBankStatement.getName())) {
+			parentBankStatement.setName(desiredName);
 			parentBankStatement.saveEx();
 		}
 	}
