@@ -270,7 +270,7 @@ public class SequenceCheck extends SvrProcess
 						}
 					}
 				} catch (Exception e) {
-					s_log.severe(e.getLocalizedMessage());
+					s_log.log(Level.SEVERE, "AD_Sequence_ID=" + sequenceId, e);
 				}
 			});
 		});
