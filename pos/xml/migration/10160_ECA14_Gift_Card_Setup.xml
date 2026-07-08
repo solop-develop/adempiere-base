@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA14" Name="10150_ECA14_Gift_Card_Setup" ReleaseNo="3.9.4" SeqNo="10160">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="54786" Action="I" Record_ID="50118" Table="AD_SetupDefinition">
+        <Data AD_Column_ID="97364" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="97365" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="97366" Column="AD_SetupDefinition_ID">50118</Data>
+        <Data AD_Column_ID="97367" Column="Classname">org.spin.pos.setup.DeployGiftCard</Data>
+        <Data AD_Column_ID="97368" Column="Created">2025-06-17 21:03:48.413</Data>
+        <Data AD_Column_ID="97369" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="97370" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="97371" Column="EntityType">ECA14</Data>
+        <Data AD_Column_ID="97372" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="97373" Column="IsActive">true</Data>
+        <Data AD_Column_ID="97374" Column="Name">Gift Card Setup</Data>
+        <Data AD_Column_ID="97375" Column="Updated">2025-06-17 21:03:48.413</Data>
+        <Data AD_Column_ID="97376" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="97377" Column="UUID">d5f2c00c-288e-4e6e-abcc-da2978791d18</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
