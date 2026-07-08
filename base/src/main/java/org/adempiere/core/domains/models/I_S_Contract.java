@@ -1133,7 +1133,22 @@ public interface I_S_Contract
 
 	public I_PP_Calendar getPP_Calendar() throws RuntimeException;
 
-    /** Column name PriorityRule */
+	/** Column name PP_PeriodDefinition_ID */
+	public static final String COLUMNNAME_PP_PeriodDefinition_ID = "PP_PeriodDefinition_ID";
+
+	/** Set Current Period.
+	 * Period Definition, allows to define time cycles for the Operational Calendar
+	 */
+	public void setPP_PeriodDefinition_ID (int PP_PeriodDefinition_ID);
+
+	/** Get Current Period.
+	 * Period Definition, allows to define time cycles for the Operational Calendar
+	 */
+	public int getPP_PeriodDefinition_ID();
+
+	public I_PP_PeriodDefinition getPP_PeriodDefinition() throws RuntimeException;
+
+	/** Column name PriorityRule */
     public static final String COLUMNNAME_PriorityRule = "PriorityRule";
 
 	/** Set Priority.

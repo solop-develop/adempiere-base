@@ -2022,6 +2022,34 @@ public class X_S_Contract extends PO implements I_S_Contract, I_Persistent
 		return ii.intValue();
 	}
 
+	public I_PP_PeriodDefinition getPP_PeriodDefinition() throws RuntimeException
+	{
+		return (I_PP_PeriodDefinition) org.compiere.model.MTable.get(getCtx(), I_PP_PeriodDefinition.Table_Name)
+				.getPO(getPP_PeriodDefinition_ID(), get_TrxName());	}
+
+	/** Set Current Period.
+	 @param PP_PeriodDefinition_ID
+	 Period Definition, allows to define time cycles for the Operational Calendar
+	 */
+	public void setPP_PeriodDefinition_ID (int PP_PeriodDefinition_ID)
+	{
+		if (PP_PeriodDefinition_ID < 1)
+			set_Value (COLUMNNAME_PP_PeriodDefinition_ID, null);
+		else
+			set_Value (COLUMNNAME_PP_PeriodDefinition_ID, Integer.valueOf(PP_PeriodDefinition_ID));
+	}
+
+	/** Get Current Period.
+	 @return Period Definition, allows to define time cycles for the Operational Calendar
+	 */
+	public int getPP_PeriodDefinition_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_PP_PeriodDefinition_ID);
+		if (ii == null)
+			return 0;
+		return ii.intValue();
+	}
+
 	/** PriorityRule AD_Reference_ID=154 */
 	public static final int PRIORITYRULE_AD_Reference_ID=154;
 	/** High = 3 */
