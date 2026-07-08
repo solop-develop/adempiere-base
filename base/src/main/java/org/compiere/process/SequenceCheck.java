@@ -218,6 +218,13 @@ public class SequenceCheck extends SvrProcess
 			Trx.run(transactionName -> {
 				try {
 					MSequence seq = new MSequence (ctx, sequenceId, transactionName);
+					// The id list is fetched in the main trx, but each record is loaded in a
+					// separate parallel trx that may not see it (MSequence.load: NO Data found),
+					// leaving an empty PO. Skip it instead of validating a blank sequence.
+					if (seq == null || seq.get_ID() != sequenceId.intValue()) {
+						s_log.warning("AD_Sequence_ID=" + sequenceId + " could not be loaded, skipping");
+						return;
+					}
 					int old = seq.getCurrentNext();
 					int oldSys = seq.getCurrentNextSys();
 					// Created may be null for some sequences; guard against NPE so the
