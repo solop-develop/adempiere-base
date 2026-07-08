@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="U" Name="U Cascade Delete I_BankStatement on BankStatement delete" ReleaseNo="1.0" SeqNo="503620">
+    <Comments>By EdwinBetanc0urt</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>ALTER TABLE I_BankStatement DROP CONSTRAINT IF EXISTS cbankstatement_ibankstatement;
+      ALTER TABLE I_BankStatement ADD CONSTRAINT cbankstatement_ibankstatement FOREIGN KEY (C_BankStatement_ID) REFERENCES C_BankStatement (C_BankStatement_ID) ON DELETE CASCADE;
+      ALTER TABLE I_BankStatement DROP CONSTRAINT IF EXISTS cbankstmtline_ibankstmt;
+      ALTER TABLE I_BankStatement ADD CONSTRAINT cbankstmtline_ibankstmt FOREIGN KEY (C_BankStatementLine_ID) REFERENCES C_BankStatementLine (C_BankStatementLine_ID) ON DELETE CASCADE;</SQLStatement>
+      <RollbackStatement>ALTER TABLE I_BankStatement DROP CONSTRAINT IF EXISTS cbankstatement_ibankstatement;
+      ALTER TABLE I_BankStatement ADD CONSTRAINT cbankstatement_ibankstatement FOREIGN KEY (C_BankStatement_ID) REFERENCES C_BankStatement (C_BankStatement_ID) ON DELETE SET NULL;
+      ALTER TABLE I_BankStatement DROP CONSTRAINT IF EXISTS cbankstmtline_ibankstmt;
+      ALTER TABLE I_BankStatement ADD CONSTRAINT cbankstmtline_ibankstmt FOREIGN KEY (C_BankStatementLine_ID) REFERENCES C_BankStatementLine (C_BankStatementLine_ID) ON DELETE SET NULL;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="20" StepType="SQL">
+      <SQLStatement>ALTER TABLE C_BankStatementLineMatch DROP CONSTRAINT IF EXISTS cbslinematch_cbsline;
+      ALTER TABLE C_BankStatementLineMatch ADD CONSTRAINT cbslinematch_cbsline FOREIGN KEY (C_BankStatementLine_ID) REFERENCES C_BankStatementLine (C_BankStatementLine_ID) ON DELETE CASCADE;
+      ALTER TABLE C_BankStatementLineMatch DROP CONSTRAINT IF EXISTS cbslinematch_cbs;
+      ALTER TABLE C_BankStatementLineMatch ADD CONSTRAINT cbslinematch_cbs FOREIGN KEY (C_BankStatement_ID) REFERENCES C_BankStatement (C_BankStatement_ID) ON DELETE CASCADE;
+      ALTER TABLE C_BankStatementLineMatch DROP CONSTRAINT IF EXISTS cbslinematch_ibs;
+      ALTER TABLE C_BankStatementLineMatch ADD CONSTRAINT cbslinematch_ibs FOREIGN KEY (I_BankStatement_ID) REFERENCES I_BankStatement (I_BankStatement_ID) ON DELETE CASCADE NOT VALID;</SQLStatement>
+      <RollbackStatement>ALTER TABLE C_BankStatementLineMatch DROP CONSTRAINT IF EXISTS cbslinematch_cbsline;
+      ALTER TABLE C_BankStatementLineMatch DROP CONSTRAINT IF EXISTS cbslinematch_cbs;
+      ALTER TABLE C_BankStatementLineMatch DROP CONSTRAINT IF EXISTS cbslinematch_ibs;</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
