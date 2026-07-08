@@ -29,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
@@ -215,6 +216,9 @@ public class SequenceCheck extends SvrProcess
 				.setOnlyActiveRecords(true)
 				.getIDsAsList();
 		AtomicInteger counterValue = new AtomicInteger(0);
+		// SvrProcess.addLog() is not thread-safe; buffer messages here and flush them
+		// sequentially after the parallel stream completes.
+		ConcurrentLinkedQueue<String> logMessages = new ConcurrentLinkedQueue<>();
 		sequenceIds.stream().parallel().forEach(sequenceId -> {
 			Trx.run(transactionName -> {
 				try {
@@ -232,9 +236,7 @@ public class SequenceCheck extends SvrProcess
 					String fixedName = fixTableSequenceName(seq);
 					if (fixedName != null) {
 						seq.saveEx();
-						if (sp != null) {
-							sp.addLog(0, null, null, "Sequence name fixed => " + fixedName);
-						}
+						logMessages.add("Sequence name fixed => " + fixedName);
 					}
 					int old = seq.getCurrentNext();
 					int oldSys = seq.getCurrentNextSys();
@@ -243,23 +245,17 @@ public class SequenceCheck extends SvrProcess
 					boolean isNewSequence = seq.getCreated() != null && seq.getCreated().equals(seq.getUpdated());
 					if (seq.validateTableIDValue()) {
 						if (seq.getCurrentNext() != old) {
-							String msg = seq.getName() + " ID  "
-									+ old + " -> " + seq.getCurrentNext();
-							if (sp != null) {
-								sp.addLog(0, null, null, msg);
-							}
+							logMessages.add(seq.getName() + " ID  "
+									+ old + " -> " + seq.getCurrentNext());
 						}
 						if (seq.getCurrentNextSys() != oldSys) {
-							String msg = seq.getName() + " Sys "
-									+ oldSys + " -> " + seq.getCurrentNextSys();
-							if (sp != null) {
-								sp.addLog(0, null, null, msg);
-							}
+							logMessages.add(seq.getName() + " Sys "
+									+ oldSys + " -> " + seq.getCurrentNextSys());
 						}
 						seq.saveEx();
 						if(isNewSequence) {
-							if(sp != null && createMissingNativeSequence(seq, transactionName)) {
-								sp.addLog("Native Sequence Created => " + seq.getName());
+							if(createMissingNativeSequence(seq, transactionName)) {
+								logMessages.add("Native Sequence Created => " + seq.getName());
 							}
 						}
 						counterValue.incrementAndGet();
@@ -269,8 +265,8 @@ public class SequenceCheck extends SvrProcess
 						seq.saveEx();
 						seq.setDescription(originalDescription);
 						seq.saveEx();
-						if(sp != null && createMissingNativeSequence(seq, transactionName)) {
-							sp.addLog("Native Sequence Created => " + seq.getName());
+						if(createMissingNativeSequence(seq, transactionName)) {
+							logMessages.add("Native Sequence Created => " + seq.getName());
 						}
 					}
 				} catch (Exception e) {
@@ -278,6 +274,10 @@ public class SequenceCheck extends SvrProcess
 				}
 			});
 		});
+		// Flush buffered messages sequentially (single thread) into the non-thread-safe log.
+		if (sp != null) {
+			logMessages.forEach(msg -> sp.addLog(0, null, null, msg));
+		}
 		s_log.fine("#" + counterValue);
 	}	//	checkTableID
 
