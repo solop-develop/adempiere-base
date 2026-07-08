@@ -1362,6 +1362,34 @@ public class X_C_Project extends PO implements I_C_Project, I_Persistent
 		return ii.intValue();
 	}
 
+	public I_M_Product getM_Product() throws RuntimeException
+	{
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
+				.getPO(getM_Product_ID(), get_TrxName());	}
+
+	/** Set Product.
+	 @param M_Product_ID
+	 Product, Service, Item
+	 */
+	public void setM_Product_ID (int M_Product_ID)
+	{
+		if (M_Product_ID < 1)
+			set_Value (COLUMNNAME_M_Product_ID, null);
+		else
+			set_Value (COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+	}
+
+	/** Get Product.
+	 @return Product, Service, Item
+	 */
+	public int getM_Product_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Product_ID);
+		if (ii == null)
+			return 0;
+		return ii.intValue();
+	}
+
 	public I_M_Warehouse getM_Warehouse() throws RuntimeException
     {
 		return (I_M_Warehouse)MTable.get(getCtx(), I_M_Warehouse.Table_Name)
