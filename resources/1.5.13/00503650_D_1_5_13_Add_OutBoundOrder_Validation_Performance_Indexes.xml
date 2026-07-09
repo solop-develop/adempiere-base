@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_OutBoundOrder_Validation_Performance_Indexes" ReleaseNo="1.5.13" SeqNo="503650">
+    <Comments>Add indexes used by the available-quantity check in OutBoundOrder generation</Comments>
+    <!--
+      Issue (duplicate outbound orders from the same sales order) is fixed by adding
+      a server-side re-validation of available quantity per requested line, inside the
+      generation transaction of OutBoundOrderLogic.generateLoadOrder. That check runs, per
+      requested line:
+
+        SELECT COALESCE(SUM(...), 0)
+        FROM   WM_InOutBoundLine lc
+        JOIN   WM_InOutBound     c   ON c.WM_InOutBound_ID = lc.WM_InOutBound_ID
+        LEFT JOIN (SELECT iol.WM_InOutBoundLine_ID, SUM(iol.MovementQty) MovementQty
+                   FROM   M_InOut     io
+                   JOIN   M_InOutLine iol ON iol.M_InOut_ID = io.M_InOut_ID
+                   WHERE  io.DocStatus IN ('CO','CL')
+                     AND  iol.WM_InOutBoundLine_ID IS NOT NULL
+                   GROUP BY iol.WM_InOutBoundLine_ID) iol
+                                       ON iol.WM_InOutBoundLine_ID = lc.WM_InOutBoundLine_ID
+        WHERE  lc.C_OrderLine_ID  = ?      /* Sales Order case */
+          or lc.DD_OrderLine_ID = ?   /* Distribution Order case */
+
+      For OVs with dozens of lines (the reported case had 41), the WHERE clauses must
+      resolve via Index Scan; without these indexes the check degrades to a sequential
+      scan of WM_InOutBoundLine per line, which is unacceptable inside the generation
+      transaction.
+
+      All three statements are idempotent (IF NOT EXISTS), safe to re-run on instances
+      where the indexes already exist.
+
+      CONCURRENTLY is intentionally omitted because migration steps run inside a
+      transaction. On very large production databases, create the indexes manually
+      with CREATE INDEX CONCURRENTLY outside the migration and then mark this step as
+      applied.
+    -->
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_wm_inoutboundline_c_orderline_id ON WM_InOutBoundLine (C_OrderLine_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_wm_inoutboundline_c_orderline_id;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="20" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_wm_inoutboundline_dd_orderline_id ON WM_InOutBoundLine (DD_OrderLine_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_wm_inoutboundline_dd_orderline_id;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="30" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_m_inoutline_wm_inoutboundline_id ON M_InOutLine (WM_InOutBoundLine_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_m_inoutline_wm_inoutboundline_id;</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
