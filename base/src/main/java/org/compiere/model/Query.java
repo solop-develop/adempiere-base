@@ -19,10 +19,6 @@
  ******************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.exceptions.DBException;
-import org.adempiere.model.POWrapper;
-import org.compiere.util.*;
-
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,6 +29,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
+
+import org.adempiere.exceptions.DBException;
+import org.adempiere.model.POWrapper;
+import org.compiere.util.CLogMgt;
+import org.compiere.util.CLogger;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Util;
 
 /**
  * 
@@ -85,7 +89,8 @@ public class Query
 	private boolean onlyActiveRecords = false;
 	private boolean onlyClient_ID = false;
 	private int onlySelection_ID = -1;
-	
+	private boolean forUpdate = false;
+
 	/**
 	 * 
 	 * @param table
@@ -239,6 +244,16 @@ public class Query
 	public Query setOnlySelection(int AD_PInstance_ID)
 	{
 		this.onlySelection_ID = AD_PInstance_ID;
+		return this;
+	}
+
+	/**
+	 * Add FOR UPDATE clause
+	 * @param forUpdate
+	 */
+	public Query setForUpdate(boolean forUpdate)
+	{
+		this.forUpdate = forUpdate;
 		return this;
 	}
 	
@@ -692,6 +707,12 @@ public class Query
 		{
 			MRole role = MRole.getDefault(this.ctx, false);
 			sql = role.addAccessSQL(sql, table.getTableName(), applyAccessFilterFullyQualified, applyAccessFilterRW);
+		}
+		if (forUpdate) {
+			sql = sql + " FOR UPDATE";
+			if (DB.isPostgreSQL()) {
+				sql = sql + " OF " + table.getTableName();
+			}
 		}
 		if (CLogMgt.isLevelFinest()) log.finest("TableName = "+table.getTableName()+"... SQL = " +sql); //red1  - to assist in debugging SQL
 		return sql;
