@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for R_Iteration
  *  @author Adempiere (generated) 
@@ -78,7 +77,7 @@ public interface I_R_Iteration
 	  */
 	public int getC_Project_ID();
 
-	public I_C_Project getC_Project() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -147,6 +146,15 @@ public interface I_R_Iteration
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name IsProjectIteration */
+    public static final String COLUMNNAME_IsProjectIteration = "IsProjectIteration";
+
+	/** Set Project Iteration	  */
+	public void setIsProjectIteration (boolean IsProjectIteration);
+
+	/** Get Project Iteration	  */
+	public boolean isProjectIteration();
 
     /** Column name IterationStatus */
     public static final String COLUMNNAME_IterationStatus = "IterationStatus";
