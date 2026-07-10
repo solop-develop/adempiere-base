@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Enable_ChangeLog_On_OutBound_Tables" ReleaseNo="1.5.13" SeqNo="503680">
+    <Comments>Enable AD_ChangeLog on WM_InOutBound (header) and WM_InOutBoundLine (lines) to close the audit gap on outbound order generation.</Comments>
+    <!--
+      Rationale:
+      Duplicate outbound orders generated from the same sales order have been observed
+      in production. Diagnosing which user / session caused the second call, and
+      confirming both were creations (not edits), required reading application logs —
+      no dictionary-level audit trail existed on these tables. AD_ChangeLog is
+      ADempiere's native audit mechanism and, once enabled, records INSERT / UPDATE /
+      DELETE per column with user, timestamp and old/new value.
+
+      Scope:
+        Header (WM_InOutBound, AD_Table_ID=53233):
+          Low volume (1 row per generation). Header-only audit is enough to detect
+          double-generation patterns (two Created rows very close in time). Safe to
+          enable across environments.
+
+        Lines (WM_InOutBoundLine, AD_Table_ID=53234):
+          N rows per generation. Adds traceability against post-creation edits or SQL
+          deletes on line quantities. Higher AD_ChangeLog volume — evaluate periodic
+          purge / retention in production before enabling on high-throughput sites.
+    -->
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="53233" Table="AD_Table">
+        <Data AD_Column_ID="8564" Column="IsChangeLog" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="53234" Table="AD_Table">
+        <Data AD_Column_ID="8564" Column="IsChangeLog" oldValue="false">true</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
