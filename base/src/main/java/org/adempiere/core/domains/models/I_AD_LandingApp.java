@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for AD_LandingApp
  *  @author Adempiere (generated) 
@@ -43,6 +42,21 @@ public interface I_AD_LandingApp
     BigDecimal accessLevel = BigDecimal.valueOf(6);
 
     /** Load Meta Data */
+
+    /** Column name AD_AppRegistration_ID */
+    public static final String COLUMNNAME_AD_AppRegistration_ID = "AD_AppRegistration_ID";
+
+	/** Set Application Registration.
+	  * External Application Registration
+	  */
+	public void setAD_AppRegistration_ID (int AD_AppRegistration_ID);
+
+	/** Get Application Registration.
+	  * External Application Registration
+	  */
+	public int getAD_AppRegistration_ID();
+
+	public org.adempiere.core.domains.models.I_AD_AppRegistration getAD_AppRegistration() throws RuntimeException;
 
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
