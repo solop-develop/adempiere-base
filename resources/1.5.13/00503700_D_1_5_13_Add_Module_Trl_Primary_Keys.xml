@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Module_Trl_Primary_Keys" ReleaseNo="1.5.13" SeqNo="503700">
+    <Comments>Add the missing composite PRIMARY KEY (parent id + AD_Language) to AD_Module_Trl and AD_SubModule_Trl. By EdwinBetanc0urt</Comments>
+    <!--
+      These two dictionary translation tables ship without a PRIMARY KEY, unlike every
+      other _Trl table (keyed by (<parent>_ID, AD_Language)). Without it the translation
+      import's per-row UPDATE ... WHERE <parent>_ID=? AND AD_Language=? degrades to a
+      sequential scan, duplicate translations are not prevented, and the tables are
+      inconsistent with the rest of the dictionary.
+
+      Verified on a dictionary-current database: no duplicate (parent_id, AD_Language)
+      groups and no NULLs, so the PRIMARY KEY applies cleanly. DROP CONSTRAINT IF EXISTS
+      before ADD makes each step idempotent (safe to re-apply), matching the repo idiom.
+    -->
+    <Step DBType="Postgres" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>ALTER TABLE ad_module_trl DROP CONSTRAINT IF EXISTS ad_module_trl_pkey;
+ALTER TABLE ad_module_trl ADD CONSTRAINT ad_module_trl_pkey PRIMARY KEY (ad_module_id, ad_language);</SQLStatement>
+      <RollbackStatement>ALTER TABLE ad_module_trl DROP CONSTRAINT IF EXISTS ad_module_trl_pkey;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="N" SeqNo="20" StepType="SQL">
+      <SQLStatement>ALTER TABLE ad_submodule_trl DROP CONSTRAINT IF EXISTS ad_submodule_trl_pkey;
+ALTER TABLE ad_submodule_trl ADD CONSTRAINT ad_submodule_trl_pkey PRIMARY KEY (ad_submodule_id, ad_language);</SQLStatement>
+      <RollbackStatement>ALTER TABLE ad_submodule_trl DROP CONSTRAINT IF EXISTS ad_submodule_trl_pkey;</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
