@@ -171,8 +171,13 @@ public class ReservationBuilder {
                 reservation.setM_AttributeSetInstance_ID(movementLine.getM_AttributeSetInstance_ID());
                 reservation.setQty(movementLine.getMovementQty().negate());
             }
+            // Only resolve the locator for movement lines tied to a Distribution
+            // Order line. A manual movement (DD_OrderLine_ID = 0) has no reservation
+            // to build; calling fillLocatorLocatorId() here would throw
+            // "@M_Locator_ID@ @NotFound@" because warehouse/product stay unset.
+            // Mirrors withInOutLine, which gates fillLocatorLocatorId() the same way.
+            fillLocatorLocatorId();
         }
-        fillLocatorLocatorId();
         return this;
     }
 
