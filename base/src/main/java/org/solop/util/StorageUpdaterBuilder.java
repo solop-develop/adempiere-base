@@ -180,7 +180,12 @@ public class StorageUpdaterBuilder {
         }
         //	Warehouse
         if (getWarehouseId() != 0) {
-            transactionSQL.append("AND sl.M_Warehouse_ID = ? ");
+			transactionSQL.append(
+				"AND EXISTS("
+				+ "SELECT 1 FROM M_Locator AS l "
+				+ "WHERE l.M_Locator_ID = sl.M_Locator_ID AND l.M_Warehouse_ID = ?"
+				+ ") "
+			);
             parameters.add(getWarehouseId());
         }
         //Product
@@ -390,4 +395,5 @@ public class StorageUpdaterBuilder {
             processedNewTransactions.addAndGet(inserted);
         }
     }
+
 }
