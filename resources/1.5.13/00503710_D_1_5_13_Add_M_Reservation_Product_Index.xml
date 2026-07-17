@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_M_Reservation_Product_Index" ReleaseNo="1.5.13" SeqNo="503710">
+    <Comments>Add index on M_Reservation.M_Product_ID to speed up per-product reservation lookups (Available-to-Promise detail and the Update Storage process), avoiding a full sequential scan of the reservation ledger. by EdwinBetanc0urt.</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_m_reservation_m_product_id ON M_Reservation (M_Product_ID);
+      </SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_m_reservation_m_product_id;
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
