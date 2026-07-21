@@ -23,20 +23,30 @@ import java.math.BigDecimal;
  *
  */
 public final class ChartDataValue {
-	
+
 	private String name;
 	private BigDecimal amount;
-	
+	private BigDecimal comparison;
+
 	public ChartDataValue(String name, BigDecimal amount) {
+		this(name, amount, null);
+	}
+
+	public ChartDataValue(String name, BigDecimal amount, BigDecimal comparison) {
 		this.name = name;
 		this.amount = amount;
+		this.comparison = comparison;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public BigDecimal getAmount() {
 		return amount;
+	}
+
+	public BigDecimal getComparison() {
+		return comparison;
 	}
 }

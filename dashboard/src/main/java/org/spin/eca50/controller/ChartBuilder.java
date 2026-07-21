@@ -61,6 +61,11 @@ public class ChartBuilder {
 		String name = datasource.getName();
 		String where = datasource.getWhereClause();
 		String fromClause = datasource.getFromClause();
+		//	Comparison value column (explicit per-datasource difference expression)
+		String comparison = datasource.get_ValueAsString("ComparisonColumn");
+		if (Util.isEmpty(comparison, true)) {
+			comparison = "NULL";
+		}
 		String category;
 		String unit = "D";
 		if (!isTimeSeries) {
@@ -86,7 +91,7 @@ public class ChartBuilder {
 		}
 
 		List<Object> parameters = new ArrayList<Object>();
-		StringBuilder sql = new StringBuilder("SELECT " + value + ", " + category + ", " + series);
+		StringBuilder sql = new StringBuilder("SELECT " + value + ", " + category + ", " + series + ", " + comparison);
 		sql.append(" FROM ").append(fromClause);
 
 		// where clause
@@ -120,7 +125,7 @@ public class ChartBuilder {
 
                 // add value(s)
                 if (currentValue instanceof Collection) {
-                    // is multiple values to IN or BETWEEN operators
+                    // is multiple values to IN or BETWEEN operators/resume
                     addCollectionParameters(currentValue, parameters);
                 } else {
                     parameters.add(currentValue);
@@ -202,22 +207,21 @@ public class ChartBuilder {
 			});
 		//	Run queries
 		if (!dataSources.isEmpty()) {
-			Map<String, List<Map<String, BigDecimal>>> seriesMap = new HashMap<String, List<Map<String, BigDecimal>>>();
+			Map<String, List<ChartDataValue>> seriesMap = new HashMap<String, List<ChartDataValue>>();
 			dataSources.forEach(dataSource -> {
 				DB.runResultSet(null, dataSource.getQuery(), dataSource.getParameters(), resulSet -> {
 					while (resulSet.next()) {
 						String key = resulSet.getString(2);
 						String seriesName = resulSet.getString(3);
 						BigDecimal amount = resulSet.getBigDecimal(1);
+						BigDecimal comparisonValue = resulSet.getBigDecimal(4);
 
 						// series values
-						List<Map<String, BigDecimal>> valuesList = new ArrayList<Map<String, BigDecimal>>();
-						if (seriesMap.containsKey(seriesName)) {
-							valuesList = seriesMap.get(seriesName);
+						List<ChartDataValue> valuesList = seriesMap.get(seriesName);
+						if (valuesList == null) {
+							valuesList = new ArrayList<ChartDataValue>();
 						}
-						HashMap<String, BigDecimal> valuesMap = new HashMap<String, BigDecimal>();
-						valuesMap.put(key, amount);
-						valuesList.add(valuesMap);
+						valuesList.add(new ChartDataValue(key, amount, comparisonValue));
 
 						seriesMap.put(seriesName, valuesList);
 					}
@@ -229,13 +233,7 @@ public class ChartBuilder {
 			seriesMap.forEach((key, value1) -> {
                 ChartSeriesValue chartSeries = new ChartSeriesValue(key);
                 // each values list
-                value1.forEach(serie -> {
-                    serie.forEach((name, amount) -> {
-                        ChartDataValue data = new ChartDataValue(name, amount);
-                        // fill series with value data
-                        chartSeries.addData(data);
-                    });
-                });
+                value1.forEach(chartSeries::addData);
                 metrics.addSerie(chartSeries);
             });
 		}

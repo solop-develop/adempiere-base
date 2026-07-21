@@ -137,7 +137,13 @@ public class JWT implements IThirdPartyAccessGenerator {
 		if (definition == null || definition.getAD_TokenDefinition_ID() <= 0) {
 			throw new AdempiereException("@AD_TokenDefinition_ID@ @NotFound@");
 		}
-
+		//	Resolve scopes for third party grant tokens
+		String scopeString = resolveScope(tokenProfileId, definition);
+		token.setAD_User_ID(userId);
+		token.setAD_Role_ID(roleId);
+		token.setAD_TokenProfile_ID(tokenProfileId);
+		token.setScope(scopeString);
+		token.saveEx();
 		//	Create default session
         //	TODO: Create session with created from parameter
 		int clientId = Env.getAD_Client_ID(Env.getCtx());
@@ -147,7 +153,7 @@ public class JWT implements IThirdPartyAccessGenerator {
 		//	Apply optional claim set first so custom claims cannot override reserved/system claims
 		applyClaimSet(jwtBuilder, tokenClaimSetId);
 		jwtBuilder
-			// .id(String.valueOf(session.getAD_Session_ID()))
+			.id(token.getUUID())
 			.claim("AD_Client_ID", clientId)
 			.claim("AD_Org_ID", Env.getAD_Org_ID(Env.getCtx()))
 			.claim("AD_Role_ID", roleId)
@@ -155,9 +161,6 @@ public class JWT implements IThirdPartyAccessGenerator {
 			.claim("M_Warehouse_ID", Env.getContextAsInt(Env.getCtx(), "#M_Warehouse_ID"))
 			.claim("AD_Language", Env.getAD_Language(Env.getCtx()))
 		;
-
-		//	Resolve scopes for third party grant tokens
-		String scopeString = resolveScope(tokenProfileId, definition);
 		jwtBuilder
 			.claim("token_use", "grant")
 			.claim("scope", scopeString)
@@ -198,10 +201,6 @@ public class JWT implements IThirdPartyAccessGenerator {
 			throw new AdempiereException("@TokenValue@ @NotFound@");
 		}
         token.setTokenValue(tokenValue);
-        token.setAD_User_ID(userId);
-        token.setAD_Role_ID(roleId);
-        token.setAD_TokenProfile_ID(tokenProfileId);
-        token.setScope(scopeString);
         token.saveEx();
         return userTokenValue;
 	}

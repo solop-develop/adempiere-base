@@ -92,8 +92,7 @@ public class GenerateTokenForThirdPartyAccess extends GenerateTokenForThirdParty
 			}
 			//	Generate
 			IThirdPartyAccessGenerator thirdPartyAccessGenerator = ((IThirdPartyAccessGenerator) generator);
-			String token = thirdPartyAccessGenerator.generateToken(getUserId(), getRoleId(), getTokenProfileId(), getTokenClaimSetId());
-			return "@TokenValue@: " + token;
+			return thirdPartyAccessGenerator.generateToken(getUserId(), getRoleId(), getTokenProfileId(), getTokenClaimSetId());
 		}
 	}
 }

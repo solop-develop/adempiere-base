@@ -159,7 +159,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 				for (MProjectLine projectLine : projectLines) {
 					MOrderLine orderLine = new MOrderLine(order);
 					orderLine.setLine(projectLine.getLine());
-					orderLine.setDescription(projectLine.getDescription());
+					orderLine.setDescription(projectLine.getName());
 					orderLine.setM_Product_ID(projectLine.getM_Product_ID(), true);
 					MProduct product = new MProduct(getCtx(), projectLine.getM_Product_ID(), transactionName);
 					BigDecimal toOrder = projectLine.getPlannedQty().subtract(projectLine.getInvoicedQty());
