@@ -111,7 +111,10 @@ public class UpdateStorage extends UpdateStorageAbstract {
 		}
 		//Group By
 		transactionSQL.append("GROUP BY r.AD_Client_ID, r.AD_Org_ID, r.M_Product_ID, r.M_Locator_ID, r.M_Warehouse_ID, r.M_AttributeSetInstance_ID ");
-		transactionSQL.append("HAVING SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0 AND SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0");
+		transactionSQL.append(
+			"HAVING SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0 "
+			+ "OR SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0 "
+		);
 		log.fine("SnapshotSQL (Reservations)=" + transactionSQL);
 		int inserted = DB.executeUpdateEx(transactionSQL.toString(), parameters.toArray(), get_TrxName());
 		log.fine("Snapshot Created (Reservations)=" + inserted);
@@ -161,4 +164,5 @@ public class UpdateStorage extends UpdateStorageAbstract {
 			processedTransactions.addAndGet(inserted);
 		}
 	}
+
 }
