@@ -77,6 +77,7 @@ import org.spin.util.ITokenGenerator;
 import org.spin.util.TokenGeneratorHandler;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;
@@ -287,7 +288,17 @@ public class SessionManager {
 				.verifyWith(secretKey)
 				.build()
 			;
-			Jws<Claims> claims = parser.parseSignedClaims(tokenValue);
+			Jws<Claims> claims;
+			try {
+				claims = parser.parseSignedClaims(tokenValue);
+			} catch (ExpiredJwtException expired) {
+				// Signature is valid but the token has expired: opportunistically close
+				// the AD_Session it references (typically an idle client returning after
+				// the timeout) so it does not linger as Processed='N', then reject the
+				// request exactly as before.
+				closeExpiredSessionQuietly(expired);
+				throw expired;
+			}
 			// Tenant binding is symmetric with claim emission: only enforce the
 			// tenant_id claim when this installation binds tokens to its database
 			// (ECA52_JWT_BIND_TO_DATABASE=Y) — the same flag that gates emission.
@@ -405,6 +416,51 @@ public class SessionManager {
 		return context;
 	}
 
+
+	/**
+	 * Best-effort close of the AD_Session referenced by an expired local JWT.
+	 * We only reach here after the signature was verified (that is why jjwt threw
+	 * ExpiredJwtException), so the claims are trustworthy for this token; the session
+	 * is still cross-validated against the claims before being touched, because with
+	 * database binding disabled a token from another installation could carry a
+	 * colliding AD_Session_ID. A cleanup failure never changes the auth result.
+	 *
+	 * @param expired the expiration exception carrying the verified claims
+	 */
+	private static void closeExpiredSessionQuietly(ExpiredJwtException expired) {
+		try {
+			Claims claims = expired.getClaims();
+			if (claims == null) {
+				return;
+			}
+			// Do not touch another tenant's session (database binding may be disabled).
+			String tokenTenantId = claims.get(CLAIM_TENANT_ID, String.class);
+			if (tokenTenantId != null && !tokenTenantId.equals(getTenantId())) {
+				return;
+			}
+			int sessionId = NumberManager.getIntFromString(claims.getId());
+			Integer claimUserId = claims.get("AD_User_ID", Integer.class);
+			if (sessionId <= 0 || claimUserId == null) {
+				return;
+			}
+			MSession session = new MSession(Env.getCtx(), sessionId, null);
+			if (session.getAD_Session_ID() <= 0 || session.isProcessed()) {
+				return;
+			}
+			// Cross-validate against the row actually loaded from this database.
+			Integer claimClientId = claims.get("AD_Client_ID", Integer.class);
+			if (session.getCreatedBy() != claimUserId.intValue()
+					|| (claimClientId != null && session.getAD_Client_ID() != claimClientId.intValue())) {
+				log.warning("Expired JWT claims mismatch AD_Session; not closing sessionId=" + sessionId);
+				return;
+			}
+			session.logout();
+			log.fine("Closed expired AD_Session_ID=" + sessionId);
+		} catch (Exception cleanupError) {
+			// Best-effort: never let cleanup affect the authentication outcome.
+			log.warning("Could not close expired session: " + cleanupError.getMessage());
+		}
+	}
 
 	public static MSession createSession(String clientVersion, String language, int roleId, int userId, int organizationId, int warehouseId) {
 		Properties context = (Properties) Env.getCtx().clone();
@@ -896,14 +952,12 @@ public class SessionManager {
 							+ "WHERE (o.AD_Client_ID = r.AD_Client_ID OR o.AD_Org_ID = 0) "
 								+ "AND o.IsActive = 'Y' "
 								+ "AND o.IsSummary = 'N' "
-								// TODO: add `LIMIT 1` or `AND ROWNUM = 1` to best performance
 						+ ")"
 					+ ") "
 					+ "OR (r.IsUseUserOrgAccess = 'N' AND EXISTS("
 						+ "SELECT 1 FROM AD_Role_OrgAccess AS ro "
 							+ "WHERE ro.AD_Role_ID = ur.AD_Role_ID "
 								+ "AND ro.IsActive = 'Y'"
-								// TODO: add `LIMIT 1` or `AND ROWNUM = 1` to best performance
 						+ ")"
 					+ ") "
 					+ "OR ("
@@ -911,7 +965,6 @@ public class SessionManager {
 							+ "SELECT 1 FROM AD_User_OrgAccess AS uo "
 							+ "WHERE uo.AD_User_ID = ur.AD_User_ID "
 							+ "AND uo.IsActive = 'Y' "
-							// TODO: add `LIMIT 1` or `AND ROWNUM = 1` to best performance
 						+ ")"
 					+ ")"
 				+ ") "
@@ -1149,7 +1202,6 @@ public class SessionManager {
 						+ " WHERE cc.IsActive = 'Y' "
 							+ "AND ColumnName = 'IsDefault' "
 							+ "AND t.AD_Table_ID = cc.AD_Table_ID"
-							// TODO: add `LIMIT 1` or `AND ROWNUM = 1` to best performance
 					+ ")"
 					// TODO: Only conversion type, and table dimensions
 					+ "AND t.AD_Table_ID IN(" + I_C_ConversionType.Table_ID + ") "

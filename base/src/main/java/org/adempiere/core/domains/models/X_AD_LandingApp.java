@@ -18,12 +18,12 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.I_Persistent;
-import org.compiere.model.PO;
-import org.compiere.model.POInfo;
-
 import java.sql.ResultSet;
 import java.util.Properties;
+import org.compiere.model.I_Persistent;
+import org.compiere.model.MTable;
+import org.compiere.model.PO;
+import org.compiere.model.POInfo;
 
 /** Generated Model for AD_LandingApp
  *  @author Adempiere (generated) 
@@ -34,7 +34,7 @@ public class X_AD_LandingApp extends PO implements I_AD_LandingApp, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260617L;
+	private static final long serialVersionUID = 20260710L;
 
     /** Standard Constructor */
     public X_AD_LandingApp (Properties ctx, int AD_LandingApp_ID, String trxName)
@@ -75,6 +75,34 @@ public class X_AD_LandingApp extends PO implements I_AD_LandingApp, I_Persistent
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	public org.adempiere.core.domains.models.I_AD_AppRegistration getAD_AppRegistration() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_AD_AppRegistration)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_AppRegistration.Table_Name)
+			.getPO(getAD_AppRegistration_ID(), get_TrxName());	}
+
+	/** Set Application Registration.
+		@param AD_AppRegistration_ID 
+		External Application Registration
+	  */
+	public void setAD_AppRegistration_ID (int AD_AppRegistration_ID)
+	{
+		if (AD_AppRegistration_ID < 1) 
+			set_Value (COLUMNNAME_AD_AppRegistration_ID, null);
+		else 
+			set_Value (COLUMNNAME_AD_AppRegistration_ID, Integer.valueOf(AD_AppRegistration_ID));
+	}
+
+	/** Get Application Registration.
+		@return External Application Registration
+	  */
+	public int getAD_AppRegistration_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_AppRegistration_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 
 	/** Set Landing App.
 		@param AD_LandingApp_ID Landing App	  */

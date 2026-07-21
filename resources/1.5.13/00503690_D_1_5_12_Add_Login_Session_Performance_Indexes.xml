@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Login_Session_Performance_Indexes" ReleaseNo="1.5.12" SeqNo="503690">
+    <Comments>Add indexes for the session-lookup and role-access-load hot paths</Comments>
+    <!--
+      These indexes back two hot paths in ADempiere itself — resolving a session and
+      (re)loading a role's access — so they benefit every client that uses these tables
+      equally: the web UI (ZK), the gRPC/REST services, and any background process that
+      establishes a session or loads a role.
+
+        #1 AD_Session lookup by WebSession. On a busy database AD_Session grows unbounded
+           (hundreds of thousands of rows) while only a few thousand have WebSession set, so
+           the lookup became a Parallel Seq Scan (tens of MB, 40-125 ms). A PARTIAL index
+           (WHERE WebSession IS NOT NULL) stays tiny and turns the lookup into a
+           sub-millisecond index scan. This is the only genuinely missing index here
+           (no auto-generated equivalent exists).
+
+        #2-#8 Role access load (MRole). Every access table whose PK leads with the object id
+           (not the role) is filtered by AD_Role_ID while MRole builds its access lists, so
+           filtering by role does a full index scan of the PK. Measured without a role index:
+           AD_Document_Action_Access ~5-21 ms, AD_Process_Access ~2.7 ms, AD_Window_Access
+           ~2.4 ms, AD_Workflow_Access ~1.2 ms, AD_Browse_Access ~0.7 ms, AD_Form_Access
+           ~0.4 ms, AD_Task_Access sub-ms. All seven use the ADempiere-standard FK-index
+           name, so IF NOT EXISTS is a no-op on databases where FK-index generation already
+           created them, and a safety net where it has not run.
+
+      Other role/access tables need nothing here: AD_Table_Access, AD_Column_Access,
+      AD_Record_Access and AD_Role_OrgAccess already have the role as the leading PK column;
+      AD_User_OrgAccess leads by AD_User_ID (loaded by user). There is no AD_Org_Access
+      table; org access is AD_Role_OrgAccess / AD_User_OrgAccess (both covered by their PK).
+      AD_Dashboard_Access, AD_Role_MCP_Access, AD_LdapAccess and the replication access
+      tables are tiny and/or off this path.
+
+      CONCURRENTLY is intentionally omitted because migration steps run inside a
+      transaction; all indexes are small and the build lock is brief. On very large
+      production databases, create them manually with CREATE INDEX CONCURRENTLY outside
+      the migration and then mark the step as applied.
+    -->
+    <Step DBType="Postgres" Parse="N" SeqNo="10" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_ad_session_websession ON AD_Session (WebSession) WHERE WebSession IS NOT NULL;</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_ad_session_websession;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="20" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_ad_document_action_access_ad_role_id ON AD_Document_Action_Access (AD_Role_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_ad_document_action_access_ad_role_id;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="30" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_ad_process_access_ad_role_id ON AD_Process_Access (AD_Role_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_ad_process_access_ad_role_id;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="40" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_ad_window_access_ad_role_id ON AD_Window_Access (AD_Role_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_ad_window_access_ad_role_id;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="50" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_ad_workflow_access_ad_role_id ON AD_Workflow_Access (AD_Role_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_ad_workflow_access_ad_role_id;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="60" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_ad_browse_access_ad_role_id ON AD_Browse_Access (AD_Role_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_ad_browse_access_ad_role_id;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="70" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_ad_form_access_ad_role_id ON AD_Form_Access (AD_Role_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_ad_form_access_ad_role_id;</RollbackStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="80" StepType="SQL">
+      <SQLStatement>CREATE INDEX IF NOT EXISTS idx_ad_task_access_ad_role_id ON AD_Task_Access (AD_Role_ID);</SQLStatement>
+      <RollbackStatement>DROP INDEX IF EXISTS idx_ad_task_access_ad_role_id;</RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
