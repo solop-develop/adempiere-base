@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_AppRegistration_to_Landing_App" ReleaseNo="1.5.13" SeqNo="503690">
+    <Comments>Add App Registration to Landing App Window</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109999" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="130">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="110000" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="140">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109988" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="20">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109990" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="40">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109991" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="50">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="110002" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="160">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109989" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="30">20</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109994" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="80">30</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="110003" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="170">40</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109996" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="100">50</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109998" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="120">70</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109997" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="110">80</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="110001" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="150">90</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109993" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="70">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109995" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="90">110</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109989" Table="AD_Field">
+        <Data AD_Column_ID="101775" Column="AD_Window_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109989" Table="AD_Field">
+        <Data AD_Column_ID="183" Column="IsSameLine" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109994" Table="AD_Field">
+        <Data AD_Column_ID="101775" Column="AD_Window_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="110003" Table="AD_Field">
+        <Data AD_Column_ID="101775" Column="AD_Window_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109996" Table="AD_Field">
+        <Data AD_Column_ID="183" Column="IsSameLine" oldValue="false">true</Data>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109992" Table="AD_Field">
+        <Data AD_Column_ID="101775" Column="AD_Window_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109998" Table="AD_Field">
+        <Data AD_Column_ID="101775" Column="AD_Window_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109997" Table="AD_Field">
+        <Data AD_Column_ID="101775" Column="AD_Window_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="110001" Table="AD_Field">
+        <Data AD_Column_ID="183" Column="IsSameLine" oldValue="false">true</Data>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="250" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109993" Table="AD_Field">
+        <Data AD_Column_ID="101775" Column="AD_Window_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="260" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109995" Table="AD_Field">
+        <Data AD_Column_ID="183" Column="IsSameLine" oldValue="false">true</Data>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID" isNewNull="true" oldValue="0"/>
+      </PO>
+    </Step>
+    <Step SeqNo="270" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="107202" Table="AD_Column">
+        <Data AD_Column_ID="117" Column="DefaultValue" isOldNull="true">@SQL=SELECT COALESCE(MAX(SeqNo),0)+10 AS DefaultValue FROM AD_LandingApp WHERE AD_LandingApp_ID=@AD_LandingApp_ID@</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">SeqNo</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="280" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="107203" Table="AD_Column">
+        <Data AD_Column_ID="120" Column="IsParent" oldValue="false">true</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable" oldValue="true">false</Data>
+        <Data AD_Column_ID="92541" Column="RequiresSync" oldValue="false">true</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isOldNull="true">AD_LandingApp_ID</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="290" StepType="AD">
+      <PO AD_Table_ID="104" Action="I" Record_ID="56729" Table="AD_Ref_List">
+        <Data AD_Column_ID="563" Column="IsActive">true</Data>
+        <Data AD_Column_ID="564" Column="Created">2026-07-10 21:01:51.276</Data>
+        <Data AD_Column_ID="566" Column="Updated">2026-07-10 21:01:51.276</Data>
+        <Data AD_Column_ID="200" Column="Value">LND</Data>
+        <Data AD_Column_ID="7712" Column="EntityType">D</Data>
+        <Data AD_Column_ID="151" Column="AD_Reference_ID">54081</Data>
+        <Data AD_Column_ID="150" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
+        <Data AD_Column_ID="149" Column="Name">Landing App</Data>
+        <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
+        <Data AD_Column_ID="148" Column="AD_Ref_List_ID">56729</Data>
+        <Data AD_Column_ID="372" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="371" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="565" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="567" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84390" Column="UUID">c38479a5-d896-4a30-ad8f-499960ebea2f</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="300" StepType="AD">
+      <PO AD_Table_ID="136" Action="I" Record_ID="56729" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="707" Column="Created">2026-07-10 21:01:52.481</Data>
+        <Data AD_Column_ID="709" Column="Updated">2026-07-10 21:01:52.481</Data>
+        <Data AD_Column_ID="706" Column="IsActive">true</Data>
+        <Data AD_Column_ID="338" Column="Name">Landing App</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="339" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="1216" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="1215" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="710" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="708" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID">56729</Data>
+        <Data AD_Column_ID="337" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84391" Column="UUID">03f5d46a-b7a6-4f76-bd18-9980878b868e</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="310" StepType="AD">
+      <PO AD_Table_ID="136" Action="U" Record_ID="56729" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="338" Column="Name" oldValue="Landing App">Aplicación de Aterrizaje</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID" oldValue="56729">56729</Data>
+        <Data AD_Column_ID="337" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="320" StepType="AD">
+      <PO AD_Table_ID="54542" Action="I" Record_ID="50062" Table="AD_AppSupport">
+        <Data AD_Column_ID="91310" Column="UUID">9740dead-17ab-4cfd-b84c-05b5d6e20419</Data>
+        <Data AD_Column_ID="91312" Column="Value">Landing-App</Data>
+        <Data AD_Column_ID="91313" Column="Name">Landing App</Data>
+        <Data AD_Column_ID="91314" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="91315" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="91316" Column="Classname">localhost</Data>
+        <Data AD_Column_ID="91303" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="91306" Column="Created">2026-07-10 21:03:46.014</Data>
+        <Data AD_Column_ID="91307" Column="Updated">2026-07-10 21:03:46.014</Data>
+        <Data AD_Column_ID="91308" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="91318" Column="IsDefault">false</Data>
+        <Data AD_Column_ID="91304" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="91305" Column="IsActive">true</Data>
+        <Data AD_Column_ID="91309" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="91317" Column="ApplicationType">LND</Data>
+        <Data AD_Column_ID="91311" Column="AD_AppSupport_ID">50062</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="330" StepType="AD">
+      <PO AD_Table_ID="54544" Action="I" Record_ID="50138" Table="AD_AppSupport_Para">
+        <Data AD_Column_ID="91386" Column="UUID">2cd00418-880b-4382-b113-f064f03f1e5e</Data>
+        <Data AD_Column_ID="91390" Column="ParameterType">C</Data>
+        <Data AD_Column_ID="91382" Column="Created">2026-07-10 21:04:22.276</Data>
+        <Data AD_Column_ID="91383" Column="Updated">2026-07-10 21:04:22.276</Data>
+        <Data AD_Column_ID="91379" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="91380" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="91393" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="91381" Column="IsActive">true</Data>
+        <Data AD_Column_ID="91384" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="91385" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="91387" Column="AD_AppSupport_Para_ID">50138</Data>
+        <Data AD_Column_ID="91389" Column="ParameterDefault" isNewNull="true"/>
+        <Data AD_Column_ID="91391" Column="IsMandatory">true</Data>
+        <Data AD_Column_ID="91394" Column="AD_AppSupport_ID">50062</Data>
+        <Data AD_Column_ID="91388" Column="ParameterName">token</Data>
+        <Data AD_Column_ID="91392" Column="AD_Reference_ID">10</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="340" StepType="AD">
+      <PO AD_Table_ID="108" Action="I" Record_ID="53078" Table="AD_Val_Rule">
+        <Data AD_Column_ID="583" Column="IsActive">true</Data>
+        <Data AD_Column_ID="192" Column="Type">S</Data>
+        <Data AD_Column_ID="193" Column="Code">EXISTS(SELECT 1 FROM AD_AppSupport s WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID AND s.ApplicationType IN('LND'))</Data>
+        <Data AD_Column_ID="586" Column="Updated">2026-07-10 21:05:30.357</Data>
+        <Data AD_Column_ID="584" Column="Created">2026-07-10 21:05:30.357</Data>
+        <Data AD_Column_ID="188" Column="Name">AD_AppRegistration from only Landing App</Data>
+        <Data AD_Column_ID="189" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="387" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="388" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="187" Column="AD_Val_Rule_ID">53078</Data>
+        <Data AD_Column_ID="7715" Column="EntityType">D</Data>
+        <Data AD_Column_ID="587" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="585" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="84460" Column="UUID">7f351a9a-4d3f-4a09-b961-b3be9e88f9c6</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="350" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="107484" Table="AD_Column">
+        <Data AD_Column_ID="112" Column="Description">External Application Registration</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2026-07-10 21:05:40.218</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated">2026-07-10 21:05:40.218</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">107484</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="111" Column="Name">Application Registration</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">AD_AppRegistration_ID</Data>
+        <Data AD_Column_ID="113" Column="Help">Connect ADempiere with a External Application</Data>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo">0</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">55167</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">60723</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID">53078</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">19</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">12c91aa4-e962-42c6-b7ca-826d9e9d6360</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="360" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="107484" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created">2026-07-10 21:05:41.602</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2026-07-10 21:05:41.602</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">107484</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Application Registration</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID">ceb0c609-6315-4744-bdbd-abb72dc26462</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="370" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="110429" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name">Application Registration</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="579" Column="Created">2026-07-10 21:07:06.55</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2026-07-10 21:07:06.551</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="169" Column="Description">External Application Registration</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="170" Column="Help">Connect ADempiere with a External Application</Data>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">110429</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">D</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">120</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">107484</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">120</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55453</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID">c86f7acf-f304-49c0-b16f-2f88d3295e5c</Data>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">53917</Data>
+        <Data AD_Column_ID="105742" Column="DocBaseURL" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="380" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110429" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-07-10 21:07:08.746</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-07-10 21:07:08.746</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">External Application Registration</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Application Registration</Data>
+        <Data AD_Column_ID="288" Column="Help">Connect ADempiere with a External Application</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110429</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">bdcfbf00-cc85-4a08-a446-b347f148216b</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

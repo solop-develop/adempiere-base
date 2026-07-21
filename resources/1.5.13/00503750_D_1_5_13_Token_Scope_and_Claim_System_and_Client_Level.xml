@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Token_Scope_and_Claim_System_and_Client_Level" ReleaseNo="1.5.13" SeqNo="503750">
+    <Comments>Make Token Scope and Claim tables have system+client access level</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="55177" Table="AD_Table">
+        <Data AD_Column_ID="354" Column="AccessLevel" oldValue="3">6</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="115" Action="I" Record_ID="1000146" Table="AD_Sequence">
+        <Data AD_Column_ID="349" Column="IsActive">true</Data>
+        <Data AD_Column_ID="347" Column="Description">Table AD_TokenProfileScope</Data>
+        <Data AD_Column_ID="627" Column="Created">2026-07-15 17:05:55.382</Data>
+        <Data AD_Column_ID="629" Column="Updated">2026-07-15 17:05:55.382</Data>
+        <Data AD_Column_ID="225" Column="StartNewYear">false</Data>
+        <Data AD_Column_ID="1187" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="1188" Column="IsAutoSequence">true</Data>
+        <Data AD_Column_ID="222" Column="IsAudited">false</Data>
+        <Data AD_Column_ID="223" Column="Prefix" isNewNull="true"/>
+        <Data AD_Column_ID="224" Column="Suffix" isNewNull="true"/>
+        <Data AD_Column_ID="54272" Column="DateColumn" isNewNull="true"/>
+        <Data AD_Column_ID="54309" Column="DecimalPattern" isNewNull="true"/>
+        <Data AD_Column_ID="216" Column="Name">AD_TokenProfileScope</Data>
+        <Data AD_Column_ID="427" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="426" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1186" Column="AD_Sequence_ID">1000146</Data>
+        <Data AD_Column_ID="2747" Column="IncrementNo">1</Data>
+        <Data AD_Column_ID="2746" Column="StartNo">1000000</Data>
+        <Data AD_Column_ID="350" Column="IsTableID">true</Data>
+        <Data AD_Column_ID="3887" Column="CurrentNextSys">50000</Data>
+        <Data AD_Column_ID="220" Column="CurrentNext">1000000</Data>
+        <Data AD_Column_ID="628" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="630" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84417" Column="UUID">e534d311-82a2-4980-8bd5-01ed1c18748d</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="55175" Table="AD_Table">
+        <Data AD_Column_ID="354" Column="AccessLevel" oldValue="3">6</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="115" Action="I" Record_ID="1000147" Table="AD_Sequence">
+        <Data AD_Column_ID="349" Column="IsActive">true</Data>
+        <Data AD_Column_ID="347" Column="Description">Table AD_TokenScope</Data>
+        <Data AD_Column_ID="627" Column="Created">2026-07-15 17:05:58.993</Data>
+        <Data AD_Column_ID="629" Column="Updated">2026-07-15 17:05:58.993</Data>
+        <Data AD_Column_ID="225" Column="StartNewYear">false</Data>
+        <Data AD_Column_ID="1187" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="1188" Column="IsAutoSequence">true</Data>
+        <Data AD_Column_ID="222" Column="IsAudited">false</Data>
+        <Data AD_Column_ID="223" Column="Prefix" isNewNull="true"/>
+        <Data AD_Column_ID="224" Column="Suffix" isNewNull="true"/>
+        <Data AD_Column_ID="54272" Column="DateColumn" isNewNull="true"/>
+        <Data AD_Column_ID="54309" Column="DecimalPattern" isNewNull="true"/>
+        <Data AD_Column_ID="216" Column="Name">AD_TokenScope</Data>
+        <Data AD_Column_ID="427" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="426" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1186" Column="AD_Sequence_ID">1000147</Data>
+        <Data AD_Column_ID="2747" Column="IncrementNo">1</Data>
+        <Data AD_Column_ID="2746" Column="StartNo">1000000</Data>
+        <Data AD_Column_ID="350" Column="IsTableID">true</Data>
+        <Data AD_Column_ID="3887" Column="CurrentNextSys">50000</Data>
+        <Data AD_Column_ID="220" Column="CurrentNext">1000000</Data>
+        <Data AD_Column_ID="628" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="630" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84417" Column="UUID">82da1157-1bef-4e83-abc4-f8f2bce18d2c</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="55178" Table="AD_Table">
+        <Data AD_Column_ID="354" Column="AccessLevel" oldValue="3">6</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="115" Action="I" Record_ID="1000148" Table="AD_Sequence">
+        <Data AD_Column_ID="349" Column="IsActive">true</Data>
+        <Data AD_Column_ID="347" Column="Description">Table AD_TokenClaimSet</Data>
+        <Data AD_Column_ID="627" Column="Created">2026-07-15 17:06:08.6</Data>
+        <Data AD_Column_ID="629" Column="Updated">2026-07-15 17:06:08.6</Data>
+        <Data AD_Column_ID="225" Column="StartNewYear">false</Data>
+        <Data AD_Column_ID="1187" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="1188" Column="IsAutoSequence">true</Data>
+        <Data AD_Column_ID="222" Column="IsAudited">false</Data>
+        <Data AD_Column_ID="223" Column="Prefix" isNewNull="true"/>
+        <Data AD_Column_ID="224" Column="Suffix" isNewNull="true"/>
+        <Data AD_Column_ID="54272" Column="DateColumn" isNewNull="true"/>
+        <Data AD_Column_ID="54309" Column="DecimalPattern" isNewNull="true"/>
+        <Data AD_Column_ID="216" Column="Name">AD_TokenClaimSet</Data>
+        <Data AD_Column_ID="427" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="426" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1186" Column="AD_Sequence_ID">1000148</Data>
+        <Data AD_Column_ID="2747" Column="IncrementNo">1</Data>
+        <Data AD_Column_ID="2746" Column="StartNo">1000000</Data>
+        <Data AD_Column_ID="350" Column="IsTableID">true</Data>
+        <Data AD_Column_ID="3887" Column="CurrentNextSys">50000</Data>
+        <Data AD_Column_ID="220" Column="CurrentNext">1000000</Data>
+        <Data AD_Column_ID="628" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="630" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84417" Column="UUID">f42ba5d8-1e62-40ea-bd34-d1a7b4deb9d7</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="55179" Table="AD_Table">
+        <Data AD_Column_ID="354" Column="AccessLevel" oldValue="3">6</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="115" Action="I" Record_ID="1000149" Table="AD_Sequence">
+        <Data AD_Column_ID="349" Column="IsActive">true</Data>
+        <Data AD_Column_ID="347" Column="Description">Table AD_TokenClaimSetItem</Data>
+        <Data AD_Column_ID="627" Column="Created">2026-07-15 17:06:12.739</Data>
+        <Data AD_Column_ID="629" Column="Updated">2026-07-15 17:06:12.739</Data>
+        <Data AD_Column_ID="225" Column="StartNewYear">false</Data>
+        <Data AD_Column_ID="1187" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="1188" Column="IsAutoSequence">true</Data>
+        <Data AD_Column_ID="222" Column="IsAudited">false</Data>
+        <Data AD_Column_ID="223" Column="Prefix" isNewNull="true"/>
+        <Data AD_Column_ID="224" Column="Suffix" isNewNull="true"/>
+        <Data AD_Column_ID="54272" Column="DateColumn" isNewNull="true"/>
+        <Data AD_Column_ID="54309" Column="DecimalPattern" isNewNull="true"/>
+        <Data AD_Column_ID="216" Column="Name">AD_TokenClaimSetItem</Data>
+        <Data AD_Column_ID="427" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="426" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1186" Column="AD_Sequence_ID">1000149</Data>
+        <Data AD_Column_ID="2747" Column="IncrementNo">1</Data>
+        <Data AD_Column_ID="2746" Column="StartNo">1000000</Data>
+        <Data AD_Column_ID="350" Column="IsTableID">true</Data>
+        <Data AD_Column_ID="3887" Column="CurrentNextSys">50000</Data>
+        <Data AD_Column_ID="220" Column="CurrentNext">1000000</Data>
+        <Data AD_Column_ID="628" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="630" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84417" Column="UUID">fef45fdb-3581-4d02-8411-c10d6128b0be</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="55176" Table="AD_Table">
+        <Data AD_Column_ID="354" Column="AccessLevel" oldValue="3">6</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="115" Action="I" Record_ID="1000150" Table="AD_Sequence">
+        <Data AD_Column_ID="349" Column="IsActive">true</Data>
+        <Data AD_Column_ID="347" Column="Description">Table AD_TokenProfile</Data>
+        <Data AD_Column_ID="627" Column="Created">2026-07-15 17:06:35.079</Data>
+        <Data AD_Column_ID="629" Column="Updated">2026-07-15 17:06:35.079</Data>
+        <Data AD_Column_ID="225" Column="StartNewYear">false</Data>
+        <Data AD_Column_ID="1187" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="1188" Column="IsAutoSequence">true</Data>
+        <Data AD_Column_ID="222" Column="IsAudited">false</Data>
+        <Data AD_Column_ID="223" Column="Prefix" isNewNull="true"/>
+        <Data AD_Column_ID="224" Column="Suffix" isNewNull="true"/>
+        <Data AD_Column_ID="54272" Column="DateColumn" isNewNull="true"/>
+        <Data AD_Column_ID="54309" Column="DecimalPattern" isNewNull="true"/>
+        <Data AD_Column_ID="216" Column="Name">AD_TokenProfile</Data>
+        <Data AD_Column_ID="427" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="426" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1186" Column="AD_Sequence_ID">1000150</Data>
+        <Data AD_Column_ID="2747" Column="IncrementNo">1</Data>
+        <Data AD_Column_ID="2746" Column="StartNo">1000000</Data>
+        <Data AD_Column_ID="350" Column="IsTableID">true</Data>
+        <Data AD_Column_ID="3887" Column="CurrentNextSys">50000</Data>
+        <Data AD_Column_ID="220" Column="CurrentNext">1000000</Data>
+        <Data AD_Column_ID="628" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="630" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84417" Column="UUID">9241d2a9-fe7c-46bf-ab0e-aa5609b4882d</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
