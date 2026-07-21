@@ -38,7 +38,7 @@ public class X_R_Iteration extends PO implements I_R_Iteration, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260624L;
+	private static final long serialVersionUID = 20251226L;
 
     /** Standard Constructor */
     public X_R_Iteration (Properties ctx, int R_Iteration_ID, String trxName)
@@ -161,6 +161,27 @@ public class X_R_Iteration extends PO implements I_R_Iteration, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Project Iteration.
+		@param IsProjectIteration Project Iteration	  */
+	public void setIsProjectIteration (boolean IsProjectIteration)
+	{
+		set_Value (COLUMNNAME_IsProjectIteration, Boolean.valueOf(IsProjectIteration));
+	}
+
+	/** Get Project Iteration.
+		@return Project Iteration	  */
+	public boolean isProjectIteration ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsProjectIteration);
+		if (oo != null)
+		{
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** IterationStatus AD_Reference_ID=131 */
@@ -313,7 +334,7 @@ public class X_R_Iteration extends PO implements I_R_Iteration, I_Persistent
 	}
 
 	/** Set Search Key.
-		@param Value 
+		@param Value
 		Search key for the record in the format required - must be unique
 	  */
 	public void setValue (String Value)
@@ -324,7 +345,7 @@ public class X_R_Iteration extends PO implements I_R_Iteration, I_Persistent
 	/** Get Search Key.
 		@return Search key for the record in the format required - must be unique
 	  */
-	public String getValue () 
+	public String getValue ()
 	{
 		return (String)get_Value(COLUMNNAME_Value);
 	}
