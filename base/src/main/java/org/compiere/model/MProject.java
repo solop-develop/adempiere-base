@@ -16,11 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_ProjectIssue;
-import org.adempiere.core.domains.models.I_C_ProjectLine;
-import org.adempiere.core.domains.models.I_C_ProjectPhase;
-import org.adempiere.core.domains.models.X_C_Project;
-import org.adempiere.core.domains.models.X_I_Project;
+import org.adempiere.core.domains.models.*;
 import org.compiere.util.CCache;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -627,14 +623,14 @@ public class MProject extends X_C_Project
 			setAD_User_ID(0);
 		
 		//	Set Currency
-		if (is_ValueChanged("M_PriceList_Version_ID") && getM_PriceList_Version_ID() != 0)
+		if ((newRecord || is_ValueChanged(COLUMNNAME_M_PriceList_Version_ID)) && getM_PriceList_Version_ID() != 0)
 		{
 			MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID(), null);
-			if (pl != null && pl.get_ID() != 0)
+			if (pl.get_ID() != 0)
 				setC_Currency_ID(pl.getC_Currency_ID());
 		}
 		
-		if (is_ValueChanged("C_ProjectCategory_ID"))
+		if (is_ValueChanged(COLUMNNAME_C_ProjectCategory_ID))
 			setProjectCategory(getC_ProjectCategory().getProjectCategory());
 		
 		return true;
