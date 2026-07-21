@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="PA_Goal_ChartType" ReleaseNo="1.5.13" SeqNo="503760">
+    <Comments>Change PAGoal chartType list to same as AD_Chart</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="57921" Table="AD_Column">
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" oldValue="53315">53377</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Hide_Project_Summary_Fields" ReleaseNo="1.5.13" SeqNo="503720">
+    <Comments>Hide Project Summary Fields and set paymet term mandatory</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109896" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="750">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109893" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="720">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109892" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="710">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109890" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="690">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109891" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="700">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109725" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="630">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109729" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="620">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109889" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="680">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109726" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="660">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109887" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="650">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109886" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="640">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109888" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="670">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109885" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="610">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109884" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="600">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109894" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="730">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="109895" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="true">false</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="740">0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="106621" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="560">550</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="106633" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="570">560</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="106634" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="580">570</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="107156" Table="AD_Field">
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="590">580</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="94594" Table="AD_Field">
+        <Data AD_Column_ID="15013" Column="IsMandatory" isOldNull="true">Y</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

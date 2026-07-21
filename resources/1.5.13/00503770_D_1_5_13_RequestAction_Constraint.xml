@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="RequestAction_Constraint" ReleaseNo="1.5.13" SeqNo="503770">
+    <Comments>Better Request Action Constraint</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>ALTER TABLE r_requestaction
+        DROP CONSTRAINT IF EXISTS rrequest_rrequestaction,
+        ADD CONSTRAINT rrequest_rrequestaction
+        FOREIGN KEY (r_request_id)
+        REFERENCES r_request(r_request_id)
+        ON DELETE CASCADE;
+      </SQLStatement>
+      <RollbackStatement>
+        ALTER TABLE r_requestaction
+        DROP CONSTRAINT IF EXISTS rrequest_rrequestaction;
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
