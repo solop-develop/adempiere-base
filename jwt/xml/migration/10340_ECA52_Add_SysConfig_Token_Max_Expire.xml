@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="ECA52" Name="ECA52 Add SysConfig Token Max Expire" ReleaseNo="1.0" SeqNo="10340">
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="50009" Action="I" Record_ID="50182" Table="AD_SysConfig">
+        <Data AD_Column_ID="50196" Column="Value">7776000000</Data>
+        <Data AD_Column_ID="84421" Column="UUID">815ddeb6-e2ca-47ff-85a1-a3fa92c5b2d4</Data>
+        <Data AD_Column_ID="50193" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="50191" Column="Updated">2026-07-22 15:20:00.0</Data>
+        <Data AD_Column_ID="50195" Column="Name">ECA52_TOKEN_MAX_EXPIRE_TIME</Data>
+        <Data AD_Column_ID="50194" Column="IsActive">true</Data>
+        <Data AD_Column_ID="53270" Column="EntityType">ECA52</Data>
+        <Data AD_Column_ID="50197" Column="Description">Maximum lifetime, in milliseconds, allowed for an ECA52 third party grant token. Every grant token always carries an exp claim and its effective time to live is min(requested, this cap); when the token definition has no expire date it falls back to this value instead of never expiring. Default 7776000000 ms (90 days). Set 0 or leave empty to use the built-in default.</Data>
+        <Data AD_Column_ID="50192" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="50190" Column="Created">2026-07-22 15:20:00.0</Data>
+        <Data AD_Column_ID="53271" Column="ConfigurationLevel">S</Data>
+        <Data AD_Column_ID="50187" Column="AD_SysConfig_ID">50182</Data>
+        <Data AD_Column_ID="50189" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="50188" Column="AD_Client_ID">0</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

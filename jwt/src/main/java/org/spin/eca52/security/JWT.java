@@ -54,6 +54,12 @@ public class JWT implements IThirdPartyAccessGenerator {
 	private String language;
 	/**	Session ID	*/
 	private int sessionId;
+	/**	SysConfig (ms): maximum lifetime for third party grant tokens; caps even a longer value set on the token definition	*/
+	private static final String ECA52_TOKEN_MAX_EXPIRE_TIME = "ECA52_TOKEN_MAX_EXPIRE_TIME";
+	/**	Default maximum grant-token lifetime: 90 days in ms	*/
+	private static final long DEFAULT_MAX_TOKEN_EXPIRE_MILLIS = 90L * 24 * 60 * 60 * 1000;
+	/**	Default grant-token lifetime when the definition expires but sets no explicit time: 5 min in ms	*/
+	private static final long DEFAULT_TOKEN_EXPIRE_MILLIS = 5L * 60 * 1000;
 
 	public JWT() {
     	//	
@@ -103,6 +109,29 @@ public class JWT implements IThirdPartyAccessGenerator {
 		);
 		SecretKey secretKey = Keys.hmacShaKeyFor(keyBytes);
 		return secretKey;
+	}
+
+	/**
+	 * Maximum lifetime (ms) allowed for a third party grant token. Read from SysConfig
+	 * {@code ECA52_TOKEN_MAX_EXPIRE_TIME} (per client); falls back to
+	 * {@link #DEFAULT_MAX_TOKEN_EXPIRE_MILLIS}. Guarantees a grant token can never be
+	 * minted without an expiration nor with an unbounded one.
+	 * @param clientId current client
+	 * @return maximum lifetime in milliseconds (always &gt; 0)
+	 */
+	private static long getMaxTokenExpireMillis(int clientId) {
+		String value = MSysConfig.getValue(ECA52_TOKEN_MAX_EXPIRE_TIME, clientId);
+		if(!Util.isEmpty(value, true)) {
+			try {
+				long parsed = Long.parseLong(value.trim());
+				if(parsed > 0) {
+					return parsed;
+				}
+			} catch (NumberFormatException e) {
+				//	fall through to default
+			}
+		}
+		return DEFAULT_MAX_TOKEN_EXPIRE_MILLIS;
 	}
 
 
@@ -170,21 +199,32 @@ public class JWT implements IThirdPartyAccessGenerator {
 			.signWith(secretKey, Jwts.SIG.HS256)
 		;
 
-		//	Validate
+		//	Grant tokens must always carry an exp claim and never exceed a maximum lifetime,
+		//	so a third party token can never be valid forever (previously no exp when IsHasExpireDate='N').
+		long maxExpireMillis = getMaxTokenExpireMillis(clientId);
+		long requestedMillis;
 		if(definition.isHasExpireDate()) {
-			BigDecimal expirationTime = Optional.ofNullable(
+			requestedMillis = Optional.ofNullable(
 					definition.getExpirationTime()
 				).orElse(
-					new BigDecimal(5 * 60 * 1000)
-				)
+					new BigDecimal(DEFAULT_TOKEN_EXPIRE_MILLIS)
+				).longValue()
 			;
-			token.setExpireDate(
-				new Timestamp(currentTimeMillis + expirationTime.longValue())
-			);
-			jwtBuilder.expiration(
-				new Date(currentTimeMillis + expirationTime.longValue())
-			);
+		} else {
+			//	Previously non-expiring: fall back to the maximum cap.
+			requestedMillis = maxExpireMillis;
 		}
+		//	Clamp to the cap; guard against non-positive values.
+		long effectiveMillis = requestedMillis <= 0
+			? maxExpireMillis
+			: Math.min(requestedMillis, maxExpireMillis)
+		;
+		token.setExpireDate(
+			new Timestamp(currentTimeMillis + effectiveMillis)
+		);
+		jwtBuilder.expiration(
+			new Date(currentTimeMillis + effectiveMillis)
+		);
 		userTokenValue = jwtBuilder.compact();
 		String tokenValue = null;
 		try {
