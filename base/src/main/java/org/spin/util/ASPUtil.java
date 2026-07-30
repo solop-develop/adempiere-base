@@ -65,9 +65,7 @@ import org.compiere.util.Util;
  * @author Yamel Senih, ysenih@erpya.com , http://www.erpya.com
  */
 public class ASPUtil {
-	
-	/**	Instance	*/
-	private static ASPUtil instance = null;
+
 	/**	Client	*/
 	private int clientId;
 	/**	Role	*/
@@ -141,13 +139,13 @@ public class ASPUtil {
 	 * @return
 	 */
 	public static ASPUtil getInstance(Properties context, int clientId, int roleId, int userId, String language) {
-		if(instance == null) {
-			instance = new ASPUtil(context, clientId, roleId, userId, language);
-		} else {
-			instance.loadValues(context, clientId, roleId, userId, language);
-		}
-		//	
-		return instance;
+		// Multi-Tenant PATCH: the original static singleton (`instance` + loadValues()) let two
+		// concurrent threads -- two scheduler tenants, or two HTTP requests -- stomp on each
+		// other's context/clientId/roleId/userId, causing an NPE in MRole.get() while looking up
+		// another tenant's role. Per-instance state is just 5 scalar fields; the heavy caches are
+		// still the static CCache instances (already tenant-prefixed), so creating a new instance
+		// per call has no meaningful cost and removes the race at its root.
+		return new ASPUtil(context, clientId, roleId, userId, language);
 	}
 	
 	/**
