@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
   <Migration EntityType="D" Name="BPartner_Disable_Logging_High_Frequency_Columns" ReleaseNo="1.5.14" SeqNo="503890">
-    <Comments>Disable change log (IsAllowLogging) for C_BPartner columns that are recalculated on every Sales Order (ActualLifeTimeValue, SO_CreditUsed), following the same criterion already applied to TotalOpenBalance. Prevents the change log from growing unbounded on Business Partners used as POS default.</Comments>
+    <Comments>Disable change log (IsAllowLogging) for C_BPartner columns that are recalculated on every Sales Order (ActualLifeTimeValue, SO_CreditUsed, TotalOpenBalance). Prevents the change log from growing unbounded on Business Partners used as POS default.</Comments>
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="112" Action="U" Record_ID="2925" Table="AD_Column">
         <Data AD_Column_ID="56187" Column="IsAllowLogging" oldValue="true">false</Data>
@@ -9,6 +9,11 @@
     </Step>
     <Step SeqNo="20" StepType="AD">
       <PO AD_Table_ID="112" Action="U" Record_ID="2921" Table="AD_Column">
+        <Data AD_Column_ID="56187" Column="IsAllowLogging" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="112" Action="U" Record_ID="12533" Table="AD_Column">
         <Data AD_Column_ID="56187" Column="IsAllowLogging" oldValue="true">false</Data>
       </PO>
     </Step>
