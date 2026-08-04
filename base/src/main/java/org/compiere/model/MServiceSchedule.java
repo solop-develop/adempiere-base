@@ -57,6 +57,7 @@ public static int DAY_OF_WEEK_REFERENCE = 167;
             MResource resource = (MResource) getS_Resource();
             if (overlappingSchedule != null) {
                 X_S_ServicePlan servicePlan = (X_S_ServicePlan) getS_ServicePlan();
+                String servicePlanDescription = servicePlan == null ? "" : servicePlan.getDescription();
                 String dayOfWeek = MRefList.getListName(getCtx(), DAY_OF_WEEK_REFERENCE, getDayOfWeek());
                 String timeFromFormated = DisplayType.getDateFormat(DisplayType.Time).format(getTimeFrom());
                 String timeToFormated = DisplayType.getDateFormat(DisplayType.Time).format(getTimeTo());
@@ -71,7 +72,7 @@ public static int DAY_OF_WEEK_REFERENCE = 167;
                         dayOfWeek,
                         timeFromFormated,
                         timeToFormated,
-                        servicePlan.getDescription(),
+                        servicePlanDescription,
                         partnerName
                 );
                 throw new AdempiereException(errorMessage);
@@ -100,6 +101,5 @@ public static int DAY_OF_WEEK_REFERENCE = 167;
         }
         return super.beforeSave(newRecord);
     }	//	beforeSave
-
 
 }
