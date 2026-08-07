@@ -588,6 +588,15 @@ public class PackInHandler extends DefaultHandler {
         	//	
         	//	Columns
         	if(Env.getContext(context, "SynchronizeColumns").equals("Y") && columns.size() > 0) {
+				// Commit the dictionary rows imported in this transaction (AD_Reference, AD_Ref_Table, AD_Val_Rule, ...)
+				// BEFORE synchronizing the columns. MColumn.syncDatabase() -> DisplayType.getSQLDataType() -> MRefTable.getById()
+				// reads AD_Ref_Table with trxName = null, so a reference-value column whose AD_Ref_Table was imported in
+				// this same (still open) transaction would resolve to null and be created as VARCHAR instead of NUMERIC.
+				// Committing here makes the just-imported references visible to that lookup.
+				Trx syncTrx = Trx.get(trxName, false);
+				if (syncTrx != null && !syncTrx.commit()) {
+					log.warning("Could not commit imported references before column sync; reference-value column types may not resolve");
+				}
         		for (Element e : columns) {
     	    		Attributes atts = e.attributes;
     	    		String columnUuid = atts.getValue(AttributeFiller.getUUIDAttribute(I_AD_Column.Table_Name));
