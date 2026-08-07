@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for HR_AttendanceRecord
  *  @author Adempiere (generated) 
@@ -104,7 +103,7 @@ public interface I_HR_AttendanceRecord
 	  */
 	public int getC_Project_ID();
 
-	public I_C_Project getC_Project() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -131,7 +130,7 @@ public interface I_HR_AttendanceRecord
 	/** Get Attendance Batch	  */
 	public int getHR_AttendanceBatch_ID();
 
-	public I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException;
 
     /** Column name HR_AttendanceRecord_ID */
     public static final String COLUMNNAME_HR_AttendanceRecord_ID = "HR_AttendanceRecord_ID";
@@ -237,6 +236,36 @@ public interface I_HR_AttendanceRecord
 	  */
 	public boolean isProcessed();
 
+    /** Column name S_Contract_ID */
+    public static final String COLUMNNAME_S_Contract_ID = "S_Contract_ID";
+
+	/** Set Contract.
+	  * Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID);
+
+	/** Get Contract.
+	  * Contract
+	  */
+	public int getS_Contract_ID();
+
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
+
+    /** Column name S_ContractLine_ID */
+    public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
+
+	/** Set ContractLine.
+	  * ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID);
+
+	/** Get ContractLine.
+	  * ContractLine
+	  */
+	public int getS_ContractLine_ID();
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException;
+
     /** Column name SeqNo */
     public static final String COLUMNNAME_SeqNo = "SeqNo";
 
@@ -265,7 +294,7 @@ public interface I_HR_AttendanceRecord
 	  */
 	public int getS_ResourceAssignment_ID();
 
-	public I_S_ResourceAssignment getS_ResourceAssignment() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_ResourceAssignment getS_ResourceAssignment() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

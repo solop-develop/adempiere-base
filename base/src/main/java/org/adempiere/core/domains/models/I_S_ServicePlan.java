@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for S_ServicePlan
  *  @author Adempiere (generated) 
@@ -78,7 +77,7 @@ public interface I_S_ServicePlan
 	  */
 	public int getAD_User_ID();
 
-	public I_AD_User getAD_User() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_AD_User getAD_User() throws RuntimeException;
 
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
@@ -93,7 +92,7 @@ public interface I_S_ServicePlan
 	  */
 	public int getC_BPartner_ID();
 
-	public I_C_BPartner getC_BPartner() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_BPartner_Location_ID */
     public static final String COLUMNNAME_C_BPartner_Location_ID = "C_BPartner_Location_ID";
@@ -108,7 +107,7 @@ public interface I_S_ServicePlan
 	  */
 	public int getC_BPartner_Location_ID();
 
-	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -204,7 +203,22 @@ public interface I_S_ServicePlan
 	  */
 	public int getS_Contract_ID();
 
-	public I_S_Contract getS_Contract() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
+
+    /** Column name S_ContractLine_ID */
+    public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
+
+	/** Set ContractLine.
+	  * ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID);
+
+	/** Get ContractLine.
+	  * ContractLine
+	  */
+	public int getS_ContractLine_ID();
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException;
 
     /** Column name S_Resource_ID */
     public static final String COLUMNNAME_S_Resource_ID = "S_Resource_ID";
@@ -219,7 +233,7 @@ public interface I_S_ServicePlan
 	  */
 	public int getS_Resource_ID();
 
-	public I_S_Resource getS_Resource() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_Resource getS_Resource() throws RuntimeException;
 
     /** Column name S_ResourceType_ID */
     public static final String COLUMNNAME_S_ResourceType_ID = "S_ResourceType_ID";
@@ -230,7 +244,7 @@ public interface I_S_ServicePlan
 	/** Get Resource Type	  */
 	public int getS_ResourceType_ID();
 
-	public I_S_ResourceType getS_ResourceType() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_ResourceType getS_ResourceType() throws RuntimeException;
 
     /** Column name S_ServicePlan_ID */
     public static final String COLUMNNAME_S_ServicePlan_ID = "S_ServicePlan_ID";

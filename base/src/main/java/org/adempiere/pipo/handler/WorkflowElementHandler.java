@@ -16,12 +16,6 @@
  *****************************************************************************/
 package org.adempiere.pipo.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
-import javax.xml.transform.sax.TransformerHandler;
-
 import org.adempiere.core.domains.models.I_AD_WF_NextCondition;
 import org.adempiere.core.domains.models.I_AD_WF_Node;
 import org.adempiere.core.domains.models.I_AD_WF_NodeNext;
@@ -30,11 +24,13 @@ import org.adempiere.pipo.PackOut;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
-import org.compiere.wf.MWFNextCondition;
-import org.compiere.wf.MWFNode;
-import org.compiere.wf.MWFNodeNext;
-import org.compiere.wf.MWorkflow;
+import org.compiere.wf.*;
 import org.xml.sax.SAXException;
+
+import javax.xml.transform.sax.TransformerHandler;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Change to Generic PO handler
@@ -83,6 +79,10 @@ public class WorkflowElementHandler extends GenericPOHandler {
 				packOut.createView(node.getAD_View_ID(), document);
 			}
 			packOut.createGenericPO(document, node);
+			//	Export node parameters
+			for(MWFNodePara nodePara : node.getParameters()) {
+				packOut.createGenericPO(document, nodePara);
+			}
 		}
 		//	Export conditions
 		for(MWFNode node : nodes) {

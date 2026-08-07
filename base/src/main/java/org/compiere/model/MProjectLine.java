@@ -17,6 +17,7 @@
 package org.compiere.model;
 
 import org.adempiere.core.domains.models.*;
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.TimeUtil;
@@ -27,8 +28,8 @@ import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -269,14 +270,38 @@ public class MProjectLine extends X_C_ProjectLine
 					setPlannedPrice(pp.getPriceStd());
 				}
 			}
-			if(Optional.ofNullable(getPlannedQty()).orElse(Env.ZERO).compareTo(Env.ZERO) == 0) {
-				BigDecimal quantity = (BigDecimal) get_Value("QtyEntered");
-				setPlannedQty(Optional.ofNullable(quantity).orElse(Env.ZERO));
-			}
 			if(get_ValueAsInt("C_UOM_ID") <= 0 && getM_Product_ID() > 0) {
 				MProduct product = MProduct.get(getCtx(), getM_Product_ID());
 				set_ValueOfColumn("C_UOM_ID", product.getC_UOM_ID());
 			}
+		}
+		//	QtyEntered is expressed in the line's own C_UOM_ID; PlannedQty must be kept in the product's UOM
+		boolean uomOrProductChanged = is_ValueChanged("M_Product_ID") || is_ValueChanged("C_UOM_ID");
+		//	On a new record every column reads as "changed" (old value is null), so is_ValueChanged can't tell
+		//	which field the user actually meant to drive off of; fall back to "which one has a non-zero value"
+		boolean qtyEnteredBased = newRecord
+			? (getQtyEntered() != null && getQtyEntered().signum() != 0)
+			: (uomOrProductChanged || is_ValueChanged(COLUMNNAME_QtyEntered));
+		boolean plannedQtyBased = !qtyEnteredBased && (newRecord
+			? (getPlannedQty() != null && getPlannedQty().signum() != 0)
+			: is_ValueChanged(COLUMNNAME_PlannedQty));
+		if (getM_Product_ID() > 0 && get_ValueAsInt("C_UOM_ID") > 0 && getQtyEntered() != null && qtyEnteredBased)
+		{
+			//	Driven by QtyEntered, including the case where it was explicitly zeroed
+			BigDecimal plannedQty = getQtyEntered().signum() == 0 ? Env.ZERO
+				: MUOMConversion.convertProductFrom(getCtx(), getM_Product_ID(), get_ValueAsInt("C_UOM_ID"), getQtyEntered());
+			if (plannedQty == null)
+				throw new AdempiereException("@Error@ @C_UOM_Conversion_ID@ @NotFound@");
+			setPlannedQty(plannedQty);
+		}
+		//	No QtyEntered-driven change (e.g. PlannedQty entered/zeroed directly): derive it back from PlannedQty in the product's UOM
+		else if (getM_Product_ID() > 0 && get_ValueAsInt("C_UOM_ID") > 0 && getPlannedQty() != null && plannedQtyBased)
+		{
+			BigDecimal qtyEntered = getPlannedQty().signum() == 0 ? Env.ZERO
+				: MUOMConversion.convertProductTo(getCtx(), getM_Product_ID(), get_ValueAsInt("C_UOM_ID"), getPlannedQty());
+			if (qtyEntered == null)
+				throw new AdempiereException("@Error@ @C_UOM_Conversion_ID@ @NotFound@");
+			setQtyEntered(qtyEntered);
 		}
 		//	Planned Amount
 		if (isCostBased()) {
@@ -329,13 +354,15 @@ public class MProjectLine extends X_C_ProjectLine
 		} else {
 			//	Margin <-> Planned Price interdependency, anchored on the fixed Cost (#2843)
 			if (!isSummary() && getCost() != null && getCost().signum() > 0) {
-				if (is_ValueChanged(COLUMNNAME_PlannedPrice)) {
+				if (is_ValueChanged(COLUMNNAME_PlannedPrice)
+					|| (is_ValueChanged(COLUMNNAME_Cost) && getMargin().signum() == 0)) {
 					//	Price edited -> derive Margin %
 					BigDecimal margin = getPlannedPrice().subtract(getCost())
 						.divide(getCost(), 4, RoundingMode.HALF_UP)
 						.multiply(Env.ONEHUNDRED);
 					setMargin(margin);
-				} else if (is_ValueChanged(COLUMNNAME_Margin)) {
+				} else if (is_ValueChanged(COLUMNNAME_Margin)
+					|| (is_ValueChanged(COLUMNNAME_Cost) && getPlannedPrice().signum() == 0)) {
 					//	Margin edited -> derive Planned Price
 					BigDecimal price = getCost().multiply(Env.ONEHUNDRED.add(getMargin()))
 						.divide(Env.ONEHUNDRED, 4, RoundingMode.HALF_UP);
@@ -349,11 +376,11 @@ public class MProjectLine extends X_C_ProjectLine
 
 		//	Planned Margin
 		if (is_ValueChanged("M_Product_ID") || is_ValueChanged("M_Product_Category_ID")
-			|| is_ValueChanged("PlannedQty") || is_ValueChanged("PlannedPrice"))
+			|| is_ValueChanged("PlannedQty") || is_ValueChanged("Cost"))
 		{
 			if (getM_Product_ID() != 0 && getProject().getM_PriceList_ID() > 0)
 			{
-				BigDecimal marginEach = getPlannedPrice().subtract(getLimitPrice());
+				BigDecimal marginEach = getPlannedPrice().subtract(getCost());
 				setPlannedMarginAmt(marginEach.multiply(getPlannedQty()));
 			}
 			else if (getM_Product_Category_ID() != 0)
@@ -399,7 +426,7 @@ public class MProjectLine extends X_C_ProjectLine
 		//	(Delivered/Consumed + ProfitRealized) in this same save (#2843)
 		if (!isSummary() && getC_ProjectIssue_ID() > 0
 			&& (newRecord || is_ValueChanged(COLUMNNAME_C_ProjectIssue_ID))) {
-			recalculateFromDocument(MProjectIssue.Table_Name, false);
+			recalculateFromDocument(MProjectIssue.Table_Name, false, null);
 		}
 
 		return true;
@@ -586,85 +613,105 @@ public class MProjectLine extends X_C_ProjectLine
 	 *	aggregation and only sets its fields; the caller's save triggers the roll up. (#2843)
 	 *	@param tableName source document table (MOrder/MInvoice/MInOut/MProjectIssue Table_Name)
 	 *	@param isSOTrx sales (true) vs purchase (false) side of the document
+	 *	@param newAmtQty amount/qty contributed by the document that is currently completing (may be null).
+	 *	This is required because the SQL aggregations only see documents already CO/CL in the DB, and the
+	 *	document calling this method is completing right now: its own DocStatus is not yet CO/CL, so the
+	 *	aggregation would miss it. The caller passes its own line totals so they can be added on top.
 	 */
-	public void recalculateFromDocument(String tableName, boolean isSOTrx)
+	public void recalculateFromDocument(String tableName, boolean isSOTrx, BigDecimal[] newAmtQty)
 	{
 		if (isSummary())
 			return;
 		if (MOrder.Table_Name.equals(tableName)) {
 			if (isSOTrx)
-				recalculateSalesOrdered();
+				recalculateSalesOrdered(newAmtQty);
 			else
-				recalculateCostOrdered();
+				recalculateCostOrdered(newAmtQty);
 		} else if (MInvoice.Table_Name.equals(tableName)) {
 			if (isSOTrx)
-				recalculateSalesInvoiced();
+				recalculateSalesInvoiced(newAmtQty);
 			else
-				recalculateCostInvoiced();
+				recalculateCostInvoiced(newAmtQty);
 		} else if (MInOut.Table_Name.equals(tableName)) {
 			//	Sales shipment does not map to a column; the "delivered" goes through the Issue
 			if (!isSOTrx)
-				recalculateCostReceived();
+				recalculateCostReceived(newAmtQty);
 		} else if (MProjectIssue.Table_Name.equals(tableName)) {
 			recalculateIssue();
 		}
 	}	//	recalculateFromDocument
 
 	/**	Ordered (sales): OrderedAmt, QtyOrdered from completed SO lines	*/
-	private void recalculateSalesOrdered()
+	private void recalculateSalesOrdered(BigDecimal[] newAmtQty)
 	{
 		BigDecimal[] amtQty = getDocumentAmtQty(
 			"SELECT COALESCE(SUM(ol.LineNetAmt),0), COALESCE(SUM(ol.QtyOrdered),0) "
 			+ "FROM " + MOrderLine.Table_Name + " ol JOIN " + MOrder.Table_Name + " o ON o.C_Order_ID=ol.C_Order_ID "
 			+ "WHERE ol.C_ProjectLine_ID=? AND o.IsSOTrx='Y' AND o.DocStatus IN ('CO','CL')", getC_ProjectLine_ID());
+		addAmtQty(amtQty, newAmtQty);
 		setOrderedAmt(amtQty[0]);
 		setQtyOrdered(amtQty[1]);
+		setCommittedAmt(amtQty[0]);
+		setCommittedQty(amtQty[1]);
 	}	//	recalcSalesOrdered
 
 	/**	Ordered (purchase): CostOrderedAmt, CostOrderedQty from completed PO lines	*/
-	private void recalculateCostOrdered()
+	private void recalculateCostOrdered(BigDecimal[] newAmtQty)
 	{
 		BigDecimal[] amtQty = getDocumentAmtQty(
 			"SELECT COALESCE(SUM(ol.LineNetAmt),0), COALESCE(SUM(ol.QtyOrdered),0) "
 			+ "FROM " + MOrderLine.Table_Name + " ol JOIN " + MOrder.Table_Name + " o ON o.C_Order_ID=ol.C_Order_ID "
 			+ "WHERE ol.C_ProjectLine_ID=? AND o.IsSOTrx='N' AND o.DocStatus IN ('CO','CL')", getC_ProjectLine_ID());
+		addAmtQty(amtQty, newAmtQty);
 		setCostOrderedAmt(amtQty[0]);
 		setCostOrderedQty(amtQty[1]);
 	}	//	recalcCostOrdered
 
 	/**	Invoiced (sales/AR): InvoicedAmt, InvoicedQty from completed AR lines	*/
-	private void recalculateSalesInvoiced()
+	private void recalculateSalesInvoiced(BigDecimal[] newAmtQty)
 	{
 		BigDecimal[] amtQty = getDocumentAmtQty(
 			"SELECT COALESCE(SUM(il.LineNetAmt),0), COALESCE(SUM(il.QtyInvoiced),0) "
 			+ "FROM " + MInvoiceLine.Table_Name + " il JOIN " + MInvoice.Table_Name + " i ON i.C_Invoice_ID=il.C_Invoice_ID "
 			+ "WHERE il.C_ProjectLine_ID=? AND i.IsSOTrx='Y' AND i.DocStatus IN ('CO','CL')", getC_ProjectLine_ID());
+		addAmtQty(amtQty, newAmtQty);
 		setInvoicedAmt(amtQty[0]);
 		setInvoicedQty(amtQty[1]);
 	}	//	recalcSalesInvoiced
 
 	/**	Invoiced (purchase/AP): CostInvoicedAmt, CostInvoicedQty from completed AP lines	*/
-	private void recalculateCostInvoiced()
+	private void recalculateCostInvoiced(BigDecimal[] newAmtQty)
 	{
 		BigDecimal[] amtQty = getDocumentAmtQty(
 			"SELECT COALESCE(SUM(il.LineNetAmt),0), COALESCE(SUM(il.QtyInvoiced),0) "
 			+ "FROM " + MInvoiceLine.Table_Name + " il JOIN " + MInvoice.Table_Name + " i ON i.C_Invoice_ID=il.C_Invoice_ID "
 			+ "WHERE il.C_ProjectLine_ID=? AND i.IsSOTrx='N' AND i.DocStatus IN ('CO','CL')", getC_ProjectLine_ID());
+		addAmtQty(amtQty, newAmtQty);
 		setCostInvoicedAmt(amtQty[0]);
 		setCostInvoicedQty(amtQty[1]);
 	}	//	recalcCostInvoiced
 
 	/**	Received (purchase receipt): CostReceivedAmt, CostReceivedQty; amount from the linked PO line price	*/
-	private void recalculateCostReceived()
+	private void recalculateCostReceived(BigDecimal[] newAmtQty)
 	{
 		BigDecimal[] amtQty = getDocumentAmtQty(
 			"SELECT COALESCE(SUM(iol.MovementQty*COALESCE(ol.PriceActual,0)),0), COALESCE(SUM(iol.MovementQty),0) "
 			+ "FROM " + MInOutLine.Table_Name + " iol JOIN " + MInOut.Table_Name + " io ON io.M_InOut_ID=iol.M_InOut_ID "
 			+ "LEFT JOIN " + MOrderLine.Table_Name + " ol ON ol.C_OrderLine_ID=iol.C_OrderLine_ID "
 			+ "WHERE iol.C_ProjectLine_ID=? AND io.IsSOTrx='N' AND io.DocStatus IN ('CO','CL')", getC_ProjectLine_ID());
+		addAmtQty(amtQty, newAmtQty);
 		setCostReceivedAmt(amtQty[0]);
 		setCostReceivedQty(amtQty[1]);
 	}	//	recalcCostReceived
+
+	/**	Add the currently-completing document's own contribution on top of the SQL-aggregated totals	*/
+	private static void addAmtQty(BigDecimal[] amtQty, BigDecimal[] newAmtQty)
+	{
+		if (newAmtQty == null)
+			return;
+		amtQty[0] = amtQty[0].add(newAmtQty[0]);
+		amtQty[1] = amtQty[1].add(newAmtQty[1]);
+	}	//	addAmtQty
 
 	/**
 	 *	Realized via Project Issue: Delivered (sale) and Consumed (cost). The issue stores no price,
@@ -715,19 +762,23 @@ public class MProjectLine extends X_C_ProjectLine
 	/**
 	 *	Recalculate the given leaf project lines for the block that depends on the source document
 	 *	and save them, propagating the roll up. Used by document completion. (#2843)
+	 *	@param projectLineAmtQty C_ProjectLine_ID -> {amount, qty} contributed by the document lines that are
+	 *	completing right now. The document itself is not yet CO/CL in the DB at this point, so its own
+	 *	contribution has to be added on top of the SQL aggregation instead of relying on the aggregation alone.
 	 */
-	public static void recalculateProjectLines(Properties ctx, Collection<Integer> projectLineIds,
+	public static void recalculateProjectLines(Properties ctx, Map<Integer, BigDecimal[]> projectLineAmtQty,
 		String trxName, String tableName, boolean isSOTrx)
 	{
-		if (projectLineIds == null || projectLineIds.isEmpty())
+		if (projectLineAmtQty == null || projectLineAmtQty.isEmpty())
 			return;
-		for (Integer projectLineId : projectLineIds) {
+		for (Map.Entry<Integer, BigDecimal[]> entry : projectLineAmtQty.entrySet()) {
+			Integer projectLineId = entry.getKey();
 			if (projectLineId == null || projectLineId <= 0)
 				continue;
 			MProjectLine projectLine = new MProjectLine(ctx, projectLineId, trxName);
 			if (projectLine.get_ID() != projectLineId || projectLine.isSummary())
 				continue;
-			projectLine.recalculateFromDocument(tableName, isSOTrx);
+			projectLine.recalculateFromDocument(tableName, isSOTrx, entry.getValue());
 			projectLine.saveEx();
 		}
 	}	//	recalculateProjectLines

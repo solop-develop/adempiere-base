@@ -18,13 +18,14 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for AD_Process
  *  @author Adempiere (generated) 
@@ -35,7 +36,7 @@ public class X_AD_Process extends PO implements I_AD_Process, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260805L;
 
     /** Standard Constructor */
     public X_AD_Process (Properties ctx, int AD_Process_ID, String trxName)
@@ -119,9 +120,9 @@ public class X_AD_Process extends PO implements I_AD_Process, I_Persistent
 		return (String)get_Value(COLUMNNAME_AccessLevel);
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Browse getAD_Browse() throws RuntimeException
+	public I_AD_Browse getAD_Browse() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Browse)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Browse.Table_Name)
+		return (I_AD_Browse)MTable.get(getCtx(), I_AD_Browse.Table_Name)
 			.getPO(getAD_Browse_ID(), get_TrxName());	}
 
 	/** Set Smart Browse.
@@ -144,9 +145,9 @@ public class X_AD_Process extends PO implements I_AD_Process, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Form getAD_Form() throws RuntimeException
+	public I_AD_Form getAD_Form() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Form)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Form.Table_Name)
+		return (I_AD_Form)MTable.get(getCtx(), I_AD_Form.Table_Name)
 			.getPO(getAD_Form_ID(), get_TrxName());	}
 
 	/** Set Special Form.
@@ -172,9 +173,9 @@ public class X_AD_Process extends PO implements I_AD_Process, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_PrintFormat getAD_PrintFormat() throws RuntimeException
+	public I_AD_PrintFormat getAD_PrintFormat() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_PrintFormat)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_PrintFormat.Table_Name)
+		return (I_AD_PrintFormat)MTable.get(getCtx(), I_AD_PrintFormat.Table_Name)
 			.getPO(getAD_PrintFormat_ID(), get_TrxName());	}
 
 	/** Set Print Format.
@@ -223,9 +224,9 @@ public class X_AD_Process extends PO implements I_AD_Process, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_ReportView getAD_ReportView() throws RuntimeException
+	public I_AD_ReportView getAD_ReportView() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_ReportView)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_ReportView.Table_Name)
+		return (I_AD_ReportView)MTable.get(getCtx(), I_AD_ReportView.Table_Name)
 			.getPO(getAD_ReportView_ID(), get_TrxName());	}
 
 	/** Set Report View.
@@ -251,9 +252,9 @@ public class X_AD_Process extends PO implements I_AD_Process, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Workflow getAD_Workflow() throws RuntimeException
+	public I_AD_Workflow getAD_Workflow() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Workflow)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Workflow.Table_Name)
+		return (I_AD_Workflow)MTable.get(getCtx(), I_AD_Workflow.Table_Name)
 			.getPO(getAD_Workflow_ID(), get_TrxName());	}
 
 	/** Set Workflow.
@@ -330,6 +331,23 @@ public class X_AD_Process extends PO implements I_AD_Process, I_Persistent
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
+	/** Set Documentation URL.
+		@param DocBaseURL 
+		Base URL for external documentation page
+	  */
+	public void setDocBaseURL (String DocBaseURL)
+	{
+		set_Value (COLUMNNAME_DocBaseURL, DocBaseURL);
+	}
+
+	/** Get Documentation URL.
+		@return Base URL for external documentation page
+	  */
+	public String getDocBaseURL () 
+	{
+		return (String)get_Value(COLUMNNAME_DocBaseURL);
+	}
+
 	/** EntityType AD_Reference_ID=389 */
 	public static final int ENTITYTYPE_AD_Reference_ID=389;
 	/** Set Entity Type.
@@ -348,6 +366,32 @@ public class X_AD_Process extends PO implements I_AD_Process, I_Persistent
 	public String getEntityType () 
 	{
 		return (String)get_Value(COLUMNNAME_EntityType);
+	}
+
+	/** ExecutionMode AD_Reference_ID=54735 */
+	public static final int EXECUTIONMODE_AD_Reference_ID=54735;
+	/** Synchronous = S */
+	public static final String EXECUTIONMODE_Synchronous = "S";
+	/** Asynchronous = A */
+	public static final String EXECUTIONMODE_Asynchronous = "A";
+	/** Both (Client Decides) = B */
+	public static final String EXECUTIONMODE_BothClientDecides = "B";
+	/** Set Execution Mode.
+		@param ExecutionMode 
+		Mode That Determines Whether the Process Runs Synchronously or Asynchronously
+	  */
+	public void setExecutionMode (String ExecutionMode)
+	{
+
+		set_Value (COLUMNNAME_ExecutionMode, ExecutionMode);
+	}
+
+	/** Get Execution Mode.
+		@return Mode That Determines Whether the Process Runs Synchronously or Asynchronously
+	  */
+	public String getExecutionMode () 
+	{
+		return (String)get_Value(COLUMNNAME_ExecutionMode);
 	}
 
 	/** Set Generate Class.

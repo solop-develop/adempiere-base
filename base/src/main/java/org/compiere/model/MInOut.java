@@ -1685,11 +1685,23 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 		StorageUpdate.addDocumentToQueue(this);
 
 		//	Refresh project line summarization for linked project lines (#2843)
-		Set<Integer> projectLineIds = new java.util.HashSet<Integer>();
-		for (MInOutLine inOutLine : getLines())
-			if (inOutLine.get_ValueAsInt("C_ProjectLine_ID") > 0)
-				projectLineIds.add(inOutLine.get_ValueAsInt("C_ProjectLine_ID"));
-		MProjectLine.recalculateProjectLines(getCtx(), projectLineIds, get_TrxName(), Table_Name, isSOTrx());
+		//	The receipt is still not DocStatus CO/CL in the DB at this point, so its own lines
+		//	are added on top of the SQL aggregation instead of being found by it.
+		Map<Integer, BigDecimal[]> projectLineAmtQty = new HashMap<Integer, BigDecimal[]>();
+		for (MInOutLine inOutLine : getLines()) {
+			int projectLineId = inOutLine.get_ValueAsInt("C_ProjectLine_ID");
+			if (projectLineId > 0) {
+				BigDecimal priceActual = Env.ZERO;
+				if (inOutLine.getC_OrderLine_ID() > 0) {
+					MOrderLine orderLine = new MOrderLine(getCtx(), inOutLine.getC_OrderLine_ID(), get_TrxName());
+					priceActual = Optional.ofNullable(orderLine.getPriceActual()).orElse(Env.ZERO);
+				}
+				BigDecimal[] amtQty = projectLineAmtQty.computeIfAbsent(projectLineId, id -> new BigDecimal[] { Env.ZERO, Env.ZERO });
+				amtQty[0] = amtQty[0].add(inOutLine.getMovementQty().multiply(priceActual));
+				amtQty[1] = amtQty[1].add(inOutLine.getMovementQty());
+			}
+		}
+		MProjectLine.recalculateProjectLines(getCtx(), projectLineAmtQty, get_TrxName(), Table_Name, isSOTrx());
 
 		processMsg = info.toString();
 		setProcessed(true);

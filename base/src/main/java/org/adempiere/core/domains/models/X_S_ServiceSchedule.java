@@ -18,16 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 
 /** Generated Model for S_ServiceSchedule
  *  @author Adempiere (generated) 
@@ -38,7 +37,7 @@ public class X_S_ServiceSchedule extends PO implements I_S_ServiceSchedule, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260311L;
+	private static final long serialVersionUID = 20260806L;
 
     /** Standard Constructor */
     public X_S_ServiceSchedule (Properties ctx, int S_ServiceSchedule_ID, String trxName)
@@ -83,9 +82,9 @@ public class X_S_ServiceSchedule extends PO implements I_S_ServiceSchedule, I_Pe
       return sb.toString();
     }
 
-	public I_C_BPartner getC_BPartner() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -111,9 +110,9 @@ public class X_S_ServiceSchedule extends PO implements I_S_ServiceSchedule, I_Pe
 		return ii.intValue();
 	}
 
-	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException
     {
-		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_BPartner_Location)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner_Location.Table_Name)
 			.getPO(getC_BPartner_Location_ID(), get_TrxName());	}
 
 	/** Set Partner Location.
@@ -210,9 +209,37 @@ public class X_S_ServiceSchedule extends PO implements I_S_ServiceSchedule, I_Pe
 		return bd;
 	}
 
-	public I_S_Resource getS_Resource() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException
     {
-		return (I_S_Resource)MTable.get(getCtx(), I_S_Resource.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_ContractLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ContractLine.Table_Name)
+			.getPO(getS_ContractLine_ID(), get_TrxName());	}
+
+	/** Set ContractLine.
+		@param S_ContractLine_ID 
+		ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID)
+	{
+		if (S_ContractLine_ID < 1) 
+			set_Value (COLUMNNAME_S_ContractLine_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ContractLine_ID, Integer.valueOf(S_ContractLine_ID));
+	}
+
+	/** Get ContractLine.
+		@return ContractLine
+	  */
+	public int getS_ContractLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ContractLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_S_Resource getS_Resource() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_Resource)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Resource.Table_Name)
 			.getPO(getS_Resource_ID(), get_TrxName());	}
 
 	/** Set Resource.
@@ -238,9 +265,9 @@ public class X_S_ServiceSchedule extends PO implements I_S_ServiceSchedule, I_Pe
 		return ii.intValue();
 	}
 
-	public I_S_ServicePlan getS_ServicePlan() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_ServicePlan getS_ServicePlan() throws RuntimeException
     {
-		return (I_S_ServicePlan)MTable.get(getCtx(), I_S_ServicePlan.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_ServicePlan)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ServicePlan.Table_Name)
 			.getPO(getS_ServicePlan_ID(), get_TrxName());	}
 
 	/** Set Service Plan ID.

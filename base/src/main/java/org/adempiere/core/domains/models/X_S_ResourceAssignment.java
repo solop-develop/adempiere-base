@@ -18,17 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 
 /** Generated Model for S_ResourceAssignment
  *  @author Adempiere (generated) 
@@ -39,7 +38,7 @@ public class X_S_ResourceAssignment extends PO implements I_S_ResourceAssignment
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260309L;
+	private static final long serialVersionUID = 20260806L;
 
     /** Standard Constructor */
     public X_S_ResourceAssignment (Properties ctx, int S_ResourceAssignment_ID, String trxName)
@@ -340,9 +339,9 @@ public class X_S_ResourceAssignment extends PO implements I_S_ResourceAssignment
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
-	public I_HR_Leave getHR_Leave() throws RuntimeException
+	public org.adempiere.core.domains.models.I_HR_Leave getHR_Leave() throws RuntimeException
     {
-		return (I_HR_Leave)MTable.get(getCtx(), I_HR_Leave.Table_Name)
+		return (org.adempiere.core.domains.models.I_HR_Leave)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_Leave.Table_Name)
 			.getPO(getHR_Leave_ID(), get_TrxName());	}
 
 	/** Set Leave.
@@ -433,9 +432,9 @@ public class X_S_ResourceAssignment extends PO implements I_S_ResourceAssignment
 		return (String)get_Value(COLUMNNAME_Name);
 	}
 
-	public I_S_Resource getPreviousResource() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_Resource getPreviousResource() throws RuntimeException
     {
-		return (I_S_Resource)MTable.get(getCtx(), I_S_Resource.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_Resource)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Resource.Table_Name)
 			.getPO(getPreviousResource_ID(), get_TrxName());	}
 
 	/** Set Previous Resource.
@@ -499,26 +498,26 @@ public class X_S_ResourceAssignment extends PO implements I_S_ResourceAssignment
 	}
 
 	public I_R_Request getR_Request() throws RuntimeException
-    {
+	{
 		return (I_R_Request)MTable.get(getCtx(), I_R_Request.Table_Name)
-			.getPO(getR_Request_ID(), get_TrxName());	}
+				.getPO(getR_Request_ID(), get_TrxName());	}
 
 	/** Set Request.
-		@param R_Request_ID 
+		@param R_Request_ID
 		Request from a Business Partner or Prospect
 	  */
 	public void setR_Request_ID (int R_Request_ID)
 	{
-		if (R_Request_ID < 1) 
+		if (R_Request_ID < 1)
 			set_Value (COLUMNNAME_R_Request_ID, null);
-		else 
+		else
 			set_Value (COLUMNNAME_R_Request_ID, Integer.valueOf(R_Request_ID));
 	}
 
 	/** Get Request.
 		@return Request from a Business Partner or Prospect
 	  */
-	public int getR_Request_ID () 
+	public int getR_Request_ID ()
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_R_Request_ID);
 		if (ii == null)
@@ -527,28 +526,56 @@ public class X_S_ResourceAssignment extends PO implements I_S_ResourceAssignment
 	}
 
 	public I_S_Contract getS_Contract() throws RuntimeException
-    {
+	{
 		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
-			.getPO(getS_Contract_ID(), get_TrxName());	}
+				.getPO(getS_Contract_ID(), get_TrxName());	}
 
 	/** Set Contract.
-		@param S_Contract_ID 
-		Contract
-	  */
+	 @param S_Contract_ID
+	 Contract
+	 */
 	public void setS_Contract_ID (int S_Contract_ID)
 	{
-		if (S_Contract_ID < 1) 
+		if (S_Contract_ID < 1)
 			set_Value (COLUMNNAME_S_Contract_ID, null);
-		else 
+		else
 			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
 	}
 
 	/** Get Contract.
-		@return Contract
-	  */
-	public int getS_Contract_ID () 
+	 @return Contract
+	 */
+	public int getS_Contract_ID ()
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
+		if (ii == null)
+			return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_ContractLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ContractLine.Table_Name)
+			.getPO(getS_ContractLine_ID(), get_TrxName());	}
+
+	/** Set ContractLine.
+		@param S_ContractLine_ID 
+		ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID)
+	{
+		if (S_ContractLine_ID < 1) 
+			set_Value (COLUMNNAME_S_ContractLine_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ContractLine_ID, Integer.valueOf(S_ContractLine_ID));
+	}
+
+	/** Get ContractLine.
+		@return ContractLine
+	  */
+	public int getS_ContractLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ContractLine_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -577,9 +604,9 @@ public class X_S_ResourceAssignment extends PO implements I_S_ResourceAssignment
 		return ii.intValue();
 	}
 
-	public I_S_Resource getS_Resource() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_Resource getS_Resource() throws RuntimeException
     {
-		return (I_S_Resource)MTable.get(getCtx(), I_S_Resource.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_Resource)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Resource.Table_Name)
 			.getPO(getS_Resource_ID(), get_TrxName());	}
 
 	/** Set Resource.
@@ -613,9 +640,9 @@ public class X_S_ResourceAssignment extends PO implements I_S_ResourceAssignment
         return new KeyNamePair(get_ID(), String.valueOf(getS_Resource_ID()));
     }
 
-	public I_S_Resource getS_Resource_Plan() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_Resource getS_Resource_Plan() throws RuntimeException
     {
-		return (I_S_Resource)MTable.get(getCtx(), I_S_Resource.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_Resource)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Resource.Table_Name)
 			.getPO(getS_Resource_Plan_ID(), get_TrxName());	}
 
 	/** Set Plan Resource.
@@ -641,9 +668,9 @@ public class X_S_ResourceAssignment extends PO implements I_S_ResourceAssignment
 		return ii.intValue();
 	}
 
-	public I_S_ServicePlan getS_ServicePlan() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_ServicePlan getS_ServicePlan() throws RuntimeException
     {
-		return (I_S_ServicePlan)MTable.get(getCtx(), I_S_ServicePlan.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_ServicePlan)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ServicePlan.Table_Name)
 			.getPO(getS_ServicePlan_ID(), get_TrxName());	}
 
 	/** Set Service Plan ID.
@@ -669,9 +696,9 @@ public class X_S_ResourceAssignment extends PO implements I_S_ResourceAssignment
 		return ii.intValue();
 	}
 
-	public I_S_ServiceSchedule getS_ServiceSchedule() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_ServiceSchedule getS_ServiceSchedule() throws RuntimeException
     {
-		return (I_S_ServiceSchedule)MTable.get(getCtx(), I_S_ServiceSchedule.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_ServiceSchedule)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ServiceSchedule.Table_Name)
 			.getPO(getS_ServiceSchedule_ID(), get_TrxName());	}
 
 	/** Set Service Schedule ID.

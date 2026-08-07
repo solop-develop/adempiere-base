@@ -2046,12 +2046,19 @@ public class MOrder extends X_C_Order implements DocAction
 		createDropShipmentOrder();
 		processRecognitionPlans();
 
-		//	Refresh project line summarization for linked project lines
-		java.util.Set<Integer> projectLineIds = new java.util.HashSet<Integer>();
-		for (MOrderLine orderLine : getLines())
-			if (orderLine.get_ValueAsInt("C_ProjectLine_ID") > 0)
-				projectLineIds.add(orderLine.get_ValueAsInt("C_ProjectLine_ID"));
-		MProjectLine.recalculateProjectLines(getCtx(), projectLineIds, get_TrxName(), Table_Name, isSOTrx());
+		//	Refresh project line summarization for linked project lines (#2843)
+		//	The order is still not DocStatus CO/CL in the DB at this point, so its own lines
+		//	are added on top of the SQL aggregation instead of being found by it.
+		Map<Integer, BigDecimal[]> projectLineAmtQty = new HashMap<Integer, BigDecimal[]>();
+		for (MOrderLine orderLine : getLines()) {
+			int projectLineId = orderLine.getC_ProjectLine_ID();
+			if (projectLineId > 0) {
+				BigDecimal[] amtQty = projectLineAmtQty.computeIfAbsent(projectLineId, id -> new BigDecimal[] { Env.ZERO, Env.ZERO });
+				amtQty[0] = amtQty[0].add(orderLine.getLineNetAmt());
+				amtQty[1] = amtQty[1].add(orderLine.getQtyOrdered());
+			}
+		}
+		MProjectLine.recalculateProjectLines(getCtx(), projectLineAmtQty, get_TrxName(), Table_Name, isSOTrx());
 
 		setProcessed(true);
 		m_processMsg = info.toString();
@@ -2133,6 +2140,7 @@ public class MOrder extends X_C_Order implements DocAction
 		purchaseOrder.setC_Activity_ID(getC_Activity_ID());
 		purchaseOrder.setC_Campaign_ID(getC_Campaign_ID());
 		purchaseOrder.setC_Project_ID(getC_Project_ID());
+
 		purchaseOrder.setUser1_ID(getUser1_ID());
 		purchaseOrder.setUser2_ID(getUser2_ID());
 		purchaseOrder.setUser3_ID(getUser3_ID());
@@ -2152,15 +2160,28 @@ public class MOrder extends X_C_Order implements DocAction
 			poLine.setQtyOrdered(line.getQtyOrdered());
 			poLine.setDescription(line.getDescription());
 			poLine.setDatePromised(line.getDatePromised());
+			poLine.setC_Project_ID(line.getC_Project_ID());
+			poLine.setC_ProjectPhase_ID(line.getC_ProjectPhase_ID());
+			poLine.setC_ProjectTask_ID(line.getC_ProjectTask_ID());
+			if (line.getC_ProjectLine_ID() > 0) {
+				poLine.setC_ProjectLine_ID(line.getC_ProjectLine_ID());
+			}
 			poLine.setPrice();
 			if (line.getCost().signum() != 0) {
 				poLine.setPrice(line.getCost());
+			}
+			if(poLine.getPriceEntered().signum() == 0) {
+				poLine.setPrice(line.getPriceActual());
 			}
 			poLine.saveEx();
 			//	Set link to source
 			line.setLink_OrderLine_ID(poLine.getC_OrderLine_ID());
 			line.saveEx();
 		}
+		if (get_ValueAsInt("C_ProjectLine_ID") > 0) {
+			purchaseOrder.set_ValueOfColumn("C_ProjectLine_ID", get_ValueAsInt("C_ProjectLine_ID"));
+		}
+		purchaseOrder.saveEx();
 		setLink_Order_ID(purchaseOrder.getC_Order_ID());
 		saveEx();
 		if(!purchaseOrder.processIt(DOCACTION_Complete)) {

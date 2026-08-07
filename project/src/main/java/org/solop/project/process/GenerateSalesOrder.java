@@ -134,8 +134,6 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 			String lineInvoiceRule = Optional.ofNullable(mainLine.getProjInvoiceRule()).orElse(MProjectLine.PROJINVOICERULE_None);
 			if (lineInvoiceRule.equals(MProjectLine.PROJINVOICERULE_ProductQuantity) && mainLine.getM_Product_ID() != 0) {
 				String description = mainLine.getDescription();
-				BigDecimal quantityToOrder = mainLine.getPlannedQty();
-				BigDecimal quantityEntered = mainLine.getPlannedQty();
 				int projectUomId = mainLine.get_ValueAsInt("C_UOM_ID");
 				MProduct product = MProduct.get(getCtx(), mainLine.getM_Product_ID());
 				MOrderLine orderLine = new MOrderLine(order);
@@ -146,7 +144,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 				}
 				orderLine.setDescription(stringBuilder.toString());
 				orderLine.setProduct(product);
-				setQuantityToOrder(orderLine, product, projectUomId, quantityEntered, quantityToOrder);
+				setQuantityToOrder(orderLine, product, projectUomId, mainLine.getPlannedQty());
 				orderLine.setPrice();
 				orderLine.setC_Project_ID(project.getC_Project_ID());
 				if (mainLine.getPlannedAmt() != null && mainLine.getPlannedAmt().compareTo(Env.ZERO) != 0) {
@@ -163,7 +161,7 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 					orderLine.setM_Product_ID(projectLine.getM_Product_ID(), true);
 					MProduct product = new MProduct(getCtx(), projectLine.getM_Product_ID(), transactionName);
 					BigDecimal toOrder = projectLine.getPlannedQty().subtract(projectLine.getInvoicedQty());
-					setQuantityToOrder(orderLine, product, projectLine.get_ValueAsInt("C_UOM_ID"), projectLine.getPlannedQty(), toOrder);
+					setQuantityToOrder(orderLine, product, projectLine.get_ValueAsInt("C_UOM_ID"), toOrder);
 					orderLine.setPrice();
 					if (projectLine.getPlannedPrice() != null && projectLine.getPlannedPrice().compareTo(Env.ZERO) != 0) {
 						orderLine.setPrice(projectLine.getPlannedPrice());
@@ -199,29 +197,20 @@ public class GenerateSalesOrder extends GenerateSalesOrderAbstract {
 
 	/**
 	 * Set line Quantity
+	 * @param lineUomId UOM of the project line (already set on the project line)
+	 * @param quantityInProductUom quantity to order/invoice, expressed in the product's own UOM
 	 */
-	private void setQuantityToOrder(MOrderLine orderLine, MProduct product, int uomToId, BigDecimal quantityEntered, BigDecimal quantityOrdered) {
-		int uomId = product.getC_UOM_ID();
-		if(uomToId > 0
-				&& quantityEntered != null
-				&& quantityEntered != Env.ZERO) {
-			uomId = uomToId;
-			if(uomId != product.getC_UOM_ID()) {
-				BigDecimal convertedQuantity = MUOMConversion.convertProductFrom (getCtx(), product.getM_Product_ID(), uomToId, quantityEntered);
-				if (convertedQuantity == null) {
-					quantityEntered = quantityOrdered;
-				} else {
-					quantityOrdered = convertedQuantity;
-				}
-				orderLine.setQty(quantityEntered);
-				orderLine.setQtyOrdered(quantityOrdered);
-			} else {
-				orderLine.setQty(quantityOrdered);
-			}
-		} else {
-			orderLine.setQty(quantityOrdered);
-		}
+	private void setQuantityToOrder(MOrderLine orderLine, MProduct product, int lineUomId, BigDecimal quantityInProductUom) {
+		int uomId = lineUomId > 0 ? lineUomId : product.getC_UOM_ID();
 		orderLine.setC_UOM_ID(uomId);
+		BigDecimal quantityEntered = quantityInProductUom;
+		if (uomId != product.getC_UOM_ID()) {
+			BigDecimal convertedQuantity = MUOMConversion.convertProductTo(getCtx(), product.getM_Product_ID(), uomId, quantityInProductUom);
+			if (convertedQuantity != null) {
+				quantityEntered = convertedQuantity;
+			}
+		}
+		orderLine.setQty(quantityEntered);
 	}
 
 	private MProject getProject (Properties ctx, int projectId, String transactionName) {
