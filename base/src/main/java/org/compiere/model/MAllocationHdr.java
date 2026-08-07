@@ -540,14 +540,10 @@ public final class MAllocationHdr extends X_C_AllocationHdr implements DocAction
 	 * 	Gather the Business Partners for each document referenced by the lines (payment, invoice, order);
 	 * 	if more than one appears, abort the document. Reversals are exempt (see prepareIt),
 	 * 	in order that already corrupted allocations can be reversed/cancelled.
-	 * 	Configurable via the SysConfig VALIDATE_ALLOCATION_SINGLE_BPARTNER (default: Y).
 	 * 	@param allocationLines allocation lines
 	 */
 	private void validateSingleBusinessPartner(List<MAllocationLine> allocationLines)
 	{
-		if (!MSysConfig.getBooleanValue("VALIDATE_ALLOCATION_SINGLE_BPARTNER", true, getAD_Client_ID())) {
-			return;
-		}
 		//	Business Partner -> document where it first appeared (for the message details)
 		Map<Integer, String> businessPartners = new LinkedHashMap<Integer, String>();
 		for (MAllocationLine allocationLine : allocationLines) {
