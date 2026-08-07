@@ -109,6 +109,39 @@ public class ReferenceUtil {
 		return newDisplayType;
 	}
 
+
+	public static String joinStrings(String... stringValues) {
+		StringBuilder stringBuilder = new StringBuilder();
+		for (String stringValue : stringValues) {
+			if (!Util.isEmpty(stringValue, true)) {
+				stringBuilder.append(stringValue);
+			}
+		}
+		return stringBuilder.toString();
+		// return String.join(
+		// 	"",
+		// 	Arrays.stream(stringValues)
+		// 		.filter(s -> !Util.isEmpty(s, true))
+		// 		.toArray(String[]::new)
+		// );
+	}
+
+	/**
+	 * Varargs overload: extract context column names from several context strings.
+	 * Kept alongside getContextColumnNames(String) so callers compiled against the single-argument
+	 * signature (Window/Browser/Process/ReferenceValues in the jar) keep linking (binary compatibility).
+	 * @param values context strings
+	 * @return List<String>
+	 */
+	public static List<String> getContextColumnNames(String... values) {
+		if (values == null || values.length <= 0) {
+			return new ArrayList<String>();
+		}
+		return getContextColumnNames(
+			joinStrings(values)
+		);
+	}
+
 	/**
 	 * Get Context column names from context
 	 * @param context
@@ -123,7 +156,9 @@ public class ReferenceUtil {
 		String END   = "\\@";  // A literal ")" character in regex
 
 		// Captures the word(s) between the above two character(s)
-		final String COLUMN_NAME_PATTERN = START + "(#|$|\\d\\|){0,1}(\\w+)" + END;
+		// support the two-char tab-context prefix `\d+\|` (e.g. `@0|C_BPartner_ID@`);
+		// the previous single-char class only matched one char, so tab-context columns were never captured.
+		final String COLUMN_NAME_PATTERN = START + "(#|$|\\d+\\||\\|){0,1}(\\w+)" + END;
 
 		Pattern pattern = Pattern.compile(
 			COLUMN_NAME_PATTERN,
@@ -132,7 +167,12 @@ public class ReferenceUtil {
 		Matcher matcher = pattern.matcher(context);
 		Map<String, Boolean> columnNamesMap = new HashMap<String, Boolean>();
 		while(matcher.find()) {
-			final String columnContext = matcher.group().replace("@", "").replace("@", "");
+			// strip the tab-context prefix (`0|C_BPartner_ID` -> `C_BPartner_ID`) so the bare
+			// column name is advertised to the frontend and its value is sent back on lookups/browsers.
+			final String columnContext = matcher.group()
+				.replace("@", "")
+				.replaceFirst("^\\d+\\|", "")
+			;
 			columnNamesMap.put(columnContext, true);
 		}
 		return new ArrayList<String>(columnNamesMap.keySet());
