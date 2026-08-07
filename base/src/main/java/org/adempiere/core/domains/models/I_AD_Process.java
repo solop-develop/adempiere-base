@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for AD_Process
  *  @author Adempiere (generated) 
@@ -65,7 +66,7 @@ public interface I_AD_Process
 	/** Get Smart Browse	  */
 	public int getAD_Browse_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Browse getAD_Browse() throws RuntimeException;
+	public I_AD_Browse getAD_Browse() throws RuntimeException;
 
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
@@ -88,7 +89,7 @@ public interface I_AD_Process
 	  */
 	public int getAD_Form_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Form getAD_Form() throws RuntimeException;
+	public I_AD_Form getAD_Form() throws RuntimeException;
 
     /** Column name AD_Org_ID */
     public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";
@@ -116,7 +117,7 @@ public interface I_AD_Process
 	  */
 	public int getAD_PrintFormat_ID();
 
-	public org.adempiere.core.domains.models.I_AD_PrintFormat getAD_PrintFormat() throws RuntimeException;
+	public I_AD_PrintFormat getAD_PrintFormat() throws RuntimeException;
 
     /** Column name AD_Process_ID */
     public static final String COLUMNNAME_AD_Process_ID = "AD_Process_ID";
@@ -144,7 +145,7 @@ public interface I_AD_Process
 	  */
 	public int getAD_ReportView_ID();
 
-	public org.adempiere.core.domains.models.I_AD_ReportView getAD_ReportView() throws RuntimeException;
+	public I_AD_ReportView getAD_ReportView() throws RuntimeException;
 
     /** Column name AD_Workflow_ID */
     public static final String COLUMNNAME_AD_Workflow_ID = "AD_Workflow_ID";
@@ -159,7 +160,7 @@ public interface I_AD_Process
 	  */
 	public int getAD_Workflow_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Workflow getAD_Workflow() throws RuntimeException;
+	public I_AD_Workflow getAD_Workflow() throws RuntimeException;
 
     /** Column name Classname */
     public static final String COLUMNNAME_Classname = "Classname";
@@ -216,6 +217,19 @@ public interface I_AD_Process
 	  */
 	public String getDescription();
 
+    /** Column name DocBaseURL */
+    public static final String COLUMNNAME_DocBaseURL = "DocBaseURL";
+
+	/** Set Documentation URL.
+	  * Base URL for external documentation page
+	  */
+	public void setDocBaseURL (String DocBaseURL);
+
+	/** Get Documentation URL.
+	  * Base URL for external documentation page
+	  */
+	public String getDocBaseURL();
+
     /** Column name EntityType */
     public static final String COLUMNNAME_EntityType = "EntityType";
 
@@ -230,6 +244,19 @@ public interface I_AD_Process
  Determines ownership and synchronization
 	  */
 	public String getEntityType();
+
+    /** Column name ExecutionMode */
+    public static final String COLUMNNAME_ExecutionMode = "ExecutionMode";
+
+	/** Set Execution Mode.
+	  * Mode That Determines Whether the Process Runs Synchronously or Asynchronously
+	  */
+	public void setExecutionMode (String ExecutionMode);
+
+	/** Get Execution Mode.
+	  * Mode That Determines Whether the Process Runs Synchronously or Asynchronously
+	  */
+	public String getExecutionMode();
 
     /** Column name GenerateClass */
     public static final String COLUMNNAME_GenerateClass = "GenerateClass";

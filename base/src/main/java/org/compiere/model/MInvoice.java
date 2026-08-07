@@ -433,23 +433,26 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		if (ss != null)
 			setPaymentRule(ss);
 
-
 		//	Set Locations
 		MBPartnerLocation[] locs = bp.getLocations(false);
 		if (locs != null)
 		{
 			for (int i = 0; i < locs.length; i++)
 			{
-				if ((locs[i].isBillTo() && isSOTrx())
-				|| (locs[i].isPayFrom() && !isSOTrx()))
+				if (getC_BPartner_Location_ID() <= 0
+					&& ((locs[i].isBillTo() && isSOTrx())
+					|| (locs[i].isPayFrom() && !isSOTrx()))) {
 					setC_BPartner_Location_ID(locs[i].getC_BPartner_Location_ID());
+				}
 			}
 			//	set to first
-			if (getC_BPartner_Location_ID() == 0 && locs.length > 0)
+			if (getC_BPartner_Location_ID() <= 0 && locs.length > 0) {
 				setC_BPartner_Location_ID(locs[0].getC_BPartner_Location_ID());
+			}
 		}
-		if (getC_BPartner_Location_ID() == 0)
+		if (getC_BPartner_Location_ID() <= 0) {
 			log.log(Level.SEVERE, new BPartnerNoAddressException(bp).getLocalizedMessage()); //TODO: throw exception?
+		}
 
 		//	Set Contact
 		MUser[] contacts = bp.getContacts(false);
@@ -2241,6 +2244,8 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			int invoiceToAllocateId = get_ValueAsInt("ReferenceDocument_ID");
 			MTable allocateInvoiceTable = MTable.get(getCtx(), "C_AllocateInvoice");
 			String whereClause = "C_Invoice_ID = ?";
+			//	Explicit amount from the single C_AllocateInvoice line, if that is how invoiceToAllocateId was resolved
+			BigDecimal explicitPlacedAmount = null;
 			if (invoiceToAllocateId <= 0) {
 				if (allocateInvoiceTable != null && allocateInvoiceTable.get_ID() > 0) {
 					String getAllocateInvoicesCountSql = "SELECT COUNT(DISTINCT(ReferenceDocument_ID)) FROM C_AllocateInvoice WHERE C_Invoice_ID = ?";
@@ -2252,45 +2257,143 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 						PO AllocateInvoice = allocateInvoiceTable.getPO(allocateInvoiceId,get_TrxName());
 						invoiceToAllocateId = AllocateInvoice.get_ValueAsInt("ReferenceDocument_ID");
 						set_ValueOfColumn("ReferenceDocument_ID", invoiceToAllocateId);
+						explicitPlacedAmount = Optional.ofNullable((BigDecimal) AllocateInvoice.get_Value("AllocateAmount"))
+							.orElse(Env.ZERO);
+						if (explicitPlacedAmount.signum()==0) {
+							throw new AdempiereException(Msg.getMsg(getCtx(), "AllocateAmountZero",
+									new Object[] { MInvoice.get(getCtx(), invoiceToAllocateId).getDocumentNo() }));
+						}
 					}
 				}
 			}
+
+			MOrgInfo orgInfo = MOrgInfo.get(getCtx(), getAD_Org_ID(), get_TrxName());
+			boolean isAllowOverdraftDocument = orgInfo != null && orgInfo.isAllowOverdraftDocument();
+			BigDecimal mainDocumentTotal = getGrandTotal();
+			HashMap<Integer, BigDecimal> currencyConvertRate = new HashMap<>();
+
 			if (invoiceToAllocateId > 0) {
-				allocationManager.addAllocateDocument(invoiceToAllocateId, getGrandTotal(), Env.ZERO, Env.ZERO);
-				allocationManager.createAllocation();
-				hasAllocation = true;
-			} else {
+				MInvoice referenceInvoice = MInvoice.get(getCtx(), invoiceToAllocateId);
+				BigDecimal referenceOpenAmt = referenceInvoice.getOpenAmt(false, null);
+				//	No open amount on the reference document - nothing to allocate
+				if (referenceOpenAmt.signum() != 0) {
+					if (referenceInvoice.getC_Currency_ID() != getC_Currency_ID()) {
+						BigDecimal rate = MConversionRate.getRate(referenceInvoice.getC_Currency_ID(), getC_Currency_ID(), getDateInvoiced(), getC_ConversionType_ID(), getAD_Client_ID(), getAD_Org_ID());
+						referenceOpenAmt = referenceOpenAmt.multiply(rate);
+					}
+					//	Placed amount: the specific amount requested on the C_AllocateInvoice line, if any,
+					//	otherwise this document is fully applied against the reference document
+					BigDecimal placedAmount = (explicitPlacedAmount != null && explicitPlacedAmount.signum() != 0)
+						? explicitPlacedAmount
+						: mainDocumentTotal.min(referenceOpenAmt);
 
-				if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
-					List<Integer> allocateInvoiceIds = new Query(getCtx(), allocateInvoiceTable.getTableName(),whereClause, get_TrxName())
-						.setParameters(get_ID())
-						.getIDsAsList();
-					HashMap<Integer, BigDecimal> currencyConvertRate = new HashMap<>();
-					allocateInvoiceIds.forEach(allocationId -> {
-						PO allocation = allocateInvoiceTable.getPO(allocationId, get_TrxName());
-						BigDecimal amountToAllocate = Optional.ofNullable((BigDecimal) allocation.get_Value("AllocateAmount"))
-							.orElse(Env.ZERO);
-						if (amountToAllocate.signum() == 0) {
-							MInvoice referenceInvoice = MInvoice.get(getCtx(), allocation.get_ValueAsInt("ReferenceDocument_ID"));
-							int referenceCurrencyId = referenceInvoice.getC_Currency_ID();
-							BigDecimal rate = currencyConvertRate.get(referenceCurrencyId);
-							if (rate == null) {
-								rate = MConversionRate.getRate(referenceCurrencyId, getC_Currency_ID(), getDateInvoiced(), getC_ConversionType_ID(), getAD_Client_ID(), getAD_Org_ID());
-								//TODO: Validate Rate Null
-								currencyConvertRate.put(referenceCurrencyId, rate);
-							}
-							amountToAllocate = referenceInvoice.getOpenAmt();
-							amountToAllocate = amountToAllocate.multiply(rate);
-						}
-						if (amountToAllocate.signum() != 0) {
-							allocationManager.addAllocateDocument(allocation.get_ValueAsInt("ReferenceDocument_ID"),amountToAllocate, Env.ZERO, Env.ZERO);
-						}
+					if (placedAmount.compareTo(mainDocumentTotal) > 0) {
+						processMsg = Msg.getMsg(getCtx(), "AllocateAmountExceedsTotal",
+								new Object[] { placedAmount, mainDocumentTotal, getDocumentNo() });
+						return DocAction.STATUS_Invalid;
+					}
 
-					});
-					if (!allocateInvoiceIds.isEmpty()) {
+					if (!isAllowOverdraftDocument && placedAmount.compareTo(referenceOpenAmt) > 0) {
+						processMsg = Msg.getMsg(getCtx(), "AllocateAmountExceedsOpen",
+								new Object[] { placedAmount, referenceOpenAmt, referenceInvoice.getDocumentNo() });
+						return DocAction.STATUS_Invalid;
+					}
+
+					if (placedAmount.signum() != 0) {
+						allocationManager.addAllocateDocument(invoiceToAllocateId, placedAmount, Env.ZERO, Env.ZERO);
 						allocationManager.createAllocation();
 						hasAllocation = true;
 					}
+				}
+			} else if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
+				List<Integer> allocateInvoiceIds = new Query(getCtx(), allocateInvoiceTable.getTableName(),whereClause, get_TrxName())
+					.setParameters(get_ID())
+					.getIDsAsList();
+
+				List<Integer> qualifiedAllocationIds = new ArrayList<>();
+				Map<Integer, BigDecimal> placedAmountByAllocationId = new HashMap<>();
+				Map<Integer, Integer> referenceDocumentIdByAllocationId = new HashMap<>();
+				//	Open amount of each referenced document, converted to this invoice's currency and fetched only once
+				//	even if several allocation lines point to the same referenced document
+				Map<Integer, BigDecimal> openAmtByReferenceDocument = new HashMap<>();
+				Map<Integer, MInvoice> referenceInvoiceByReferenceDocument = new HashMap<>();
+				BigDecimal totalPlacedAmount = Env.ZERO;
+
+				for (Integer allocationId : allocateInvoiceIds) {
+					PO allocation = allocateInvoiceTable.getPO(allocationId, get_TrxName());
+
+					int referenceDocumentId = allocation.get_ValueAsInt("ReferenceDocument_ID");
+					MInvoice referenceInvoice = referenceInvoiceByReferenceDocument.computeIfAbsent(referenceDocumentId,
+						id -> MInvoice.get(getCtx(), id));
+
+					BigDecimal referenceOpenAmt = openAmtByReferenceDocument.get(referenceDocumentId);
+					if (referenceOpenAmt == null) {
+						referenceOpenAmt = referenceInvoice.getOpenAmt(false, null);
+						int referenceCurrencyId = referenceInvoice.getC_Currency_ID();
+						if (referenceCurrencyId != getC_Currency_ID()) {
+							BigDecimal rate = currencyConvertRate.get(referenceCurrencyId);
+							if (rate == null) {
+								rate = MConversionRate.getRate(referenceCurrencyId, getC_Currency_ID(), getDateInvoiced(), getC_ConversionType_ID(), getAD_Client_ID(), getAD_Org_ID());
+								if (rate == null || rate.signum() == 0) {
+									processMsg = "@C_Conversion_Rate@ @NotFound@";
+									return DocAction.STATUS_Invalid;
+								}
+								currencyConvertRate.put(referenceCurrencyId, rate);
+							}
+							referenceOpenAmt = referenceOpenAmt.multiply(rate);
+						}
+						openAmtByReferenceDocument.put(referenceDocumentId, referenceOpenAmt);
+					}
+					//	No open amount on the reference document - nothing to allocate
+					if (referenceOpenAmt.signum() == 0) {
+						continue;
+					}
+					BigDecimal placedAmount = Optional.ofNullable((BigDecimal) allocation.get_Value("AllocateAmount"))
+							.orElse(Env.ZERO);
+					if (placedAmount.signum()==0) {
+						processMsg = Msg.getMsg(getCtx(), "AllocateAmountZero",
+								new Object[] { referenceInvoice.getDocumentNo() });
+						return DocAction.STATUS_Invalid;
+					}
+
+					qualifiedAllocationIds.add(allocationId);
+					placedAmountByAllocationId.put(allocationId, placedAmount);
+					referenceDocumentIdByAllocationId.put(allocationId, referenceDocumentId);
+					totalPlacedAmount = totalPlacedAmount.add(placedAmount);
+				}
+
+				if (totalPlacedAmount.compareTo(mainDocumentTotal) > 0) {
+					processMsg = Msg.getMsg(getCtx(), "AllocateAmountExceedsTotal",
+							new Object[] { totalPlacedAmount, mainDocumentTotal, getDocumentNo() });
+					return DocAction.STATUS_Invalid;
+				}
+
+				//	Several allocation lines may reference the same document - validate that the SUM of what
+				//	they place against it does not exceed that document's open amount, not just each line on its own
+				if (!isAllowOverdraftDocument) {
+					Map<Integer, BigDecimal> remainingOpenAmtByReferenceDocument = new HashMap<>(openAmtByReferenceDocument);
+					for (Integer allocationId : qualifiedAllocationIds) {
+						int referenceDocumentId = referenceDocumentIdByAllocationId.get(allocationId);
+						BigDecimal placedAmount = placedAmountByAllocationId.get(allocationId);
+						BigDecimal remainingOpenAmt = remainingOpenAmtByReferenceDocument.get(referenceDocumentId).subtract(placedAmount);
+						if (remainingOpenAmt.signum() < 0) {
+							MInvoice referenceInvoice = referenceInvoiceByReferenceDocument.get(referenceDocumentId);
+							processMsg = Msg.getMsg(getCtx(), "AllocateAmountExceedsOpen",
+									new Object[] { placedAmount, openAmtByReferenceDocument.get(referenceDocumentId), referenceInvoice.getDocumentNo() });
+							return DocAction.STATUS_Invalid;
+						}
+						remainingOpenAmtByReferenceDocument.put(referenceDocumentId, remainingOpenAmt);
+					}
+				}
+
+				for (Integer allocationId : qualifiedAllocationIds) {
+					BigDecimal placedAmount = placedAmountByAllocationId.get(allocationId);
+					int referenceDocumentId = referenceDocumentIdByAllocationId.get(allocationId);
+					allocationManager.addAllocateDocument(referenceDocumentId, placedAmount, Env.ZERO, Env.ZERO);
+				}
+				if (!qualifiedAllocationIds.isEmpty()) {
+					allocationManager.createAllocation();
+					hasAllocation = true;
 				}
 			}
 		} //Automatic Allocation
@@ -2322,11 +2425,18 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
         }
 
 		//	Refresh project line summarization for linked project lines (#2843)
-		Set<Integer> projectLineIds = new HashSet<Integer>();
-		for (MInvoiceLine invoiceLine : getLines())
-			if (invoiceLine.get_ValueAsInt("C_ProjectLine_ID") > 0)
-				projectLineIds.add(invoiceLine.get_ValueAsInt("C_ProjectLine_ID"));
-		MProjectLine.recalculateProjectLines(getCtx(), projectLineIds, get_TrxName(), Table_Name, isSOTrx());
+		//	The invoice is still not DocStatus CO/CL in the DB at this point, so its own lines
+		//	are added on top of the SQL aggregation instead of being found by it.
+		Map<Integer, BigDecimal[]> projectLineAmtQty = new HashMap<Integer, BigDecimal[]>();
+		for (MInvoiceLine invoiceLine : getLines()) {
+			int projectLineId = invoiceLine.get_ValueAsInt("C_ProjectLine_ID");
+			if (projectLineId > 0) {
+				BigDecimal[] amtQty = projectLineAmtQty.computeIfAbsent(projectLineId, id -> new BigDecimal[] { Env.ZERO, Env.ZERO });
+				amtQty[0] = amtQty[0].add(invoiceLine.getLineNetAmt());
+				amtQty[1] = amtQty[1].add(invoiceLine.getQtyInvoiced());
+			}
+		}
+		MProjectLine.recalculateProjectLines(getCtx(), projectLineAmtQty, get_TrxName(), Table_Name, isSOTrx());
 
 		processMsg = info.toString().trim();
 		setProcessed(true);

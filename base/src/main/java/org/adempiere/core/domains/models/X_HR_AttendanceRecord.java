@@ -18,17 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 
 /** Generated Model for HR_AttendanceRecord
  *  @author Adempiere (generated) 
@@ -39,7 +38,7 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260306L;
+	private static final long serialVersionUID = 20260806L;
 
     /** Standard Constructor */
     public X_HR_AttendanceRecord (Properties ctx, int HR_AttendanceRecord_ID, String trxName)
@@ -129,9 +128,9 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
 		return (String)get_Value(COLUMNNAME_Comments);
 	}
 
-	public I_C_Project getC_Project() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
     {
-		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
 			.getPO(getC_Project_ID(), get_TrxName());	}
 
 	/** Set Project.
@@ -157,9 +156,9 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
 		return ii.intValue();
 	}
 
-	public I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException
+	public org.adempiere.core.domains.models.I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException
     {
-		return (I_HR_AttendanceBatch)MTable.get(getCtx(), I_HR_AttendanceBatch.Table_Name)
+		return (org.adempiere.core.domains.models.I_HR_AttendanceBatch)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_AttendanceBatch.Table_Name)
 			.getPO(getHR_AttendanceBatch_ID(), get_TrxName());	}
 
 	/** Set Attendance Batch.
@@ -341,6 +340,62 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
 		return false;
 	}
 
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+			.getPO(getS_Contract_ID(), get_TrxName());	}
+
+	/** Set Contract.
+		@param S_Contract_ID 
+		Contract
+	  */
+	public void setS_Contract_ID (int S_Contract_ID)
+	{
+		if (S_Contract_ID < 1) 
+			set_Value (COLUMNNAME_S_Contract_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_Contract_ID, Integer.valueOf(S_Contract_ID));
+	}
+
+	/** Get Contract.
+		@return Contract
+	  */
+	public int getS_Contract_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_Contract_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_ContractLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ContractLine.Table_Name)
+			.getPO(getS_ContractLine_ID(), get_TrxName());	}
+
+	/** Set ContractLine.
+		@param S_ContractLine_ID 
+		ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID)
+	{
+		if (S_ContractLine_ID < 1) 
+			set_Value (COLUMNNAME_S_ContractLine_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ContractLine_ID, Integer.valueOf(S_ContractLine_ID));
+	}
+
+	/** Get ContractLine.
+		@return ContractLine
+	  */
+	public int getS_ContractLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ContractLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Sequence.
 		@param SeqNo 
 		Method of ordering records; lowest number comes first
@@ -361,9 +416,9 @@ public class X_HR_AttendanceRecord extends PO implements I_HR_AttendanceRecord, 
 		return ii.intValue();
 	}
 
-	public I_S_ResourceAssignment getS_ResourceAssignment() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_ResourceAssignment getS_ResourceAssignment() throws RuntimeException
     {
-		return (I_S_ResourceAssignment)MTable.get(getCtx(), I_S_ResourceAssignment.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_ResourceAssignment)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ResourceAssignment.Table_Name)
 			.getPO(getS_ResourceAssignment_ID(), get_TrxName());	}
 
 	/** Set Resource Assignment.

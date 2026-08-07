@@ -37,7 +37,7 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260306L;
+	private static final long serialVersionUID = 20260805L;
 
     /** Standard Constructor */
     public X_AD_OrgInfo (Properties ctx, int AD_OrgInfo_ID, String trxName)
@@ -295,25 +295,52 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 			 return 0;
 		return ii.intValue();
 	}
-
 	/** Set Corporate Branding Image.
-		@param CorporateBrandingImage_ID 
-		Corporate Branding Image
-	  */
+	 @param CorporateBrandingImage_ID
+	 Corporate Branding Image
+	 */
 	public void setCorporateBrandingImage_ID (int CorporateBrandingImage_ID)
 	{
-		if (CorporateBrandingImage_ID < 1) 
+		if (CorporateBrandingImage_ID < 1)
 			set_Value (COLUMNNAME_CorporateBrandingImage_ID, null);
-		else 
+		else
 			set_Value (COLUMNNAME_CorporateBrandingImage_ID, Integer.valueOf(CorporateBrandingImage_ID));
 	}
 
 	/** Get Corporate Branding Image.
-		@return Corporate Branding Image
-	  */
-	public int getCorporateBrandingImage_ID () 
+	 @return Corporate Branding Image
+	 */
+	public int getCorporateBrandingImage_ID ()
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_CorporateBrandingImage_ID);
+		if (ii == null)
+			return 0;
+		return ii.intValue();
+	}
+
+	public I_M_PriceList getDistributorPriceList() throws RuntimeException
+    {
+		return (I_M_PriceList)MTable.get(getCtx(), I_M_PriceList.Table_Name)
+			.getPO(getDistributorPriceList_ID(), get_TrxName());	}
+
+	/** Set Distributor Price List.
+		@param DistributorPriceList_ID 
+		Price list used for distributor pricing
+	  */
+	public void setDistributorPriceList_ID (int DistributorPriceList_ID)
+	{
+		if (DistributorPriceList_ID < 1) 
+			set_Value (COLUMNNAME_DistributorPriceList_ID, null);
+		else 
+			set_Value (COLUMNNAME_DistributorPriceList_ID, Integer.valueOf(DistributorPriceList_ID));
+	}
+
+	/** Get Distributor Price List.
+		@return Price list used for distributor pricing
+	  */
+	public int getDistributorPriceList_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_DistributorPriceList_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -441,6 +468,69 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Allows Overdraft Document.
+		@param IsAllowOverdraftDocument Allows Overdraft Document	  */
+	public void setIsAllowOverdraftDocument (boolean IsAllowOverdraftDocument)
+	{
+		set_Value (COLUMNNAME_IsAllowOverdraftDocument, Boolean.valueOf(IsAllowOverdraftDocument));
+	}
+
+	/** Get Allows Overdraft Document.
+		@return Allows Overdraft Document	  */
+	public boolean isAllowOverdraftDocument () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsAllowOverdraftDocument);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** IsAutoCompleteAttendanceBatch AD_Reference_ID=319 */
+	public static final int ISAUTOCOMPLETEATTENDANCEBATCH_AD_Reference_ID=319;
+	/** Yes = Y */
+	public static final String ISAUTOCOMPLETEATTENDANCEBATCH_Yes = "Y";
+	/** No = N */
+	public static final String ISAUTOCOMPLETEATTENDANCEBATCH_No = "N";
+	/** Set Auto Complete Attendance Batch.
+		@param IsAutoCompleteAttendanceBatch Auto Complete Attendance Batch	  */
+	public void setIsAutoCompleteAttendanceBatch (String IsAutoCompleteAttendanceBatch)
+	{
+
+		set_Value (COLUMNNAME_IsAutoCompleteAttendanceBatch, IsAutoCompleteAttendanceBatch);
+	}
+
+	/** Get Auto Complete Attendance Batch.
+		@return Auto Complete Attendance Batch	  */
+	public String getIsAutoCompleteAttendanceBatch ()
+	{
+		return (String)get_Value(COLUMNNAME_IsAutoCompleteAttendanceBatch);
+	}
+
+	/** IsAutoCompleteIncidence AD_Reference_ID=319 */
+	public static final int ISAUTOCOMPLETEINCIDENCE_AD_Reference_ID=319;
+	/** Yes = Y */
+	public static final String ISAUTOCOMPLETEINCIDENCE_Yes = "Y";
+	/** No = N */
+	public static final String ISAUTOCOMPLETEINCIDENCE_No = "N";
+	/** Set Auto Complete Incidence.
+		@param IsAutoCompleteIncidence Auto Complete Incidence	  */
+	public void setIsAutoCompleteIncidence (String IsAutoCompleteIncidence)
+	{
+
+		set_Value (COLUMNNAME_IsAutoCompleteIncidence, IsAutoCompleteIncidence);
+	}
+
+	/** Get Auto Complete Incidence.
+		@return Auto Complete Incidence	  */
+	public String getIsAutoCompleteIncidence ()
+	{
+		return (String)get_Value(COLUMNNAME_IsAutoCompleteIncidence);
 	}
 
 	/** IsRequiresToleranceApproval AD_Reference_ID=319 */
@@ -661,6 +751,34 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 		return (String)get_Value(COLUMNNAME_RequestUserPW);
 	}
 
+	public I_M_PriceList getRetailPriceList() throws RuntimeException
+    {
+		return (I_M_PriceList)MTable.get(getCtx(), I_M_PriceList.Table_Name)
+			.getPO(getRetailPriceList_ID(), get_TrxName());	}
+
+	/** Set Retail Price List.
+		@param RetailPriceList_ID 
+		Price list used for retail pricing
+	  */
+	public void setRetailPriceList_ID (int RetailPriceList_ID)
+	{
+		if (RetailPriceList_ID < 1) 
+			set_Value (COLUMNNAME_RetailPriceList_ID, null);
+		else 
+			set_Value (COLUMNNAME_RetailPriceList_ID, Integer.valueOf(RetailPriceList_ID));
+	}
+
+	/** Get Retail Price List.
+		@return Price list used for retail pricing
+	  */
+	public int getRetailPriceList_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_RetailPriceList_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public I_AD_User getSupervisor() throws RuntimeException
     {
 		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
@@ -849,5 +967,33 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 	public String getUUID () 
 	{
 		return (String)get_Value(COLUMNNAME_UUID);
+	}
+
+	public I_M_PriceList getWholesalePriceList() throws RuntimeException
+    {
+		return (I_M_PriceList)MTable.get(getCtx(), I_M_PriceList.Table_Name)
+			.getPO(getWholesalePriceList_ID(), get_TrxName());	}
+
+	/** Set Wholesale Price List.
+		@param WholesalePriceList_ID 
+		Price list used for wholesale pricing
+	  */
+	public void setWholesalePriceList_ID (int WholesalePriceList_ID)
+	{
+		if (WholesalePriceList_ID < 1) 
+			set_Value (COLUMNNAME_WholesalePriceList_ID, null);
+		else 
+			set_Value (COLUMNNAME_WholesalePriceList_ID, Integer.valueOf(WholesalePriceList_ID));
+	}
+
+	/** Get Wholesale Price List.
+		@return Price list used for wholesale pricing
+	  */
+	public int getWholesalePriceList_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_WholesalePriceList_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 }

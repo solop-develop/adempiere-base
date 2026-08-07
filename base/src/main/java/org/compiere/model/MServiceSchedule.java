@@ -36,15 +36,13 @@ public static int DAY_OF_WEEK_REFERENCE = 167;
     @Override
     protected boolean beforeSave (boolean newRecord)
     {
-        if (getS_Resource_ID() <= 0) {
-            throw new AdempiereException("@S_Resource_ID@ @NotFound@");
-        }
         if (getS_ServicePlan_ID() <= 0) {
             throw new AdempiereException("@S_ServicePlan_ID@ @NotFound@");
         }
         BigDecimal plannedHours = BigDecimal.valueOf(TimeUtil.getHoursBetween(getTimeFrom(), getTimeTo()));
         setPlannedHours(plannedHours);
-        if (newRecord || is_ValueChanged(COLUMNNAME_TimeFrom) || is_ValueChanged(COLUMNNAME_TimeTo) || is_ValueChanged(COLUMNNAME_S_Resource_ID)) {
+        if (getS_Resource_ID() > 0
+                && (newRecord || is_ValueChanged(COLUMNNAME_TimeFrom) || is_ValueChanged(COLUMNNAME_TimeTo) || is_ValueChanged(COLUMNNAME_S_Resource_ID))) {
             String whereClause = " S_Resource_ID = ? " +
                 " AND DayOfWeek = ? " +
                 " AND S_ServiceSchedule_ID <> ? " +
@@ -57,6 +55,7 @@ public static int DAY_OF_WEEK_REFERENCE = 167;
             MResource resource = (MResource) getS_Resource();
             if (overlappingSchedule != null) {
                 X_S_ServicePlan servicePlan = (X_S_ServicePlan) getS_ServicePlan();
+                String servicePlanDescription = servicePlan == null ? "" : servicePlan.getDescription();
                 String dayOfWeek = MRefList.getListName(getCtx(), DAY_OF_WEEK_REFERENCE, getDayOfWeek());
                 String timeFromFormated = DisplayType.getDateFormat(DisplayType.Time).format(getTimeFrom());
                 String timeToFormated = DisplayType.getDateFormat(DisplayType.Time).format(getTimeTo());
@@ -71,7 +70,7 @@ public static int DAY_OF_WEEK_REFERENCE = 167;
                         dayOfWeek,
                         timeFromFormated,
                         timeToFormated,
-                        servicePlan.getDescription(),
+                        servicePlanDescription,
                         partnerName
                 );
                 throw new AdempiereException(errorMessage);
@@ -100,6 +99,5 @@ public static int DAY_OF_WEEK_REFERENCE = 167;
         }
         return super.beforeSave(newRecord);
     }	//	beforeSave
-
 
 }

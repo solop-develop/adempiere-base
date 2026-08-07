@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for S_ResourceAssignment
  *  @author Adempiere (generated) 
@@ -234,7 +233,7 @@ public interface I_S_ResourceAssignment
 	  */
 	public int getHR_Leave_ID();
 
-	public I_HR_Leave getHR_Leave() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_HR_Leave getHR_Leave() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -301,7 +300,7 @@ public interface I_S_ResourceAssignment
 	  */
 	public int getPreviousResource_ID();
 
-	public I_S_Resource getPreviousResource() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_Resource getPreviousResource() throws RuntimeException;
 
     /** Column name Qty */
     public static final String COLUMNNAME_Qty = "Qty";
@@ -349,15 +348,31 @@ public interface I_S_ResourceAssignment
 
 	/** Set Contract.
 	  * Contract
-	  */
+	 */
 	public void setS_Contract_ID (int S_Contract_ID);
 
 	/** Get Contract.
-	  * Contract
-	  */
+	 * Contract
+	 */
 	public int getS_Contract_ID();
 
 	public I_S_Contract getS_Contract() throws RuntimeException;
+
+
+	/** Column name S_ContractLine_ID */
+    public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
+
+	/** Set ContractLine.
+	  * ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID);
+
+	/** Get ContractLine.
+	  * ContractLine
+	  */
+	public int getS_ContractLine_ID();
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException;
 
     /** Column name S_ResourceAssignment_ID */
     public static final String COLUMNNAME_S_ResourceAssignment_ID = "S_ResourceAssignment_ID";
@@ -385,7 +400,7 @@ public interface I_S_ResourceAssignment
 	  */
 	public int getS_Resource_ID();
 
-	public I_S_Resource getS_Resource() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_Resource getS_Resource() throws RuntimeException;
 
     /** Column name S_Resource_Plan_ID */
     public static final String COLUMNNAME_S_Resource_Plan_ID = "S_Resource_Plan_ID";
@@ -400,7 +415,7 @@ public interface I_S_ResourceAssignment
 	  */
 	public int getS_Resource_Plan_ID();
 
-	public I_S_Resource getS_Resource_Plan() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_Resource getS_Resource_Plan() throws RuntimeException;
 
     /** Column name S_ServicePlan_ID */
     public static final String COLUMNNAME_S_ServicePlan_ID = "S_ServicePlan_ID";
@@ -415,7 +430,7 @@ public interface I_S_ResourceAssignment
 	  */
 	public int getS_ServicePlan_ID();
 
-	public I_S_ServicePlan getS_ServicePlan() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_ServicePlan getS_ServicePlan() throws RuntimeException;
 
     /** Column name S_ServiceSchedule_ID */
     public static final String COLUMNNAME_S_ServiceSchedule_ID = "S_ServiceSchedule_ID";
@@ -430,7 +445,7 @@ public interface I_S_ResourceAssignment
 	  */
 	public int getS_ServiceSchedule_ID();
 
-	public I_S_ServiceSchedule getS_ServiceSchedule() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_ServiceSchedule getS_ServiceSchedule() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

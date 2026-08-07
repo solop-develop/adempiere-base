@@ -19,6 +19,7 @@ package org.spin.tar.process;
 
 import org.adempiere.core.domains.models.X_HR_Incidence;
 import org.adempiere.core.domains.models.X_S_Contract;
+import org.adempiere.core.domains.models.X_S_ContractLine;
 import org.adempiere.core.domains.models.X_S_TimeExpense;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MProductPricing;
@@ -54,8 +55,8 @@ public class CreateExpenseReportFromIncidence extends CreateExpenseReportFromInc
 				continue;
 			}
 			int bPartnerId = incidence.getC_BPartner_ID();
-			int contractId = incidence.get_ValueAsInt("S_Contract_ID");
-			int contractLineId = incidence.get_ValueAsInt("S_ContractLine_ID");
+			int contractId = incidence.getS_Contract_ID();
+			int contractLineId = incidence.getS_ContractLine_ID();
 			//	Create new
 			if(expenseReport == null
 					|| currentBPartnerId != bPartnerId
@@ -76,7 +77,15 @@ public class CreateExpenseReportFromIncidence extends CreateExpenseReportFromInc
 							: getIsInvoiced().equals("Y"));
 			expenseLine.setIsInvoiced(isInvoiced);
 			//	Validate product
-			if(shiftIncidence.getM_Product_ID() != 0) {
+			//	If the incidence has a contract line, use its product and price
+			X_S_ContractLine contractLine = contractLineId > 0
+					? new X_S_ContractLine(getCtx(), contractLineId, get_TrxName())
+					: null;
+			if(contractLine != null
+					&& contractLine.getM_Product_ID() != 0) {
+				expenseLine.setM_Product_ID(contractLine.getM_Product_ID());
+				expenseLine.setExpenseAmt(contractLine.getPriceActual());
+			} else if(shiftIncidence.getM_Product_ID() != 0) {
 				expenseLine.setM_Product_ID(shiftIncidence.getM_Product_ID());
 				//	Get price from price list
 				MProductPricing productPricing = new MProductPricing(shiftIncidence.getM_Product_ID(),

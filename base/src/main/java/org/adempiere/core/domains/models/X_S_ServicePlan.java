@@ -18,16 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
-
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 
 /** Generated Model for S_ServicePlan
  *  @author Adempiere (generated) 
@@ -38,7 +37,7 @@ public class X_S_ServicePlan extends PO implements I_S_ServicePlan, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260311L;
+	private static final long serialVersionUID = 20260806L;
 
     /** Standard Constructor */
     public X_S_ServicePlan (Properties ctx, int S_ServicePlan_ID, String trxName)
@@ -86,9 +85,9 @@ public class X_S_ServicePlan extends PO implements I_S_ServicePlan, I_Persistent
       return sb.toString();
     }
 
-	public I_AD_User getAD_User() throws RuntimeException
+	public org.adempiere.core.domains.models.I_AD_User getAD_User() throws RuntimeException
     {
-		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
+		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
 			.getPO(getAD_User_ID(), get_TrxName());	}
 
 	/** Set User/Contact.
@@ -114,9 +113,9 @@ public class X_S_ServicePlan extends PO implements I_S_ServicePlan, I_Persistent
 		return ii.intValue();
 	}
 
-	public I_C_BPartner getC_BPartner() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -142,9 +141,9 @@ public class X_S_ServicePlan extends PO implements I_S_ServicePlan, I_Persistent
 		return ii.intValue();
 	}
 
-	public I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException
     {
-		return (I_C_BPartner_Location)MTable.get(getCtx(), I_C_BPartner_Location.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_BPartner_Location)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner_Location.Table_Name)
 			.getPO(getC_BPartner_Location_ID(), get_TrxName());	}
 
 	/** Set Partner Location.
@@ -283,9 +282,9 @@ public class X_S_ServicePlan extends PO implements I_S_ServicePlan, I_Persistent
 		return false;
 	}
 
-	public I_S_Contract getS_Contract() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
     {
-		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
 			.getPO(getS_Contract_ID(), get_TrxName());	}
 
 	/** Set Contract.
@@ -311,9 +310,37 @@ public class X_S_ServicePlan extends PO implements I_S_ServicePlan, I_Persistent
 		return ii.intValue();
 	}
 
-	public I_S_Resource getS_Resource() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException
     {
-		return (I_S_Resource)MTable.get(getCtx(), I_S_Resource.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_ContractLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ContractLine.Table_Name)
+			.getPO(getS_ContractLine_ID(), get_TrxName());	}
+
+	/** Set ContractLine.
+		@param S_ContractLine_ID 
+		ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID)
+	{
+		if (S_ContractLine_ID < 1) 
+			set_Value (COLUMNNAME_S_ContractLine_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ContractLine_ID, Integer.valueOf(S_ContractLine_ID));
+	}
+
+	/** Get ContractLine.
+		@return ContractLine
+	  */
+	public int getS_ContractLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ContractLine_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_S_Resource getS_Resource() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_S_Resource)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Resource.Table_Name)
 			.getPO(getS_Resource_ID(), get_TrxName());	}
 
 	/** Set Resource.
@@ -339,9 +366,9 @@ public class X_S_ServicePlan extends PO implements I_S_ServicePlan, I_Persistent
 		return ii.intValue();
 	}
 
-	public I_S_ResourceType getS_ResourceType() throws RuntimeException
+	public org.adempiere.core.domains.models.I_S_ResourceType getS_ResourceType() throws RuntimeException
     {
-		return (I_S_ResourceType)MTable.get(getCtx(), I_S_ResourceType.Table_Name)
+		return (org.adempiere.core.domains.models.I_S_ResourceType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ResourceType.Table_Name)
 			.getPO(getS_ResourceType_ID(), get_TrxName());	}
 
 	/** Set Resource Type.

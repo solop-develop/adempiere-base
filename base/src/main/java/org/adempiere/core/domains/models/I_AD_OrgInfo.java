@@ -199,6 +199,21 @@ public interface I_AD_OrgInfo
 	  */
 	public int getCreatedBy();
 
+    /** Column name DistributorPriceList_ID */
+    public static final String COLUMNNAME_DistributorPriceList_ID = "DistributorPriceList_ID";
+
+	/** Set Distributor Price List.
+	  * Price list used for distributor pricing
+	  */
+	public void setDistributorPriceList_ID (int DistributorPriceList_ID);
+
+	/** Get Distributor Price List.
+	  * Price list used for distributor pricing
+	  */
+	public int getDistributorPriceList_ID();
+
+	public I_M_PriceList getDistributorPriceList() throws RuntimeException;
+
     /** Column name DropShip_Warehouse_ID */
     public static final String COLUMNNAME_DropShip_Warehouse_ID = "DropShip_Warehouse_ID";
 
@@ -293,6 +308,33 @@ public interface I_AD_OrgInfo
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name IsAllowOverdraftDocument */
+    public static final String COLUMNNAME_IsAllowOverdraftDocument = "IsAllowOverdraftDocument";
+
+	/** Set Allows Overdraft Document	  */
+	public void setIsAllowOverdraftDocument (boolean IsAllowOverdraftDocument);
+
+	/** Get Allows Overdraft Document	  */
+	public boolean isAllowOverdraftDocument();
+
+    /** Column name IsAutoCompleteAttendanceBatch */
+    public static final String COLUMNNAME_IsAutoCompleteAttendanceBatch = "IsAutoCompleteAttendanceBatch";
+
+	/** Set Auto Complete Attendance Batch	  */
+	public void setIsAutoCompleteAttendanceBatch (String IsAutoCompleteAttendanceBatch);
+
+	/** Get Auto Complete Attendance Batch	  */
+	public String getIsAutoCompleteAttendanceBatch();
+
+    /** Column name IsAutoCompleteIncidence */
+    public static final String COLUMNNAME_IsAutoCompleteIncidence = "IsAutoCompleteIncidence";
+
+	/** Set Auto Complete Incidence	  */
+	public void setIsAutoCompleteIncidence (String IsAutoCompleteIncidence);
+
+	/** Get Auto Complete Incidence	  */
+	public String getIsAutoCompleteIncidence();
 
     /** Column name IsRequiresToleranceApproval */
     public static final String COLUMNNAME_IsRequiresToleranceApproval = "IsRequiresToleranceApproval";
@@ -420,6 +462,21 @@ public interface I_AD_OrgInfo
 	  */
 	public String getRequestUserPW();
 
+    /** Column name RetailPriceList_ID */
+    public static final String COLUMNNAME_RetailPriceList_ID = "RetailPriceList_ID";
+
+	/** Set Retail Price List.
+	  * Price list used for retail pricing
+	  */
+	public void setRetailPriceList_ID (int RetailPriceList_ID);
+
+	/** Get Retail Price List.
+	  * Price list used for retail pricing
+	  */
+	public int getRetailPriceList_ID();
+
+	public I_M_PriceList getRetailPriceList() throws RuntimeException;
+
     /** Column name Supervisor_ID */
     public static final String COLUMNNAME_Supervisor_ID = "Supervisor_ID";
 
@@ -535,4 +592,19 @@ public interface I_AD_OrgInfo
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name WholesalePriceList_ID */
+    public static final String COLUMNNAME_WholesalePriceList_ID = "WholesalePriceList_ID";
+
+	/** Set Wholesale Price List.
+	  * Price list used for wholesale pricing
+	  */
+	public void setWholesalePriceList_ID (int WholesalePriceList_ID);
+
+	/** Get Wholesale Price List.
+	  * Price list used for wholesale pricing
+	  */
+	public int getWholesalePriceList_ID();
+
+	public I_M_PriceList getWholesalePriceList() throws RuntimeException;
 }

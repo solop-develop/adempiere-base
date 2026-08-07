@@ -24,20 +24,7 @@ import org.adempiere.exceptions.DBException;
 import org.adempiere.model.GenericPO;
 import org.compiere.Adempiere;
 import org.compiere.acct.Doc;
-import org.compiere.util.CLogMgt;
-import org.compiere.util.CLogger;
-import org.compiere.util.CacheMgt;
-import org.compiere.util.DB;
-import org.compiere.util.DisplayType;
-import org.compiere.util.Env;
-import org.compiere.util.Evaluatee;
-import org.compiere.util.Ini;
-import org.compiere.util.Msg;
-import org.compiere.util.SecureEngine;
-import org.compiere.util.Trace;
-import org.compiere.util.Trx;
-import org.compiere.util.Util;
-import org.compiere.util.ValueNamePair;
+import org.compiere.util.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -50,24 +37,10 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.math.BigDecimal;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Savepoint;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -2745,7 +2718,10 @@ public abstract class PO
 			}
 			if (no <= 0)
 			{
-				log.severe("No NextID (" + no + ")");
+				String msg = "Could not get the next ID for table " + p_info.getTableName()
+					+ " - Verify that the database sequence exists (e.g. " + p_info.getTableName().toLowerCase() + "_seq)";
+				log.severe(msg);
+				log.saveError("Error", msg, false);
 				return saveFinish (true, false);
 			}
 			m_IDs[0] = Integer.valueOf(no);

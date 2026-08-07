@@ -22,6 +22,7 @@ import org.adempiere.core.domains.models.X_S_ServicePlan;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MDocType;
+import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPeriod;
 import org.compiere.model.MRule;
 import org.compiere.model.ModelValidationEngine;
@@ -265,12 +266,17 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 
 		for(MHRShiftIncidence shiftIncidence : shiftIncidenceList) {
 			int projectId = 0;
+			MHRAttendanceRecord contractSource = null;
 			long durationInMillis = 0;
 			long startTime = 0;
 			long endTime = 0;
 			for(MHRAttendanceRecord attendance : getLines(false)) {
 				if (projectId <= 0) {
 					projectId = attendance.getC_Project_ID();
+				}
+				if (contractSource == null
+						&& attendance.getS_ContractLine_ID() > 0) {
+					contractSource = attendance;
 				}
 				if(startTime == 0) {
 					startTime = attendance.getAttendanceTime().getTime();
@@ -288,12 +294,7 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 			//	Create Incidence
 			if(durationInMillis != 0) {
 				MHRIncidence incidence = new MHRIncidence(this, shiftIncidence, durationInMillis);
-				if(get_ValueAsInt("S_Contract_ID") > 0) {
-					incidence.set_ValueOfColumn("S_Contract_ID", get_ValueAsInt("S_Contract_ID"));
-				}
-				if(get_ValueAsInt("S_ContractLine_ID") > 0) {
-					incidence.set_ValueOfColumn("S_ContractLine_ID", get_ValueAsInt("S_ContractLine_ID"));
-				}
+				setContractReference(incidence, contractSource);
 				this.shiftIncidence = shiftIncidence;
 				this.incidence = incidence;
 				//	Process rule if it applied
@@ -349,12 +350,7 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 		shiftIncidenceList.stream().forEach(shiftIncidence -> {
 			//	Create Incidence
 			MHRIncidence incidence = new MHRIncidence(this, shiftIncidence, durationInMillis);
-			if(get_ValueAsInt("S_Contract_ID") > 0) {
-				incidence.set_ValueOfColumn("S_Contract_ID", get_ValueAsInt("S_Contract_ID"));
-			}
-			if(get_ValueAsInt("S_ContractLine_ID") > 0) {
-				incidence.set_ValueOfColumn("S_ContractLine_ID", get_ValueAsInt("S_ContractLine_ID"));
-			}
+			setContractReference(incidence, firstAttendance);
 			this.shiftIncidence = shiftIncidence;
 			this.incidence = incidence;
 			//	Process rule if it applied
@@ -452,12 +448,7 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 							if(durationInMillis > 0
 									|| (durationInMillis == 0 && shiftIncidence.isFixedValue())) {
 								MHRIncidence incidence = new MHRIncidence(this, shiftIncidence, durationInMillis);
-								if(get_ValueAsInt("S_Contract_ID") > 0) {
-									incidence.set_ValueOfColumn("S_Contract_ID", get_ValueAsInt("S_Contract_ID"));
-								}
-								if(get_ValueAsInt("S_ContractLine_ID") > 0) {
-									incidence.set_ValueOfColumn("S_ContractLine_ID", get_ValueAsInt("S_ContractLine_ID"));
-								}
+								setContractReference(incidence, lastAttendance);
 								this.shiftIncidence = shiftIncidence;
 								this.incidence = incidence;
 								//	Process rule if it applied
@@ -485,12 +476,7 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 									|| (durationInMillis == 0 && shiftIncidence.isFixedValue())
 									|| shiftIncidence.isVariableCalculation()) {
 								MHRIncidence incidence = new MHRIncidence(this, shiftIncidence, durationInMillis);
-								if(get_ValueAsInt("S_Contract_ID") > 0) {
-									incidence.set_ValueOfColumn("S_Contract_ID", get_ValueAsInt("S_Contract_ID"));
-								}
-								if(get_ValueAsInt("S_ContractLine_ID") > 0) {
-									incidence.set_ValueOfColumn("S_ContractLine_ID", get_ValueAsInt("S_ContractLine_ID"));
-								}
+								setContractReference(incidence, attendance);
 								this.shiftIncidence = shiftIncidence;
 								this.attendance = attendance;
 								this.incidence = incidence;
@@ -507,6 +493,40 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 		}
 	}
 	
+	/**
+	 * Set the contract and contract line reference on an incidence.
+	 * The contract line from the attendance record takes precedence over the batch's one,
+	 * because the record is more specific. When the record has no contract line,
+	 * the batch's contract line is used as fallback. The same precedence is applied
+	 * to the contract, so both stay consistent.
+	 * @param incidence incidence to set
+	 * @param attendance attendance record used as source (may be {@code null})
+	 */
+	private void setContractReference(MHRIncidence incidence, MHRAttendanceRecord attendance) {
+		//	Contract (record takes precedence over batch)
+		int contractId = 0;
+		if(attendance != null
+				&& attendance.getS_Contract_ID() > 0) {
+			contractId = attendance.getS_Contract_ID();
+		} else if(getS_Contract_ID() > 0) {
+			contractId = getS_Contract_ID();
+		}
+		if(contractId > 0) {
+			incidence.setS_Contract_ID(contractId);
+		}
+		//	Contract line (record takes precedence over batch)
+		int contractLineId = 0;
+		if(attendance != null
+				&& attendance.getS_ContractLine_ID() > 0) {
+			contractLineId = attendance.getS_ContractLine_ID();
+		} else if(getS_ContractLine_ID() > 0) {
+			contractLineId = getS_ContractLine_ID();
+		}
+		if(contractLineId > 0) {
+			incidence.setS_ContractLine_ID(contractLineId);
+		}
+	}
+
 	/**
 	 * Process rule
 	 * @param incidence
@@ -772,10 +792,35 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 		if(errorMessage.length() > 0) {
 			return errorMessage.toString();
 		}
+		completeIncidencesIfRequired();
 		//	default
 		return null;
 	}
-	
+
+	/**
+	 * Complete generated incidences when the organization is configured to create
+	 * them already completed (AD_OrgInfo.IsAutoCompleteIncidence = Y). When the
+	 * configuration is empty or N, the incidences keep their default draft status.
+	 */
+	private void completeIncidencesIfRequired() {
+		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), getAD_Org_ID(), get_TrxName());
+		if(orgInfo == null
+				|| !"Y".equals(orgInfo.getIsAutoCompleteIncidence())) {
+			return;
+		}
+		int[] incidenceIds = new Query(getCtx(), MHRIncidence.Table_Name,
+				"HR_AttendanceBatch_ID = ? AND IsManual = 'N' AND DocStatus = ?", get_TrxName())
+			.setParameters(getHR_AttendanceBatch_ID(), DocAction.STATUS_Drafted)
+			.getIDs();
+		for(int incidenceId : incidenceIds) {
+			MHRIncidence incidence = new MHRIncidence(getCtx(), incidenceId, get_TrxName());
+			if(!incidence.processIt(DocAction.ACTION_Complete)) {
+				throw new AdempiereException("@ProcessRunError@ " + incidence.getProcessMsg());
+			}
+			incidence.saveEx();
+		}
+	}
+
 	/**
 	 * Get work shift for employee from:
 	 * - Shift Schedule for a Work Group

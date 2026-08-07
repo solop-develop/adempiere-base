@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for HR_AttendanceBatch
  *  @author Adempiere (generated) 
@@ -78,7 +77,7 @@ public interface I_HR_AttendanceBatch
 	  */
 	public int getC_BPartner_ID();
 
-	public I_C_BPartner getC_BPartner() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_DocType_ID */
     public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
@@ -93,7 +92,7 @@ public interface I_HR_AttendanceBatch
 	  */
 	public int getC_DocType_ID();
 
-	public I_C_DocType getC_DocType() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -194,7 +193,7 @@ public interface I_HR_AttendanceBatch
 	/** Get Payroll Employee	  */
 	public int getHR_Employee_ID();
 
-	public I_HR_Employee getHR_Employee() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_HR_Employee getHR_Employee() throws RuntimeException;
 
     /** Column name HR_ShiftSchedule_ID */
     public static final String COLUMNNAME_HR_ShiftSchedule_ID = "HR_ShiftSchedule_ID";
@@ -209,7 +208,7 @@ public interface I_HR_AttendanceBatch
 	  */
 	public int getHR_ShiftSchedule_ID();
 
-	public I_HR_ShiftSchedule getHR_ShiftSchedule() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_HR_ShiftSchedule getHR_ShiftSchedule() throws RuntimeException;
 
     /** Column name HR_WorkShift_ID */
     public static final String COLUMNNAME_HR_WorkShift_ID = "HR_WorkShift_ID";
@@ -224,7 +223,7 @@ public interface I_HR_AttendanceBatch
 	  */
 	public int getHR_WorkShift_ID();
 
-	public I_HR_WorkShift getHR_WorkShift() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_HR_WorkShift getHR_WorkShift() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -313,7 +312,22 @@ public interface I_HR_AttendanceBatch
 	  */
 	public int getS_Contract_ID();
 
-	public I_S_Contract getS_Contract() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
+
+    /** Column name S_ContractLine_ID */
+    public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
+
+	/** Set ContractLine.
+	  * ContractLine
+	  */
+	public void setS_ContractLine_ID (int S_ContractLine_ID);
+
+	/** Get ContractLine.
+	  * ContractLine
+	  */
+	public int getS_ContractLine_ID();
+
+	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException;
 
     /** Column name S_ResourceAssignment_ID */
     public static final String COLUMNNAME_S_ResourceAssignment_ID = "S_ResourceAssignment_ID";
@@ -341,7 +355,7 @@ public interface I_HR_AttendanceBatch
 	  */
 	public int getS_ServiceSchedule_ID();
 
-	public I_S_ServiceSchedule getS_ServiceSchedule() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_S_ServiceSchedule getS_ServiceSchedule() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
