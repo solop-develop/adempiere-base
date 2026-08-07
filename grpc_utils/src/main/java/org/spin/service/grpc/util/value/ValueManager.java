@@ -640,7 +640,7 @@ public class ValueManager {
 				);
 			} else {
 				displayedValue = NumberManager.getDisplayValue(
-					displayedValue,
+					value,
 					displayTypeId
 				);
 			}
