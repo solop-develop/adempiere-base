@@ -41,7 +41,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -485,6 +487,11 @@ public final class MAllocationHdr extends X_C_AllocationHdr implements DocAction
 					});
 		}
 
+		//	Prevent an assignment from mixing different business partners (exempt reversals)
+		if (!isReversal()) {
+			validateSingleBusinessPartner(allocationLines);
+		}
+
 		//	Add up Amounts & validate
 		AtomicReference<BigDecimal> approval = new AtomicReference<>(Env.ZERO);
 		allocationLines.stream()
@@ -527,6 +534,57 @@ public final class MAllocationHdr extends X_C_AllocationHdr implements DocAction
 		
 		return DocAction.STATUS_InProgress;
 	}	//	prepareIt
+
+	/**
+	 * 	Prevent an assignment from mixing different business partners.
+	 * 	Gather the Business Partners for each document referenced by the lines (payment, invoice, order);
+	 * 	if more than one appears, abort the document. Reversals are exempt (see prepareIt),
+	 * 	in order that already corrupted allocations can be reversed/cancelled.
+	 * 	@param allocationLines allocation lines
+	 */
+	private void validateSingleBusinessPartner(List<MAllocationLine> allocationLines)
+	{
+		//	Business Partner -> document where it first appeared (for the message details)
+		Map<Integer, String> businessPartners = new LinkedHashMap<Integer, String>();
+		for (MAllocationLine allocationLine : allocationLines) {
+			if (allocationLine.getC_Payment_ID() > 0) {
+				MPayment payment = new MPayment(getCtx(), allocationLine.getC_Payment_ID(), get_TrxName());
+				addBusinessPartnerReference(businessPartners, payment.getC_BPartner_ID(), "@C_Payment_ID@ " + payment.getDocumentNo());
+			}
+			if (allocationLine.getC_Invoice_ID() > 0) {
+				MInvoice invoice = new MInvoice(getCtx(), allocationLine.getC_Invoice_ID(), get_TrxName());
+				addBusinessPartnerReference(businessPartners, invoice.getC_BPartner_ID(), "@C_Invoice_ID@ " + invoice.getDocumentNo());
+			}
+			if (allocationLine.getC_Order_ID() > 0) {
+				MOrder order = new MOrder(getCtx(), allocationLine.getC_Order_ID(), get_TrxName());
+				addBusinessPartnerReference(businessPartners, order.getC_BPartner_ID(), "@C_Order_ID@ " + order.getDocumentNo());
+			}
+		}
+		if (businessPartners.size() > 1) {
+			StringBuilder detail = new StringBuilder();
+			for (Map.Entry<Integer, String> reference : businessPartners.entrySet()) {
+				if (detail.length() > 0) {
+					detail.append(" | ");
+				}
+				detail.append(MBPartner.get(getCtx(), reference.getKey()).getName())
+					.append(" (").append(Msg.parseTranslation(getCtx(), reference.getValue())).append(")");
+			}
+			processMsg = Msg.parseTranslation(getCtx(), "@MixedBPartnerAllocation@") + ": " + detail;
+			throw new AdempiereException(processMsg);
+		}
+	}	//	validateSingleBusinessPartner
+
+	/**
+	 * 	Record the Business Partner and the document where it first appeared.
+	 * 	@param businessPartners Business Partner accumulator -> source document
+	 * 	@param businessPartnerId Business Partner ID to register (ignores 0)
+	 * 	@param source reference of the document (@C_Payment_ID@, @C_Invoice_ID@, ...)
+	 */
+	private void addBusinessPartnerReference(Map<Integer, String> businessPartners, int businessPartnerId, String source)
+	{
+		if (businessPartnerId > 0 && !businessPartners.containsKey(businessPartnerId))
+			businessPartners.put(businessPartnerId, source);
+	}	//	addBusinessPartnerReference
 	
 	/**
 	 * 	Approve Document
