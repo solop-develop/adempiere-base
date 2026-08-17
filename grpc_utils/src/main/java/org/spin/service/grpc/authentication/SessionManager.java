@@ -227,7 +227,15 @@ public class SessionManager {
 		sessionData.roleId = session.getAD_Role_ID();
 		sessionData.organizationId = session.getAD_Org_ID();
 		sessionData.warehouseId = Env.getContextAsInt(context, "M_Warehouse_ID");
-		sessionData.language = Env.getAD_Language(context);
+		// Cannot rely on session.getCtx() because MSession has no AD_Language column —
+		// getCtx() returns the global context, not the session-specific one, so it
+		// never reflects a language change made via setSessionAttribute. Same fix
+		// already applied in KeycloakSessionHandler#loadExistingSessionContext.
+		String language = PreferenceUtil.getLanguagePreference(session.getCreatedBy());
+		if (Util.isEmpty(language, true)) {
+			language = getDefaultLanguage(null);
+		}
+		sessionData.language = language;
 	}
 
 	public static int getSessionIdByOpenID(String bearerToken) {
