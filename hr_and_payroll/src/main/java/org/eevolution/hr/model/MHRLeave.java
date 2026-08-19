@@ -16,13 +16,8 @@
  *****************************************************************************/
 package org.eevolution.hr.model;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.X_HR_Leave;
+import org.adempiere.core.domains.models.X_HR_ShiftIncidence;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.process.DocAction;
@@ -33,6 +28,16 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.spin.hr.util.TNAUtil;
+import org.spin.tar.model.MHRIncidence;
+import org.spin.tar.model.MHRShiftIncidence;
+import org.spin.tar.model.MHRShiftSchedule;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
 
 /** Generated Model for HR_Leave
  *  @author Adempiere (generated) 
@@ -47,13 +52,13 @@ public class MHRLeave extends X_HR_Leave implements DocAction, DocOptions {
 	public static final String		DocBaseType_Standard = "TNL";
 
     /** Standard Constructor */
-    public MHRLeave (Properties ctx, int HR_Leave_ID, String trxName)
+    public MHRLeave(Properties ctx, int HR_Leave_ID, String trxName)
     {
       super (ctx, HR_Leave_ID, trxName);
     }
 
     /** Load Constructor */
-    public MHRLeave (Properties ctx, ResultSet rs, String trxName)
+    public MHRLeave(Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -292,8 +297,10 @@ public class MHRLeave extends X_HR_Leave implements DocAction, DocOptions {
 		if (!isApproved())
 			approveIt();
 		log.info(toString());
-		//	Reload Leave balance 
+		//	Reload Leave balance
 		addUsedLeave();
+		//	Generate incidences from the leave configuration (shift incidences of type Leave)
+		generateIncidences();
 		//	User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
 		if (valid != null)
@@ -328,6 +335,126 @@ public class MHRLeave extends X_HR_Leave implements DocAction, DocOptions {
 			MHRLeaveAssign leaveAssign = new MHRLeaveAssign(getCtx(), getHR_LeaveAssign_ID(), get_TrxName());
 			leaveAssign.addUsedLeave(-1);
 			leaveAssign.saveEx();
+		}
+	}
+
+	/**
+	 * Generate the incidences for the leave.
+	 * The leave quantity is the whole leave duration, computed as the difference between
+	 * {@link #getStartDate()} and {@link #getEndDate()} (same criterion used for the leave duration),
+	 * and converted to the time unit configured on each shift incidence (typically hours). A single
+	 * incidence is created per shift incidence configured as
+	 * {@link X_HR_ShiftIncidence#EVENTTYPE_Leave Leave} on the work shift resolved for the leave start
+	 * day. Previously generated (non manual) incidences for the same leave are removed first, so the
+	 * method is safe to call again after a re-activation.
+	 */
+	private void generateIncidences() {
+		//	Remove previously generated (non manual) incidences for this leave
+		DB.executeUpdateEx("DELETE FROM HR_Incidence WHERE IsManual = 'N' AND HR_Leave_ID = " + getHR_Leave_ID(), get_TrxName());
+		//	Validate dates
+		Timestamp startDate = getStartDate();
+		Timestamp endDate = getEndDate();
+		if(startDate == null
+				|| endDate == null
+				|| !endDate.after(startDate)) {
+			return;
+		}
+		//	Resolve employee
+		MHREmployee employee = MHREmployee.getById(getCtx(), getHR_Employee_ID());
+		if(employee == null) {
+			return;
+		}
+		//	Resolve the work shift from the leave start day
+		Timestamp startDay = TimeUtil.getDay(startDate);
+		int workShiftId = getWorkShiftId(employee, startDay);
+		if(workShiftId <= 0) {
+			return;
+		}
+		//	Leave quantity = whole leave duration (End - Start); the unit comes from each shift incidence
+		long durationInMillis = TimeUtil.getMillisecondsBetween(startDate, endDate);
+		if(durationInMillis <= 0) {
+			return;
+		}
+		//	One incidence per shift incidence of type Leave applicable to the start day
+		List<MHRShiftIncidence> shiftIncidenceList = MHRShiftIncidence.getShiftIncidenceList(getCtx(), workShiftId, X_HR_ShiftIncidence.EVENTTYPE_Leave, startDay);
+		for(MHRShiftIncidence shiftIncidence : shiftIncidenceList) {
+			MHRIncidence incidence = new MHRIncidence(this, shiftIncidence, durationInMillis);
+			incidence.setServiceDate(startDay);
+			incidence.saveEx();
+		}
+		//	Complete when the organization is configured for it
+		completeIncidencesIfRequired();
+	}
+
+
+
+	/**
+	 * Resolve the work shift for the employee at a given date, using the same precedence as the
+	 * attendance import (ImportAttendance#getWorkShiftId): first the employee shift group, then the
+	 * work group (its direct shift regardless of the shift allocation flag, and as a last option the
+	 * default shift of its shift group). The rotating shift schedule of the work group is only used
+	 * as a final fallback, for configurations that actually rely on it. This keeps the leave
+	 * incidence generation consistent with how the attendance batch resolves the work shift, so it
+	 * no longer depends on the work group having IsShiftAllocation = Y or a shift schedule loaded.
+	 * @param employee
+	 * @param date used only for the shift schedule fallback
+	 * @return work shift id or 0 when it can not be resolved
+	 */
+	private int getWorkShiftId(MHREmployee employee, Timestamp date) {
+		int workShiftId = 0;
+		//	Employee shift group
+		if(employee.getHR_ShiftGroup_ID() > 0) {
+			MHRWorkShift workShift = MHRWorkShift.getDefaultFromGroup(getCtx(), employee.getHR_ShiftGroup_ID(), get_TrxName());
+			if(workShift != null) {
+				workShiftId = workShift.getHR_WorkShift_ID();
+			}
+		}
+		//	Work group: direct shift, then the default shift of its shift group
+		if(workShiftId <= 0
+				&& employee.getHR_WorkGroup_ID() > 0) {
+			MHRWorkGroup workGroup = MHRWorkGroup.getById(getCtx(), employee.getHR_WorkGroup_ID(), get_TrxName());
+			if(workGroup.getHR_WorkShift_ID() > 0) {
+				workShiftId = workGroup.getHR_WorkShift_ID();
+			}
+			if(workShiftId <= 0
+					&& workGroup.getHR_ShiftGroup_ID() > 0) {
+				MHRWorkShift workShift = MHRWorkShift.getDefaultFromGroup(getCtx(), workGroup.getHR_ShiftGroup_ID(), get_TrxName());
+				if(workShift != null) {
+					workShiftId = workShift.getHR_WorkShift_ID();
+				}
+			}
+			//	Last resort: rotating shift schedule of the work group
+			if(workShiftId <= 0) {
+				MHRShiftSchedule shiftSchedule = MHRShiftSchedule.getScheduleFromWorkGroup(getCtx(), workGroup.getHR_WorkGroup_ID(), date, get_TrxName());
+				if(shiftSchedule != null) {
+					workShiftId = shiftSchedule.getHR_WorkShift_ID();
+				}
+			}
+		}
+		return workShiftId;
+	}
+
+	/**
+	 * Complete the incidences generated for the leave when the organization is configured to
+	 * create them already completed (AD_OrgInfo.IsAutoCompleteIncidence = Y). Same behavior as
+	 * the attendance batch.
+	 */
+	private void completeIncidencesIfRequired() {
+		MOrgInfo orgInfo = MOrgInfo.get(getCtx(), getAD_Org_ID(), get_TrxName());
+		if(orgInfo == null
+				|| !"Y".equals(orgInfo.getIsAutoCompleteIncidence())) {
+			return;
+		}
+		int[] incidenceIds = new Query(getCtx(), MHRIncidence.Table_Name,
+				"HR_Leave_ID = ? AND IsManual = 'N' AND DocStatus = ?", get_TrxName())
+			.setParameters(getHR_Leave_ID(), DocAction.STATUS_Drafted)
+			.getIDs();
+		for(int incidenceId : incidenceIds) {
+			MHRIncidence incidence = new MHRIncidence(getCtx(), incidenceId, get_TrxName());
+			if(!incidence.processIt(DocAction.ACTION_Complete)) {
+				throw new AdempiereException("@ProcessRunError@ " + incidence.getProcessMsg());
+			}
+			incidence.saveEx();
 		}
 	}
 	
@@ -366,6 +493,8 @@ public class MHRLeave extends X_HR_Leave implements DocAction, DocOptions {
 			return false;
 		addDescription(Msg.getMsg(getCtx(), "Voided"));
 		removeUsedLeave();
+		//	Remove incidences generated for this leave
+		DB.executeUpdateEx("DELETE FROM HR_Incidence WHERE IsManual = 'N' AND HR_Leave_ID = " + getHR_Leave_ID(), get_TrxName());
 		// After Void
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_VOID);
 		if (m_processMsg != null)
