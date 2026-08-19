@@ -265,6 +265,11 @@ public class MWMInOutBoundLine extends X_WM_InOutBoundLine
 	 * @return BigDecimal with Quantity to Ship
 	 */
 	public BigDecimal getQtyToDeliver() {
+		if (getWM_InOutBoundLine_ID() > 0) {
+			// Already-committed outbound line: return what of its own commitment is still unshipped,
+			// not the order line's overall open balance (which ignores other splits of the same order line).
+			return getMovementQty().subtract(getShipmentQtyDelivered());
+		}
 		if(getC_OrderLine_ID() > 0) {
 			Optional<I_C_OrderLine> maybeOrderLine = Optional.ofNullable(getOrderLine());
 			AtomicReference<BigDecimal> quantityToDeliver = new AtomicReference<>(BigDecimal.ZERO);
