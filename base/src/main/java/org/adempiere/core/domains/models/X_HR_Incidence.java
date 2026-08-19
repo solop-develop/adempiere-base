@@ -464,6 +464,31 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return ii.intValue();
 	}
 
+	public org.adempiere.core.domains.models.I_HR_Leave getHR_Leave() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_HR_Leave)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_Leave.Table_Name)
+			.getPO(getHR_Leave_ID(), get_TrxName());	}
+
+	/** Set Employee Leave.
+		@param HR_Leave_ID Employee Leave	  */
+	public void setHR_Leave_ID (int HR_Leave_ID)
+	{
+		if (HR_Leave_ID < 1)
+			set_Value (COLUMNNAME_HR_Leave_ID, null);
+		else
+			set_Value (COLUMNNAME_HR_Leave_ID, Integer.valueOf(HR_Leave_ID));
+	}
+
+	/** Get Employee Leave.
+		@return Employee Leave	  */
+	public int getHR_Leave_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_HR_Leave_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.adempiere.core.domains.models.I_HR_ShiftIncidence getHR_ShiftIncidence() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_HR_ShiftIncidence)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_ShiftIncidence.Table_Name)

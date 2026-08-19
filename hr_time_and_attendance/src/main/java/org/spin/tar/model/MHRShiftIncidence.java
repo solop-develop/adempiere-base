@@ -195,6 +195,7 @@ public class MHRShiftIncidence extends X_HR_ShiftIncidence {
 		String egress = X_HR_ShiftIncidence.EVENTTYPE_Egress;
 		String attendance = X_HR_ShiftIncidence.EVENTTYPE_Attendance;
 		String leave = X_HR_ShiftIncidence.EVENTTYPE_Leave;
+		String absence = X_HR_ShiftIncidence.EVENTTYPE_Absence;
 		//	Load Hash
 		if(shiftIncidenceList != null) {
 			//	Sunday
@@ -202,36 +203,43 @@ public class MHRShiftIncidence extends X_HR_ShiftIncidence {
 			shiftIncidenceForDaysCache.put(keyPrefix + egress + Calendar.SUNDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + attendance + Calendar.SUNDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + leave + Calendar.SUNDAY, new ArrayList<MHRShiftIncidence>());
+			shiftIncidenceForDaysCache.put(keyPrefix + absence + Calendar.SUNDAY, new ArrayList<MHRShiftIncidence>());
 			//	Monday
 			shiftIncidenceForDaysCache.put(keyPrefix + entrance + Calendar.MONDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + egress + Calendar.MONDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + attendance + Calendar.MONDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + leave + Calendar.MONDAY, new ArrayList<MHRShiftIncidence>());
+			shiftIncidenceForDaysCache.put(keyPrefix + absence + Calendar.MONDAY, new ArrayList<MHRShiftIncidence>());
 			//	Tuesday
 			shiftIncidenceForDaysCache.put(keyPrefix + entrance + Calendar.TUESDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + egress + Calendar.TUESDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + attendance + Calendar.TUESDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + leave + Calendar.TUESDAY, new ArrayList<MHRShiftIncidence>());
+			shiftIncidenceForDaysCache.put(keyPrefix + absence + Calendar.TUESDAY, new ArrayList<MHRShiftIncidence>());
 			//	Wednesday
 			shiftIncidenceForDaysCache.put(keyPrefix + entrance + Calendar.WEDNESDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + egress + Calendar.WEDNESDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + attendance + Calendar.WEDNESDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + leave + Calendar.WEDNESDAY, new ArrayList<MHRShiftIncidence>());
+			shiftIncidenceForDaysCache.put(keyPrefix + absence + Calendar.WEDNESDAY, new ArrayList<MHRShiftIncidence>());
 			//	Thursday
 			shiftIncidenceForDaysCache.put(keyPrefix + entrance + Calendar.THURSDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + egress + Calendar.THURSDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + attendance + Calendar.THURSDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + leave + Calendar.THURSDAY, new ArrayList<MHRShiftIncidence>());
+			shiftIncidenceForDaysCache.put(keyPrefix + absence + Calendar.THURSDAY, new ArrayList<MHRShiftIncidence>());
 			//	Friday
 			shiftIncidenceForDaysCache.put(keyPrefix + entrance + Calendar.FRIDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + egress + Calendar.FRIDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + attendance + Calendar.FRIDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + leave + Calendar.FRIDAY, new ArrayList<MHRShiftIncidence>());
+			shiftIncidenceForDaysCache.put(keyPrefix + absence + Calendar.FRIDAY, new ArrayList<MHRShiftIncidence>());
 			//	Saturday
 			shiftIncidenceForDaysCache.put(keyPrefix + entrance + Calendar.SATURDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + egress + Calendar.SATURDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + attendance + Calendar.SATURDAY, new ArrayList<MHRShiftIncidence>());
 			shiftIncidenceForDaysCache.put(keyPrefix + leave + Calendar.SATURDAY, new ArrayList<MHRShiftIncidence>());
+			shiftIncidenceForDaysCache.put(keyPrefix + absence + Calendar.SATURDAY, new ArrayList<MHRShiftIncidence>());
 			//	Add
 			for(MHRShiftIncidence shiftIncidence : shiftIncidenceList) {
 				if(!shiftIncidence.isOnSunday()

@@ -238,6 +238,19 @@ public interface I_HR_AttendanceBatch
 	  */
 	public boolean isActive();
 
+    /** Column name IsApprovalRequired */
+    public static final String COLUMNNAME_IsApprovalRequired = "IsApprovalRequired";
+
+	/** Set Approval Required.
+	  * Indicates whether this attendance batch requires approval
+	  */
+	public void setIsApprovalRequired (boolean IsApprovalRequired);
+
+	/** Get Approval Required.
+	  * Indicates whether this attendance batch requires approval
+	  */
+	public boolean isApprovalRequired();
+
     /** Column name IsApproved */
     public static final String COLUMNNAME_IsApproved = "IsApproved";
 

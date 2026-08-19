@@ -38,7 +38,7 @@ public class X_HR_LeaveType extends PO implements I_HR_LeaveType, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230102L;
+	private static final long serialVersionUID = 20260813L;
 
     /** Standard Constructor */
     public X_HR_LeaveType (Properties ctx, int HR_LeaveType_ID, String trxName)
@@ -246,6 +246,27 @@ public class X_HR_LeaveType extends PO implements I_HR_LeaveType, I_Persistent
 	public boolean isAllowedEncashment () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsAllowedEncashment);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Generated From Attendance.
+		@param IsGeneratedFromAttendance Generated From Attendance	  */
+	public void setIsGeneratedFromAttendance (boolean IsGeneratedFromAttendance)
+	{
+		set_Value (COLUMNNAME_IsGeneratedFromAttendance, Boolean.valueOf(IsGeneratedFromAttendance));
+	}
+
+	/** Get Generated From Attendance.
+		@return Generated From Attendance	  */
+	public boolean isGeneratedFromAttendance () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsGeneratedFromAttendance);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 

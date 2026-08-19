@@ -36,7 +36,7 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260806L;
+	private static final long serialVersionUID = 20260811L;
 
     /** Standard Constructor */
     public X_HR_AttendanceBatch (Properties ctx, int HR_AttendanceBatch_ID, String trxName)
@@ -395,6 +395,30 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Approval Required.
+		@param IsApprovalRequired 
+		Indicates whether this attendance batch requires approval
+	  */
+	public void setIsApprovalRequired (boolean IsApprovalRequired)
+	{
+		set_Value (COLUMNNAME_IsApprovalRequired, Boolean.valueOf(IsApprovalRequired));
+	}
+
+	/** Get Approval Required.
+		@return Indicates whether this attendance batch requires approval
+	  */
+	public boolean isApprovalRequired () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsApprovalRequired);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Approved.
