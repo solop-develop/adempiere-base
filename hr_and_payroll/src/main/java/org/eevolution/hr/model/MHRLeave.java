@@ -402,7 +402,7 @@ public class MHRLeave extends X_HR_Leave implements DocAction, DocOptions {
 	 */
 	private int getWorkShiftId(MHREmployee employee, Timestamp date) {
 		int workShiftId = 0;
-		//	Employee shift group
+		//	Employee shift group (primary source, same as attendance import)
 		if(employee.getHR_ShiftGroup_ID() > 0) {
 			MHRWorkShift workShift = MHRWorkShift.getDefaultFromGroup(getCtx(), employee.getHR_ShiftGroup_ID(), get_TrxName());
 			if(workShift != null) {

@@ -16,9 +16,14 @@
  *****************************************************************************/
 package org.spin.queue.notification.telegram.support;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.adempiere.core.domains.models.X_AD_UserSocialMedia;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.Adempiere;
 import org.compiere.model.MClient;
+import org.compiere.model.MUser;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -27,6 +32,7 @@ import org.compiere.util.Trx;
 import org.compiere.util.Util;
 import org.eevolution.services.dsl.ProcessBuilder;
 import org.spin.model.MADAppRegistration;
+import org.spin.model.MADUserSocialMedia;
 import org.spin.queue.notification.DefaultNotifier;
 import org.spin.queue.notification.model.MADNotificationQueue;
 import org.spin.queue.notification.model.MADNotificationRecipient;
@@ -102,37 +108,87 @@ public class Telegram implements INotification {
 
 	@Override
 	public void sendNotification(MADNotificationQueue notification) {
+		sendNotification(notification, notification.getRecipients());
+	}
+
+	@Override
+	public void sendNotification(MADNotificationQueue notification, List<MADNotificationRecipient> recipients) {
+		if(Util.isEmpty(notification.getText())) {
+			throw new AdempiereException("@Text@ @IsMandatory@");
+		}
 		StringBuffer errorMessage = new StringBuffer();
+		MADAppRegistration registration = MADAppRegistration.getById(notification.getCtx(), getAppRegistrationId(), notification.get_TrxName());
+		int applicationSupportId = registration != null ? registration.getAD_AppSupport_ID() : 0;
+		//	Register the bot once for the whole list
 		SenderBot sender = new SenderBot(botName, botToken);
 		try {
 			new TelegramBotsApi(SenderSession.class).registerBot(sender);
 		} catch (Exception e) {
 			throw new AdempiereException(e);
 		}
-		notification.getRecipients().forEach(recipient -> {
-			try {
-				if(Util.isEmpty(notification.getText())) {
-					throw new AdempiereException("@Text@ @IsMandatory@");
+		for(MADNotificationRecipient recipient : recipients) {
+			if(recipient.getAD_User_ID() <= 0) {
+				continue;
+			}
+			MUser user = MUser.get(notification.getCtx(), recipient.getAD_User_ID());
+			if(user == null) {
+				continue;
+			}
+			//	Send to each of the user's accounts for this platform; mark the recipient if any is sent
+			boolean anySent = false;
+			StringBuffer recipientError = new StringBuffer();
+			for(MADUserSocialMedia socialMedia : MADUserSocialMedia.getSocialMedias(notification.getCtx(), user.getAD_User_ID(), notification.get_TrxName())) {
+				if(!socialMedia.isReceiveNotifications() || !matchesRegistration(socialMedia, applicationSupportId)) {
+					continue;
 				}
-				sender.sendMessage(MessageFactory.getInstance().getHandler(recipient.getMessageType())
-						.createAndGetMessage(notification, recipient));
+				try {
+					MADNotificationRecipient handleRecipient = new MADNotificationRecipient(notification);
+					handleRecipient.setAccountName(Optional.ofNullable(socialMedia.getAccountName()).orElse("").trim());
+					handleRecipient.setAD_User_ID(user.getAD_User_ID());
+					if(!Util.isEmpty(recipient.getMessageType())) {
+						handleRecipient.setMessageType(recipient.getMessageType());
+					}
+					sender.sendMessage(MessageFactory.getInstance().getHandler(handleRecipient.getMessageType())
+							.createAndGetMessage(notification, handleRecipient));
+					anySent = true;
+					log.fine("Telegram sent");
+				} catch (Exception exception) {
+					log.severe(exception.getLocalizedMessage());
+					if(recipientError.length() > 0) {
+						recipientError.append(Env.NL);
+					}
+					recipientError.append("Error: Sending to: ").append(socialMedia.getAccountName())
+							.append(": ").append(exception.getLocalizedMessage());
+				}
+			}
+			if(anySent) {
 				recipient.setProcessed(true);
 				recipient.saveEx();
-				log.fine("Telegram sent");	
-			} catch (Exception exception) {
-				log.severe(exception.getLocalizedMessage());
-				recipient.setErrorMsg(exception.getLocalizedMessage());
+			} else if(recipientError.length() > 0) {
+				recipient.setErrorMsg(recipientError.toString());
 				recipient.saveEx();
 				if(errorMessage.length() > 0) {
 					errorMessage.append(Env.NL);
 				}
-	        	errorMessage.append("Error: Sending to: ").append(recipient.getAccountName())
-						.append(": ").append(exception.getLocalizedMessage());
+				errorMessage.append(recipientError);
 			}
-		});
+		}
 		if(errorMessage.length() > 0) {
 			throw new AdempiereException(errorMessage.toString());
 		}
+	}
+
+	/**
+	 * Whether a user's social media account belongs to this notifier's platform/registration
+	 * @param socialMedia the user social media account
+	 * @param applicationSupportId this notifier's app support
+	 * @return
+	 */
+	private boolean matchesRegistration(X_AD_UserSocialMedia socialMedia, int applicationSupportId) {
+		if(socialMedia.getAD_AppSupport_ID() > 0 && applicationSupportId > 0) {
+			return socialMedia.getAD_AppSupport_ID() == applicationSupportId;
+		}
+		return DefaultNotifier.DefaultNotificationType_Telegram.equals(socialMedia.getApplicationType());
 	}
 	
 	public static void main(String[] args) {

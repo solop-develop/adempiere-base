@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for HR_Incidence
  *  @author Adempiere (generated) 
@@ -90,7 +91,7 @@ public interface I_HR_Incidence
 	  */
 	public int getC_BPartner_ID();
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException;
+	public I_C_BPartner getC_BPartner() throws RuntimeException;
 
     /** Column name C_DocType_ID */
     public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
@@ -105,7 +106,7 @@ public interface I_HR_Incidence
 	  */
 	public int getC_DocType_ID();
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException;
+	public I_C_DocType getC_DocType() throws RuntimeException;
 
     /** Column name C_Project_ID */
     public static final String COLUMNNAME_C_Project_ID = "C_Project_ID";
@@ -120,7 +121,7 @@ public interface I_HR_Incidence
 	  */
 	public int getC_Project_ID();
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException;
+	public I_C_Project getC_Project() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -225,7 +226,7 @@ public interface I_HR_Incidence
 	/** Get Attendance Batch	  */
 	public int getHR_AttendanceBatch_ID();
 
-	public org.adempiere.core.domains.models.I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException;
+	public I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException;
 
     /** Column name HR_Concept_ID */
     public static final String COLUMNNAME_HR_Concept_ID = "HR_Concept_ID";
@@ -240,7 +241,7 @@ public interface I_HR_Incidence
 	  */
 	public int getHR_Concept_ID();
 
-	public org.adempiere.core.domains.models.I_HR_Concept getHR_Concept() throws RuntimeException;
+	public I_HR_Concept getHR_Concept() throws RuntimeException;
 
     /** Column name HR_Employee_ID */
     public static final String COLUMNNAME_HR_Employee_ID = "HR_Employee_ID";
@@ -251,7 +252,7 @@ public interface I_HR_Incidence
 	/** Get Payroll Employee	  */
 	public int getHR_Employee_ID();
 
-	public org.adempiere.core.domains.models.I_HR_Employee getHR_Employee() throws RuntimeException;
+	public I_HR_Employee getHR_Employee() throws RuntimeException;
 
     /** Column name HR_Incidence_ID */
     public static final String COLUMNNAME_HR_Incidence_ID = "HR_Incidence_ID";
@@ -271,7 +272,7 @@ public interface I_HR_Incidence
 	/** Get Employee Leave	  */
 	public int getHR_Leave_ID();
 
-	public org.adempiere.core.domains.models.I_HR_Leave getHR_Leave() throws RuntimeException;
+	public I_HR_Leave getHR_Leave() throws RuntimeException;
 
     /** Column name HR_ShiftIncidence_ID */
     public static final String COLUMNNAME_HR_ShiftIncidence_ID = "HR_ShiftIncidence_ID";
@@ -286,7 +287,7 @@ public interface I_HR_Incidence
 	  */
 	public int getHR_ShiftIncidence_ID();
 
-	public org.adempiere.core.domains.models.I_HR_ShiftIncidence getHR_ShiftIncidence() throws RuntimeException;
+	public I_HR_ShiftIncidence getHR_ShiftIncidence() throws RuntimeException;
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -375,7 +376,7 @@ public interface I_HR_Incidence
 	  */
 	public int getS_Contract_ID();
 
-	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException;
+	public I_S_Contract getS_Contract() throws RuntimeException;
 
     /** Column name S_ContractLine_ID */
     public static final String COLUMNNAME_S_ContractLine_ID = "S_ContractLine_ID";
@@ -390,7 +391,7 @@ public interface I_HR_Incidence
 	  */
 	public int getS_ContractLine_ID();
 
-	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException;
+	public I_S_ContractLine getS_ContractLine() throws RuntimeException;
 
     /** Column name ServiceDate */
     public static final String COLUMNNAME_ServiceDate = "ServiceDate";
@@ -418,7 +419,7 @@ public interface I_HR_Incidence
 	  */
 	public int getS_TimeExpense_ID();
 
-	public org.adempiere.core.domains.models.I_S_TimeExpense getS_TimeExpense() throws RuntimeException;
+	public I_S_TimeExpense getS_TimeExpense() throws RuntimeException;
 
     /** Column name S_TimeExpenseLine_ID */
     public static final String COLUMNNAME_S_TimeExpenseLine_ID = "S_TimeExpenseLine_ID";
@@ -433,7 +434,7 @@ public interface I_HR_Incidence
 	  */
 	public int getS_TimeExpenseLine_ID();
 
-	public org.adempiere.core.domains.models.I_S_TimeExpenseLine getS_TimeExpenseLine() throws RuntimeException;
+	public I_S_TimeExpenseLine getS_TimeExpenseLine() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

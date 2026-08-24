@@ -18,14 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for AD_Scheduler
  *  @author Adempiere (generated) 
@@ -36,7 +37,7 @@ public class X_AD_Scheduler extends PO implements I_AD_Scheduler, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20251215L;
+	private static final long serialVersionUID = 20260817L;
 
     /** Standard Constructor */
     public X_AD_Scheduler (Properties ctx, int AD_Scheduler_ID, String trxName)
@@ -46,6 +47,8 @@ public class X_AD_Scheduler extends PO implements I_AD_Scheduler, I_Persistent
         {
 			setAD_Process_ID (0);
 			setAD_Scheduler_ID (0);
+			setIsProcessManaged (false);
+// N
 			setKeepLogDays (0);
 // 7
 			setName (null);
@@ -83,9 +86,9 @@ public class X_AD_Scheduler extends PO implements I_AD_Scheduler, I_Persistent
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_AD_Process getAD_Process() throws RuntimeException
+	public I_AD_Process getAD_Process() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Process)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Process.Table_Name)
+		return (I_AD_Process)MTable.get(getCtx(), I_AD_Process.Table_Name)
 			.getPO(getAD_Process_ID(), get_TrxName());	}
 
 	/** Set Process.
@@ -162,9 +165,9 @@ public class X_AD_Scheduler extends PO implements I_AD_Scheduler, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_AD_Table getAD_Table() throws RuntimeException
+	public I_AD_Table getAD_Table() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Table)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Table.Table_Name)
+		return (I_AD_Table)MTable.get(getCtx(), I_AD_Table.Table_Name)
 			.getPO(getAD_Table_ID(), get_TrxName());	}
 
 	/** Set Table.
@@ -384,6 +387,30 @@ public class X_AD_Scheduler extends PO implements I_AD_Scheduler, I_Persistent
 		return false;
 	}
 
+	/** Set Is Process Managed.
+		@param IsProcessManaged 
+		When Y, this scheduler row is dispatched by the process module poller, not by the native scheduler engine
+	  */
+	public void setIsProcessManaged (boolean IsProcessManaged)
+	{
+		set_Value (COLUMNNAME_IsProcessManaged, Boolean.valueOf(IsProcessManaged));
+	}
+
+	/** Get Is Process Managed.
+		@return When Y, this scheduler row is dispatched by the process module poller, not by the native scheduler engine
+	  */
+	public boolean isProcessManaged () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsProcessManaged);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Days to keep Log.
 		@param KeepLogDays 
 		Number of days to keep the log entries
@@ -448,6 +475,23 @@ public class X_AD_Scheduler extends PO implements I_AD_Scheduler, I_Persistent
     {
         return new KeyNamePair(get_ID(), getName());
     }
+
+	/** Set Payload.
+		@param Payload 
+		Canonical Request Payload in JSON Format
+	  */
+	public void setPayload (String Payload)
+	{
+		set_Value (COLUMNNAME_Payload, Payload);
+	}
+
+	/** Get Payload.
+		@return Canonical Request Payload in JSON Format
+	  */
+	public String getPayload () 
+	{
+		return (String)get_Value(COLUMNNAME_Payload);
+	}
 
 	/** Set Process Now.
 		@param Processing Process Now	  */
@@ -521,9 +565,9 @@ public class X_AD_Scheduler extends PO implements I_AD_Scheduler, I_Persistent
 		return (String)get_Value(COLUMNNAME_ScheduleType);
 	}
 
-	public org.adempiere.core.domains.models.I_AD_User getSupervisor() throws RuntimeException
+	public I_AD_User getSupervisor() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+		return (I_AD_User)MTable.get(getCtx(), I_AD_User.Table_Name)
 			.getPO(getSupervisor_ID(), get_TrxName());	}
 
 	/** Set Supervisor.

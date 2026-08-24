@@ -17,17 +17,33 @@
 package org.spin.queue.notification.support;
 
 import org.spin.queue.notification.model.MADNotificationQueue;
+import org.spin.queue.notification.model.MADNotificationRecipient;
 import org.spin.util.support.IAppSupport;
+
+import java.util.List;
 
 /**
  * @author Yamel Senih, ySenih@erpya.com, ERPCyA http://www.erpya.com
  * Contract for notification
  */
 public interface INotification extends IAppSupport {
-	
+
 	/**
 	 * Send notification method from queue
 	 * @param queue
 	 */
 	public void sendNotification(MADNotificationQueue queue);
+
+	/**
+	 * Send the notification only to the given recipients (already selected for this channel
+	 * by the caller). Each recipient successfully sent must be marked processed; failures are
+	 * recorded per recipient. Used by the User Defined dispatch so a recipient with several
+	 * channels does not clash. The default keeps backward compatibility by sending to every
+	 * recipient of the queue.
+	 * @param queue
+	 * @param recipients recipients to notify through this channel
+	 */
+	default void sendNotification(MADNotificationQueue queue, List<MADNotificationRecipient> recipients) {
+		sendNotification(queue);
+	}
 }

@@ -16,19 +16,16 @@
  *****************************************************************************/
 package org.spin.queue.notification.support;
 
-import java.util.Arrays;
-
 import org.adempiere.core.domains.models.X_AD_UserMail;
-import org.compiere.model.MAttachment;
-import org.compiere.model.MClient;
-import org.compiere.model.MEMailConfig;
-import org.compiere.model.MUser;
-import org.compiere.model.MOrg;
-import org.compiere.model.MOrgInfo;
+import org.compiere.model.*;
 import org.compiere.util.CLogger;
 import org.compiere.util.EMail;
 import org.compiere.util.Env;
 import org.spin.queue.notification.model.MADNotificationQueue;
+import org.spin.queue.notification.model.MADNotificationRecipient;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
@@ -63,8 +60,13 @@ public class EMailSender implements INotification {
 
 	@Override
 	public void sendNotification(MADNotificationQueue notification) {
+		sendNotification(notification, notification.getRecipients());
+	}
+
+	@Override
+	public void sendNotification(MADNotificationQueue notification, List<MADNotificationRecipient> recipients) {
 		StringBuffer errorMessage = new StringBuffer();
-		notification.getRecipients().forEach(recipient -> {
+		recipients.forEach(recipient -> {
 
 			int eMailConfigurationId = 0;
 			String eMailUser = null;

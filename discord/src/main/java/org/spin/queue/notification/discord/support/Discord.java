@@ -16,9 +16,14 @@
  *****************************************************************************/
 package org.spin.queue.notification.discord.support;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.adempiere.core.domains.models.X_AD_UserSocialMedia;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.Adempiere;
 import org.compiere.model.MClient;
+import org.compiere.model.MUser;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -27,6 +32,7 @@ import org.compiere.util.Trx;
 import org.compiere.util.Util;
 import org.eevolution.services.dsl.ProcessBuilder;
 import org.spin.model.MADAppRegistration;
+import org.spin.model.MADUserSocialMedia;
 import org.spin.queue.notification.DefaultNotifier;
 import org.spin.queue.notification.discord.util.BaseMessage;
 import org.spin.queue.notification.discord.util.MessageFactory;
@@ -103,36 +109,94 @@ public class Discord implements INotification {
 
 	@Override
 	public void sendNotification(MADNotificationQueue notification) {
+		sendNotification(notification, notification.getRecipients());
+	}
+
+	@Override
+	public void sendNotification(MADNotificationQueue notification, List<MADNotificationRecipient> recipients) {
+		if(Util.isEmpty(notification.getText())) {
+			throw new AdempiereException("@Text@ @IsMandatory@");
+		}
 		StringBuffer errorMessage = new StringBuffer();
-		notification.getRecipients().forEach(recipient -> {
-			try {
-				if(Util.isEmpty(notification.getText())) {
-					throw new AdempiereException("@Text@ @IsMandatory@");
+		MADAppRegistration registration = MADAppRegistration.getById(notification.getCtx(), getAppRegistrationId(), notification.get_TrxName());
+		int applicationSupportId = registration != null ? registration.getAD_AppSupport_ID() : 0;
+		//	Open the connection once for the whole list
+		JDA connector;
+		try {
+			connector = JDABuilder.createDefault(botToken).build();
+			connector.awaitReady();
+		} catch (Exception exception) {
+			throw new AdempiereException(exception);
+		}
+		try {
+			for(MADNotificationRecipient recipient : recipients) {
+				if(recipient.getAD_User_ID() <= 0) {
+					continue;
 				}
-				JDA connector = JDABuilder.createDefault(botToken).build();
-				connector.awaitReady();
-			    MessageFactory.getInstance()
-						.getHandler(recipient.getMessageType())
-						.createAndGetMessage(connector, notification, recipient)
-						.queue();
-			    connector.shutdown();
-				recipient.setProcessed(true);
-				recipient.saveEx();
-				log.fine("Telegram sent");	
-			} catch (Exception exception) {
-				log.severe(exception.getLocalizedMessage());
-				recipient.setErrorMsg(exception.getLocalizedMessage());
-				recipient.saveEx();
-				if(errorMessage.length() > 0) {
-					errorMessage.append(Env.NL);
+				MUser user = MUser.get(notification.getCtx(), recipient.getAD_User_ID());
+				if(user == null) {
+					continue;
 				}
-	        	errorMessage.append("Error: Sending to: ").append(recipient.getAccountName())
-						.append(": ").append(exception.getLocalizedMessage());
+				//	Send to each of the user's accounts for this platform; mark the recipient if any is sent
+				boolean anySent = false;
+				StringBuffer recipientError = new StringBuffer();
+				for(MADUserSocialMedia socialMedia : MADUserSocialMedia.getSocialMedias(notification.getCtx(), user.getAD_User_ID(), notification.get_TrxName())) {
+					if(!socialMedia.isReceiveNotifications() || !matchesRegistration(socialMedia, applicationSupportId)) {
+						continue;
+					}
+					try {
+						MADNotificationRecipient handleRecipient = new MADNotificationRecipient(notification);
+						handleRecipient.setAccountName(Optional.ofNullable(socialMedia.getAccountName()).orElse("").trim());
+						handleRecipient.setAD_User_ID(user.getAD_User_ID());
+						if(!Util.isEmpty(recipient.getMessageType())) {
+							handleRecipient.setMessageType(recipient.getMessageType());
+						}
+						MessageFactory.getInstance()
+								.getHandler(handleRecipient.getMessageType())
+								.createAndGetMessage(connector, notification, handleRecipient)
+								.queue();
+						anySent = true;
+						log.fine("Discord sent");
+					} catch (Exception exception) {
+						log.severe(exception.getLocalizedMessage());
+						if(recipientError.length() > 0) {
+							recipientError.append(Env.NL);
+						}
+						recipientError.append("Error: Sending to: ").append(socialMedia.getAccountName())
+								.append(": ").append(exception.getLocalizedMessage());
+					}
+				}
+				if(anySent) {
+					recipient.setProcessed(true);
+					recipient.saveEx();
+				} else if(recipientError.length() > 0) {
+					recipient.setErrorMsg(recipientError.toString());
+					recipient.saveEx();
+					if(errorMessage.length() > 0) {
+						errorMessage.append(Env.NL);
+					}
+					errorMessage.append(recipientError);
+				}
 			}
-		});
+		} finally {
+			connector.shutdown();
+		}
 		if(errorMessage.length() > 0) {
 			throw new AdempiereException(errorMessage.toString());
 		}
+	}
+
+	/**
+	 * Whether a user's social media account belongs to this notifier's platform/registration
+	 * @param socialMedia the user social media account
+	 * @param applicationSupportId this notifier's app support
+	 * @return
+	 */
+	private boolean matchesRegistration(X_AD_UserSocialMedia socialMedia, int applicationSupportId) {
+		if(socialMedia.getAD_AppSupport_ID() > 0 && applicationSupportId > 0) {
+			return socialMedia.getAD_AppSupport_ID() == applicationSupportId;
+		}
+		return DefaultNotifier.DefaultNotificationType_Discord.equals(socialMedia.getApplicationType());
 	}
 	
 	public static void main(String[] args) {
