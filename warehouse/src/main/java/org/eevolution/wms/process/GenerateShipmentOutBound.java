@@ -60,7 +60,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
@@ -353,7 +352,8 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
     }
 
     private BigDecimal getSalesOrderQtyToDelivery(MWMInOutBoundLine outboundLine) {
-        return Optional.ofNullable(getSelectionAsBigDecimal(outboundLine.getWM_InOutBoundLine_ID(), "QtyToDeliver")).orElse(outboundLine.getQtyToDeliver());
+        // Always recompute from the order line; never trust a client-supplied selection override, which can be stale.
+        return outboundLine.getQtyToDeliver();
     }
 
     private BigDecimal getManufacturingOrderQtyToDelivery(MWMInOutBoundLine outboundLine, MPPOrderBOMLine orderBOMLine) {
