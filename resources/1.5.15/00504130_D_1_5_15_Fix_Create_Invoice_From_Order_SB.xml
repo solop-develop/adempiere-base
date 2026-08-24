@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_Create_Invoice_From_Order_SB" ReleaseNo="1.5.15" SeqNo="504130">
+    <Comments>Create Invoice From Order Lines SB does not search because Project and OrderLine have same column and there is no alias for the columns</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="90002" Table="AD_Browse">
+        <Data AD_Column_ID="58000" Column="WhereClause" oldValue="case when o.INVOICERULE = 'D' then qtyinvoiced &lt; qtydelivered else oLine.qtyinvoiced &lt;&gt; oLine.qtyordered  end and o.docstatus in ('CO') and o.issotrx = 'Y'">CASE when o.INVOICERULE = 'D' THEN oLine.QtyInvoiced &lt; oLine.QtyDelivered ELSE
+oLine.QtyInvoiced &lt;&gt; oLine.QtyOrdered  END
+AND o.DocStatus in ('CO', 'CL')
+AND o.IsSOTrx = 'Y'
+AND oLine.qtyOpenToInvoice &gt; 0</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

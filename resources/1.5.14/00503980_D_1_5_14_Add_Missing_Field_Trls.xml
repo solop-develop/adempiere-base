@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Missing_Field_Trls" ReleaseNo="1.5.14" SeqNo="503980">
+    <Comments>Add missing Field Trls</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110516" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:22.882</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:22.882</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Organizational entity within client</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Organization</Data>
+        <Data AD_Column_ID="288" Column="Help">An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110516</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">aef78910-6eb4-402d-94be-2d4f38242ba7</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110518" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:23.492</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:23.492</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Date this record was created</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Created</Data>
+        <Data AD_Column_ID="288" Column="Help">The Created field indicates the date that this record was created.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110518</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">5268b6a5-fd93-49ff-a809-f39abb9ddd08</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110519" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:23.746</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:23.746</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Date this record was updated</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Updated</Data>
+        <Data AD_Column_ID="288" Column="Help">The Updated field indicates the date that this record was updated.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110519</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">e42c797d-3186-4f7c-b68a-d3f3fbcd3dc9</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110520" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:24.011</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:24.011</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">User who created this records</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Created By</Data>
+        <Data AD_Column_ID="288" Column="Help">The Created By field indicates the user who created this record.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110520</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">78ebea81-ea13-4abe-bed5-5c50d520d4d3</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110521" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:24.283</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:24.283</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">User who updated this records</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Updated By</Data>
+        <Data AD_Column_ID="288" Column="Help">The Updated By field indicates the user who updated this record.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110521</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">d871f8ec-b05c-4e56-955a-710fa0ae5a0f</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110522" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:24.561</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:24.561</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Immutable Universally Unique Identifier</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Immutable Universally Unique Identifier</Data>
+        <Data AD_Column_ID="288" Column="Help">"A surrogate key in a database is a unique identifier for either an entity in the modeled world or an object in the database. The surrogate key is not derived from application data, unlike a natural (or business) key which is derived from application data. " , According to Wikipedia http://en.wikipedia.org/wiki/Surrogate_key</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110522</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">0313f331-07be-48b3-a3c7-40623c0e5d22</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110523" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:24.824</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:24.824</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Hash of the Canonical Request Payload</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Request Hash</Data>
+        <Data AD_Column_ID="288" Column="Help">Hexadecimal digest of the canonical request payload. It is used to detect an equivalent request that is already queued or running.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110523</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">80571bfd-a77c-4843-8391-5936ac2a359a</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110524" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:25.11</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:25.11</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">A Cancellation Has Been Requested for This Execution</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Cancel Requested</Data>
+        <Data AD_Column_ID="288" Column="Help">Set when a caller asks to stop the execution. The running process checks this flag at safe points and stops as soon as possible.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110524</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">5676b0cc-a99e-40e9-8d04-b3e6de5201dd</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110525" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:25.378</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:25.378</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Canonical Request Payload in JSON Format</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Payload</Data>
+        <Data AD_Column_ID="288" Column="Help">Canonical JSON representation of the request, including the process parameters. It is the source from which the request hash is calculated.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110525</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">7a17aa54-c624-44fe-8a1d-2078eecb1276</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110526" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:25.629</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:25.629</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Responsibility Role</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Role</Data>
+        <Data AD_Column_ID="288" Column="Help">The Role determines security and access a user who has this Role will have in the System.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110526</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">fd8f0d39-a996-49ca-863e-ca2360dc0d62</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110527" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:25.872</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:25.872</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">User within the system - Internal or Business Partner Contact</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">User/Contact</Data>
+        <Data AD_Column_ID="288" Column="Help">The User identifies a unique user in the system. This could be an internal user or a business partner contact</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110527</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">41b87073-794d-43bc-b315-452e6d99f988</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110528" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:26.125</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:26.125</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Number of Times the Execution Has Been Retried</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Retry Count</Data>
+        <Data AD_Column_ID="288" Column="Help">Incremented every time the execution is retried after a recoverable failure.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110528</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">3ab42229-2a85-4beb-84bc-e63adc66247f</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110529" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:26.372</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:26.372</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Maximum Number of Retries Allowed for This Execution</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Maximum Retries</Data>
+        <Data AD_Column_ID="288" Column="Help">When the retry count reaches this limit the execution is marked as error and is no longer retried.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110529</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">aa3f7fae-7bf6-4f2a-bd47-0ab7559d28eb</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110530" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:26.631</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:26.631</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Date and Time When the Worker Lease Expires</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Lease Expiration</Data>
+        <Data AD_Column_ID="288" Column="Help">A running execution whose lease has expired is considered orphaned and can be recovered or retried by another worker.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110530</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">8061e102-5f99-4274-92c9-5f22248f9f52</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110531" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:26.881</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:26.881</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Schedule Processes</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Scheduler</Data>
+        <Data AD_Column_ID="288" Column="Help">Schedule processes to be executed asynchronously</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110531</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">1ff061d7-9c2e-49b8-90b5-5568d0ed5061</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110532" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:27.131</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:27.131</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Database Table information</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Table</Data>
+        <Data AD_Column_ID="288" Column="Help">The Database Table provides the information of the table definition</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110532</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">8405072f-f061-41fe-8146-b5bcb198b802</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110533" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:27.374</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:27.374</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Direct internal record ID</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Record ID</Data>
+        <Data AD_Column_ID="288" Column="Help">The Record ID is the internal unique identifier of a record. Please note that zooming to the record may not be successful for Orders, Invoices and Shipment/Receipts as sometimes the Sales Order type is not known.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110533</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">0b97e9fd-3c4a-4941-ae33-333c9ca7a305</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110534" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:27.616</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:27.616</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Idempotent Execution Request for an ADempiere Process</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Process Execution</Data>
+        <Data AD_Column_ID="288" Column="Help">Identifies a single request to execute an ADempiere process, together with its idempotency data, status and result.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110534</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">9a31acb7-4264-4941-8a3a-920bbe47fb4b</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110535" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:27.864</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:27.864</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Client/Tenant for this installation.</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Client</Data>
+        <Data AD_Column_ID="288" Column="Help">A Client is a company or a legal entity. You cannot share data between Clients. Tenant is a synonym for Client.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110535</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">51253d46-ec58-4869-b093-7668a00735ce</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110536" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-05 18:02:28.127</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-05 18:02:28.127</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">The record is active in the system</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Active</Data>
+        <Data AD_Column_ID="288" Column="Help">There are two methods of making records unavailable in the system: One is to delete the record, the other is to de-activate the record. A de-activated record is not available for selection, but available for reports.
+There are two reasons for de-activating and not deleting records:
+(1) The system requires the record for audit purposes.
+(2) The record is referenced by other records. E.g., you cannot delete a Business Partner, if there are invoices for this partner record existing. You de-activate the Business Partner and prevent that this record is used for future entries.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110536</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">368b7a9c-1f7f-4304-a3b7-9a3a979f5bce</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

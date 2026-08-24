@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Update_Nuxt_Forms_Path_to_UI" ReleaseNo="1.5.14" SeqNo="503800">
+    <Comments>Update Nuxt Forms WebPath to UI</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>UPDATE AD_Menu
+        SET WebPath = 'ui/' || SUBSTR(WebPath, 6),
+        Updated = now(),
+        UpdatedBy = 100
+        WHERE WebPath LIKE 'nuxt/%';
+      </SQLStatement>
+      <RollbackStatement>
+        UPDATE AD_Menu
+        SET WebPath = 'nuxt/' || SUBSTR(WebPath, 4),
+        Updated = now(),
+        UpdatedBy = 100
+        WHERE WebPath LIKE 'ui/%';
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>

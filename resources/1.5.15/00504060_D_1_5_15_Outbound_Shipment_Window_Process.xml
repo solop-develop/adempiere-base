@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Outbound_Shipment_Window_Process" ReleaseNo="1.5.15" SeqNo="504060">
+    <Comments>Add a Process for the outbound order window Generate Shipment</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="284" Action="I" Record_ID="54980" Table="AD_Process">
+        <Data AD_Column_ID="2803" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="11834" Column="AD_Workflow_ID" isNewNull="true"/>
+        <Data AD_Column_ID="107673" Column="ExecutionMode" isNewNull="true"/>
+        <Data AD_Column_ID="105743" Column="DocBaseURL" isNewNull="true"/>
+        <Data AD_Column_ID="101781" Column="SP003_IsMultiSelection">false</Data>
+        <Data AD_Column_ID="7752" Column="AD_PrintFormat_ID" isNewNull="true"/>
+        <Data AD_Column_ID="78843" Column="GenerateClass">N</Data>
+        <Data AD_Column_ID="14084" Column="IsServerProcess">false</Data>
+        <Data AD_Column_ID="56515" Column="AD_Form_ID" isNewNull="true"/>
+        <Data AD_Column_ID="11563" Column="WorkflowValue" isNewNull="true"/>
+        <Data AD_Column_ID="4023" Column="Value">WM_InOutbound Generate Shipment Window</Data>
+        <Data AD_Column_ID="2810" Column="Description">These process allows to generate multiple shipments for products that were succesfuly picked from an Outbound Order.</Data>
+        <Data AD_Column_ID="2809" Column="Name">Generate Shipments from Outbound Order</Data>
+        <Data AD_Column_ID="50181" Column="ShowHelp">Y</Data>
+        <Data AD_Column_ID="2804" Column="IsActive">true</Data>
+        <Data AD_Column_ID="57920" Column="CopyFromProcess" isNewNull="true"/>
+        <Data AD_Column_ID="5790" Column="AccessLevel">3</Data>
+        <Data AD_Column_ID="4214" Column="IsDirectPrint">false</Data>
+        <Data AD_Column_ID="2807" Column="Updated">2026-08-13 12:29:13.899</Data>
+        <Data AD_Column_ID="2805" Column="Created">2026-08-13 12:29:13.899</Data>
+        <Data AD_Column_ID="50182" Column="JasperReport" isNewNull="true"/>
+        <Data AD_Column_ID="6485" Column="EntityType">D</Data>
+        <Data AD_Column_ID="63488" Column="AD_Browse_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2813" Column="ProcedureName" isNewNull="true"/>
+        <Data AD_Column_ID="2802" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2801" Column="AD_Process_ID">54980</Data>
+        <Data AD_Column_ID="2806" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2808" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="6652" Column="Statistic_Count">0</Data>
+        <Data AD_Column_ID="6653" Column="Statistic_Seconds">0</Data>
+        <Data AD_Column_ID="3371" Column="IsReport">false</Data>
+        <Data AD_Column_ID="12458" Column="IsBetaFunctionality">false</Data>
+        <Data AD_Column_ID="2811" Column="Help">
+
+Once the Picking process is completed the process to generate shipments can be fulfilled.</Data>
+        <Data AD_Column_ID="4656" Column="Classname">org.eevolution.wms.process.GenerateShipmentOutBound</Data>
+        <Data AD_Column_ID="84383" Column="UUID">0f62363d-aed2-4a89-8339-64c1ce329b7e</Data>
+        <Data AD_Column_ID="4374" Column="AD_ReportView_ID" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="287" Action="I" Record_ID="0" Table="AD_Process_Trl">
+        <Data AD_Column_ID="2847" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2850" Column="Updated">2026-08-13 12:29:16.123</Data>
+        <Data AD_Column_ID="2848" Column="Created">2026-08-13 12:29:16.123</Data>
+        <Data AD_Column_ID="2853" Column="Description">These process allows to generate multiple shipments for products that were succesfuly picked from an Outbound Order.</Data>
+        <Data AD_Column_ID="2854" Column="Help">
+
+Once the Picking process is completed the process to generate shipments can be fulfilled.</Data>
+        <Data AD_Column_ID="2855" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2852" Column="Name">Generate Shipments from Outbound Order</Data>
+        <Data AD_Column_ID="2846" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2845" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2851" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2844" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2843" Column="AD_Process_ID">54980</Data>
+        <Data AD_Column_ID="2849" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="84387" Column="UUID">ca3202bd-5323-4b10-abd0-ab48382733e5</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="60034" Table="AD_Process_Para">
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID">135</Data>
+        <Data AD_Column_ID="84385" Column="UUID">8a1cb9b3-6809-4136-b9c1-a735b6d44f2f</Data>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">287</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2826" Column="SeqNo">10</Data>
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID">219</Data>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">17</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54980</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">2</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">EE03</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">60034</Data>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue">PR</Data>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="2824" Column="Help">You find the current status in the Document Status field. The options are listed in a popup</Data>
+        <Data AD_Column_ID="2823" Column="Description">The targeted status of the document</Data>
+        <Data AD_Column_ID="4017" Column="ColumnName">DocAction</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3738" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="2818" Column="Created">2026-08-13 12:29:30.746</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2822" Column="Name">Document Action</Data>
+        <Data AD_Column_ID="2820" Column="Updated">2026-08-13 12:29:30.746</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="60034" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2836" Column="Created">2026-08-13 12:29:32.051</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2026-08-13 12:29:32.051</Data>
+        <Data AD_Column_ID="2840" Column="Name">Document Action</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">The targeted status of the document</Data>
+        <Data AD_Column_ID="3743" Column="Help">You find the current status in the Document Status field. The options are listed in a popup</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">60034</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">74eccc59-1fdb-427f-aa96-c0aedb6286f8</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="60035" Table="AD_Process_Para">
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84385" Column="UUID">696c9193-8627-4123-84d5-3c27166f0707</Data>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">1037</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2826" Column="SeqNo">20</Data>
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">15</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54980</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">11</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">EE03</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">60035</Data>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue">@#Date@</Data>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="2824" Column="Help">The Movement Date indicates the date that a product moved in or out of inventory.  This is the result of a shipment, receipt or inventory movement.</Data>
+        <Data AD_Column_ID="2823" Column="Description">Date a product was moved in or out of inventory</Data>
+        <Data AD_Column_ID="4017" Column="ColumnName">MovementDate</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3738" Column="IsMandatory">true</Data>
+        <Data AD_Column_ID="2818" Column="Created">2026-08-13 12:29:32.317</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2822" Column="Name">Movement Date</Data>
+        <Data AD_Column_ID="2820" Column="Updated">2026-08-13 12:29:32.317</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="60035" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2836" Column="Created">2026-08-13 12:29:33.543</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2026-08-13 12:29:33.543</Data>
+        <Data AD_Column_ID="2840" Column="Name">Movement Date</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">Date a product was moved in or out of inventory</Data>
+        <Data AD_Column_ID="3743" Column="Help">The Movement Date indicates the date that a product moved in or out of inventory.  This is the result of a shipment, receipt or inventory movement.</Data>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">60035</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">dde70ea2-b86e-464a-8970-9a8cda741685</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="285" Action="I" Record_ID="60036" Table="AD_Process_Para">
+        <Data AD_Column_ID="2816" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2828" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84385" Column="UUID">30045ca2-f489-4ef5-836f-5f04166256fb</Data>
+        <Data AD_Column_ID="7729" Column="AD_Element_ID">59293</Data>
+        <Data AD_Column_ID="2821" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2826" Column="SeqNo">30</Data>
+        <Data AD_Column_ID="3736" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2827" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="2819" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2825" Column="AD_Process_ID">54980</Data>
+        <Data AD_Column_ID="3737" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="7728" Column="EntityType">EE03</Data>
+        <Data AD_Column_ID="2815" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2814" Column="AD_Process_Para_ID">60036</Data>
+        <Data AD_Column_ID="81287" Column="IsInfoOnly">false</Data>
+        <Data AD_Column_ID="56300" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="3739" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="3741" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="3740" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="5593" Column="DefaultValue2" isNewNull="true"/>
+        <Data AD_Column_ID="5819" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="56299" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="2824" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2823" Column="Description">The product not available lines are include in the shipment</Data>
+        <Data AD_Column_ID="4017" Column="ColumnName">IsIncludeNotAvailable</Data>
+        <Data AD_Column_ID="3742" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="3738" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="2818" Column="Created">2026-08-13 12:29:33.748</Data>
+        <Data AD_Column_ID="2830" Column="IsRange">false</Data>
+        <Data AD_Column_ID="2817" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2822" Column="Name">IsIncludeNotAvailable</Data>
+        <Data AD_Column_ID="2820" Column="Updated">2026-08-13 12:29:33.748</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="286" Action="I" Record_ID="60036" Table="AD_Process_Para_Trl">
+        <Data AD_Column_ID="2836" Column="Created">2026-08-13 12:29:34.953</Data>
+        <Data AD_Column_ID="2835" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2838" Column="Updated">2026-08-13 12:29:34.953</Data>
+        <Data AD_Column_ID="2840" Column="Name">IsIncludeNotAvailable</Data>
+        <Data AD_Column_ID="2842" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="2841" Column="Description">The product not available lines are include in the shipment</Data>
+        <Data AD_Column_ID="3743" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2831" Column="AD_Process_Para_ID">60036</Data>
+        <Data AD_Column_ID="2833" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2834" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2837" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2832" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="2839" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84386" Column="UUID">826afe2b-8f8d-4bb3-9653-0d18598d92f5</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="60034" Table="AD_Process_Para">
+        <Data AD_Column_ID="7728" Column="EntityType" oldValue="EE03">D</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="60035" Table="AD_Process_Para">
+        <Data AD_Column_ID="7728" Column="EntityType" oldValue="EE03">D</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="285" Action="U" Record_ID="60036" Table="AD_Process_Para">
+        <Data AD_Column_ID="7728" Column="EntityType" oldValue="EE03">D</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="53224" Action="U" Record_ID="50324" Table="AD_Browse">
+        <Data AD_Column_ID="58002" Column="AD_Process_ID" oldValue="53185">54980</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

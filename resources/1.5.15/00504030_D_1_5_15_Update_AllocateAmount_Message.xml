@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Update_AllocateAmount_Message" ReleaseNo="1.5.15" SeqNo="504030">
+    <Comments>Update AllocateAmount Message</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53855" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="The amount to allocate cannot be zero for the referenced document {0}. Enter an Allocate Amount greater than zero.">The amount to allocate cannot be zero for the referenced document {0}. Enter an Allocate Amount greater than zero, or mark the 'Only Reference' checkbox if you only want to link the documents without creating an allocation.
+</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="53855" Table="AD_Message_Trl">
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53855">53855</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="El monto a asignar no puede ser cero para el documento referenciado {0}. Ingrese un Monto a Asignar mayor que cero.">El monto a asignar no puede ser cero para el documento referenciado {0}. Ingrese un Monto a Asignar mayor que cero, o marque la casilla 'Solo Referencia' si solo desea relacionar los documentos sin crear una asignación.</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

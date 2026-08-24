@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Remove_UOM_Mandatory_in_Project_Line" ReleaseNo="1.5.14" SeqNo="503840">
+    <Comments>Remove UOM Mandatory in Project Line</Comments>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="104844" Table="AD_Field">
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true" oldValue="Y"/>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

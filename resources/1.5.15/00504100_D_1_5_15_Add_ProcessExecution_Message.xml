@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_ProcessExecution_Message" ReleaseNo="1.5.15" SeqNo="504100">
+    <Comments>Add Message to Process Execution</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="64074" Table="AD_Element">
+        <Data AD_Column_ID="2600" Column="Updated">2026-08-17 14:06:11.317</Data>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2603" Column="Name">Progress</Data>
+        <Data AD_Column_ID="2604" Column="Description">Progress percentage reported by the process, 0-100</Data>
+        <Data AD_Column_ID="2598" Column="Created">2026-08-17 14:06:11.317</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">Progress</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="4299" Column="PrintName">Progress</Data>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="58589" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">11</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">64074</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">D</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84316" Column="UUID">4da146d8-9e4e-449d-abfd-a34c3aca4b20</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2642" Column="Created">2026-08-17 14:06:14.992</Data>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2026-08-17 14:06:14.992</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">Progreso</Data>
+        <Data AD_Column_ID="2647" Column="Description">Porcentaje de avance reportado por el proceso, 0-100</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Progreso</Data>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">64074</Data>
+        <Data AD_Column_ID="84317" Column="UUID">848d3945-a338-42db-b60b-db8d042f7e39</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="64075" Table="AD_Element">
+        <Data AD_Column_ID="2600" Column="Updated">2026-08-17 14:06:15.526</Data>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2603" Column="Name">Progress Message</Data>
+        <Data AD_Column_ID="2604" Column="Description">Free-text message accompanying Progress</Data>
+        <Data AD_Column_ID="2598" Column="Created">2026-08-17 14:06:15.526</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">ProgressMessage</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="4299" Column="PrintName">Progress Message</Data>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="58589" Column="FieldLength">255</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">10</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">64075</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">D</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84316" Column="UUID">918e1590-117d-4b56-9780-79302f611c11</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2642" Column="Created">2026-08-17 14:06:16.801</Data>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2026-08-17 14:06:16.801</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">Mensaje de Progreso</Data>
+        <Data AD_Column_ID="2647" Column="Description">Mensaje de texto libre que acompaña al progreso</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Mensaje de Progreso</Data>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">64075</Data>
+        <Data AD_Column_ID="84317" Column="UUID">1e9f5097-85f6-45ca-afe4-96148f570210</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="107728" Table="AD_Column">
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="112" Column="Description">Progress percentage reported by the process, 0-100</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2026-08-17 14:06:19.412</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated">2026-08-17 14:06:19.412</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">107728</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="111" Column="Name">Progress</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">Progress</Data>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">55193</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">64074</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">10</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">11</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">ca82b952-60cb-4cf5-af1b-4a118d55bcf0</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="107728" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created">2026-08-17 14:06:22.629</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2026-08-17 14:06:22.629</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">107728</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Progress</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID">52ad6936-2769-40b6-9597-72b8e9084868</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="107729" Table="AD_Column">
+        <Data AD_Column_ID="112" Column="Description">Free-text message accompanying Progress</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2026-08-17 14:06:23.099</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated">2026-08-17 14:06:23.099</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">107729</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="111" Column="Name">Progress Message</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">ProgressMessage</Data>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">55193</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">64075</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">255</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">10</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">ed1f5fcf-6a95-4487-8523-1d339921c9d2</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="107729" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created">2026-08-17 14:06:25.404</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2026-08-17 14:06:25.404</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">107729</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Progress Message</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID">73be23de-6a05-4db1-bb2b-75684fb6fe8a</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="110568" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name">Progress</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">true</Data>
+        <Data AD_Column_ID="579" Column="Created">2026-08-17 14:06:28.957</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2026-08-17 14:06:28.957</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">false</Data>
+        <Data AD_Column_ID="169" Column="Description">Progress percentage reported by the process, 0-100</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">110568</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">D</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">120</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">107728</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55478</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID">d528b5ad-3878-4072-a32a-7e16b2a269ab</Data>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">53930</Data>
+        <Data AD_Column_ID="105742" Column="DocBaseURL" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110568" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-17 14:06:33.341</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-17 14:06:33.341</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Progress percentage reported by the process, 0-100</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Progress</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110568</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">df65b33c-d2d0-48da-a63d-a2708f581274</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="110569" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name">Progress Message</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">true</Data>
+        <Data AD_Column_ID="579" Column="Created">2026-08-17 14:06:33.747</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2026-08-17 14:06:33.747</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">false</Data>
+        <Data AD_Column_ID="169" Column="Description">Free-text message accompanying Progress</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true"/>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">true</Data>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">110569</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">D</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">130</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">107729</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55478</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID">f6598f56-6230-4386-97aa-f0ad72c8c33b</Data>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">53930</Data>
+        <Data AD_Column_ID="105742" Column="DocBaseURL" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110569" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-17 14:06:35.496</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-17 14:06:35.496</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Free-text message accompanying Progress</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Progress Message</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110569</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">1a0ef0c1-1a28-4896-bae2-0af1a3ebba91</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="64076" Table="AD_Element">
+        <Data AD_Column_ID="2600" Column="Updated">2026-08-17 14:38:19.172</Data>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2603" Column="Name">Is Process Managed</Data>
+        <Data AD_Column_ID="2604" Column="Description">When Y, this scheduler row is dispatched by the process module poller, not by the native scheduler engine</Data>
+        <Data AD_Column_ID="2598" Column="Created">2026-08-17 14:38:19.172</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">IsProcessManaged</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="4299" Column="PrintName">Is Process Managed</Data>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="58589" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">64076</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">D</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84316" Column="UUID">eb18e446-072c-4d90-8e77-96a5300dee14</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2642" Column="Created">2026-08-17 14:38:20.357</Data>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2026-08-17 14:38:20.357</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2646" Column="Name">Is Process Managed</Data>
+        <Data AD_Column_ID="2647" Column="Description">When Y, this scheduler row is dispatched by the process module poller, not by the native scheduler engine</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Is Process Managed</Data>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">64076</Data>
+        <Data AD_Column_ID="84317" Column="UUID">4575eb20-503c-4a2a-839c-81847818e251</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="107730" Table="AD_Column">
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">a4fa56be-2288-492b-bc15-fea413a95ca4</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">14</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">4000</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">64057</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">688</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="113" Column="Help">Canonical JSON representation of the request, including the process parameters. It is the source from which the request hash is calculated.</Data>
+        <Data AD_Column_ID="116" Column="ColumnName">Payload</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="111" Column="Name">Payload</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">107730</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated">2026-08-17 14:38:21.24</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2026-08-17 14:38:21.24</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="112" Column="Description">Canonical Request Payload in JSON Format</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="107730" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created">2026-08-17 14:38:22.692</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2026-08-17 14:38:22.692</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">107730</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Contenido de la Solicitud</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID">4d539c3e-59f3-49d3-bd10-091a64f89e80</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="107731" Table="AD_Column">
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84306" Column="UUID">286e700b-f72d-4557-aa08-623183757d40</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="118" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">64076</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">688</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">IsProcessManaged</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="117" Column="DefaultValue">N</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">true</Data>
+        <Data AD_Column_ID="111" Column="Name">Is Process Managed</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">107731</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated">2026-08-17 14:38:22.893</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2026-08-17 14:38:22.893</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="112" Column="Description">When Y, this scheduler row is dispatched by the process module poller, not by the native scheduler engine</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="107731" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created">2026-08-17 14:38:24.256</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2026-08-17 14:38:24.256</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">107731</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Is Process Managed</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID">e2a7eded-bef4-4a9d-9193-a09a5de160bb</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="110570" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name">Payload</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="579" Column="Created">2026-08-17 14:40:47.635</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2026-08-17 14:40:47.635</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="169" Column="Description">Canonical Request Payload in JSON Format</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="170" Column="Help">Canonical JSON representation of the request, including the process parameters. It is the source from which the request hash is calculated.</Data>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">110570</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">D</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">220</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">107730</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">220</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">589</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID">51e57127-0e7b-4f47-a8c6-4fd1cdc104ba</Data>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">305</Data>
+        <Data AD_Column_ID="105742" Column="DocBaseURL" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110570" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-17 14:40:48.99</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-17 14:40:48.99</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Canonical Request Payload in JSON Format</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Payload</Data>
+        <Data AD_Column_ID="288" Column="Help">Canonical JSON representation of the request, including the process parameters. It is the source from which the request hash is calculated.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110570</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">66984640-aae0-4ea7-9fd4-5b57618dbdb2</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="110571" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name">Is Process Managed</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="579" Column="Created">2026-08-17 14:41:59.902</Data>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2026-08-17 14:41:59.902</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="169" Column="Description">When Y, this scheduler row is dispatched by the process module poller, not by the native scheduler engine</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="182" Column="SortNo">0</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="59704" Column="PreferredWidth">0</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">true</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">110571</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">D</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">230</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">107731</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">230</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">589</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="84320" Column="UUID">8014b811-c328-4457-ab1a-1048271bd25c</Data>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">305</Data>
+        <Data AD_Column_ID="105742" Column="DocBaseURL" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110571" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-17 14:42:01.634</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-17 14:42:01.634</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">When Y, this scheduler row is dispatched by the process module poller, not by the native scheduler engine</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="286" Column="Name">Is Process Managed</Data>
+        <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110571</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">0ed31d17-1ed1-4280-95fe-c965c16c7092</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="277" Action="U" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Is Process Managed">Gestionado por Proceso</Data>
+        <Data AD_Column_ID="2647" Column="Description" oldValue="When Y, this scheduler row is dispatched by the process module poller, not by the native scheduler engine">Cuando es Y, esta fila del programador la despacha el poller del módulo de procesos, no el motor nativo del programador</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated" oldValue="false">true</Data>
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Is Process Managed">Gestionado por Proceso</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="64076">64076</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
