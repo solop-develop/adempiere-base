@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_Request_Form_WebPath" ReleaseNo="1.5.14" SeqNo="503920">
+    <Comments>Fix Request Form Webpath</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="55083" Table="AD_Menu">
+        <Data AD_Column_ID="104730" Column="WebPath" oldValue="/nuxt/module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@">ui/module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

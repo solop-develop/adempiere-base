@@ -1,98 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Migrations>
-  <Migration EntityType="D" Name="Allow_Commission_Create_Return_Order" ReleaseNo="1.5.12" SeqNo="503600">
-    <Comments>Allows Commission Create Return Order</Comments>
+  <Migration EntityType="D" Name="AllocateInvoice_Reference_Only_Check" ReleaseNo="1.5.15" SeqNo="504020">
+    <Comments>Add Check IsReferenceOnly to Allocate Invoice</Comments>
     <Step SeqNo="10" StepType="AD">
-      <PO AD_Table_ID="276" Action="I" Record_ID="64010" Table="AD_Element">
-        <Data AD_Column_ID="2600" Column="Updated">2026-07-03 15:29:31.541</Data>
+      <PO AD_Table_ID="276" Action="I" Record_ID="64065" Table="AD_Element">
+        <Data AD_Column_ID="2600" Column="Updated">2026-08-07 14:35:26.891</Data>
         <Data AD_Column_ID="2597" Column="IsActive">true</Data>
-        <Data AD_Column_ID="2603" Column="Name">DocType Reverse</Data>
+        <Data AD_Column_ID="2603" Column="Name">Only Reference</Data>
         <Data AD_Column_ID="2604" Column="Description" isNewNull="true"/>
-        <Data AD_Column_ID="2598" Column="Created">2026-07-03 15:29:31.541</Data>
-        <Data AD_Column_ID="2602" Column="ColumnName">C_DocTypeReverse_ID</Data>
+        <Data AD_Column_ID="2598" Column="Created">2026-08-07 14:35:26.891</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">IsReferenceOnly</Data>
         <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
         <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
         <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
         <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
-        <Data AD_Column_ID="4299" Column="PrintName">Document Type for Reverse</Data>
+        <Data AD_Column_ID="4299" Column="PrintName">Only Reference</Data>
         <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
-        <Data AD_Column_ID="58589" Column="FieldLength">10</Data>
-        <Data AD_Column_ID="58588" Column="AD_Reference_ID">30</Data>
-        <Data AD_Column_ID="2594" Column="AD_Element_ID">64010</Data>
+        <Data AD_Column_ID="58589" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">64065</Data>
         <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="6484" Column="EntityType">D</Data>
         <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID">170</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
         <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="84316" Column="UUID">8513f337-4cde-4970-ba1b-1b1b28bddfb7</Data>
+        <Data AD_Column_ID="84316" Column="UUID">2dde9b80-e789-4b14-a8ba-4830ad7542e9</Data>
       </PO>
     </Step>
     <Step SeqNo="20" StepType="AD">
       <PO AD_Table_ID="277" Action="I" Record_ID="0" Table="AD_Element_Trl">
-        <Data AD_Column_ID="2642" Column="Created">2026-07-03 15:29:33.661</Data>
+        <Data AD_Column_ID="2642" Column="Created">2026-08-07 14:35:28.511</Data>
         <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
         <Data AD_Column_ID="2641" Column="IsActive">true</Data>
-        <Data AD_Column_ID="2644" Column="Updated">2026-07-03 15:29:33.661</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2026-08-07 14:35:28.511</Data>
         <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
         <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
         <Data AD_Column_ID="2648" Column="Help" isNewNull="true"/>
-        <Data AD_Column_ID="2646" Column="Name">DocType Reverse</Data>
+        <Data AD_Column_ID="2646" Column="Name">Only Reference</Data>
         <Data AD_Column_ID="2647" Column="Description" isNewNull="true"/>
         <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="4300" Column="PrintName">Document Type for Reverse</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Only Reference</Data>
         <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
         <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
         <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="2637" Column="AD_Element_ID">64010</Data>
-        <Data AD_Column_ID="84317" Column="UUID">3a9fcd90-16f3-40e3-b4c4-71addb136b26</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">64065</Data>
+        <Data AD_Column_ID="84317" Column="UUID">f586c4e2-ba8e-439e-a452-c50c9fc48211</Data>
       </PO>
     </Step>
     <Step SeqNo="30" StepType="AD">
       <PO AD_Table_ID="277" Action="U" Record_ID="0" Table="AD_Element_Trl">
         <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
-        <Data AD_Column_ID="2646" Column="Name" oldValue="DocType Reverse">Tipo de Documento para Reverso</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Only Reference">Solo Referencia</Data>
         <Data AD_Column_ID="2649" Column="IsTranslated" oldValue="false">true</Data>
-        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Document Type for Reverse">Tipo de Documento para Reverso</Data>
-        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="64010">64010</Data>
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Only Reference">Solo Referencia</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="64065">64065</Data>
       </PO>
     </Step>
     <Step SeqNo="40" StepType="AD">
-      <PO AD_Table_ID="108" Action="I" Record_ID="53076" Table="AD_Val_Rule">
-        <Data AD_Column_ID="583" Column="IsActive">true</Data>
-        <Data AD_Column_ID="192" Column="Type">S</Data>
-        <Data AD_Column_ID="193" Column="Code">C_DocType.DocBaseType IN ('SOO', 'POO')</Data>
-        <Data AD_Column_ID="586" Column="Updated">2026-07-03 15:32:38.553</Data>
-        <Data AD_Column_ID="584" Column="Created">2026-07-03 15:32:38.553</Data>
-        <Data AD_Column_ID="188" Column="Name">DocType PO and SO and Return</Data>
-        <Data AD_Column_ID="189" Column="Description">Document Type for Purchase and Sales Order and Return</Data>
-        <Data AD_Column_ID="387" Column="AD_Client_ID">0</Data>
-        <Data AD_Column_ID="388" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="187" Column="AD_Val_Rule_ID">53076</Data>
-        <Data AD_Column_ID="7715" Column="EntityType">D</Data>
-        <Data AD_Column_ID="587" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="585" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="84460" Column="UUID">a39be0d5-aa19-4d76-8e4f-3b3f1cea9d54</Data>
-      </PO>
-    </Step>
-    <Step SeqNo="50" StepType="AD">
-      <PO AD_Table_ID="101" Action="I" Record_ID="107446" Table="AD_Column">
+      <PO AD_Table_ID="101" Action="I" Record_ID="107690" Table="AD_Column">
         <Data AD_Column_ID="112" Column="Description" isNewNull="true"/>
         <Data AD_Column_ID="548" Column="IsActive">true</Data>
         <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
-        <Data AD_Column_ID="549" Column="Created">2026-07-03 15:33:21.64</Data>
+        <Data AD_Column_ID="549" Column="Created">2026-08-07 14:36:28.028</Data>
         <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
-        <Data AD_Column_ID="551" Column="Updated">2026-07-03 15:33:21.64</Data>
+        <Data AD_Column_ID="551" Column="Updated">2026-08-07 14:36:28.028</Data>
         <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
-        <Data AD_Column_ID="109" Column="AD_Column_ID">107446</Data>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">107690</Data>
         <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
-        <Data AD_Column_ID="111" Column="Name">DocType Reverse</Data>
+        <Data AD_Column_ID="111" Column="Name">Only Reference</Data>
         <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
         <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="117" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="117" Column="DefaultValue">N</Data>
         <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
         <Data AD_Column_ID="120" Column="IsParent">false</Data>
         <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
@@ -103,7 +85,7 @@
         <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
         <Data AD_Column_ID="110" Column="Version">0</Data>
         <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
-        <Data AD_Column_ID="116" Column="ColumnName">C_DocTypeReverse_ID</Data>
+        <Data AD_Column_ID="116" Column="ColumnName">IsReferenceOnly</Data>
         <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
         <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
         <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
@@ -119,49 +101,49 @@
         <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
-        <Data AD_Column_ID="114" Column="AD_Table_ID">429</Data>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">54995</Data>
         <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="2608" Column="AD_Element_ID">64010</Data>
-        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID">170</Data>
-        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID">53076</Data>
-        <Data AD_Column_ID="118" Column="FieldLength">10</Data>
-        <Data AD_Column_ID="226" Column="AD_Reference_ID">30</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">64065</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">20</Data>
         <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
-        <Data AD_Column_ID="84306" Column="UUID">6f1e080e-871e-443b-972a-56cd6cc104a9</Data>
+        <Data AD_Column_ID="84306" Column="UUID">25d2b294-dcca-43dd-a742-23c2d2d65894</Data>
         <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
         <Data AD_Column_ID="92541" Column="RequiresSync">true</Data>
         <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
       </PO>
     </Step>
-    <Step SeqNo="60" StepType="AD">
-      <PO AD_Table_ID="752" Action="I" Record_ID="107446" Table="AD_Column_Trl">
-        <Data AD_Column_ID="12960" Column="Created">2026-07-03 15:33:22.952</Data>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="107690" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created">2026-08-07 14:36:29.781</Data>
         <Data AD_Column_ID="12959" Column="IsActive">true</Data>
-        <Data AD_Column_ID="12952" Column="Updated">2026-07-03 15:33:22.952</Data>
-        <Data AD_Column_ID="12955" Column="AD_Column_ID">107446</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2026-08-07 14:36:29.781</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">107690</Data>
         <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="12957" Column="Name">DocType Reverse</Data>
+        <Data AD_Column_ID="12957" Column="Name">Only Reference</Data>
         <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="84310" Column="UUID">7cd51f5b-1b2b-4ac0-b12a-7e2a5372e79b</Data>
+        <Data AD_Column_ID="84310" Column="UUID">6cbd22bd-c603-40dc-adc7-6907b9906c79</Data>
       </PO>
     </Step>
-    <Step SeqNo="70" StepType="AD">
-      <PO AD_Table_ID="101" Action="U" Record_ID="103669" Table="AD_Column">
-        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" oldValue="53019">53076</Data>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="100" Action="U" Record_ID="54995" Table="AD_Table">
+        <Data AD_Column_ID="105" Column="AD_Window_ID" isOldNull="true">167</Data>
       </PO>
     </Step>
     <Step SeqNo="80" StepType="AD">
-      <PO AD_Table_ID="107" Action="I" Record_ID="110292" Table="AD_Field">
-        <Data AD_Column_ID="168" Column="Name">DocType Reverse</Data>
+      <PO AD_Table_ID="107" Action="I" Record_ID="110551" Table="AD_Field">
+        <Data AD_Column_ID="168" Column="Name">Only Reference</Data>
         <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
-        <Data AD_Column_ID="579" Column="Created">2026-07-03 15:34:14.371</Data>
+        <Data AD_Column_ID="579" Column="Created">2026-08-07 14:37:02.679</Data>
         <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
         <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
-        <Data AD_Column_ID="581" Column="Updated">2026-07-03 15:34:14.371</Data>
+        <Data AD_Column_ID="581" Column="Updated">2026-08-07 14:37:02.679</Data>
         <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
         <Data AD_Column_ID="578" Column="IsActive">true</Data>
         <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
@@ -187,39 +169,39 @@
         <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
         <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
-        <Data AD_Column_ID="167" Column="AD_Field_ID">110292</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">110551</Data>
         <Data AD_Column_ID="7714" Column="EntityType">D</Data>
         <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
-        <Data AD_Column_ID="181" Column="SeqNo">240</Data>
+        <Data AD_Column_ID="181" Column="SeqNo">10</Data>
         <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
-        <Data AD_Column_ID="174" Column="AD_Column_ID">107446</Data>
+        <Data AD_Column_ID="174" Column="AD_Column_ID">107690</Data>
         <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
-        <Data AD_Column_ID="62479" Column="SeqNoGrid">240</Data>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">10</Data>
         <Data AD_Column_ID="180" Column="DisplayLength">0</Data>
-        <Data AD_Column_ID="172" Column="AD_Tab_ID">355</Data>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">55280</Data>
         <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
-        <Data AD_Column_ID="84320" Column="UUID">a6708076-2ec7-4be3-a295-ff938fe7cfae</Data>
-        <Data AD_Column_ID="101775" Column="AD_Window_ID">207</Data>
+        <Data AD_Column_ID="84320" Column="UUID">eac5c5b4-11c2-4a28-8fc8-904a33f6e772</Data>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">167</Data>
         <Data AD_Column_ID="105742" Column="DocBaseURL" isNewNull="true"/>
       </PO>
     </Step>
     <Step SeqNo="90" StepType="AD">
-      <PO AD_Table_ID="127" Action="I" Record_ID="110292" Table="AD_Field_Trl">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110551" Table="AD_Field_Trl">
         <Data AD_Column_ID="671" Column="IsActive">true</Data>
-        <Data AD_Column_ID="672" Column="Created">2026-07-03 15:34:15.455</Data>
-        <Data AD_Column_ID="674" Column="Updated">2026-07-03 15:34:15.455</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-07 14:37:04.228</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-07 14:37:04.228</Data>
         <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="287" Column="Description" isNewNull="true"/>
         <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="286" Column="Name">DocType Reverse</Data>
+        <Data AD_Column_ID="286" Column="Name">Only Reference</Data>
         <Data AD_Column_ID="288" Column="Help" isNewNull="true"/>
         <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
-        <Data AD_Column_ID="284" Column="AD_Field_ID">110292</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110551</Data>
         <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
         <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
         <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
-        <Data AD_Column_ID="84323" Column="UUID">37220873-cff4-48dd-b4d6-294bc784711c</Data>
+        <Data AD_Column_ID="84323" Column="UUID">d125a110-3c08-4060-ad39-5baa4284eefe</Data>
       </PO>
     </Step>
   </Migration>

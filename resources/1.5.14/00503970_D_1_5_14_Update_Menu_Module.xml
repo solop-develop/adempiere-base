@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Update_Menu_Module" ReleaseNo="1.5.14" SeqNo="503970">
+    <Comments>Update Menu module for process execution and token claim set</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="55148" Table="AD_Menu">
+        <Data AD_Column_ID="104002" Column="AD_Module_ID" isOldNull="true">50011</Data>
+        <Data AD_Column_ID="104003" Column="AD_SubModule_ID" isOldNull="true">50041</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="116" Action="U" Record_ID="55158" Table="AD_Menu">
+        <Data AD_Column_ID="104002" Column="AD_Module_ID" isOldNull="true">50011</Data>
+        <Data AD_Column_ID="104003" Column="AD_SubModule_ID" isOldNull="true">50041</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

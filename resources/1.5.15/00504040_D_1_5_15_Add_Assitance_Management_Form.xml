@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Assitance_Management_Form" ReleaseNo="1.5.15" SeqNo="504040">
+    <Comments>Add Assistance Management Form</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="376" Action="I" Record_ID="53103" Table="AD_Form">
+        <Data AD_Column_ID="4602" Column="Updated">2026-08-11 19:57:21.136</Data>
+        <Data AD_Column_ID="4600" Column="Created">2026-08-11 19:57:21.136</Data>
+        <Data AD_Column_ID="4599" Column="IsActive">true</Data>
+        <Data AD_Column_ID="4605" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="5791" Column="AccessLevel">3</Data>
+        <Data AD_Column_ID="4607" Column="Classname">org.compiere.apps.form.AttendanceManagementForm</Data>
+        <Data AD_Column_ID="4606" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="13022" Column="JSPURL" isNewNull="true"/>
+        <Data AD_Column_ID="4604" Column="Name">Attendance Management</Data>
+        <Data AD_Column_ID="12738" Column="IsBetaFunctionality">false</Data>
+        <Data AD_Column_ID="4597" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="4598" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="4596" Column="AD_Form_ID">53103</Data>
+        <Data AD_Column_ID="7708" Column="EntityType">D</Data>
+        <Data AD_Column_ID="4603" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="4601" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="84325" Column="UUID">984b4bf3-3b6d-42ac-97db-585f796b3cde</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="377" Action="I" Record_ID="53103" Table="AD_Form_Trl">
+        <Data AD_Column_ID="4615" Column="Updated">2026-08-11 19:57:23.17</Data>
+        <Data AD_Column_ID="4618" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="4613" Column="Created">2026-08-11 19:57:23.17</Data>
+        <Data AD_Column_ID="4612" Column="IsActive">true</Data>
+        <Data AD_Column_ID="4620" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="4617" Column="Name">Gestión de Asistencia</Data>
+        <Data AD_Column_ID="4619" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="4610" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="4611" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="4608" Column="AD_Form_ID">53103</Data>
+        <Data AD_Column_ID="4609" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="4614" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="4616" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84327" Column="UUID">3cb24d5e-c77a-4bd9-876b-d93ff13b4441</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="102" Action="I" Record_ID="54738" Table="AD_Reference">
+        <Data AD_Column_ID="556" Column="Updated">2026-08-11 19:57:23.496</Data>
+        <Data AD_Column_ID="553" Column="IsActive">true</Data>
+        <Data AD_Column_ID="554" Column="Created">2026-08-11 19:57:23.496</Data>
+        <Data AD_Column_ID="139" Column="ValidationType">L</Data>
+        <Data AD_Column_ID="132" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="54355" Column="IsOrderByValue">false</Data>
+        <Data AD_Column_ID="1180" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="130" Column="Name">Auto Complete Attendance Batch</Data>
+        <Data AD_Column_ID="131" Column="Description">Controls whether the attendance batch is auto-completed and under which validation conditions</Data>
+        <Data AD_Column_ID="129" Column="AD_Reference_ID">54738</Data>
+        <Data AD_Column_ID="363" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="364" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6486" Column="EntityType">D</Data>
+        <Data AD_Column_ID="557" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="555" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="84393" Column="UUID">e42ddbcb-c123-4aba-97d8-21d09c3c0621</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="126" Action="I" Record_ID="0" Table="AD_Reference_Trl">
+        <Data AD_Column_ID="280" Column="Name">Auto Complete Attendance Batch</Data>
+        <Data AD_Column_ID="282" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="666" Column="IsActive">true</Data>
+        <Data AD_Column_ID="667" Column="Created">2026-08-11 19:57:24.596</Data>
+        <Data AD_Column_ID="669" Column="Updated">2026-08-11 19:57:24.596</Data>
+        <Data AD_Column_ID="668" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="283" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="281" Column="Description">Controls whether the attendance batch is auto-completed and under which validation conditions</Data>
+        <Data AD_Column_ID="1203" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="1202" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="670" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="279" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="278" Column="AD_Reference_ID">54738</Data>
+        <Data AD_Column_ID="84394" Column="UUID">36c54634-e1a9-46eb-bc60-345b9be38157</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="276" Action="U" Record_ID="64063" Table="AD_Element">
+        <Data AD_Column_ID="2604" Column="Description" oldValue="Controls whether the attendance batch (HR_AttendanceBatch) is completed automatically (Y) or left as draft (empty/N).">Controls when the attendance batch is auto-completed, based on time and location validation.</Data>
+        <Data AD_Column_ID="2605" Column="Help" oldValue="When set to Yes, the attendance batch (HR_AttendanceBatch) is generated already completed. When empty or No, the batch is left in draft status for manual review.">Determines whether and under which conditions the attendance batch (HR_AttendanceBatch) is generated already completed instead of being left as a draft for manual review. Options: Never - the batch is never auto-completed and always stays in draft; Always - the batch is always auto-completed regardless of time or location; Correct Time - the batch is auto-completed only when the recorded time is correct; Correct Location - the batch is auto-completed only when the recorded location is correct; Correct Time and Location - the batch is auto-completed only when both the time and the location are correct.</Data>
+        <Data AD_Column_ID="58589" Column="FieldLength" oldValue="1">2</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" oldValue="319">54738</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="276" Action="I" Record_ID="64072" Table="AD_Element">
+        <Data AD_Column_ID="2600" Column="Updated">2026-08-11 19:57:25.327</Data>
+        <Data AD_Column_ID="2597" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2603" Column="Name">Approval Required</Data>
+        <Data AD_Column_ID="2604" Column="Description">Indicates whether this attendance batch requires approval</Data>
+        <Data AD_Column_ID="2598" Column="Created">2026-08-11 19:57:25.327</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">IsApprovalRequired</Data>
+        <Data AD_Column_ID="2605" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="4299" Column="PrintName">Approval Required</Data>
+        <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="58589" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="58588" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="2594" Column="AD_Element_ID">64072</Data>
+        <Data AD_Column_ID="2596" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2595" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6484" Column="EntityType">D</Data>
+        <Data AD_Column_ID="2599" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="58590" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="2601" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84316" Column="UUID">ba1d2e78-7bcb-44a3-b30a-493f916e994e</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="277" Action="I" Record_ID="0" Table="AD_Element_Trl">
+        <Data AD_Column_ID="2642" Column="Created">2026-08-11 19:57:26.452</Data>
+        <Data AD_Column_ID="6449" Column="PO_Help" isNewNull="true"/>
+        <Data AD_Column_ID="2641" Column="IsActive">true</Data>
+        <Data AD_Column_ID="2644" Column="Updated">2026-08-11 19:57:26.452</Data>
+        <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
+        <Data AD_Column_ID="2648" Column="Help">Cuando se establece en Sí, el lote de asistencia requiere aprobación antes de poder ser procesado.</Data>
+        <Data AD_Column_ID="2646" Column="Name">Aprobación Requerida</Data>
+        <Data AD_Column_ID="2647" Column="Description">Indica si este lote de asistencia requiere aprobación</Data>
+        <Data AD_Column_ID="2649" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Aprobación Requerida</Data>
+        <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
+        <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
+        <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="2639" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="2645" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="2643" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2637" Column="AD_Element_ID">64072</Data>
+        <Data AD_Column_ID="84317" Column="UUID">fd1c46f1-119e-480c-87a9-9000d0bf05a3</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="107686" Table="AD_Column">
+        <Data AD_Column_ID="112" Column="Description" oldValue="Controls whether the attendance batch (HR_AttendanceBatch) is completed automatically (Y) or left as draft (empty/N).">Controls when the attendance batch is auto-completed, based on time and location validation.</Data>
+        <Data AD_Column_ID="113" Column="Help" oldValue="When set to Yes, the attendance batch (HR_AttendanceBatch) is generated already completed. When empty or No, the batch is left in draft status for manual review.">Determines whether and under which conditions the attendance batch (HR_AttendanceBatch) is generated already completed instead of being left as a draft for manual review. Options: Never - the batch is never auto-completed and always stays in draft; Always - the batch is always auto-completed regardless of time or location; Correct Time - the batch is auto-completed only when the recorded time is correct; Correct Location - the batch is auto-completed only when the recorded location is correct; Correct Time and Location - the batch is auto-completed only when both the time and the location are correct.</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" oldValue="319">54738</Data>
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="1">2</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="101" Action="I" Record_ID="107724" Table="AD_Column">
+        <Data AD_Column_ID="112" Column="Description">Indicates whether this attendance batch requires approval</Data>
+        <Data AD_Column_ID="548" Column="IsActive">true</Data>
+        <Data AD_Column_ID="90939" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="549" Column="Created">2026-08-11 19:57:27.818</Data>
+        <Data AD_Column_ID="3388" Column="ValueMin" isNewNull="true"/>
+        <Data AD_Column_ID="551" Column="Updated">2026-08-11 19:57:27.818</Data>
+        <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
+        <Data AD_Column_ID="109" Column="AD_Column_ID">107724</Data>
+        <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
+        <Data AD_Column_ID="111" Column="Name">Approval Required</Data>
+        <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
+        <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="117" Column="DefaultValue">N</Data>
+        <Data AD_Column_ID="1179" Column="VFormat" isNewNull="true"/>
+        <Data AD_Column_ID="120" Column="IsParent">false</Data>
+        <Data AD_Column_ID="6244" Column="IsSelectionColumn">false</Data>
+        <Data AD_Column_ID="6483" Column="IsSyncDatabase">N</Data>
+        <Data AD_Column_ID="119" Column="IsKey">false</Data>
+        <Data AD_Column_ID="6245" Column="ReadOnlyLogic" isNewNull="true"/>
+        <Data AD_Column_ID="56352" Column="FormatPattern" isNewNull="true"/>
+        <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
+        <Data AD_Column_ID="110" Column="Version">0</Data>
+        <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
+        <Data AD_Column_ID="116" Column="ColumnName">IsApprovalRequired</Data>
+        <Data AD_Column_ID="113" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
+        <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
+        <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
+        <Data AD_Column_ID="128" Column="IsEncrypted">N</Data>
+        <Data AD_Column_ID="54358" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="56187" Column="IsAllowLogging">true</Data>
+        <Data AD_Column_ID="56149" Column="IsAutocomplete">false</Data>
+        <Data AD_Column_ID="68024" Column="IsRange">false</Data>
+        <Data AD_Column_ID="62199" Column="IsAllowCopy">true</Data>
+        <Data AD_Column_ID="127" Column="SeqNo" isNewNull="true"/>
+        <Data AD_Column_ID="6482" Column="EntityType">D</Data>
+        <Data AD_Column_ID="359" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="360" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="59702" Column="AD_Chart_ID" isNewNull="true"/>
+        <Data AD_Column_ID="114" Column="AD_Table_ID">54498</Data>
+        <Data AD_Column_ID="550" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="2608" Column="AD_Element_ID">64072</Data>
+        <Data AD_Column_ID="227" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="115" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="118" Column="FieldLength">1</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID">20</Data>
+        <Data AD_Column_ID="552" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="84306" Column="UUID">1ea3578f-2bd0-4e12-9b54-bd15ab0b65aa</Data>
+        <Data AD_Column_ID="3369" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="92541" Column="RequiresSync">false</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true"/>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="752" Action="I" Record_ID="107724" Table="AD_Column_Trl">
+        <Data AD_Column_ID="12960" Column="Created">2026-08-11 19:57:29.362</Data>
+        <Data AD_Column_ID="12959" Column="IsActive">true</Data>
+        <Data AD_Column_ID="12952" Column="Updated">2026-08-11 19:57:29.362</Data>
+        <Data AD_Column_ID="12955" Column="AD_Column_ID">107724</Data>
+        <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="12957" Column="Name">Aprobación Requerida</Data>
+        <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="12956" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="12953" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84310" Column="UUID">347a42ba-26e0-4261-9f97-2b8c84b4c7bc</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="104" Action="I" Record_ID="56741" Table="AD_Ref_List">
+        <Data AD_Column_ID="372" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="84390" Column="UUID">a3806a66-ac83-4ac0-af22-fe57886bc964</Data>
+        <Data AD_Column_ID="567" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="565" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="371" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="148" Column="AD_Ref_List_ID">56741</Data>
+        <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
+        <Data AD_Column_ID="149" Column="Name">Never</Data>
+        <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
+        <Data AD_Column_ID="150" Column="Description">The attendance batch is never auto-completed</Data>
+        <Data AD_Column_ID="151" Column="AD_Reference_ID">54738</Data>
+        <Data AD_Column_ID="7712" Column="EntityType">D</Data>
+        <Data AD_Column_ID="200" Column="Value">N</Data>
+        <Data AD_Column_ID="566" Column="Updated">2026-08-11 19:57:29.611</Data>
+        <Data AD_Column_ID="564" Column="Created">2026-08-11 19:57:29.611</Data>
+        <Data AD_Column_ID="563" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="136" Action="I" Record_ID="56741" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="707" Column="Created">2026-08-11 19:57:30.696</Data>
+        <Data AD_Column_ID="709" Column="Updated">2026-08-11 19:57:30.696</Data>
+        <Data AD_Column_ID="706" Column="IsActive">true</Data>
+        <Data AD_Column_ID="338" Column="Name">Nunca</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="339" Column="Description">El lote de asistencia nunca se completa automáticamente</Data>
+        <Data AD_Column_ID="1216" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="1215" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="710" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="708" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID">56741</Data>
+        <Data AD_Column_ID="337" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84391" Column="UUID">b23b93e9-a771-496f-b5bd-87773994d803</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="104" Action="I" Record_ID="56742" Table="AD_Ref_List">
+        <Data AD_Column_ID="372" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="84390" Column="UUID">b04e44b4-5fb0-4c67-937a-d46501f4f8ee</Data>
+        <Data AD_Column_ID="567" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="565" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="371" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="148" Column="AD_Ref_List_ID">56742</Data>
+        <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
+        <Data AD_Column_ID="149" Column="Name">Always</Data>
+        <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
+        <Data AD_Column_ID="150" Column="Description">The attendance batch is always auto-completed</Data>
+        <Data AD_Column_ID="151" Column="AD_Reference_ID">54738</Data>
+        <Data AD_Column_ID="7712" Column="EntityType">D</Data>
+        <Data AD_Column_ID="200" Column="Value">A</Data>
+        <Data AD_Column_ID="566" Column="Updated">2026-08-11 19:57:30.922</Data>
+        <Data AD_Column_ID="564" Column="Created">2026-08-11 19:57:30.922</Data>
+        <Data AD_Column_ID="563" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="136" Action="I" Record_ID="56742" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="707" Column="Created">2026-08-11 19:57:31.879</Data>
+        <Data AD_Column_ID="709" Column="Updated">2026-08-11 19:57:31.879</Data>
+        <Data AD_Column_ID="706" Column="IsActive">true</Data>
+        <Data AD_Column_ID="338" Column="Name">Siempre</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="339" Column="Description">El lote de asistencia siempre se completa automáticamente</Data>
+        <Data AD_Column_ID="1216" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="1215" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="710" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="708" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID">56742</Data>
+        <Data AD_Column_ID="337" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84391" Column="UUID">18276c90-8ef8-4d73-b87e-4a4b4f925daf</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="104" Action="I" Record_ID="56743" Table="AD_Ref_List">
+        <Data AD_Column_ID="372" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="84390" Column="UUID">cbebe7bd-7830-4c41-ae3d-106b35d16d42</Data>
+        <Data AD_Column_ID="567" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="565" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="371" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="148" Column="AD_Ref_List_ID">56743</Data>
+        <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
+        <Data AD_Column_ID="149" Column="Name">Correct Time</Data>
+        <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
+        <Data AD_Column_ID="150" Column="Description">Auto-complete only when the time is correct</Data>
+        <Data AD_Column_ID="151" Column="AD_Reference_ID">54738</Data>
+        <Data AD_Column_ID="7712" Column="EntityType">D</Data>
+        <Data AD_Column_ID="200" Column="Value">T</Data>
+        <Data AD_Column_ID="566" Column="Updated">2026-08-11 19:57:32.093</Data>
+        <Data AD_Column_ID="564" Column="Created">2026-08-11 19:57:32.093</Data>
+        <Data AD_Column_ID="563" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="160" StepType="AD">
+      <PO AD_Table_ID="136" Action="I" Record_ID="56743" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="707" Column="Created">2026-08-11 19:57:33.119</Data>
+        <Data AD_Column_ID="709" Column="Updated">2026-08-11 19:57:33.119</Data>
+        <Data AD_Column_ID="706" Column="IsActive">true</Data>
+        <Data AD_Column_ID="338" Column="Name">Hora Correcta</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="339" Column="Description">Completar automáticamente solo cuando la hora es correcta</Data>
+        <Data AD_Column_ID="1216" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="1215" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="710" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="708" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID">56743</Data>
+        <Data AD_Column_ID="337" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84391" Column="UUID">ee947d3b-4447-4b33-bc53-1a451e3633e0</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="170" StepType="AD">
+      <PO AD_Table_ID="104" Action="I" Record_ID="56744" Table="AD_Ref_List">
+        <Data AD_Column_ID="372" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="84390" Column="UUID">596d9a06-56af-4feb-8fdf-2f1c6e08a7bf</Data>
+        <Data AD_Column_ID="567" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="565" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="371" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="148" Column="AD_Ref_List_ID">56744</Data>
+        <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
+        <Data AD_Column_ID="149" Column="Name">Correct Location</Data>
+        <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
+        <Data AD_Column_ID="150" Column="Description">Auto-complete only when the location is correct</Data>
+        <Data AD_Column_ID="151" Column="AD_Reference_ID">54738</Data>
+        <Data AD_Column_ID="7712" Column="EntityType">D</Data>
+        <Data AD_Column_ID="200" Column="Value">L</Data>
+        <Data AD_Column_ID="566" Column="Updated">2026-08-11 19:57:33.333</Data>
+        <Data AD_Column_ID="564" Column="Created">2026-08-11 19:57:33.333</Data>
+        <Data AD_Column_ID="563" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="180" StepType="AD">
+      <PO AD_Table_ID="136" Action="I" Record_ID="56744" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="707" Column="Created">2026-08-11 19:57:34.34</Data>
+        <Data AD_Column_ID="709" Column="Updated">2026-08-11 19:57:34.34</Data>
+        <Data AD_Column_ID="706" Column="IsActive">true</Data>
+        <Data AD_Column_ID="338" Column="Name">Ubicación Correcta</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="339" Column="Description">Completar automáticamente solo cuando la ubicación es correcta</Data>
+        <Data AD_Column_ID="1216" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="1215" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="710" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="708" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID">56744</Data>
+        <Data AD_Column_ID="337" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84391" Column="UUID">260ec33c-85cc-4390-ba04-5da05063993a</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="190" StepType="AD">
+      <PO AD_Table_ID="104" Action="I" Record_ID="56745" Table="AD_Ref_List">
+        <Data AD_Column_ID="372" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="84390" Column="UUID">f27c369b-5769-41d5-82fa-3eec3d5d94a6</Data>
+        <Data AD_Column_ID="567" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="565" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="371" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="148" Column="AD_Ref_List_ID">56745</Data>
+        <Data AD_Column_ID="153" Column="ValidTo" isNewNull="true"/>
+        <Data AD_Column_ID="149" Column="Name">Correct Time and Location</Data>
+        <Data AD_Column_ID="152" Column="ValidFrom" isNewNull="true"/>
+        <Data AD_Column_ID="150" Column="Description">Auto-complete only when both time and location are correct</Data>
+        <Data AD_Column_ID="151" Column="AD_Reference_ID">54738</Data>
+        <Data AD_Column_ID="7712" Column="EntityType">D</Data>
+        <Data AD_Column_ID="200" Column="Value">TL</Data>
+        <Data AD_Column_ID="566" Column="Updated">2026-08-11 19:57:34.573</Data>
+        <Data AD_Column_ID="564" Column="Created">2026-08-11 19:57:34.573</Data>
+        <Data AD_Column_ID="563" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="200" StepType="AD">
+      <PO AD_Table_ID="136" Action="I" Record_ID="56745" Table="AD_Ref_List_Trl">
+        <Data AD_Column_ID="707" Column="Created">2026-08-11 19:57:35.545</Data>
+        <Data AD_Column_ID="709" Column="Updated">2026-08-11 19:57:35.545</Data>
+        <Data AD_Column_ID="706" Column="IsActive">true</Data>
+        <Data AD_Column_ID="338" Column="Name">Hora y Ubicación Correcta</Data>
+        <Data AD_Column_ID="340" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="339" Column="Description">Completar automáticamente solo cuando la hora y la ubicación son correctas</Data>
+        <Data AD_Column_ID="1216" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="1215" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="710" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="708" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="336" Column="AD_Ref_List_ID">56745</Data>
+        <Data AD_Column_ID="337" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84391" Column="UUID">09bf9ecf-3fb4-4e24-96ff-06385ab956d8</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="210" StepType="AD">
+      <PO AD_Table_ID="107" Action="I" Record_ID="110564" Table="AD_Field">
+        <Data AD_Column_ID="174" Column="AD_Column_ID">107724</Data>
+        <Data AD_Column_ID="384" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="54356" Column="AD_Reference_Value_ID" isNewNull="true"/>
+        <Data AD_Column_ID="57957" Column="Included_Tab_ID" isNewNull="true"/>
+        <Data AD_Column_ID="105742" Column="DocBaseURL" isNewNull="true"/>
+        <Data AD_Column_ID="101775" Column="AD_Window_ID">53625</Data>
+        <Data AD_Column_ID="84320" Column="UUID">5b8bbb36-493f-4bba-835d-ebb7940b4002</Data>
+        <Data AD_Column_ID="54357" Column="AD_Val_Rule_ID" isNewNull="true"/>
+        <Data AD_Column_ID="172" Column="AD_Tab_ID">54659</Data>
+        <Data AD_Column_ID="180" Column="DisplayLength" isNewNull="true"/>
+        <Data AD_Column_ID="62479" Column="SeqNoGrid">0</Data>
+        <Data AD_Column_ID="5375" Column="AD_FieldGroup_ID" isNewNull="true"/>
+        <Data AD_Column_ID="181" Column="SeqNo">180</Data>
+        <Data AD_Column_ID="580" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="582" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="7714" Column="EntityType">D</Data>
+        <Data AD_Column_ID="167" Column="AD_Field_ID">110564</Data>
+        <Data AD_Column_ID="383" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="186" Column="IsEncrypted">false</Data>
+        <Data AD_Column_ID="53265" Column="DefaultValue" isNewNull="true"/>
+        <Data AD_Column_ID="9969" Column="ObscureType" isNewNull="true"/>
+        <Data AD_Column_ID="184" Column="IsHeading">false</Data>
+        <Data AD_Column_ID="183" Column="IsSameLine">false</Data>
+        <Data AD_Column_ID="62478" Column="IsDisplayedGrid">false</Data>
+        <Data AD_Column_ID="59704" Column="PreferredWidth" isNewNull="true"/>
+        <Data AD_Column_ID="15013" Column="IsMandatory" isNewNull="true"/>
+        <Data AD_Column_ID="15011" Column="AD_Reference_ID" isNewNull="true"/>
+        <Data AD_Column_ID="177" Column="DisplayLogic" isNewNull="true"/>
+        <Data AD_Column_ID="54359" Column="InfoFactoryClass" isNewNull="true"/>
+        <Data AD_Column_ID="170" Column="Help" isNewNull="true"/>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="182" Column="SortNo" isNewNull="true"/>
+        <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
+        <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
+        <Data AD_Column_ID="169" Column="Description">Indicates whether this attendance batch requires approval</Data>
+        <Data AD_Column_ID="74868" Column="IsAllowCopy">false</Data>
+        <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
+        <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
+        <Data AD_Column_ID="578" Column="IsActive">true</Data>
+        <Data AD_Column_ID="88918" Column="AD_ContextInfo_ID" isNewNull="true"/>
+        <Data AD_Column_ID="581" Column="Updated">2026-08-11 19:57:36.101</Data>
+        <Data AD_Column_ID="88877" Column="AD_FieldDefinition_ID" isNewNull="true"/>
+        <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
+        <Data AD_Column_ID="579" Column="Created">2026-08-11 19:57:36.101</Data>
+        <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="168" Column="Name">Approval Required</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="220" StepType="AD">
+      <PO AD_Table_ID="127" Action="I" Record_ID="110564" Table="AD_Field_Trl">
+        <Data AD_Column_ID="671" Column="IsActive">true</Data>
+        <Data AD_Column_ID="672" Column="Created">2026-08-11 19:57:37.861</Data>
+        <Data AD_Column_ID="674" Column="Updated">2026-08-11 19:57:37.861</Data>
+        <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="287" Column="Description">Indica si este lote de asistencia requiere aprobación</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="286" Column="Name">Aprobación Requerida</Data>
+        <Data AD_Column_ID="288" Column="Help">Cuando se establece en Sí, el lote de asistencia requiere aprobación antes de poder ser procesado.</Data>
+        <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID">110564</Data>
+        <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="675" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="285" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84323" Column="UUID">46ff20b9-192b-4884-8a55-bcfa8e173cb6</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="230" StepType="AD">
+      <PO AD_Table_ID="116" Action="I" Record_ID="55162" Table="AD_Menu">
+        <Data AD_Column_ID="400" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="104003" Column="AD_SubModule_ID">50000</Data>
+        <Data AD_Column_ID="105744" Column="DocBaseURL" isNewNull="true"/>
+        <Data AD_Column_ID="104002" Column="AD_Module_ID">50000</Data>
+        <Data AD_Column_ID="104730" Column="WebPath">ui/module/@AD_Module_ID@/submodule/@AD_SubModule_ID@/form/@AD_Form_ID@</Data>
+        <Data AD_Column_ID="229" Column="Name">Attendance Management</Data>
+        <Data AD_Column_ID="84344" Column="UUID">8220e034-61c6-4ea2-a980-e23fadfbbda0</Data>
+        <Data AD_Column_ID="3375" Column="AD_Process_ID" isNewNull="true"/>
+        <Data AD_Column_ID="602" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="4621" Column="AD_Form_ID">53103</Data>
+        <Data AD_Column_ID="600" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="233" Column="AD_Window_ID" isNewNull="true"/>
+        <Data AD_Column_ID="234" Column="AD_Workflow_ID" isNewNull="true"/>
+        <Data AD_Column_ID="7721" Column="EntityType">D</Data>
+        <Data AD_Column_ID="6297" Column="AD_Workbench_ID" isNewNull="true"/>
+        <Data AD_Column_ID="228" Column="AD_Menu_ID">55162</Data>
+        <Data AD_Column_ID="399" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="232" Column="Action">X</Data>
+        <Data AD_Column_ID="230" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="59134" Column="IsCentrallyMaintained">true</Data>
+        <Data AD_Column_ID="6651" Column="IsReadOnly">false</Data>
+        <Data AD_Column_ID="4426" Column="IsSOTrx">false</Data>
+        <Data AD_Column_ID="1169" Column="IsSummary">false</Data>
+        <Data AD_Column_ID="235" Column="AD_Task_ID" isNewNull="true"/>
+        <Data AD_Column_ID="601" Column="Updated">2026-08-11 19:57:38.096</Data>
+        <Data AD_Column_ID="599" Column="Created">2026-08-11 19:57:38.096</Data>
+        <Data AD_Column_ID="57960" Column="AD_Browse_ID" isNewNull="true"/>
+        <Data AD_Column_ID="598" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="240" StepType="AD">
+      <PO AD_Table_ID="120" Action="I" Record_ID="55162" Table="AD_Menu_Trl">
+        <Data AD_Column_ID="636" Column="IsActive">true</Data>
+        <Data AD_Column_ID="639" Column="Updated">2026-08-11 19:57:39.32</Data>
+        <Data AD_Column_ID="637" Column="Created">2026-08-11 19:57:39.32</Data>
+        <Data AD_Column_ID="640" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="248" Column="Description" isNewNull="true"/>
+        <Data AD_Column_ID="249" Column="IsTranslated">true</Data>
+        <Data AD_Column_ID="1194" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="1195" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="638" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="245" Column="AD_Menu_ID">55162</Data>
+        <Data AD_Column_ID="246" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="84345" Column="UUID">19564fe4-8609-4108-ba78-21026ee1dde0</Data>
+        <Data AD_Column_ID="247" Column="Name">Gestión de Asistencia</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="250" StepType="AD">
+      <PO AD_Table_ID="452" Action="I" Record_ID="55162" Table="AD_TreeNodeMM">
+        <Data AD_Column_ID="84442" Column="UUID">38175a06-d380-459a-8e39-b1a4c3eaef96</Data>
+        <Data AD_Column_ID="6150" Column="IsActive">true</Data>
+        <Data AD_Column_ID="6153" Column="Updated">2026-08-11 19:57:39.594</Data>
+        <Data AD_Column_ID="6151" Column="Created">2026-08-11 19:57:39.594</Data>
+        <Data AD_Column_ID="6162" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="6149" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="6161" Column="Node_ID">55162</Data>
+        <Data AD_Column_ID="6155" Column="Parent_ID">160</Data>
+        <Data AD_Column_ID="6154" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="6152" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="6157" Column="SeqNo">69</Data>
+        <Data AD_Column_ID="6160" Column="AD_Tree_ID">10</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

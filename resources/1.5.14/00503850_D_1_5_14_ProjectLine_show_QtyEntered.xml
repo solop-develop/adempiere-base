@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="ProjectLine_show_QtyEntered" ReleaseNo="1.5.14" SeqNo="503850">
+    <Comments>ProjectLine show QtyEntered</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="104843" Table="AD_Field">
+        <Data AD_Column_ID="176" Column="IsDisplayed" oldValue="false">true</Data>
+        <Data AD_Column_ID="181" Column="SeqNo" oldValue="0">800</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

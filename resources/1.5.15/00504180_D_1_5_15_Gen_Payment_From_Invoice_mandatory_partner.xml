@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Gen_Payment_From_Invoice_mandatory_partner" ReleaseNo="1.5.15" SeqNo="504180">
+    <Comments>Make Partner search criteria mandatory in Generate Payment From Invoice SB</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="53223" Action="U" Record_ID="60911" Table="AD_Browse_Field">
+        <Data AD_Column_ID="57985" Column="IsMandatory" oldValue="false">true</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

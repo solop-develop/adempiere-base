@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="ProjectLine_PlannedQty_Default_Zero" ReleaseNo="1.5.12" SeqNo="503630">
+    <Comments>Make PlannedQty Default Value Zero</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="94677" Table="AD_Field">
+        <Data AD_Column_ID="53265" Column="DefaultValue" isOldNull="true">0</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
