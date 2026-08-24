@@ -1048,11 +1048,15 @@ public class CalloutOrder extends CalloutEngine
 			if (priceEntered == null)
 				priceEntered = pp.getPriceStd();
 			//
-			log.fine("QtyChanged -> PriceActual=" + pp.getPriceStd() 
+			log.fine("QtyChanged -> PriceActual=" + pp.getPriceStd()
 				+ ", PriceEntered=" + priceEntered + ", Discount=" + pp.getDiscount());
 			priceActual = pp.getPriceStd();
 			mTab.setValue("PriceActual", pp.getPriceStd());
-			mTab.setValue("Discount", pp.getDiscount());
+			// Only update discount if it hasn't been manually set by user (preserve manual discount changes)
+			BigDecimal currentDiscount = (BigDecimal) mTab.getValue("Discount");
+			if (currentDiscount == null) {
+				mTab.setValue("Discount", pp.getDiscount());
+			}
 			mTab.setValue("PriceEntered", priceEntered);
 			Env.setContext(ctx, WindowNo, "DiscountSchema", pp.isDiscountSchema() ? "Y" : "N");
 		}

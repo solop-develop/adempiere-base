@@ -950,14 +950,30 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 			if (m_productPrice == null) {
 				getProductPricing(m_M_PriceList_ID);
 			}
+			// Price recalculation: skip if only quantity changed (preserve prices from previous edits)
+			// Skip price recalc if only quantity changed (ignore PriceActual changes from previous code execution)
+			boolean skipPriceRecalc = is_ValueChanged(COLUMNNAME_QtyEntered)
+				&& !is_ValueChanged(COLUMNNAME_M_Product_ID)
+				&& !is_ValueChanged(COLUMNNAME_C_UOM_ID)
+				&& !is_ValueChanged(COLUMNNAME_Discount)
+				&& !is_ValueChanged(COLUMNNAME_PriceEntered);
+
 			if (!isProcessed()
 					&& !getParent().isProcessed()
+					&& !skipPriceRecalc
 					&& (newRecord
 							|| is_ValueChanged(COLUMNNAME_M_Product_ID)
 							|| is_ValueChanged(COLUMNNAME_C_UOM_ID)
 							|| is_ValueChanged(COLUMNNAME_QtyEntered)
 							|| is_ValueChanged(COLUMNNAME_Discount)
 							|| is_ValueChanged(COLUMNNAME_PriceEntered))) {
+				// Recalculate m_productPrice when quantity or product changes
+				if (newRecord || is_ValueChanged(COLUMNNAME_M_Product_ID) || is_ValueChanged(COLUMNNAME_C_UOM_ID) || is_ValueChanged(COLUMNNAME_QtyEntered)) {
+					m_productPrice = null;
+				}
+				if (m_productPrice == null) {
+					getProductPricing(m_M_PriceList_ID);
+				}
 				if(!m_productPrice.isCalculated()) {
 					if(!getParent().isReturnOrder()) {
 						throw new ProductNotOnPriceListException(m_productPrice, getLine());
@@ -970,7 +986,7 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 					if(product.isWithoutDiscount()) {
 						setDiscount(Env.ZERO);
 					} else {
-						if(Optional.ofNullable(getDiscount()).orElse(Env.ZERO).signum() == 0) {
+						if (newRecord && !is_ValueChanged(COLUMNNAME_Discount) && Optional.ofNullable(getDiscount()).orElse(Env.ZERO).signum() == 0) {
 							setDiscount(m_productPrice.getDiscount());
 						}
 					}
@@ -1072,9 +1088,22 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 			setLine (ii);
 		}
 		
+		// Recalculate price when discount changes on existing records
+		if (!newRecord && is_ValueChanged(COLUMNNAME_Discount)) {
+			BigDecimal discountPercent = Optional.ofNullable(getDiscount()).orElse(Env.ZERO)
+				.divide(Env.ONEHUNDRED, getPrecision(), RoundingMode.HALF_UP);
+			BigDecimal priceActual = getPriceList().multiply(Env.ONE.subtract(discountPercent));
+			setPriceActual(priceActual);
+			BigDecimal priceEntered = MUOMConversion.convertProductFrom(getCtx(), getM_Product_ID(), getC_UOM_ID(), priceActual);
+			setPriceEntered(priceEntered);
+		}
+
 		//	Calculations & Rounding
 		setLineNetAmt();	//	extended Amount with or without tax
-		setDiscount();
+		// Only recalculate discount for new records or when user explicitly changed it
+		if (newRecord || is_ValueChanged(COLUMNNAME_Discount)) {
+			setDiscount();
+		}
 		String documentNote = null;
 		if ((newRecord || is_ValueChanged(getM_Product_ID())) && getM_Product_ID() > 0 ) {
 			documentNote = getProduct().get_Translation(MProduct.COLUMNNAME_DocumentNote);
