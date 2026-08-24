@@ -18,13 +18,13 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
-import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /** Generated Model for HR_LeaveReason
  *  @author Adempiere (generated) 

@@ -174,7 +174,6 @@ public class MProductPO extends X_M_Product_PO
 		if(is_ValueChanged(COLUMNNAME_IsCurrentVendor)) {
 			if(isCurrentVendor()) {
 				getByProductWithCurrentVendorAndOrg(getCtx(), getM_Product_ID(), getAD_Org_ID(), get_TrxName())
-						.parallelStream()
 						.forEach(po -> {
 							po.setIsCurrentVendor(false);
 							po.saveEx(get_TrxName());

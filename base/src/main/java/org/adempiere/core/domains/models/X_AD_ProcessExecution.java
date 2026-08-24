@@ -36,7 +36,7 @@ public class X_AD_ProcessExecution extends PO implements I_AD_ProcessExecution, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260805L;
+	private static final long serialVersionUID = 20260817L;
 
     /** Standard Constructor */
     public X_AD_ProcessExecution (Properties ctx, int AD_ProcessExecution_ID, String trxName)
@@ -467,6 +467,43 @@ public class X_AD_ProcessExecution extends PO implements I_AD_ProcessExecution, 
 	public String getProcessExecutionStatus () 
 	{
 		return (String)get_Value(COLUMNNAME_ProcessExecutionStatus);
+	}
+
+	/** Set Progress.
+		@param Progress 
+		Progress percentage reported by the process, 0-100
+	  */
+	public void setProgress (int Progress)
+	{
+		set_Value (COLUMNNAME_Progress, Integer.valueOf(Progress));
+	}
+
+	/** Get Progress.
+		@return Progress percentage reported by the process, 0-100
+	  */
+	public int getProgress () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Progress);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Progress Message.
+		@param ProgressMessage 
+		Free-text message accompanying Progress
+	  */
+	public void setProgressMessage (String ProgressMessage)
+	{
+		set_Value (COLUMNNAME_ProgressMessage, ProgressMessage);
+	}
+
+	/** Get Progress Message.
+		@return Free-text message accompanying Progress
+	  */
+	public String getProgressMessage () 
+	{
+		return (String)get_Value(COLUMNNAME_ProgressMessage);
 	}
 
 	/** Set Record ID.

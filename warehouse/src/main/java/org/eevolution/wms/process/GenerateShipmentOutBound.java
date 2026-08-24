@@ -31,15 +31,7 @@ package org.eevolution.wms.process;
 
 import org.adempiere.core.domains.models.X_C_Order;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MDocType;
-import org.compiere.model.MInOut;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MMovement;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MStorage;
-import org.compiere.model.PO;
-import org.compiere.model.Query;
+import org.compiere.model.*;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.Trx;
 import org.eevolution.distribution.model.MDDOrder;
@@ -53,14 +45,7 @@ import org.eevolution.wms.model.MWMInOutBound;
 import org.eevolution.wms.model.MWMInOutBoundLine;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinWorkerThread;
@@ -116,16 +101,32 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
         // Overwrite table RV_WM_InOutBoundLine by WM_InOutBoundLine domain model
         getProcessInfo().setTableSelectionId(MWMInOutBoundLine.Table_ID);
         List<MWMInOutBoundLine> outBoundLines = null;
-         if(isSelection()) {
+        if(getRecord_ID() > 0) {
+            if(isSelection()) {
+                // Overwrite table RV_WM_InOutBoundLine by WM_InOutBoundLine
+                getProcessInfo().setTableSelectionId(MWMInOutBoundLine.Table_ID);
+                outBoundLines = (List<MWMInOutBoundLine>) getInstancesForSelection(get_TrxName());
+                for (MWMInOutBoundLine outBoundLine : outBoundLines) {
+                    if (outBoundLine.getWM_InOutBound_ID() != getRecord_ID()) {
+                        throw new AdempiereException("@SBP_LineNotInOutbound@");
+                    }
+                }
+            } else {
+                outBoundLines = new Query(getCtx(), MWMInOutBoundLine.Table_Name, MWMInOutBound.COLUMNNAME_WM_InOutBound_ID + "=?", get_TrxName())
+                        .setParameters(getRecord_ID())
+                        .setOrderBy(MWMInOutBoundLine.COLUMNNAME_C_Order_ID + ", " + MWMInOutBoundLine.COLUMNNAME_DD_Order_ID)
+                        .list();
+            }
+        } else if(isSelection()) {
             // Overwrite table RV_WM_InOutBoundLine by WM_InOutBoundLine
             getProcessInfo().setTableSelectionId(MWMInOutBoundLine.Table_ID);
             outBoundLines = (List<MWMInOutBoundLine>) getInstancesForSelection(get_TrxName());
-        } else if(getRecord_ID() > 0) {
-            outBoundLines = new Query(getCtx(), MWMInOutBoundLine.Table_Name, MWMInOutBound.COLUMNNAME_WM_InOutBound_ID + "=?", get_TrxName())
-                    .setParameters(getRecord_ID())
-                    .setOrderBy(MWMInOutBoundLine.COLUMNNAME_C_Order_ID + ", " + MWMInOutBoundLine.COLUMNNAME_DD_Order_ID)
-                    .list();
         }
+        
+        if (outBoundLines == null) {
+            throw new AdempiereException("@WM_InOutBoundLine_ID@ @NotFound@");
+        }
+
         outBoundLines.stream()
                 .filter(outBoundLine -> outBoundLine.getQtyToDeliver().signum() > 0 || isIncludeNotAvailable())
                 .forEach(this::groupOutBoundLines);

@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Yamel Senih, ysenih@erpya.com , http://www.erpya.com
  * @version Release 3.9.3
  * See: https://github.com/adempiere/adempiere/issues/2730
- */
+ */ 
 public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract {
 	private HashMap<String, List<MWMInOutBoundLine>> groupedOutBoundLines;
 	List<PO> invoicesToPrint;
@@ -49,16 +49,30 @@ public class GenerateInvoiceInOutBound extends GenerateInvoiceInOutBoundAbstract
 		groupedOutBoundLines = new HashMap<>();
 		invoicesToPrint = new ArrayList<PO>();
 		List<MWMInOutBoundLine> outBoundLines = null;
-		//	Get from record
-		if(isSelection()) {
+		if(getRecord_ID() > 0) {
+			if(isSelection()) {
+				// Overwrite table RV_WM_InOutBoundLine by WM_InOutBoundLine
+				getProcessInfo().setTableSelectionId(MWMInOutBoundLine.Table_ID);
+				outBoundLines = (List<MWMInOutBoundLine>) getInstancesForSelection(get_TrxName());
+				for (MWMInOutBoundLine outBoundLine : outBoundLines) {
+					if (outBoundLine.getWM_InOutBound_ID() != getRecord_ID()) {
+						throw new AdempiereException("@SBP_LineNotInOutbound@");
+					}
+				}
+			} else {
+				outBoundLines = new Query(getCtx(), MWMInOutBoundLine.Table_Name, MWMInOutBound.COLUMNNAME_WM_InOutBound_ID + "=?", get_TrxName())
+						.setParameters(getRecord_ID())
+						.setOrderBy(MWMInOutBoundLine.COLUMNNAME_C_Order_ID + ", " + MWMInOutBoundLine.COLUMNNAME_DD_Order_ID)
+						.list();
+			}
+		} else if(isSelection()) {
 			// Overwrite table RV_WM_InOutBoundLine by WM_InOutBoundLine
 			getProcessInfo().setTableSelectionId(MWMInOutBoundLine.Table_ID);
 			outBoundLines = (List<MWMInOutBoundLine>) getInstancesForSelection(get_TrxName());
-		} else if(getRecord_ID() > 0) {
-			outBoundLines = new Query(getCtx(), MWMInOutBoundLine.Table_Name, MWMInOutBound.COLUMNNAME_WM_InOutBound_ID + "=?", get_TrxName())
-					.setParameters(getRecord_ID())
-					.setOrderBy(MWMInOutBoundLine.COLUMNNAME_C_Order_ID + ", " + MWMInOutBoundLine.COLUMNNAME_DD_Order_ID)
-					.list();
+		}
+
+		if (outBoundLines == null) {
+			throw new AdempiereException("@WM_InOutBoundLine_ID@ @NotFound@");
 		}
 		//	Create
 		if(outBoundLines != null) {

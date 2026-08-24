@@ -170,6 +170,15 @@ public interface I_AD_OrgInfo
 
 	public I_C_Location getC_Location() throws RuntimeException;
 
+    /** Column name CompanyName */
+    public static final String COLUMNNAME_CompanyName = "CompanyName";
+
+	/** Set Company Name	  */
+	public void setCompanyName (String CompanyName);
+
+	/** Get Company Name	  */
+	public String getCompanyName();
+
     /** Column name CorporateBrandingImage_ID */
     public static final String COLUMNNAME_CorporateBrandingImage_ID = "CorporateBrandingImage_ID";
 

@@ -323,6 +323,32 @@ public interface I_AD_ProcessExecution
 	  */
 	public String getProcessExecutionStatus();
 
+    /** Column name Progress */
+    public static final String COLUMNNAME_Progress = "Progress";
+
+	/** Set Progress.
+	  * Progress percentage reported by the process, 0-100
+	  */
+	public void setProgress (int Progress);
+
+	/** Get Progress.
+	  * Progress percentage reported by the process, 0-100
+	  */
+	public int getProgress();
+
+    /** Column name ProgressMessage */
+    public static final String COLUMNNAME_ProgressMessage = "ProgressMessage";
+
+	/** Set Progress Message.
+	  * Free-text message accompanying Progress
+	  */
+	public void setProgressMessage (String ProgressMessage);
+
+	/** Get Progress Message.
+	  * Free-text message accompanying Progress
+	  */
+	public String getProgressMessage();
+
     /** Column name Record_ID */
     public static final String COLUMNNAME_Record_ID = "Record_ID";
 

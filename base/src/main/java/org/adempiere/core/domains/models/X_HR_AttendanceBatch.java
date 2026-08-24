@@ -18,14 +18,15 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for HR_AttendanceBatch
  *  @author Adempiere (generated) 
@@ -89,9 +90,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -117,9 +118,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException
+	public I_C_DocType getC_DocType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocType_ID(), get_TrxName());	}
 
 	/** Set Document Type.
@@ -316,9 +317,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_Employee getHR_Employee() throws RuntimeException
+	public I_HR_Employee getHR_Employee() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_Employee)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_Employee.Table_Name)
+		return (I_HR_Employee)MTable.get(getCtx(), I_HR_Employee.Table_Name)
 			.getPO(getHR_Employee_ID(), get_TrxName());	}
 
 	/** Set Payroll Employee.
@@ -341,9 +342,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_ShiftSchedule getHR_ShiftSchedule() throws RuntimeException
+	public I_HR_ShiftSchedule getHR_ShiftSchedule() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_ShiftSchedule)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_ShiftSchedule.Table_Name)
+		return (I_HR_ShiftSchedule)MTable.get(getCtx(), I_HR_ShiftSchedule.Table_Name)
 			.getPO(getHR_ShiftSchedule_ID(), get_TrxName());	}
 
 	/** Set Shift Schedule.
@@ -369,9 +370,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_WorkShift getHR_WorkShift() throws RuntimeException
+	public I_HR_WorkShift getHR_WorkShift() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_WorkShift)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_WorkShift.Table_Name)
+		return (I_HR_WorkShift)MTable.get(getCtx(), I_HR_WorkShift.Table_Name)
 			.getPO(getHR_WorkShift_ID(), get_TrxName());	}
 
 	/** Set Work Shift.
@@ -538,9 +539,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return false;
 	}
 
-	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+	public I_S_Contract getS_Contract() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
 			.getPO(getS_Contract_ID(), get_TrxName());	}
 
 	/** Set Contract.
@@ -566,9 +567,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException
+	public I_S_ContractLine getS_ContractLine() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_ContractLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ContractLine.Table_Name)
+		return (I_S_ContractLine)MTable.get(getCtx(), I_S_ContractLine.Table_Name)
 			.getPO(getS_ContractLine_ID(), get_TrxName());	}
 
 	/** Set ContractLine.
@@ -617,9 +618,9 @@ public class X_HR_AttendanceBatch extends PO implements I_HR_AttendanceBatch, I_
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_S_ServiceSchedule getS_ServiceSchedule() throws RuntimeException
+	public I_S_ServiceSchedule getS_ServiceSchedule() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_ServiceSchedule)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ServiceSchedule.Table_Name)
+		return (I_S_ServiceSchedule)MTable.get(getCtx(), I_S_ServiceSchedule.Table_Name)
 			.getPO(getS_ServiceSchedule_ID(), get_TrxName());	}
 
 	/** Set Service Schedule ID.

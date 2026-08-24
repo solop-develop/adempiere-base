@@ -18,15 +18,16 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for HR_ShiftIncidence
  *  @author Adempiere (generated) 
@@ -81,9 +82,9 @@ public class X_HR_ShiftIncidence extends PO implements I_HR_ShiftIncidence, I_Pe
       return sb.toString();
     }
 
-	public org.adempiere.core.domains.models.I_AD_Rule getAD_Rule() throws RuntimeException
+	public I_AD_Rule getAD_Rule() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_AD_Rule)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Rule.Table_Name)
+		return (I_AD_Rule)MTable.get(getCtx(), I_AD_Rule.Table_Name)
 			.getPO(getAD_Rule_ID(), get_TrxName());	}
 
 	/** Set Rule.
@@ -250,9 +251,9 @@ public class X_HR_ShiftIncidence extends PO implements I_HR_ShiftIncidence, I_Pe
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_HR_Concept getHR_Concept() throws RuntimeException
+	public I_HR_Concept getHR_Concept() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_Concept)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_Concept.Table_Name)
+		return (I_HR_Concept)MTable.get(getCtx(), I_HR_Concept.Table_Name)
 			.getPO(getHR_Concept_ID(), get_TrxName());	}
 
 	/** Set Global Payroll Concept.
@@ -301,9 +302,9 @@ public class X_HR_ShiftIncidence extends PO implements I_HR_ShiftIncidence, I_Pe
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_WorkShift getHR_WorkShift() throws RuntimeException
+	public I_HR_WorkShift getHR_WorkShift() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_WorkShift)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_WorkShift.Table_Name)
+		return (I_HR_WorkShift)MTable.get(getCtx(), I_HR_WorkShift.Table_Name)
 			.getPO(getHR_WorkShift_ID(), get_TrxName());	}
 
 	/** Set Work Shift.
@@ -473,9 +474,9 @@ public class X_HR_ShiftIncidence extends PO implements I_HR_ShiftIncidence, I_Pe
 		return false;
 	}
 
-	public org.adempiere.core.domains.models.I_M_Product getM_Product() throws RuntimeException
+	public I_M_Product getM_Product() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_M_Product)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Product.Table_Name)
+		return (I_M_Product)MTable.get(getCtx(), I_M_Product.Table_Name)
 			.getPO(getM_Product_ID(), get_TrxName());	}
 
 	/** Set Product.

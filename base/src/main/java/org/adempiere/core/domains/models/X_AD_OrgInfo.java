@@ -295,6 +295,21 @@ public class X_AD_OrgInfo extends PO implements I_AD_OrgInfo, I_Persistent
 			 return 0;
 		return ii.intValue();
 	}
+
+	/** Set Company Name.
+		@param CompanyName Company Name	  */
+	public void setCompanyName (String CompanyName)
+	{
+		set_Value (COLUMNNAME_CompanyName, CompanyName);
+	}
+
+	/** Get Company Name.
+		@return Company Name	  */
+	public String getCompanyName ()
+	{
+		return (String)get_Value(COLUMNNAME_CompanyName);
+	}
+
 	/** Set Corporate Branding Image.
 	 @param CorporateBrandingImage_ID
 	 Corporate Branding Image

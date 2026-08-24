@@ -41,9 +41,8 @@ import org.spin.util.support.AppSupportHandler;
 import org.spin.util.support.IAppSupport;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
@@ -129,7 +128,7 @@ public class DefaultNotifier extends QueueManager {
 		attachments = new ArrayList<AttachmentStub>();
 		return this;
 	}
-	
+
 	/**
 	 * @return the userId
 	 */
@@ -372,115 +371,7 @@ public class DefaultNotifier extends QueueManager {
 			log.warning("User Id Not found");
 		}
 		//	for default
-		if(!getApplicationType().equals(DefaultNotificationType_UserDefined)) {
-			addToQueueBasedOnApplicationType(queueId);
-		} else {
-			getRecipients().stream().filter(recipient -> recipient.getUserId() > 0)
-				.forEach(recipient -> {
-				MUser userRecipient = MUser.get(getContext(), recipient.getUserId());
-				//	For EMail
-				if(userRecipient.isNotificationEMail()) {
-					int applicationSupportId = getApplicationSupportFromValue(DefaultNotificationType_EMail);
-					addToQueueBasedOnUserDefinition(
-							DefaultNotificationType_EMail,
-							applicationSupportId, queueId,
-							userRecipient.getAD_User_ID(),
-							userRecipient.getEMail(),
-							recipient.getMessageType()
-					);
-				}
-				//	For Note
-				if(userRecipient.isNotificationNote()) {
-					int applicationSupportId = getApplicationSupportFromValue(DefaultNotificationType_Notes);
-					addToQueueBasedOnUserDefinition(
-							DefaultNotificationType_Notes,
-							applicationSupportId, queueId,
-							recipient.getUserId(),
-							recipient.getAccountName(),
-							recipient.getMessageType());
-				}
-				//	For Social Media
-				if(userRecipient.isNotificationSocialMedia()) {
-					MADUserSocialMedia.getSocialMedias(getContext(), recipient.getUserId(), getTransactionName())
-						.stream()
-						.filter(X_AD_UserSocialMedia::isReceiveNotifications)
-						.forEach(socialMedia -> {
-							int applicationSupportId = socialMedia.getAD_AppSupport_ID();
-							if(applicationSupportId <= 0) {
-								applicationSupportId = getApplicationSupportFromValue(socialMedia.getApplicationType());
-							}
-							addToQueueBasedOnUserDefinition(
-									socialMedia.getApplicationType(),
-									applicationSupportId, queueId,
-									userRecipient.getAD_User_ID(),
-									socialMedia.getAccountName(),
-									recipient.getMessageType()
-							);
-					});
-				}
-			});
-		}
-	}
-	
-	/**
-	 * Add to queue 
-	 * @param applicationType
-	 * @param applicationSupportId
-	 * @param queueId
-	 * @param recipient
-	 */
-	private void addToQueueBasedOnUserDefinition(
-			String applicationType,
-			int applicationSupportId,
-			int queueId,
-			int userId,
-			String accountName,
-			String messageType) {
-
-		MADQueue queue = new MADQueue(getContext(), queueId, getTransactionName());
-		MADNotificationQueue notification = new MADNotificationQueue(queue);
-		notification.setApplicationType(applicationType);
-		if(getUserId() > 0) {
-			notification.setAD_User_ID(getUserId());
-		}
-		if(getApplicationSupportId() > 0) {
-			notification.setAD_AppSupport_ID(applicationSupportId);
-		}
-		if(!Util.isEmpty(getText())) {
-			notification.setText(getText());
-		}
-		if(!Util.isEmpty(getDescription())) {
-			notification.setDescription(getDescription());
-		}
-		if(Util.isEmpty(messageType)) {
-			messageType = getMessageType();
-		}
-		if(!Util.isEmpty(messageType)) {
-			notification.setMessageType(messageType);
-		} else {
-			notification.setMessageType(MADNotificationQueue.MESSAGETYPE_Standard);
-		}
-		if(!Util.isEmpty(getUpdateHandler())) {
-			notification.setResponseHandler(getUpdateHandler());
-		}
-		notification.saveEx();
-		//	Add recipient
-		MADNotificationRecipient notificationRecipient = new MADNotificationRecipient(notification);
-		notificationRecipient.setAccountName(Optional.ofNullable(accountName).orElse("").trim());
-		if(userId > 0) {
-			notificationRecipient.setAD_User_ID(userId);
-		}
-		notificationRecipient.saveEx();
-		//	Add Attachments
-		if(getAttachments().size() > 0) {
-			getAttachments().forEach(attachment -> {
-				MAttachment attachmentReference = notification.createAttachment();
-				attachmentReference.addEntry(attachment.getAttachment());
-				Optional.ofNullable(attachment.getComment()).ifPresent(attachmentReference::addTextMsg);
-				attachmentReference.saveEx(getTransactionName());
-			});
-		}
-		logger.fine("Queue Added: " + notification);
+		addToQueueBasedOnApplicationType(queueId);
 	}
 	
 	/**
@@ -549,7 +440,12 @@ public class DefaultNotifier extends QueueManager {
 				getTransactionName()
 		).forEach(notification -> {
 			try {
-				getNotifier(notification).sendNotification(notification);
+				if(DefaultNotificationType_UserDefined.equals(notification.getApplicationType())) {
+					//	User Defined: resolve the channel per recipient based on each user's NotificationType
+					dispatchUserDefined(notification);
+				} else {
+					getNotifier(notification).sendNotification(notification);
+				}
 				notification.setProcessed(true);
 				notification.saveEx();
 			} catch (Exception exception) {
@@ -558,6 +454,172 @@ public class DefaultNotifier extends QueueManager {
 				throw new AdempiereException(exception);
 			}
 		});
+	}
+
+	/**
+	 * Dispatch a User Defined (UDP) notification per recipient, keeping the single notification
+	 * record. Each recipient (user) is routed to every channel it is subscribed to, and the row
+	 * is marked processed by the channel senders when at least one channel delivered. Only
+	 * non-processed recipients are dispatched, so a retry re-sends only the pending ones. The
+	 * notification is left unprocessed (and therefore retried) while any active recipient is
+	 * still pending.
+	 * @param source the User Defined notification
+	 */
+	private void dispatchUserDefined(MADNotificationQueue source) {
+		List<MADNotificationRecipient> pending = source.getRecipients().stream()
+				.filter(recipient -> !recipient.isProcessed())
+				.collect(Collectors.toList());
+		//	Route each recipient to every channel it is subscribed to
+		List<MADNotificationRecipient> emailRecipients = new ArrayList<MADNotificationRecipient>();
+		List<MADNotificationRecipient> noteRecipients = new ArrayList<MADNotificationRecipient>();
+		Map<Integer, List<MADNotificationRecipient>> socialRecipientsByAppSupport = new LinkedHashMap<Integer, List<MADNotificationRecipient>>();
+		pending.forEach(recipient -> {
+			boolean routed = false;
+			if(recipient.getAD_User_ID() > 0) {
+				MUser user = MUser.get(getContext(), recipient.getAD_User_ID());
+				if(user == null || user.getAD_User_ID() <= 0) {
+					return;
+				}
+				//	E-mail (default the address to the user's e-mail when empty)
+				if(user.isNotificationEMail()) {
+					if(Util.isEmpty(recipient.getAccountName(), true) && !Util.isEmpty(user.getEMail(), true)) {
+						recipient.setAccountName(user.getEMail());
+					}
+					if(!Util.isEmpty(recipient.getAccountName(), true)) {
+						emailRecipients.add(recipient);
+						routed = true;
+					}
+				}
+				//	Note
+				if(user.isNotificationNote()) {
+					noteRecipients.add(recipient);
+					routed = true;
+				}
+				//	Social media: route to every app support the user has an account on
+				if(user.isNotificationSocialMedia()) {
+					for(Integer applicationSupportId : socialApplicationSupports(user)) {
+						socialRecipientsByAppSupport
+								.computeIfAbsent(applicationSupportId, key -> new ArrayList<MADNotificationRecipient>())
+								.add(recipient);
+						routed = true;
+					}
+				}
+			} else if(!Util.isEmpty(recipient.getAccountName(), true)) {
+				//	Fallback to e-mail for account-only recipients
+				emailRecipients.add(recipient);
+				routed = true;
+			}
+			if(!routed) {
+				//	No deliverable channel for this recipient: mark processed so it does not block the queue
+				recipient.setErrorMsg("@NotificationType@ @NotFound@");
+				recipient.setProcessed(true);
+				recipient.saveEx();
+			}
+		});
+		StringBuffer errorMessage = new StringBuffer();
+		//	E-mail channel
+		if(!emailRecipients.isEmpty()) {
+			dispatchChannel(getRegistrationByApplicationType(DefaultNotificationType_EMail),
+					DefaultNotificationType_EMail, source, emailRecipients, errorMessage);
+		}
+		//	Note channel
+		if(!noteRecipients.isEmpty()) {
+			dispatchChannel(getRegistrationByApplicationType(DefaultNotificationType_Notes),
+					DefaultNotificationType_Notes, source, noteRecipients, errorMessage);
+		}
+		//	Social media channels (one dispatch per app support / registration)
+		socialRecipientsByAppSupport.forEach((applicationSupportId, socialRecipients) ->
+			dispatchChannel(getRegistrationByAppSupport(applicationSupportId),
+					"@AD_AppSupport_ID@ " + applicationSupportId, source, socialRecipients, errorMessage));
+		//	The notification is processed only when every active recipient is processed
+		boolean allProcessed = source.getRecipients().stream().allMatch(MADNotificationRecipient::isProcessed);
+		if(!allProcessed) {
+			throw new AdempiereException(errorMessage.length() > 0
+					? errorMessage.toString()
+					: "@Pending@ @AD_NotificationRecipient_ID@");
+		}
+	}
+
+	/**
+	 * Distinct app supports where the user has a social media account subscribed to notifications
+	 * @param user the recipient user
+	 * @return distinct app support ids
+	 */
+	private Set<Integer> socialApplicationSupports(MUser user) {
+		Set<Integer> applicationSupports = new LinkedHashSet<Integer>();
+		MADUserSocialMedia.getSocialMedias(getContext(), user.getAD_User_ID(), getTransactionName())
+			.stream()
+			.filter(X_AD_UserSocialMedia::isReceiveNotifications)
+			.forEach(socialMedia -> {
+				int applicationSupportId = socialMedia.getAD_AppSupport_ID();
+				if(applicationSupportId <= 0) {
+					applicationSupportId = getApplicationSupportFromValue(socialMedia.getApplicationType());
+				}
+				if(applicationSupportId > 0) {
+					applicationSupports.add(applicationSupportId);
+				}
+		});
+		return applicationSupports;
+	}
+
+	/**
+	 * Send the given recipients through the notifier bound to a resolved registration. The
+	 * recipients are already selected for this channel; the notifier marks each one it delivers.
+	 * A null registration means the channel is not configured for this client and is skipped.
+	 * @param registration registration that resolves the channel notifier (nullable)
+	 * @param channelLabel label used for error reporting
+	 * @param notification the source notification
+	 * @param recipients recipients selected for this channel
+	 * @param errorMessage accumulates dispatch errors
+	 */
+	private void dispatchChannel(
+			MADAppRegistration registration,
+			String channelLabel,
+			MADNotificationQueue notification,
+			List<MADNotificationRecipient> recipients,
+			StringBuffer errorMessage) {
+		try {
+			if(registration == null) {
+				return;
+			}
+			IAppSupport supportedApplication = AppSupportHandler.getInstance().getAppSupport(registration);
+			if(supportedApplication == null || !INotification.class.isAssignableFrom(supportedApplication.getClass())) {
+				throw new AdempiereException("@AD_AppRegistration_ID@ @NotFound@");
+			}
+			((INotification) supportedApplication).sendNotification(notification, recipients);
+		} catch (Exception exception) {
+			logger.severe(exception.getLocalizedMessage());
+			if(errorMessage.length() > 0) {
+				errorMessage.append(Env.NL);
+			}
+			errorMessage.append(channelLabel).append(": ").append(exception.getLocalizedMessage());
+		}
+	}
+
+	/**
+	 * Resolve the registration for a channel application type
+	 * @param applicationType
+	 * @return
+	 */
+	private MADAppRegistration getRegistrationByApplicationType(String applicationType) {
+		return MADAppRegistration.getByApplicationType(getContext(), applicationType, getTransactionName());
+	}
+
+	/**
+	 * Resolve the registration bound to an app support (used for social media accounts)
+	 * @param applicationSupportId
+	 * @return
+	 */
+	private MADAppRegistration getRegistrationByAppSupport(int applicationSupportId) {
+		if(applicationSupportId <= 0) {
+			return null;
+		}
+		return new Query(getContext(), I_AD_AppRegistration.Table_Name,
+				I_AD_AppRegistration.COLUMNNAME_AD_AppSupport_ID + " = ?", getTransactionName())
+				.setParameters(applicationSupportId)
+				.setOnlyActiveRecords(true)
+				.setOrderBy(I_AD_AppRegistration.COLUMNNAME_AD_Client_ID + " DESC")
+				.first();
 	}
 	
 	/**

@@ -15,12 +15,6 @@
  *************************************************************************************/
 package org.spin.tar.model;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.X_HR_Incidence;
 import org.adempiere.core.domains.models.X_HR_ShiftIncidence;
 import org.adempiere.exceptions.AdempiereException;
@@ -36,6 +30,12 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Util;
 import org.eevolution.hr.model.MHRLeave;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for HR_Incidence
  *  @author Adempiere (generated) 

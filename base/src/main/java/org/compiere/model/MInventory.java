@@ -87,7 +87,7 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 	 *	@param M_Inventory_ID id
 	 *	@param trxName transaction
 	 */
-	public MInventory (Properties ctx, int M_Inventory_ID, String trxName)
+	public MInventory(Properties ctx, int M_Inventory_ID, String trxName)
 	{
 		super (ctx, M_Inventory_ID, trxName);
 		if (M_Inventory_ID == 0)
@@ -110,7 +110,7 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MInventory (Properties ctx, ResultSet rs, String trxName)
+	public MInventory(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MInventory
@@ -120,7 +120,7 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 	 * @param wh warehouse
 	 * @deprecated since 3.5.3a . Please use {@link #MInventory(MWarehouse, String)}.
 	 */
-	public MInventory (MWarehouse wh)
+	public MInventory(MWarehouse wh)
 	{
 		this(wh, wh.get_TrxName());
 	}	//	MInventory
@@ -130,7 +130,7 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 	 * @param wh
 	 * @param trxName
 	 */
-	public MInventory (MWarehouse wh, String trxName)
+	public MInventory(MWarehouse wh, String trxName)
 	{
 		this (wh.getCtx(), 0, trxName);
 		setClientOrg(wh);
@@ -447,17 +447,17 @@ public class MInventory extends X_M_Inventory implements DocAction, DocumentReve
 //								ma.getM_AttributeSetInstance_ID(), 0,
 //								QtyMA.negate(), Env.ZERO, Env.ZERO, get_TrxName());
 						// Only Update Date Last Inventory if is a Physical Inventory
-						if(line.getQtyInternalUse().compareTo(Env.ZERO) == 0)
-						{	
-							MStorage storage = MStorage.get(getCtx(), line.getM_Locator_ID(), 
-									line.getM_Product_ID(), ma.getM_AttributeSetInstance_ID(), get_TrxName());						
-							storage.setDateLastInventory(getMovementDate());
-							if (!storage.save(get_TrxName()))
-							{
-								m_processMsg = "Storage not updated(2)";
-								return DocAction.STATUS_Invalid;
-							}
-						}
+//						if(line.getQtyInternalUse().compareTo(Env.ZERO) == 0)
+//						{
+//							MStorage storage = MStorage.get(getCtx(), line.getM_Locator_ID(),
+//									line.getM_Product_ID(), ma.getM_AttributeSetInstance_ID(), get_TrxName());
+//							storage.setDateLastInventory(getMovementDate());
+//							if (!storage.save(get_TrxName()))
+//							{
+//								m_processMsg = "Storage not updated(2)";
+//								return DocAction.STATUS_Invalid;
+//							}
+//						}
 
 						String m_MovementType =null;
 						if(QtyMA.negate().compareTo(Env.ZERO) > 0 )

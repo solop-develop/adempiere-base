@@ -18,16 +18,17 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /** Generated Model for HR_Incidence
  *  @author Adempiere (generated) 
@@ -114,9 +115,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
+	public I_C_BPartner getC_BPartner() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)
+		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
 			.getPO(getC_BPartner_ID(), get_TrxName());	}
 
 	/** Set Business Partner .
@@ -142,9 +143,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_DocType getC_DocType() throws RuntimeException
+	public I_C_DocType getC_DocType() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_DocType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_DocType.Table_Name)
+		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
 			.getPO(getC_DocType_ID(), get_TrxName());	}
 
 	/** Set Document Type.
@@ -170,9 +171,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_C_Project getC_Project() throws RuntimeException
+	public I_C_Project getC_Project() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_C_Project)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Project.Table_Name)
+		return (I_C_Project)MTable.get(getCtx(), I_C_Project.Table_Name)
 			.getPO(getC_Project_ID(), get_TrxName());	}
 
 	/** Set Project.
@@ -358,9 +359,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return (String)get_Value(COLUMNNAME_DocumentNote);
 	}
 
-	public org.adempiere.core.domains.models.I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException
+	public I_HR_AttendanceBatch getHR_AttendanceBatch() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_AttendanceBatch)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_AttendanceBatch.Table_Name)
+		return (I_HR_AttendanceBatch)MTable.get(getCtx(), I_HR_AttendanceBatch.Table_Name)
 			.getPO(getHR_AttendanceBatch_ID(), get_TrxName());	}
 
 	/** Set Attendance Batch.
@@ -383,9 +384,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_Concept getHR_Concept() throws RuntimeException
+	public I_HR_Concept getHR_Concept() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_Concept)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_Concept.Table_Name)
+		return (I_HR_Concept)MTable.get(getCtx(), I_HR_Concept.Table_Name)
 			.getPO(getHR_Concept_ID(), get_TrxName());	}
 
 	/** Set Global Payroll Concept.
@@ -419,9 +420,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
         return new KeyNamePair(get_ID(), String.valueOf(getHR_Concept_ID()));
     }
 
-	public org.adempiere.core.domains.models.I_HR_Employee getHR_Employee() throws RuntimeException
+	public I_HR_Employee getHR_Employee() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_Employee)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_Employee.Table_Name)
+		return (I_HR_Employee)MTable.get(getCtx(), I_HR_Employee.Table_Name)
 			.getPO(getHR_Employee_ID(), get_TrxName());	}
 
 	/** Set Payroll Employee.
@@ -464,9 +465,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_Leave getHR_Leave() throws RuntimeException
+	public I_HR_Leave getHR_Leave() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_Leave)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_Leave.Table_Name)
+		return (I_HR_Leave)MTable.get(getCtx(), I_HR_Leave.Table_Name)
 			.getPO(getHR_Leave_ID(), get_TrxName());	}
 
 	/** Set Employee Leave.
@@ -489,9 +490,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_HR_ShiftIncidence getHR_ShiftIncidence() throws RuntimeException
+	public I_HR_ShiftIncidence getHR_ShiftIncidence() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_HR_ShiftIncidence)MTable.get(getCtx(), org.adempiere.core.domains.models.I_HR_ShiftIncidence.Table_Name)
+		return (I_HR_ShiftIncidence)MTable.get(getCtx(), I_HR_ShiftIncidence.Table_Name)
 			.getPO(getHR_ShiftIncidence_ID(), get_TrxName());	}
 
 	/** Set Shift Incidence.
@@ -630,9 +631,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return bd;
 	}
 
-	public org.adempiere.core.domains.models.I_S_Contract getS_Contract() throws RuntimeException
+	public I_S_Contract getS_Contract() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_Contract)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_Contract.Table_Name)
+		return (I_S_Contract)MTable.get(getCtx(), I_S_Contract.Table_Name)
 			.getPO(getS_Contract_ID(), get_TrxName());	}
 
 	/** Set Contract.
@@ -658,9 +659,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_S_ContractLine getS_ContractLine() throws RuntimeException
+	public I_S_ContractLine getS_ContractLine() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_ContractLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_ContractLine.Table_Name)
+		return (I_S_ContractLine)MTable.get(getCtx(), I_S_ContractLine.Table_Name)
 			.getPO(getS_ContractLine_ID(), get_TrxName());	}
 
 	/** Set ContractLine.
@@ -703,9 +704,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return (Timestamp)get_Value(COLUMNNAME_ServiceDate);
 	}
 
-	public org.adempiere.core.domains.models.I_S_TimeExpense getS_TimeExpense() throws RuntimeException
+	public I_S_TimeExpense getS_TimeExpense() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_TimeExpense)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_TimeExpense.Table_Name)
+		return (I_S_TimeExpense)MTable.get(getCtx(), I_S_TimeExpense.Table_Name)
 			.getPO(getS_TimeExpense_ID(), get_TrxName());	}
 
 	/** Set Expense Report.
@@ -731,9 +732,9 @@ public class X_HR_Incidence extends PO implements I_HR_Incidence, I_Persistent
 		return ii.intValue();
 	}
 
-	public org.adempiere.core.domains.models.I_S_TimeExpenseLine getS_TimeExpenseLine() throws RuntimeException
+	public I_S_TimeExpenseLine getS_TimeExpenseLine() throws RuntimeException
     {
-		return (org.adempiere.core.domains.models.I_S_TimeExpenseLine)MTable.get(getCtx(), org.adempiere.core.domains.models.I_S_TimeExpenseLine.Table_Name)
+		return (I_S_TimeExpenseLine)MTable.get(getCtx(), I_S_TimeExpenseLine.Table_Name)
 			.getPO(getS_TimeExpenseLine_ID(), get_TrxName());	}
 
 	/** Set Expense Line.

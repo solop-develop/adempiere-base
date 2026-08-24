@@ -17,10 +17,11 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /** Generated Interface for AD_Scheduler
  *  @author Adempiere (generated) 
@@ -77,7 +78,7 @@ public interface I_AD_Scheduler
 	  */
 	public int getAD_Process_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Process getAD_Process() throws RuntimeException;
+	public I_AD_Process getAD_Process() throws RuntimeException;
 
     /** Column name AD_Role_ID */
     public static final String COLUMNNAME_AD_Role_ID = "AD_Role_ID";
@@ -120,7 +121,7 @@ public interface I_AD_Scheduler
 	  */
 	public int getAD_Table_ID();
 
-	public org.adempiere.core.domains.models.I_AD_Table getAD_Table() throws RuntimeException;
+	public I_AD_Table getAD_Table() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -260,6 +261,19 @@ public interface I_AD_Scheduler
 	/** Get Notify Supervisor On Error	  */
 	public boolean isNotifySupervisorOnError();
 
+    /** Column name IsProcessManaged */
+    public static final String COLUMNNAME_IsProcessManaged = "IsProcessManaged";
+
+	/** Set Is Process Managed.
+	  * When Y, this scheduler row is dispatched by the process module poller, not by the native scheduler engine
+	  */
+	public void setIsProcessManaged (boolean IsProcessManaged);
+
+	/** Get Is Process Managed.
+	  * When Y, this scheduler row is dispatched by the process module poller, not by the native scheduler engine
+	  */
+	public boolean isProcessManaged();
+
     /** Column name KeepLogDays */
     public static final String COLUMNNAME_KeepLogDays = "KeepLogDays";
 
@@ -298,6 +312,19 @@ public interface I_AD_Scheduler
 	  * Alphanumeric identifier of the entity
 	  */
 	public String getName();
+
+    /** Column name Payload */
+    public static final String COLUMNNAME_Payload = "Payload";
+
+	/** Set Payload.
+	  * Canonical Request Payload in JSON Format
+	  */
+	public void setPayload (String Payload);
+
+	/** Get Payload.
+	  * Canonical Request Payload in JSON Format
+	  */
+	public String getPayload();
 
     /** Column name Processing */
     public static final String COLUMNNAME_Processing = "Processing";
@@ -347,7 +374,7 @@ public interface I_AD_Scheduler
 	  */
 	public int getSupervisor_ID();
 
-	public org.adempiere.core.domains.models.I_AD_User getSupervisor() throws RuntimeException;
+	public I_AD_User getSupervisor() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

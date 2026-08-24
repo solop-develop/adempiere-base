@@ -16,9 +16,6 @@
  *****************************************************************************/
 package org.spin.queue.notification.support;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MNote;
@@ -27,6 +24,11 @@ import org.compiere.util.Env;
 import org.compiere.util.Util;
 import org.spin.queue.model.MADQueue;
 import org.spin.queue.notification.model.MADNotificationQueue;
+import org.spin.queue.notification.model.MADNotificationRecipient;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
@@ -58,8 +60,13 @@ public class NoteSender implements INotification {
 
 	@Override
 	public void sendNotification(MADNotificationQueue notification) {
+		sendNotification(notification, notification.getRecipients());
+	}
+
+	@Override
+	public void sendNotification(MADNotificationQueue notification, List<MADNotificationRecipient> recipients) {
 		StringBuffer errorMessage = new StringBuffer();
-		notification.getRecipients().forEach(recipient -> {
+		recipients.forEach(recipient -> {
 			try {
 				MNote note = new MNote(notification.getCtx(), 0, notification.get_TrxName());
 				if(recipient.getAD_User_ID() > 0) {
