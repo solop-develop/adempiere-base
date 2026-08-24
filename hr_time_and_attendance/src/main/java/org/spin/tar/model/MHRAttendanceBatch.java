@@ -323,8 +323,8 @@ public class MHRAttendanceBatch extends X_HR_AttendanceBatch implements DocActio
 		scriptCtx.remove("_AttendanceDurationInMillis");
 		scriptCtx.remove("_AttendanceHours");
 		scriptCtx.remove("_AttendanceMinutes");
-		//	Get Worked time
-		List<MHRShiftIncidence> shiftIncidenceList = MHRShiftIncidence.getShiftIncidenceList(getCtx(), workShift.getHR_WorkShift_ID(), X_HR_ShiftIncidence.EVENTTYPE_Leave, getDateDoc());
+		//	Get Worked time (absence configuration from the work shift)
+		List<MHRShiftIncidence> shiftIncidenceList = MHRShiftIncidence.getShiftIncidenceList(getCtx(), workShift.getHR_WorkShift_ID(), X_HR_ShiftIncidence.EVENTTYPE_Absence, getDateDoc());
 		//	Get from work shift
 		BigDecimal noOfHours = workShift.getNoOfHours();
 		if(noOfHours == null) {

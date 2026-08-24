@@ -119,6 +119,15 @@ public interface I_HR_LeaveReason
 	  */
 	public boolean isActive();
 
+    /** Column name IsGeneratedFromAttendance */
+    public static final String COLUMNNAME_IsGeneratedFromAttendance = "IsGeneratedFromAttendance";
+
+	/** Set Generated From Attendance	  */
+	public void setIsGeneratedFromAttendance (boolean IsGeneratedFromAttendance);
+
+	/** Get Generated From Attendance	  */
+	public boolean isGeneratedFromAttendance();
+
     /** Column name LeaveReasonType */
     public static final String COLUMNNAME_LeaveReasonType = "LeaveReasonType";
 

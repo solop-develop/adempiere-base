@@ -35,6 +35,7 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Util;
+import org.eevolution.hr.model.MHRLeave;
 
 /** Generated Model for HR_Incidence
  *  @author Adempiere (generated) 
@@ -136,6 +137,46 @@ public class MHRIncidence extends X_HR_Incidence implements DocAction, DocOption
     }
     
     
+    /**
+     * Create from Leave and Shift Incidence.
+     * Mirrors the millisecond based constructor used for attendance, but the reference
+     * document is the employee leave instead of the attendance batch, so the incidence
+     * is linked through HR_Leave_ID and has no attendance batch.
+     * @param leave
+     * @param shiftIncidence
+     * @param durationInMillis
+     */
+    public MHRIncidence(MHRLeave leave, MHRShiftIncidence shiftIncidence, long durationInMillis) {
+    	super(leave.getCtx(), 0, leave.get_TrxName());
+    	//	Set default values
+    	setHR_Leave_ID(leave.getHR_Leave_ID());
+    	setDateDoc(leave.getDateDoc());
+    	setServiceDate(leave.getStartDate());
+    	setC_BPartner_ID(leave.getC_BPartner_ID());
+    	setHR_Employee_ID(leave.getHR_Employee_ID());
+    	setHR_ShiftIncidence_ID(shiftIncidence.getHR_ShiftIncidence_ID());
+    	setHR_Concept_ID(shiftIncidence.getHR_Concept_ID());
+    	//	Validate time
+    	if(durationInMillis == 0
+    			|| Util.isEmpty(shiftIncidence.getTimeUnit())) {
+    		if(shiftIncidence.getFixedQty() != null
+    				&& !shiftIncidence.getFixedQty().equals(Env.ZERO)) {
+    			setQty(shiftIncidence.getFixedQty());
+    		}if(shiftIncidence.getFixedAmt() != null
+    				&& !shiftIncidence.getFixedAmt().equals(Env.ZERO)) {
+    			setAmt(shiftIncidence.getFixedAmt());
+    		}
+    	} else {
+    		//	Set Quantity
+    		double time = getTime(shiftIncidence.getTimeUnit(), durationInMillis);
+    		if(time == 0) {
+    			throw new AdempiereException("@TimeUnit@ @NotFound@");
+    		}
+    		//
+    		setQty(new BigDecimal(time));
+    	}
+    }
+
     /**
      * Get Time from duration and time unit
      * @param timeUnit

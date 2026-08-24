@@ -262,6 +262,17 @@ public interface I_HR_Incidence
 	/** Get Employee Incidence	  */
 	public int getHR_Incidence_ID();
 
+    /** Column name HR_Leave_ID */
+    public static final String COLUMNNAME_HR_Leave_ID = "HR_Leave_ID";
+
+	/** Set Employee Leave	  */
+	public void setHR_Leave_ID (int HR_Leave_ID);
+
+	/** Get Employee Leave	  */
+	public int getHR_Leave_ID();
+
+	public org.adempiere.core.domains.models.I_HR_Leave getHR_Leave() throws RuntimeException;
+
     /** Column name HR_ShiftIncidence_ID */
     public static final String COLUMNNAME_HR_ShiftIncidence_ID = "HR_ShiftIncidence_ID";
 
