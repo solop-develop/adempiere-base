@@ -149,6 +149,8 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 				MTable allocateInvoiceTable = MTable.get(getCtx(), "C_AllocateInvoice");
 				if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
 					int referenceInvoiceId = fromLine.getC_Invoice_ID();
+					//	Whether an allocate line was already created for this referenced invoice in this run
+					boolean referenceAlreadyLinked = remainingOpenByReference.containsKey(referenceInvoiceId);
 					//	Open balance of the referenced invoice, fetched once and decremented per line
 					BigDecimal remainingOpenAmt = remainingOpenByReference.get(referenceInvoiceId);
 					if (remainingOpenAmt == null) {
@@ -163,11 +165,14 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 							: Env.ZERO;
 					remainingOpenByReference.put(referenceInvoiceId, remainingOpenAmt.subtract(allocateAmount));
 
-					PO allocateInvoice = allocateInvoiceTable.getPO(0, invoiceLine.get_TrxName());
-					allocateInvoice.set_ValueOfColumn("C_Invoice_ID", getRecord_ID());
-					allocateInvoice.set_ValueOfColumn("ReferenceDocument_ID", referenceInvoiceId);
-					allocateInvoice.set_ValueOfColumn("AllocateAmount", allocateAmount);
-					allocateInvoice.saveEx();
+					//	Skip additional zero-amount allocate lines once the referenced invoice is already linked
+					if (allocateAmount.signum() != 0 || !referenceAlreadyLinked) {
+						PO allocateInvoice = allocateInvoiceTable.getPO(0, invoiceLine.get_TrxName());
+						allocateInvoice.set_ValueOfColumn("C_Invoice_ID", getRecord_ID());
+						allocateInvoice.set_ValueOfColumn("ReferenceDocument_ID", referenceInvoiceId);
+						allocateInvoice.set_ValueOfColumn("AllocateAmount", allocateAmount);
+						allocateInvoice.saveEx();
+					}
 				}
 				// MZ Goodwill
 				// copy the landed cost
@@ -214,7 +219,9 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 			invoice.setRMA(rma);
 		} else if(createFromType.equals(RECEIPT)) {
 			MInOut inOut = new MInOut(getCtx(), referenceId, get_TrxName());
+			int originalDocTypeId = invoice.getC_DocTypeTarget_ID();
 			invoice.setShipment(inOut);
+			invoice.setC_DocTypeTarget_ID(originalDocTypeId);
 		}
 		//	Save
 		invoice.saveEx();

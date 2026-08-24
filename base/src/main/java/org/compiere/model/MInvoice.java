@@ -2260,8 +2260,14 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 						explicitPlacedAmount = Optional.ofNullable((BigDecimal) AllocateInvoice.get_Value("AllocateAmount"))
 							.orElse(Env.ZERO);
 						if (explicitPlacedAmount.signum()==0) {
-							throw new AdempiereException(Msg.getMsg(getCtx(), "AllocateAmountZero",
-									new Object[] { MInvoice.get(getCtx(), invoiceToAllocateId).getDocumentNo() }));
+							//	A reference-only line with zero amount only records the link and must not allocate:
+							//	route it through the general branch below, which skips it. Any other zero amount is an error
+							if (!AllocateInvoice.get_ValueAsBoolean("IsReferenceOnly")) {
+								throw new AdempiereException(Msg.getMsg(getCtx(), "AllocateAmountZero",
+										new Object[] { MInvoice.get(getCtx(), invoiceToAllocateId).getDocumentNo() }));
+							}
+							invoiceToAllocateId = 0;
+							explicitPlacedAmount = null;
 						}
 					}
 				}
@@ -2275,23 +2281,28 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			if (invoiceToAllocateId > 0) {
 				MInvoice referenceInvoice = MInvoice.get(getCtx(), invoiceToAllocateId);
 				BigDecimal referenceOpenAmt = referenceInvoice.getOpenAmt(false, null);
-				//	No open amount on the reference document - nothing to allocate
-				if (referenceOpenAmt.signum() != 0) {
-					if (referenceInvoice.getC_Currency_ID() != getC_Currency_ID()) {
-						BigDecimal rate = MConversionRate.getRate(referenceInvoice.getC_Currency_ID(), getC_Currency_ID(), getDateInvoiced(), getC_ConversionType_ID(), getAD_Client_ID(), getAD_Org_ID());
-						referenceOpenAmt = referenceOpenAmt.multiply(rate);
+				if (referenceInvoice.getC_Currency_ID() != getC_Currency_ID()) {
+					BigDecimal rate = MConversionRate.getRate(referenceInvoice.getC_Currency_ID(), getC_Currency_ID(), getDateInvoiced(), getC_ConversionType_ID(), getAD_Client_ID(), getAD_Org_ID());
+					if (rate == null || rate.signum() == 0) {
+						processMsg = "@C_Conversion_Rate@ @NotFound@";
+						return DocAction.STATUS_Invalid;
 					}
-					//	Placed amount: the specific amount requested on the C_AllocateInvoice line, if any,
-					//	otherwise this document is fully applied against the reference document
-					BigDecimal placedAmount = (explicitPlacedAmount != null && explicitPlacedAmount.signum() != 0)
-						? explicitPlacedAmount
-						: mainDocumentTotal.min(referenceOpenAmt);
+					referenceOpenAmt = referenceOpenAmt.multiply(rate);
+				}
+				//	Placed amount: the specific amount requested on the C_AllocateInvoice line, if any,
+				//	otherwise this document is fully applied against the reference document (up to its open balance)
+				BigDecimal placedAmount = (explicitPlacedAmount != null && explicitPlacedAmount.signum() != 0)
+					? explicitPlacedAmount
+					: mainDocumentTotal.min(referenceOpenAmt);
 
+				//	Nothing to place - no explicit amount and the reference is already settled
+				if (placedAmount.signum() != 0) {
 					if (placedAmount.compareTo(mainDocumentTotal) > 0) {
 						processMsg = Msg.getMsg(getCtx(), "AllocateAmountExceedsTotal",
 								new Object[] { placedAmount, mainDocumentTotal, getDocumentNo() });
 						return DocAction.STATUS_Invalid;
 					}
+
 
 					if (!isAllowOverdraftDocument && placedAmount.compareTo(referenceOpenAmt) > 0) {
 						processMsg = Msg.getMsg(getCtx(), "AllocateAmountExceedsOpen",
@@ -2299,11 +2310,9 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 						return DocAction.STATUS_Invalid;
 					}
 
-					if (placedAmount.signum() != 0) {
-						allocationManager.addAllocateDocument(invoiceToAllocateId, placedAmount, Env.ZERO, Env.ZERO);
-						allocationManager.createAllocation();
-						hasAllocation = true;
-					}
+					allocationManager.addAllocateDocument(invoiceToAllocateId, placedAmount, Env.ZERO, Env.ZERO);
+					allocationManager.createAllocation();
+					hasAllocation = true;
 				}
 			} else if (allocateInvoiceTable != null && allocateInvoiceTable.getAD_Table_ID() > 0) {
 				List<Integer> allocateInvoiceIds = new Query(getCtx(), allocateInvoiceTable.getTableName(),whereClause, get_TrxName())
@@ -2344,13 +2353,16 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 						}
 						openAmtByReferenceDocument.put(referenceDocumentId, referenceOpenAmt);
 					}
-					//	No open amount on the reference document - nothing to allocate
-					if (referenceOpenAmt.signum() == 0) {
-						continue;
-					}
 					BigDecimal placedAmount = Optional.ofNullable((BigDecimal) allocation.get_Value("AllocateAmount"))
 							.orElse(Env.ZERO);
+					//	A zero amount is only accepted when the user explicitly flagged the line as reference-only
+					//	(records the link without creating an allocation); any other zero amount is an error,
+					//	even if the referenced document has no open balance. This check runs before the open-amount
+					//	guard below so an unflagged zero line always fails instead of being silently skipped
 					if (placedAmount.signum()==0) {
+						if (allocation.get_ValueAsBoolean("IsReferenceOnly")) {
+							continue;
+						}
 						processMsg = Msg.getMsg(getCtx(), "AllocateAmountZero",
 								new Object[] { referenceInvoice.getDocumentNo() });
 						return DocAction.STATUS_Invalid;
