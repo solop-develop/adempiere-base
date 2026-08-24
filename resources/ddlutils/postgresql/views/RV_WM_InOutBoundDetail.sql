@@ -79,7 +79,11 @@ f.DD_Driver_ID,
 f.DD_Vehicle_ID,
 f.M_Shipper_ID,
 f.M_FreightCategory_ID,
-iobl.UUID
+iobl.UUID,
+((COALESCE(loc.Address1, '') || COALESCE(', ' || loc.Address2, '')) || COALESCE(', ' || loc.Address3, '')) || COALESCE(', ' || loc.Address4, '') AS directionName,
+loc.city,
+((COALESCE(billLoc.Address1, '') || COALESCE(', ' || billLoc.Address2, '')) || COALESCE(', ' || billLoc.Address3, '')) || COALESCE(', ' || billLoc.Address4, '') AS billDirectionName,
+billLoc.city AS BillCity
 FROM WM_InOutBound iob
 INNER JOIN WM_InOutBoundLine iobl ON(iobl.WM_InOutBound_ID = iob.WM_InOutBound_ID)
 LEFT JOIN C_Order o ON(o.C_Order_ID = iobl.C_Order_ID)
@@ -90,4 +94,8 @@ LEFT JOIN (SELECT i.C_Invoice_ID, il.C_InvoiceLine_ID, il.WM_InOutBoundLine_ID
             FROM C_Invoice i
             INNER JOIN C_InvoiceLine il ON(il.C_Invoice_ID = i.C_Invoice_ID)
             WHERE i.DocStatus IN('CO', 'CL')) il ON(il.WM_InOutBoundLine_ID = iobl.WM_InOutBoundLine_ID)
-LEFT JOIN DD_Freight f ON(f.WM_InOutBound_ID = iob.WM_InOutBound_ID AND f.DocStatus IN('CO', 'CL'));
+LEFT JOIN DD_Freight f ON(f.WM_InOutBound_ID = iob.WM_InOutBound_ID AND f.DocStatus IN('CO', 'CL'))
+LEFT JOIN C_BPartner_Location bpl ON bpl.C_BPartner_Location_ID = COALESCE(o.C_BPartner_Location_ID, ddo.C_BPartner_Location_ID)
+LEFT JOIN C_Location loc ON loc.C_Location_ID = bpl.C_Location_ID
+LEFT JOIN C_BPartner_Location billBpl ON billBpl.C_BPartner_Location_ID = o.Bill_Location_ID
+LEFT JOIN C_Location billLoc ON billLoc.C_Location_ID = billBpl.C_Location_ID;
