@@ -213,6 +213,21 @@ public final class MPayment extends X_C_Payment
 	}
 
 	/**
+	 * Get the bank statement line that references this payment on a bank
+	 * statement that is not yet completed or closed (still open reconciliation).
+	 * @return line or null
+	 */
+	private MBankStatementLine getOpenBankStatementLine() {
+		return new Query(getCtx(), I_C_BankStatementLine.Table_Name,
+				"C_Payment_ID = ? "
+				+ "AND EXISTS(SELECT 1 FROM C_BankStatement bs "
+				+ "		WHERE bs.C_BankStatement_ID = C_BankStatementLine.C_BankStatement_ID "
+				+ "		AND bs.DocStatus NOT IN('CO', 'CL', 'VO', 'RE'))", get_TrxName())
+				.setParameters(getC_Payment_ID())
+				.first();
+	}
+
+	/**
 	 *  Load Constructor
 	 *  @param ctx context
 	 *  @param rs result set record
@@ -2274,6 +2289,13 @@ public final class MPayment extends X_C_Payment
 
 	public MPayment reverseIt(boolean isAccrual)
 	{
+		MBankStatementLine openBankStatementLine = getOpenBankStatementLine();
+		if (openBankStatementLine != null) {
+			processMsg = Msg.getMsg(getCtx(), "Payment.ExistBankStatement",
+					new Object[] { openBankStatementLine.getParent().getDocumentNo(), openBankStatementLine.getLine() });
+			return null;
+		}
+
 		if (!voidOnlinePayment())
 			return null;
 
