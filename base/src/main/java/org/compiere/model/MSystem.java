@@ -73,10 +73,6 @@ public class MSystem extends X_AD_System
 		if (s_system == null)
 			return null;
 		//
-		if (!Ini.isClient() && s_system.setInfo())
-		{
-			s_system.saveEx();
-		}
 		return s_system;
 	}	//	get
 	
