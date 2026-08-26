@@ -17,6 +17,7 @@
 package org.compiere.model;
 
 import org.adempiere.core.domains.models.*;
+import org.eevolution.context.service.infrastructure.domain.entities.MSContract;
 import org.adempiere.engine.CostEngineFactory;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoAddressException;
@@ -2449,6 +2450,19 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			}
 		}
 		MProjectLine.recalculateProjectLines(getCtx(), projectLineAmtQty, get_TrxName(), Table_Name, isSOTrx());
+
+		//	Refresh contract summarization when the invoice header references a contract
+		int contractId = getS_Contract_ID();
+		if (contractId > 0) {
+			BigDecimal[] amtQty = new BigDecimal[] { Env.ZERO, Env.ZERO };
+			for (MInvoiceLine invoiceLine : getLines()) {
+				amtQty[0] = amtQty[0].add(invoiceLine.getLineNetAmt());
+				amtQty[1] = amtQty[1].add(invoiceLine.getQtyInvoiced());
+			}
+			Map<Integer, BigDecimal[]> contractAmtQty = new HashMap<>();
+			contractAmtQty.put(contractId, amtQty);
+			MSContract.recalculateContracts(getCtx(), contractAmtQty, get_TrxName(), Table_Name, isSOTrx());
+		}
 
 		processMsg = info.toString().trim();
 		setProcessed(true);

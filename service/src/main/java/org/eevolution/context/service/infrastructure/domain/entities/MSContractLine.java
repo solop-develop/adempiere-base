@@ -34,4 +34,28 @@ public class MSContractLine extends X_S_ContractLine {
 		super(ctx, rs, trxName);
 	}
 
+	@Override
+	protected boolean afterSave(boolean newRecord, boolean success) {
+		if (success)
+			updateContractPlanned();
+		return success;
+	}
+
+	@Override
+	protected boolean afterDelete(boolean success) {
+		if (success)
+			updateContractPlanned();
+		return success;
+	}
+
+	private void updateContractPlanned() {
+		if (getS_Contract_ID() <= 0)
+			return;
+		MSContract contract = new MSContract(getCtx(), getS_Contract_ID(), get_TrxName());
+		if (contract.get_ID() == getS_Contract_ID()) {
+			contract.updatePlannedFromLines();
+			contract.saveEx();
+		}
+	}
+
 }	//	MSContractLine

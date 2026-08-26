@@ -17,6 +17,7 @@
 package org.compiere.model;
 
 import org.adempiere.core.domains.models.*;
+import org.eevolution.context.service.infrastructure.domain.entities.MSContract;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoBillToAddressException;
 import org.adempiere.exceptions.BPartnerNoShipToAddressException;
@@ -2059,6 +2060,19 @@ public class MOrder extends X_C_Order implements DocAction
 			}
 		}
 		MProjectLine.recalculateProjectLines(getCtx(), projectLineAmtQty, get_TrxName(), Table_Name, isSOTrx());
+
+		//	Refresh contract summarization when the order header references a contract
+		int contractId = get_ValueAsInt("S_Contract_ID");
+		if (contractId > 0) {
+			BigDecimal[] amtQty = new BigDecimal[] { Env.ZERO, Env.ZERO };
+			for (MOrderLine orderLine : getLines()) {
+				amtQty[0] = amtQty[0].add(orderLine.getLineNetAmt());
+				amtQty[1] = amtQty[1].add(orderLine.getQtyOrdered());
+			}
+			Map<Integer, BigDecimal[]> contractAmtQty = new HashMap<>();
+			contractAmtQty.put(contractId, amtQty);
+			MSContract.recalculateContracts(getCtx(), contractAmtQty, get_TrxName(), Table_Name, isSOTrx());
+		}
 
 		setProcessed(true);
 		m_processMsg = info.toString();
