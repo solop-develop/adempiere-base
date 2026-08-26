@@ -2427,10 +2427,14 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 			allocatePrepayments();
 		}
 
-		//	Counter Documents
-		MInvoice counter = createCounterDoc();
-		if (counter != null)
-			info.append(" - @CounterDoc@: @C_Invoice_ID@=").append(counter.getDocumentNo());
+		//	Counter Documents must not be generated for a reversal document
+		if (!isReversal())
+		{
+			//	Counter Documents
+			MInvoice counter = createCounterDoc();
+			if (counter != null)
+				info.append(" - @CounterDoc@: @C_Invoice_ID@=").append(counter.getDocumentNo());
+		}
 
 		for (MInvoiceLine invoiceLine:getLines()){
 		    generateCostDetail(invoiceLine);
@@ -2871,9 +2875,41 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		allocationHdr.saveEx();
 		//	Reverse all Recognitions
 		reverseAllRecognitionPlans();
+		//	Cascade reversal to linked counter document (only from the original document)
+		reverseCounterDocument(isAccrual);
 		clearInOutboundLines();
 		return  reversal;
 	}
+
+	/**
+	 * Cascade reversal to the linked counter document when reversing the source document.
+	 * Only the source document (per C_DocTypeCounter configuration) triggers the cascade;
+	 * the direction check plus the status check prevent an infinite loop between the
+	 * document and its counter.
+	 * @param isAccrual reverse using accrual date
+	 */
+	private void reverseCounterDocument(boolean isAccrual) {
+		if (getRef_Invoice_ID() == 0)
+			return;
+		MInvoice counter = new MInvoice(getCtx(), getRef_Invoice_ID(), get_TrxName());
+		if (counter.get_ID() <= 0)
+			return;
+		//	Direction guard: this document must be the source that generates the counter (avoid loop)
+		MDocTypeCounter counterDocType = MDocTypeCounter.getCounterDocType(getCtx(), getC_DocType_ID());
+		if (counterDocType == null
+				|| !counterDocType.isCreateCounter()
+				|| !counterDocType.isValid()
+				|| counterDocType.getCounter_C_DocType_ID() != counter.getC_DocType_ID())
+			return;
+		//	Only cascade to an active counter document (status also closes the loop)
+		if (counter.getReversal_ID() > 0
+				|| (!DOCSTATUS_Completed.equals(counter.getDocStatus())
+						&& !DOCSTATUS_Closed.equals(counter.getDocStatus())))
+			return;
+		if (!counter.processIt(isAccrual ? DocAction.ACTION_Reverse_Accrual : DocAction.ACTION_Reverse_Correct))
+			throw new AdempiereException("@Error@ @CounterDoc@ " + counter.getDocumentNo() + ": " + counter.getProcessMsg());
+		counter.saveEx(get_TrxName());
+	}	//	reverseCounterDocument
 
 	private String getLiberatedDocumentNo(){
         return getDocumentNo() + "-" + get_ID();

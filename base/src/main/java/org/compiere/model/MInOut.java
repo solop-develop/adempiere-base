@@ -1648,15 +1648,19 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			}	//	PO Matching
 		}	//	for all lines
 
-		//	Counter Documents
-		MInOut counter = createCounterDoc();
-		if (counter != null)
-			info.append(" - @CounterDoc@: @M_InOut_ID@=").append(counter.getDocumentNo());
+		//	Counter Documents and Drop Shipments must not be generated for a reversal document
+		if (!isReversal())
+		{
+			//	Counter Documents
+			MInOut counter = createCounterDoc();
+			if (counter != null)
+				info.append(" - @CounterDoc@: @M_InOut_ID@=").append(counter.getDocumentNo());
 
-		//  Drop Shipments
-		MInOut dropShipment = createDropShipment();
-		if (dropShipment != null)
-			info.append(" - @DropShipment@: @M_InOut_ID@=").append(dropShipment.getDocumentNo());
+			//  Drop Shipments
+			MInOut dropShipment = createDropShipment();
+			if (dropShipment != null)
+				info.append(" - @DropShipment@: @M_InOut_ID@=").append(dropShipment.getDocumentNo());
+		}
 		//	User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
 		if (valid != null)
@@ -2287,9 +2291,72 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 					}
 					order.saveEx(get_TrxName());
 				});
+		//	Cascade reversal to linked counter document and drop shipment (only from the original document)
+		reverseCounterDocument(isAccrual);
+		reverseDropShipment(isAccrual);
 		clearInOutboundLines();
 		return reversal;
 	}
+
+	/**
+	 * Cascade reversal to the linked counter document when reversing the source document.
+	 * Only the source document (per C_DocTypeCounter configuration) triggers the cascade;
+	 * the direction check plus the status check prevent an infinite loop between the
+	 * document and its counter.
+	 * @param isAccrual reverse using accrual date
+	 */
+	private void reverseCounterDocument(boolean isAccrual) {
+		if (getRef_InOut_ID() == 0)
+			return;
+		MInOut counter = new MInOut(getCtx(), getRef_InOut_ID(), get_TrxName());
+		if (counter.get_ID() <= 0)
+			return;
+		//	Direction guard: this document must be the source that generates the counter (avoid loop)
+		MDocTypeCounter counterDocType = MDocTypeCounter.getCounterDocType(getCtx(), getC_DocType_ID());
+		if (counterDocType == null
+				|| !counterDocType.isCreateCounter()
+				|| !counterDocType.isValid()
+				|| counterDocType.getCounter_C_DocType_ID() != counter.getC_DocType_ID())
+			return;
+		//	Only cascade to an active counter document (status also closes the loop)
+		if (counter.getReversal_ID() > 0
+				|| (!DOCSTATUS_Completed.equals(counter.getDocStatus())
+						&& !DOCSTATUS_Closed.equals(counter.getDocStatus())))
+			return;
+		if (!counter.processIt(isAccrual ? DocAction.ACTION_Reverse_Accrual : DocAction.ACTION_Reverse_Correct))
+			throw new AdempiereException("@Error@ @CounterDoc@ " + counter.getDocumentNo() + ": " + counter.getProcessMsg());
+		counter.saveEx(get_TrxName());
+	}	//	reverseCounterDocument
+
+	/**
+	 * Cascade reversal to the drop shipment generated from this receipt.
+	 * Mirrors the createDropShipment() conditions so only the generating receipt triggers the
+	 * cascade (the generated shipment has IsDropShip = N and never cascades back).
+	 * Every active M_InOut linked to the sales order (Link_Order_ID) is reversed.
+	 * @param isAccrual reverse using accrual date
+	 */
+	private void reverseDropShipment(boolean isAccrual) {
+		if (isSOTrx() || !isDropShip() || getC_Order_ID() == 0)
+			return;
+		int linkOrderId = new MOrder(getCtx(), getC_Order_ID(), get_TrxName()).getLink_Order_ID();
+		if (linkOrderId <= 0)
+			return;
+		//	Active (completed/closed, not reversed) documents linked to the sales order
+		List<Integer> activeInOutIds = new Query(getCtx(), MInOut.Table_Name,
+				"C_Order_ID = ? AND M_InOut_ID <> ? AND DocStatus IN ('CO','CL') AND (Reversal_ID IS NULL OR Reversal_ID = 0)", get_TrxName())
+				.setParameters(linkOrderId, getM_InOut_ID())
+				.getIDsAsList();
+		//	No linked document: nothing to cascade (this document is still reversed)
+		if (activeInOutIds.isEmpty())
+			return;
+		//	Reverse every active document linked to the sales order
+		for (Integer inOutId : activeInOutIds) {
+			MInOut dropShipment = new MInOut(getCtx(), inOutId, get_TrxName());
+			if (!dropShipment.processIt(isAccrual ? DocAction.ACTION_Reverse_Accrual : DocAction.ACTION_Reverse_Correct))
+				throw new AdempiereException("@Error@ @DropShipment@ " + dropShipment.getDocumentNo() + ": " + dropShipment.getProcessMsg());
+			dropShipment.saveEx(get_TrxName());
+		}
+	}	//	reverseDropShipment
 
 	/**
 	 * reverse Matching
