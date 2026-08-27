@@ -1993,21 +1993,16 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 
 		//	Document Type
 		int C_DocTypeTarget_ID = 0;
+		//	Require an explicit, valid counter document configuration.
+		//	Fail loudly instead so the missing C_DocTypeCounter mapping gets configured.
 		MDocTypeCounter counterDT = MDocTypeCounter.getCounterDocType(getCtx(), getC_DocType_ID());
-		if (counterDT != null)
-		{
-			log.fine(counterDT.toString());
-			if (!counterDT.isCreateCounter() || !counterDT.isValid())
-				return null;
-			C_DocTypeTarget_ID = counterDT.getCounter_C_DocType_ID();
-		}
-		else	//	indirect
-		{
-			C_DocTypeTarget_ID = MDocTypeCounter.getCounterDocType_ID(getCtx(), getC_DocType_ID());
-			log.fine("Indirect C_DocTypeTarget_ID=" + C_DocTypeTarget_ID);
-			if (C_DocTypeTarget_ID <= 0)
-				return null;
-		}
+		if (counterDT == null)
+			throw new AdempiereException("@NotFound@ @C_DocTypeCounter_ID@ - @C_DocType_ID@="
+				+ MDocType.get(getCtx(), getC_DocType_ID()).getName());
+		log.fine(counterDT.toString());
+		if (!counterDT.isCreateCounter() || !counterDT.isValid())
+			return null;
+		C_DocTypeTarget_ID = counterDT.getCounter_C_DocType_ID();
 
 		//	Deep Copy
 		MInOut counter = copyFrom(this, getMovementDate(), getDateAcct(),

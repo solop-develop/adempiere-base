@@ -567,6 +567,12 @@ public class MOrder extends X_C_Order implements DocAction
 
 			// don't copy linked lines
 			line.setLink_OrderLine_ID(0);
+			//	Do not propagate return references: Ref_InOutLine_ID / Ref_InvoiceLine_ID
+			//	are only meaningful on RMA create-from flows. PO.copyValues copies them, and
+			//	leaving them on a copied/counter order leaks the reference to non-return
+			//	orders, which breaks RV_OrderRMA_CreateFrom (C_Order_CreateFrom_InOut_RMA).
+			line.setRef_InOutLine_ID(0);
+			line.setRef_InvoiceLine_ID(0);
 			//	Tax
 			if (getC_BPartner_ID() != otherOrder.getC_BPartner_ID())
 				line.setTax();		//	recalculate
@@ -2352,23 +2358,18 @@ public class MOrder extends X_C_Order implements DocAction
 		MOrgInfo counterOrgInfo = MOrgInfo.get(getCtx(), counterAD_Org_ID, get_TrxName());
 		log.info("Counter BP=" + counterBP.getName());
 
-		//	Document Type
+		//	Document Type - require an explicit, valid counter document configuration.
+		// Fail loudly instead so the
+		//	missing C_DocTypeCounter mapping gets configured.
 		int C_DocTypeTarget_ID = 0;
 		MDocTypeCounter counterDT = MDocTypeCounter.getCounterDocType(getCtx(), getC_DocType_ID());
-		if (counterDT != null)
-		{
-			log.fine(counterDT.toString());
-			if (!counterDT.isCreateCounter() || !counterDT.isValid())
-				return null;
-			C_DocTypeTarget_ID = counterDT.getCounter_C_DocType_ID();
-		}
-		else	//	indirect
-		{
-			C_DocTypeTarget_ID = MDocTypeCounter.getCounterDocType_ID(getCtx(), getC_DocType_ID());
-			log.fine("Indirect C_DocTypeTarget_ID=" + C_DocTypeTarget_ID);
-			if (C_DocTypeTarget_ID <= 0)
-				return null;
-		}
+		if (counterDT == null)
+			throw new AdempiereException("@NotFound@ @C_DocTypeCounter_ID@ - @C_DocType_ID@="
+				+ MDocType.get(getCtx(), getC_DocType_ID()).getName());
+		log.fine(counterDT.toString());
+		if (!counterDT.isCreateCounter() || !counterDT.isValid())
+			return null;
+		C_DocTypeTarget_ID = counterDT.getCounter_C_DocType_ID();
 		//	Deep Copy
 		MOrder counter = copyFrom (this, getDateOrdered(), 
 			C_DocTypeTarget_ID, !isSOTrx(), true, false, get_TrxName());
