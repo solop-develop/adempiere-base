@@ -25,6 +25,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.adempiere.core.domains.models.I_M_InOut;
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.core.domains.models.I_M_RMALine;
 import org.adempiere.core.domains.models.X_M_RMA;
 import org.compiere.process.DocAction;
@@ -494,21 +495,16 @@ public class MRMA extends X_M_RMA implements DocAction
 
 		//	Document Type
 		int C_DocTypeTarget_ID = 0;
+		//	Require an explicit, valid counter document configuration.
+		//	Fail loudly instead so the missing C_DocTypeCounter mapping gets configured.
 		MDocTypeCounter counterDT = MDocTypeCounter.getCounterDocType(getCtx(), getC_DocType_ID());
-		if (counterDT != null)
-		{
-			log.fine(counterDT.toString());
-			if (!counterDT.isCreateCounter() || !counterDT.isValid())
-				return null;
-			C_DocTypeTarget_ID = counterDT.getCounter_C_DocType_ID();
-		}
-		else	//	indirect
-		{
-			C_DocTypeTarget_ID = MDocTypeCounter.getCounterDocType_ID(getCtx(), getC_DocType_ID());
-			log.fine("Indirect C_DocTypeTarget_ID=" + C_DocTypeTarget_ID);
-			if (C_DocTypeTarget_ID <= 0)
-				return null;
-		}
+		if (counterDT == null)
+			throw new AdempiereException("@NotFound@ @C_DocTypeCounter_ID@ - @C_DocType_ID@="
+				+ MDocType.get(getCtx(), getC_DocType_ID()).getName());
+		log.fine(counterDT.toString());
+		if (!counterDT.isCreateCounter() || !counterDT.isValid())
+			return null;
+		C_DocTypeTarget_ID = counterDT.getCounter_C_DocType_ID();
 
 		//	Deep Copy
 		MRMA counter = copyFrom(this, C_DocTypeTarget_ID, !isSOTrx(), true, get_TrxName());
