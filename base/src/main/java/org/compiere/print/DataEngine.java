@@ -17,6 +17,7 @@
 package org.compiere.print;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Clob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -268,6 +269,7 @@ public class DataEngine
 		//	Direct SQL w/o Reference Info
 		StringBuffer sqlSELECT = new StringBuffer("SELECT ");
 		StringBuffer sqlFROM = new StringBuffer(" FROM ").append(tableName);
+		StringBuffer sqlConvert = new StringBuffer();
 		ArrayList<String> groupByColumns = new ArrayList<String>();
 		
 		//Activate when Line_ID or Record_ID is present
@@ -289,10 +291,16 @@ public class DataEngine
 			+ " , pfi.isDesc " //26
 			+ " , pfi.SeqNo " //27
 			+ ", pfi.AD_PrintFormatItem_ID, pfi.IsHideGrandTotal " // 28
+			+ ", COALESCE(pfi.IsCurrencyConverted,'N') AS IsCurrencyConverted"			// currency conversion
+			+ ", sc.ColumnName AS SourceDocumentColumnName, sc.AD_Reference_ID AS SourceDocumentRefId, sc.AD_Reference_Value_ID AS SourceDocumentRefValueId"
+			+ ", scd.ColumnName AS SourceDateColumnName"
+			+ ", pfi.TargetConversionType_ID, pfi.TargetCurrency_ID "
 			+ "FROM AD_PrintFormat pf"
 			+ " INNER JOIN AD_PrintFormatItem pfi ON (pf.AD_PrintFormat_ID=pfi.AD_PrintFormat_ID)"
 			+ " INNER JOIN AD_Column c ON (pfi.AD_Column_ID=c.AD_Column_ID)"
 			+ " LEFT OUTER JOIN AD_ReportView_Col rvc ON (pf.AD_ReportView_ID=rvc.AD_ReportView_ID AND c.AD_Column_ID=rvc.AD_Column_ID) "
+			+ " LEFT OUTER JOIN AD_Column sc  ON (sc.AD_Column_ID  = pfi.SourceDocumentColumn_ID)"
+			+ " LEFT OUTER JOIN AD_Column scd ON (scd.AD_Column_ID = pfi.SourceDateColumn_ID) "
 			+ "WHERE pf.AD_PrintFormat_ID=?"					//	#1
 			+ " AND pfi.IsActive='Y' AND (pfi.IsPrinted='Y' OR c.IsKey='Y' OR pfi.SortNo > 0) "
 			+ " AND pfi.PrintFormatType IN ('"
@@ -303,6 +311,34 @@ public class DataEngine
 				+ MPrintFormatItem.PRINTFORMATTYPE_PrintFormat
 				+ "') "
 			+ "ORDER BY pfi.IsPrinted DESC, pfi.SeqNo";			//	Functions are put in first column
+
+		//	Columns referenced by more than one printed item need a unique name so the same base
+		//	column can appear more than once (raw + raw, or raw + converted) without collision.
+		java.util.Set<Integer> duplicatedColumnIds = new java.util.HashSet<Integer>();
+		String dupSql = "SELECT pfi.AD_Column_ID FROM AD_PrintFormatItem pfi"
+			+ " WHERE pfi.AD_PrintFormat_ID=? AND pfi.IsActive='Y' AND pfi.IsPrinted='Y'"
+			+ " AND pfi.AD_Column_ID IS NOT NULL"
+			+ " GROUP BY pfi.AD_Column_ID HAVING COUNT(*) > 1";
+		PreparedStatement dupStmt = null;
+		ResultSet dupRs = null;
+		try
+		{
+			dupStmt = DB.prepareStatement(dupSql, m_trxName);
+			dupStmt.setInt(1, format.get_ID());
+			dupRs = dupStmt.executeQuery();
+			while (dupRs.next())
+				duplicatedColumnIds.add(dupRs.getInt(1));
+		}
+		catch (SQLException e)
+		{
+			log.log(Level.SEVERE, dupSql, e);
+		}
+		finally
+		{
+			DB.close(dupRs, dupStmt);
+			dupRs = null; dupStmt = null;
+		}
+
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try
@@ -334,23 +370,49 @@ public class DataEngine
 				String functionColumn = rs.getString("FunctionColumn");
 				if (functionColumn == null)
 					functionColumn = "";
+				//	Currency conversion configuration (read early so grouping/functions key by the unique name)
+				int printFormatItemId = rs.getInt("AD_PrintFormatItem_ID");
+				boolean isConvertedColumn = "Y".equals(rs.getString("IsCurrencyConverted"));
+				String sourceDocumentColumnName = rs.getString("SourceDocumentColumnName");
+				int sourceDocumentRefId = rs.getInt("SourceDocumentRefId");
+				int sourceDocumentRefValueId = rs.getInt("SourceDocumentRefValueId");
+				String sourceDateColumnName = rs.getString("SourceDateColumnName");
+				int itemConversionTypeId = rs.getInt("TargetConversionType_ID");
+				int itemCurrencyId = rs.getInt("TargetCurrency_ID");
+				boolean isConvertibleType = referenceId == DisplayType.Amount || referenceId == DisplayType.Number
+					|| referenceId == DisplayType.CostPrice || referenceId == DisplayType.Quantity;
+				if (isConvertedColumn && !isConvertibleType)
+				{
+					log.warning("Currency conversion applies only to numeric columns - AD_PrintFormatItem_ID=" + printFormatItemId);
+					isConvertedColumn = false;
+				}
+				if (isConvertedColumn
+					&& (sourceDocumentColumnName == null || sourceDateColumnName == null || itemCurrencyId <= 0))
+				{
+					log.warning("Currency conversion not fully configured - AD_PrintFormatItem_ID=" + printFormatItemId);
+					isConvertedColumn = false;	//	degrade to a normal column, do not break the report
+				}
+				boolean isDuplicatedColumn = duplicatedColumnIds.contains(columnId);
+				String effectiveColumnName = (isConvertedColumn || isDuplicatedColumn)
+					? columnName + "_" + printFormatItemId : columnName;
+				String conversionAliasPrefix = "Conv" + printFormatItemId + "_";
 				//	Breaks/Column Functions
 				if ("Y".equals(rs.getString("IsGroupBy")))
-					group.addGroupColumn(columnName);
+					group.addGroupColumn(effectiveColumnName);
 				if ("Y".equals(rs.getString("IsSummarized")))
-					group.addFunction(columnName, PrintDataFunction.F_SUM);
+					group.addFunction(effectiveColumnName, PrintDataFunction.F_SUM);
 				if ("Y".equals(rs.getString("IsAveraged")))
-					group.addFunction(columnName, PrintDataFunction.F_MEAN);
+					group.addFunction(effectiveColumnName, PrintDataFunction.F_MEAN);
 				if ("Y".equals(rs.getString("IsCounted")))
-					group.addFunction(columnName, PrintDataFunction.F_COUNT);
+					group.addFunction(effectiveColumnName, PrintDataFunction.F_COUNT);
 				if ("Y".equals(rs.getString("IsMinCalc")))	//	IsMinCalc
-					group.addFunction(columnName, PrintDataFunction.F_MIN);
+					group.addFunction(effectiveColumnName, PrintDataFunction.F_MIN);
 				if ("Y".equals(rs.getString("IsMaxCalc")))	//	IsMaxCalc
-					group.addFunction(columnName, PrintDataFunction.F_MAX);
+					group.addFunction(effectiveColumnName, PrintDataFunction.F_MAX);
 				if ("Y".equals(rs.getString("IsVarianceCalc")))	//	IsVarianceCalc
-					group.addFunction(columnName, PrintDataFunction.F_VARIANCE);
+					group.addFunction(effectiveColumnName, PrintDataFunction.F_VARIANCE);
 				if ("Y".equals(rs.getString("IsDeviationCalc")))	//	IsDeviationCalc
-					group.addFunction(columnName, PrintDataFunction.F_DEVIATION);
+					group.addFunction(effectiveColumnName, PrintDataFunction.F_DEVIATION);
 				if ("Y".equals(rs.getString("isRunningTotal")))	//	isRunningTotal
 					//	RunningTotalLines only once - use max
 					runningTotalLines = Math.max(runningTotalLines, rs.getInt("RunningTotalLines"));	
@@ -371,7 +433,6 @@ public class DataEngine
 				
 				String formatPattern = rs.getString("FormatPattern");
 				boolean isDesc = "Y".equals(rs.getString("isDesc"));
-				int printFormatItemId = rs.getInt("AD_PrintFormatItem_ID");
 				boolean isHideGrandTotal = "Y".equals(rs.getString("IsHideGrandTotal"));
 				//	Fully qualified Table.Column for ordering
 				String orderName = tableName + "." + columnName;
@@ -379,6 +440,57 @@ public class DataEngine
 				PrintDataColumn pdc = null;
 
 				int seqNo = rs.getInt("SeqNo");
+
+				//	Currency conversion: project source metadata via a JOIN to the source document.
+				//	This touches only auxiliary buffers (sqlConvert, sqlFROM, groupByColumns) and never
+				//	columnSQL/columnName/orderName/lookupSQL nor the standard if/else branch below.
+				if (isConvertedColumn)
+				{
+					//	Resolve the source document table: a Table/Search
+					//	reference with a reference value resolves via AD_Ref_Table (the column name may not
+					//	match the table, e.g. SalesInvoice_ID -> C_Invoice); ID/TableDir (or no reference
+					//	value) strips the trailing "_ID". The JOIN uses the referenced table's key column.
+					String sourceTable;
+					String sourceKeyColumn;
+					if ((sourceDocumentRefId == DisplayType.Table || sourceDocumentRefId == DisplayType.Search)
+						&& sourceDocumentRefValueId > 0)
+					{
+						TableReference tr = getTableReference(sourceDocumentRefValueId);
+						sourceTable = tr.TableName;
+						sourceKeyColumn = tr.KeyColumn;
+					}
+					else
+					{
+						sourceTable = sourceDocumentColumnName.endsWith("_ID")
+							? sourceDocumentColumnName.substring(0, sourceDocumentColumnName.length() - 3)
+							: sourceDocumentColumnName;
+						sourceKeyColumn = sourceDocumentColumnName;
+					}
+					String linkColumn = tableName + "." + sourceDocumentColumnName;
+					String synonym = m_synonym;	//	current synonym, before consuming it
+					//	The source conversion type is optional; project NULL when the source table has
+					//	no C_ConversionType_ID so the query never references a missing column (the reader
+					//	then falls back to the item's type or the client default).
+					boolean sourceHasConversionType = org.compiere.model.MColumn.getColumn_ID(sourceTable, "C_ConversionType_ID") > 0;
+					String conversionTypeSelect = sourceHasConversionType
+						? synonym + ".C_ConversionType_ID AS " + conversionAliasPrefix + "C_ConversionType_ID"
+						: "NULL AS " + conversionAliasPrefix + "C_ConversionType_ID";
+					sqlConvert.append(",")
+						.append(conversionTypeSelect).append(",")
+						.append(synonym).append(".").append(sourceDateColumnName).append(" AS ").append(conversionAliasPrefix).append("ConversionDate,")
+						.append(synonym).append(".C_Currency_ID AS ").append(conversionAliasPrefix).append("C_Currency_ID,")
+						.append(synonym).append(".AD_Client_ID AS ").append(conversionAliasPrefix).append("AD_Client_ID,")
+						.append(synonym).append(".AD_Org_ID AS ").append(conversionAliasPrefix).append("AD_Org_ID");
+					if (sourceHasConversionType)
+						groupByColumns.add(synonym + ".C_ConversionType_ID");
+					groupByColumns.add(synonym + "." + sourceDateColumnName);
+					groupByColumns.add(synonym + ".C_Currency_ID");
+					groupByColumns.add(synonym + ".AD_Client_ID");
+					groupByColumns.add(synonym + ".AD_Org_ID");
+					sqlFROM.append(" LEFT OUTER JOIN ").append(sourceTable).append(" ").append(synonym)
+						.append(" ON (").append(linkColumn).append("=").append(synonym).append(".").append(sourceKeyColumn).append(")");
+					synonymNext();
+				}
 
 				//  -- Key --
 				if (isKey)
@@ -648,6 +760,23 @@ public class DataEngine
 				if (pdc == null || (!IsPrinted && !isKey))
 					continue;
 
+				//	Give the column a unique name so the same base column can appear more than once
+				//	(raw + raw, or raw + converted) in one format without colliding.
+				if (isConvertedColumn && !pdc.hasAlias())
+				{
+					pdc.setConversion(conversionAliasPrefix, itemConversionTypeId, itemCurrencyId);
+					pdc.setUniqueColumnName(effectiveColumnName);
+				}
+				else if (isDuplicatedColumn)
+				{
+					//	Aliased columns (Table/TableDir/List/Search) keep their alias so the
+					//	Display-and-Value read path (two positional values) is preserved.
+					if (pdc.hasAlias())
+						pdc.setUniqueColumnNameKeepAlias(effectiveColumnName);
+					else
+						pdc.setUniqueColumnName(effectiveColumnName);
+				}
+
 				pdc.setFormatPattern(formatPattern);
 				pdc.setSortOrderIndex(SortNo);
 				pdc.setDisplayOrderIndex(seqNo);
@@ -696,6 +825,7 @@ public class DataEngine
 		 */
 		StringBuffer finalSQL = new StringBuffer();
 		finalSQL.append(sqlSELECT.substring(0, sqlSELECT.length()-1))
+			.append(sqlConvert)
 			.append(sqlFROM);
 
 		//	WHERE clause
@@ -974,8 +1104,27 @@ public class DataEngine
 						//	Display Value only
 						else
 						{
+							//	Currency-converted numeric column
+							if (pdc.isConvertedColumn())
+							{
+								BigDecimal amount = rs.getBigDecimal(counter++);	//	advance the counter even if null
+								if (!rs.wasNull())
+								{
+									String p = pdc.getConversionAliasPrefix();
+									int conversionTypeId = pdc.getConversionTypeId() > 0
+										? pdc.getConversionTypeId()
+										: rs.getInt(p + "C_ConversionType_ID");
+									pde = new ConversionElement(pd.getCtx(), pdc.getColumnName(), amount,
+										conversionTypeId,
+										rs.getInt(p + "C_Currency_ID"),	//	source currency (from the document)
+										pdc.getCurrencyId(),			//	target currency (from the item)
+										rs.getTimestamp(p + "ConversionDate"),
+										rs.getInt(p + "AD_Client_ID"), rs.getInt(p + "AD_Org_ID"),
+										pdc.getDisplayType(), pdc.getFormatPattern());
+								}
+							}
 							//	Transformation for Booleans
-							if (pdc.getDisplayType() == DisplayType.YesNo)
+							else if (pdc.getDisplayType() == DisplayType.YesNo)
 							{
 								String displayAs = MSysConfig.getValue(REPORT_DISPLAY_YES_NO, "text", Env.getAD_Client_ID(pd.getCtx()));
 								String s = rs.getString(counter++);
