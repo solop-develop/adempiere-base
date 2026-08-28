@@ -339,6 +339,19 @@ public interface I_AD_PrintFormatItem
 	  */
 	public boolean isCounted();
 
+    /** Column name IsCurrencyConverted */
+    public static final String COLUMNNAME_IsCurrencyConverted = "IsCurrencyConverted";
+
+	/** Set Is Currency Converted.
+	  * Enable printing a numeric column converted to another currency
+	  */
+	public void setIsCurrencyConverted (boolean IsCurrencyConverted);
+
+	/** Get Is Currency Converted.
+	  * Enable printing a numeric column converted to another currency
+	  */
+	public boolean isCurrencyConverted();
+
     /** Column name IsDesc */
     public static final String COLUMNNAME_IsDesc = "IsDesc";
 
@@ -808,6 +821,66 @@ public interface I_AD_PrintFormatItem
 	  * Determines in what order the records are displayed
 	  */
 	public int getSortNo();
+
+    /** Column name SourceDateColumn_ID */
+    public static final String COLUMNNAME_SourceDateColumn_ID = "SourceDateColumn_ID";
+
+	/** Set Source Date Column.
+	  * Column that provides the conversion date
+	  */
+	public void setSourceDateColumn_ID (int SourceDateColumn_ID);
+
+	/** Get Source Date Column.
+	  * Column that provides the conversion date
+	  */
+	public int getSourceDateColumn_ID();
+
+	public org.adempiere.core.domains.models.I_AD_Column getSourceDateColumn() throws RuntimeException;
+
+    /** Column name SourceDocumentColumn_ID */
+    public static final String COLUMNNAME_SourceDocumentColumn_ID = "SourceDocumentColumn_ID";
+
+	/** Set Source Document Column.
+	  * Column of the source document that holds the numeric value to convert
+	  */
+	public void setSourceDocumentColumn_ID (int SourceDocumentColumn_ID);
+
+	/** Get Source Document Column.
+	  * Column of the source document that holds the numeric value to convert
+	  */
+	public int getSourceDocumentColumn_ID();
+
+	public org.adempiere.core.domains.models.I_AD_Column getSourceDocumentColumn() throws RuntimeException;
+
+    /** Column name TargetConversionType_ID */
+    public static final String COLUMNNAME_TargetConversionType_ID = "TargetConversionType_ID";
+
+	/** Set Target Conversion Type.
+	  * Conversion type used to convert to the target currency
+	  */
+	public void setTargetConversionType_ID (int TargetConversionType_ID);
+
+	/** Get Target Conversion Type.
+	  * Conversion type used to convert to the target currency
+	  */
+	public int getTargetConversionType_ID();
+
+	public org.adempiere.core.domains.models.I_C_ConversionType getTargetConversionType() throws RuntimeException;
+
+    /** Column name TargetCurrency_ID */
+    public static final String COLUMNNAME_TargetCurrency_ID = "TargetCurrency_ID";
+
+	/** Set Target Currency.
+	  * Currency to which the numeric value is converted
+	  */
+	public void setTargetCurrency_ID (int TargetCurrency_ID);
+
+	/** Get Target Currency.
+	  * Currency to which the numeric value is converted
+	  */
+	public int getTargetCurrency_ID();
+
+	public org.adempiere.core.domains.models.I_C_Currency getTargetCurrency() throws RuntimeException;
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

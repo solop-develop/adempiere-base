@@ -79,6 +79,15 @@ public class PrintDataColumn
 	 *  the columns.  The sort order affects the level
 	 *  of the groups in the report.   
 	 */
+	/** Currency conversion: true when this column prints a numeric value converted to another currency. */
+	private boolean		isConvertedColumn = false;
+	/** Alias prefix ("Conv<AD_PrintFormatItem_ID>_") of the conversion metadata columns in the query. */
+	private String		conversionAliasPrefix;
+	/** Target conversion type (0 = use the source document's conversion type). */
+	private int			conversionTypeId;
+	/** Target currency the value is converted into. */
+	private int			currencyId;
+
 	private int			sortOrderIndex = -1;
 
 	/** The display order index or -1 if not set.  
@@ -212,6 +221,60 @@ public class PrintDataColumn
 	 */
 	public void setDisplayOrderIndex(int displayOrderIndex) {
 		this.displayOrderIndex = displayOrderIndex;
+	}
+
+	/**
+	 * Marks this column as currency-converted and stores the target configuration.
+	 * @param conversionAliasPrefix alias prefix of the conversion metadata columns in the query
+	 * @param conversionTypeId target conversion type (0 = use the source document's type)
+	 * @param currencyId target currency
+	 */
+	public void setConversion(String conversionAliasPrefix, int conversionTypeId, int currencyId) {
+		this.isConvertedColumn = true;
+		this.conversionAliasPrefix = conversionAliasPrefix;
+		this.conversionTypeId = conversionTypeId;
+		this.currencyId = currencyId;
+	}
+
+	/** @return true if this column prints a value converted to another currency */
+	public boolean isConvertedColumn() {
+		return isConvertedColumn;
+	}
+
+	/** @return alias prefix of the conversion metadata columns in the query */
+	public String getConversionAliasPrefix() {
+		return conversionAliasPrefix;
+	}
+
+	/** @return target conversion type (0 = use the source document's type) */
+	public int getConversionTypeId() {
+		return conversionTypeId;
+	}
+
+	/** @return target currency */
+	public int getCurrencyId() {
+		return currencyId;
+	}
+
+	/**
+	 * Renames the column with a unique name so the same base column can appear more than once
+	 * in a format (e.g. raw and converted). Sets both columnName and alias to the same value so
+	 * {@link #hasAlias()} stays false (keeps the "Display Value only" read path).
+	 * @param uniqueColumnName the new unique column name
+	 */
+	public void setUniqueColumnName(String uniqueColumnName) {
+		this.columnName = uniqueColumnName;
+		this.alias = uniqueColumnName;
+	}
+
+	/**
+	 * Renames only the column name (keeps the alias) so the same base column can appear more than
+	 * once even for aliased columns (Table/TableDir/List/Search). Keeping a different alias means
+	 * {@link #hasAlias()} stays true, so the "Display and Value" read path is preserved.
+	 * @param uniqueColumnName the new unique column name
+	 */
+	public void setUniqueColumnNameKeepAlias(String uniqueColumnName) {
+		this.columnName = uniqueColumnName;
 	}
 
 }	//	PrintDataColumn
