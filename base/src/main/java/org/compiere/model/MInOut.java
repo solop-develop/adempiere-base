@@ -17,6 +17,7 @@
 package org.compiere.model;
 
 import org.adempiere.core.domains.models.*;
+import org.eevolution.context.service.infrastructure.domain.entities.MSContract;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.print.ReportEngine;
@@ -1702,6 +1703,24 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			}
 		}
 		MProjectLine.recalculateProjectLines(getCtx(), projectLineAmtQty, get_TrxName(), Table_Name, isSOTrx());
+
+		//	Refresh contract summarization when the receipt/shipment header references a contract
+		int contractId = get_ValueAsInt("S_Contract_ID");
+		if (contractId > 0) {
+			BigDecimal[] amtQty = new BigDecimal[] { Env.ZERO, Env.ZERO };
+			for (MInOutLine inOutLine : getLines()) {
+				BigDecimal priceActual = Env.ZERO;
+				if (inOutLine.getC_OrderLine_ID() > 0) {
+					MOrderLine orderLine = new MOrderLine(getCtx(), inOutLine.getC_OrderLine_ID(), get_TrxName());
+					priceActual = Optional.ofNullable(orderLine.getPriceActual()).orElse(Env.ZERO);
+				}
+				amtQty[0] = amtQty[0].add(inOutLine.getMovementQty().multiply(priceActual));
+				amtQty[1] = amtQty[1].add(inOutLine.getMovementQty());
+			}
+			Map<Integer, BigDecimal[]> contractAmtQty = new HashMap<Integer, BigDecimal[]>();
+			contractAmtQty.put(contractId, amtQty);
+			MSContract.recalculateContracts(getCtx(), contractAmtQty, get_TrxName(), Table_Name, isSOTrx());
+		}
 
 		processMsg = info.toString();
 		setProcessed(true);

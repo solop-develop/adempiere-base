@@ -31,10 +31,15 @@ import org.eevolution.manufacturing.model.MPPPeriodDefinition;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Contract Entity
@@ -122,6 +127,9 @@ public class MSContract extends X_S_Contract implements DocAction, DocOptions {
 			setTotalLines(totalLines);
 			setGrandTotal(totalLines);
 		}
+
+		//	Planned summarization from the contract's own lines
+		updatePlannedFromLines();
 
 		//	Add up Amounts
 		processMessage = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
@@ -380,6 +388,136 @@ public class MSContract extends X_S_Contract implements DocAction, DocOptions {
 		return new Query(getCtx(), I_S_ContractLine.Table_Name, whereClause, get_TrxName())
 				.setParameters(get_ID())
 				.list();
+	}
+
+	/**
+	 * Recompute the header planned summarization columns from the contract's own lines.
+	 * These are planning values (independent of documents): PlannedAmt/PlannedQty from the
+	 * lines, CostPlannedAmt from qty*cost, and the derived margin/profit/balance.
+	 */
+	public void updatePlannedFromLines() {
+		BigDecimal plannedAmt = Env.ZERO;
+		BigDecimal plannedQty = Env.ZERO;
+		BigDecimal costPlannedAmt = Env.ZERO;
+		for (MSContractLine line : getLines()) {
+			if (!line.isActive())
+				continue;
+			BigDecimal qty = Optional.ofNullable(line.getQtyEntered()).orElse(Env.ZERO);
+			BigDecimal cost = Optional.ofNullable(line.getPriceCost()).orElse(Env.ZERO);
+			plannedAmt = plannedAmt.add(Optional.ofNullable(line.getLineNetAmt()).orElse(Env.ZERO));
+			plannedQty = plannedQty.add(qty);
+			costPlannedAmt = costPlannedAmt.add(qty.multiply(cost));
+		}
+		BigDecimal plannedMarginAmt = plannedAmt.subtract(costPlannedAmt);
+		setPlannedAmt(plannedAmt);
+		setPlannedQty(plannedQty);
+		setCostPlannedAmt(costPlannedAmt);
+		setPlannedMarginAmt(plannedMarginAmt);
+		setProfitPlannedAmt(plannedMarginAmt);
+		setProjectBalanceAmt(plannedAmt.subtract(getInvoicedAmt()));
+	}
+
+	/**
+	 * Recalculate the document-driven summarization columns of the given contracts and save them.
+	 * Called from document completion (MOrder/MInvoice/MInOut) whose header references a contract.
+	 * The map carries the amount/qty the completing document contributes (its own lines), added on
+	 * top of the SQL aggregation because the document is not yet CO/CL in the DB at this point.
+	 */
+	public static void recalculateContracts(Properties ctx, Map<Integer, BigDecimal[]> contractAmtQty,
+		String trxName, String tableName, boolean isSOTrx) {
+		if (contractAmtQty == null || contractAmtQty.isEmpty())
+			return;
+		for (Map.Entry<Integer, BigDecimal[]> entry : contractAmtQty.entrySet()) {
+			Integer contractId = entry.getKey();
+			if (contractId == null || contractId <= 0)
+				continue;
+			MSContract contract = new MSContract(ctx, contractId, trxName);
+			if (contract.get_ID() != contractId)
+				continue;
+			contract.recalculateFromDocument(tableName, isSOTrx, entry.getValue());
+			contract.saveEx();
+		}
+	}
+
+	private void recalculateFromDocument(String tableName, boolean isSOTrx, BigDecimal[] newAmtQty) {
+		if (MOrder.Table_Name.equals(tableName)) {
+			if (isSOTrx) {
+				BigDecimal[] amtQty = getDocumentAmtQty(
+					"SELECT COALESCE(SUM(ol.LineNetAmt),0), COALESCE(SUM(ol.QtyOrdered),0) "
+					+ "FROM " + MOrderLine.Table_Name + " ol JOIN " + MOrder.Table_Name + " o ON o.C_Order_ID=ol.C_Order_ID "
+					+ "WHERE o.S_Contract_ID=? AND o.IsSOTrx='Y' AND o.DocStatus IN ('CO','CL')", newAmtQty);
+				setOrderedAmt(amtQty[0]);
+				setQtyOrdered(amtQty[1]);
+				setCommittedAmt(amtQty[0]);
+				setCommittedQty(amtQty[1]);
+			} else {
+				BigDecimal[] amtQty = getDocumentAmtQty(
+					"SELECT COALESCE(SUM(ol.LineNetAmt),0), COALESCE(SUM(ol.QtyOrdered),0) "
+					+ "FROM " + MOrderLine.Table_Name + " ol JOIN " + MOrder.Table_Name + " o ON o.C_Order_ID=ol.C_Order_ID "
+					+ "WHERE o.S_Contract_ID=? AND o.IsSOTrx='N' AND o.DocStatus IN ('CO','CL')", newAmtQty);
+				setCostOrderedAmt(amtQty[0]);
+				setCostOrderedQty(amtQty[1]);
+			}
+		} else if (MInvoice.Table_Name.equals(tableName)) {
+			if (isSOTrx) {
+				BigDecimal[] amtQty = getDocumentAmtQty(
+					"SELECT COALESCE(SUM(il.LineNetAmt),0), COALESCE(SUM(il.QtyInvoiced),0) "
+					+ "FROM " + MInvoiceLine.Table_Name + " il JOIN " + MInvoice.Table_Name + " i ON i.C_Invoice_ID=il.C_Invoice_ID "
+					+ "WHERE i.S_Contract_ID=? AND i.IsSOTrx='Y' AND i.DocStatus IN ('CO','CL')", newAmtQty);
+				setInvoicedAmt(amtQty[0]);
+				setInvoicedQty(amtQty[1]);
+			} else {
+				BigDecimal[] amtQty = getDocumentAmtQty(
+					"SELECT COALESCE(SUM(il.LineNetAmt),0), COALESCE(SUM(il.QtyInvoiced),0) "
+					+ "FROM " + MInvoiceLine.Table_Name + " il JOIN " + MInvoice.Table_Name + " i ON i.C_Invoice_ID=il.C_Invoice_ID "
+					+ "WHERE i.S_Contract_ID=? AND i.IsSOTrx='N' AND i.DocStatus IN ('CO','CL')", newAmtQty);
+				setCostInvoicedAmt(amtQty[0]);
+				setCostInvoicedQty(amtQty[1]);
+			}
+			setProfitRealizedAmt(getInvoicedAmt().subtract(getCostInvoicedAmt()));
+		} else if (MInOut.Table_Name.equals(tableName)) {
+			if (isSOTrx) {
+				BigDecimal[] amtQty = getDocumentAmtQty(
+					"SELECT COALESCE(SUM(iol.MovementQty*COALESCE(ol.PriceActual,0)),0), COALESCE(SUM(iol.MovementQty),0) "
+					+ "FROM " + MInOutLine.Table_Name + " iol JOIN " + MInOut.Table_Name + " io ON io.M_InOut_ID=iol.M_InOut_ID "
+					+ "LEFT JOIN " + MOrderLine.Table_Name + " ol ON ol.C_OrderLine_ID=iol.C_OrderLine_ID "
+					+ "WHERE io.S_Contract_ID=? AND io.IsSOTrx='Y' AND io.DocStatus IN ('CO','CL')", newAmtQty);
+				setDeliveredAmt(amtQty[0]);
+				setQtyDelivered(amtQty[1]);
+			} else {
+				BigDecimal[] amtQty = getDocumentAmtQty(
+					"SELECT COALESCE(SUM(iol.MovementQty*COALESCE(ol.PriceActual,0)),0), COALESCE(SUM(iol.MovementQty),0) "
+					+ "FROM " + MInOutLine.Table_Name + " iol JOIN " + MInOut.Table_Name + " io ON io.M_InOut_ID=iol.M_InOut_ID "
+					+ "LEFT JOIN " + MOrderLine.Table_Name + " ol ON ol.C_OrderLine_ID=iol.C_OrderLine_ID "
+					+ "WHERE io.S_Contract_ID=? AND io.IsSOTrx='N' AND io.DocStatus IN ('CO','CL')", newAmtQty);
+				setCostReceivedAmt(amtQty[0]);
+				setCostReceivedQty(amtQty[1]);
+			}
+		}
+	}
+
+	private BigDecimal[] getDocumentAmtQty(String sql, BigDecimal[] newAmtQty) {
+		BigDecimal[] result = new BigDecimal[] { Env.ZERO, Env.ZERO };
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = DB.prepareStatement(sql, get_TrxName());
+			pstmt.setInt(1, get_ID());
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result[0] = Optional.ofNullable(rs.getBigDecimal(1)).orElse(Env.ZERO);
+				result[1] = Optional.ofNullable(rs.getBigDecimal(2)).orElse(Env.ZERO);
+			}
+		} catch (Exception e) {
+			log.log(Level.SEVERE, sql, e);
+		} finally {
+			DB.close(rs, pstmt);
+		}
+		if (newAmtQty != null) {
+			result[0] = result[0].add(newAmtQty[0]);
+			result[1] = result[1].add(newAmtQty[1]);
+		}
+		return result;
 	}
 
 }	//	MSContract

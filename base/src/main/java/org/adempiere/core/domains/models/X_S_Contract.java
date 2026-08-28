@@ -600,6 +600,159 @@ public class X_S_Contract extends PO implements I_S_Contract, I_Persistent
 		return (String)get_Value(COLUMNNAME_CopyFrom);
 	}
 
+	/** Set Cost Consumed Amount.
+		@param CostConsumedAmt Cost Consumed Amount	  */
+	public void setCostConsumedAmt (BigDecimal CostConsumedAmt)
+	{
+		set_Value (COLUMNNAME_CostConsumedAmt, CostConsumedAmt);
+	}
+
+	/** Get Cost Consumed Amount.
+		@return Cost Consumed Amount	  */
+	public BigDecimal getCostConsumedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostConsumedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Consumed Quantity.
+		@param CostConsumedQty Cost Consumed Quantity	  */
+	public void setCostConsumedQty (BigDecimal CostConsumedQty)
+	{
+		set_Value (COLUMNNAME_CostConsumedQty, CostConsumedQty);
+	}
+
+	/** Get Cost Consumed Quantity.
+		@return Cost Consumed Quantity	  */
+	public BigDecimal getCostConsumedQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostConsumedQty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Invoiced Amount.
+		@param CostInvoicedAmt Cost Invoiced Amount	  */
+	public void setCostInvoicedAmt (BigDecimal CostInvoicedAmt)
+	{
+		set_Value (COLUMNNAME_CostInvoicedAmt, CostInvoicedAmt);
+	}
+
+	/** Get Cost Invoiced Amount.
+		@return Cost Invoiced Amount	  */
+	public BigDecimal getCostInvoicedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostInvoicedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Invoiced Quantity.
+		@param CostInvoicedQty Cost Invoiced Quantity	  */
+	public void setCostInvoicedQty (BigDecimal CostInvoicedQty)
+	{
+		set_Value (COLUMNNAME_CostInvoicedQty, CostInvoicedQty);
+	}
+
+	/** Get Cost Invoiced Quantity.
+		@return Cost Invoiced Quantity	  */
+	public BigDecimal getCostInvoicedQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostInvoicedQty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Ordered Amount.
+		@param CostOrderedAmt Cost Ordered Amount	  */
+	public void setCostOrderedAmt (BigDecimal CostOrderedAmt)
+	{
+		set_Value (COLUMNNAME_CostOrderedAmt, CostOrderedAmt);
+	}
+
+	/** Get Cost Ordered Amount.
+		@return Cost Ordered Amount	  */
+	public BigDecimal getCostOrderedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostOrderedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Ordered Quantity.
+		@param CostOrderedQty Cost Ordered Quantity	  */
+	public void setCostOrderedQty (BigDecimal CostOrderedQty)
+	{
+		set_Value (COLUMNNAME_CostOrderedQty, CostOrderedQty);
+	}
+
+	/** Get Cost Ordered Quantity.
+		@return Cost Ordered Quantity	  */
+	public BigDecimal getCostOrderedQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostOrderedQty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Planned Amount.
+		@param CostPlannedAmt Cost Planned Amount	  */
+	public void setCostPlannedAmt (BigDecimal CostPlannedAmt)
+	{
+		set_Value (COLUMNNAME_CostPlannedAmt, CostPlannedAmt);
+	}
+
+	/** Get Cost Planned Amount.
+		@return Cost Planned Amount	  */
+	public BigDecimal getCostPlannedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostPlannedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Received Amount.
+		@param CostReceivedAmt Cost Received Amount	  */
+	public void setCostReceivedAmt (BigDecimal CostReceivedAmt)
+	{
+		set_Value (COLUMNNAME_CostReceivedAmt, CostReceivedAmt);
+	}
+
+	/** Get Cost Received Amount.
+		@return Cost Received Amount	  */
+	public BigDecimal getCostReceivedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostReceivedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Received Quantity.
+		@param CostReceivedQty Cost Received Quantity	  */
+	public void setCostReceivedQty (BigDecimal CostReceivedQty)
+	{
+		set_Value (COLUMNNAME_CostReceivedQty, CostReceivedQty);
+	}
+
+	/** Get Cost Received Quantity.
+		@return Cost Received Quantity	  */
+	public BigDecimal getCostReceivedQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostReceivedQty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	public I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException
     {
 		return (I_C_PaymentTerm)MTable.get(getCtx(), I_C_PaymentTerm.Table_Name)
@@ -875,6 +1028,23 @@ public class X_S_Contract extends PO implements I_S_Contract, I_Persistent
 	public BigDecimal getDaysToExpiry () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_DaysToExpiry);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Delivered Amount.
+		@param DeliveredAmt Delivered Amount	  */
+	public void setDeliveredAmt (BigDecimal DeliveredAmt)
+	{
+		set_Value (COLUMNNAME_DeliveredAmt, DeliveredAmt);
+	}
+
+	/** Get Delivered Amount.
+		@return Delivered Amount	  */
+	public BigDecimal getDeliveredAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_DeliveredAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
@@ -1325,6 +1495,46 @@ public class X_S_Contract extends PO implements I_S_Contract, I_Persistent
 		return bd;
 	}
 
+	/** Set Invoiced Amount.
+		@param InvoicedAmt 
+		The amount invoiced
+	  */
+	public void setInvoicedAmt (BigDecimal InvoicedAmt)
+	{
+		set_Value (COLUMNNAME_InvoicedAmt, InvoicedAmt);
+	}
+
+	/** Get Invoiced Amount.
+		@return The amount invoiced
+	  */
+	public BigDecimal getInvoicedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_InvoicedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Quantity Invoiced.
+		@param InvoicedQty 
+		The quantity invoiced
+	  */
+	public void setInvoicedQty (BigDecimal InvoicedQty)
+	{
+		set_Value (COLUMNNAME_InvoicedQty, InvoicedQty);
+	}
+
+	/** Get Quantity Invoiced.
+		@return The quantity invoiced
+	  */
+	public BigDecimal getInvoicedQty () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_InvoicedQty);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** InvoiceRule AD_Reference_ID=150 */
 	public static final int INVOICERULE_AD_Reference_ID=150;
 	/** After Order delivered = O */
@@ -1711,6 +1921,7 @@ public class X_S_Contract extends PO implements I_S_Contract, I_Persistent
 		return ii.intValue();
 	}
 
+
 	public I_M_FreightCategory getM_FreightCategory() throws RuntimeException
     {
 		return (I_M_FreightCategory)MTable.get(getCtx(), I_M_FreightCategory.Table_Name)
@@ -1823,6 +2034,23 @@ public class X_S_Contract extends PO implements I_S_Contract, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set Ordered Amount.
+		@param OrderedAmt Ordered Amount	  */
+	public void setOrderedAmt (BigDecimal OrderedAmt)
+	{
+		set_Value (COLUMNNAME_OrderedAmt, OrderedAmt);
+	}
+
+	/** Get Ordered Amount.
+		@return Ordered Amount	  */
+	public BigDecimal getOrderedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_OrderedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	public I_C_BPartner getPay_BPartner() throws RuntimeException
     {
 		return (I_C_BPartner)MTable.get(getCtx(), I_C_BPartner.Table_Name)
@@ -1928,6 +2156,26 @@ public class X_S_Contract extends PO implements I_S_Contract, I_Persistent
 	public BigDecimal getPlannedAmt () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PlannedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Planned Margin.
+		@param PlannedMarginAmt 
+		Project's planned margin amount
+	  */
+	public void setPlannedMarginAmt (BigDecimal PlannedMarginAmt)
+	{
+		set_Value (COLUMNNAME_PlannedMarginAmt, PlannedMarginAmt);
+	}
+
+	/** Get Planned Margin.
+		@return Project's planned margin amount
+	  */
+	public BigDecimal getPlannedMarginAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_PlannedMarginAmt);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
@@ -2145,6 +2393,66 @@ public class X_S_Contract extends PO implements I_S_Contract, I_Persistent
 		return false;
 	}
 
+	/** Set Planned Profit.
+		@param ProfitPlannedAmt 
+		Planned profit amount
+	  */
+	public void setProfitPlannedAmt (BigDecimal ProfitPlannedAmt)
+	{
+		set_Value (COLUMNNAME_ProfitPlannedAmt, ProfitPlannedAmt);
+	}
+
+	/** Get Planned Profit.
+		@return Planned profit amount
+	  */
+	public BigDecimal getProfitPlannedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ProfitPlannedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Realized Profit.
+		@param ProfitRealizedAmt 
+		Realized profit amount
+	  */
+	public void setProfitRealizedAmt (BigDecimal ProfitRealizedAmt)
+	{
+		set_Value (COLUMNNAME_ProfitRealizedAmt, ProfitRealizedAmt);
+	}
+
+	/** Get Realized Profit.
+		@return Realized profit amount
+	  */
+	public BigDecimal getProfitRealizedAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ProfitRealizedAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Project Balance.
+		@param ProjectBalanceAmt 
+		Total Project Balance
+	  */
+	public void setProjectBalanceAmt (BigDecimal ProjectBalanceAmt)
+	{
+		set_Value (COLUMNNAME_ProjectBalanceAmt, ProjectBalanceAmt);
+	}
+
+	/** Get Project Balance.
+		@return Total Project Balance
+	  */
+	public BigDecimal getProjectBalanceAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ProjectBalanceAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Promotion Code.
 		@param PromotionCode 
 		User entered promotion code at sales time
@@ -2160,6 +2468,46 @@ public class X_S_Contract extends PO implements I_S_Contract, I_Persistent
 	public String getPromotionCode () 
 	{
 		return (String)get_Value(COLUMNNAME_PromotionCode);
+	}
+
+	/** Set Delivered Quantity.
+		@param QtyDelivered 
+		Delivered Quantity
+	  */
+	public void setQtyDelivered (BigDecimal QtyDelivered)
+	{
+		set_Value (COLUMNNAME_QtyDelivered, QtyDelivered);
+	}
+
+	/** Get Delivered Quantity.
+		@return Delivered Quantity
+	  */
+	public BigDecimal getQtyDelivered () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyDelivered);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Ordered Quantity.
+		@param QtyOrdered 
+		Ordered Quantity
+	  */
+	public void setQtyOrdered (BigDecimal QtyOrdered)
+	{
+		set_Value (COLUMNNAME_QtyOrdered, QtyOrdered);
+	}
+
+	/** Get Ordered Quantity.
+		@return Ordered Quantity
+	  */
+	public BigDecimal getQtyOrdered () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyOrdered);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	public I_S_Contract getRef_Contract() throws RuntimeException
