@@ -47,33 +47,34 @@ public class PublishRelease extends PublishReleaseAbstract
 		if (release.isProcessed())
 			throw new AdempiereException("@AlreadyPosted@");
 
-		final String where = "R_Release_ID=? AND EXISTS (SELECT 1 FROM R_Status s "
-				+ "WHERE s.R_Status_ID=R_Request.R_Status_ID AND s.IsClosed='N')";
-		List<MRequest> requests = new Query(getCtx(), MRequest.Table_Name, where, get_TrxName())
-				.setParameters(getRecord_ID())
-				.setOnlyActiveRecords(true)
-				.list();
-
 		int closedCount = 0;
-		for (MRequest request : requests) {
-			MRequestType requestType = MRequestType.get(getCtx(), request.getR_RequestType_ID());
-			if (requestType == null || requestType.get_ID()<=0) {
-				throw new AdempiereException("@R_RequestType_ID@ @NotFound@ (R_Request_ID=" + request.get_ID() + ")");
-			}
-
-			MStatus closedStatus = new Query(getCtx(), MStatus.Table_Name,
-					"R_StatusCategory_ID=? AND IsClosed='Y'", get_TrxName())
-					.setParameters(requestType.getR_StatusCategory_ID())
+		if (MRelease.RELEASETYPE_Stable.equals(release.getReleaseType())) {
+			final String where = "R_Release_ID=? AND EXISTS (SELECT 1 FROM R_Status s "
+					+ "WHERE s.R_Status_ID=R_Request.R_Status_ID AND s.IsClosed='N')";
+			List<MRequest> requests = new Query(getCtx(), MRequest.Table_Name, where, get_TrxName())
+					.setParameters(getRecord_ID())
 					.setOnlyActiveRecords(true)
-					.setOrderBy("SeqNo")
-					.first();
-			if (closedStatus == null) {
-				throw new AdempiereException("@R_Status@ @IsClosed@ @NotFound@");
-			}
+					.list();
+			for (MRequest request : requests) {
+				MRequestType requestType = MRequestType.get(getCtx(), request.getR_RequestType_ID());
+				if (requestType == null || requestType.get_ID()<=0) {
+					throw new AdempiereException("@R_RequestType_ID@ @NotFound@ (R_Request_ID=" + request.get_ID() + ")");
+				}
 
-			request.setR_Status_ID(closedStatus.getR_Status_ID());
-			request.saveEx();
-			closedCount++;
+				MStatus closedStatus = new Query(getCtx(), MStatus.Table_Name,
+						"R_StatusCategory_ID=? AND IsClosed='Y'", get_TrxName())
+						.setParameters(requestType.getR_StatusCategory_ID())
+						.setOnlyActiveRecords(true)
+						.setOrderBy("SeqNo")
+						.first();
+				if (closedStatus == null) {
+					throw new AdempiereException("@R_Status@ @IsClosed@ @NotFound@");
+				}
+
+				request.setR_Status_ID(closedStatus.getR_Status_ID());
+				request.saveEx();
+				closedCount++;
+			}
 		}
 		release.setProcessed(true);
 		release.setDatePublished(new Timestamp(System.currentTimeMillis()));
