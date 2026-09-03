@@ -92,6 +92,14 @@ public class MPeriodControl extends X_C_PeriodControl
 		setDocBaseType (DocBaseType);
 	}	//	MPeriodControl
 
+	@Override
+	protected boolean beforeSave(boolean newRecord) {
+		if(getC_Calendar_ID() <= 0) {
+			setC_Calendar_ID(getC_Period().getC_Year().getC_Calendar_ID());
+		}
+		return super.beforeSave(newRecord);
+	}
+
 	/**
 	 * 	Is Period Open
 	 *	@return true if open
