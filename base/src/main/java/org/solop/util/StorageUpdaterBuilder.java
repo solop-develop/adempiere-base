@@ -26,6 +26,7 @@ public class StorageUpdaterBuilder {
 
     private List<Integer> productIds;
     private int productCategoryId;
+    private boolean recreateInventory;
     private final AtomicInteger processedNewTransactions = new AtomicInteger(0);
     private final AtomicInteger processedNewReservations = new AtomicInteger(0);
     private final AtomicInteger processedSnapshots = new AtomicInteger(0);
@@ -67,6 +68,10 @@ public class StorageUpdaterBuilder {
         return productCategoryId;
     }
 
+    public boolean isRecreateInventory() {
+        return recreateInventory;
+    }
+
     public StorageUpdaterBuilder withClientId(int clientId) {
         this.clientId = clientId;
         return this;
@@ -97,6 +102,11 @@ public class StorageUpdaterBuilder {
         return this;
     }
 
+    public StorageUpdaterBuilder withRecreateInventory(boolean recreateInventory) {
+        this.recreateInventory = recreateInventory;
+        return this;
+    }
+
     public String build() {
         if(context == null || transactionName == null) {
             throw new IllegalStateException("Context and Transaction Name are required");
@@ -104,8 +114,17 @@ public class StorageUpdaterBuilder {
         if(clientId <= 0) {
             throw new IllegalStateException("Client ID must be greater than zero");
         }
-        MStorageSnapshotRun lastSnapshot = getLastSnapshot();
         deleteOldStorage();
+        if(recreateInventory) {
+            //	Recreate the storage from scratch, ignoring the last snapshot
+            createStoreFromAllTransactions();
+            createStoreFromAllReservations();
+            log.info("Storage Recreated from scratch. Transactions: " + processedNewTransactions.get() +
+                    ", Reservations: " + processedNewReservations.get());
+            return "Storage Recreated from scratch. Transactions: " + processedNewTransactions.get() +
+                    ", Reservations: " + processedNewReservations.get();
+        }
+        MStorageSnapshotRun lastSnapshot = getLastSnapshot();
         if(lastSnapshot != null) {
             createStoreFromSnapshot(lastSnapshot);
             createStoreFromReservations(lastSnapshot);
@@ -394,6 +413,139 @@ public class StorageUpdaterBuilder {
         log.fine("Snapshot Created (Transactions)=" + inserted);
         if (inserted > 0) {
             processedNewTransactions.addAndGet(inserted);
+        }
+    }
+
+    private void createStoreFromAllTransactions() {
+        List<Object> parameters = new ArrayList<>();
+        StringBuilder transactionSQL = new StringBuilder("INSERT INTO M_Storage (M_Storage_ID, AD_Client_ID, AD_Org_ID, M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID, QtyOnHand, QtyReserved, QtyOrdered, IsActive, Created, CreatedBy, Updated, UpdatedBy, UUID) " +
+                "SELECT nextval('m_storage_seq'), mt.AD_Client_ID, mw.AD_Org_ID, mt.M_Product_ID, mt.M_Locator_ID, mt.M_AttributeSetInstance_ID, Sum(mt.MovementQty) MovementQty, 0, 0, 'Y', now(), 0, now(), 0, getUUID() " +
+                "FROM M_Transaction mt " +
+                "INNER JOIN M_Locator ml ON mt.M_Locator_ID = ml.M_Locator_ID " +
+                "INNER JOIN M_Warehouse mw ON mw.M_Warehouse_ID = ml.M_Warehouse_ID " +
+                "WHERE mt.AD_Client_ID = ? ");
+        parameters.add(getClientId());
+        //	Org
+        if (getOrganizationId() != 0) {
+            transactionSQL.append("AND mw.AD_Org_ID = ? ");
+            parameters.add(getOrganizationId());
+        }
+        //	Warehouse
+        if (getWarehouseId() != 0) {
+            transactionSQL.append("AND mw.M_Warehouse_ID = ? ");
+            parameters.add(getWarehouseId());
+        }
+        //Product
+        if (getProductId() != 0) {
+            transactionSQL.append("AND mt.M_Product_ID = ? ");
+            parameters.add(getProductId());
+        }
+        if(getProductIds() != null && !getProductIds().isEmpty()) {
+            transactionSQL.append("AND mt.M_Product_ID IN").append(getProductIds().toString().replace('[','(').replace(']',')')).append(" ");
+        }
+        //Product Category
+        if (getProductCategoryId() != 0) {
+            transactionSQL.append("AND EXISTS (SELECT 1 FROM M_Product WHERE M_Product.M_Product_Category_ID= ? AND M_Product.M_Product_ID = mt.M_Product_ID) ");
+            parameters.add(getProductCategoryId());
+        }
+        //Group By
+        transactionSQL.append("GROUP BY mt.AD_Client_ID, mw.AD_Org_ID, mt.M_Product_ID, mt.M_Locator_ID, ml.M_Warehouse_ID, mt.M_AttributeSetInstance_ID ");
+        transactionSQL.append("HAVING SUM(mt.MovementQty) <> 0 ");
+        log.fine("StorageSQL (All Transactions)=" + transactionSQL);
+        int inserted = DB.executeUpdateEx(transactionSQL.toString(), parameters.toArray(), getTransactionName());
+        log.fine("Storage Created (All Transactions)=" + inserted);
+        if (inserted > 0) {
+            processedNewTransactions.addAndGet(inserted);
+        }
+    }
+
+    private void createStoreFromAllReservations() {
+        List<Object> parameters = new ArrayList<>();
+        //	Update the currents (rows already created from transactions)
+        StringBuilder transactionSQL = new StringBuilder("UPDATE M_Storage AS s " +
+                "SET QtyOrdered = s.QtyOrdered + r.QtyOrdered, " +
+                "QtyReserved = s.QtyReserved + r.QtyReserved " +
+                "FROM (" +
+                "SELECT s.M_Storage_ID, " +
+                "SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) QtyOrdered, " +
+                "SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) QtyReserved " +
+                "FROM M_Reservation r " +
+                "INNER JOIN M_Storage s ON(s.M_Product_ID = r.M_Product_ID AND s.M_Locator_ID = r.M_Locator_ID AND s.M_AttributeSetInstance_ID = r.M_AttributeSetInstance_ID) ");
+        transactionSQL.append("WHERE r.AD_Client_ID = ? ");
+        parameters.add(getClientId());
+        //	Org
+        if (getOrganizationId() != 0) {
+            transactionSQL.append("AND r.AD_Org_ID = ? ");
+            parameters.add(getOrganizationId());
+        }
+        //	Warehouse
+        if (getWarehouseId() != 0) {
+            transactionSQL.append("AND r.M_Warehouse_ID = ? ");
+            parameters.add(getWarehouseId());
+        }
+        //Product
+        if (getProductId() != 0) {
+            transactionSQL.append("AND r.M_Product_ID = ? ");
+            parameters.add(getProductId());
+        }
+        if(getProductIds() != null && !getProductIds().isEmpty()) {
+            transactionSQL.append("AND r.M_Product_ID IN").append(getProductIds().toString().replace('[','(').replace(']',')')).append(" ");
+        }
+        //Product Category
+        if (getProductCategoryId() != 0) {
+            transactionSQL.append("AND EXISTS (SELECT 1 FROM M_Product WHERE M_Product.M_Product_Category_ID= ? AND M_Product.M_Product_ID = r.M_Product_ID) ");
+            parameters.add(getProductCategoryId());
+        }
+        transactionSQL.append("GROUP BY s.M_Storage_ID " +
+                "HAVING SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0 " +
+                "OR SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0" +
+                ") r " +
+                "WHERE s.M_Storage_ID = r.M_Storage_ID");
+        log.fine("StorageSQL (All Reservations Existing)=" + transactionSQL);
+        int inserted = DB.executeUpdateEx(transactionSQL.toString(), parameters.toArray(), getTransactionName());
+        log.fine("Storage Created (All Reservations Existing)=" + inserted);
+        if (inserted > 0) {
+            processedNewReservations.addAndGet(inserted);
+        }
+        parameters.clear();
+        //	Insert reservation-only combinations (no transaction for that product/locator/asi)
+        transactionSQL = new StringBuilder("INSERT INTO M_Storage (M_Storage_ID, AD_Client_ID, AD_Org_ID, M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID, QtyOnHand, QtyReserved, QtyOrdered, IsActive, Created, CreatedBy, Updated, UpdatedBy, UUID) " +
+                "SELECT nextval('m_storage_seq'), r.AD_Client_ID, r.AD_Org_ID, r.M_Product_ID, r.M_Locator_ID, r.M_AttributeSetInstance_ID, 0, SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END), SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END), 'Y', now(), 0, now(), 0, getUUID() " +
+                "FROM M_Reservation r " +
+                "WHERE r.AD_Client_ID = ? ");
+        parameters.add(getClientId());
+        transactionSQL.append("AND NOT EXISTS(SELECT 1 FROM M_Storage s WHERE s.M_Product_ID = r.M_Product_ID AND s.M_Locator_ID = r.M_Locator_ID AND s.M_AttributeSetInstance_ID = r.M_AttributeSetInstance_ID) ");
+        //	Org
+        if (getOrganizationId() != 0) {
+            transactionSQL.append("AND r.AD_Org_ID = ? ");
+            parameters.add(getOrganizationId());
+        }
+        //	Warehouse
+        if (getWarehouseId() != 0) {
+            transactionSQL.append("AND r.M_Warehouse_ID = ? ");
+            parameters.add(getWarehouseId());
+        }
+        //Product
+        if (getProductId() != 0) {
+            transactionSQL.append("AND r.M_Product_ID = ? ");
+            parameters.add(getProductId());
+        }
+        if(getProductIds() != null && !getProductIds().isEmpty()) {
+            transactionSQL.append("AND r.M_Product_ID IN").append(getProductIds().toString().replace('[','(').replace(']',')')).append(" ");
+        }
+        //Product Category
+        if (getProductCategoryId() != 0) {
+            transactionSQL.append("AND EXISTS (SELECT 1 FROM M_Product WHERE M_Product.M_Product_Category_ID= ? AND M_Product.M_Product_ID = r.M_Product_ID) ");
+            parameters.add(getProductCategoryId());
+        }
+        //Group By
+        transactionSQL.append("GROUP BY r.AD_Client_ID, r.AD_Org_ID, r.M_Product_ID, r.M_Locator_ID, r.M_Warehouse_ID, r.M_AttributeSetInstance_ID ");
+        transactionSQL.append("HAVING SUM(CASE WHEN r.ReservationType IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0 OR SUM(CASE WHEN r.ReservationType NOT IN('PO+', 'PO-') THEN r.Qty ELSE 0 END) <> 0");
+        log.fine("StorageSQL (All Reservations)=" + transactionSQL);
+        inserted = DB.executeUpdateEx(transactionSQL.toString(), parameters.toArray(), getTransactionName());
+        log.fine("Storage Created (All Reservations)=" + inserted);
+        if (inserted > 0) {
+            processedNewReservations.addAndGet(inserted);
         }
     }
 

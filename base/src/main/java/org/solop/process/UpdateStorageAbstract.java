@@ -41,6 +41,8 @@ public abstract class UpdateStorageAbstract extends SvrProcess {
 	public static final String M_PRODUCT_ID = "M_Product_ID";
 	/**	Parameter Name for Product Category	*/
 	public static final String M_PRODUCT_CATEGORY_ID = "M_Product_Category_ID";
+	/**	Parameter Name for Recreate Inventory	*/
+	public static final String ISRECREATEINVENTORY = "IsRecreateInventory";
 	/**	Parameter Value for Create Snapshot	*/
 	private boolean isCreateSnapshot;
 	/**	Parameter Value for Organization	*/
@@ -51,6 +53,8 @@ public abstract class UpdateStorageAbstract extends SvrProcess {
 	private int productId;
 	/**	Parameter Value for Product Category	*/
 	private int productCategoryId;
+	/**	Parameter Value for Recreate Inventory	*/
+	private boolean isRecreateInventory;
 
 	@Override
 	protected void prepare() {
@@ -59,6 +63,7 @@ public abstract class UpdateStorageAbstract extends SvrProcess {
 		warehouseId = getParameterAsInt(M_WAREHOUSE_ID);
 		productId = getParameterAsInt(M_PRODUCT_ID);
 		productCategoryId = getParameterAsInt(M_PRODUCT_CATEGORY_ID);
+		isRecreateInventory = getParameterAsBoolean(ISRECREATEINVENTORY);
 	}
 
 	/**	 Getter Parameter Value for Create Snapshot	*/
@@ -109,6 +114,16 @@ public abstract class UpdateStorageAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Product Category	*/
 	protected void setProductCategoryId(int productCategoryId) {
 		this.productCategoryId = productCategoryId;
+	}
+
+	/**	 Getter Parameter Value for Recreate Inventory	*/
+	protected boolean isRecreateInventory() {
+		return isRecreateInventory;
+	}
+
+	/**	 Setter Parameter Value for Recreate Inventory	*/
+	protected void setIsRecreateInventory(boolean isRecreateInventory) {
+		this.isRecreateInventory = isRecreateInventory;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/
