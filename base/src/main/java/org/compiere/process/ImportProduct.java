@@ -163,7 +163,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 		sql = new StringBuffer ("UPDATE I_Product i "
 			+ "SET M_Product_ID=(SELECT M_Product_ID FROM M_Product_po p"
 			+ " WHERE i.C_BPartner_ID=p.C_BPartner_ID"
-			+ " AND p.IsCurrentVendor='Y'"
+			+ " AND p.IsCurrentVendor='Y' AND p.IsActive='Y'"
 			+ " AND i.VendorProductNo=p.VendorProductNo AND p.AD_Client_ID=").append(m_AD_Client_ID).append(") "
 			+ "WHERE M_Product_ID IS NULL"
 			+ " AND I_IsImported='N'").append(clientCheck);
@@ -349,7 +349,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 				+ "SET ").append(strFieldsPO[i]).append(" = (SELECT ").append(strFieldsPO[i])
 				.append(" FROM M_Product_PO p"
 				+ " WHERE i.M_Product_ID=p.M_Product_ID AND i.C_BPartner_ID=p.C_BPartner_ID"
-				+ " AND p.IsCurrentVendor='Y' AND p.AD_Client_ID=").append(m_AD_Client_ID).append(")"
+				+ " AND p.IsCurrentVendor='Y' AND p.IsActive='Y' AND p.AD_Client_ID=").append(m_AD_Client_ID).append(")"
 				+ " WHERE M_Product_ID IS NOT NULL AND C_BPartner_ID IS NOT NULL"
 				+ " AND ").append(strFieldsPO[i]).append(" IS NULL"
 				+ " AND I_IsImported='N'").append(clientCheck);
@@ -366,7 +366,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 				+ "SET ").append(numFieldsPO[i]).append(" = (SELECT ").append(numFieldsPO[i])
 				.append(" FROM M_Product_PO p"
 				+ " WHERE i.M_Product_ID=p.M_Product_ID AND i.C_BPartner_ID=p.C_BPartner_ID"
-				+ " AND p.IsCurrentVendor='Y' AND i.AD_Client_ID=p.AD_Client_ID)"
+				+ " AND p.IsCurrentVendor='Y' AND p.IsActive='Y' AND i.AD_Client_ID=p.AD_Client_ID)"
 				+ " WHERE M_Product_ID IS NOT NULL AND C_BPartner_ID IS NOT NULL"
 				+ " AND (").append(numFieldsPO[i]).append(" IS NULL OR ").append(numFieldsPO[i]).append("=0)"
 				+ " AND I_IsImported='N'").append(clientCheck);
@@ -703,7 +703,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess
 					{
 						//	Look for an existing Product_PO of the same partner, product and import Org
 						List<MProductPO> existingPOs = MProductPO.getByPartnerAndOrg(getCtx(),
-							C_BPartner_ID, M_Product_ID, imp.getAD_Org_ID(), get_TrxName());
+							C_BPartner_ID, M_Product_ID, imp.getAD_Org_ID(), false, get_TrxName());
 						if (!existingPOs.isEmpty())
 						{
 							//	Update only the first one found

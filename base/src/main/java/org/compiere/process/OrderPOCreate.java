@@ -170,7 +170,7 @@ public class OrderPOCreate extends OrderPOCreateAbstract {
 		String sql = "SELECT MIN(po.C_BPartner_ID), po.M_Product_ID "
 			+ "FROM M_Product_PO po"
 			+ " INNER JOIN C_OrderLine ol ON (po.M_Product_ID=ol.M_Product_ID) "
-			+ "WHERE ol.C_Order_ID=? AND po.IsCurrentVendor='Y' "
+			+ "WHERE ol.C_Order_ID=? AND po.IsCurrentVendor='Y' AND po.IsActive='Y' "
 			+ " AND po.AD_Org_ID IN (0, ?)"
 			+ ((getVendorId() > 0) ? " AND po.C_BPartner_ID=? " : "")
 			+ "GROUP BY po.M_Product_ID "
