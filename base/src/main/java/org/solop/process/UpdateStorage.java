@@ -67,6 +67,7 @@ public class UpdateStorage extends UpdateStorageAbstract {
 				.withWarehouseId(getWarehouseId())
 				.withProductCategoryId(getProductCategoryId())
 				.withProductId(getProductId())
+				.withRecreateInventory(isRecreateInventory())
 				.build();
 
 		if(snapshotRun != null) {
