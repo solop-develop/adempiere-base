@@ -161,7 +161,8 @@ public class ConsignedMaterial implements ModelValidator, FactsValidator {
 					.stream()
 					.filter(orderLine -> orderLine.getM_Product_ID() > 0)
 					.forEach(orderLine -> {
-						List<MProductPO> purchaseProductList = MProductPO.getByPartnerAndOrg(orderLine.getCtx(), order.getC_BPartner_ID(), orderLine.getM_Product_ID(), order.getAD_Org_ID(), order.get_TrxName());
+						//	include inactive records: this flow reactivates an existing (inactive) Product PO instead of inserting a duplicate key
+						List<MProductPO> purchaseProductList = MProductPO.getByPartnerAndOrg(orderLine.getCtx(), order.getC_BPartner_ID(), orderLine.getM_Product_ID(), order.getAD_Org_ID(), false, order.get_TrxName());
 						Optional<MProductPO> maybePurchaseProduct = purchaseProductList.stream().filter(puchaseProduct -> puchaseProduct.getC_Currency_ID() == order.getC_Currency_ID()).findFirst();
 						if(maybePurchaseProduct.isPresent()) {	//	Update Price
 							MProductPO purchaseProductToUpdate = maybePurchaseProduct.get();

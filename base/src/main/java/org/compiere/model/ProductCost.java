@@ -622,7 +622,7 @@ public class ProductCost
 	private BigDecimal getPOCost (MAcctSchema acctSchema)
 	{
 		String sql = "SELECT C_Currency_ID, PriceList,PricePO,PriceLastPO "
-			+ "FROM M_Product_PO WHERE M_Product_ID=? "
+			+ "FROM M_Product_PO WHERE M_Product_ID=? AND IsActive='Y' "
 			+ "ORDER BY IsCurrentVendor DESC";
 
 		int currencyId = 0;

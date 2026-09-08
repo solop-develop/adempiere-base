@@ -351,6 +351,7 @@ public class M_PriceList_Create extends M_PriceList_CreateAbstract {
 				new Query(getCtx(), I_M_Product_PO.Table_Name, querywhereClause.toString(), get_TrxName())
 					.setParameters(parameters)
 					.setClient_ID()
+					.setOnlyActiveRecords(true)
 					.<MProductPO>list()
 					.forEach(productPurchasing -> {
 						//	Get conversion for Type
