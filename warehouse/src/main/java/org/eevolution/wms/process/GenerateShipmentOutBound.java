@@ -353,8 +353,35 @@ public class GenerateShipmentOutBound extends GenerateShipmentOutBoundAbstract {
     }
 
     private BigDecimal getSalesOrderQtyToDelivery(MWMInOutBoundLine outboundLine) {
-        // Always recompute from the order line; never trust a client-supplied selection override, which can be stale.
-        return outboundLine.getQtyToDeliver();
+		// Outbound Order remnant: total committed on this outbound line minus what has
+		// already been shipped from it. This is the hard ceiling and already reflects
+		// edits made to the outbound line's own quantity (MovementQty).
+		BigDecimal outboundOrderQtyToDeliver = outboundLine.getQtyToDeliver();
+
+		if (isIncludeNotAvailable()) {
+			return outboundLine.getQtyToPick();
+		}
+
+		// Quantity the user edited/selected in the "Cantidad a Entregar" column of the
+		// Smart Browser (T_Selection). Null when the browser sent no override for this
+		// row (e.g. process invoked directly by Record_ID, bypassing the browser).
+		BigDecimal selectedQtyToDeliver = getSelectionAsBigDecimal(outboundLine.getWM_InOutBoundLine_ID(), "QtyToDeliver");
+
+		if (selectedQtyToDeliver == null) {
+			// No override sent at all: keep current full-remnant behavior (non-browser path).
+			return outboundOrderQtyToDeliver;
+		}
+
+		if (selectedQtyToDeliver.signum() <= 0) {
+			throw new AdempiereException("@QtyMustBeGreaterThanZero@ (WM_InOutBoundLine_ID=" + outboundLine.getWM_InOutBoundLine_ID() + ")");
+		}
+
+		if (selectedQtyToDeliver.compareTo(outboundOrderQtyToDeliver) > 0) {
+			throw new AdempiereException("@QtyInsufficient@ @WM_InOutBoundLine_ID@=" + outboundLine.getWM_InOutBoundLine_ID()
+					+ ": @Qty@=" + selectedQtyToDeliver + ", @AvailableQty@=" + outboundOrderQtyToDeliver);
+		}
+
+		return selectedQtyToDeliver;
     }
 
     private BigDecimal getManufacturingOrderQtyToDelivery(MWMInOutBoundLine outboundLine, MPPOrderBOMLine orderBOMLine) {

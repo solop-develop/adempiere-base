@@ -21,6 +21,7 @@ import io.vavr.Tuple;
 import io.vavr.Tuple3;
 import io.vavr.collection.List;
 import io.vavr.control.Try;
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.print.MPrintFormat;
 import org.compiere.print.MPrintFormatItem;
@@ -1205,11 +1206,31 @@ public class FinReport extends FinReportAbstract {
      */
     private int setNameAndDescription(MReportLine reportLine, Boolean isCombination, Integer combinationId) {
         AtomicInteger rows = new AtomicInteger(0);
+        //	Without a source value query (e.g. UserElement / unsupported element types return
+        //	null or empty from MAcctSchemaElement.getValueQuery) and outside a combination there
+        //	is no sub-select to derive Name/Description from. Building the update anyway produced
+        //	invalid SQL such as "UPDATE T_Report SET (Name,Description)=(T_Report.Record_ID)" which
+        //	crashed the PostgreSQL statement converter (StringIndexOutOfBoundsException) and left
+        //	the report rows/columns with unresolved names (e.g. "@Amount@"). Fail with a clear,
+        //	actionable message identifying the misconfigured report line and its source element.
+        String sourceValueQuery = reportLine.getSourceValueQuery();
+        boolean hasSourceValueQuery = sourceValueQuery != null && !sourceValueQuery.isEmpty();
+        if (!hasSourceValueQuery && !Boolean.TRUE.equals(isCombination)) {
+            String elementType = null;
+            MReportSource[] sources = reportLine.getSources();
+            if (sources != null && sources.length > 0) {
+                elementType = sources[0].getElementType();
+            }
+            throw new AdempiereException(
+                    "@PA_ReportLine_ID@ '" + reportLine.getName() + "'"
+                            + " (@ElementType@=" + elementType + "):"
+                            + " @No@ @SourceValueQuery@ - the source element type has no value query"
+                            + " defined to resolve Name/Description");
+        }
         Trx.run(trxName -> {
             //	Set Name,Description
             StringBuilder updateNameAndDesc = new StringBuilder("UPDATE T_Report SET (Name,Description)=(");
-            String sourceValueQuery = reportLine.getSourceValueQuery();
-            if ((sourceValueQuery == null || sourceValueQuery.isEmpty()) && isCombination) {
+            if (!hasSourceValueQuery) {
                 updateNameAndDesc.append("SELECT Combination , Description FROM C_ValidCombination WHERE C_ValidCombination_ID=").append(combinationId);
             } else {
                 updateNameAndDesc.append(sourceValueQuery);

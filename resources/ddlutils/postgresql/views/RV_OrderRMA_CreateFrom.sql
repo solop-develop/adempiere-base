@@ -14,7 +14,9 @@ LEFT JOIN C_Charge c ON (l.C_Charge_ID = c.C_Charge_ID)
 LEFT JOIN (SELECT ol_sub.Ref_InOutLine_ID, ol_sub.QtyOrdered, o_sub.C_Currency_ID
                 FROM C_Order o_sub
                 INNER JOIN C_OrderLine ol_sub ON(ol_sub.C_Order_ID = o_sub.C_Order_ID)
+                INNER JOIN C_DocType dt_sub ON(dt_sub.C_DocType_ID = COALESCE(NULLIF(o_sub.C_DocType_ID, 0), o_sub.C_DocTypeTarget_ID))
                 WHERE o_sub.DocStatus NOT IN('VO', 'CL')
+                AND dt_sub.DocSubTypeSO = 'RM'
                 AND ol_sub.Ref_InOutLine_ID IS NOT NULL) ol ON (ol.Ref_InOutLine_ID = l.M_InOutLine_ID)
 LEFT JOIN LATERAL (
     SELECT ppo.VendorProductNo
