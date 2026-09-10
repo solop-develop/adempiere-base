@@ -103,8 +103,9 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 	}
 
 	private void consolidateByInvoice(){
-		String query = "SELECT i.DateInvoiced, i.AD_Org_ID, il.M_Product_ID, il.C_OrderLine_ID, (il.QtyInvoiced - COALESCE (cd.UsedQty,0)) AS UsedQty FROM C_InvoiceLine il" +
+		String query = "SELECT i.DateInvoiced, i.AD_Org_ID, il.M_Product_ID, il.C_OrderLine_ID, (il.QtyInvoiced * (CASE WHEN dt.DocBaseType = 'ARC' THEN -1 ELSE 1 END) - COALESCE (cd.UsedQty,0)) AS UsedQty FROM C_InvoiceLine il" +
 				" INNER JOIN C_Invoice i ON (i.C_Invoice_ID = il.C_Invoice_ID)" +
+				" INNER JOIN C_DocType dt ON (dt.C_DocType_ID = i.C_DocType_ID)" +
 				" INNER JOIN C_BPartner bp ON (bp.C_BPartner_ID = i.C_BPartner_ID)" +
 				" LEFT JOIN (SELECT SUM(cd.qty) AS UsedQty, cd.C_OrderLine_ID FROM C_ConsignmentDetail cd" +
 				" GROUP BY cd.C_OrderLine_ID) cd ON (cd.C_OrderLine_ID = il.C_OrderLine_ID)" +
@@ -132,7 +133,7 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 				" AND purchaseOrder.AD_Org_ID = i.AD_Org_ID" +
 				" AND ol2.M_Product_ID = il.M_Product_ID" +
 				" )" +
-				"AND (il.QtyInvoiced - COALESCE (cd.UsedQty,0)) > 0";
+				"AND (il.QtyInvoiced * (CASE WHEN dt.DocBaseType = 'ARC' THEN -1 ELSE 1 END) - COALESCE (cd.UsedQty,0)) <> 0";
 
 		DB.runResultSet(get_TrxName(), query, null, resultSet -> {
 			while (resultSet.next()) {
