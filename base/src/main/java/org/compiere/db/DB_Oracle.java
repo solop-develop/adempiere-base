@@ -1251,8 +1251,25 @@ public class DB_Oracle implements AdempiereDatabase
 							;
 		if(no == -1 )
 			return false;
-		else 
+		else
 			return true;
+	}
+
+	public boolean dropSequence(String name, String trxName)
+	{
+		final int cnt = DB.getSQLValueEx(trxName, "SELECT COUNT(*) FROM user_sequences WHERE UPPER(sequence_name)=?", name.toUpperCase());
+		if (cnt == 0)
+			return true;
+		int no = DB.executeUpdate("DROP SEQUENCE " + name.toUpperCase(), trxName);
+		return no != -1;
+	}
+
+	public int getCurrentSequenceValue(String name)
+	{
+		final int cnt = DB.getSQLValueEx(null, "SELECT COUNT(*) FROM user_sequences WHERE UPPER(sequence_name)=?", name.toUpperCase());
+		if (cnt == 0)
+			return -1;
+		return DB.getSQLValue(null, "SELECT last_number FROM user_sequences WHERE UPPER(sequence_name)=?", name.toUpperCase());
 	}
 
 	public boolean isQueryTimeoutSupported() {

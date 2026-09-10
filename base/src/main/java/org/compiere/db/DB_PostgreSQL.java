@@ -998,6 +998,20 @@ public class DB_PostgreSQL implements AdempiereDatabase
 			return true;
 	}
 
+	public boolean dropSequence(String name, String trxName)
+	{
+		int no = DB.executeUpdate("DROP SEQUENCE IF EXISTS " + name.toUpperCase(), trxName);
+		return no != -1;
+	}
+
+	public int getCurrentSequenceValue(String name)
+	{
+		final int cnt = DB.getSQLValueEx(null, "SELECT COUNT(*) FROM pg_class WHERE UPPER(relname)=? AND relkind='S'", name.toUpperCase());
+		if (cnt == 0)
+			return -1;
+		return DB.getSQLValue(null, "SELECT last_value FROM " + name.toLowerCase());
+	}
+
 	public boolean isQueryTimeoutSupported() {
 		return false;
 	}

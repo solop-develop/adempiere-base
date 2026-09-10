@@ -70,6 +70,7 @@ public class SequenceCheck extends SvrProcess
 		checkTableSequences (Env.getCtx(), this);
 		checkTableID (Env.getCtx(), this, false);
 		checkClientSequences (Env.getCtx(), this);
+		checkDocumentSequences (Env.getCtx(), this);
 		return "Sequence Check";
 	}	//	doIt
 	
@@ -86,6 +87,7 @@ public class SequenceCheck extends SvrProcess
 			checkTableSequences (ctx, null); // Requires AD_Sequence to be valid
 			checkTableID (ctx, null, false); // Check others
 			checkClientSequences (ctx, null);
+			checkDocumentSequences (ctx, null);
 		}
 		catch (Exception e)
 		{
@@ -374,7 +376,68 @@ public class SequenceCheck extends SvrProcess
 		}	//	for all clients
 		
 	}	//	checkClientSequences
-	
+
+	/**
+	 * 	Create the native sequences backing document (non table-ID) AD_Sequence records that don't
+	 *  have one yet. Lets an existing installation switch SYSTEM_NATIVE_SEQUENCE on without losing
+	 *  the current numbering - each native sequence is created starting at the sequence's current
+	 *  CurrentNext (or, for StartNewYear sequences, at each year's CurrentNext in AD_Sequence_No).
+	 *	@param ctx context
+	 *	@param sp server process or null
+	 */
+	private static void checkDocumentSequences (Properties ctx, SvrProcess sp)
+	{
+		boolean nativeSequenceEnabled = MSysConfig.getBooleanValue("SYSTEM_NATIVE_SEQUENCE", false);
+		if (!nativeSequenceEnabled)
+			return;
+
+		String trxName = (sp != null) ? sp.get_TrxName() : null;
+		List<Integer> sequenceIds = new Query(ctx, I_AD_Sequence.Table_Name, "IsTableID='N' AND IsActive='Y'", trxName)
+				.setOnlyActiveRecords(true)
+				.getIDsAsList();
+		for (Integer sequenceId : sequenceIds)
+		{
+			MSequence seq = new MSequence(ctx, sequenceId, trxName);
+			String seqName = MSequence.getNativeSequenceName(sequenceId);
+			if (CConnection.get().getDatabase().getCurrentSequenceValue(seqName) < 0)
+			{
+				CConnection.get().getDatabase().createSequence(seqName, seq.getIncrementNo(), 0, 99999999, seq.getCurrentNext(), trxName);
+				if (sp != null)
+					sp.addLog(0, null, null, "Native Sequence Created => " + seq.getName());
+			}
+			if (seq.isStartNewYear())
+			{
+				String sql = "SELECT CalendarYear, CurrentNext FROM AD_Sequence_No WHERE AD_Sequence_ID=?";
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+				try
+				{
+					pstmt = DB.prepareStatement(sql, trxName);
+					pstmt.setInt(1, sequenceId);
+					rs = pstmt.executeQuery();
+					while (rs.next())
+					{
+						String yearSeqName = MSequence.getNativeSequenceName(sequenceId, rs.getString(1));
+						if (CConnection.get().getDatabase().getCurrentSequenceValue(yearSeqName) < 0)
+						{
+							CConnection.get().getDatabase().createSequence(yearSeqName, seq.getIncrementNo(), 0, 99999999, rs.getInt(2), trxName);
+							if (sp != null)
+								sp.addLog(0, null, null, "Native Sequence Created => " + yearSeqName);
+						}
+					}
+				}
+				catch (Exception e)
+				{
+					s_log.log(Level.SEVERE, sql, e);
+				}
+				finally
+				{
+					DB.close(rs, pstmt);
+				}
+			}
+		}
+	}	//	checkDocumentSequences
+
 	//add main method, preparing for nightly build
 	public static void main(String[] args) 
 	{

@@ -401,6 +401,10 @@ public class MSequence extends X_AD_Sequence
 				throw new AdempiereException(throwable);
 			});
 		}
+		// With the native sequence active (and not adempiereSys, which keeps using CurrentNextSys
+		// the classic way) the row is only read for its metadata (Prefix/Suffix/IncrementNo/...);
+		// no FOR UPDATE lock is taken and CurrentNext/AD_Sequence_No are not written.
+		boolean useNative = isNativeSequenceEnabled() && !adempiereSys.get();
 		String selectSQL = null;
 		if (DB.isOracle() == false)
 		{
@@ -413,7 +417,7 @@ public class MSequence extends X_AD_Sequence
 						+ "AND y.CalendarYear = ? "
 						+ "AND s.IsActive='Y' AND s.IsTableID='N' AND s.IsAutoSequence='Y' "
 						+ "ORDER BY s.AD_Client_ID DESC "
-						+ "FOR UPDATE "; //OF y"; // dete: MySql
+						+ (useNative ? "" : "FOR UPDATE "); //OF y"; // dete: MySql
 			} else {
 				selectSQL = "SELECT CurrentNext, CurrentNextSys, IncrementNo, Prefix, Suffix, DecimalPattern, AD_Sequence_ID "
 						+ "FROM AD_Sequence "
@@ -421,7 +425,7 @@ public class MSequence extends X_AD_Sequence
 						+ "AND AD_Client_ID = ? "
 						+ "AND IsActive='Y' AND IsTableID='N' AND IsAutoSequence='Y' "
 						+ "ORDER BY AD_Client_ID DESC "
-						+ "FOR UPDATE "; //OF AD_Sequence"; //dete: MySql
+						+ (useNative ? "" : "FOR UPDATE "); //OF AD_Sequence"; //dete: MySql
 			}
 			USE_PROCEDURE=false;
 		}
@@ -474,23 +478,30 @@ public class MSequence extends X_AD_Sequence
 							resulset.getString(6)
 							)
 					);
-					String sql = "";
-					if (adempiereSys.get()) {
-						sql = "UPDATE AD_Sequence SET CurrentNextSys = CurrentNextSys + ? WHERE AD_Sequence_ID = ?";
-						sequence.get().withNext(resulset.getInt(2));
+					if (useNative) {
+						String seqName = isStartNewYear.get()
+								? getNativeSequenceName(sequence.get().sequenceId, calendarYear.get())
+								: getNativeSequenceName(sequence.get().sequenceId);
+						sequence.get().withNext(nextNativeValue(seqName, resulset.getInt(1), sequence.get().incrementNo, trxName));
 					} else {
-						sql = isStartNewYear.get()
-								? "UPDATE AD_Sequence_No SET CurrentNext = CurrentNext + ? WHERE AD_Sequence_ID = ? AND CalendarYear = ?"
-								: "UPDATE AD_Sequence SET CurrentNext = CurrentNext + ? WHERE AD_Sequence_ID = ?";
-						sequence.get().withNext(resulset.getInt(1));
+						String sql = "";
+						if (adempiereSys.get()) {
+							sql = "UPDATE AD_Sequence SET CurrentNextSys = CurrentNextSys + ? WHERE AD_Sequence_ID = ?";
+							sequence.get().withNext(resulset.getInt(2));
+						} else {
+							sql = isStartNewYear.get()
+									? "UPDATE AD_Sequence_No SET CurrentNext = CurrentNext + ? WHERE AD_Sequence_ID = ? AND CalendarYear = ?"
+									: "UPDATE AD_Sequence SET CurrentNext = CurrentNext + ? WHERE AD_Sequence_ID = ?";
+							sequence.get().withNext(resulset.getInt(1));
+						}
+						List<Object> updateParameters = new ArrayList<>();
+						updateParameters.add(sequence.get().incrementNo);
+						updateParameters.add(sequence.get().sequenceId);
+						if (isStartNewYear.get()) {
+							updateParameters.add(calendarYear);
+						}
+						DB.executeUpdateEx(sql, updateParameters.toArray(), trxName);
 					}
-					List<Object> updateParameters = new ArrayList<>();
-					updateParameters.add(sequence.get().incrementNo);
-					updateParameters.add(sequence.get().sequenceId);
-					if (isStartNewYear.get()) {
-						updateParameters.add(calendarYear);
-					}
-					DB.executeUpdateEx(sql, updateParameters.toArray(), trxName);
 				} else {
 					s_log.warning ("(Table) - no record found - " + TableName);
 					MSequence seq = new MSequence (Env.getCtx(), AD_Client_ID, TableName, null);
@@ -644,6 +655,10 @@ public class MSequence extends X_AD_Sequence
 			}
 		}
 
+		// With the native sequence active (and not adempiereSys, which keeps using CurrentNextSys
+		// the classic way) the row is only read for its metadata; no FOR UPDATE lock is taken and
+		// AD_Sequence/AD_Sequence_No are not written.
+		boolean useNative = isNativeSequenceEnabled() && !adempiereSys;
 		String selectSQL = null;
 		if (DB.isOracle() == false)
 		{
@@ -655,7 +670,7 @@ public class MSequence extends X_AD_Sequence
 						+ "AND s.AD_Sequence_ID = ? "
 						+ "AND y.CalendarYear = ? "
 						+ "AND s.IsActive='Y' AND s.IsTableID='N' AND s.IsAutoSequence='Y' "
-						+ "FOR UPDATE "; //OF y"; //dete: MySql
+						+ (useNative ? "" : "FOR UPDATE "); //OF y"; //dete: MySql
 			}
 			else
 			{
@@ -663,7 +678,7 @@ public class MSequence extends X_AD_Sequence
 						+ "FROM AD_Sequence "
 						+ "WHERE AD_Sequence_ID = ? "
 						+ "AND IsActive='Y' AND IsTableID='N' AND IsAutoSequence='Y' "
-						+ "FOR UPDATE "; //OF AD_Sequence"; //dete: MySql
+						+ (useNative ? "" : "FOR UPDATE "); //OF AD_Sequence"; //dete: MySql
 			}
 			USE_PROCEDURE=false;
 		}
@@ -745,7 +760,14 @@ public class MSequence extends X_AD_Sequence
 					adempiereSys = false;
 				AD_Sequence_ID = rs.getInt(8);
 
-				if (USE_PROCEDURE)
+				if (useNative)
+				{
+					String seqName = isStartNewYear
+							? getNativeSequenceName(AD_Sequence_ID, calendarYear)
+							: getNativeSequenceName(AD_Sequence_ID);
+					next = nextNativeValue(seqName, rs.getInt(1), incrementNo, trxName);
+				}
+				else if (USE_PROCEDURE)
 				{
 					next = isStartNewYear
 						? nextIDByYear(conn, AD_Sequence_ID, incrementNo, calendarYear)
@@ -986,6 +1008,66 @@ public class MSequence extends X_AD_Sequence
 	}	//	get
 
 
+	/** Max value for a native sequence backing a document sequence	*/
+	private static final int	MAX_NATIVE_VALUE = 99999999;
+
+	/**
+	 * 	Name of the native sequence backing a document (non table-ID) sequence.
+	 *  Derived from AD_Sequence_ID (not Name) because Name is not unique across clients and
+	 *  may contain characters that are not valid SQL identifiers.
+	 *	@param sequenceId AD_Sequence_ID
+	 *	@return native sequence name
+	 */
+	public static String getNativeSequenceName(int sequenceId)
+	{
+		return "AD_SEQUENCE_" + sequenceId + "_SEQ";
+	}
+
+	/**
+	 * 	Name of the native sequence backing a StartNewYear document sequence for a given year.
+	 *	@param sequenceId AD_Sequence_ID
+	 *	@param calendarYear year (as stored in AD_Sequence_No.CalendarYear)
+	 *	@return native sequence name
+	 */
+	public static String getNativeSequenceName(int sequenceId, String calendarYear)
+	{
+		return "AD_SEQUENCE_" + sequenceId + "_" + calendarYear + "_SEQ";
+	}
+
+	/**
+	 * 	Is the native sequence feature active
+	 *	@return true if SYSTEM_NATIVE_SEQUENCE sysconfig is enabled
+	 */
+	private static boolean isNativeSequenceEnabled()
+	{
+		return MSysConfig.getBooleanValue("SYSTEM_NATIVE_SEQUENCE", false);
+	}
+
+	/**
+	 * 	Get next value from a native sequence, creating it on the fly (starting at startNo) if it
+	 *  does not exist yet - covers newly created StartNewYear sequences for a new year and
+	 *  instances where the sequence check migration has not run yet.
+	 *	@param seqName native sequence name
+	 *	@param startNo start value to use if the sequence must be created
+	 *	@param incrementNo increment to use if the sequence must be created
+	 *	@param trxName transaction (only used for the create/alter, not for the nextval call)
+	 *	@return next value
+	 */
+	private static int nextNativeValue(String seqName, int startNo, int incrementNo, String trxName)
+	{
+		int next = CConnection.get().getDatabase().getNextID(seqName);
+		if (next <= 0)
+		{
+			if (!CConnection.get().getDatabase().createSequence(seqName, incrementNo, 0, MAX_NATIVE_VALUE, startNo, trxName))
+			{
+				// Lost the race against a concurrent creator - the sequence should exist now
+				s_log.fine("Native sequence create failed (likely concurrent creation), retrying nextval - " + seqName);
+			}
+			next = CConnection.get().getDatabase().getNextID(seqName);
+		}
+		return next;
+	}
+
 	/**	Sequence for Table Document No's	*/
 	public static final String	PREFIX_DOCSEQ = "DocumentNo_";
 	/**	Start Number			*/
@@ -1086,8 +1168,87 @@ public class MSequence extends X_AD_Sequence
 				);
 			}
 		}
+		else if (!newRecord && isNativeSequenceEnabled()) {
+			// Track whether CurrentNext/IncrementNo were edited on purpose (not by the numbering
+			// flow itself, which no longer writes them when native sequences are active) so
+			// afterSave can push the change into the native sequence.
+			m_nativeSequenceNeedsReset = is_ValueChanged(COLUMNNAME_CurrentNext)
+				|| is_ValueChanged(COLUMNNAME_IncrementNo);
+		}
 		return true;
 	}	//	beforeSave
+
+	/** Set by {@link #beforeSave(boolean)} when a document sequence's CurrentNext/IncrementNo
+	 *  was edited and the native sequence must be reset to match.						*/
+	private boolean m_nativeSequenceNeedsReset = false;
+
+	/**
+	 * 	After Save - keep the native sequence for document sequences in sync
+	 *	@param newRecord new record
+	 *	@param success save was successful
+	 *	@return success
+	 */
+	@Override
+	protected boolean afterSave(boolean newRecord, boolean success)
+	{
+		if (success && !isTableID() && isNativeSequenceEnabled()) {
+			if (newRecord) {
+				CConnection.get().getDatabase().createSequence(
+					getNativeSequenceName(getAD_Sequence_ID()), getIncrementNo(), 0, MAX_NATIVE_VALUE, getCurrentNext(), get_TrxName());
+			}
+			else if (m_nativeSequenceNeedsReset) {
+				CConnection.get().getDatabase().createSequence(
+					getNativeSequenceName(getAD_Sequence_ID()), getIncrementNo(), 0, MAX_NATIVE_VALUE, getCurrentNext(), get_TrxName());
+				m_nativeSequenceNeedsReset = false;
+			}
+		}
+		return success;
+	}	//	afterSave
+
+	/** Calendar years collected in {@link #beforeDelete()} for the native yearly sequences to drop. */
+	private List<String> m_sequenceNoYears = null;
+
+	/**
+	 * 	Before Delete - remember the AD_Sequence_No years so the matching native
+	 *  yearly sequences can be dropped afterwards
+	 *	@return true
+	 */
+	@Override
+	protected boolean beforeDelete()
+	{
+		if (!isTableID() && isNativeSequenceEnabled()) {
+			m_sequenceNoYears = new ArrayList<>();
+			DB.runResultSet(get_TrxName(),
+				"SELECT CalendarYear FROM AD_Sequence_No WHERE AD_Sequence_ID=?",
+				List.of(getAD_Sequence_ID()),
+				resultSet -> {
+					while (resultSet.next())
+						m_sequenceNoYears.add(resultSet.getString(1));
+				}).onFailure(throwable -> {
+					throw new AdempiereException(throwable);
+				});
+		}
+		return true;
+	}	//	beforeDelete
+
+	/**
+	 * 	After Delete - drop the native sequence(s) created for this document sequence
+	 *	@param success delete was successful
+	 *	@return success
+	 */
+	@Override
+	protected boolean afterDelete(boolean success)
+	{
+		if (success && !isTableID() && isNativeSequenceEnabled()) {
+			CConnection.get().getDatabase().dropSequence(getNativeSequenceName(getAD_Sequence_ID()), get_TrxName());
+			if (m_sequenceNoYears != null) {
+				for (String year : m_sequenceNoYears) {
+					CConnection.get().getDatabase().dropSequence(getNativeSequenceName(getAD_Sequence_ID(), year), get_TrxName());
+				}
+			}
+		}
+		return success;
+	}	//	afterDelete
 
 
 	/**************************************************************************
@@ -1546,6 +1707,11 @@ public class MSequence extends X_AD_Sequence
 			d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 		String calendarYear = sdf.format(d);
+		if (isNativeSequenceEnabled()) {
+			int currentValue = CConnection.get().getDatabase().getCurrentSequenceValue(getNativeSequenceName(AD_Sequence_ID, calendarYear));
+			if (currentValue >= 0)
+				return String.valueOf(currentValue);
+		}
 		String sql = "SELECT CurrentNext FROM AD_Sequence_No WHERE AD_Sequence_ID = ? AND CalendarYear = ?";
 		return DB.getSQLValueString(trxName, sql, AD_Sequence_ID, calendarYear);
 	}

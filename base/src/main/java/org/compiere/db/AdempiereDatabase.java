@@ -217,8 +217,23 @@ public interface AdempiereDatabase
 	 * @param Sequence Name
 	 */
 	public boolean createSequence(String name , int increment , int minvalue , int maxvalue ,int  start, String trxName);
-	
-	
+
+	/**
+	 * 	Drop Native Sequence if it exists
+	 *	@param name Sequence Name
+	 *	@param trxName transaction
+	 *	@return true if dropped or already absent
+	 */
+	public boolean dropSequence(String name, String trxName);
+
+	/**
+	 * 	Get current value of a Native Sequence (last value returned by nextval)
+	 *	@param name Sequence Name
+	 *	@return current value or -1 if the sequence does not exist
+	 */
+	public int getCurrentSequenceValue(String name);
+
+
 	/** Create User commands					*/
 	public static final int		CMD_CREATE_USER = 0;
 	/** Create Database/Schema Commands			*/
