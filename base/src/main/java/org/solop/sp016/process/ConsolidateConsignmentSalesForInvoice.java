@@ -85,9 +85,26 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 				"       FROM adempiere.m_product_po pp " +
 				"      WHERE pp.m_product_id = ol2.m_product_id AND o2.c_bpartner_id = pp.c_bpartner_id AND pp.isactive = 'Y'::bpchar AND pp.discontinued = 'N'::bpchar)) " +
 				")";
-		List<Integer> inventoryLineIds = new Query(getCtx(), MInventoryLine.Table_Name, whereClause, get_TrxName())
-				.setClient_ID()
-				.getIDsAsList();
+		//	Filter internal-use inventory by the same date range, applied to the inventory movement date
+		StringBuilder inventoryWhereClause = new StringBuilder(whereClause);
+		List<Object> inventoryParameters = new ArrayList<>();
+		if (getDateInvoiced() != null && getDateInvoicedTo() != null) {
+			inventoryWhereClause.append(" AND EXISTS (SELECT 1 FROM M_Inventory i2 WHERE i2.M_Inventory_ID = M_InventoryLine.M_Inventory_ID AND i2.MovementDate BETWEEN ? AND ?)");
+			inventoryParameters.add(getDateInvoiced());
+			inventoryParameters.add(getDateInvoicedTo());
+		} else if (getDateInvoiced() != null) {
+			inventoryWhereClause.append(" AND EXISTS (SELECT 1 FROM M_Inventory i2 WHERE i2.M_Inventory_ID = M_InventoryLine.M_Inventory_ID AND i2.MovementDate >= ?)");
+			inventoryParameters.add(getDateInvoiced());
+		} else if (getDateInvoicedTo() != null) {
+			inventoryWhereClause.append(" AND EXISTS (SELECT 1 FROM M_Inventory i2 WHERE i2.M_Inventory_ID = M_InventoryLine.M_Inventory_ID AND i2.MovementDate <= ?)");
+			inventoryParameters.add(getDateInvoicedTo());
+		}
+		Query inventoryLineQuery = new Query(getCtx(), MInventoryLine.Table_Name, inventoryWhereClause.toString(), get_TrxName())
+				.setClient_ID();
+		if (!inventoryParameters.isEmpty()) {
+			inventoryLineQuery.setParameters(inventoryParameters);
+		}
+		List<Integer> inventoryLineIds = inventoryLineQuery.getIDsAsList();
 
 		inventoryLineIds.forEach(inventoryLineId -> {
 
@@ -103,8 +120,9 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 	}
 
 	private void consolidateByInvoice(){
-		String query = "SELECT i.DateInvoiced, i.AD_Org_ID, il.M_Product_ID, il.C_OrderLine_ID, (il.QtyInvoiced - COALESCE (cd.UsedQty,0)) AS UsedQty FROM C_InvoiceLine il" +
+		String query = "SELECT i.DateInvoiced, i.AD_Org_ID, il.M_Product_ID, il.C_OrderLine_ID, (il.QtyInvoiced * (CASE WHEN dt.DocBaseType = 'ARC' THEN -1 ELSE 1 END) - COALESCE (cd.UsedQty,0)) AS UsedQty FROM C_InvoiceLine il" +
 				" INNER JOIN C_Invoice i ON (i.C_Invoice_ID = il.C_Invoice_ID)" +
+				" INNER JOIN C_DocType dt ON (dt.C_DocType_ID = i.C_DocType_ID)" +
 				" INNER JOIN C_BPartner bp ON (bp.C_BPartner_ID = i.C_BPartner_ID)" +
 				" LEFT JOIN (SELECT SUM(cd.qty) AS UsedQty, cd.C_OrderLine_ID FROM C_ConsignmentDetail cd" +
 				" GROUP BY cd.C_OrderLine_ID) cd ON (cd.C_OrderLine_ID = il.C_OrderLine_ID)" +
@@ -132,9 +150,23 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 				" AND purchaseOrder.AD_Org_ID = i.AD_Org_ID" +
 				" AND ol2.M_Product_ID = il.M_Product_ID" +
 				" )" +
-				"AND (il.QtyInvoiced - COALESCE (cd.UsedQty,0)) > 0";
+				"AND (il.QtyInvoiced * (CASE WHEN dt.DocBaseType = 'ARC' THEN -1 ELSE 1 END) - COALESCE (cd.UsedQty,0)) <> 0";
 
-		DB.runResultSet(get_TrxName(), query, null, resultSet -> {
+		List<Object> parameters = new ArrayList<>();
+		//	Filter final consumer sale invoices/credit memos by invoice date range
+		if (getDateInvoiced() != null && getDateInvoicedTo() != null) {
+			query += " AND i.DateInvoiced BETWEEN ? AND ?";
+			parameters.add(getDateInvoiced());
+			parameters.add(getDateInvoicedTo());
+		} else if (getDateInvoiced() != null) {
+			query += " AND i.DateInvoiced >= ?";
+			parameters.add(getDateInvoiced());
+		} else if (getDateInvoicedTo() != null) {
+			query += " AND i.DateInvoiced <= ?";
+			parameters.add(getDateInvoicedTo());
+		}
+
+		DB.runResultSet(get_TrxName(), query, parameters, resultSet -> {
 			while (resultSet.next()) {
 
 				consolidateData(resultSet.getInt("M_Product_ID"), resultSet.getInt("AD_Org_ID"),
@@ -148,17 +180,35 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 	}
 
 	private void consolidateData(int productId, int orgId, BigDecimal qty, BigDecimal qtyUsed, int orderLineId, int inventoryLineId, Timestamp dateDoc) {
+		//	Filter by product parameter (applies to both invoice and inventory sources)
+		if (getProductId() > 0 && productId != getProductId()) {
+			return;
+		}
 		String searchKey = productId + "|" + orgId;
 		List<ConsignmentOrderGrouping> orderLinesAndQtyList = productToOrderGroup.getOrDefault(searchKey, new ArrayList<>());
 		if (orderLinesAndQtyList.isEmpty()) {
 			//For the Consigned Sales Order Lines still open
 			productToOrderGroup.put(searchKey, orderLinesAndQtyList);
-			String whereClauseOrderLine = "M_Product_ID = ? AND QtyDelivered > QtyInvoiced AND EXISTS (SELECT 1 FROM C_Order o " +
+			List<Object> orderLineParameters = new ArrayList<>();
+			orderLineParameters.add(productId);
+			orderLineParameters.add(orgId);
+			StringBuilder whereClauseOrderLine = new StringBuilder("M_Product_ID = ? AND QtyDelivered > QtyInvoiced AND EXISTS (SELECT 1 FROM C_Order o " +
 					"INNER JOIN C_Order o2 ON (o2.C_Order_ID  = o.Ref_Order_ID) " +
 					"WHERE o.IsDropShip = 'Y' AND o.IsSOTrx = 'Y' AND o.C_Order_ID = C_OrderLine.C_Order_ID " +
-					"AND o2.AD_Org_ID = ?)";
-			List<Integer> openSalesOrderLineIds = new Query(getCtx(), MOrderLine.Table_Name, whereClauseOrderLine, get_TrxName())
-					.setParameters(productId, orgId)
+					"AND o2.AD_Org_ID = ?");
+			//	Filter by the business partner of the original consignment order
+			if (getBPartnerId() > 0) {
+				whereClauseOrderLine.append(" AND o.C_BPartner_ID = ?");
+				orderLineParameters.add(getBPartnerId());
+			}
+			whereClauseOrderLine.append(")");
+			//	Filter by the original consignment order
+			if (getOrderId() > 0) {
+				whereClauseOrderLine.append(" AND C_OrderLine.C_Order_ID = ?");
+				orderLineParameters.add(getOrderId());
+			}
+			List<Integer> openSalesOrderLineIds = new Query(getCtx(), MOrderLine.Table_Name, whereClauseOrderLine.toString(), get_TrxName())
+					.setParameters(orderLineParameters)
 					.setOrderBy("Created")
 					.getIDsAsList();
 			for (Integer openOrderLineId : openSalesOrderLineIds) {

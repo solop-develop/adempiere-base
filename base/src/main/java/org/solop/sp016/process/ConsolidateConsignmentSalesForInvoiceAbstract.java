@@ -18,6 +18,7 @@
 
 package org.solop.sp016.process;
 
+import java.sql.Timestamp;
 import org.compiere.process.SvrProcess;
 
 /** Generated Process for (Consolidate Consignment Sales For Invoice)
@@ -31,9 +32,82 @@ public abstract class ConsolidateConsignmentSalesForInvoiceAbstract extends SvrP
 	private static final String NAME_FOR_PROCESS = "Consolidate Consignment Sales For Invoice";
 	/** Process Id 	*/
 	private static final int ID_FOR_PROCESS = 54894;
+	/**	Parameter Name for Date Invoiced	*/
+	public static final String DATEINVOICED = "DateInvoiced";
+	/**	Parameter Name for Business Partner 	*/
+	public static final String C_BPARTNER_ID = "C_BPartner_ID";
+	/**	Parameter Name for Order	*/
+	public static final String C_ORDER_ID = "C_Order_ID";
+	/**	Parameter Name for Product	*/
+	public static final String M_PRODUCT_ID = "M_Product_ID";
+	/**	Parameter Value for Date Invoiced	*/
+	private Timestamp dateInvoiced;
+	/**	Parameter Value for Date Invoiced(To)	*/
+	private Timestamp dateInvoicedTo;
+	/**	Parameter Value for Business Partner 	*/
+	private int bPartnerId;
+	/**	Parameter Value for Order	*/
+	private int orderId;
+	/**	Parameter Value for Product	*/
+	private int productId;
 
 	@Override
 	protected void prepare() {
+		dateInvoiced = getParameterAsTimestamp(DATEINVOICED);
+		dateInvoicedTo = getParameterToAsTimestamp(DATEINVOICED);
+		bPartnerId = getParameterAsInt(C_BPARTNER_ID);
+		orderId = getParameterAsInt(C_ORDER_ID);
+		productId = getParameterAsInt(M_PRODUCT_ID);
+	}
+
+	/**	 Getter Parameter Value for Date Invoiced	*/
+	protected Timestamp getDateInvoiced() {
+		return dateInvoiced;
+	}
+
+	/**	 Setter Parameter Value for Date Invoiced	*/
+	protected void setDateInvoiced(Timestamp dateInvoiced) {
+		this.dateInvoiced = dateInvoiced;
+	}
+
+	/**	 Getter Parameter Value for Date Invoiced(To)	*/
+	protected Timestamp getDateInvoicedTo() {
+		return dateInvoicedTo;
+	}
+
+	/**	 Setter Parameter Value for Date Invoiced(To)	*/
+	protected void setDateInvoicedTo(Timestamp dateInvoicedTo) {
+		this.dateInvoicedTo = dateInvoicedTo;
+	}
+
+	/**	 Getter Parameter Value for Business Partner 	*/
+	protected int getBPartnerId() {
+		return bPartnerId;
+	}
+
+	/**	 Setter Parameter Value for Business Partner 	*/
+	protected void setBPartnerId(int bPartnerId) {
+		this.bPartnerId = bPartnerId;
+	}
+
+	/**	 Getter Parameter Value for Order	*/
+	protected int getOrderId() {
+		return orderId;
+	}
+
+	/**	 Setter Parameter Value for Order	*/
+	protected void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
+	/**	 Getter Parameter Value for Product	*/
+	protected int getProductId() {
+		return productId;
+	}
+
+	/**	 Setter Parameter Value for Product	*/
+	protected void setProductId(int productId) {
+		this.productId = productId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/
