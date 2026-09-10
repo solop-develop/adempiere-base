@@ -89,14 +89,14 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 		StringBuilder inventoryWhereClause = new StringBuilder(whereClause);
 		List<Object> inventoryParameters = new ArrayList<>();
 		if (getDateInvoiced() != null && getDateInvoicedTo() != null) {
-			inventoryWhereClause.append(" AND EXISTS (SELECT 1 FROM M_Inventory i2 WHERE i2.M_Inventory_ID = M_InventoryLine.M_Inventory_ID AND i2.MovementDate::date BETWEEN ?::date AND ?::date)");
+			inventoryWhereClause.append(" AND EXISTS (SELECT 1 FROM M_Inventory i2 WHERE i2.M_Inventory_ID = M_InventoryLine.M_Inventory_ID AND i2.MovementDate BETWEEN ? AND ?)");
 			inventoryParameters.add(getDateInvoiced());
 			inventoryParameters.add(getDateInvoicedTo());
 		} else if (getDateInvoiced() != null) {
-			inventoryWhereClause.append(" AND EXISTS (SELECT 1 FROM M_Inventory i2 WHERE i2.M_Inventory_ID = M_InventoryLine.M_Inventory_ID AND i2.MovementDate::date >= ?::date)");
+			inventoryWhereClause.append(" AND EXISTS (SELECT 1 FROM M_Inventory i2 WHERE i2.M_Inventory_ID = M_InventoryLine.M_Inventory_ID AND i2.MovementDate >= ?)");
 			inventoryParameters.add(getDateInvoiced());
 		} else if (getDateInvoicedTo() != null) {
-			inventoryWhereClause.append(" AND EXISTS (SELECT 1 FROM M_Inventory i2 WHERE i2.M_Inventory_ID = M_InventoryLine.M_Inventory_ID AND i2.MovementDate::date <= ?::date)");
+			inventoryWhereClause.append(" AND EXISTS (SELECT 1 FROM M_Inventory i2 WHERE i2.M_Inventory_ID = M_InventoryLine.M_Inventory_ID AND i2.MovementDate <= ?)");
 			inventoryParameters.add(getDateInvoicedTo());
 		}
 		Query inventoryLineQuery = new Query(getCtx(), MInventoryLine.Table_Name, inventoryWhereClause.toString(), get_TrxName())
@@ -155,14 +155,14 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 		List<Object> parameters = new ArrayList<>();
 		//	Filter final consumer sale invoices/credit memos by invoice date range
 		if (getDateInvoiced() != null && getDateInvoicedTo() != null) {
-			query += " AND i.DateInvoiced::date BETWEEN ?::date AND ?::date";
+			query += " AND i.DateInvoiced BETWEEN ? AND ?";
 			parameters.add(getDateInvoiced());
 			parameters.add(getDateInvoicedTo());
 		} else if (getDateInvoiced() != null) {
-			query += " AND i.DateInvoiced::date >= ?::date";
+			query += " AND i.DateInvoiced >= ?";
 			parameters.add(getDateInvoiced());
 		} else if (getDateInvoicedTo() != null) {
-			query += " AND i.DateInvoiced::date <= ?::date";
+			query += " AND i.DateInvoiced <= ?";
 			parameters.add(getDateInvoicedTo());
 		}
 
