@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_CostDetail_Index" ReleaseNo="4.1.0" SeqNo="504380">
+    <Comments>Add CostDetail Index</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>
+        CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_m_costdetail_last_tx
+        ON adempiere.m_costdetail (m_product_id, m_costelement_id, m_costtype_id, c_acctschema_id, processing, dateacct, seqno);
+      </SQLStatement>
+      <RollbackStatement>
+        DROP INDEX IF EXISTS idx_m_costdetail_last_tx;
+      </RollbackStatement>
+    </Step>
+  </Migration>
+</Migrations>
