@@ -25,6 +25,28 @@ public class AverageInvoiceCostingMethod extends AbstractCostingMethod
 		implements ICostingMethod {
 
 	private boolean isReceiptLandedCost = false;
+
+	/**
+	 * In a vendor receipt, a Landed Cost element contributes no amount of its own: the amount
+	 * comes from the C_LandedCostAllocation rows, which are already accumulated into CumulatedAmt.
+	 * Charging CostAmt to the receipt line as well makes the landed cost be counted twice when it
+	 * is read back (CumulatedAmt + CostAmt), and every later outgoing transaction consumes at
+	 * double the unit cost.
+	 *
+	 * This is the same condition {@link #isReceiptLandedCost} evaluates, but as a method: that flag
+	 * is assigned in a branch that is not reached when the receipt shares its M_Transaction_ID with
+	 * its own allocations, because the adjustment is zero and calculate() returns early.
+	 *
+	 * @return true when the current transaction is a vendor receipt and the cost element is a
+	 * Landed Cost element
+	 */
+	private boolean isReceiptOfLandedCostElement() {
+		return transaction != null
+				&& MTransaction.MOVEMENTTYPE_VendorReceipts.equals(transaction.getMovementType())
+				&& MCostElement.COSTELEMENTTYPE_LandedCost.equals(MCostElement
+						.get(transaction.getCtx(), dimension.getM_CostElement_ID()).getCostElementType());
+	}
+
     /**
      * Constructor for Cost Engine
      * @param accountSchema
@@ -342,9 +364,9 @@ public class AverageInvoiceCostingMethod extends AbstractCostingMethod
 			// create new cost detail
 			costDetail = new MCostDetail(transaction, accountSchema.getC_AcctSchema_ID(),
 					dimension.getM_CostType_ID(),
-					dimension.getM_CostElement_ID(), /*isReceiptLandedCost ? Env.ZERO : */currentCostPrice
+					dimension.getM_CostElement_ID(), isReceiptOfLandedCostElement() ? Env.ZERO : currentCostPrice
 							.multiply(movementQuantity).abs(),
-							/*isReceiptLandedCost ? Env.ZERO :*/ currentCostPriceLowerLevel.multiply(movementQuantity).abs(),
+							isReceiptOfLandedCostElement() ? Env.ZERO : currentCostPriceLowerLevel.multiply(movementQuantity).abs(),
 					movementQuantity, transaction.get_TrxName());
 			// set account date for this cost detail
 			costDetail.setDateAcct(dateAccounting);

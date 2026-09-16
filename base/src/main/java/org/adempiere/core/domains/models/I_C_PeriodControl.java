@@ -64,6 +64,21 @@ public interface I_C_PeriodControl
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name C_Calendar_ID */
+    public static final String COLUMNNAME_C_Calendar_ID = "C_Calendar_ID";
+
+	/** Set Calendar.
+	  * Accounting Calendar Name
+	  */
+	public void setC_Calendar_ID (int C_Calendar_ID);
+
+	/** Get Calendar.
+	  * Accounting Calendar Name
+	  */
+	public int getC_Calendar_ID();
+
+	public org.adempiere.core.domains.models.I_C_Calendar getC_Calendar() throws RuntimeException;
+
     /** Column name C_Period_ID */
     public static final String COLUMNNAME_C_Period_ID = "C_Period_ID";
 

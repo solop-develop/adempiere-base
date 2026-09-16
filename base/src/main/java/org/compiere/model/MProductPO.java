@@ -50,6 +50,18 @@ public class MProductPO extends X_M_Product_PO
 	 */
 	public static List<MProductPO> getByPartnerAndOrg(Properties ctx , Integer partnerId, Integer productId, Integer orgId, String trxName)
 	{
+		//	Only active records: inactive Product PO must not be taken into account
+		return getByPartnerAndOrg(ctx, partnerId, productId, orgId, true, trxName);
+	}
+
+	/**
+	 * Get Product PO by partner and org.
+	 * @param onlyActiveRecords when {@code false} inactive records are also returned
+	 *        (only for upsert/reactivation flows that need to reuse an inactive row,
+	 *        since the unique key is M_Product_ID + C_BPartner_ID + C_Currency_ID)
+	 */
+	public static List<MProductPO> getByPartnerAndOrg(Properties ctx , Integer partnerId, Integer productId, Integer orgId, boolean onlyActiveRecords, String trxName)
+	{
 		List<Object> parameters = new ArrayList<>();
 		StringBuilder whereClause = new StringBuilder();
 		Optional.ofNullable(partnerId)
@@ -64,6 +76,7 @@ public class MProductPO extends X_M_Product_PO
 		parameters.add(orgId);
 		List<MProductPO> purchaseProducts = new Query(ctx, MProductPO.Table_Name, whereClause.toString() , trxName)
 				.setClient_ID()
+				.setOnlyActiveRecords(onlyActiveRecords)
 				.setParameters(parameters)
 				.setOrderBy(MProductPO.COLUMNNAME_IsCurrentVendor + ", " + MProductPO.COLUMNNAME_AD_Org_ID + " DESC")
 				.list();
