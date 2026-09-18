@@ -18,24 +18,23 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
+import java.sql.ResultSet;
+import java.util.Properties;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 
-import java.sql.ResultSet;
-import java.util.Properties;
-
 /** Generated Model for AD_AssignedWidget
- *  @author Adempiere (generated)
+ *  @author Adempiere (generated) 
  *  @version Release 3.9.4 - $Id$ */
-public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Persistent
+public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260908L;
+	private static final long serialVersionUID = 20260918L;
 
     /** Standard Constructor */
     public X_AD_AssignedWidget (Properties ctx, int AD_AssignedWidget_ID, String trxName)
@@ -44,6 +43,11 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
       /** if (AD_AssignedWidget_ID == 0)
         {
 			setAD_AssignedWidget_ID (0);
+			setAD_DashboardInstance_ID (0);
+			setAD_TemplateZone_ID (0);
+			setDisplayOrder (0);
+// 1
+			setReportType (null);
         } */
     }
 
@@ -54,7 +58,7 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
     }
 
     /** AccessLevel
-      * @return 3 - Client - Org
+      * @return 3 - Client - Org 
       */
     protected int get_AccessLevel()
     {
@@ -79,15 +83,15 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 		@param AD_AssignedWidget_ID Assigned Widget	  */
 	public void setAD_AssignedWidget_ID (int AD_AssignedWidget_ID)
 	{
-		if (AD_AssignedWidget_ID < 1)
+		if (AD_AssignedWidget_ID < 1) 
 			set_ValueNoCheck (COLUMNNAME_AD_AssignedWidget_ID, null);
-		else
+		else 
 			set_ValueNoCheck (COLUMNNAME_AD_AssignedWidget_ID, Integer.valueOf(AD_AssignedWidget_ID));
 	}
 
 	/** Get Assigned Widget.
 		@return Assigned Widget	  */
-	public int getAD_AssignedWidget_ID ()
+	public int getAD_AssignedWidget_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AD_AssignedWidget_ID);
 		if (ii == null)
@@ -95,24 +99,49 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 		return ii.intValue();
 	}
 
-	public I_AD_DashboardInstance getAD_DashboardInstance() throws RuntimeException
+	public org.adempiere.core.domains.models.I_AD_Chart getAD_Chart() throws RuntimeException
     {
-		return (I_AD_DashboardInstance)MTable.get(getCtx(), I_AD_DashboardInstance.Table_Name)
+		return (org.adempiere.core.domains.models.I_AD_Chart)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Chart.Table_Name)
+			.getPO(getAD_Chart_ID(), get_TrxName());	}
+
+	/** Set Chart.
+		@param AD_Chart_ID Chart	  */
+	public void setAD_Chart_ID (int AD_Chart_ID)
+	{
+		if (AD_Chart_ID < 1) 
+			set_Value (COLUMNNAME_AD_Chart_ID, null);
+		else 
+			set_Value (COLUMNNAME_AD_Chart_ID, Integer.valueOf(AD_Chart_ID));
+	}
+
+	/** Get Chart.
+		@return Chart	  */
+	public int getAD_Chart_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_Chart_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_AD_DashboardInstance getAD_DashboardInstance() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_AD_DashboardInstance)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_DashboardInstance.Table_Name)
 			.getPO(getAD_DashboardInstance_ID(), get_TrxName());	}
 
 	/** Set Dashboard Instance.
 		@param AD_DashboardInstance_ID Dashboard Instance	  */
 	public void setAD_DashboardInstance_ID (int AD_DashboardInstance_ID)
 	{
-		if (AD_DashboardInstance_ID < 1)
-			set_Value (COLUMNNAME_AD_DashboardInstance_ID, null);
-		else
-			set_Value (COLUMNNAME_AD_DashboardInstance_ID, Integer.valueOf(AD_DashboardInstance_ID));
+		if (AD_DashboardInstance_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_AD_DashboardInstance_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_AD_DashboardInstance_ID, Integer.valueOf(AD_DashboardInstance_ID));
 	}
 
 	/** Get Dashboard Instance.
 		@return Dashboard Instance	  */
-	public int getAD_DashboardInstance_ID ()
+	public int getAD_DashboardInstance_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AD_DashboardInstance_ID);
 		if (ii == null)
@@ -120,24 +149,24 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 		return ii.intValue();
 	}
 
-	public I_AD_TemplateZone getAD_TemplateZone() throws RuntimeException
+	public org.adempiere.core.domains.models.I_AD_TemplateZone getAD_TemplateZone() throws RuntimeException
     {
-		return (I_AD_TemplateZone)MTable.get(getCtx(), I_AD_TemplateZone.Table_Name)
+		return (org.adempiere.core.domains.models.I_AD_TemplateZone)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_TemplateZone.Table_Name)
 			.getPO(getAD_TemplateZone_ID(), get_TrxName());	}
 
 	/** Set Template Zone.
 		@param AD_TemplateZone_ID Template Zone	  */
 	public void setAD_TemplateZone_ID (int AD_TemplateZone_ID)
 	{
-		if (AD_TemplateZone_ID < 1)
+		if (AD_TemplateZone_ID < 1) 
 			set_Value (COLUMNNAME_AD_TemplateZone_ID, null);
-		else
+		else 
 			set_Value (COLUMNNAME_AD_TemplateZone_ID, Integer.valueOf(AD_TemplateZone_ID));
 	}
 
 	/** Get Template Zone.
 		@return Template Zone	  */
-	public int getAD_TemplateZone_ID ()
+	public int getAD_TemplateZone_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AD_TemplateZone_ID);
 		if (ii == null)
@@ -146,7 +175,7 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 	}
 
 	/** Set Configuration JSON.
-		@param ConfigJSON
+		@param ConfigJSON 
 		Widget configuration stored as JSON
 	  */
 	public void setConfigJSON (String ConfigJSON)
@@ -157,13 +186,13 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 	/** Get Configuration JSON.
 		@return Widget configuration stored as JSON
 	  */
-	public String getConfigJSON ()
+	public String getConfigJSON () 
 	{
 		return (String)get_Value(COLUMNNAME_ConfigJSON);
 	}
 
 	/** Set Display Order.
-		@param DisplayOrder
+		@param DisplayOrder 
 		Order of the widget within its zone
 	  */
 	public void setDisplayOrder (int DisplayOrder)
@@ -174,7 +203,7 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 	/** Get Display Order.
 		@return Order of the widget within its zone
 	  */
-	public int getDisplayOrder ()
+	public int getDisplayOrder () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_DisplayOrder);
 		if (ii == null)
@@ -183,18 +212,21 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 	}
 
 	/** Set Report.
-		@param Report_ID
+		@param Report_ID 
 		Identifier of the chart or report to render
 	  */
 	public void setReport_ID (int Report_ID)
 	{
-		set_Value (COLUMNNAME_Report_ID, Integer.valueOf(Report_ID));
+		if (Report_ID < 1) 
+			set_Value (COLUMNNAME_Report_ID, null);
+		else 
+			set_Value (COLUMNNAME_Report_ID, Integer.valueOf(Report_ID));
 	}
 
 	/** Get Report.
 		@return Identifier of the chart or report to render
 	  */
-	public int getReport_ID ()
+	public int getReport_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_Report_ID);
 		if (ii == null)
@@ -246,13 +278,13 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 
 	/** Get Report Type.
 		@return Report Type	  */
-	public String getReportType ()
+	public String getReportType () 
 	{
 		return (String)get_Value(COLUMNNAME_ReportType);
 	}
 
 	/** Set Immutable Universally Unique Identifier.
-		@param UUID
+		@param UUID 
 		Immutable Universally Unique Identifier
 	  */
 	public void setUUID (String UUID)
@@ -263,7 +295,7 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 	/** Get Immutable Universally Unique Identifier.
 		@return Immutable Universally Unique Identifier
 	  */
-	public String getUUID ()
+	public String getUUID () 
 	{
 		return (String)get_Value(COLUMNNAME_UUID);
 	}

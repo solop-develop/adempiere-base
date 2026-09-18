@@ -17,28 +17,27 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-
 /** Generated Interface for AD_AssignedWidget
- *  @author Adempiere (generated)
+ *  @author Adempiere (generated) 
  *  @version Release 3.9.4
  */
-public interface I_AD_AssignedWidget
+public interface I_AD_AssignedWidget 
 {
 
     /** TableName=AD_AssignedWidget */
     public static final String Table_Name = "AD_AssignedWidget";
 
-    /** AD_Table_ID=2000177 */
+    /** AD_Table_ID=55204 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
-    /** AccessLevel = 3 - Client - Org
+    /** AccessLevel = 3 - Client - Org 
      */
     BigDecimal accessLevel = BigDecimal.valueOf(3);
 
@@ -52,6 +51,17 @@ public interface I_AD_AssignedWidget
 
 	/** Get Assigned Widget	  */
 	public int getAD_AssignedWidget_ID();
+
+    /** Column name AD_Chart_ID */
+    public static final String COLUMNNAME_AD_Chart_ID = "AD_Chart_ID";
+
+	/** Set Chart	  */
+	public void setAD_Chart_ID (int AD_Chart_ID);
+
+	/** Get Chart	  */
+	public int getAD_Chart_ID();
+
+	public org.adempiere.core.domains.models.I_AD_Chart getAD_Chart() throws RuntimeException;
 
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
@@ -70,7 +80,7 @@ public interface I_AD_AssignedWidget
 	/** Get Dashboard Instance	  */
 	public int getAD_DashboardInstance_ID();
 
-	public I_AD_DashboardInstance getAD_DashboardInstance() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_AD_DashboardInstance getAD_DashboardInstance() throws RuntimeException;
 
     /** Column name AD_Org_ID */
     public static final String COLUMNNAME_AD_Org_ID = "AD_Org_ID";
@@ -94,7 +104,7 @@ public interface I_AD_AssignedWidget
 	/** Get Template Zone	  */
 	public int getAD_TemplateZone_ID();
 
-	public I_AD_TemplateZone getAD_TemplateZone() throws RuntimeException;
+	public org.adempiere.core.domains.models.I_AD_TemplateZone getAD_TemplateZone() throws RuntimeException;
 
     /** Column name ConfigJSON */
     public static final String COLUMNNAME_ConfigJSON = "ConfigJSON";
