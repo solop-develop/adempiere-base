@@ -29,6 +29,7 @@ import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1005,6 +1006,36 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 		return "";
 	}
 
+	private String landedCostDateIssue(MInOutLine iol)
+	{
+		Timestamp invoiceDate = getParent().getDateAcct();
+		Timestamp receiptDate = iol.getParent().getMovementDate();
+		if (invoiceDate != null && receiptDate != null && invoiceDate.before(receiptDate))
+			return Msg.getMsg(getCtx(), "LandedCostDateError",
+				new Object[]{invoiceDate, iol.getParent().getDocumentNo(), receiptDate});
+		return null;
+	}
+
+	private String landedCostBaseIssue(MInOutLine iol, String distribution, BigDecimal base)
+	{
+		if (base.signum() != 0 || iol.getMovementQty().signum() == 0)
+			return null;
+		String key;
+		if (MLandedCost.LANDEDCOSTDISTRIBUTION_Volume.equals(distribution))
+			key = "LandedCostNoVolumeError";
+		else if (MLandedCost.LANDEDCOSTDISTRIBUTION_Weight.equals(distribution))
+			key = "LandedCostNoWeightError";
+		else if (MLandedCost.LANDEDCOSTDISTRIBUTION_Costs.equals(distribution))
+			key = "LandedCostNoInvoiceError";
+		else
+			return null;
+		MProduct product = iol.getProduct();
+		String productLabel = (product != null ? product.getValue() + " - " + product.getName()
+								: String.valueOf(iol.getM_Product_ID()))
+			+ " (" + iol.getParent().getDocumentNo() + " / " + iol.getLine() + ")";
+		return Msg.getMsg(getCtx(), key, new Object[]{productLabel});
+	}
+
 	/**************************************************************************
 	 * 	Allocate Landed Costs
 	 *	@return error message or ""
@@ -1060,12 +1091,23 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 				if (list.isEmpty())
 					return Msg.getMsg(getCtx(), "LandedCostNoMatchError");
 				//	Calculate total & base
+				LinkedHashSet<String> issues = new LinkedHashSet<String>();
 				BigDecimal total = Env.ZERO;
 				for (int i = 0; i < list.size(); i++)
 				{
 					MInOutLine iol = (MInOutLine)list.get(i);
-					total = total.add(iol.getBase(lc.getLandedCostDistribution()));
+					String dateIssue = landedCostDateIssue(iol);
+					if (dateIssue != null)
+						issues.add(dateIssue);
+					BigDecimal base = iol.getBase(lc.getLandedCostDistribution());
+					String baseIssue = landedCostBaseIssue(iol, lc.getLandedCostDistribution(), base);
+					if (baseIssue != null)
+						issues.add(baseIssue);
+					total = total.add(base);
 				}
+				if (!issues.isEmpty())
+					return Msg.getMsg(getCtx(), "LandedCostDistributionError",
+						new Object[]{String.join("\n", issues)});
 				if (total.signum() == 0) {
 					return getErrorMessage(lc.getLandedCostDistribution());
 				}
@@ -1108,7 +1150,17 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 				lca.setM_InOutLine_ID(lc.getM_InOutLine_ID());
 				lca.setM_AttributeSetInstance_ID(iol.getM_AttributeSetInstance_ID());
 				lca.setC_LandedCostType_ID(lc.getC_LandedCostType_ID());
-				BigDecimal base = iol.getBase(lc.getLandedCostDistribution()); 
+				LinkedHashSet<String> issues = new LinkedHashSet<String>();
+				String dateIssue = landedCostDateIssue(iol);
+				if (dateIssue != null)
+					issues.add(dateIssue);
+				BigDecimal base = iol.getBase(lc.getLandedCostDistribution());
+				String baseIssue = landedCostBaseIssue(iol, lc.getLandedCostDistribution(), base);
+				if (baseIssue != null)
+					issues.add(baseIssue);
+				if (!issues.isEmpty())
+					return Msg.getMsg(getCtx(), "LandedCostDistributionError",
+						new Object[]{String.join("\n", issues)});
 				lca.setBase(base);
 				lca.setAmt(getLineNetAmt());
 				// MZ Goodwill
@@ -1116,15 +1168,12 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 				lca.setQty(iol.getMovementQty());
 				// end MZ
 				lca.saveEx();
+				return "";
 			}
 			//	Single Product
 			else if (lc.getM_Product_ID() != 0)
 			{
-				MLandedCostAllocation lca = new MLandedCostAllocation (this, lc.getM_CostElement_ID());
-				lca.setM_Product_ID(lc.getM_Product_ID());	//	No ASI
-				lca.setC_LandedCostType_ID(lc.getC_LandedCostType_ID());
-				lca.setAmt(getLineNetAmt());
-				lca.saveEx();
+				return Msg.getMsg(getCtx(), "LandedCostProductDirectErr");
 			}
 			else
 				return Msg.getMsg(getCtx(), "LandedCostNoRefErr");
@@ -1172,12 +1221,23 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 		if (list.isEmpty())
 			return Msg.getMsg(getCtx(), "LandedCostNoMatchError");
 		//	Calculate total & base
+		LinkedHashSet<String> issues = new LinkedHashSet<String>();
 		BigDecimal total = Env.ZERO;
 		for (int i = 0; i < list.size(); i++)
 		{
 			MInOutLine iol = (MInOutLine)list.get(i);
-			total = total.add(iol.getBase(LandedCostDistribution));
+			String dateIssue = landedCostDateIssue(iol);
+			if (dateIssue != null)
+				issues.add(dateIssue);
+			BigDecimal base = iol.getBase(LandedCostDistribution);
+			String baseIssue = landedCostBaseIssue(iol, LandedCostDistribution, base);
+			if (baseIssue != null)
+				issues.add(baseIssue);
+			total = total.add(base);
 		}
+		if (!issues.isEmpty())
+			return Msg.getMsg(getCtx(), "LandedCostDistributionError",
+				new Object[]{String.join("\n", issues)});
 		if (total.signum() == 0)
 			return getErrorMessage(LandedCostDistribution);
 		//	Create Allocations
@@ -1223,14 +1283,14 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 		{
 			MLandedCostAllocation allocation = allocations[i];
 			if (largestAmtAllocation == null
-				|| allocation.getAmt().compareTo(largestAmtAllocation.getAmt()) > 0)
+				|| allocation.getAmt(true).compareTo(largestAmtAllocation.getAmt(true)) > 0)
 				largestAmtAllocation = allocation;
-			allocationAmt = allocationAmt.add(allocation.getAmt());
+			allocationAmt = allocationAmt.add(allocation.getAmt(true));
 		}
 		BigDecimal difference = getLineNetAmt().subtract(allocationAmt);
-		if (difference.signum() != 0)
+		if (difference.signum() != 0 && largestAmtAllocation != null)
 		{
-			largestAmtAllocation.setAmt(largestAmtAllocation.getAmt().add(difference));
+			largestAmtAllocation.setAmt(largestAmtAllocation.getAmt(true).add(difference));
 			largestAmtAllocation.saveEx();
 			log.config("Difference=" + difference
 				+ ", C_LandedCostAllocation_ID=" + largestAmtAllocation.getC_LandedCostAllocation_ID()
