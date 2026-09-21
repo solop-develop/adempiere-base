@@ -211,4 +211,13 @@ public interface I_AD_AssignedWidget
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name WidgetFilter */
+    public static final String COLUMNNAME_WidgetFilter = "WidgetFilter";
+
+	/** Set Widget Filter	  */
+	public void setWidgetFilter (String WidgetFilter);
+
+	/** Get Widget Filter	  */
+	public String getWidgetFilter();
 }

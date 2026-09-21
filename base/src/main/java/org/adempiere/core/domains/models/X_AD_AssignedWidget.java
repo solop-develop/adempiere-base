@@ -34,7 +34,7 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260918L;
+	private static final long serialVersionUID = 20260921L;
 
     /** Standard Constructor */
     public X_AD_AssignedWidget (Properties ctx, int AD_AssignedWidget_ID, String trxName)
@@ -298,5 +298,19 @@ public class X_AD_AssignedWidget extends PO implements I_AD_AssignedWidget, I_Pe
 	public String getUUID () 
 	{
 		return (String)get_Value(COLUMNNAME_UUID);
+	}
+
+	/** Set Widget Filter.
+		@param WidgetFilter Widget Filter	  */
+	public void setWidgetFilter (String WidgetFilter)
+	{
+		set_Value (COLUMNNAME_WidgetFilter, WidgetFilter);
+	}
+
+	/** Get Widget Filter.
+		@return Widget Filter	  */
+	public String getWidgetFilter () 
+	{
+		return (String)get_Value(COLUMNNAME_WidgetFilter);
 	}
 }
