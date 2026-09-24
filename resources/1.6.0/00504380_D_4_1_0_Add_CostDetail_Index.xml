@@ -5,7 +5,7 @@
     <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
       <SQLStatement>
         CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_m_costdetail_last_tx
-        ON adempiere.m_costdetail (m_product_id, m_costelement_id, m_costtype_id, c_acctschema_id, processing, dateacct, seqno);
+        ON m_costdetail (m_product_id, m_costelement_id, m_costtype_id, c_acctschema_id, processing, dateacct, seqno);
       </SQLStatement>
       <RollbackStatement>
         DROP INDEX IF EXISTS idx_m_costdetail_last_tx;
