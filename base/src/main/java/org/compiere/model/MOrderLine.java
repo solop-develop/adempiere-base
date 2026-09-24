@@ -689,6 +689,27 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 	}	//	setDiscount
 
 	/**
+	 * 	Get Price List with discount applied, rounded to the Price List precision
+	 *	@param discount discount percent
+	 *	@return price actual
+	 */
+	private BigDecimal getPriceWithDiscount(BigDecimal discount) {
+		BigDecimal discountPercent = Optional.ofNullable(discount)
+			.orElse(Env.ZERO)
+			.divide(Env.ONEHUNDRED, 12, RoundingMode.HALF_UP)
+		;
+		BigDecimal price = Optional.ofNullable(getPriceList())
+			.orElse(Env.ZERO)
+			.multiply(Env.ONE.subtract(discountPercent))
+		;
+		int pricePrecision = MPriceList.get(getCtx(), m_M_PriceList_ID, get_TrxName()).getPricePrecision();
+		if (pricePrecision >= 0 && price.scale() > pricePrecision) {
+			price = price.setScale(pricePrecision, RoundingMode.HALF_UP);
+		}
+		return price;
+	}	//	getPriceWithDiscount
+
+	/**
 	 *	Is Tax Included in Amount
 	 *	@return true if tax calculated
 	 */
@@ -983,27 +1004,37 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 					setPriceList(m_productPrice.getPriceList());
 					setPriceLimit(m_productPrice.getPriceLimit());
 					MProduct product = MProduct.get(getCtx(), getM_Product_ID());
+					// Values sent by the client (e.g. POS quick entry) before any recalculation.
+					// On new records is_ValueChanged() returns true for every column that was set
+					// (old value is null), so decisions for new records are made by value.
+					BigDecimal clientDiscount = Optional.ofNullable(getDiscount()).orElse(Env.ZERO);
+					BigDecimal clientPriceActual = Optional.ofNullable(getPriceActual()).orElse(Env.ZERO);
 					if(product.isWithoutDiscount()) {
+						clientDiscount = Env.ZERO;
 						setDiscount(Env.ZERO);
 					} else {
-						if (newRecord && !is_ValueChanged(COLUMNNAME_Discount) && Optional.ofNullable(getDiscount()).orElse(Env.ZERO).signum() == 0) {
+						if (newRecord && clientDiscount.signum() == 0) {
 							setDiscount(m_productPrice.getDiscount());
 						}
 					}
 					BigDecimal priceActual = m_productPrice.getPriceStd();
 					if(newRecord) {
-						if ((getPriceActual() == null || getPriceActual().signum() == 0) && getDiscount().compareTo(Env.ONEHUNDRED) != 0) {
-							setPriceActual(priceActual);
+						if (clientPriceActual.signum() != 0) {
+							// Price explicitly entered by the client
+							if(!product.isWithoutDiscount() || getParent().getC_POS_ID() <= 0) {
+								priceActual = clientPriceActual;
+							}
+						} else if (clientDiscount.signum() != 0) {
+							// Discount explicitly entered by the client: apply it over the list price
+							priceActual = getPriceWithDiscount(clientDiscount);
 						}
-					}
-					if(is_ValueChanged(COLUMNNAME_PriceActual)) {
+					} else if(is_ValueChanged(COLUMNNAME_PriceActual)) {
 						if(!product.isWithoutDiscount() || getParent().getC_POS_ID() <= 0) {
 							priceActual = getPriceActual();
 						}
 
 					} else if(is_ValueChanged(COLUMNNAME_Discount)) {
-						priceActual = getPriceList()
-								.multiply(Env.ONE.subtract(getDiscount().divide(Env.ONEHUNDRED, m_precision, RoundingMode.HALF_UP)));
+						priceActual = getPriceWithDiscount(getDiscount());
 					}
 					if (priceActual == null) {
 						priceActual = BigDecimal.ZERO;
