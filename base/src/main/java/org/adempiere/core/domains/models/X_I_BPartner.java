@@ -685,6 +685,164 @@ public class X_I_BPartner extends PO implements I_I_BPartner, I_Persistent
 		return ii.intValue();
 	}
 
+	/** Set BP Group Name.
+		@param GroupName
+		Business Partner Group Name used for import
+	  */
+	public void setGroupName (String GroupName)
+	{
+		set_Value (COLUMNNAME_GroupName, GroupName);
+	}
+
+	/** Get BP Group Name.
+		@return Business Partner Group Name used for import
+	  */
+	public String getGroupName ()
+	{
+		return (String)get_Value(COLUMNNAME_GroupName);
+	}
+
+	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_AD_User)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_User.Table_Name)
+			.getPO(getSalesRep_ID(), get_TrxName());	}
+
+	/** Set Sales Representative.
+		@param SalesRep_ID
+		Sales Representative or Company Agent
+	  */
+	public void setSalesRep_ID (int SalesRep_ID)
+	{
+		if (SalesRep_ID < 1)
+			set_Value (COLUMNNAME_SalesRep_ID, null);
+		else
+			set_Value (COLUMNNAME_SalesRep_ID, Integer.valueOf(SalesRep_ID));
+	}
+
+	/** Get Sales Representative.
+		@return Sales Representative or Company Agent
+	  */
+	public int getSalesRep_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SalesRep_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Sales Rep Value.
+		@param SalesRepValue
+		Value of the Sales Representative user used for import
+	  */
+	public void setSalesRepValue (String SalesRepValue)
+	{
+		set_Value (COLUMNNAME_SalesRepValue, SalesRepValue);
+	}
+
+	/** Get Sales Rep Value.
+		@return Value of the Sales Representative user used for import
+	  */
+	public String getSalesRepValue ()
+	{
+		return (String)get_Value(COLUMNNAME_SalesRepValue);
+	}
+
+	/** Set Sales Representative.
+		@param SalesRep_Name
+		Name of the Sales Representative user used for import
+	  */
+	public void setSalesRep_Name (String SalesRep_Name)
+	{
+		set_Value (COLUMNNAME_SalesRep_Name, SalesRep_Name);
+	}
+
+	/** Get Sales Representative.
+		@return Name of the Sales Representative user used for import
+	  */
+	public String getSalesRep_Name ()
+	{
+		return (String)get_Value(COLUMNNAME_SalesRep_Name);
+	}
+
+	public org.adempiere.core.domains.models.I_C_Job getC_Job() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_C_Job)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Job.Table_Name)
+			.getPO(getC_Job_ID(), get_TrxName());	}
+
+	/** Set Position.
+		@param C_Job_ID
+		Job Position
+	  */
+	public void setC_Job_ID (int C_Job_ID)
+	{
+		if (C_Job_ID < 1)
+			set_Value (COLUMNNAME_C_Job_ID, null);
+		else
+			set_Value (COLUMNNAME_C_Job_ID, Integer.valueOf(C_Job_ID));
+	}
+
+	/** Get Position.
+		@return Job Position
+	  */
+	public int getC_Job_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Job_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Position Name.
+		@param JobName
+		Name of the Job Position used for import
+	  */
+	public void setJobName (String JobName)
+	{
+		set_Value (COLUMNNAME_JobName, JobName);
+	}
+
+	/** Get Position Name.
+		@return Name of the Job Position used for import
+	  */
+	public String getJobName ()
+	{
+		return (String)get_Value(COLUMNNAME_JobName);
+	}
+
+	/** Set Position Category Name.
+		@param JobCategoryName
+		Name of the Job Position Category used for import
+	  */
+	public void setJobCategoryName (String JobCategoryName)
+	{
+		set_Value (COLUMNNAME_JobCategoryName, JobCategoryName);
+	}
+
+	/** Get Position Category Name.
+		@return Name of the Job Position Category used for import
+	  */
+	public String getJobCategoryName ()
+	{
+		return (String)get_Value(COLUMNNAME_JobCategoryName);
+	}
+
+	/** Set Location EMail.
+		@param LocationEMail
+		Electronic Mail Address of the Business Partner Location
+	  */
+	public void setLocationEMail (String LocationEMail)
+	{
+		set_Value (COLUMNNAME_LocationEMail, LocationEMail);
+	}
+
+	/** Get Location EMail.
+		@return Electronic Mail Address of the Business Partner Location
+	  */
+	public String getLocationEMail ()
+	{
+		return (String)get_Value(COLUMNNAME_LocationEMail);
+	}
+
 	public org.adempiere.core.domains.models.I_C_BPartner getC_BPartner() throws RuntimeException
     {
 		return (org.adempiere.core.domains.models.I_C_BPartner)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_BPartner.Table_Name)

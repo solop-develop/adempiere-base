@@ -458,6 +458,114 @@ public interface I_I_BPartner
 
 	public org.adempiere.core.domains.models.I_C_BP_Group getC_BP_Group() throws RuntimeException;
 
+    /** Column name GroupName */
+    public static final String COLUMNNAME_GroupName = "GroupName";
+
+	/** Set BP Group Name.
+	  * Business Partner Group Name used for import
+	  */
+	public void setGroupName (String GroupName);
+
+	/** Get BP Group Name.
+	  * Business Partner Group Name used for import
+	  */
+	public String getGroupName();
+
+    /** Column name SalesRep_ID */
+    public static final String COLUMNNAME_SalesRep_ID = "SalesRep_ID";
+
+	/** Set Sales Representative.
+	  * Sales Representative or Company Agent
+	  */
+	public void setSalesRep_ID (int SalesRep_ID);
+
+	/** Get Sales Representative.
+	  * Sales Representative or Company Agent
+	  */
+	public int getSalesRep_ID();
+
+	public org.adempiere.core.domains.models.I_AD_User getSalesRep() throws RuntimeException;
+
+    /** Column name SalesRepValue */
+    public static final String COLUMNNAME_SalesRepValue = "SalesRepValue";
+
+	/** Set Sales Rep Value.
+	  * Value of the Sales Representative user used for import
+	  */
+	public void setSalesRepValue (String SalesRepValue);
+
+	/** Get Sales Rep Value.
+	  * Value of the Sales Representative user used for import
+	  */
+	public String getSalesRepValue();
+
+    /** Column name SalesRep_Name */
+    public static final String COLUMNNAME_SalesRep_Name = "SalesRep_Name";
+
+	/** Set Sales Representative.
+	  * Name of the Sales Representative user used for import
+	  */
+	public void setSalesRep_Name (String SalesRep_Name);
+
+	/** Get Sales Representative.
+	  * Name of the Sales Representative user used for import
+	  */
+	public String getSalesRep_Name();
+
+    /** Column name C_Job_ID */
+    public static final String COLUMNNAME_C_Job_ID = "C_Job_ID";
+
+	/** Set Position.
+	  * Job Position
+	  */
+	public void setC_Job_ID (int C_Job_ID);
+
+	/** Get Position.
+	  * Job Position
+	  */
+	public int getC_Job_ID();
+
+	public org.adempiere.core.domains.models.I_C_Job getC_Job() throws RuntimeException;
+
+    /** Column name JobName */
+    public static final String COLUMNNAME_JobName = "JobName";
+
+	/** Set Position Name.
+	  * Name of the Job Position used for import
+	  */
+	public void setJobName (String JobName);
+
+	/** Get Position Name.
+	  * Name of the Job Position used for import
+	  */
+	public String getJobName();
+
+    /** Column name JobCategoryName */
+    public static final String COLUMNNAME_JobCategoryName = "JobCategoryName";
+
+	/** Set Position Category Name.
+	  * Name of the Job Position Category used for import
+	  */
+	public void setJobCategoryName (String JobCategoryName);
+
+	/** Get Position Category Name.
+	  * Name of the Job Position Category used for import
+	  */
+	public String getJobCategoryName();
+
+    /** Column name LocationEMail */
+    public static final String COLUMNNAME_LocationEMail = "LocationEMail";
+
+	/** Set Location EMail.
+	  * Electronic Mail Address of the Business Partner Location
+	  */
+	public void setLocationEMail (String LocationEMail);
+
+	/** Get Location EMail.
+	  * Electronic Mail Address of the Business Partner Location
+	  */
+	public String getLocationEMail();
+
     /** Column name C_BPartner_ID */
     public static final String COLUMNNAME_C_BPartner_ID = "C_BPartner_ID";
 
