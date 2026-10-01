@@ -1875,7 +1875,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			+ "FROM M_InOutLine AS l "
 			+ "INNER JOIN C_OrderLine AS ol "
 				+ "ON ("
-					"ol.C_OrderLine_ID = COALESCE("
+					+ "ol.C_OrderLine_ID = COALESCE("
 						+ "NULLIF(l.C_OrderLine_ID, 0), "
 						+ "("
 							+ "SELECT iol.C_OrderLine_ID "
