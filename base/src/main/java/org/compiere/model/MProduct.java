@@ -18,6 +18,7 @@ package org.compiere.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -611,36 +612,54 @@ public class MProduct extends X_M_Product
 	@Override
 	protected boolean beforeSave (boolean newRecord)
 	{
-		//	Check Storage
+		//	Check Storage, validated against the ledgers (M_Transaction and M_Reservation) because
+		//	M_Storage is updated asynchronously and can be outdated
 		if (!newRecord && 	//	
 			((is_ValueChanged("IsActive") && !isActive())		//	now not active 
 			|| (is_ValueChanged("IsStocked") && !isStocked())	//	now not stocked
 			|| (is_ValueChanged("ProductType") 					//	from Item
 				&& PRODUCTTYPE_Item.equals(get_ValueOld("ProductType")))))
 		{
-			MStorage[] storages = MStorage.getOfProduct(getCtx(), get_ID(), get_TrxName());
-			BigDecimal OnHand = Env.ZERO;
-			BigDecimal Ordered = Env.ZERO;
-			BigDecimal Reserved = Env.ZERO;
-			for (int i = 0; i < storages.length; i++)
-			{
-				OnHand = OnHand.add(storages[i].getQtyOnHand());
-				Ordered = Ordered.add(storages[i].getQtyOrdered());
-				Reserved = Reserved.add(storages[i].getQtyReserved());
-			}
-			String errMsg = "";
-			if (OnHand.signum() != 0)
-				errMsg = "@QtyOnHand@ = " + OnHand;
-			if (Ordered.signum() != 0)
-				errMsg += " - @QtyOrdered@ = " + Ordered;
-			if (Reserved.signum() != 0)
-				errMsg += " - @QtyReserved@" + Reserved;
+			BigDecimal onHand = DB.getSQLValueBDEx(
+				get_TrxName(),
+				"SELECT COALESCE(SUM(MovementQty), 0) FROM M_Transaction WHERE M_Product_ID = ?",
+				get_ID()
+			);
+			BigDecimal ordered = DB.getSQLValueBDEx(
+				get_TrxName(),
+				"SELECT COALESCE(SUM(Qty), 0) FROM M_Reservation WHERE M_Product_ID = ? AND ReservationType IN ('PO+', 'PO-')",
+				get_ID()
+			);
+			BigDecimal reserved = DB.getSQLValueBDEx(
+				get_TrxName(),
+				"SELECT COALESCE(SUM(Qty), 0) FROM M_Reservation WHERE M_Product_ID = ? AND ReservationType NOT IN ('PO+', 'PO-')",
+				get_ID()
+			);
+			String errMsg = getQuantitiesMessage(onHand, ordered, reserved);
 			if (errMsg.length() > 0)
 			{
 				log.saveError("Error", Msg.parseTranslation(getCtx(), errMsg)); 
 				return false;
 			}
 		}	//	storage
+		//	Now stocked: pending orders have no reservation, so receipts and shipments would unbalance the ledger
+		if (!newRecord && is_ValueChanged("IsStocked") && isStocked() && PRODUCTTYPE_Item.equals(getProductType()))
+		{
+			String pendingOrder = DB.getSQLValueStringEx(
+				get_TrxName(),
+				"SELECT o.DocumentNo FROM C_OrderLine ol "
+				+ "INNER JOIN C_Order o ON (o.C_Order_ID = ol.C_Order_ID) "
+				+ "WHERE ol.M_Product_ID = ? AND o.DocStatus = ? AND ol.QtyOrdered > ol.QtyDelivered "
+				+ "ORDER BY o.C_Order_ID",
+				get_ID(),
+				MOrder.DOCSTATUS_Completed
+			);
+			if (pendingOrder != null)
+			{
+				log.saveError("Error", Msg.parseTranslation(getCtx(), "@C_Order_ID@ @Processed@: " + pendingOrder));
+				return false;
+			}
+		}
 	
 		// it checks if UOM has been changed , if so disallow the change if the condition is true.
 		if ((!newRecord) && is_ValueChanged("C_UOM_ID") && hasInventoryOrCost ()) {
@@ -768,6 +787,27 @@ public class MProduct extends X_M_Product
 		return success;
 	}	//	afterSave
 
+	/**
+	 * Build the message with the quantities that are not zero
+	 * @param onHand quantity on hand
+	 * @param ordered quantity ordered
+	 * @param reserved quantity reserved
+	 * @return message, empty if all the quantities are zero
+	 */
+	private String getQuantitiesMessage(BigDecimal onHand, BigDecimal ordered, BigDecimal reserved) {
+		List<String> messages = new ArrayList<>();
+		if (onHand.signum() != 0) {
+			messages.add("@QtyOnHand@ = " + onHand);
+		}
+		if (ordered.signum() != 0) {
+			messages.add("@QtyOrdered@ = " + ordered);
+		}
+		if (reserved.signum() != 0) {
+			messages.add("@QtyReserved@ = " + reserved);
+		}
+		return String.join(" - ", messages);
+	}
+
 	@Override
 	protected boolean beforeDelete ()
 	{
@@ -785,16 +825,10 @@ public class MProduct extends X_M_Product
 			for (int i = 0; i < storages.length; i++)
 			{
 				OnHand = OnHand.add(storages[i].getQtyOnHand());
-				Ordered = OnHand.add(storages[i].getQtyOrdered());
-				Reserved = OnHand.add(storages[i].getQtyReserved());
+				Ordered = Ordered.add(storages[i].getQtyOrdered());
+				Reserved = Reserved.add(storages[i].getQtyReserved());
 			}
-			String errMsg = "";
-			if (OnHand.signum() != 0)
-				errMsg = "@QtyOnHand@ = " + OnHand;
-			if (Ordered.signum() != 0)
-				errMsg += " - @QtyOrdered@ = " + Ordered;
-			if (Reserved.signum() != 0)
-				errMsg += " - @QtyReserved@" + Reserved;
+			String errMsg = getQuantitiesMessage(OnHand, Ordered, Reserved);
 			if (errMsg.length() > 0)
 			{
 				log.saveError("Error", Msg.parseTranslation(getCtx(), errMsg)); 
