@@ -1119,11 +1119,14 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 			setLine (ii);
 		}
 		
-		// Recalculate price when discount changes on existing records
-		if (!newRecord && is_ValueChanged(COLUMNNAME_Discount)) {
-			BigDecimal discountPercent = Optional.ofNullable(getDiscount()).orElse(Env.ZERO)
-				.divide(Env.ONEHUNDRED, getPrecision(), RoundingMode.HALF_UP);
-			BigDecimal priceActual = getPriceList().multiply(Env.ONE.subtract(discountPercent));
+		// Recalculate price when only the discount changes on existing records.
+		// If the price was also changed (e.g. the callout recalculates the discount when the user edits the price),
+		// the entered price prevails and the discount is derived from it below.
+		if (!newRecord
+				&& is_ValueChanged(COLUMNNAME_Discount)
+				&& !is_ValueChanged(COLUMNNAME_PriceActual)
+				&& !is_ValueChanged(COLUMNNAME_PriceEntered)) {
+			BigDecimal priceActual = getPriceWithDiscount(getDiscount());
 			setPriceActual(priceActual);
 			BigDecimal priceEntered = MUOMConversion.convertProductFrom(getCtx(), getM_Product_ID(), getC_UOM_ID(), priceActual);
 			setPriceEntered(priceEntered);
