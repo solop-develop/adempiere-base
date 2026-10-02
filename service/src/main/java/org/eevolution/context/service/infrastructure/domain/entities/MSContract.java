@@ -19,7 +19,9 @@ package org.eevolution.context.service.infrastructure.domain.entities;
 import org.adempiere.core.domains.models.I_C_DocType;
 import org.adempiere.core.domains.models.I_PP_Period;
 import org.adempiere.core.domains.models.I_S_ContractLine;
+import org.adempiere.core.domains.models.I_S_ContractTax;
 import org.adempiere.core.domains.models.X_S_Contract;
+import org.adempiere.core.domains.models.X_S_ContractTax;
 import org.compiere.model.*;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocOptions;
@@ -33,8 +35,11 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  * Contract Entity
@@ -57,7 +62,182 @@ public class MSContract extends X_S_Contract implements DocAction, DocOptions {
 
 	@Override
 	protected boolean beforeSave(boolean newRecord) {
+		//	Tax Included from Price List
+		if (getM_PriceList_ID() > 0) {
+			MPriceList priceList = MPriceList.get(getCtx(), getM_PriceList_ID(), get_TrxName());
+			setIsTaxIncluded(priceList.isTaxIncluded());
+		}
 		return true;
+	}
+
+	/**
+	 * Is Tax Included in Amount, based on Price List when it is defined
+	 * @return true if tax is included
+	 */
+	@Override
+	public boolean isTaxIncluded() {
+		if (getM_PriceList_ID() > 0) {
+			return MPriceList.get(getCtx(), getM_PriceList_ID(), get_TrxName()).isTaxIncluded();
+		}
+		return super.isTaxIncluded();
+	}
+
+	/**
+	 * Get Currency Precision
+	 * @return precision
+	 */
+	public int getPrecision() {
+		return MCurrency.getStdPrecision(getCtx(), getC_Currency_ID());
+	}
+
+	/**
+	 * Set Processed, also for contract taxes
+	 * @param processed processed
+	 */
+	@Override
+	public void setProcessed(boolean processed) {
+		super.setProcessed(processed);
+		if (get_ID() == 0) {
+			return;
+		}
+		DB.executeUpdateEx(
+			"UPDATE S_ContractTax SET Processed=? WHERE S_Contract_ID=?",
+			new Object[]{processed, getS_Contract_ID()},
+			get_TrxName()
+		);
+	}
+
+	/**
+	 * Calculate Tax and Total
+	 * @return true if tax total calculated
+	 */
+	public boolean calculateTaxTotal() {
+		log.fine("");
+		//	Delete Taxes
+		DB.executeUpdateEx(
+			"DELETE S_ContractTax WHERE S_Contract_ID=?",
+			new Object[]{getS_Contract_ID()},
+			get_TrxName()
+		);
+		boolean isTaxIncluded = isTaxIncluded();
+		int precision = getPrecision();
+		//	Lines
+		BigDecimal totalLines = Env.ZERO;
+		List<Integer> taxList = new ArrayList<>();
+		for (MSContractLine contractLine : getLines()) {
+			totalLines = totalLines.add(Optional.ofNullable(contractLine.getLineNetAmt()).orElse(Env.ZERO));
+			if (contractLine.getC_Tax_ID() <= 0 || taxList.contains(contractLine.getC_Tax_ID())) {
+				continue;
+			}
+			X_S_ContractTax contractTax = createContractTax(contractLine.getC_Tax_ID(), isTaxIncluded);
+			if (!calculateTaxFromLines(contractTax, isTaxIncluded, precision)) {
+				return false;
+			}
+			contractTax.saveEx();
+			taxList.add(contractLine.getC_Tax_ID());
+		}
+		//	Taxes
+		BigDecimal grandTotal = totalLines;
+		for (X_S_ContractTax contractTax : getTaxes()) {
+			MTax tax = MTax.get(getCtx(), contractTax.getC_Tax_ID());
+			if (tax.isSummary()) {
+				for (MTax childTax : tax.getChildTaxes(false)) {
+					BigDecimal taxAmount = childTax.calculateTax(contractTax.getTaxBaseAmt(), isTaxIncluded, precision);
+					X_S_ContractTax childContractTax = createContractTax(childTax.getC_Tax_ID(), isTaxIncluded);
+					childContractTax.setTaxBaseAmt(contractTax.getTaxBaseAmt());
+					childContractTax.setTaxAmt(taxAmount);
+					childContractTax.saveEx();
+					if (!isTaxIncluded)
+						grandTotal = grandTotal.add(taxAmount);
+				}
+				contractTax.deleteEx(true);
+			} else if (!isTaxIncluded) {
+				grandTotal = grandTotal.add(contractTax.getTaxAmt());
+			}
+		}
+		setTotalLines(totalLines);
+		setGrandTotal(grandTotal);
+		return true;
+	}
+
+	/**
+	 * Create a new contract tax (not saved)
+	 * @param taxId tax
+	 * @param isTaxIncluded tax included
+	 * @return contract tax
+	 */
+	private X_S_ContractTax createContractTax(int taxId, boolean isTaxIncluded) {
+		X_S_ContractTax contractTax = new X_S_ContractTax(getCtx(), 0, get_TrxName());
+		contractTax.setAD_Org_ID(getAD_Org_ID());
+		contractTax.setS_Contract_ID(getS_Contract_ID());
+		contractTax.setC_Tax_ID(taxId);
+		contractTax.setIsTaxIncluded(isTaxIncluded);
+		contractTax.setTaxBaseAmt(Env.ZERO);
+		contractTax.setTaxAmt(Env.ZERO);
+		return contractTax;
+	}
+
+	/**
+	 * Calculate/Set Tax Amt from Contract Lines
+	 * @param contractTax contract tax
+	 * @param isTaxIncluded tax included
+	 * @param precision precision
+	 * @return true if calculated
+	 */
+	private boolean calculateTaxFromLines(X_S_ContractTax contractTax, boolean isTaxIncluded, int precision) {
+		MTax tax = MTax.get(getCtx(), contractTax.getC_Tax_ID());
+		boolean documentLevel = tax.isDocumentLevel();
+		BigDecimal taxBaseAmt = Env.ZERO;
+		BigDecimal taxAmt = Env.ZERO;
+		List<BigDecimal> lineNetAmounts = new Query(
+			getCtx(),
+			I_S_ContractLine.Table_Name,
+			I_S_ContractLine.COLUMNNAME_S_Contract_ID + "=? AND " + I_S_ContractLine.COLUMNNAME_C_Tax_ID + "=?",
+			get_TrxName()
+		)
+			.setParameters(getS_Contract_ID(), contractTax.getC_Tax_ID())
+			.<MSContractLine>list()
+			.stream()
+			.map(contractLine -> Optional.ofNullable(contractLine.getLineNetAmt()).orElse(Env.ZERO))
+			.collect(Collectors.toList())
+		;
+		for (BigDecimal baseAmt : lineNetAmounts) {
+			taxBaseAmt = taxBaseAmt.add(baseAmt);
+			if (!documentLevel) {
+				// calculate line tax
+				taxAmt = taxAmt.add(tax.calculateTax(baseAmt, isTaxIncluded, precision));
+			}
+		}
+		//	Calculate Tax
+		if (documentLevel) {
+			// calculate header tax
+			taxAmt = tax.calculateTax(taxBaseAmt, isTaxIncluded, precision);
+		}
+		contractTax.setTaxAmt(taxAmt);
+		//	Set Base
+		if (isTaxIncluded) {
+			contractTax.setTaxBaseAmt(taxBaseAmt.subtract(taxAmt));
+		}
+		else {
+			contractTax.setTaxBaseAmt(taxBaseAmt);
+		}
+		return true;
+	}
+
+	/**
+	 * Get Contract Taxes
+	 * @return taxes
+	 */
+	public List<X_S_ContractTax> getTaxes() {
+		return new Query(
+			getCtx(),
+			I_S_ContractTax.Table_Name,
+			I_S_ContractTax.COLUMNNAME_S_Contract_ID + "=? ",
+			get_TrxName()
+		)
+			.setParameters(getS_Contract_ID())
+			.list()
+		;
 	}
 
 	@Override
@@ -114,13 +294,12 @@ public class MSContract extends X_S_Contract implements DocAction, DocOptions {
 		if (contractLines.isEmpty()) {
 			processMessage = "@NoLines@";
 			return DocAction.STATUS_Invalid;
-		} else {
-			BigDecimal totalLines = Env.ZERO;
-			for (MSContractLine contractLine : contractLines) {
-				totalLines = totalLines.add(contractLine.getLineNetAmt());
-			}
-			setTotalLines(totalLines);
-			setGrandTotal(totalLines);
+		}
+
+		//	Calculate Taxes and Totals
+		if (!calculateTaxTotal()) {
+			processMessage = "Error calculating tax";
+			return DocAction.STATUS_Invalid;
 		}
 
 		//	Add up Amounts

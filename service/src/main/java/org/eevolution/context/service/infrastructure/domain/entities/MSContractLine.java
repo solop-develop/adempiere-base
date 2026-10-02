@@ -17,8 +17,15 @@
 package org.eevolution.context.service.infrastructure.domain.entities;
 
 import org.adempiere.core.domains.models.X_S_ContractLine;
+import org.compiere.model.MCurrency;
+import org.compiere.model.MProduct;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
+import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -32,6 +39,140 @@ public class MSContractLine extends X_S_ContractLine {
 
 	public MSContractLine(Properties ctx, ResultSet rs, String trxName) {
 		super(ctx, rs, trxName);
+	}
+
+	/** Parent */
+	private MSContract parent = null;
+
+	/**
+	 * Get Parent
+	 * @return parent contract
+	 */
+	public MSContract getParent() {
+		if (parent == null) {
+			parent = new MSContract(getCtx(), getS_Contract_ID(), get_TrxName());
+		}
+		return parent;
+	}
+
+	/**
+	 * Get Currency Precision from Currency
+	 * @return precision
+	 */
+	public int getPrecision() {
+		if (getC_Currency_ID() > 0) {
+			return MCurrency.getStdPrecision(getCtx(), getC_Currency_ID());
+		}
+		return getParent().getPrecision();
+	}
+
+	/**
+	 * Calculate Extended Amt.
+	 * May or may not include tax
+	 */
+	public void setLineNetAmt() {
+		BigDecimal priceEntered = Optional.ofNullable(getPriceEntered()).orElse(Env.ZERO);
+		BigDecimal qtyEntered = Optional.ofNullable(getQtyEntered()).orElse(Env.ZERO);
+		BigDecimal lineNetAmount = null;
+		if (getM_Product_ID() > 0) {
+			MProduct product = MProduct.get(getCtx(), getM_Product_ID(), get_TrxName());
+			if (product.getC_UOM_ID() != getC_UOM_ID()
+					&& priceEntered.signum() != 0
+					&& qtyEntered.signum() != 0) {
+				lineNetAmount = qtyEntered.multiply(priceEntered);
+			}
+		}
+		//	Set default
+		if (lineNetAmount == null) {
+			lineNetAmount = Optional.ofNullable(getPriceActual())
+				.orElse(Env.ZERO)
+				.multiply(Optional.ofNullable(getQtyOrdered())
+				.orElse(Env.ZERO))
+			;
+		}
+		if (lineNetAmount.scale() > getPrecision()) {
+			lineNetAmount = lineNetAmount.setScale(getPrecision(), RoundingMode.HALF_UP);
+		}
+		super.setLineNetAmt(lineNetAmount);
+	}
+
+	@Override
+	protected boolean beforeSave(boolean newRecord) {
+		if (getParent().isProcessed()) {
+			return true;
+		}
+		//	Currency from Contract
+		if (getC_Currency_ID() <= 0) {
+			setC_Currency_ID(getParent().getC_Currency_ID());
+		}
+		//	Line Net Amount
+		setLineNetAmt();
+		return true;
+	}
+
+	@Override
+	protected boolean afterSave(boolean newRecord, boolean success) {
+		if (!success)
+			return success;
+		if (newRecord
+				|| (is_ValueChanged(COLUMNNAME_C_Tax_ID) && !getParent().isProcessed())
+				|| (is_ValueChanged(COLUMNNAME_LineNetAmt) && !getParent().isProcessed())
+				|| (is_ValueChanged(COLUMNNAME_QtyEntered) && !getParent().isProcessed())
+				|| (is_ValueChanged(COLUMNNAME_PriceActual) && !getParent().isProcessed())
+				|| (is_ValueChanged(COLUMNNAME_IsActive) && !getParent().isProcessed())
+		)
+			return updateHeaderTax();
+		return true;
+	}
+
+	@Override
+	protected boolean afterDelete(boolean success) {
+		if (!success) {
+			return success;
+		}
+		return updateHeaderTax();
+	}
+
+	/**
+	 * Update Tax & Header
+	 * @return true if header updated
+	 */
+	private boolean updateHeaderTax() {
+		//	Recalculate Tax for this Tax
+		if (!getParent().isProcessed()) {
+			getParent().calculateTaxTotal();
+		}
+
+		//	Update Contract Header
+		String sql = "UPDATE S_Contract c"
+			+ " SET TotalLines="
+				+ "(SELECT COALESCE(SUM(LineNetAmt),0) FROM S_ContractLine cl WHERE c.S_Contract_ID=cl.S_Contract_ID) "
+			+ "WHERE S_Contract_ID=? "
+		;
+		int no = DB.executeUpdateEx(sql, new Object[]{getS_Contract_ID()}, get_TrxName());
+		if (no != 1) {
+			log.warning("(1) #" + no);
+		}
+
+		if (getParent().isTaxIncluded()) {
+			sql = "UPDATE S_Contract c "
+				+ " SET GrandTotal=TotalLines "
+				+ "WHERE S_Contract_ID=? "
+			;
+		}
+		else {
+			sql = "UPDATE S_Contract c "
+				+ " SET GrandTotal=TotalLines+ "
+					+ "(SELECT COALESCE(SUM(TaxAmt),0) FROM S_ContractTax ct WHERE c.S_Contract_ID=ct.S_Contract_ID) "
+				+ "WHERE S_Contract_ID=? "
+			;
+		}
+		no = DB.executeUpdateEx(sql, new Object[]{getS_Contract_ID()}, get_TrxName());
+		if (no != 1) {
+			log.warning("(2) #" + no);
+		}
+		parent = null;
+		return no == 1;
 	}
 
 }	//	MSContractLine
