@@ -49,7 +49,9 @@ public class InvoiceQuantityControl {
 	 */
 	public BigDecimal getPendingQuantity(MOrderLine orderLine) {
 		return pendingQuantityByOrderLine.computeIfAbsent(orderLine.getC_OrderLine_ID(),
-				key -> orderLine.getQtyOrdered().subtract(orderLine.getQtyInvoiced()).max(Env.ZERO));
+				key -> orderLine.getQtyOrdered().subtract(orderLine.getQtyInvoiced())
+			.max(Env.ZERO))
+		;
 	}
 
 	/**
@@ -68,4 +70,5 @@ public class InvoiceQuantityControl {
 		pendingQuantityByOrderLine.put(orderLine.getC_OrderLine_ID(), pendingQuantity.subtract(quantityToInvoice));
 		return quantityToInvoice;
 	}
+
 }

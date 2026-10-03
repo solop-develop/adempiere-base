@@ -280,8 +280,10 @@ public class InvoiceGenerate extends InvoiceGenerateAbstract {
 		MOrderLine orderLine = new MOrderLine(getCtx(), sLine.getC_OrderLine_ID(), get_TrxName());
 		BigDecimal qtyInvoiced = quantityControl.reserveQuantity(orderLine, sLine.getMovementQty());
 		if (qtyInvoiced.signum() == 0 && sLine.getMovementQty().signum() != 0) {
-			addLog("@QtyInvoiced@ >= @QtyOrdered@ - @C_Order_ID@: " + order.getDocumentNo()
-					+ " @Line@: " + orderLine.getLine() + " @M_InOut_ID@: " + ship.getDocumentNo());
+			addLog(
+				"@QtyInvoiced@ >= @QtyOrdered@ - @C_Order_ID@: " + order.getDocumentNo()
+				+ " @Line@: " + orderLine.getLine() + " @M_InOut_ID@: " + ship.getDocumentNo()
+			);
 			return;
 		}
 		if (invoice == null)
@@ -330,14 +332,19 @@ public class InvoiceGenerate extends InvoiceGenerateAbstract {
 		//	
 		MInvoiceLine line = new MInvoiceLine (invoice);
 		line.setShipLine(sLine);
-		if (!sLine.sameOrderLineUOM())
+		if (!sLine.sameOrderLineUOM()) {
 			line.setQtyEntered(qtyInvoiced);
-		else if (qtyInvoiced.compareTo(sLine.getMovementQty()) == 0 || sLine.getMovementQty().signum() == 0)
+		}
+		else if (qtyInvoiced.compareTo(sLine.getMovementQty()) == 0 || sLine.getMovementQty().signum() == 0) {
 			line.setQtyEntered(sLine.getQtyEntered());
-		else	//	Capped quantity: keep the shipment UOM proportion
+		}
+		else {
+			//	Capped quantity: keep the shipment UOM proportion
 			line.setQtyEntered(qtyInvoiced
 				.multiply(sLine.getQtyEntered())
-				.divide(sLine.getMovementQty(), 12, RoundingMode.HALF_UP));
+				.divide(sLine.getMovementQty(), 12, RoundingMode.HALF_UP))
+			;
+		}
 		line.setQtyInvoiced(qtyInvoiced);
 		line.setLine(m_line + sLine.getLine());
 		//@Trifon - special handling when ShipLine.ToBeInvoiced='N'

@@ -212,8 +212,10 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 						MOrderLine orderLine = new MOrderLine(getCtx(), shipLine.getC_OrderLine_ID(), transactionName);
 						BigDecimal qtyToInvoice = quantityControl.reserveQuantity(orderLine, shipLine.getMovementQty());
 						if (qtyToInvoice.signum() == 0 && shipLine.getMovementQty().signum() != 0) {
-							addLog("@QtyInvoiced@ >= @QtyOrdered@ - @C_Order_ID@: " + order.getDocumentNo()
-									+ " @Line@: " + orderLine.getLine() + " @M_InOut_ID@: " + shipLine.getParent().getDocumentNo());
+							addLog(
+								"@QtyInvoiced@ >= @QtyOrdered@ - @C_Order_ID@: " + order.getDocumentNo()
+								+ " @Line@: " + orderLine.getLine() + " @M_InOut_ID@: " + shipLine.getParent().getDocumentNo()
+							);
 							return;
 						}
 						MInvoice invoice = maybeInvoice.get();
@@ -301,8 +303,10 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 						if (quantityControl.isControlled(orderLine) && toInvoice.signum() > 0) {
 							BigDecimal pendingQuantity = quantityControl.getPendingQuantity(orderLine);
 							if (toInvoice.compareTo(pendingQuantity) > 0) {
-								throw new AdempiereException("@QtyInvoiced@ > @QtyOrdered@ - @C_Order_ID@: " + order.getDocumentNo()
-										+ " @Line@: " + orderLine.getLine() + " @Qty@: " + toInvoice + " @QtyToInvoice@: " + pendingQuantity);
+								throw new AdempiereException(
+									"@QtyInvoiced@ > @QtyOrdered@ - @C_Order_ID@: " + order.getDocumentNo()
+									+ " @Line@: " + orderLine.getLine() + " @Qty@: " + toInvoice + " @QtyToInvoice@: " + pendingQuantity
+								);
 							}
 							quantityControl.reserveQuantity(orderLine, toInvoice);
 						}
@@ -447,16 +451,18 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 	 *	@return quantity entered
 	 */
 	private BigDecimal getQtyEntered(MInOutLine sLine, BigDecimal qtyInvoiced) {
-		if (!sLine.sameOrderLineUOM())
+		if (!sLine.sameOrderLineUOM()) {
 			return qtyInvoiced;
+		}
 		if (qtyInvoiced.compareTo(sLine.getMovementQty()) == 0
-				|| sLine.getMovementQty().signum() == 0)
+				|| sLine.getMovementQty().signum() == 0) {
 			return sLine.getQtyEntered();
+		}
 		//	Capped quantity: keep the shipment UOM proportion
 		return qtyInvoiced
-				.multiply(sLine.getQtyEntered())
-				.divide(sLine.getMovementQty(), 12, RoundingMode.HALF_UP);
+			.multiply(sLine.getQtyEntered())
+			.divide(sLine.getMovementQty(), 12, RoundingMode.HALF_UP)
+		;
 	}	//	getQtyEntered
-
 
 }	//	InvoiceGenerate
