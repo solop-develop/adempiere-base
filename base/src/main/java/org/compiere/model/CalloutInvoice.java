@@ -687,10 +687,11 @@ public class CalloutInvoice extends CalloutEngine
 				}
 			}
 			//	Add it up (Line Net Amount already includes tax when price list is tax included)
-			if (isTaxIncluded(WindowNo))
+			if (isTaxIncluded(WindowNo)) {
 				mTab.setValue("LineTotalAmt", lineNetAmount);
-			else
+			} else {
 				mTab.setValue("LineTotalAmt", lineNetAmount.add(TaxAmt));
+			}
 		//}
 
 		return "";

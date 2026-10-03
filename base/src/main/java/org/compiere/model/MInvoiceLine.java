@@ -460,13 +460,15 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 	 */
 	private void setLineTotalAmt ()
 	{
-		if (getC_Tax_ID() == 0)
+		if (getC_Tax_ID() == 0) {
 			return;
+		}
 		MTax tax = MTax.get (getCtx(), getC_Tax_ID());
-		if ((tax.isDocumentLevel() && m_IsSOTrx) || isTaxIncluded())
+		if ((tax.isDocumentLevel() && m_IsSOTrx) || isTaxIncluded()) {
 			setLineTotalAmt(getLineNetAmt());
-		else
+		} else {
 			setLineTotalAmt(getLineNetAmt().add(getTaxAmt()));
+		}
 	}	//	setLineTotalAmt
 
 	/**
@@ -875,10 +877,11 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 		setLineNetAmt();
 		// TaxAmt recalculations should be done if the TaxAmt is zero
 		// or this is an Invoice(Customer) - teo_sarca, globalqss [ 1686773 ]
-		if (getTaxAmt().compareTo(Env.ZERO) == 0)
+		if (getTaxAmt().compareTo(Env.ZERO) == 0) {
 			setTaxAmt();
-		else
+		} else {
 			setLineTotalAmt();
+		}
 
 		if (getC_OrderLine_ID() <= 0) {
 			String documentNote = null;
