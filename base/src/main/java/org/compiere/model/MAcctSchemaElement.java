@@ -75,7 +75,7 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 		for(MAcctSchemaElement ase : elements)
 		{
 			s_log.fine(" - " + ase);
-			if (ase.isMandatory() && ase.getDefaultValue() == 0 && !isUserElement(ase.getElementType())) {
+			if (ase.isMandatory() && ase.getDefaultValue() == 0 && !isUserDefined(ase.getElementType())) {
 				s_log.log(Level.SEVERE, "No default value for " + ase.getName());
 			}
 			list.add(ase);
@@ -330,9 +330,10 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 			|| ELEMENTTYPE_UserList3.equals(elementType) || ELEMENTTYPE_UserList4.equals(elementType);
 	}
 
-	// User elements point to an arbitrary column, so they cannot hold a default value
-	private static boolean isUserElement(String elementType) {
-		return ELEMENTTYPE_UserElement1.equals(elementType) || ELEMENTTYPE_UserElement2.equals(elementType);
+	// User-defined dimensions are mandatory without a default value: the user must provide them
+	private static boolean isUserDefined(String elementType) {
+		return isUserList(elementType)
+			|| ELEMENTTYPE_UserElement1.equals(elementType) || ELEMENTTYPE_UserElement2.equals(elementType);
 	}
 
 	/**
@@ -461,9 +462,6 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 				errorField = COLUMNNAME_C_Project_ID;
 			else if (ELEMENTTYPE_SalesRegion.equals(et) && getC_SalesRegion_ID() == 0)
 				errorField = COLUMNNAME_C_SalesRegion_ID;
-			else if (isUserList(et) && getC_ElementValue_ID() == 0) {
-				errorField = COLUMNNAME_C_ElementValue_ID;
-			}
 			if (errorField != null)
 			{
 				log.saveError("Error", Msg.parseTranslation(getCtx(), "@IsMandatory@: @" + errorField + "@"));
