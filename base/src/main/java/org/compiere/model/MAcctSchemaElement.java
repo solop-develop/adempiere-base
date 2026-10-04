@@ -326,14 +326,19 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 	}   //  isElementType
 
 	private static boolean isUserList(String elementType) {
-		return ELEMENTTYPE_UserList1.equals(elementType) || ELEMENTTYPE_UserList2.equals(elementType)
-			|| ELEMENTTYPE_UserList3.equals(elementType) || ELEMENTTYPE_UserList4.equals(elementType);
+		return ELEMENTTYPE_UserList1.equals(elementType)
+			|| ELEMENTTYPE_UserList2.equals(elementType)
+			|| ELEMENTTYPE_UserList3.equals(elementType)
+			|| ELEMENTTYPE_UserList4.equals(elementType)
+		;
 	}
 
 	// User-defined dimensions are mandatory without a default value: the user must provide them
 	private static boolean isUserDefined(String elementType) {
 		return isUserList(elementType)
-			|| ELEMENTTYPE_UserElement1.equals(elementType) || ELEMENTTYPE_UserElement2.equals(elementType);
+			|| ELEMENTTYPE_UserElement1.equals(elementType)
+			|| ELEMENTTYPE_UserElement2.equals(elementType)
+		;
 	}
 
 	/**

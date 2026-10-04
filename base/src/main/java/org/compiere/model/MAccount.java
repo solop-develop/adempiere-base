@@ -789,8 +789,7 @@ public class MAccount extends X_C_ValidCombination
 					combiStr = ev.getValue();
 					descrStr = ev.getName();
 				}
-				else if (element.isMandatory())
-				{
+				else if (element.isMandatory()) {
 					log.warning("Mandatory Element missing: " + element.getName());
 					fullyQualified = false;
 				}
@@ -803,8 +802,7 @@ public class MAccount extends X_C_ValidCombination
 					combiStr = ev.getValue();
 					descrStr = ev.getName();
 				}
-				else if (element.isMandatory())
-				{
+				else if (element.isMandatory()) {
 					log.warning("Mandatory Element missing: " + element.getName());
 					fullyQualified = false;
 				}
@@ -817,8 +815,7 @@ public class MAccount extends X_C_ValidCombination
 					combiStr = ev.getValue();
 					descrStr = ev.getName();
 				}
-				else if (element.isMandatory())
-				{
+				else if (element.isMandatory()) {
 					log.warning("Mandatory Element missing: " + element.getName());
 					fullyQualified = false;
 				}
@@ -831,8 +828,7 @@ public class MAccount extends X_C_ValidCombination
 					combiStr = ev.getValue();
 					descrStr = ev.getName();
 				}
-				else if (element.isMandatory())
-				{
+				else if (element.isMandatory()) {
 					log.warning("Mandatory Element missing: " + element.getName());
 					fullyQualified = false;
 				}
@@ -842,8 +838,7 @@ public class MAccount extends X_C_ValidCombination
 				if (getUserElement1_ID() != 0)
 				{
 				}
-				else if (element.isMandatory())
-				{
+				else if (element.isMandatory()) {
 					log.warning("Mandatory Element missing: " + element.getName());
 					fullyQualified = false;
 				}
@@ -853,8 +848,7 @@ public class MAccount extends X_C_ValidCombination
 				if (getUserElement2_ID() != 0)
 				{
 				}
-				else if (element.isMandatory())
-				{
+				else if (element.isMandatory()) {
 					log.warning("Mandatory Element missing: " + element.getName());
 					fullyQualified = false;
 				}
