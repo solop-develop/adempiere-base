@@ -299,8 +299,18 @@ public class MProduct extends X_M_Product
 		setM_PartType_ID(impP.getM_PartType_ID());
 		setM_Purchase_Group_ID(impP.getM_Purchase_Group_ID());
 		setM_Sales_Group_ID(impP.getM_Sales_Group_ID());
+		setWeight(impP.getWeight());
+		setVolume(impP.getVolume());
+		setShelfWidth(impP.getShelfWidth());
+		setShelfHeight(impP.getShelfHeight());
+		setShelfDepth(impP.getShelfDepth());
+		setUnitsPerPallet(BigDecimal.valueOf(impP.getUnitsPerPallet()));
+		setClassification(impP.getClassification());
+		setDiscontinued(impP.isDiscontinued());
+		setDiscontinuedAt(impP.getDiscontinuedAt());
+		setDiscontinuedBy(impP.getDiscontinuedBy());
 	}	//	MProduct
-	
+
 	/** Additional Downloads				*/
 	private MProductDownload[] m_downloads = null;
 	
