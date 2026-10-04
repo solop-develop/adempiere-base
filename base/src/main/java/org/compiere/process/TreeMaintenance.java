@@ -139,17 +139,15 @@ public class TreeMaintenance extends SvrProcess
 			AtomicReference<String> parentColumnName = new AtomicReference<>();
 			AtomicReference<String> sortColumnName = new AtomicReference<>();
 
-			MTable sourceTable	 = null;
+			MTable sourceTable = MTable.get(Env.getCtx(), sourceTableName);
 			if (tree.getParent_Column_ID() > 0) {
 				parentColumnName.set(MColumn.getColumnName(Env.getCtx(), tree.getParent_Column_ID()));
-				sourceTable = MTable.get(Env.getCtx(),tree.getAD_Table_ID());
 			}
 			if (tree.getAD_ColumnSortOrder_ID() > 0) {
 				sortColumnName.set(MColumn.getColumnName(Env.getCtx(), tree.getAD_ColumnSortOrder_ID()));
 			}
-
-
-
+			boolean isWithParentColumn = !Util.isEmpty(parentColumnName.get(), true);
+			boolean isWithSortColumn = !Util.isEmpty(sortColumnName.get(), true);
 
 			int C_Element_ID = treeElement;
 			StringBuffer sql = new StringBuffer();
@@ -167,10 +165,12 @@ public class TreeMaintenance extends SvrProcess
 			//
 			int deletes = DB.executeUpdate(sql.toString(), get_TrxName());
 			addLog(0,null, new BigDecimal(deletes), tree.getName()+ " Deleted");
-			String whereClause = "1=1";
+			//	Same client restriction used to delete unused nodes
+			String whereClause = "AD_Client_ID = ?";
 			List<Object> parameters = new ArrayList<>();
+			parameters.add(AD_Client_ID);
 			if (C_Element_ID > 0) {
-				whereClause = " C_Element_ID = ?";
+				whereClause += " AND C_Element_ID = ?";
 				parameters.add(C_Element_ID);
 			}
 			List<Integer> treeElementIds = new Query(getCtx(), sourceTableName, whereClause, get_TrxName())
@@ -192,15 +192,15 @@ public class TreeMaintenance extends SvrProcess
 				treeNode.setIsActive(true);
 
 				PO element = sourceTable.getPO(treeElementId, get_TrxName());
-				String sortColumnValue = element.get_ValueAsString(sortColumnName.get());
-				if (!Util.isEmpty(sortColumnName.get(), true) && C_Element_ID > 0) {
+				if (isWithSortColumn && C_Element_ID > 0) {
+					String sortColumnValue = element.get_ValueAsString(sortColumnName.get());
 					int parentId = getParentFromSort(sortColumnName.get(), sortColumnValue, whereClause, sourceTableName);
 					if (parentId <= 0) {
 						treeNode.set_CustomColumn("Parent_ID", null);
 					} else {
 						treeNode.set_CustomColumn("Parent_ID", parentId);
 					}
-					if (!Util.isEmpty(parentColumnName.get(), true)) {
+					if (isWithParentColumn) {
 						if (parentId <= 0) {
 							element.set_ValueOfColumn(parentColumnName.get(), null);
 						}else {
@@ -208,10 +208,13 @@ public class TreeMaintenance extends SvrProcess
 						}
 
 					}
-				} else if (element.get_ValueAsInt(parentColumnName.get()) > 0) {
+				} else if (isWithParentColumn && element.get_ValueAsInt(parentColumnName.get()) > 0) {
 					treeNode.set_CustomColumn("Parent_ID", element.get_ValueAsInt(parentColumnName.get()));
 				}
-				element.saveEx();
+				//	Avoid saving (and firing tree node updates) on unchanged records
+				if (element.is_Changed()) {
+					element.saveEx();
+				}
 
 
 				treeNode.setIsDirectLoad(true);
@@ -219,6 +222,10 @@ public class TreeMaintenance extends SvrProcess
 				treeNode.saveEx();
 			}
 
+			//	Siblings are resolved by parent column
+			if (!isWithParentColumn) {
+				return;
+			}
 			whereClause = "AD_Tree_ID = ?";
 			List<PO> nodeList = new Query(getCtx(), nodeTableName, whereClause, get_TrxName())
 				.setParameters(tree.get_ID())
@@ -237,7 +244,7 @@ public class TreeMaintenance extends SvrProcess
 		String whereClause = "AD_Client_ID = ?";
 		parameters.add(getAD_Client_ID());
 		if (parentId >0) {
-			whereClause += "AND " + parentColumnName + " = ? ";
+			whereClause += " AND " + parentColumnName + " = ? ";
 			parameters.add(parentId);
 
 		} else {
