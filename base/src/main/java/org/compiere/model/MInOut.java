@@ -1398,15 +1398,6 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 
 				log.fine("Material Transaction");
 				MTransaction materialTransaction = null;
-				//same warehouse in order and receipt?
-				boolean sameWarehouse = true;
-				//	Reservation ASI - assume none
-				int reservationAttributeSetInstance_ID = 0; // sLine.getM_AttributeSetInstance_ID();
-				if (orderLine != null) {
-					reservationAttributeSetInstance_ID = orderLine.getM_AttributeSetInstance_ID();
-					sameWarehouse = orderLine.getM_Warehouse_ID()==getM_Warehouse_ID();
-				}
-				//
 				if (inOutLine.getM_AttributeSetInstance_ID() == 0)
 				{
 					List<MInOutLineMA> mas = MInOutLineMA.get(getCtx(),
@@ -1445,21 +1436,8 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 //								sameWarehouse ? reservedDiff : Env.ZERO,
 //								sameWarehouse ? orderedDiff : Env.ZERO,
 //								get_TrxName());
-						ReservationBuilder.newInstance(getCtx(), get_TrxName())
-								.withInOutLine(inOutLine)
-								.build();
-						if (!sameWarehouse) {
-							//correct qtyOrdered in warehouse of order
-							MWarehouse warehouse = MWarehouse.get(getCtx(), orderLine.getM_Warehouse_ID());
-//							MStorage.add(getCtx(), orderLine.getM_Warehouse_ID(),
-//									warehouse.getDefaultLocator().getM_Locator_ID(),
-//									inOutLine.getM_Product_ID(),
-//									ma.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
-//									Env.ZERO, reservedDiff, orderedDiff, get_TrxName());
-							ReservationBuilder.newInstance(getCtx(), get_TrxName())
-									.withInOutLine(inOutLine)
-									.build();
-						}
+						//	Reserve only the quantity of this lot, in the warehouse of the order
+						createOrderReservation(inOutLine, orderLine, reservedDiff.add(orderedDiff));
 						//	Create Transaction
 						materialTransaction = new MTransaction (getCtx(), inOutLine.getAD_Org_ID(),
 							MovementType, inOutLine.getM_Locator_ID(),
@@ -1472,39 +1450,19 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 				//	sLine.getM_AttributeSetInstance_ID() != 0
 				if (materialTransaction == null)
 				{
-					
-					BigDecimal reservedDiff = Env.ZERO;
-					BigDecimal orderedDiff = Env.ZERO;
-					if (inOutLine.getC_OrderLine_ID() != 0 && sameWarehouse
-							&& !orderLine.getParent().isReturnOrder())
-					{
-						if (isSOTrx())
-							reservedDiff = QtySO;
-						else 
-							orderedDiff = QtyPO;
-					}
-
 					//	Fallback: Update Storage - see also VMatch.createMatchRecord
 //					MStorage.add(getCtx(), getM_Warehouse_ID(),
 //							inOutLine.getM_Locator_ID(),
 //							inOutLine.getM_Product_ID(),
 //							inOutLine.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
 //							quantity, reservedDiff, orderedDiff, get_TrxName());
-					ReservationBuilder.newInstance(getCtx(), get_TrxName())
-							.withInOutLine(inOutLine)
-							.build();
-					if (!sameWarehouse) {
-						//correct qtyOrdered in warehouse of order
-						MWarehouse warehouse = MWarehouse.get(getCtx(), orderLine.getM_Warehouse_ID());
 //						MStorage.add(getCtx(), orderLine.getM_Warehouse_ID(),
 //								warehouse.getDefaultLocator().getM_Locator_ID(),
 //								inOutLine.getM_Product_ID(),
 //								inOutLine.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
 //								Env.ZERO, QtySO.negate(), QtyPO.negate(), get_TrxName());
-						ReservationBuilder.newInstance(getCtx(), get_TrxName())
-								.withInOutLine(inOutLine)
-								.build();
-					}
+					//	The reservation is registered once, in the warehouse of the order
+					createOrderReservation(inOutLine, orderLine, isSOTrx() ? QtySO : QtyPO);
 					//	FallBack: Create Transaction
 					materialTransaction = new MTransaction (getCtx(), inOutLine.getAD_Org_ID(),
 						MovementType, inOutLine.getM_Locator_ID(),
@@ -1855,6 +1813,31 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			}
 
 		}
+	}
+
+
+	/**
+	 * Register the change of the order reservation caused by a shipment/receipt line.
+	 * Return orders do not reserve stock, so they are ignored.
+	 * @param inOutLine shipment/receipt line
+	 * @param orderLine related order line, can be null
+	 * @param quantity signed change of the reservation (same sign as the change of QtyReserved)
+	 */
+	private void createOrderReservation(MInOutLine inOutLine, MOrderLine orderLine, BigDecimal quantity) {
+		if (orderLine == null || quantity == null || quantity.signum() == 0 || orderLine.getParent().isReturnOrder()) {
+			return;
+		}
+		// MStorage.add(
+		// 	getCtx(), orderLine.getM_Warehouse_ID(),
+		// 	orderLine.getM_Warehouse().getDefaultLocator().getM_Locator_ID(),
+		// 	inOutLine.getM_Product_ID(),
+		// 	inOutLine.getM_AttributeSetInstance_ID(), 0,
+		// 	Env.ZERO, quantity, Env.ZERO, get_TrxName()
+		// );
+		ReservationBuilder.newInstance(getCtx(), get_TrxName())
+			.withInOutLine(inOutLine, quantity)
+			.build()
+		;
 	}
 
 	/**

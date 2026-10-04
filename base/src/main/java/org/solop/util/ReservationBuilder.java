@@ -97,7 +97,7 @@ public class ReservationBuilder {
         reservation.setM_Locator_ID(locatorId);
     }
 
-    public ReservationBuilder withInOutLine(MInOutLine inOutLine) {
+	public ReservationBuilder withInOutLine(MInOutLine inOutLine, BigDecimal quantityToReserve) {
         if(inOutLine.getC_OrderLine_ID() > 0) {
             reservation.setC_OrderLine_ID(inOutLine.getC_OrderLine_ID());
             MOrderLine orderLine = new MOrderLine(inOutLine.getCtx(), inOutLine.getC_OrderLine_ID(), inOutLine.get_TrxName());
@@ -114,8 +114,16 @@ public class ReservationBuilder {
                 reservation.setReservationType(MReservation.RESERVATIONTYPE_POReceiptQuantity);
             }
             reservation.setM_Warehouse_ID(orderLine.getM_Warehouse_ID());
-            reservation.setM_Locator_ID(inOutLine.getM_Locator_ID());
-            reservation.setQty(inOutLine.getMovementQty().negate());
+			// The reservation belongs to the warehouse of the order. When the shipment/receipt
+			// was made in another warehouse its locator cannot be used, so one is resolved instead.
+			MLocator inOutLocator = inOutLine.getM_Locator_ID() > 0
+				? MLocator.get(inOutLine.getCtx(), inOutLine.getM_Locator_ID())
+				: null
+			;
+			if(inOutLocator != null && inOutLocator.getM_Warehouse_ID() == reservation.getM_Warehouse_ID()) {
+				reservation.setM_Locator_ID(inOutLocator.getM_Locator_ID());
+			}
+			reservation.setQty(Optional.ofNullable(quantityToReserve).orElse(Env.ZERO));
             fillLocatorLocatorId();
         }
         return this;
