@@ -19,6 +19,7 @@ package org.adempiere.process;
 import io.vavr.Tuple2;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.process.util.InvoiceGrouping;
+import org.adempiere.process.util.InvoiceQuantityControl;
 import org.compiere.model.*;
 import org.compiere.process.DocAction;
 import org.compiere.util.DisplayType;
@@ -57,6 +58,8 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 	private HashSet<Integer> ordersToIgnore;
 	private HashSet<Integer> ordersCanInvoice;
 	private InvoiceGrouping grouping;
+	/**	Control of quantity pending to invoice per order line	*/
+	private InvoiceQuantityControl quantityControl;
 	private int withError = 0;
 
 	private int maxLines = 0;
@@ -67,6 +70,7 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 	protected void prepare() {
 		super.prepare();
 		grouping = InvoiceGrouping.newInstance();
+		quantityControl = InvoiceQuantityControl.newInstance();
 		//	Login Date
 		if(getDateInvoiced() == null) {
 			setDateInvoiced(Env.getContextAsDate(getCtx(), "#Date"));
@@ -120,7 +124,7 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 		if (!ordersCanInvoice.contains(order.get_ID())) {
 			boolean completeOrder = MOrder.INVOICERULE_AfterOrderDelivered.equals(order.getInvoiceRule());
 			if (completeOrder) {
-				String whereClause = "QtyOrder > QtyDelivered AND C_Order_ID = ?";
+				String whereClause = "QtyOrdered > QtyDelivered AND C_Order_ID = ?";
 				boolean notFullyDelivered = new Query(getCtx(), MOrderLine.Table_Name, whereClause, get_TrxName())
 						.setParameters(order.get_ID())
 						.match();
@@ -163,7 +167,7 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 		if (afterDelivery) {
 			String whereClause = MInOutLine.COLUMNNAME_C_OrderLine_ID + " = ? " +
 					" AND IsInvoiced = 'N'" +
-					" AND EXISTS(SELECT 1 FROM M_InOut io where io.DocStatus IN ('CO', 'CL'))";
+					" AND EXISTS(SELECT 1 FROM M_InOut io WHERE io.M_InOut_ID = M_InOutLine.M_InOut_ID AND io.DocStatus IN ('CO', 'CL'))";
 			List<Integer> shipLineIds = new Query(getCtx(), MInOutLine.Table_Name, whereClause, get_TrxName())
 					.setParameters(line.get_ID())
 					.getIDsAsList();
@@ -202,6 +206,18 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 							order = new MOrder(getCtx(), orderShipLineTuple._1(), transactionName);
 							maybeOrder.set(order);
 						}
+						MInOutLine shipLine = MInOutLine.get(getCtx(), orderShipLineTuple._2());
+						shipLine.set_TrxName(transactionName);
+						//	Do not invoice more than the pending quantity of the order line
+						MOrderLine orderLine = new MOrderLine(getCtx(), shipLine.getC_OrderLine_ID(), transactionName);
+						BigDecimal qtyToInvoice = quantityControl.reserveQuantity(orderLine, shipLine.getMovementQty());
+						if (qtyToInvoice.signum() == 0 && shipLine.getMovementQty().signum() != 0) {
+							addLog(
+								"@QtyInvoiced@ >= @QtyOrdered@ - @C_Order_ID@: " + order.getDocumentNo()
+								+ " @Line@: " + orderLine.getLine() + " @M_InOut_ID@: " + shipLine.getParent().getDocumentNo()
+							);
+							return;
+						}
 						MInvoice invoice = maybeInvoice.get();
 						if (invoice == null) {
 							invoice = new MInvoice(order, 0, getDateInvoiced());
@@ -215,15 +231,17 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 							maybeInvoice.set(invoice);
 						}
 						//Create invoice line with transactionName
-						MInOutLine shipLine = MInOutLine.get(getCtx(), orderShipLineTuple._2());
-						shipLine.set_TrxName(transactionName);
 						MInOut ship = shipLine.getParent();
 						ship.set_TrxName(transactionName);
-						createLine (invoice, order, ship, shipLine, transactionName);
+						createLine (invoice, order, ship, shipLine, qtyToInvoice, transactionName);
 						m_line += 1000;
 
 					});
 					MInvoice invoice = maybeInvoice.get();
+					if (invoice == null) {
+						//	All shipment lines were already invoiced
+						return;
+					}
 					invoice.setDocAction(getDocAction());
 					if (!invoice.processIt(getDocAction())) {
 						addLog("@ProcessFailed@ : " + invoice.getDocumentInfo());
@@ -281,6 +299,17 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 						}
 
 						BigDecimal toInvoice = Optional.ofNullable(getSelectionAsBigDecimal(orderLine.getC_OrderLine_ID(), "OLINE_QtyEntered")).orElse(orderLine.getQtyOrdered().subtract(orderLine.getQtyInvoiced()));
+						//	Selected quantity cannot exceed the pending quantity of the order line
+						if (quantityControl.isControlled(orderLine) && toInvoice.signum() > 0) {
+							BigDecimal pendingQuantity = quantityControl.getPendingQuantity(orderLine);
+							if (toInvoice.compareTo(pendingQuantity) > 0) {
+								throw new AdempiereException(
+									"@QtyInvoiced@ > @QtyOrdered@ - @C_Order_ID@: " + order.getDocumentNo()
+									+ " @Line@: " + orderLine.getLine() + " @Qty@: " + toInvoice + " @QtyToInvoice@: " + pendingQuantity
+								);
+							}
+							quantityControl.reserveQuantity(orderLine, toInvoice);
+						}
 
 						BigDecimal qtyEntered = toInvoice;
 						//	Correct UOM for QtyEntered
@@ -346,9 +375,10 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 	 *	@param order order
 	 *	@param ship shipment header
 	 *	@param sLine shipment line
+	 *	@param qtyInvoiced quantity to invoice, capped by the pending quantity of the order line
 	 *  @param transactionName trx Name
 	 */
-	private void createLine (MInvoice invoice, MOrder order, MInOut ship, MInOutLine sLine, String transactionName)
+	private void createLine (MInvoice invoice, MOrder order, MInOut ship, MInOutLine sLine, BigDecimal qtyInvoiced, String transactionName)
 	{
 		//	Create Shipment Comment Line
 		if (isAddInvoiceReferenceLine()
@@ -394,11 +424,8 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 		//	
 		MInvoiceLine line = new MInvoiceLine (invoice);
 		line.setShipLine(sLine);
-		if (sLine.sameOrderLineUOM())
-			line.setQtyEntered(sLine.getQtyEntered());
-		else
-			line.setQtyEntered(sLine.getMovementQty());
-		line.setQtyInvoiced(sLine.getMovementQty());
+		line.setQtyEntered(getQtyEntered(sLine, qtyInvoiced));
+		line.setQtyInvoiced(qtyInvoiced);
 		line.setLine(m_line + sLine.getLine());
 		//@Trifon - special handling when ShipLine.ToBeInvoiced='N'
 		if (!sLine.isToBeInvoiced()) {
@@ -417,5 +444,25 @@ public class SB_InvoiceGenerateFromOrderLine extends SB_InvoiceGenerateFromOrder
 		log.fine(line.toString());
 	}	//	createLine
 
+	/**
+	 * 	Get Quantity Entered (shipment line UOM) for the quantity to invoice
+	 *	@param sLine shipment line
+	 *	@param qtyInvoiced quantity to invoice (product UOM)
+	 *	@return quantity entered
+	 */
+	private BigDecimal getQtyEntered(MInOutLine sLine, BigDecimal qtyInvoiced) {
+		if (!sLine.sameOrderLineUOM()) {
+			return qtyInvoiced;
+		}
+		if (qtyInvoiced.compareTo(sLine.getMovementQty()) == 0
+				|| sLine.getMovementQty().signum() == 0) {
+			return sLine.getQtyEntered();
+		}
+		//	Capped quantity: keep the shipment UOM proportion
+		return qtyInvoiced
+			.multiply(sLine.getQtyEntered())
+			.divide(sLine.getMovementQty(), 12, RoundingMode.HALF_UP)
+		;
+	}	//	getQtyEntered
 
 }	//	InvoiceGenerate
