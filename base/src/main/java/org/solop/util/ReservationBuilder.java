@@ -61,7 +61,7 @@ public class ReservationBuilder {
         return this;
     }
 
-    public ReservationBuilder withOrderLine(MOrderLine orderLine, BigDecimal currentReservation) {
+	public ReservationBuilder withOrderLine(MOrderLine orderLine, BigDecimal quantityToReserve) {
         reservation.setC_OrderLine_ID(orderLine.getC_OrderLine_ID());
         reservation.setC_Order_ID(orderLine.getC_Order_ID());
         reservation.setM_Product_ID(orderLine.getM_Product_ID());
@@ -74,7 +74,7 @@ public class ReservationBuilder {
             reservation.setReservationType(MReservation.RESERVATIONTYPE_POOrderQuantity);
         }
         reservation.setM_Warehouse_ID(orderLine.getM_Warehouse_ID());
-        reservation.setQty(orderLine.getQtyOrdered().subtract(Optional.ofNullable(currentReservation).orElse(Env.ZERO)));
+		reservation.setQty(Optional.ofNullable(quantityToReserve).orElse(Env.ZERO));
         fillLocatorLocatorId();
         return this;
     }
@@ -121,13 +121,13 @@ public class ReservationBuilder {
         return this;
     }
 
-    public ReservationBuilder withDistributionOrderLine(MDDOrderLine orderLine, BigDecimal currentReservation, boolean isToLocator, boolean isReverse) {
+	public ReservationBuilder withDistributionOrderLine(MDDOrderLine orderLine, BigDecimal deltaQuantity, boolean isToLocator, boolean isReverse) {
         reservation.setDD_OrderLine_ID(orderLine.getDD_OrderLine_ID());
         reservation.setDD_Order_ID(orderLine.getDD_Order_ID());
         reservation.setM_Product_ID(orderLine.getM_Product_ID());
         reservation.setReservationType(MReservation.RESERVATIONTYPE_DistributionOrderQuantity);
         reservation.setAD_Org_ID(orderLine.getAD_Org_ID());
-        BigDecimal quantityToReserve = orderLine.getQtyOrdered().subtract(Optional.ofNullable(currentReservation).orElse(Env.ZERO));
+		BigDecimal quantityToReserve = Optional.ofNullable(deltaQuantity).orElse(Env.ZERO);
         if(isReverse) {
             quantityToReserve = quantityToReserve.negate();
         }

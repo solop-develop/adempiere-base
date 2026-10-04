@@ -1303,8 +1303,9 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 //						getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
 //						Env.ZERO, reserved, ordered, get_TrxName());
 				ReservationBuilder.newInstance(getCtx(), get_TrxName())
-						.withOrderLine(this, currentReserved)
-						.build();
+					.withOrderLine(this, difference)
+					.build()
+				;
 			}    //	stocked
 		}
 	}
