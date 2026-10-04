@@ -455,6 +455,23 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 	}	//	setTaxAmt
 
 	/**
+	 * 	Calculate Line Total Amt from current Line Net and Tax Amt.
+	 * 	Line Net already includes tax when price list is tax included
+	 */
+	private void setLineTotalAmt ()
+	{
+		if (getC_Tax_ID() == 0) {
+			return;
+		}
+		MTax tax = MTax.get (getCtx(), getC_Tax_ID());
+		if ((tax.isDocumentLevel() && m_IsSOTrx) || isTaxIncluded()) {
+			setLineTotalAmt(getLineNetAmt());
+		} else {
+			setLineTotalAmt(getLineNetAmt().add(getTaxAmt()));
+		}
+	}	//	setLineTotalAmt
+
+	/**
 	 * 	Calculate Extended Amt.
 	 * 	May or may not include tax
 	 */
@@ -860,8 +877,11 @@ public class MInvoiceLine extends X_C_InvoiceLine implements DocumentReversalLin
 		setLineNetAmt();
 		// TaxAmt recalculations should be done if the TaxAmt is zero
 		// or this is an Invoice(Customer) - teo_sarca, globalqss [ 1686773 ]
-		if (getTaxAmt().compareTo(Env.ZERO) == 0)
+		if (getTaxAmt().compareTo(Env.ZERO) == 0) {
 			setTaxAmt();
+		} else {
+			setLineTotalAmt();
+		}
 
 		if (getC_OrderLine_ID() <= 0) {
 			String documentNote = null;
