@@ -1213,6 +1213,13 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			processMsg = "@NoLines@";
 			return DocAction.STATUS_Invalid;
 		}
+		//	A closed order is final, it does not accept new movements (reversals are validated before reversing)
+		if (!isReversal()) {
+			processMsg = validateClosedOrders();
+			if (processMsg != null) {
+				return DocAction.STATUS_Invalid;
+			}
+		}
 		//	Validate if the dates is bad
 		validateOrderDate(Arrays.asList(lines));
 		BigDecimal Volume = Env.ZERO;
@@ -1841,6 +1848,48 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 	}
 
 	/**
+	 * Validate that no line points to an order that is already Closed, Voided or Reversed.
+	 * For lines of an RMA the order line is the one of the original shipment/receipt.
+	 * @return error message with the document number of the first order found, or null if it is valid
+	 */
+	private String validateClosedOrders() {
+		String sql = ""
+			+ "SELECT o.DocumentNo "
+			+ "FROM M_InOutLine AS l "
+			+ "INNER JOIN C_OrderLine AS ol "
+				+ "ON ("
+					+ "ol.C_OrderLine_ID = COALESCE("
+						+ "NULLIF(l.C_OrderLine_ID, 0), "
+						+ "("
+							+ "SELECT iol.C_OrderLine_ID "
+							+ "FROM M_RMALine AS rl "
+							+ "INNER JOIN M_InOutLine AS iol "
+								+ "ON (iol.M_InOutLine_ID = rl.M_InOutLine_ID) "
+							+ "WHERE rl.M_RMALine_ID = l.M_RMALine_ID "
+						+ ") "
+					+ ") "
+				+ ") "
+			+ "INNER JOIN C_Order AS o "
+				+ "ON (o.C_Order_ID = ol.C_Order_ID) "
+			+ "WHERE "
+				+ "l.M_InOut_ID = ? "
+				+ "AND o.DocStatus IN (?, ?, ?) "
+			+ "ORDER BY o.C_Order_ID"
+		;
+		String documentNo = DB.getSQLValueStringEx(
+			get_TrxName(),
+			sql, getM_InOut_ID(),
+			MOrder.DOCSTATUS_Closed,
+			MOrder.DOCSTATUS_Voided,
+			MOrder.DOCSTATUS_Reversed
+		);
+		if (documentNo == null) {
+			return null;
+		}
+		return "@C_Order_ID@ @Closed@: " + documentNo;
+	}
+
+	/**
 	 * 	Check Material Policy
 	 * 	Sets line ASI
 	 */
@@ -2390,6 +2439,10 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 		processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_REVERSECORRECT);
 		if (processMsg != null)
 			return false;
+		processMsg = validateClosedOrders();
+		if (processMsg != null) {
+			return false;
+		}
 
 		MInOut reversal = reverseIt(false);
 		if (reversal == null)
@@ -2419,6 +2472,10 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 		processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_REVERSEACCRUAL);
 		if (processMsg != null)
 			return false;
+		processMsg = validateClosedOrders();
+		if (processMsg != null) {
+			return false;
+		}
 
 		MInOut reversal = reverseIt(true);
 		if (reversal == null)
