@@ -789,6 +789,10 @@ public class MAccount extends X_C_ValidCombination
 					combiStr = ev.getValue();
 					descrStr = ev.getName();
 				}
+				else if (element.isMandatory()) {
+					log.warning("Mandatory Element missing: " + element.getName());
+					fullyQualified = false;
+				}
 			}
 			else if (MAcctSchemaElement.ELEMENTTYPE_UserList2.equals(element.getElementType()))
 			{
@@ -797,6 +801,10 @@ public class MAccount extends X_C_ValidCombination
 					MElementValue ev = new MElementValue(getCtx(), getUser2_ID(), get_TrxName());
 					combiStr = ev.getValue();
 					descrStr = ev.getName();
+				}
+				else if (element.isMandatory()) {
+					log.warning("Mandatory Element missing: " + element.getName());
+					fullyQualified = false;
 				}
 			}
 			else if (MAcctSchemaElement.ELEMENTTYPE_UserList3.equals(element.getElementType()))
@@ -807,6 +815,10 @@ public class MAccount extends X_C_ValidCombination
 					combiStr = ev.getValue();
 					descrStr = ev.getName();
 				}
+				else if (element.isMandatory()) {
+					log.warning("Mandatory Element missing: " + element.getName());
+					fullyQualified = false;
+				}
 			}
 			else if (MAcctSchemaElement.ELEMENTTYPE_UserList4.equals(element.getElementType()))
 			{
@@ -816,17 +828,29 @@ public class MAccount extends X_C_ValidCombination
 					combiStr = ev.getValue();
 					descrStr = ev.getName();
 				}
+				else if (element.isMandatory()) {
+					log.warning("Mandatory Element missing: " + element.getName());
+					fullyQualified = false;
+				}
 			}
 			else if (MAcctSchemaElement.ELEMENTTYPE_UserElement1.equals(element.getElementType()))
 			{
 				if (getUserElement1_ID() != 0)
 				{
 				}
+				else if (element.isMandatory()) {
+					log.warning("Mandatory Element missing: " + element.getName());
+					fullyQualified = false;
+				}
 			}
 			else if (MAcctSchemaElement.ELEMENTTYPE_UserElement2.equals(element.getElementType()))
 			{
 				if (getUserElement2_ID() != 0)
 				{
+				}
+				else if (element.isMandatory()) {
+					log.warning("Mandatory Element missing: " + element.getName());
+					fullyQualified = false;
 				}
 			}
 			combi.append(combiStr);
