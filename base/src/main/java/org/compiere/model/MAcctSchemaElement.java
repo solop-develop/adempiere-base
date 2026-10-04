@@ -75,8 +75,9 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 		for(MAcctSchemaElement ase : elements)
 		{
 			s_log.fine(" - " + ase);
-			if (ase.isMandatory() && ase.getDefaultValue() == 0)
+			if (ase.isMandatory() && ase.getDefaultValue() == 0 && !isUserElement(ase.getElementType())) {
 				s_log.log(Level.SEVERE, "No default value for " + ase.getName());
+			}
 			list.add(ase);
 		}
 		
@@ -324,6 +325,16 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 		return elementType.equals(getElementType());
 	}   //  isElementType
 
+	private static boolean isUserList(String elementType) {
+		return ELEMENTTYPE_UserList1.equals(elementType) || ELEMENTTYPE_UserList2.equals(elementType)
+			|| ELEMENTTYPE_UserList3.equals(elementType) || ELEMENTTYPE_UserList4.equals(elementType);
+	}
+
+	// User elements point to an arbitrary column, so they cannot hold a default value
+	private static boolean isUserElement(String elementType) {
+		return ELEMENTTYPE_UserElement1.equals(elementType) || ELEMENTTYPE_UserElement2.equals(elementType);
+	}
+
 	/**
 	 * Get Default element value
 	 * @return default
@@ -354,10 +365,9 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 			defaultValue = getC_Project_ID();
 		else if (elementType.equals(ELEMENTTYPE_SalesRegion))
 			defaultValue = getC_SalesRegion_ID();
-		else if (elementType.equals(ELEMENTTYPE_UserList1))
+		else if (isUserList(elementType)) {
 			defaultValue = getC_ElementValue_ID();
-		else if (elementType.equals(ELEMENTTYPE_UserList2))
-			defaultValue = getC_ElementValue_ID();
+		}
 		else if (elementType.equals(ELEMENTTYPE_UserElement1))
 			defaultValue = 0;
 		else if (elementType.equals(ELEMENTTYPE_UserElement2))
@@ -418,10 +428,6 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 		if (getAD_Org_ID() != 0)
 			setAD_Org_ID(0);
 		String et = getElementType();
-		if (isMandatory() &&
-			(ELEMENTTYPE_UserList1.equals(et) || ELEMENTTYPE_UserList2.equals(et)
-			|| ELEMENTTYPE_UserElement1.equals(et) || ELEMENTTYPE_UserElement2.equals(et)))
-			setIsMandatory(false);
 		// Acct Schema Elements "Account" and "Org" should be mandatory - teo_sarca BF [ 1795817 ]
 		if (ELEMENTTYPE_Account.equals(et) || ELEMENTTYPE_Organization.equals(et)) {
 			if (!isMandatory())
@@ -455,6 +461,9 @@ public final class MAcctSchemaElement extends X_C_AcctSchema_Element
 				errorField = COLUMNNAME_C_Project_ID;
 			else if (ELEMENTTYPE_SalesRegion.equals(et) && getC_SalesRegion_ID() == 0)
 				errorField = COLUMNNAME_C_SalesRegion_ID;
+			else if (isUserList(et) && getC_ElementValue_ID() == 0) {
+				errorField = COLUMNNAME_C_ElementValue_ID;
+			}
 			if (errorField != null)
 			{
 				log.saveError("Error", Msg.parseTranslation(getCtx(), "@IsMandatory@: @" + errorField + "@"));
