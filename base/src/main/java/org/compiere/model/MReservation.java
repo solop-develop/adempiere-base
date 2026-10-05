@@ -72,7 +72,8 @@ public class MReservation extends X_M_Reservation {
     public int getExpectedInOutSign() {
         if (expectedInOutSign == null) {
             if (getM_InOutLine_ID() > 0) {
-                expectedInOutSign = getExpectedInOutSign(new MInOutLine(getCtx(), getM_InOutLine_ID(), get_TrxName()));
+                MInOutLine inOutLine = new MInOutLine(getCtx(), getM_InOutLine_ID(), get_TrxName());
+                expectedInOutSign = getExpectedInOutSign(inOutLine);
             } else {
                 expectedInOutSign = 0;
             }
@@ -96,14 +97,17 @@ public class MReservation extends X_M_Reservation {
             if (expectedSign != 0 && quantity.signum() != 0 && quantity.signum() != expectedSign) {
                 BigDecimal correctedQuantity = quantity.abs().multiply(BigDecimal.valueOf(expectedSign));
                 MInOutLine inOutLine = new MInOutLine(getCtx(), getM_InOutLine_ID(), get_TrxName());
-                log.warning("Reservation quantity sign corrected - M_InOutLine_ID=" + getM_InOutLine_ID()
-                        + ", MovementType=" + inOutLine.getParent().getMovementType()
-                        + ", MovementQty=" + inOutLine.getMovementQty()
-                        + ", Received=" + quantity
-                        + ", Used=" + correctedQuantity);
+                log.warning(
+                    "Reservation quantity sign corrected - M_InOutLine_ID=" + getM_InOutLine_ID()
+                    + ", MovementType=" + inOutLine.getParent().getMovementType()
+                    + ", MovementQty=" + inOutLine.getMovementQty()
+                    + ", Received=" + quantity
+                    + ", Used=" + correctedQuantity
+                );
                 setQty(correctedQuantity);
             }
         }
         return true;
     }
+
 }

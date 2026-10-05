@@ -40,6 +40,7 @@ import java.util.Properties;
 public class ReservationBuilder {
     private static final CLogger log = CLogger.getCLogger(ReservationBuilder.class);
     private final MReservation reservation;
+
     public static ReservationBuilder newInstance(Properties context, String transactionName) {
         return new ReservationBuilder(context, transactionName);
     }
@@ -115,7 +116,8 @@ public class ReservationBuilder {
     public ReservationBuilder withInOutLine(MInOutLine inOutLine) {
         BigDecimal movementQuantity = Optional.ofNullable(inOutLine.getMovementQty()).orElse(Env.ZERO);
         int expectedSign = MReservation.getExpectedInOutSign(inOutLine);
-        return withInOutLine(inOutLine, movementQuantity.abs().multiply(BigDecimal.valueOf(expectedSign)));
+        BigDecimal qtyToReserve = movementQuantity.abs().multiply(BigDecimal.valueOf(expectedSign));
+        return withInOutLine(inOutLine, qtyToReserve);
     }
 
     /**
@@ -285,11 +287,12 @@ public class ReservationBuilder {
         }
         //	A shipment/receipt line of a return order (or without pending quantity) does not reserve
         if(reservation.getM_InOutLine_ID() > 0 && reservation.getExpectedInOutSign() == 0) {
-            log.fine("No reservation for M_InOutLine_ID=" + reservation.getM_InOutLine_ID());
+            log.info("No reservation for M_InOutLine_ID=" + reservation.getM_InOutLine_ID());
             return null;
         }
         reservation.setDateTrx(new Timestamp(System.currentTimeMillis()));
         reservation.saveEx();
         return reservation;
     }
+
 }
