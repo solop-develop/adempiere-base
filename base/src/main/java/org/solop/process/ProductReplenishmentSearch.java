@@ -119,6 +119,7 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 
 	private String insertReplenish(String transactionName) {
 		List<Object> parameters = new ArrayList<>();
+		boolean hasReplenishmentClass = getReplenishmentClass() != null && !getReplenishmentClass().trim().isEmpty();
 		StringBuilder insertSql = new StringBuilder("INSERT INTO T_Replenish (AD_PInstance_ID, " +
 				"AD_Client_ID, " +
 				"AD_Org_ID, " +
@@ -198,7 +199,7 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 				"        po.C_BPartner_ID," +
 				"        COALESCE(po.Order_Min, 0) AS Order_Min," +
 				"        COALESCE(po.Order_Pack, 0) AS Order_Pack, " +
-				"        COALESCE(r.ReplenishmentClass, w.ReplenishmentClass) AS ReplenishmentClass" +
+				(hasReplenishmentClass ? "        CAST(? AS VARCHAR) AS ReplenishmentClass" : "        COALESCE(r.ReplenishmentClass, w.ReplenishmentClass) AS ReplenishmentClass") +
 				"    FROM M_Replenish r" +
 				"    INNER JOIN M_Warehouse w ON(w.M_Warehouse_ID = r.M_Warehouse_ID)" +
 				"    LEFT JOIN LATERAL (SELECT po.C_BPartner_ID, po.Order_Min, po.Order_Pack FROM M_Product_PO po WHERE po.M_Product_ID = r.M_Product_ID AND po.IsActive = 'Y' AND po.IsCurrentVendor = 'Y' AND po.AD_Org_ID IN (0,w.AD_Org_ID) ORDER BY po.AD_Org_ID DESC LIMIT 1) po ON true " +
@@ -215,6 +216,10 @@ public class ProductReplenishmentSearch extends ProductReplenishmentSearchAbstra
 		insertSql.append(" WHERE r.M_Warehouse_ID = ?");
 
 		parameters.add(getDateTrx());
+		//	Replenishment Class from parameter overrides the warehouse/replenish class
+		if(hasReplenishmentClass) {
+			parameters.add(getReplenishmentClass().trim());
+		}
 		parameters.add(getWarehouseId());
 		//	Organization
 		if(getOrgId() > 0) {
