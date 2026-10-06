@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_Contract_Line_Charge_Callout_Package" ReleaseNo="4.1.1" SeqNo="504580">
+    <Comments>Fix Contract Line Charge callout package</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="89126" Table="AD_Column">
+        <Data AD_Column_ID="1692" Column="Callout" oldValue="org.eevolution.context.service.infrastructure.domain.callouts.CalloutContract.charge">org.eevolution.context.service.domain.callouts.CalloutContract.charge</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
