@@ -1001,7 +1001,14 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 					}
 				}
 				if(!getParent().isReturnOrder()) {
-					setPriceList(m_productPrice.getPriceList());
+					// Keep the list price entered by the user, otherwise take it from the price list
+					BigDecimal clientPriceList = Optional.ofNullable(getPriceList()).orElse(Env.ZERO);
+					boolean isManualPriceList = newRecord
+						? clientPriceList.signum() != 0
+						: is_ValueChanged(COLUMNNAME_PriceList);
+					if (!isManualPriceList) {
+						setPriceList(m_productPrice.getPriceList());
+					}
 					setPriceLimit(m_productPrice.getPriceLimit());
 					MProduct product = MProduct.get(getCtx(), getM_Product_ID());
 					// Values sent by the client (e.g. POS quick entry) before any recalculation.
@@ -1134,8 +1141,8 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 
 		//	Calculations & Rounding
 		setLineNetAmt();	//	extended Amount with or without tax
-		// Only recalculate discount for new records or when user explicitly changed it
-		if (newRecord || is_ValueChanged(COLUMNNAME_Discount)) {
+		// Only recalculate discount for new records or when user explicitly changed it or the list price
+		if (newRecord || is_ValueChanged(COLUMNNAME_Discount) || is_ValueChanged(COLUMNNAME_PriceList)) {
 			setDiscount();
 		}
 		String documentNote = null;
