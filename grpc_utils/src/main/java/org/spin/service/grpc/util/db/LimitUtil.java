@@ -14,7 +14,6 @@
  ************************************************************************************/
 package org.spin.service.grpc.util.db;
 
-import java.util.regex.Matcher;
 
 import org.compiere.util.Util;
 
@@ -101,13 +100,10 @@ public class LimitUtil {
 	 * @return
 	 */
 	public static String getQueryWithLimit(String query, int limit, int offset) {
-		Matcher matcher = OrderByUtil.SQL_ORDER_BY_PATTERN
-			.matcher(query)
-		;
-
 		String sql = query;
-		if(matcher.find()) {
-			int positionFrom = matcher.start();
+		// only the main ORDER BY, not the ones of sub-selects
+		int positionFrom = OrderByUtil.getMainOrderByPosition(query);
+		if (positionFrom >= 0) {
 			sql = query.substring(0, positionFrom)
 				+ " AND ROWNUM >= " + offset
 				+ " AND ROWNUM <= " + limit

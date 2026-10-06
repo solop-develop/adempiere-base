@@ -36,6 +36,12 @@ public class OrderByUtil {
 		Pattern.CASE_INSENSITIVE | Pattern.DOTALL
 	);
 
+	/**	ORDER BY with any whitespace between and around its words	*/
+	private static final Pattern ANY_ORDER_BY_PATTERN = Pattern.compile(
+		"\\s+ORDER\\s+BY\\s+",
+		Pattern.CASE_INSENSITIVE | Pattern.DOTALL
+	);
+
 
 
 	/**
@@ -85,10 +91,8 @@ public class OrderByUtil {
 	public static String getOnlyOrderBy(String sql) {
 		String orderByClause = "";
 		// extract order by clause
-		Matcher matcherOrderBy = SQL_ORDER_BY_PATTERN
-			.matcher(sql);
-		if (matcherOrderBy.find()) {
-			int positionOrderBy = matcherOrderBy.start();
+		int positionOrderBy = getMainOrderByPosition(sql);
+		if (positionOrderBy >= 0) {
 			orderByClause = sql.substring(positionOrderBy);
 		}
 		return orderByClause;
@@ -103,13 +107,48 @@ public class OrderByUtil {
 	public static String removeOrderBy(String sql) {
 		String sqlWithoutOrderBy = sql;
 		// remove order by clause
-		Matcher matcherOrderBy = SQL_ORDER_BY_PATTERN
-			.matcher(sql);
-		if(matcherOrderBy.find()) {
-			int positionOrderBy = matcherOrderBy.start();
+		int positionOrderBy = getMainOrderByPosition(sql);
+		if (positionOrderBy >= 0) {
 			sqlWithoutOrderBy = sql.substring(0, positionOrderBy);
 		}
 		return sqlWithoutOrderBy;
+	}
+
+	/**
+	 * Position of the last ORDER BY clause that belongs to the main query, ignoring the
+	 * ones inside parentheses (sub-selects, derived tables) and inside string literals
+	 * @param sql
+	 * @return position of the whitespace before ORDER BY, or -1 if the main query has none
+	 */
+	public static int getMainOrderByPosition(String sql) {
+		if (sql == null || sql.isEmpty()) {
+			return -1;
+		}
+		int position = -1;
+		int depth = 0;
+		boolean isLiteral = false;
+		int index = 0;
+		Matcher matcherOrderBy = ANY_ORDER_BY_PATTERN.matcher(sql);
+		while (matcherOrderBy.find()) {
+			int start = matcherOrderBy.start();
+			// parenthesis depth and literal state up to this ORDER BY
+			for (; index < start; index++) {
+				char character = sql.charAt(index);
+				if (character == '\'') {
+					isLiteral = !isLiteral;
+				} else if (!isLiteral) {
+					if (character == '(') {
+						depth++;
+					} else if (character == ')') {
+						depth--;
+					}
+				}
+			}
+			if (depth == 0 && !isLiteral) {
+				position = start;
+			}
+		}
+		return position;
 	}
 
 }
