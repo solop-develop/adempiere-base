@@ -1986,6 +1986,34 @@ public final class MRole extends X_AD_Role
 		return m_dashboardAccess.get(PA_DashboardContent_ID) != null && m_dashboardAccess.get(PA_DashboardContent_ID);
 	}	//	getProcessAccess
 	
+	/**
+	 * Position of the last " ORDER BY " that belongs to the main query, ignoring
+	 * the ones inside parentheses (sub-selects, joined derived tables) and string literals.
+	 * @param sql SQL statement
+	 * @return position of the main " ORDER BY " or -1 if the main query has none
+	 */
+	static int getLastOrderByPosition(String sql) {
+		final String orderBy = " ORDER BY ";
+		int depth = 0;
+		boolean isLiteral = false;
+		int position = -1;
+		for (int i = 0; i < sql.length(); i++) {
+			char character = sql.charAt(i);
+			if (character == '\'') {
+				isLiteral = !isLiteral;
+			} else if (isLiteral) {
+				continue;
+			} else if (character == '(') {
+				depth++;
+			} else if (character == ')') {
+				depth--;
+			} else if (depth == 0 && character == ' ' && sql.startsWith(orderBy, i)) {
+				position = i;
+			}
+		}
+		return position;
+	}
+
 	/*************************************************************************
 	 *	Appends where clause to SQL statement for Table
 	 *
@@ -2002,7 +2030,7 @@ public final class MRole extends X_AD_Role
 
 		//	Cut off last ORDER BY clause
 		String orderBy = "";
-		int posOrder = SQL.lastIndexOf(" ORDER BY ");
+		int posOrder = getLastOrderByPosition(SQL);
 		if (posOrder != -1)
 		{
 			orderBy = SQL.substring(posOrder);
