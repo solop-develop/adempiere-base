@@ -18,9 +18,8 @@
 
 package org.solop.process;
 
-import org.compiere.process.SvrProcess;
-
 import java.sql.Timestamp;
+import org.compiere.process.SvrProcess;
 
 /** Generated Process for (Product Replenishment Search)
  *  @author ADempiere (generated) 
@@ -69,6 +68,8 @@ public abstract class ProductReplenishmentSearchAbstract extends SvrProcess {
 	public static final String M_SALES_GROUP_ID = "M_Sales_Group_ID";
 	/**	Parameter Name for Transaction Date	*/
 	public static final String DATETRX = "DateTrx";
+	/**	Parameter Name for Replenishment Class	*/
+	public static final String REPLENISHMENTCLASS = "ReplenishmentClass";
 	/**	Parameter Value for Organization	*/
 	private int orgId;
 	/**	Parameter Value for Warehouse	*/
@@ -107,6 +108,8 @@ public abstract class ProductReplenishmentSearchAbstract extends SvrProcess {
 	private Timestamp dateTrx;
 	/**	Parameter Value for Transaction Date(To)	*/
 	private Timestamp dateTrxTo;
+	/**	Parameter Value for Replenishment Class	*/
+	private String replenishmentClass;
 
 	@Override
 	protected void prepare() {
@@ -129,6 +132,7 @@ public abstract class ProductReplenishmentSearchAbstract extends SvrProcess {
 		salesGroupId = getParameterAsInt(M_SALES_GROUP_ID);
 		dateTrx = getParameterAsTimestamp(DATETRX);
 		dateTrxTo = getParameterToAsTimestamp(DATETRX);
+		replenishmentClass = getParameterAsString(REPLENISHMENTCLASS);
 	}
 
 	/**	 Getter Parameter Value for Organization	*/
@@ -319,6 +323,16 @@ public abstract class ProductReplenishmentSearchAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Transaction Date(To)	*/
 	protected void setDateTrxTo(Timestamp dateTrxTo) {
 		this.dateTrxTo = dateTrxTo;
+	}
+
+	/**	 Getter Parameter Value for Replenishment Class	*/
+	protected String getReplenishmentClass() {
+		return replenishmentClass;
+	}
+
+	/**	 Setter Parameter Value for Replenishment Class	*/
+	protected void setReplenishmentClass(String replenishmentClass) {
+		this.replenishmentClass = replenishmentClass;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/
