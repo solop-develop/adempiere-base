@@ -405,11 +405,6 @@ public class MProduct extends X_M_Product
 			changed = true;
 		}
 		//
-		if (!parent.getValue().equals(getValue()))
-		{
-			setValue(parent.getValue());
-			changed = true;
-		}
 		if (!parent.getName().equals(getName()))
 		{
 			setName(parent.getName());
