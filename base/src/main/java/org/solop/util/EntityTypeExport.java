@@ -50,14 +50,10 @@ public class EntityTypeExport extends GenericPOHandler {
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_View.Table_Name, false, null);
 		//	View Definition
 		createViewDefinition(packOut, document, entityType.getEntityType());
-		//	Columns
-		createViewColumns(packOut, document, entityType.getEntityType());
 		//	Process Without Browser
 		createProcessWithoutBrowser(packOut, document, entityType.getEntityType());
 		//	Smart Browser
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Browse.Table_Name, false, null);
-		//	Browse Fields
-		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Browse_Field.Table_Name, false, null);
 		//	Process
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Process.Table_Name, false, null);
 		//	Table Process
@@ -66,6 +62,10 @@ public class EntityTypeExport extends GenericPOHandler {
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Process_Para.Table_Name, false, null);
 		//	Columns
 		createColumns(packOut, document, entityType.getEntityType());
+		//	View Columns (after AD_Column)
+		createViewColumns(packOut, document, entityType.getEntityType());
+		//	Browse Fields (after AD_View_Column)
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Browse_Field.Table_Name, false, null);
 		//	Reference
 		createReferenceListAndTable(packOut, document, entityType.getEntityType());
 		// Relation Type
@@ -102,6 +102,7 @@ public class EntityTypeExport extends GenericPOHandler {
 	private void createMenu(PackOut packOut, TransformerHandler document, String entityType) throws SAXException {
 		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_Menu.Table_Name, "EntityType = ?", null)
 				.setParameters(entityType)
+				.setOrderBy("UUID")
 				.getIDsAsList();
 		for (int id : referenceIds) {
 			createParentMenu(packOut, document, id, entityType);
@@ -133,6 +134,7 @@ public class EntityTypeExport extends GenericPOHandler {
 	private void createReferences(PackOut packOut, TransformerHandler document, String entityType, String tableName, boolean includeParents, List<String> excludedParentList) throws SAXException {
 		List<Integer> referenceIds = new Query(Env.getCtx(), tableName, "EntityType = ?", null)
 				.setParameters(entityType)
+				.setOrderBy("UUID")
 				.getIDsAsList();
 		int tableId = MTable.getTable_ID(tableName);
 		for (int id : referenceIds) {
@@ -143,6 +145,7 @@ public class EntityTypeExport extends GenericPOHandler {
 	private void createProcessWithoutBrowser(PackOut packOut, TransformerHandler document, String entityType) throws SAXException {
 		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_Process.Table_Name, "EntityType = ? AND AD_Browse_ID IS NULL", null)
 				.setParameters(entityType)
+				.setOrderBy("UUID")
 				.getIDsAsList();
 		int tableId = MTable.getTable_ID(I_AD_Process.Table_Name);
 		for (int id : referenceIds) {
@@ -153,6 +156,7 @@ public class EntityTypeExport extends GenericPOHandler {
 	private void createReferencesNoId(PackOut packOut, TransformerHandler document, String entityType, String tableName, boolean includeParents, List<String> excludedParentList) throws SAXException {
 		List<PO> records = new Query(Env.getCtx(), tableName, "EntityType = ?", null)
 				.setParameters(entityType)
+				.setOrderBy("UUID")
 				.list();
 		for (PO record : records) {
 			packOut.createGenericPO(document, record, includeParents, excludedParentList);
@@ -162,6 +166,7 @@ public class EntityTypeExport extends GenericPOHandler {
 	private void createScriptValidators(PackOut packOut, TransformerHandler document, String entityType) throws SAXException {
 		List<PO> records = new Query(Env.getCtx(), I_AD_Table_ScriptValidator.Table_Name, "EXISTS(SELECT 1 FROM AD_Rule r WHERE r.AD_Rule_ID = AD_Table_ScriptValidator.AD_Rule_ID AND r.EntityType = ?)", null)
 				.setParameters(entityType)
+				.setOrderBy("UUID")
 				.list();
 		for (PO record : records) {
 			packOut.createGenericPO(document, record, false, null);
@@ -171,6 +176,7 @@ public class EntityTypeExport extends GenericPOHandler {
 	private void createColumns(PackOut packOut, TransformerHandler document, String entityType) throws SAXException {
 		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_Column.Table_Name, "EntityType = ? ", null)
 				.setParameters(entityType)
+				.setOrderBy("CASE WHEN ColumnName = 'UUID' THEN 2 WHEN IsParent = 'Y' THEN 1 ELSE 0 END, UUID")
 				.getIDsAsList();
 		for (int id : referenceIds) {
 			packOut.createGenericPO(document, I_AD_Column.Table_ID, id, false, null);
@@ -178,8 +184,12 @@ public class EntityTypeExport extends GenericPOHandler {
 	}
 
 	private void createViewDefinition(PackOut packOut, TransformerHandler document, String entityType) throws SAXException {
-		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_View_Definition.Table_Name, "(EXISTS(SELECT 1 FROM AD_View v WHERE v.AD_View_ID = AD_View_Definition.AD_View_ID AND v.EntityType = ?))", null)
-				.setParameters(entityType)
+		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_View_Definition.Table_Name, "(EXISTS(SELECT 1 FROM AD_View v WHERE v.AD_View_ID = AD_View_Definition.AD_View_ID AND v.EntityType = ?)"
+				//	Definitions used by exported view columns
+				+ " OR EXISTS(SELECT 1 FROM AD_View_Column vc WHERE vc.AD_View_Definition_ID = AD_View_Definition.AD_View_Definition_ID"
+				+ " AND (vc.EntityType = ? OR EXISTS(SELECT 1 FROM AD_Browse_Field f WHERE f.AD_View_Column_ID = vc.AD_View_Column_ID AND f.EntityType = ?))))", null)
+				.setParameters(entityType, entityType, entityType)
+				.setOrderBy("UUID")
 				.getIDsAsList();
 		for (int id : referenceIds) {
 			packOut.createGenericPO(document, I_AD_View_Definition.Table_ID, id, false, null);
@@ -189,6 +199,7 @@ public class EntityTypeExport extends GenericPOHandler {
 	private void createViewColumns(PackOut packOut, TransformerHandler document, String entityType) throws SAXException {
 		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_View_Column.Table_Name, "(EntityType = ? OR EXISTS(SELECT 1 FROM AD_Browse_Field f WHERE f.AD_View_Column_ID = AD_View_Column.AD_View_Column_ID AND f.EntityType = ?))", null)
 				.setParameters(entityType, entityType)
+				.setOrderBy("UUID")
 				.getIDsAsList();
 		for (int id : referenceIds) {
 			packOut.createGenericPO(document, I_AD_View_Column.Table_ID, id, false, null);
@@ -198,6 +209,7 @@ public class EntityTypeExport extends GenericPOHandler {
 	private void createReferenceListAndTable(PackOut packOut, TransformerHandler document, String entityType) throws SAXException {
 		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_Reference.Table_Name, "EntityType = ?", null)
 			.setParameters(entityType)
+			.setOrderBy("UUID")
 			.getIDsAsList();
 		for (int id : referenceIds) {
 			X_AD_Reference reference = new X_AD_Reference(Env.getCtx(), id, null);
@@ -208,6 +220,7 @@ public class EntityTypeExport extends GenericPOHandler {
 		List<X_AD_Ref_List> referenceListAsList = new Query(Env.getCtx(), I_AD_Ref_List.Table_Name, "EntityType = ?", null)
 			.setParameters(entityType)
 			.setOnlyActiveRecords(true)
+			.setOrderBy("UUID")
 			.list();
 		for(X_AD_Ref_List referenceList : referenceListAsList) {
 			packOut.createGenericPO(document, referenceList, false, null);
@@ -216,6 +229,7 @@ public class EntityTypeExport extends GenericPOHandler {
 		List<X_AD_Ref_Table> referenceTableAsList = new Query(Env.getCtx(), I_AD_Ref_Table.Table_Name, "EntityType = ?", null)
 			.setParameters(entityType)
 			.setOnlyActiveRecords(true)
+			.setOrderBy("UUID")
 			.list();
 		for(X_AD_Ref_Table referenceTable : referenceTableAsList) {
 			packOut.createGenericPO(document, referenceTable, false, null);
