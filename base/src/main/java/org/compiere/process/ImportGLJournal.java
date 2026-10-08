@@ -429,6 +429,19 @@ public class ImportGLJournal extends SvrProcess implements ImportProcess
 							if (no != 0)
 								log.warning("Invalid Account=" + no);
 
+							//	Error Document Controlled Account (Actual on standard period, as MJournal.prepareIt)
+							sql = new StringBuilder("UPDATE I_GLJournal i "
+									+ "SET I_IsImported='E', I_ErrorMsg=COALESCE(I_ErrorMsg,'')	||' ERR=Doc Controlled Account, ' "
+									+ "WHERE PostingType='A' "
+									+ "AND EXISTS (SELECT 1 FROM C_ElementValue ev WHERE ev.IsDocControlled='Y' "
+									+ "AND ev.C_ElementValue_ID=COALESCE(NULLIF(i.Account_ID,0), "
+									+ "(SELECT vc.Account_ID FROM C_ValidCombination vc WHERE vc.C_ValidCombination_ID=i.C_ValidCombination_ID))) "
+									+ "AND EXISTS (SELECT 1 FROM C_Period p WHERE p.C_Period_ID=i.C_Period_ID AND p.PeriodType='S') "
+									+ "AND I_IsImported<>'Y'").append(clientCheck);
+							no = DB.executeUpdate(sql.toString(), trxName);
+							if (no != 0)
+								log.warning("Doc Controlled Account=" + no);
+
 							//	Set BPartner
 							sql = new StringBuilder("UPDATE I_GLJournal i "
 									+ "SET C_BPartner_ID=(SELECT bp.C_BPartner_ID FROM C_BPartner bp "
@@ -530,6 +543,20 @@ public class ImportGLJournal extends SvrProcess implements ImportProcess
 							if (no != 0)
 								log.warning("Zero Source Balance=" + no);
 
+							//	Unbalanced Journal: a journal has a single currency, grouped as in the import loop
+							String journalGroup = "AD_Client_ID, COALESCE(BatchDocumentNo, ' '), COALESCE(JournalDocumentNo, ' '), "
+									+ "C_AcctSchema_ID, PostingType, C_DocType_ID, GL_Category_ID, C_Currency_ID, TRUNC(DateAcct, 'DD')";
+							sql = new StringBuilder("UPDATE I_GLJournal i "
+									+ "SET I_ErrorMsg=COALESCE(I_ErrorMsg,'')	||' WARN=Unbalanced Journal, ' "
+									+ "WHERE (" + journalGroup + ") IN (SELECT " + journalGroup + " FROM I_GLJournal "
+									+ "WHERE I_IsImported<>'Y'").append(clientCheck)
+									.append(" GROUP BY ").append(journalGroup)
+									.append(" HAVING SUM(AmtSourceDr)<>SUM(AmtSourceCr)) ")
+									.append("AND I_IsImported<>'Y'").append(clientCheck);
+							no = DB.executeUpdate(sql.toString(), trxName);
+							if (no != 0)
+								log.warning("Unbalanced Journal=" + no);
+
 							//	Accounted Amounts (Only if No Error)
 							sql = new StringBuilder("UPDATE I_GLJournal "
 									+ "SET AmtAcctDr = ROUND(AmtSourceDr * CurrencyRate, 2) "    //	HARDCODED rounding
@@ -623,11 +650,11 @@ public class ImportGLJournal extends SvrProcess implements ImportProcess
 					Timestamp DateAcct = null;
 					PreparedStatement pstmt = null;
 
-					//	Go through Journal Records
+					//	Go through Journal Records, empty Batch/Journal Document No are the same batch/journal in the loop
 					sql = new StringBuilder("SELECT * FROM I_GLJournal "
 							+ "WHERE I_IsImported='N'").append(clientCheck).append(" ")
-							.append("ORDER BY COALESCE(BatchDocumentNo, TO_NCHAR(I_GLJournal_ID)||' '), COALESCE(JournalDocumentNo, " +
-									"TO_NCHAR(I_GLJournal_ID)||' '), C_AcctSchema_ID, PostingType, C_DocType_ID, GL_Category_ID, " +
+							.append("ORDER BY COALESCE(BatchDocumentNo, ' '), COALESCE(JournalDocumentNo, ' '), " +
+									"C_AcctSchema_ID, PostingType, C_DocType_ID, GL_Category_ID, " +
 									"C_Currency_ID, TRUNC(DateAcct, 'DD'), Line, I_GLJournal_ID ");
 					try {
 						pstmt = DB.prepareStatement(sql.toString(), trxName);
