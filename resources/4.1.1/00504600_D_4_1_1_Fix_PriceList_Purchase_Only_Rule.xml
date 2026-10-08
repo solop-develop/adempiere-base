@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_PriceList_Purchase_Only_Rule" ReleaseNo="4.1.1" SeqNo="504600">
+    <Comments>Fix M_PriceList Purchase Only validation rule</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="108" Action="U" Record_ID="53035" Table="AD_Val_Rule">
+        <Data AD_Column_ID="193" Column="Code" oldValue="M_PriceList.IsSOPriceList = 'N' AND M_PriceList.IsSOPriceList.IsActive = 'Y'">M_PriceList.IsSOPriceList = 'N' AND M_PriceList.IsActive = 'Y'</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>
