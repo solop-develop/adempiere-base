@@ -5,10 +5,14 @@ name: Publish With gradle to maven central
 
 # Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the develop branch
+  # Publishes the release tag version when a release is published
   release:
     types:
       - published
+  # Publishes x.y.z-SNAPSHOT when a pull request is merged (push) into release/x.y.z
+  push:
+    branches:
+      - release/**
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -52,9 +56,18 @@ jobs:
           java-version: 17
           architecture: x64
 
+      - name: Resolve deploy version
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            echo "value=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "value=${GITHUB_REF_NAME#release/}-SNAPSHOT" >> $GITHUB_OUTPUT
+          fi
+
       - name: Publish with Gradle
         run: gradle publish
         env:
-          ORG_GRADLE_PROJECT_deployVersion: ${{ github.event.release.tag_name }}
+          ORG_GRADLE_PROJECT_deployVersion: ${{ steps.version.outputs.value }}
           ORG_GRADLE_PROJECT_deployUsername: "${{ secrets.DEPLOY_USER }}"
           ORG_GRADLE_PROJECT_deployPassword: "${{ secrets.DEPLOY_TOKEN }}"
