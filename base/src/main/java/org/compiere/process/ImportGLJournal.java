@@ -434,8 +434,8 @@ public class ImportGLJournal extends SvrProcess implements ImportProcess
 									+ "SET I_IsImported='E', I_ErrorMsg=COALESCE(I_ErrorMsg,'')	||' ERR=Doc Controlled Account, ' "
 									+ "WHERE PostingType='A' "
 									+ "AND EXISTS (SELECT 1 FROM C_ElementValue ev WHERE ev.IsDocControlled='Y' "
-									+ "AND ev.C_ElementValue_ID=COALESCE(NULLIF(i.Account_ID,0), "
-									+ "(SELECT vc.Account_ID FROM C_ValidCombination vc WHERE vc.C_ValidCombination_ID=i.C_ValidCombination_ID))) "
+									+ "AND ev.C_ElementValue_ID=COALESCE("
+									+ "(SELECT vc.Account_ID FROM C_ValidCombination vc WHERE vc.C_ValidCombination_ID=i.C_ValidCombination_ID), i.Account_ID)) "
 									+ "AND EXISTS (SELECT 1 FROM C_Period p WHERE p.C_Period_ID=i.C_Period_ID AND p.PeriodType='S') "
 									+ "AND I_IsImported<>'Y'").append(clientCheck);
 							no = DB.executeUpdate(sql.toString(), trxName);
@@ -543,13 +543,14 @@ public class ImportGLJournal extends SvrProcess implements ImportProcess
 							if (no != 0)
 								log.warning("Zero Source Balance=" + no);
 
-							//	Unbalanced Journal: a journal has a single currency, grouped as in the import loop
-							String journalGroup = "AD_Client_ID, COALESCE(BatchDocumentNo, ' '), COALESCE(JournalDocumentNo, ' '), "
+							//	Unbalanced Journal: a journal has a single currency, grouped as in the import loop (with Journal Document No)
+							String journalGroup = "AD_Client_ID, COALESCE(BatchDocumentNo, ' '), JournalDocumentNo, "
 									+ "C_AcctSchema_ID, PostingType, C_DocType_ID, GL_Category_ID, C_Currency_ID, TRUNC(DateAcct, 'DD')";
 							sql = new StringBuilder("UPDATE I_GLJournal i "
 									+ "SET I_ErrorMsg=COALESCE(I_ErrorMsg,'')	||' WARN=Unbalanced Journal, ' "
-									+ "WHERE (" + journalGroup + ") IN (SELECT " + journalGroup + " FROM I_GLJournal "
-									+ "WHERE I_IsImported<>'Y'").append(clientCheck)
+									+ "WHERE JournalDocumentNo IS NOT NULL "
+									+ "AND (" + journalGroup + ") IN (SELECT " + journalGroup + " FROM I_GLJournal "
+									+ "WHERE JournalDocumentNo IS NOT NULL AND I_IsImported<>'Y'").append(clientCheck)
 									.append(" GROUP BY ").append(journalGroup)
 									.append(" HAVING SUM(AmtSourceDr)<>SUM(AmtSourceCr)) ")
 									.append("AND I_IsImported<>'Y'").append(clientCheck);
@@ -650,12 +651,14 @@ public class ImportGLJournal extends SvrProcess implements ImportProcess
 					Timestamp DateAcct = null;
 					PreparedStatement pstmt = null;
 
-					//	Go through Journal Records, empty Batch/Journal Document No are the same batch/journal in the loop
+					//	Go through Journal Records, empty Batch Document No is the same batch in the loop:
+					//	keep lines of a Journal Document No together, without a batch keep the file order
 					sql = new StringBuilder("SELECT * FROM I_GLJournal "
 							+ "WHERE I_IsImported='N'").append(clientCheck).append(" ")
-							.append("ORDER BY COALESCE(BatchDocumentNo, ' '), COALESCE(JournalDocumentNo, ' '), " +
-									"C_AcctSchema_ID, PostingType, C_DocType_ID, GL_Category_ID, " +
-									"C_Currency_ID, TRUNC(DateAcct, 'DD'), Line, I_GLJournal_ID ");
+							.append("ORDER BY COALESCE(BatchDocumentNo, ' '), COALESCE(JournalDocumentNo, " +
+									"TO_NCHAR(I_GLJournal_ID)||' '), C_AcctSchema_ID, PostingType, C_DocType_ID, GL_Category_ID, " +
+									"C_Currency_ID, TRUNC(DateAcct, 'DD'), " +
+									"CASE WHEN BatchDocumentNo IS NULL THEN I_GLJournal_ID END, Line, I_GLJournal_ID ");
 					try {
 						pstmt = DB.prepareStatement(sql.toString(), trxName);
 						ResultSet rs = pstmt.executeQuery();
