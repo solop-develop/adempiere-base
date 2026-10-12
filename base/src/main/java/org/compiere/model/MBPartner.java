@@ -304,6 +304,9 @@ public class MBPartner extends X_C_BPartner
 		setTaxID(impBP.getTaxID());
 		setNAICS(impBP.getNAICS());
 		setC_BP_Group_ID(impBP.getC_BP_Group_ID());
+		if (impBP.getSalesRep_ID() > 0) {
+			setSalesRep_ID(impBP.getSalesRep_ID());
+		}
 		//	Employee values
 		setBirthday(impBP.getBirthday());
 		setFathersName(impBP.getFathersName());

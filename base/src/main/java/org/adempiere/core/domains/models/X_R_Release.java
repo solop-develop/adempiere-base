@@ -18,13 +18,13 @@
 /** Generated Model - DO NOT CHANGE */
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.I_Persistent;
-import org.compiere.model.PO;
-import org.compiere.model.POInfo;
-
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
+import org.compiere.model.I_Persistent;
+import org.compiere.model.MTable;
+import org.compiere.model.PO;
+import org.compiere.model.POInfo;
 
 /** Generated Model for R_Release
  *  @author Adempiere (generated) 
@@ -35,7 +35,7 @@ public class X_R_Release extends PO implements I_R_Release, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20260706L;
+	private static final long serialVersionUID = 20260907L;
 
     /** Standard Constructor */
     public X_R_Release (Properties ctx, int R_Release_ID, String trxName)
@@ -76,6 +76,20 @@ public class X_R_Release extends PO implements I_R_Release, I_Persistent
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	/** Set Date Planned.
+		@param DatePlanned Date Planned	  */
+	public void setDatePlanned (Timestamp DatePlanned)
+	{
+		set_Value (COLUMNNAME_DatePlanned, DatePlanned);
+	}
+
+	/** Get Date Planned.
+		@return Date Planned	  */
+	public Timestamp getDatePlanned () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DatePlanned);
+	}
 
 	/** Set Date Published.
 		@param DatePublished Date Published	  */

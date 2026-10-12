@@ -282,7 +282,7 @@ public abstract class AbstractExportFormat {
 							createCSVvalue (sb, delimiter,
 									printFormat.getItem(col).getPrintName(language));
 						} else {
-							Object obj = printData.getNode(Integer.valueOf(item.getAD_Column_ID()));
+							Object obj = printData.getNodeByItem(item.getAD_PrintFormatItem_ID(), item.getAD_Column_ID());
 							if (!item.isDisplayed(printData))
 								obj = null;
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Change_UnEarned_Revenue_Field_Trl" ReleaseNo="4.1.0" SeqNo="504260">
+    <Comments>Change UnEarned revenue field trl in revenue plan window</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="105989" Table="AD_Field">
+        <Data AD_Column_ID="170" Column="Help" oldValue="The Unearned Revenue indicates the account used for recording invoices sent for products or services not yet delivered.  It is used in revenue recognition">The Unearned Revenue/Cost indicates the account used for recording invoices sent or received for products or services not yet delivered/received.  It is used in revenue recognition</Data>
+        <Data AD_Column_ID="2745" Column="IsCentrallyMaintained" oldValue="true">false</Data>
+        <Data AD_Column_ID="169" Column="Description" oldValue="Account for unearned revenue">Account for unearned revenue/Cost</Data>
+        <Data AD_Column_ID="168" Column="Name" oldValue="Unearned Revenue">Unearned Revenue/Cost</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="127" Action="U" Record_ID="0" Table="AD_Field_Trl">
+        <Data AD_Column_ID="287" Column="Description" oldValue="Account for unearned revenue">Cuenta para ingresos/costos no devengados</Data>
+        <Data AD_Column_ID="285" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="284" Column="AD_Field_ID" oldValue="105989">105989</Data>
+        <Data AD_Column_ID="288" Column="Help" oldValue="The Unearned Revenue indicates the account used for recording invoices sent for products or services not yet delivered.  It is used in revenue recognition">El Ingreso/Costo no devengado indica la cuenta usada para registrar facturas enviadas/recibidas por productos o servicios que aún no han sido entregados/recibidos. Es usado en reconocimiento de ingresos.</Data>
+        <Data AD_Column_ID="286" Column="Name" oldValue="Unearned Revenue">Ingresos/Costos no Devengados</Data>
+        <Data AD_Column_ID="289" Column="IsTranslated" oldValue="false">true</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

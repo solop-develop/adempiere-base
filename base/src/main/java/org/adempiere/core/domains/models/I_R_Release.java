@@ -17,11 +17,10 @@
  *****************************************************************************/
 package org.adempiere.core.domains.models;
 
-import org.compiere.model.MTable;
-import org.compiere.util.KeyNamePair;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.compiere.model.MTable;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for R_Release
  *  @author Adempiere (generated) 
@@ -80,6 +79,15 @@ public interface I_R_Release
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name DatePlanned */
+    public static final String COLUMNNAME_DatePlanned = "DatePlanned";
+
+	/** Set Date Planned	  */
+	public void setDatePlanned (Timestamp DatePlanned);
+
+	/** Get Date Planned	  */
+	public Timestamp getDatePlanned();
 
     /** Column name DatePublished */
     public static final String COLUMNNAME_DatePublished = "DatePublished";

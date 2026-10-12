@@ -54,6 +54,7 @@ public class X_AD_PrintFormatItem extends PO implements I_AD_PrintFormatItem, I_
 			setIsCentrallyMaintained (true);
 // Y
 			setIsCounted (false);
+			setIsCurrencyConverted (false);
 			setIsDesc (false);
 // N
 			setIsDeviationCalc (false);
@@ -598,13 +599,37 @@ public class X_AD_PrintFormatItem extends PO implements I_AD_PrintFormatItem, I_
 	/** Get Calculate Count (¿).
 		@return Count number of not empty elements
 	  */
-	public boolean isCounted () 
+	public boolean isCounted ()
 	{
 		Object oo = get_Value(COLUMNNAME_IsCounted);
-		if (oo != null) 
+		if (oo != null)
 		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Is Currency Converted.
+		@param IsCurrencyConverted
+		Enable printing a numeric column converted to another currency
+	  */
+	public void setIsCurrencyConverted (boolean IsCurrencyConverted)
+	{
+		set_Value (COLUMNNAME_IsCurrencyConverted, Boolean.valueOf(IsCurrencyConverted));
+	}
+
+	/** Get Is Currency Converted.
+		@return Enable printing a numeric column converted to another currency
+	  */
+	public boolean isCurrencyConverted ()
+	{
+		Object oo = get_Value(COLUMNNAME_IsCurrencyConverted);
+		if (oo != null)
+		{
+			 if (oo instanceof Boolean)
+				 return ((Boolean)oo).booleanValue();
 			return "Y".equals(oo);
 		}
 		return false;
@@ -1450,6 +1475,118 @@ public class X_AD_PrintFormatItem extends PO implements I_AD_PrintFormatItem, I_
 	public int getSortNo () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_SortNo);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_AD_Column getSourceDateColumn() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_AD_Column)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Column.Table_Name)
+			.getPO(getSourceDateColumn_ID(), get_TrxName());	}
+
+	/** Set Source Date Column.
+		@param SourceDateColumn_ID
+		Column that provides the conversion date
+	  */
+	public void setSourceDateColumn_ID (int SourceDateColumn_ID)
+	{
+		if (SourceDateColumn_ID < 1)
+			set_Value (COLUMNNAME_SourceDateColumn_ID, null);
+		else
+			set_Value (COLUMNNAME_SourceDateColumn_ID, Integer.valueOf(SourceDateColumn_ID));
+	}
+
+	/** Get Source Date Column.
+		@return Column that provides the conversion date
+	  */
+	public int getSourceDateColumn_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SourceDateColumn_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_AD_Column getSourceDocumentColumn() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_AD_Column)MTable.get(getCtx(), org.adempiere.core.domains.models.I_AD_Column.Table_Name)
+			.getPO(getSourceDocumentColumn_ID(), get_TrxName());	}
+
+	/** Set Source Document Column.
+		@param SourceDocumentColumn_ID
+		Column of the source document that holds the numeric value to convert
+	  */
+	public void setSourceDocumentColumn_ID (int SourceDocumentColumn_ID)
+	{
+		if (SourceDocumentColumn_ID < 1)
+			set_Value (COLUMNNAME_SourceDocumentColumn_ID, null);
+		else
+			set_Value (COLUMNNAME_SourceDocumentColumn_ID, Integer.valueOf(SourceDocumentColumn_ID));
+	}
+
+	/** Get Source Document Column.
+		@return Column of the source document that holds the numeric value to convert
+	  */
+	public int getSourceDocumentColumn_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_SourceDocumentColumn_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_C_ConversionType getTargetConversionType() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_C_ConversionType)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_ConversionType.Table_Name)
+			.getPO(getTargetConversionType_ID(), get_TrxName());	}
+
+	/** Set Target Conversion Type.
+		@param TargetConversionType_ID
+		Conversion type used to convert to the target currency
+	  */
+	public void setTargetConversionType_ID (int TargetConversionType_ID)
+	{
+		if (TargetConversionType_ID < 1)
+			set_Value (COLUMNNAME_TargetConversionType_ID, null);
+		else
+			set_Value (COLUMNNAME_TargetConversionType_ID, Integer.valueOf(TargetConversionType_ID));
+	}
+
+	/** Get Target Conversion Type.
+		@return Conversion type used to convert to the target currency
+	  */
+	public int getTargetConversionType_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_TargetConversionType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.adempiere.core.domains.models.I_C_Currency getTargetCurrency() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_C_Currency)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Currency.Table_Name)
+			.getPO(getTargetCurrency_ID(), get_TrxName());	}
+
+	/** Set Target Currency.
+		@param TargetCurrency_ID
+		Currency to which the numeric value is converted
+	  */
+	public void setTargetCurrency_ID (int TargetCurrency_ID)
+	{
+		if (TargetCurrency_ID < 1)
+			set_Value (COLUMNNAME_TargetCurrency_ID, null);
+		else
+			set_Value (COLUMNNAME_TargetCurrency_ID, Integer.valueOf(TargetCurrency_ID));
+	}
+
+	/** Get Target Currency.
+		@return Currency to which the numeric value is converted
+	  */
+	public int getTargetCurrency_ID ()
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_TargetCurrency_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

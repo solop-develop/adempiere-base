@@ -494,6 +494,42 @@ public class PrintData implements Serializable
 	}	//	getNode
 
 	/**
+	 * 	Get the column-info index of a print-format item.
+	 * 	@param printFormatItemId AD_PrintFormatItem_ID
+	 * 	@return index in m_columnInfo or -1
+	 */
+	private int getColumnInfoIndex (int printFormatItemId)
+	{
+		if (m_columnInfo == null || printFormatItemId <= 0)
+			return -1;
+		for (int i = 0; i < m_columnInfo.length; i++)
+			if (m_columnInfo[i].getPrinformatItemId() == printFormatItemId)
+				return i;
+		return -1;
+	}	//	getColumnInfoIndex
+
+	/**
+	 * 	Resolve the node of a print-format item in the current row.
+	 * 	If the item is known in this PrintData, it is resolved by its (unique by construction)
+	 * 	column name and a null value is respected. If the item is unknown here (sub-formats,
+	 * 	PrintData restored from XML, formats built outside DataEngine), it falls back to the
+	 * 	legacy resolution by AD_Column_ID.
+	 * 	@param printFormatItemId AD_PrintFormatItem_ID
+	 * 	@param AD_Column_ID AD_Column_ID (fallback)
+	 * 	@return PrintData(Element) or null
+	 */
+	public Object getNodeByItem (int printFormatItemId, int AD_Column_ID)
+	{
+		int ci = getColumnInfoIndex(printFormatItemId);
+		if (ci >= 0)
+		{
+			int index = getIndex(m_columnInfo[ci].getColumnName());
+			return index < 0 ? null : getNode(index);
+		}
+		return AD_Column_ID > 0 ? getNode(Integer.valueOf(AD_Column_ID)) : null;
+	}	//	getNodeByItem
+
+	/**
 	 * 	Get Primary Key in row
 	 * 	@return PK or null
 	 */

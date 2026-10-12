@@ -17,6 +17,7 @@
 package org.compiere.model;
 
 import org.adempiere.core.domains.models.*;
+import org.eevolution.context.service.infrastructure.domain.entities.MSContract;
 import org.adempiere.engine.CostEngineFactory;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoAddressException;
@@ -2454,6 +2455,19 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 		}
 		MProjectLine.recalculateProjectLines(getCtx(), projectLineAmtQty, get_TrxName(), Table_Name, isSOTrx());
 
+		//	Refresh contract summarization when the invoice header references a contract
+		int contractId = getS_Contract_ID();
+		if (contractId > 0) {
+			BigDecimal[] amtQty = new BigDecimal[] { Env.ZERO, Env.ZERO };
+			for (MInvoiceLine invoiceLine : getLines()) {
+				amtQty[0] = amtQty[0].add(invoiceLine.getLineNetAmt());
+				amtQty[1] = amtQty[1].add(invoiceLine.getQtyInvoiced());
+			}
+			Map<Integer, BigDecimal[]> contractAmtQty = new HashMap<>();
+			contractAmtQty.put(contractId, amtQty);
+			MSContract.recalculateContracts(getCtx(), contractAmtQty, get_TrxName(), Table_Name, isSOTrx());
+		}
+
 		processMsg = info.toString().trim();
 		setProcessed(true);
 		if (hasAllocation) {
@@ -2543,21 +2557,16 @@ public class MInvoice extends X_C_Invoice implements DocAction , DocumentReversa
 
 		//	Document Type
 		int C_DocTypeTarget_ID = 0;
+		//	Require an explicit, valid counter document configuration.
+		//	Fail loudly instead so the missing C_DocTypeCounter mapping gets configured.
 		MDocTypeCounter counterDT = MDocTypeCounter.getCounterDocType(getCtx(), getC_DocType_ID());
-		if (counterDT != null)
-		{
-			log.fine(counterDT.toString());
-			if (!counterDT.isCreateCounter() || !counterDT.isValid())
-				return null;
-			C_DocTypeTarget_ID = counterDT.getCounter_C_DocType_ID();
-		}
-		else	//	indirect
-		{
-			C_DocTypeTarget_ID = MDocTypeCounter.getCounterDocType_ID(getCtx(), getC_DocType_ID());
-			log.fine("Indirect C_DocTypeTarget_ID=" + C_DocTypeTarget_ID);
-			if (C_DocTypeTarget_ID <= 0)
-				return null;
-		}
+		if (counterDT == null)
+			throw new AdempiereException("@NotFound@ @C_DocTypeCounter_ID@ - @C_DocType_ID@="
+				+ MDocType.get(getCtx(), getC_DocType_ID()).getName());
+		log.fine(counterDT.toString());
+		if (!counterDT.isCreateCounter() || !counterDT.isValid())
+			return null;
+		C_DocTypeTarget_ID = counterDT.getCounter_C_DocType_ID();
 
 		//	Deep Copy
 		MInvoice counter = copyFrom(this, getDateInvoiced(), getDateAcct(),

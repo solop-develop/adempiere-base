@@ -26,6 +26,8 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.logging.Level;
 
+import org.adempiere.core.domains.models.X_C_Job;
+import org.adempiere.core.domains.models.X_C_JobCategory;
 import org.adempiere.core.domains.models.X_C_ProjectMember;
 import org.adempiere.core.domains.models.X_C_ProjectMemberType;
 import org.adempiere.core.domains.models.X_I_BPartner;
@@ -136,6 +138,19 @@ implements ImportProcess
 
 		ModelValidationEngine.get().fireImportValidate(this, null, null, ImportValidator.TIMING_BEFORE_VALIDATE);
 		
+		//	Set BP_Group by Name
+		sql = new StringBuilder(
+			"UPDATE I_BPartner i "
+			+ "SET C_BP_Group_ID=(SELECT C_BP_Group_ID FROM C_BP_Group g"
+			+ " WHERE UPPER(i.GroupName)=UPPER(g.Name) AND g.AD_Client_ID=i.AD_Client_ID) "
+		);
+		sql.append(
+			"WHERE C_BP_Group_ID IS NULL AND GroupName IS NOT NULL"
+			+ " AND I_IsImported<>'Y'"
+		).append(clientCheck);
+		no = DB.executeUpdateEx(sql.toString(), get_TrxName());
+		log.fine("Set Group by Name=" + no);
+
 		//	Set BP_Group
 		sql = new StringBuilder ("UPDATE I_BPartner i "
 				+ "SET GroupValue=(SELECT MAX(Value) FROM C_BP_Group g WHERE g.IsDefault='Y'"
@@ -255,6 +270,50 @@ implements ImportProcess
 				+ " AND I_IsImported<>'Y'").append(clientCheck);
 		no = DB.executeUpdateEx(sql.toString(), get_TrxName());
 		log.config("Invalid Greeting=" + no);
+
+		//	Set Sales Rep
+		sql = new StringBuilder(
+			"UPDATE I_BPartner i "
+			+ "SET SalesRep_ID=(SELECT MAX(AD_User_ID) FROM AD_User u"
+			+ " WHERE UPPER(i.SalesRepValue)=UPPER(u.Value) AND u.IsInternalUser='Y' AND u.AD_Client_ID=i.AD_Client_ID) "
+			+ "WHERE SalesRep_ID IS NULL AND SalesRepValue IS NOT NULL"
+			+ " AND I_IsImported<>'Y'"
+		).append(clientCheck);
+		no = DB.executeUpdateEx(sql.toString(), get_TrxName());
+		log.fine("Set Sales Rep=" + no);
+		//	Set Sales Rep by Name
+		sql = new StringBuilder(
+			"UPDATE I_BPartner i "
+			+ "SET SalesRep_ID=(SELECT MAX(AD_User_ID) FROM AD_User u"
+			+ " WHERE UPPER(i.SalesRep_Name)=UPPER(u.Name) AND u.IsInternalUser='Y' AND u.AD_Client_ID=i.AD_Client_ID) "
+			+ "WHERE SalesRep_ID IS NULL AND SalesRep_Name IS NOT NULL"
+			+ " AND I_IsImported<>'Y'"
+		).append(clientCheck);
+		no = DB.executeUpdateEx(sql.toString(), get_TrxName());
+		log.fine("Set Sales Rep by Name=" + no);
+		//
+		sql = new StringBuilder(
+			"UPDATE I_BPartner "
+			+ "SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR="+ Msg.parseTranslation(getCtx(), "@Invalid@ @SalesRep_ID@") +", ' "
+			+ "WHERE SalesRep_ID IS NULL AND (SalesRepValue IS NOT NULL OR SalesRep_Name IS NOT NULL)"
+			+ " AND I_IsImported<>'Y'"
+		).append(clientCheck);
+		no = DB.executeUpdateEx(sql.toString(), get_TrxName());
+		log.config("Invalid Sales Rep=" + no);
+
+		//	Set Job Position (Contact)
+		sql = new StringBuilder(
+			"UPDATE I_BPartner i "
+			+ "SET C_Job_ID=(SELECT MAX(C_Job_ID) FROM C_Job j"
+			+ " WHERE UPPER(i.JobName)=UPPER(j.Name) AND j.AD_Client_ID IN (0, i.AD_Client_ID)) "
+			+ "WHERE C_Job_ID IS NULL AND JobName IS NOT NULL"
+			+ " AND I_IsImported<>'Y'"
+		).append(clientCheck);
+		no = DB.executeUpdateEx(sql.toString(), get_TrxName());
+		log.fine("Set Job Position=" + no);
+		//	Note: unlike other references, if JobName does not match an existing
+		//	C_Job it is NOT flagged as an error - a new Position (and, if needed, a
+		//	new Position Category) is created on the fly further down in doIt().
 
 		// Existing User. Lookup by AD_User.Email + AD_User.Name - BPartner
 		sql = new StringBuilder ("UPDATE I_BPartner i "
@@ -467,6 +526,9 @@ implements ImportProcess
 							bp.setDescription(importPartner.getDescription());
 						if (importPartner.getC_BP_Group_ID() != 0)
 							bp.setC_BP_Group_ID(importPartner.getC_BP_Group_ID());
+						if (importPartner.getSalesRep_ID() != 0) {
+							bp.setSalesRep_ID(importPartner.getSalesRep_ID());
+						}
 						//	Employee values
 						if(importPartner.getBirthday() != null)
 							bp.setBirthday(importPartner.getBirthday());
@@ -563,6 +625,9 @@ implements ImportProcess
 						bpl.setPhone2(importPartner.getPhone2());
 					if (importPartner.getFax() != null)
 						bpl.setFax(importPartner.getFax());
+					if (importPartner.getLocationEMail() != null) {
+						bpl.setEMail(importPartner.getLocationEMail());
+					}
 					ModelValidationEngine.get().fireImportValidate(this, importPartner, bpl, ImportValidator.TIMING_AFTER_IMPORT);
 					bpl.saveEx();
 				}
@@ -598,6 +663,7 @@ implements ImportProcess
 						bpl.setPhone(importPartner.getPhone());
 						bpl.setPhone2(importPartner.getPhone2());
 						bpl.setFax(importPartner.getFax());
+						bpl.setEMail(importPartner.getLocationEMail());
 						ModelValidationEngine.get().fireImportValidate(this, importPartner, bpl, ImportValidator.TIMING_AFTER_IMPORT);
 						if (bpl.save())
 						{
@@ -658,6 +724,10 @@ implements ImportProcess
 						user.setEMail(importPartner.getEMail());
 					if (importPartner.getBirthday() != null)
 						user.setBirthday(importPartner.getBirthday());
+					int jobId = resolveOrCreateC_Job_ID(importPartner);
+					if (jobId != 0) {
+						user.setC_Job_ID(jobId);
+					}
 					if (bpl != null)
 						user.setC_BPartner_Location_ID(bpl.getC_BPartner_Location_ID());
 					ModelValidationEngine.get().fireImportValidate(this, importPartner, user, ImportValidator.TIMING_AFTER_IMPORT);
@@ -697,6 +767,10 @@ implements ImportProcess
 						user.setFax(importPartner.getFax());
 						user.setEMail(importPartner.getEMail());
 						user.setBirthday(importPartner.getBirthday());
+						int newContactJobId = resolveOrCreateC_Job_ID(importPartner);
+						if (newContactJobId != 0) {
+							user.setC_Job_ID(newContactJobId);
+						}
 						// Contact Project Data Imformation
 						if (bpl != null)
 							user.setC_BPartner_Location_ID(bpl.getC_BPartner_Location_ID());
@@ -858,6 +932,63 @@ implements ImportProcess
 		return X_I_BPartner.Table_Name;
 	}
 	
+	/**
+	 * Resolve the Position (C_Job) referenced by the import record, creating it
+	 * (and, if needed, its Position Category) on the fly when JobName does not
+	 * match any existing C_Job for the client - unlike other references, an
+	 * unmatched Position is not treated as an import error.
+	 * @param impBP
+	 * @return C_Job_ID or 0 if no Position was requested
+	 */
+	private int resolveOrCreateC_Job_ID(X_I_BPartner impBP) {
+		if (impBP.getC_Job_ID() != 0)
+			return impBP.getC_Job_ID();
+		String jobName = impBP.getJobName();
+		if (jobName == null || jobName.trim().length() == 0)
+			return 0;
+
+		int jobCategoryId = getOrCreateJobCategory(impBP);
+
+		X_C_Job job = new X_C_Job(getCtx(), 0, get_TrxName());
+		job.set_ValueOfColumn("AD_Client_ID", impBP.getAD_Client_ID());
+		job.set_ValueOfColumn("AD_Org_ID", 0);
+		job.setName(jobName);
+		job.setC_JobCategory_ID(jobCategoryId);
+		job.saveEx();
+		impBP.setC_Job_ID(job.getC_Job_ID());
+		return job.getC_Job_ID();
+	}
+
+	/**
+	 * Resolve the Position Category (C_JobCategory) to use when auto-creating a
+	 * Position: match by JobCategoryName first, then fall back to any existing
+	 * category for the client, and finally create one if none exists yet.
+	 * @param impBP
+	 * @return C_JobCategory_ID, always > 0
+	 */
+	private int getOrCreateJobCategory(X_I_BPartner impBP) {
+		String categoryName = impBP.getJobCategoryName();
+		if (categoryName != null && categoryName.trim().length() > 0) {
+			int id = DB.getSQLValueEx(get_TrxName(),
+					"SELECT C_JobCategory_ID FROM C_JobCategory WHERE UPPER(Name)=UPPER(?) AND AD_Client_ID=?",
+					categoryName, impBP.getAD_Client_ID());
+			if (id > 0)
+				return id;
+		}
+		int id = DB.getSQLValueEx(get_TrxName(),
+				"SELECT MIN(C_JobCategory_ID) FROM C_JobCategory WHERE AD_Client_ID=?",
+				impBP.getAD_Client_ID());
+		if (id > 0)
+			return id;
+
+		X_C_JobCategory category = new X_C_JobCategory(getCtx(), 0, get_TrxName());
+		category.set_ValueOfColumn("AD_Client_ID", impBP.getAD_Client_ID());
+		category.set_ValueOfColumn("AD_Org_ID", 0);
+		category.setName(categoryName != null && categoryName.trim().length() > 0 ? categoryName : "General");
+		category.saveEx();
+		return category.getC_JobCategory_ID();
+	}
+
 	/**
 	 * Get Birth of place
 	 * @param impBP
