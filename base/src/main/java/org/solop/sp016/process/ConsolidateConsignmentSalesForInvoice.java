@@ -201,6 +201,11 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 				whereClauseOrderLine.append(" AND o.C_BPartner_ID = ?");
 				orderLineParameters.add(getBPartnerId());
 			}
+			//	Filter by the business partner location of the original consignment order
+			if (getBPartnerLocationId() > 0) {
+				whereClauseOrderLine.append(" AND o.C_BPartner_Location_ID = ?");
+				orderLineParameters.add(getBPartnerLocationId());
+			}
 			whereClauseOrderLine.append(")");
 			//	Filter by the original consignment order
 			if (getOrderId() > 0) {
@@ -221,6 +226,7 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 				orderGroup.setDateDoc(dateDoc);
 				orderGroup.setOrgId(order.getAD_Org_ID());
 				orderGroup.setBusinessPartnerId(order.getC_BPartner_ID());
+				orderGroup.setBusinessPartnerLocationId(order.getC_BPartner_Location_ID());
 				orderGroup.setInventoryLineId(inventoryLineId);
 				orderGroup.setClientSalesOrderLineId(orderLineId);
 				orderLinesAndQtyList.add(orderGroup);
@@ -274,11 +280,12 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 						params.add(consolidateId);
 						params.add(getAD_Client_ID());
 						params.add(orderGroup.getOrgId());
+						params.add(orderGroup.getBusinessPartnerLocationId() > 0 ? orderGroup.getBusinessPartnerLocationId() : null);
 						DB.executeUpdateEx("INSERT INTO T_ConsignmentSales (C_OrderLine_ID, C_Order_ID, QtySold, AD_PInstance_ID, " +
 										"C_BPartner_ID, M_Product_ID, DateInvoiced, QtyPending, QtyConsigned, T_ConsignmentSales_ID," +
-										"AD_Client_ID, AD_Org_ID, Created, Updated, CreatedBy, UpdatedBy) VALUES (?, " +
+										"AD_Client_ID, AD_Org_ID, C_BPartner_Location_ID, Created, Updated, CreatedBy, UpdatedBy) VALUES (?, " +
 										"?, ?, ?, ?, ?, " +
-										"?, ?, ?, ?, ?,?, NOW(), NOW(), 0,0)",
+										"?, ?, ?, ?, ?,?, ?, NOW(), NOW(), 0,0)",
 								params.toArray(),
 								transactionName);
 						orderLineToConsignedConsolidate.put(orderGroup.getOrderLineId(), consolidateId);
