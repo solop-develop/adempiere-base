@@ -254,6 +254,10 @@ public class ConsolidateConsignmentSalesForInvoice extends ConsolidateConsignmen
 			Trx.run(transactionName -> {
 				List<ConsignmentOrderGrouping> orderLinesAndQtyList = entry.getValue();
 				for (ConsignmentOrderGrouping orderGroup : orderLinesAndQtyList) {
+					//	Skip order lines without sold quantity to invoice (not covered by sales or negative)
+					if (orderGroup.getUsedAmount() == null || orderGroup.getUsedAmount().signum() <= 0) {
+						continue;
+					}
 					Integer consolidateId = orderLineToConsignedConsolidate.get(orderGroup.getOrderLineId());
 					if (consolidateId == null) {
 						List<Object> params = new ArrayList<>();
