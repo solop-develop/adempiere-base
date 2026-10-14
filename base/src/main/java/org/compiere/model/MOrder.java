@@ -17,7 +17,6 @@
 package org.compiere.model;
 
 import org.adempiere.core.domains.models.*;
-import org.eevolution.context.service.infrastructure.domain.entities.MSContract;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.BPartnerNoBillToAddressException;
 import org.adempiere.exceptions.BPartnerNoShipToAddressException;
@@ -26,6 +25,7 @@ import org.compiere.print.ReportEngine;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocumentEngine;
 import org.compiere.util.*;
+import org.eevolution.context.service.infrastructure.domain.entities.MSContract;
 import org.solop.queue.ForecastComparisonProcessor;
 import org.solop.queue.storage.StorageUpdate;
 import org.solop.util.DocumentDateUtil;

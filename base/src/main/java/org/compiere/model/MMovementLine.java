@@ -16,13 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-
 import org.adempiere.core.domains.models.X_M_MovementLine;
 import org.adempiere.engine.IDocumentLine;
 import org.adempiere.exceptions.AdempiereException;
@@ -30,6 +23,13 @@ import org.compiere.process.DocumentReversalLineEnable;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
 
 /**
  *	Inventory Move Line Model
@@ -50,7 +50,7 @@ public class MMovementLine extends X_M_MovementLine implements IDocumentLine , D
 	 *	@param M_MovementLine_ID id
 	 *	@param trxName transaction
 	 */
-	public MMovementLine (Properties ctx, int M_MovementLine_ID, String trxName)
+	public MMovementLine(Properties ctx, int M_MovementLine_ID, String trxName)
 	{
 		super (ctx, M_MovementLine_ID, trxName);
 		if (M_MovementLine_ID == 0)
@@ -75,7 +75,7 @@ public class MMovementLine extends X_M_MovementLine implements IDocumentLine , D
 	 *	@param rs result set
 	 *	@param trxName transaction
 	 */
-	public MMovementLine (Properties ctx, ResultSet rs, String trxName)
+	public MMovementLine(Properties ctx, ResultSet rs, String trxName)
 	{
 		super(ctx, rs, trxName);
 	}	//	MMovementLine
@@ -84,7 +84,7 @@ public class MMovementLine extends X_M_MovementLine implements IDocumentLine , D
 	 * 	Parent constructor
 	 *	@param parent parent
 	 */
-	public MMovementLine (MMovement parent)
+	public MMovementLine(MMovement parent)
 	{
 		this (parent.getCtx(), 0, parent.get_TrxName());
 		setClientOrg(parent);

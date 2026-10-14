@@ -20,11 +20,7 @@ import org.adempiere.core.domains.models.X_C_OrderLine;
 import org.adempiere.engine.IDocumentLine;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.ProductNotOnPriceListException;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 import org.solop.util.ReservationBuilder;
 
 import java.math.BigDecimal;
@@ -1307,11 +1303,6 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 						locatorId = warehouse.getDefaultLocator().getM_Locator_ID();
 					}
 				}
-				//	Update Storage
-//				MStorage.add(getCtx(), getM_Warehouse_ID(), locatorId,
-//						getM_Product_ID(),
-//						getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
-//						Env.ZERO, reserved, ordered, get_TrxName());
 				ReservationBuilder.newInstance(getCtx(), get_TrxName())
 					.withOrderLine(this, difference)
 					.build()
