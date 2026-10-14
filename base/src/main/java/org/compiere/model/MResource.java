@@ -154,11 +154,14 @@ public class MResource extends X_S_Resource
 		if (newRecord)
 		{
 			MResourceType resourceType = MResourceType.get(getCtx(), getS_ResourceType_ID());
-			if(resourceType.get_ValueAsInt("S_DefaultProduct_ID") > 0) {
-				set_ValueOfColumn("S_DefaultProduct_ID", resourceType.get_ValueAsInt("S_DefaultProduct_ID"));
+			//	Default product from resource, else from resource type
+			int defaultProductId = get_ValueAsInt("S_DefaultProduct_ID");
+			if(defaultProductId <= 0) {
+				defaultProductId = resourceType.get_ValueAsInt("S_DefaultProduct_ID");
+			}
+			if(defaultProductId > 0) {
+				set_ValueOfColumn("S_DefaultProduct_ID", defaultProductId);
 			} else {
-				if (getValue() == null || getValue().length() == 0)
-					setValue(getName());
 				m_product = new MProduct(this, getResourceType());
 				m_product.saveEx(get_TrxName());
 			}
@@ -187,17 +190,18 @@ public class MResource extends X_S_Resource
 		}
 		return success;
 	}	//	afterSave
-	
+
 	@Override
 	protected boolean beforeDelete()
 	{
-		// Delete product
-		MProduct product = getProduct();
-		if (product != null && product.getM_Product_ID() > 0)
-		{
-			product.setS_Resource_ID(0); // unlink resource
-			product.deleteEx(true);
-		}
+		//	Unlink products from resource
+		new Query(getCtx(), MProduct.Table_Name, MProduct.COLUMNNAME_S_Resource_ID + "=?", get_TrxName())
+			.setParameters(getS_Resource_ID())
+			.<MProduct>list()
+			.forEach(product -> {
+				product.setS_Resource_ID(0);
+				product.saveEx(get_TrxName());
+			});
 		return true;
 	}
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Fix_AcctSchemaElement_DefaultValue_DisplayLogic" ReleaseNo="4.1.1" SeqNo="504560">
+    <Comments>Fix Acct Schema Element default value display logic</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="107" Action="U" Record_ID="1541" Table="AD_Field">
+        <Data AD_Column_ID="177" Column="DisplayLogic" oldValue="@ElementType@='AC' | @ElementType@='U1' | @ElementType@='U2'  | @ElementType@='U3' | @ElementType@='U4">@ElementType@='AC' | @ElementType@='U1' | @ElementType@='U2' | @ElementType@='U3' | @ElementType@='U4'</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

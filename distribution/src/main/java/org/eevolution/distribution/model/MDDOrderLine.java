@@ -673,8 +673,9 @@ public class MDDOrderLine extends X_DD_OrderLine
 //				getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
 //				Env.ZERO, Env.ZERO , getCalculateQtyReserved() , get_TrxName());
 		ReservationBuilder.newInstance(getCtx(), get_TrxName())
-				.withDistributionOrderLine(this, getQtyReserved(), true, false)
-				.build();
+			.withDistributionOrderLine(this, getCalculateQtyReserved(), true, false)
+			.build()
+		;
 	}
 
 	public void reserveStock() {
@@ -687,7 +688,8 @@ public class MDDOrderLine extends X_DD_OrderLine
 //				getM_AttributeSetInstanceTo_ID(), getM_AttributeSetInstance_ID(),
 //				Env.ZERO, getCalculateQtyReserved(), Env.ZERO , get_TrxName());
 		ReservationBuilder.newInstance(getCtx(), get_TrxName())
-				.withDistributionOrderLine(this, getQtyReserved(), false, false)
-				.build();
+			.withDistributionOrderLine(this, getCalculateQtyReserved(), false, false)
+			.build()
+		;
 	}
 }	//	MDDOrderLine

@@ -16,16 +16,13 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.logging.Level;
-
+import org.adempiere.core.domains.models.I_C_LandedCost;
 import org.adempiere.core.domains.models.X_C_LandedCost;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
 import org.compiere.util.Msg;
+
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * 	Landed Cost Model
@@ -47,46 +44,16 @@ public class MLandedCost extends X_C_LandedCost
 	 */
 	public static MLandedCost[] getLandedCosts (MInvoiceLine il)
 	{
-		ArrayList<MLandedCost> list = new ArrayList<MLandedCost> ();
-		String sql = "SELECT * FROM C_LandedCost WHERE C_InvoiceLine_ID=?";
-		PreparedStatement pstmt = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, il.get_TrxName());
-			pstmt.setInt (1, il.getC_InvoiceLine_ID());
-			ResultSet rs = pstmt.executeQuery ();
-			while (rs.next ())
-			{
-				list.add (new MLandedCost (il.getCtx(), rs, il.get_TrxName()));
-			}
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			s_log.log (Level.SEVERE, sql, e);
-		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}
-		//
+		List<MLandedCost> list = new Query(il.getCtx(), I_C_LandedCost.Table_Name,
+				I_C_LandedCost.COLUMNNAME_C_InvoiceLine_ID + "=?", il.get_TrxName())
+			.setParameters(il.getC_InvoiceLine_ID())
+			.list();
 		MLandedCost[] retValue = new MLandedCost[list.size ()];
 		list.toArray (retValue);
 		return retValue;
 	}	// getLandedCosts
 
-	/**	Logger	*/
-	private static CLogger s_log = CLogger.getCLogger (MLandedCost.class);
 
-	
 	/***************************************************************************
 	 * Standard Constructor
 	 * 

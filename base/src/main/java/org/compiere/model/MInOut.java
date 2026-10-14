@@ -1214,6 +1214,13 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			processMsg = "@NoLines@";
 			return DocAction.STATUS_Invalid;
 		}
+		//	A closed order is final, it does not accept new movements (reversals are validated before reversing)
+		if (!isReversal()) {
+			processMsg = validateClosedOrders();
+			if (processMsg != null) {
+				return DocAction.STATUS_Invalid;
+			}
+		}
 		//	Validate if the dates is bad
 		validateOrderDate(Arrays.asList(lines));
 		BigDecimal Volume = Env.ZERO;
@@ -1399,15 +1406,6 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 
 				log.fine("Material Transaction");
 				MTransaction materialTransaction = null;
-				//same warehouse in order and receipt?
-				boolean sameWarehouse = true;
-				//	Reservation ASI - assume none
-				int reservationAttributeSetInstance_ID = 0; // sLine.getM_AttributeSetInstance_ID();
-				if (orderLine != null) {
-					reservationAttributeSetInstance_ID = orderLine.getM_AttributeSetInstance_ID();
-					sameWarehouse = orderLine.getM_Warehouse_ID()==getM_Warehouse_ID();
-				}
-				//
 				if (inOutLine.getM_AttributeSetInstance_ID() == 0)
 				{
 					List<MInOutLineMA> mas = MInOutLineMA.get(getCtx(),
@@ -1446,21 +1444,8 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 //								sameWarehouse ? reservedDiff : Env.ZERO,
 //								sameWarehouse ? orderedDiff : Env.ZERO,
 //								get_TrxName());
-						ReservationBuilder.newInstance(getCtx(), get_TrxName())
-								.withInOutLine(inOutLine)
-								.build();
-						if (!sameWarehouse) {
-							//correct qtyOrdered in warehouse of order
-							MWarehouse warehouse = MWarehouse.get(getCtx(), orderLine.getM_Warehouse_ID());
-//							MStorage.add(getCtx(), orderLine.getM_Warehouse_ID(),
-//									warehouse.getDefaultLocator().getM_Locator_ID(),
-//									inOutLine.getM_Product_ID(),
-//									ma.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
-//									Env.ZERO, reservedDiff, orderedDiff, get_TrxName());
-							ReservationBuilder.newInstance(getCtx(), get_TrxName())
-									.withInOutLine(inOutLine)
-									.build();
-						}
+						//	Reserve only the quantity of this lot, in the warehouse of the order
+						createOrderReservation(inOutLine, orderLine, reservedDiff.add(orderedDiff));
 						//	Create Transaction
 						materialTransaction = new MTransaction (getCtx(), inOutLine.getAD_Org_ID(),
 							MovementType, inOutLine.getM_Locator_ID(),
@@ -1473,39 +1458,19 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 				//	sLine.getM_AttributeSetInstance_ID() != 0
 				if (materialTransaction == null)
 				{
-					
-					BigDecimal reservedDiff = Env.ZERO;
-					BigDecimal orderedDiff = Env.ZERO;
-					if (inOutLine.getC_OrderLine_ID() != 0 && sameWarehouse
-							&& !orderLine.getParent().isReturnOrder())
-					{
-						if (isSOTrx())
-							reservedDiff = QtySO;
-						else 
-							orderedDiff = QtyPO;
-					}
-
 					//	Fallback: Update Storage - see also VMatch.createMatchRecord
 //					MStorage.add(getCtx(), getM_Warehouse_ID(),
 //							inOutLine.getM_Locator_ID(),
 //							inOutLine.getM_Product_ID(),
 //							inOutLine.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
 //							quantity, reservedDiff, orderedDiff, get_TrxName());
-					ReservationBuilder.newInstance(getCtx(), get_TrxName())
-							.withInOutLine(inOutLine)
-							.build();
-					if (!sameWarehouse) {
-						//correct qtyOrdered in warehouse of order
-						MWarehouse warehouse = MWarehouse.get(getCtx(), orderLine.getM_Warehouse_ID());
 //						MStorage.add(getCtx(), orderLine.getM_Warehouse_ID(),
 //								warehouse.getDefaultLocator().getM_Locator_ID(),
 //								inOutLine.getM_Product_ID(),
 //								inOutLine.getM_AttributeSetInstance_ID(), reservationAttributeSetInstance_ID,
 //								Env.ZERO, QtySO.negate(), QtyPO.negate(), get_TrxName());
-						ReservationBuilder.newInstance(getCtx(), get_TrxName())
-								.withInOutLine(inOutLine)
-								.build();
-					}
+					//	The reservation is registered once, in the warehouse of the order
+					createOrderReservation(inOutLine, orderLine, isSOTrx() ? QtySO : QtyPO);
 					//	FallBack: Create Transaction
 					materialTransaction = new MTransaction (getCtx(), inOutLine.getAD_Org_ID(),
 						MovementType, inOutLine.getM_Locator_ID(),
@@ -1874,6 +1839,73 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			}
 
 		}
+	}
+
+
+	/**
+	 * Register the change of the order reservation caused by a shipment/receipt line.
+	 * Return orders do not reserve stock, so they are ignored.
+	 * @param inOutLine shipment/receipt line
+	 * @param orderLine related order line, can be null
+	 * @param quantity signed change of the reservation (same sign as the change of QtyReserved)
+	 */
+	private void createOrderReservation(MInOutLine inOutLine, MOrderLine orderLine, BigDecimal quantity) {
+		if (orderLine == null || quantity == null || quantity.signum() == 0 || orderLine.getParent().isReturnOrder()) {
+			return;
+		}
+		// MStorage.add(
+		// 	getCtx(), orderLine.getM_Warehouse_ID(),
+		// 	orderLine.getM_Warehouse().getDefaultLocator().getM_Locator_ID(),
+		// 	inOutLine.getM_Product_ID(),
+		// 	inOutLine.getM_AttributeSetInstance_ID(), 0,
+		// 	Env.ZERO, quantity, Env.ZERO, get_TrxName()
+		// );
+		ReservationBuilder.newInstance(getCtx(), get_TrxName())
+			.withInOutLine(inOutLine, quantity)
+			.build()
+		;
+	}
+
+	/**
+	 * Validate that no line points to an order that is already Closed, Voided or Reversed.
+	 * For lines of an RMA the order line is the one of the original shipment/receipt.
+	 * @return error message with the document number of the first order found, or null if it is valid
+	 */
+	private String validateClosedOrders() {
+		String sql = ""
+			+ "SELECT o.DocumentNo "
+			+ "FROM M_InOutLine AS l "
+			+ "INNER JOIN C_OrderLine AS ol "
+				+ "ON ("
+					+ "ol.C_OrderLine_ID = COALESCE("
+						+ "NULLIF(l.C_OrderLine_ID, 0), "
+						+ "("
+							+ "SELECT iol.C_OrderLine_ID "
+							+ "FROM M_RMALine AS rl "
+							+ "INNER JOIN M_InOutLine AS iol "
+								+ "ON (iol.M_InOutLine_ID = rl.M_InOutLine_ID) "
+							+ "WHERE rl.M_RMALine_ID = l.M_RMALine_ID "
+						+ ") "
+					+ ") "
+				+ ") "
+			+ "INNER JOIN C_Order AS o "
+				+ "ON (o.C_Order_ID = ol.C_Order_ID) "
+			+ "WHERE "
+				+ "l.M_InOut_ID = ? "
+				+ "AND o.DocStatus IN (?, ?, ?) "
+			+ "ORDER BY o.C_Order_ID"
+		;
+		String documentNo = DB.getSQLValueStringEx(
+			get_TrxName(),
+			sql, getM_InOut_ID(),
+			MOrder.DOCSTATUS_Closed,
+			MOrder.DOCSTATUS_Voided,
+			MOrder.DOCSTATUS_Reversed
+		);
+		if (documentNo == null) {
+			return null;
+		}
+		return "@C_Order_ID@ @Closed@: " + documentNo;
 	}
 
 	/**
@@ -2421,6 +2453,10 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 		processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_REVERSECORRECT);
 		if (processMsg != null)
 			return false;
+		processMsg = validateClosedOrders();
+		if (processMsg != null) {
+			return false;
+		}
 
 		MInOut reversal = reverseIt(false);
 		if (reversal == null)
@@ -2450,6 +2486,10 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 		processMsg = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_BEFORE_REVERSEACCRUAL);
 		if (processMsg != null)
 			return false;
+		processMsg = validateClosedOrders();
+		if (processMsg != null) {
+			return false;
+		}
 
 		MInOut reversal = reverseIt(true);
 		if (reversal == null)

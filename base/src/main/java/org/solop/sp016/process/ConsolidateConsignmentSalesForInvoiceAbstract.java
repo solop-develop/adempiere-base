@@ -36,6 +36,8 @@ public abstract class ConsolidateConsignmentSalesForInvoiceAbstract extends SvrP
 	public static final String DATEINVOICED = "DateInvoiced";
 	/**	Parameter Name for Business Partner 	*/
 	public static final String C_BPARTNER_ID = "C_BPartner_ID";
+	/**	Parameter Name for Partner Location	*/
+	public static final String C_BPARTNER_LOCATION_ID = "C_BPartner_Location_ID";
 	/**	Parameter Name for Order	*/
 	public static final String C_ORDER_ID = "C_Order_ID";
 	/**	Parameter Name for Product	*/
@@ -46,6 +48,8 @@ public abstract class ConsolidateConsignmentSalesForInvoiceAbstract extends SvrP
 	private Timestamp dateInvoicedTo;
 	/**	Parameter Value for Business Partner 	*/
 	private int bPartnerId;
+	/**	Parameter Value for Partner Location	*/
+	private int bPartnerLocationId;
 	/**	Parameter Value for Order	*/
 	private int orderId;
 	/**	Parameter Value for Product	*/
@@ -56,6 +60,7 @@ public abstract class ConsolidateConsignmentSalesForInvoiceAbstract extends SvrP
 		dateInvoiced = getParameterAsTimestamp(DATEINVOICED);
 		dateInvoicedTo = getParameterToAsTimestamp(DATEINVOICED);
 		bPartnerId = getParameterAsInt(C_BPARTNER_ID);
+		bPartnerLocationId = getParameterAsInt(C_BPARTNER_LOCATION_ID);
 		orderId = getParameterAsInt(C_ORDER_ID);
 		productId = getParameterAsInt(M_PRODUCT_ID);
 	}
@@ -88,6 +93,16 @@ public abstract class ConsolidateConsignmentSalesForInvoiceAbstract extends SvrP
 	/**	 Setter Parameter Value for Business Partner 	*/
 	protected void setBPartnerId(int bPartnerId) {
 		this.bPartnerId = bPartnerId;
+	}
+
+	/**	 Getter Parameter Value for Partner Location	*/
+	protected int getBPartnerLocationId() {
+		return bPartnerLocationId;
+	}
+
+	/**	 Setter Parameter Value for Partner Location	*/
+	protected void setBPartnerLocationId(int bPartnerLocationId) {
+		this.bPartnerLocationId = bPartnerLocationId;
 	}
 
 	/**	 Getter Parameter Value for Order	*/

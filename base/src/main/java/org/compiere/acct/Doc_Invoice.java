@@ -834,7 +834,9 @@ public class Doc_Invoice extends Doc
 		Arrays.stream(landedCostAllocations)
 				.filter(landedCostAllocation -> landedCostAllocation.getBase().signum() != 0) // only cost allocation with base > 0
 				.forEach(landedCostAllocation -> {
-			BigDecimal percent = landedCostAllocation.getBase().divide(totalBase, RoundingMode.HALF_UP);
+			BigDecimal percent = totalBase.signum() != 0
+					? landedCostAllocation.getBase().divide(totalBase, RoundingMode.HALF_UP)
+					: BigDecimal.ZERO;
 			String desc = invoiceLine.getDescription();
 			if (desc == null)
 				desc = percent + "%";
@@ -877,20 +879,33 @@ public class Doc_Invoice extends Doc
 					if (isDebit)
 						debitAmount = costAdjustment;
 					else
-						creditAmount = costAdjustment;
+						creditAmount = costAdjustment.negate();
 
+					//	costAdjustment ya esta en moneda base (getPriceActual() convierte a
+					//	as.getC_Currency_ID()), asi que la linea debe crearse en esa moneda.
+					//	Usar getC_Currency_ID() (moneda de la factura) hacia que FactLine.convert()
+					//	reconvirtiera el importe una segunda vez, inflandolo por la tasa de cambio.
 					factLine = fact.createLine(line, productCost.getAccount(ProductCost.ACCTTYPE_P_CostAdjustment,as),
-							getC_Currency_ID(), debitAmount, creditAmount);
+							as.getC_Currency_ID(), debitAmount, creditAmount);
 				}
-			}	
+			}
 			else
-			{	
-				factLine = fact.createLine (line, productCost.getAccount(ProductCost.ACCTTYPE_P_CostAdjustment, as),
-						getC_Currency_ID(), debitAmount, creditAmount);
-			}	
-			
-			factLine.setDescription(desc + " " + landedCostAllocation.getM_CostElement().getName());
-			factLine.setM_Product_ID(landedCostAllocation.getM_Product_ID());
+			{
+				BigDecimal amount = landedCostAllocation.getPriceActual().multiply(landedCostAllocation.getQty());
+				if (amount.signum() != 0) {
+					if (isDebit)
+						debitAmount = amount;
+					else
+						creditAmount = amount.negate();
+					factLine = fact.createLine (line, productCost.getAccount(ProductCost.ACCTTYPE_P_CostAdjustment, as),
+							as.getC_Currency_ID(), debitAmount, creditAmount);
+				}
+			}
+
+			if (factLine != null) {
+				factLine.setDescription(desc + " " + landedCostAllocation.getM_CostElement().getName());
+				factLine.setM_Product_ID(landedCostAllocation.getM_Product_ID());
+			}
 		});
 		log.config("Created #" + landedCostAllocations.length);
 		return true;

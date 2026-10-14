@@ -27,6 +27,7 @@ import org.compiere.model.MProductionLine;
 import org.compiere.model.MReservation;
 import org.compiere.model.MStorage;
 import org.compiere.model.MWarehouse;
+import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.eevolution.distribution.model.MDDOrderLine;
 
@@ -37,7 +38,9 @@ import java.util.Properties;
 
 //  Builder for Reservation objects
 public class ReservationBuilder {
+    private static final CLogger log = CLogger.getCLogger(ReservationBuilder.class);
     private final MReservation reservation;
+
     public static ReservationBuilder newInstance(Properties context, String transactionName) {
         return new ReservationBuilder(context, transactionName);
     }
@@ -61,7 +64,14 @@ public class ReservationBuilder {
         return this;
     }
 
-    public ReservationBuilder withOrderLine(MOrderLine orderLine, BigDecimal currentReservation) {
+    /**
+     * Reservation of an order line
+     * @param orderLine order line
+     * @param quantityToReserve change to register in the ledger (difference between the target and the current
+     *                          reservation), not the current reservation of the line
+     * @return builder
+     */
+	public ReservationBuilder withOrderLine(MOrderLine orderLine, BigDecimal quantityToReserve) {
         reservation.setC_OrderLine_ID(orderLine.getC_OrderLine_ID());
         reservation.setC_Order_ID(orderLine.getC_Order_ID());
         reservation.setM_Product_ID(orderLine.getM_Product_ID());
@@ -74,7 +84,7 @@ public class ReservationBuilder {
             reservation.setReservationType(MReservation.RESERVATIONTYPE_POOrderQuantity);
         }
         reservation.setM_Warehouse_ID(orderLine.getM_Warehouse_ID());
-        reservation.setQty(orderLine.getQtyOrdered().subtract(Optional.ofNullable(currentReservation).orElse(Env.ZERO)));
+		reservation.setQty(Optional.ofNullable(quantityToReserve).orElse(Env.ZERO));
         fillLocatorLocatorId();
         return this;
     }
@@ -97,7 +107,27 @@ public class ReservationBuilder {
         reservation.setM_Locator_ID(locatorId);
     }
 
+    /**
+     * Reservation of a shipment/receipt line for its full movement quantity.
+     * The sign is calculated from the movement (see {@link MReservation#getExpectedInOutSign(MInOutLine)}).
+     * @param inOutLine shipment/receipt line
+     * @return builder
+     */
     public ReservationBuilder withInOutLine(MInOutLine inOutLine) {
+        BigDecimal movementQuantity = Optional.ofNullable(inOutLine.getMovementQty()).orElse(Env.ZERO);
+        int expectedSign = MReservation.getExpectedInOutSign(inOutLine);
+        BigDecimal qtyToReserve = movementQuantity.abs().multiply(BigDecimal.valueOf(expectedSign));
+        return withInOutLine(inOutLine, qtyToReserve);
+    }
+
+    /**
+     * Reservation of a shipment/receipt line for a given quantity (a lot or a partial match).
+     * A quantity with the wrong sign is corrected when saved (see {@link MReservation#beforeSave(boolean)}).
+     * @param inOutLine shipment/receipt line
+     * @param quantityToReserve signed change of the reservation (same sign as the change of C_OrderLine.QtyReserved)
+     * @return builder
+     */
+	public ReservationBuilder withInOutLine(MInOutLine inOutLine, BigDecimal quantityToReserve) {
         if(inOutLine.getC_OrderLine_ID() > 0) {
             reservation.setC_OrderLine_ID(inOutLine.getC_OrderLine_ID());
             MOrderLine orderLine = new MOrderLine(inOutLine.getCtx(), inOutLine.getC_OrderLine_ID(), inOutLine.get_TrxName());
@@ -114,20 +144,37 @@ public class ReservationBuilder {
                 reservation.setReservationType(MReservation.RESERVATIONTYPE_POReceiptQuantity);
             }
             reservation.setM_Warehouse_ID(orderLine.getM_Warehouse_ID());
-            reservation.setM_Locator_ID(inOutLine.getM_Locator_ID());
-            reservation.setQty(inOutLine.getMovementQty().negate());
+			// The reservation belongs to the warehouse of the order. When the shipment/receipt
+			// was made in another warehouse its locator cannot be used, so one is resolved instead.
+			MLocator inOutLocator = inOutLine.getM_Locator_ID() > 0
+				? MLocator.get(inOutLine.getCtx(), inOutLine.getM_Locator_ID())
+				: null
+			;
+			if(inOutLocator != null && inOutLocator.getM_Warehouse_ID() == reservation.getM_Warehouse_ID()) {
+				reservation.setM_Locator_ID(inOutLocator.getM_Locator_ID());
+			}
+			reservation.setQty(Optional.ofNullable(quantityToReserve).orElse(Env.ZERO));
             fillLocatorLocatorId();
         }
         return this;
     }
 
-    public ReservationBuilder withDistributionOrderLine(MDDOrderLine orderLine, BigDecimal currentReservation, boolean isToLocator, boolean isReverse) {
+    /**
+     * Reservation of a distribution order line
+     * @param orderLine distribution order line
+     * @param deltaQuantity change to register in the ledger (see MDDOrderLine.getCalculateQtyReserved),
+     *                      not the current reservation of the line
+     * @param isToLocator true for the ordered quantity in the target locator, false for the reserved one in the source
+     * @param isReverse true to negate the quantity
+     * @return builder
+     */
+	public ReservationBuilder withDistributionOrderLine(MDDOrderLine orderLine, BigDecimal deltaQuantity, boolean isToLocator, boolean isReverse) {
         reservation.setDD_OrderLine_ID(orderLine.getDD_OrderLine_ID());
         reservation.setDD_Order_ID(orderLine.getDD_Order_ID());
         reservation.setM_Product_ID(orderLine.getM_Product_ID());
         reservation.setReservationType(MReservation.RESERVATIONTYPE_DistributionOrderQuantity);
         reservation.setAD_Org_ID(orderLine.getAD_Org_ID());
-        BigDecimal quantityToReserve = orderLine.getQtyOrdered().subtract(Optional.ofNullable(currentReservation).orElse(Env.ZERO));
+		BigDecimal quantityToReserve = Optional.ofNullable(deltaQuantity).orElse(Env.ZERO);
         if(isReverse) {
             quantityToReserve = quantityToReserve.negate();
         }
@@ -238,8 +285,14 @@ public class ReservationBuilder {
         if(!isValid()) {
             return null;
         }
+        //	A shipment/receipt line of a return order (or without pending quantity) does not reserve
+        if(reservation.getM_InOutLine_ID() > 0 && reservation.getExpectedInOutSign() == 0) {
+            log.info("No reservation for M_InOutLine_ID=" + reservation.getM_InOutLine_ID());
+            return null;
+        }
         reservation.setDateTrx(new Timestamp(System.currentTimeMillis()));
         reservation.saveEx();
         return reservation;
     }
+
 }
