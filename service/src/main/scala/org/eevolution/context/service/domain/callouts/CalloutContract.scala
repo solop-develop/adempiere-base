@@ -469,102 +469,105 @@ class CalloutContract extends CalloutEngine {
       } else if gridField.getColumnName.equals("PriceEntered") then {
         val priceActual = Option(value.asInstanceOf[BigDecimal]).getOrElse(BigDecimal.ZERO)
         contractLine.setPriceActual(priceActual)
-      } else if (gridField.getColumnName.equals("QtyOrdered")
-          || gridField.getColumnName.equals("QtyEntered")
-          || gridField.getColumnName.equals("C_UOM_ID")
-          || gridField.getColumnName.equals("M_Product_ID"))
-        && !"N".equals(Env.getContext(context, windowNo, "DiscountSchema"))
-      then {
-        val partnerId = Env.getContextAsInt(context, windowNo, "C_BPartner_ID")
-        if gridField.getColumnName.equals("QtyEntered") then {
-          val qtyOrdered =
-            Option(MUOMConversion.convertProductFrom(context, productId, uomToId, contractLine.getPriceEntered)).getOrElse(contractLine.getPriceEntered)
-          val isSOTrx = Env.getContext(context, windowNo, "IsSOTrx").equals("Y")
-          val productPrice = new MProductPricing(productId, partnerId, qtyOrdered, isSOTrx, null)
-          productPrice.setM_PriceList_ID(priceListId)
-          val priceListVersionId = Env.getContextAsInt(context, windowNo, "M_PriceList_Version_ID")
-          productPrice.setM_PriceList_Version_ID(priceListVersionId)
-          val dateOrdered = contractLine.getDateStart
-          productPrice.setPriceDate(dateOrdered)
+      }
+    } else if (gridField.getColumnName.equals("QtyOrdered")
+        || gridField.getColumnName.equals("QtyEntered")
+        || gridField.getColumnName.equals("C_UOM_ID")
+        || gridField.getColumnName.equals("M_Product_ID"))
+      && !"N".equals(Env.getContext(context, windowNo, "DiscountSchema"))
+    then {
+      val partnerId = Env.getContextAsInt(context, windowNo, "C_BPartner_ID")
+      if gridField.getColumnName.equals("QtyEntered") then {
+        val qtyEntered = Option(value.asInstanceOf[BigDecimal]).getOrElse(BigDecimal.ZERO)
+        val qtyOrdered =
+          Option(MUOMConversion.convertProductFrom(context, productId, uomToId, qtyEntered)).getOrElse(qtyEntered)
+        val isSOTrx = Env.getContext(context, windowNo, "IsSOTrx").equals("Y")
+        val productPrice = new MProductPricing(productId, partnerId, qtyOrdered, isSOTrx, null)
+        productPrice.setM_PriceList_ID(priceListId)
+        val priceListVersionId = Env.getContextAsInt(context, windowNo, "M_PriceList_Version_ID")
+        productPrice.setM_PriceList_Version_ID(priceListVersionId)
+        val dateOrdered = contractLine.getDateStart
+        productPrice.setPriceDate(dateOrdered)
+        val priceActual = productPrice.getPriceStd
+        //	Keep the manual price when the product is not on the price list
+        if productPrice.isCalculated then {
           val priceEntered =
-            Option(MUOMConversion.convertProductFrom(context, productId, uomToId, productPrice.getPriceStd)).getOrElse(productPrice.getPriceStd)
+            Option(MUOMConversion.convertProductFrom(context, productId, uomToId, priceActual)).getOrElse(priceActual)
           log.fine(
-            "QtyChanged -> PriceActual=" + productPrice.getPriceStd
+            "QtyChanged -> PriceActual=" + priceActual
               + ", PriceEntered=" + priceEntered + ", Discount=" + productPrice.getDiscount
           )
-          val priceActual = productPrice.getPriceStd
           contractLine.setPriceActual(priceActual)
-          contractLine.setPriceActual(productPrice.getPriceStd)
           contractLine.setDiscount(productPrice.getDiscount)
           contractLine.setPriceEntered(priceEntered)
           Env.setContext(context, windowNo, "DiscountSchema", if productPrice.isDiscountSchema then "Y" else "N")
         }
-      } else if gridField.getColumnName.equals("PriceActual") then {
-        val priceActual = value.asInstanceOf[BigDecimal]
-        val priceEntered = Option(MUOMConversion.convertProductFrom(context, productId, uomToId, priceActual)).getOrElse(priceActual)
-        log.fine(
-          "PriceActual=" + priceActual
-            + " -> PriceEntered=" + priceEntered
-        )
-        contractLine.setPriceEntered(priceEntered)
-      } else if gridField.getColumnName.equals("PriceEntered") then {
-        val priceEntered = value.asInstanceOf[BigDecimal]
-        val priceActual = Option(MUOMConversion.convertProductTo(context, productId, uomToId, priceEntered)).getOrElse(priceEntered)
-        log.fine(
-          "PriceEntered=" + priceEntered
-            + " -> PriceActual=" + priceActual
-        )
-        contractLine.setPriceActual(priceActual)
       }
-      //  Discount entered - Calculate Actual/Entered
-      if gridField.getColumnName.equals("Discount") then {
-        val priceList = contractLine.getPriceList
-        val discount = contractLine.getDiscount
-        if priceList.signum() != 0 then {
-          val priceActual = new BigDecimal((100.0 - discount.doubleValue()) / 100.0 * priceList.doubleValue())
-          if priceActual.scale() > precision then {
-            val priceActualRound = priceActual.setScale(precision, RoundingMode.HALF_UP)
-            val priceEntered = Option(MUOMConversion.convertProductFrom(context, productId, uomToId, priceActualRound)).getOrElse(priceActualRound)
-            contractLine.setPriceActual(priceActualRound)
-            contractLine.setPriceEntered(priceEntered)
-          }
+    } else if gridField.getColumnName.equals("PriceActual") then {
+      val priceActual = value.asInstanceOf[BigDecimal]
+      val priceEntered = Option(MUOMConversion.convertProductFrom(context, productId, uomToId, priceActual)).getOrElse(priceActual)
+      log.fine(
+        "PriceActual=" + priceActual
+          + " -> PriceEntered=" + priceEntered
+      )
+      contractLine.setPriceEntered(priceEntered)
+    } else if gridField.getColumnName.equals("PriceEntered") then {
+      val priceEntered = value.asInstanceOf[BigDecimal]
+      val priceActual = Option(MUOMConversion.convertProductTo(context, productId, uomToId, priceEntered)).getOrElse(priceEntered)
+      log.fine(
+        "PriceEntered=" + priceEntered
+          + " -> PriceActual=" + priceActual
+      )
+      contractLine.setPriceActual(priceActual)
+    }
+    //  Discount entered - Calculate Actual/Entered
+    if gridField.getColumnName.equals("Discount") then {
+      val priceList = contractLine.getPriceList
+      val discount = contractLine.getDiscount
+      if priceList.signum() != 0 then {
+        val priceActual = new BigDecimal((100.0 - discount.doubleValue()) / 100.0 * priceList.doubleValue())
+        if priceActual.scale() > precision then {
+          val priceActualRound = priceActual.setScale(precision, RoundingMode.HALF_UP)
+          val priceEntered = Option(MUOMConversion.convertProductFrom(context, productId, uomToId, priceActualRound)).getOrElse(priceActualRound)
+          contractLine.setPriceActual(priceActualRound)
+          contractLine.setPriceEntered(priceEntered)
         }
+      }
+    } else {
+      val priceList = contractLine.getPriceList
+      val priceActual = contractLine.getPriceActual
+      if priceList.signum() == 0 then {
+        val discount = BigDecimal.ZERO
+        contractLine.setDiscount(discount)
       } else {
+        val discount = new BigDecimal((priceList.doubleValue() - priceActual.doubleValue()) / priceList.doubleValue() * 100.0)
+        if discount.scale() > 2 then {
+          val discountRound = discount.setScale(2, RoundingMode.HALF_UP)
+          contractLine.setDiscount(discountRound)
+        }
+      }
+    }
+    log.fine("PriceEntered=" + contractLine.getPriceEntered + ", Actual=" + contractLine.getPriceActual + ", Discount=" + contractLine.getDiscount)
+    //	Check Price Limit?
+    if MPriceList.isCheckPriceLimit(priceListId) && contractLine.getPriceLimit.doubleValue() != 0.0
+      && contractLine.getPriceActual.compareTo(contractLine.getPriceLimit) < 0
+    then {
+      val priceActual = contractLine.getPriceLimit
+      val priceEntered =
+        Option(MUOMConversion.convertProductFrom(context, productId, uomToId, contractLine.getPriceLimit)).getOrElse(contractLine.getPriceLimit)
+      log.fine("(under) PriceEntered=" + priceActual + ", Actual" + priceActual)
+      contractLine.setPriceActual(contractLine.getPriceLimit)
+      contractLine.setPriceEntered(priceEntered)
+      gridTab.fireDataStatusEEvent("UnderLimitPrice", "", false)
+      //	Repeat Discount calc
+      if contractLine.getPriceList.signum() != 0 then {
         val priceList = contractLine.getPriceList
         val priceActual = contractLine.getPriceActual
-        if priceList.signum() == 0 then {
-          val discount = BigDecimal.ZERO
-          contractLine.setDiscount(discount)
-        } else {
-          val discount = new BigDecimal((priceList.doubleValue() - priceActual.doubleValue()) / priceList.doubleValue() * 100.0)
-          if discount.scale() > 2 then {
-            val discountRound = discount.setScale(2, RoundingMode.HALF_UP)
-            contractLine.setDiscount(discountRound)
-          }
-        }
-      }
-      log.fine("PriceEntered=" + contractLine.getPriceEntered + ", Actual=" + contractLine.getPriceActual + ", Discount=" + contractLine.getDiscount)
-      //	Check Price Limit?
-      if MPriceList.isCheckPriceLimit(priceListId) && contractLine.getPriceLimit.doubleValue() != 0.0
-        && contractLine.getPriceActual.compareTo(contractLine.getPriceLimit) < 0
-      then {
-        val priceActual = contractLine.getPriceLimit
-        val priceEntered =
-          Option(MUOMConversion.convertProductFrom(context, productId, uomToId, contractLine.getPriceLimit)).getOrElse(contractLine.getPriceLimit)
-        log.fine("(under) PriceEntered=" + priceActual + ", Actual" + priceActual)
-        contractLine.setPriceActual(contractLine.getPriceLimit)
-        contractLine.setPriceEntered(priceEntered)
-        gridTab.fireDataStatusEEvent("UnderLimitPrice", "", false)
-        //	Repeat Discount calc
-        if contractLine.getPriceList.signum() != 0 then {
-          val priceList = contractLine.getPriceList
-          val priceActual = contractLine.getPriceActual
-          val discount = new BigDecimal((priceList.doubleValue() - priceActual.doubleValue()) / priceList.doubleValue() * 100.0)
-          if discount.scale() > 2 then {
-            import java.math.RoundingMode
-            val discountRound = discount.setScale(2,RoundingMode.HALF_UP)
-            contractLine.setDiscount(discountRound)
-          }
+        val discount = new BigDecimal((priceList.doubleValue() - priceActual.doubleValue()) / priceList.doubleValue() * 100.0)
+        if discount.scale() > 2 then {
+          import java.math.RoundingMode
+          val discountRound = discount.setScale(2,RoundingMode.HALF_UP)
+          contractLine.setDiscount(discountRound)
         }
       }
     }

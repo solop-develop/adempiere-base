@@ -50,14 +50,10 @@ public class EntityTypeExport extends GenericPOHandler {
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_View.Table_Name, false, null);
 		//	View Definition
 		createViewDefinition(packOut, document, entityType.getEntityType());
-		//	Columns
-		createViewColumns(packOut, document, entityType.getEntityType());
 		//	Process Without Browser
 		createProcessWithoutBrowser(packOut, document, entityType.getEntityType());
 		//	Smart Browser
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Browse.Table_Name, false, null);
-		//	Browse Fields
-		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Browse_Field.Table_Name, false, null);
 		//	Process
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Process.Table_Name, false, null);
 		//	Table Process
@@ -66,6 +62,10 @@ public class EntityTypeExport extends GenericPOHandler {
 		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Process_Para.Table_Name, false, null);
 		//	Columns
 		createColumns(packOut, document, entityType.getEntityType());
+		//	View Columns (after AD_Column)
+		createViewColumns(packOut, document, entityType.getEntityType());
+		//	Browse Fields (after AD_View_Column)
+		createReferences(packOut, document, entityType.getEntityType(),  I_AD_Browse_Field.Table_Name, false, null);
 		//	Reference
 		createReferenceListAndTable(packOut, document, entityType.getEntityType());
 		// Relation Type
@@ -184,8 +184,11 @@ public class EntityTypeExport extends GenericPOHandler {
 	}
 
 	private void createViewDefinition(PackOut packOut, TransformerHandler document, String entityType) throws SAXException {
-		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_View_Definition.Table_Name, "(EXISTS(SELECT 1 FROM AD_View v WHERE v.AD_View_ID = AD_View_Definition.AD_View_ID AND v.EntityType = ?))", null)
-				.setParameters(entityType)
+		List<Integer> referenceIds = new Query(Env.getCtx(), I_AD_View_Definition.Table_Name, "(EXISTS(SELECT 1 FROM AD_View v WHERE v.AD_View_ID = AD_View_Definition.AD_View_ID AND v.EntityType = ?)"
+				//	Definitions used by exported view columns
+				+ " OR EXISTS(SELECT 1 FROM AD_View_Column vc WHERE vc.AD_View_Definition_ID = AD_View_Definition.AD_View_Definition_ID"
+				+ " AND (vc.EntityType = ? OR EXISTS(SELECT 1 FROM AD_Browse_Field f WHERE f.AD_View_Column_ID = vc.AD_View_Column_ID AND f.EntityType = ?))))", null)
+				.setParameters(entityType, entityType, entityType)
 				.setOrderBy("UUID")
 				.getIDsAsList();
 		for (int id : referenceIds) {

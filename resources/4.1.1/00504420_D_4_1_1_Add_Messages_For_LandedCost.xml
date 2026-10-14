@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Add_Messages_For_LandedCost" ReleaseNo="4.1.1" SeqNo="504420">
+    <Comments>Add Messages for Landed Cost</Comments>
+    <Step SeqNo="10" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53837" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="The &quot;Volume&quot; distribution method failed. Ensure products in the receipt have volume configured.">Product {0} does not have a volume configured for "Volume" distribution.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="20" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="53837" Table="AD_Message_Trl">
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53837">53837</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="30" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="53837" Table="AD_Message_Trl">
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53837">53837</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="La distribución por &quot;Volumen&quot; falló. Asegúrese de que los productos del recibo tengan un volumen configurado.">El producto {0} no tiene un volumen configurado para la distribución por "Volumen".</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="40" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53836" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="The &quot;Weight&quot; distribution method failed. Ensure products in the receipt have weight configured.">Product {0} does not have a weight configured for "Weight" distribution.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="50" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="53836" Table="AD_Message_Trl">
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53836">53836</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="60" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="53836" Table="AD_Message_Trl">
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53836">53836</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="La distribución por &quot;Peso&quot; falló. Asegúrese de que los productos del recibo tengan un peso configurado.">El producto {0} no tiene un peso configurado para la distribución por "Peso".</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="70" StepType="AD">
+      <PO AD_Table_ID="109" Action="U" Record_ID="53834" Table="AD_Message">
+        <Data AD_Column_ID="198" Column="MsgText" oldValue="The &quot;Cost&quot; distribution method requires an associated purchase invoice for the selected receipt.">The "Cost" distribution for product {0} requires an associated purchase invoice.</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="80" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="53834" Table="AD_Message_Trl">
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53834">53834</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="true">false</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="90" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="53834" Table="AD_Message_Trl">
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53834">53834</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="El método de distribución por &quot;Costo&quot; requiere que el recibo seleccionado tenga una factura de compra asociada.">La distribución por "Costo" para el producto {0} requiere una factura de compra asociada.</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="100" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53860" Table="AD_Message">
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="84346" Column="UUID">5c58c7e5-afff-4d5b-9ef1-96695a3bc5a8</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53860</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">D</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="6766" Column="Value">LandedCostDateError</Data>
+        <Data AD_Column_ID="197" Column="MsgType">E</Data>
+        <Data AD_Column_ID="591" Column="Updated">2026-09-21 10:11:52.218</Data>
+        <Data AD_Column_ID="198" Column="MsgText">The landed cost invoice date ({0}) cannot be earlier than the date of receipt {1} ({2}).</Data>
+        <Data AD_Column_ID="589" Column="Created">2026-09-21 10:11:52.218</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="110" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="53860" Table="AD_Message_Trl">
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">The landed cost invoice date ({0}) cannot be earlier than the date of receipt {1} ({2}).</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="611" Column="Updated">2026-09-21 10:11:52.973</Data>
+        <Data AD_Column_ID="609" Column="Created">2026-09-21 10:11:52.973</Data>
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="84347" Column="UUID">3b204e60-88a7-43d4-bcc1-64e658b790d6</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53860</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="120" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="53860" Table="AD_Message_Trl">
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53860">53860</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="The landed cost invoice date ({0}) cannot be earlier than the date of receipt {1} ({2}).">La fecha de la factura de costo adicional ({0}) no puede ser anterior a la fecha de la recepción {1} ({2}).</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="130" StepType="AD">
+      <PO AD_Table_ID="109" Action="I" Record_ID="53861" Table="AD_Message">
+        <Data AD_Column_ID="590" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="6765" Column="AD_Message_ID">53861</Data>
+        <Data AD_Column_ID="7716" Column="EntityType">D</Data>
+        <Data AD_Column_ID="391" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="199" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="6766" Column="Value">LandedCostDistributionError</Data>
+        <Data AD_Column_ID="197" Column="MsgType">E</Data>
+        <Data AD_Column_ID="591" Column="Updated">2026-09-21 10:12:20.73</Data>
+        <Data AD_Column_ID="198" Column="MsgText">Cannot distribute landed cost. The following issues were found:\n{0}</Data>
+        <Data AD_Column_ID="589" Column="Created">2026-09-21 10:12:20.73</Data>
+        <Data AD_Column_ID="588" Column="IsActive">true</Data>
+        <Data AD_Column_ID="392" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="84346" Column="UUID">de20db0e-3afa-456b-953c-c14897ddc178</Data>
+        <Data AD_Column_ID="592" Column="UpdatedBy">100</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="140" StepType="AD">
+      <PO AD_Table_ID="119" Action="I" Record_ID="53861" Table="AD_Message_Trl">
+        <Data AD_Column_ID="1193" Column="AD_Org_ID">0</Data>
+        <Data AD_Column_ID="84347" Column="UUID">ed956ad8-4686-4fd8-9479-8529ed0e1011</Data>
+        <Data AD_Column_ID="612" Column="UpdatedBy">100</Data>
+        <Data AD_Column_ID="6767" Column="AD_Message_ID">53861</Data>
+        <Data AD_Column_ID="341" Column="AD_Language">es_MX</Data>
+        <Data AD_Column_ID="610" Column="CreatedBy">100</Data>
+        <Data AD_Column_ID="1192" Column="AD_Client_ID">0</Data>
+        <Data AD_Column_ID="343" Column="MsgTip" isNewNull="true"/>
+        <Data AD_Column_ID="342" Column="MsgText">Cannot distribute landed cost. The following issues were found:\n{0}</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated">false</Data>
+        <Data AD_Column_ID="608" Column="IsActive">true</Data>
+        <Data AD_Column_ID="611" Column="Updated">2026-09-21 10:12:21.482</Data>
+        <Data AD_Column_ID="609" Column="Created">2026-09-21 10:12:21.482</Data>
+      </PO>
+    </Step>
+    <Step SeqNo="150" StepType="AD">
+      <PO AD_Table_ID="119" Action="U" Record_ID="53861" Table="AD_Message_Trl">
+        <Data AD_Column_ID="6767" Column="AD_Message_ID" oldValue="53861">53861</Data>
+        <Data AD_Column_ID="341" Column="AD_Language" oldValue="es_MX">es_MX</Data>
+        <Data AD_Column_ID="342" Column="MsgText" oldValue="Cannot distribute landed cost. The following issues were found:\n{0}">No se puede distribuir el costo adicional. Se encontraron los siguientes problemas:\n{0}</Data>
+        <Data AD_Column_ID="344" Column="IsTranslated" oldValue="false">true</Data>
+      </PO>
+    </Step>
+  </Migration>
+</Migrations>

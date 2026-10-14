@@ -89,6 +89,11 @@ public class CreateARInvoiceFromSalesDropShipment extends CreateARInvoiceFromSal
 
 			AtomicReference<MInvoice> maybeInvoice = new AtomicReference<>();
 			value.forEach(consolidate -> {
+				//	Skip consolidated lines without quantity to invoice
+				BigDecimal qtySold = (BigDecimal) consolidate.get_Value("QtySold");
+				if (qtySold == null || qtySold.signum() <= 0) {
+					return;
+				}
 				MInvoice invoice = maybeInvoice.get();
 				MOrder order = new MOrder(getCtx(), consolidate.get_ValueAsInt("C_Order_ID"), get_TrxName());
 				if (invoice == null) {
@@ -106,7 +111,7 @@ public class CreateARInvoiceFromSalesDropShipment extends CreateARInvoiceFromSal
 
 				int uOMId = salesOrderLine.getC_UOM_ID();
 				BigDecimal qtyEntered = Env.ZERO;
-				BigDecimal qtyInvoiced = (BigDecimal) consolidate.get_Value("QtySold");
+				BigDecimal qtyInvoiced = qtySold;
 				MProduct product = MProduct.get(Env.getCtx(), invoiceLine.getM_Product_ID());
 				if(uOMId != product.getC_UOM_ID()) {
 					MUOM orderUom = MUOM.get(getCtx(), uOMId);
@@ -127,6 +132,10 @@ public class CreateARInvoiceFromSalesDropShipment extends CreateARInvoiceFromSal
 				assignOrderLines(invoiceLine.getM_Product_ID(), consolidate.get_ValueAsInt("C_Order_ID"), consolidate.get_ID());
 
 			});
+			//	No invoice created when all lines were skipped
+			if (maybeInvoice.get() == null) {
+				return;
+			}
 			if (!Util.isEmpty(getDocAction(), true)){
 				if (!maybeInvoice.get().processIt(getDocAction())){
 					throw new AdempiereException(maybeInvoice.get().getProcessMsg());

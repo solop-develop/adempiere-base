@@ -12,6 +12,7 @@ public class ConsignmentOrderGrouping {
     int inventoryLineId;
     int orderId;
     int businessPartnerId;
+    int businessPartnerLocationId;
     Timestamp dateDoc;
     int orgId;
 
@@ -77,6 +78,13 @@ public class ConsignmentOrderGrouping {
 
     public void setBusinessPartnerId(int businessPartnerId) {
         this.businessPartnerId = businessPartnerId;
+    }
+    public int getBusinessPartnerLocationId() {
+        return businessPartnerLocationId;
+    }
+
+    public void setBusinessPartnerLocationId(int businessPartnerLocationId) {
+        this.businessPartnerLocationId = businessPartnerLocationId;
     }
     public int getOrgId() {
         return orgId;
