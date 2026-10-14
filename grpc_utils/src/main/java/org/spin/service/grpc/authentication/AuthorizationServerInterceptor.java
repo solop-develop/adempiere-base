@@ -101,6 +101,8 @@ public class AuthorizationServerInterceptor implements ServerInterceptor {
 						SessionManager.revokeSession(validToken);
 					}
 				}
+				// Accept-Language (UI language picked by the user) overrides the session language
+				sessioncontext = LanguageResolver.applyRequestLanguage(sessioncontext, metadata);
 
             	Context context = Context.current()
 					.withValue(SESSION_CONTEXT, sessioncontext)
