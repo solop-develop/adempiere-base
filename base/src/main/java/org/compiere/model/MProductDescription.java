@@ -22,10 +22,11 @@ import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_M_ProductDescription;
 import org.compiere.util.Msg;
+import org.compiere.util.Util;
 
 /**
  * 	Product Description Model.
- * 	Only one description per product and description type is allowed.
+ * 	The description is mandatory and only one description per product and description type is allowed.
  */
 public class MProductDescription extends X_M_ProductDescription
 {
@@ -45,6 +46,11 @@ public class MProductDescription extends X_M_ProductDescription
 	@Override
 	protected boolean beforeSave(boolean newRecord)
 	{
+		if (Util.isEmpty(getDescription(), true))
+		{
+			log.saveError("FillMandatory", Msg.parseTranslation(getCtx(), "@Description@"));
+			return false;
+		}
 		if (newRecord
 				|| is_ValueChanged(COLUMNNAME_M_Product_ID)
 				|| is_ValueChanged(COLUMNNAME_ProductDescriptionType))
