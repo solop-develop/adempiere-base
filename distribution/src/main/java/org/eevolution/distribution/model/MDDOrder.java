@@ -828,7 +828,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 				.forEach(orderLine -> {
 			orderLine.orderedStock();
 			orderLine.reserveStock();
-			orderLine.setQtyReserved(orderLine.getQtyReserved().add(orderLine.getCalculateQtyReserved()));
+			orderLine.setQtyReserved(orderLine.getQuantityToReserve());
 			orderLine.saveEx();
 		});
 		updateVolume();
@@ -1032,7 +1032,7 @@ public class MDDOrder extends X_DD_Order implements DocAction
 					orderLine.setQtyOrdered(orderLine.getQtyDelivered());
 					orderLine.setDescription(Optional.ofNullable(orderLine.getDescription()).orElse("")
 							+ " " + Msg.parseTranslation(getCtx() , "@close@  @QtyOrdered@ (" + orderLine.getQtyOrdered() + ")"));
-					orderLine.save(get_TrxName());
+					orderLine.saveEx(get_TrxName());
 				});
 
 		//	Clear Reservations
@@ -1101,7 +1101,13 @@ public class MDDOrder extends X_DD_Order implements DocAction
 		processMessage = ModelValidationEngine.get().fireDocValidate(this,ModelValidator.TIMING_AFTER_REACTIVATE);
 		if (processMessage != null)
 			return false;
-		
+		List<MDDOrderLine> lines = getLines(true, "M_Product_ID");
+		lines.stream()
+				.filter(orderLine -> orderLine.getQtyOrdered().compareTo(orderLine.getQtyDelivered()) != 0)
+				.forEach(orderLine -> {
+					orderLine.setQtyReserved(orderLine.getQtyOrdered().subtract(orderLine.getQtyToDeliver()));
+					orderLine.saveEx(get_TrxName());
+				});
 		setDocAction(DOCACTION_Complete);
 		setProcessed(false);
 		return true;

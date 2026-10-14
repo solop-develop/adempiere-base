@@ -409,9 +409,15 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 					&& product.isStocked() )
 			{
 				//Ignore the Material Policy when is Reverse Correction
-				if(!isReversal())
+				if(!isReversal()) {
 					checkMaterialPolicy(movementLine);
-
+				}
+				ReservationBuilder.newInstance(getCtx(), get_TrxName())
+						.withMovementLine(movementLine, false)
+						.build();
+				ReservationBuilder.newInstance(getCtx(), get_TrxName())
+						.withMovementLine(movementLine, true)
+						.build();
 				if (movementLine.getM_AttributeSetInstance_ID() == 0)
 				{
 					MMovementLineMA movementLineMAS[] = MMovementLineMA.get(getCtx(),
@@ -422,31 +428,12 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 						//
 						MLocator locator = new MLocator (getCtx(), movementLine.getM_Locator_ID(), get_TrxName());
 						MLocator locatorTo = new MLocator (getCtx(), movementLine.getM_LocatorTo_ID(), get_TrxName());
-						//Update Storage 
-//						MStorage.add(getCtx(),locator.getM_Warehouse_ID(),
-//								movementLine.getM_Locator_ID(),
-//								movementLine.getM_Product_ID(),
-//								movementLineMA.getM_AttributeSetInstance_ID(), 0,
-//								movementLineMA.getMovementQty().negate(), Env.ZERO ,  Env.ZERO , get_TrxName());
-						ReservationBuilder.newInstance(getCtx(), get_TrxName())
-								.withMovementLine(movementLine, false)
-								.build();
-
 						int attributeSetInstanceToId = movementLine.getM_AttributeSetInstanceTo_ID();
 						//only can be same asi if locator is different
 						if (attributeSetInstanceToId == 0 && movementLine.getM_Locator_ID() != movementLine.getM_LocatorTo_ID())
 						{
 							attributeSetInstanceToId = movementLineMA.getM_AttributeSetInstance_ID();
 						}
-						//Update Storage 
-//						MStorage.add(getCtx(),locatorTo.getM_Warehouse_ID(),
-//								movementLine.getM_LocatorTo_ID(),
-//								movementLine.getM_Product_ID(),
-//								attributeSetInstanceToId, 0,
-//								movementLineMA.getMovementQty(), Env.ZERO ,  Env.ZERO , get_TrxName());
-						ReservationBuilder.newInstance(getCtx(), get_TrxName())
-								.withMovementLine(movementLine, true)
-								.build();
 						//
 						transactionFrom = new MTransaction (getCtx(), locator.getAD_Org_ID(),
 								MTransaction.MOVEMENTTYPE_MovementFrom,
@@ -468,24 +455,6 @@ public class MMovement extends X_M_Movement implements DocAction , DocumentRever
 				{
 					MLocator locator = new MLocator (getCtx(), movementLine.getM_Locator_ID(), get_TrxName());
 					MLocator locatorTo = new MLocator (getCtx(), movementLine.getM_LocatorTo_ID(), get_TrxName());
-					//Update Storage 
-//					MStorage.add(getCtx(),locator.getM_Warehouse_ID(),
-//							movementLine.getM_Locator_ID(),
-//							movementLine.getM_Product_ID(),
-//							movementLine.getM_AttributeSetInstance_ID(), 0,
-//							movementLine.getMovementQty().negate(), Env.ZERO ,  Env.ZERO , get_TrxName());
-					ReservationBuilder.newInstance(getCtx(), get_TrxName())
-							.withMovementLine(movementLine, false)
-							.build();
-					//Update Storage 
-//					MStorage.add(getCtx(),locatorTo.getM_Warehouse_ID(),
-//							movementLine.getM_LocatorTo_ID(),
-//							movementLine.getM_Product_ID(),
-//							movementLine.getM_AttributeSetInstanceTo_ID(), 0,
-//							movementLine.getMovementQty(), Env.ZERO ,  Env.ZERO , get_TrxName());
-					ReservationBuilder.newInstance(getCtx(), get_TrxName())
-							.withMovementLine(movementLine, true)
-							.build();
 					//
 					transactionFrom = new MTransaction (getCtx(), locator.getAD_Org_ID(),
 							MTransaction.MOVEMENTTYPE_MovementFrom,
