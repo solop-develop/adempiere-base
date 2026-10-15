@@ -620,10 +620,13 @@ public class MDDOrderLine extends X_DD_OrderLine
      */
 	public BigDecimal getCalculateQtyReserved()
 	{
-		BigDecimal reservedQuantity = getQtyOrdered()
+		return getQtyOrdered()
 				.subtract(getQtyReserved())
 				.subtract(getQtyDelivered());
-		return reservedQuantity;
+	}
+
+	public BigDecimal getQuantityToReserve(){
+		return getQtyReserved().subtract(Optional.ofNullable(getCalculateQtyReserved()).orElse(Env.ZERO));
 	}
 
 	/**
@@ -663,31 +666,22 @@ public class MDDOrderLine extends X_DD_OrderLine
 	}
 
 	public void orderedStock() {
-		MLocator locatorTo = MLocator.get(getCtx(),getM_LocatorTo_ID());
 		log.fine("Line=" + getLine()
 				+ " - Ordered=" + getQtyOrdered()
 				+ ",Reserved=" + getQtyReserved() + ",Delivered=" + getQtyDelivered());
-			//	Update Storage
-//		MStorage.add(getCtx(), locatorTo.getM_Warehouse_ID(), locatorTo.getM_Locator_ID(),
-//				getM_Product_ID(),
-//				getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
-//				Env.ZERO, Env.ZERO , getCalculateQtyReserved() , get_TrxName());
 		ReservationBuilder.newInstance(getCtx(), get_TrxName())
-				.withDistributionOrderLine(this, getQtyReserved(), true, false)
-				.build();
+			.withDistributionOrderLine(this, getQuantityToReserve(), true, false)
+			.build()
+		;
 	}
 
 	public void reserveStock() {
-		MLocator locatorFrom = MLocator.get(getCtx(),getM_Locator_ID());
 		log.fine("Line=" + getLine()
 				+ " - Ordered=" + getQtyOrdered()
 				+ ",Reserved=" + getQtyReserved() + ",Delivered=" + getQtyDelivered());
-//		MStorage.add(getCtx(), locatorFrom.getM_Warehouse_ID(), locatorFrom.getM_Locator_ID(),
-//				getM_Product_ID(),
-//				getM_AttributeSetInstanceTo_ID(), getM_AttributeSetInstance_ID(),
-//				Env.ZERO, getCalculateQtyReserved(), Env.ZERO , get_TrxName());
 		ReservationBuilder.newInstance(getCtx(), get_TrxName())
-				.withDistributionOrderLine(this, getQtyReserved(), false, false)
-				.build();
+			.withDistributionOrderLine(this, getQuantityToReserve(), false, false)
+			.build()
+		;
 	}
 }	//	MDDOrderLine

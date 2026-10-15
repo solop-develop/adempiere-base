@@ -16,22 +16,11 @@
 package org.solop.util;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MInOutLine;
-import org.compiere.model.MLocator;
-import org.compiere.model.MMovementLine;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MProductionBatch;
-import org.compiere.model.MProductionBatchLine;
-import org.compiere.model.MProductionLine;
-import org.compiere.model.MReservation;
-import org.compiere.model.MStorage;
-import org.compiere.model.MWarehouse;
+import org.compiere.model.*;
 import org.compiere.util.Env;
 import org.eevolution.distribution.model.MDDOrderLine;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -74,7 +63,8 @@ public class ReservationBuilder {
             reservation.setReservationType(MReservation.RESERVATIONTYPE_POOrderQuantity);
         }
         reservation.setM_Warehouse_ID(orderLine.getM_Warehouse_ID());
-        reservation.setQty(orderLine.getQtyOrdered().subtract(Optional.ofNullable(currentReservation).orElse(Env.ZERO)));
+        reservation.setQty(Optional.ofNullable(currentReservation).orElse(Env.ZERO));
+        reservation.setDateTrx(order.getDateOrdered());
         fillLocatorLocatorId();
         return this;
     }
@@ -105,7 +95,7 @@ public class ReservationBuilder {
             reservation.setM_InOutLine_ID(inOutLine.getM_InOutLine_ID());
             reservation.setM_InOut_ID(inOutLine.getM_InOut_ID());
             reservation.setM_Product_ID(orderLine.getM_Product_ID());
-            reservation.setM_AttributeSetInstance_ID(inOutLine.getM_AttributeSetInstance_ID());
+            reservation.setM_AttributeSetInstance_ID(orderLine.getM_AttributeSetInstance_ID());
             reservation.setAD_Org_ID(inOutLine.getAD_Org_ID());
             MOrder order = orderLine.getParent();
             if(order.isSOTrx()) {
@@ -116,6 +106,7 @@ public class ReservationBuilder {
             reservation.setM_Warehouse_ID(orderLine.getM_Warehouse_ID());
             reservation.setM_Locator_ID(inOutLine.getM_Locator_ID());
             reservation.setQty(inOutLine.getMovementQty().negate());
+            reservation.setDateTrx(inOutLine.getParent().getMovementDate());
             fillLocatorLocatorId();
         }
         return this;
@@ -127,23 +118,23 @@ public class ReservationBuilder {
         reservation.setM_Product_ID(orderLine.getM_Product_ID());
         reservation.setReservationType(MReservation.RESERVATIONTYPE_DistributionOrderQuantity);
         reservation.setAD_Org_ID(orderLine.getAD_Org_ID());
-        BigDecimal quantityToReserve = orderLine.getQtyOrdered().subtract(Optional.ofNullable(currentReservation).orElse(Env.ZERO));
         if(isReverse) {
-            quantityToReserve = quantityToReserve.negate();
+            currentReservation = currentReservation.negate();
         }
         if(isToLocator) {
             MLocator locator = MLocator.get(orderLine.getCtx(), orderLine.getM_LocatorTo_ID());
             reservation.setM_Warehouse_ID(locator.getM_Warehouse_ID());
             reservation.setM_Locator_ID(orderLine.getM_LocatorTo_ID());
             reservation.setM_AttributeSetInstance_ID(orderLine.getM_AttributeSetInstanceTo_ID());
-            reservation.setQty(quantityToReserve.negate());
+            reservation.setQty(currentReservation.negate());
         } else {
             MLocator locator = MLocator.get(orderLine.getCtx(), orderLine.getM_Locator_ID());
             reservation.setM_Warehouse_ID(locator.getM_Warehouse_ID());
             reservation.setM_Locator_ID(orderLine.getM_Locator_ID());
             reservation.setM_AttributeSetInstance_ID(orderLine.getM_AttributeSetInstance_ID());
-            reservation.setQty(quantityToReserve);
+            reservation.setQty(currentReservation);
         }
+        reservation.setDateTrx(orderLine.getParent().getDateOrdered());
         fillLocatorLocatorId();
         return this;
     }
@@ -162,20 +153,16 @@ public class ReservationBuilder {
                 MLocator locator = MLocator.get(movementLine.getCtx(), movementLine.getM_LocatorTo_ID());
                 reservation.setM_Warehouse_ID(locator.getM_Warehouse_ID());
                 reservation.setM_Locator_ID(movementLine.getM_LocatorTo_ID());
-                reservation.setM_AttributeSetInstance_ID(movementLine.getM_AttributeSetInstanceTo_ID());
+                reservation.setM_AttributeSetInstance_ID(orderLine.getM_AttributeSetInstanceTo_ID());
                 reservation.setQty(movementLine.getMovementQty());
             } else {
                 MLocator locator = MLocator.get(movementLine.getCtx(), movementLine.getM_Locator_ID());
                 reservation.setM_Warehouse_ID(locator.getM_Warehouse_ID());
                 reservation.setM_Locator_ID(movementLine.getM_Locator_ID());
-                reservation.setM_AttributeSetInstance_ID(movementLine.getM_AttributeSetInstance_ID());
+                reservation.setM_AttributeSetInstance_ID(orderLine.getM_AttributeSetInstance_ID());
                 reservation.setQty(movementLine.getMovementQty().negate());
             }
-            // Only resolve the locator for movement lines tied to a Distribution
-            // Order line. A manual movement (DD_OrderLine_ID = 0) has no reservation
-            // to build; calling fillLocatorLocatorId() here would throw
-            // "@M_Locator_ID@ @NotFound@" because warehouse/product stay unset.
-            // Mirrors withInOutLine, which gates fillLocatorLocatorId() the same way.
+            reservation.setDateTrx(movementLine.getParent().getMovementDate());
             fillLocatorLocatorId();
         }
         return this;
@@ -191,6 +178,7 @@ public class ReservationBuilder {
         reservation.setM_Warehouse_ID(locator.getM_Warehouse_ID());
         reservation.setReservationType(MReservation.RESERVATIONTYPE_ProductionOrderQuantity);
         reservation.setAD_Org_ID(orderLine.getAD_Org_ID());
+        reservation.setDateTrx(batch.getMovementDate());
         fillLocatorLocatorId();
         return this;
     }
@@ -224,6 +212,7 @@ public class ReservationBuilder {
                 reservation.setM_AttributeSetInstance_ID(productionLine.getM_AttributeSetInstance_ID());
                 reservation.setQty(productionLine.getMovementQty().negate());
             }
+            reservation.setDateTrx(productionLine.getParent().getMovementDate());
         }
         fillLocatorLocatorId();
         return this;
@@ -238,7 +227,6 @@ public class ReservationBuilder {
         if(!isValid()) {
             return null;
         }
-        reservation.setDateTrx(new Timestamp(System.currentTimeMillis()));
         reservation.saveEx();
         return reservation;
     }

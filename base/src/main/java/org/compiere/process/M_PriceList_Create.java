@@ -443,7 +443,7 @@ public class M_PriceList_Create extends M_PriceList_CreateAbstract {
 					if(querywhereClause.length() > 0) {
 						querywhereClause.append(" AND ");
 					}
-					querywhereClause.append("EXISTS(SELECT 1 FROM M_Product p WHERE p.M_Product_ID = M_Product_PO.M_Product_ID AND p.M_Product_Category_ID = ?)");
+					querywhereClause.append("EXISTS(SELECT 1 FROM M_Product p WHERE p.M_Product_ID = M_ProductPrice.M_Product_ID AND p.M_Product_Category_ID = ?)");
 					parameters.add(getProductCategoryId());
 				}
 				//	for product group
@@ -451,7 +451,7 @@ public class M_PriceList_Create extends M_PriceList_CreateAbstract {
 					if(querywhereClause.length() > 0) {
 						querywhereClause.append(" AND ");
 					}
-					querywhereClause.append("EXISTS(SELECT 1 FROM M_Product p WHERE p.M_Product_ID = M_Product_PO.M_Product_ID AND p.M_Product_Group_ID = ?)");
+					querywhereClause.append("EXISTS(SELECT 1 FROM M_Product p WHERE p.M_Product_ID = M_ProductPrice.M_Product_ID AND p.M_Product_Group_ID = ?)");
 					parameters.add(getProductGroupId());
 				}
 				//	for product class
@@ -459,7 +459,7 @@ public class M_PriceList_Create extends M_PriceList_CreateAbstract {
 					if(querywhereClause.length() > 0) {
 						querywhereClause.append(" AND ");
 					}
-					querywhereClause.append("EXISTS(SELECT 1 FROM M_Product p WHERE p.M_Product_ID = M_Product_PO.M_Product_ID AND p.M_Product_Class_ID = ?)");
+					querywhereClause.append("EXISTS(SELECT 1 FROM M_Product p WHERE p.M_Product_ID = M_ProductPrice.M_Product_ID AND p.M_Product_Class_ID = ?)");
 					parameters.add(getProductClassId());
 				}
 				//	for product classification
@@ -467,7 +467,7 @@ public class M_PriceList_Create extends M_PriceList_CreateAbstract {
 					if(querywhereClause.length() > 0) {
 						querywhereClause.append(" AND ");
 					}
-					querywhereClause.append("EXISTS(SELECT 1 FROM M_Product p WHERE p.M_Product_ID = M_Product_PO.M_Product_ID AND p.M_Product_Classification_ID = ?)");
+					querywhereClause.append("EXISTS(SELECT 1 FROM M_Product p WHERE p.M_Product_ID = M_ProductPrice.M_Product_ID AND p.M_Product_Classification_ID = ?)");
 					parameters.add(getProductClassificationId());
 				}
 				//	Get from Product Purchasing

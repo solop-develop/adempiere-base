@@ -20,11 +20,7 @@ import org.adempiere.core.domains.models.X_C_OrderLine;
 import org.adempiere.engine.IDocumentLine;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.ProductNotOnPriceListException;
-import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Msg;
-import org.compiere.util.Util;
+import org.compiere.util.*;
 import org.solop.util.ReservationBuilder;
 
 import java.math.BigDecimal;
@@ -689,6 +685,27 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 	}	//	setDiscount
 
 	/**
+	 * 	Get Price List with discount applied, rounded to the Price List precision
+	 *	@param discount discount percent
+	 *	@return price actual
+	 */
+	private BigDecimal getPriceWithDiscount(BigDecimal discount) {
+		BigDecimal discountPercent = Optional.ofNullable(discount)
+			.orElse(Env.ZERO)
+			.divide(Env.ONEHUNDRED, 12, RoundingMode.HALF_UP)
+		;
+		BigDecimal price = Optional.ofNullable(getPriceList())
+			.orElse(Env.ZERO)
+			.multiply(Env.ONE.subtract(discountPercent))
+		;
+		int pricePrecision = MPriceList.get(getCtx(), m_M_PriceList_ID, get_TrxName()).getPricePrecision();
+		if (pricePrecision >= 0 && price.scale() > pricePrecision) {
+			price = price.setScale(pricePrecision, RoundingMode.HALF_UP);
+		}
+		return price;
+	}	//	getPriceWithDiscount
+
+	/**
 	 *	Is Tax Included in Amount
 	 *	@return true if tax calculated
 	 */
@@ -980,30 +997,47 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 					}
 				}
 				if(!getParent().isReturnOrder()) {
-					setPriceList(m_productPrice.getPriceList());
+					// Keep the list price entered by the user, otherwise take it from the price list
+					BigDecimal clientPriceList = Optional.ofNullable(getPriceList()).orElse(Env.ZERO);
+					boolean isManualPriceList = newRecord
+						? clientPriceList.signum() != 0
+						: is_ValueChanged(COLUMNNAME_PriceList);
+					if (!isManualPriceList) {
+						setPriceList(m_productPrice.getPriceList());
+					}
 					setPriceLimit(m_productPrice.getPriceLimit());
 					MProduct product = MProduct.get(getCtx(), getM_Product_ID());
+					// Values sent by the client (e.g. POS quick entry) before any recalculation.
+					// On new records is_ValueChanged() returns true for every column that was set
+					// (old value is null), so decisions for new records are made by value.
+					BigDecimal clientDiscount = Optional.ofNullable(getDiscount()).orElse(Env.ZERO);
+					BigDecimal clientPriceActual = Optional.ofNullable(getPriceActual()).orElse(Env.ZERO);
 					if(product.isWithoutDiscount()) {
+						clientDiscount = Env.ZERO;
 						setDiscount(Env.ZERO);
 					} else {
-						if (newRecord && !is_ValueChanged(COLUMNNAME_Discount) && Optional.ofNullable(getDiscount()).orElse(Env.ZERO).signum() == 0) {
+						if (newRecord && clientDiscount.signum() == 0) {
 							setDiscount(m_productPrice.getDiscount());
 						}
 					}
 					BigDecimal priceActual = m_productPrice.getPriceStd();
 					if(newRecord) {
-						if ((getPriceActual() == null || getPriceActual().signum() == 0) && getDiscount().compareTo(Env.ONEHUNDRED) != 0) {
-							setPriceActual(priceActual);
+						if (clientPriceActual.signum() != 0) {
+							// Price explicitly entered by the client
+							if(!product.isWithoutDiscount() || getParent().getC_POS_ID() <= 0) {
+								priceActual = clientPriceActual;
+							}
+						} else if (clientDiscount.signum() != 0) {
+							// Discount explicitly entered by the client: apply it over the list price
+							priceActual = getPriceWithDiscount(clientDiscount);
 						}
-					}
-					if(is_ValueChanged(COLUMNNAME_PriceActual)) {
+					} else if(is_ValueChanged(COLUMNNAME_PriceActual)) {
 						if(!product.isWithoutDiscount() || getParent().getC_POS_ID() <= 0) {
 							priceActual = getPriceActual();
 						}
 
 					} else if(is_ValueChanged(COLUMNNAME_Discount)) {
-						priceActual = getPriceList()
-								.multiply(Env.ONE.subtract(getDiscount().divide(Env.ONEHUNDRED, m_precision, RoundingMode.HALF_UP)));
+						priceActual = getPriceWithDiscount(getDiscount());
 					}
 					if (priceActual == null) {
 						priceActual = BigDecimal.ZERO;
@@ -1088,11 +1122,14 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 			setLine (ii);
 		}
 		
-		// Recalculate price when discount changes on existing records
-		if (!newRecord && is_ValueChanged(COLUMNNAME_Discount)) {
-			BigDecimal discountPercent = Optional.ofNullable(getDiscount()).orElse(Env.ZERO)
-				.divide(Env.ONEHUNDRED, getPrecision(), RoundingMode.HALF_UP);
-			BigDecimal priceActual = getPriceList().multiply(Env.ONE.subtract(discountPercent));
+		// Recalculate price when only the discount changes on existing records.
+		// If the price was also changed (e.g. the callout recalculates the discount when the user edits the price),
+		// the entered price prevails and the discount is derived from it below.
+		if (!newRecord
+				&& is_ValueChanged(COLUMNNAME_Discount)
+				&& !is_ValueChanged(COLUMNNAME_PriceActual)
+				&& !is_ValueChanged(COLUMNNAME_PriceEntered)) {
+			BigDecimal priceActual = getPriceWithDiscount(getDiscount());
 			setPriceActual(priceActual);
 			BigDecimal priceEntered = MUOMConversion.convertProductFrom(getCtx(), getM_Product_ID(), getC_UOM_ID(), priceActual);
 			setPriceEntered(priceEntered);
@@ -1100,8 +1137,8 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 
 		//	Calculations & Rounding
 		setLineNetAmt();	//	extended Amount with or without tax
-		// Only recalculate discount for new records or when user explicitly changed it
-		if (newRecord || is_ValueChanged(COLUMNNAME_Discount)) {
+		// Only recalculate discount for new records or when user explicitly changed it or the list price
+		if (newRecord || is_ValueChanged(COLUMNNAME_Discount) || is_ValueChanged(COLUMNNAME_PriceList)) {
 			setDiscount();
 		}
 		String documentNote = null;
@@ -1266,14 +1303,10 @@ public class MOrderLine extends X_C_OrderLine implements IDocumentLine
 						locatorId = warehouse.getDefaultLocator().getM_Locator_ID();
 					}
 				}
-				//	Update Storage
-//				MStorage.add(getCtx(), getM_Warehouse_ID(), locatorId,
-//						getM_Product_ID(),
-//						getM_AttributeSetInstance_ID(), getM_AttributeSetInstance_ID(),
-//						Env.ZERO, reserved, ordered, get_TrxName());
 				ReservationBuilder.newInstance(getCtx(), get_TrxName())
-						.withOrderLine(this, currentReserved)
-						.build();
+					.withOrderLine(this, difference)
+					.build()
+				;
 			}    //	stocked
 		}
 	}

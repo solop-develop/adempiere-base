@@ -19,20 +19,17 @@ package org.compiere.model;
 import org.adempiere.core.domains.models.I_C_LandedCostAllocation;
 import org.adempiere.core.domains.models.X_C_LandedCostAllocation;
 import org.adempiere.engine.IDocumentLine;
-import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 
 /**
  * 	Landed Cost Allocation Model
@@ -54,37 +51,13 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation implements I
 	 *	@param trxName trx
 	 *	@return landed cost alloc
 	 */
-	public static MLandedCostAllocation[] getOfInvoiceLine (Properties ctx, 
+	public static MLandedCostAllocation[] getOfInvoiceLine (Properties ctx,
 		int C_InvoiceLine_ID, String trxName)
 	{
-		ArrayList<MLandedCostAllocation> list = new ArrayList<MLandedCostAllocation>();
-		String sql = "SELECT * FROM C_LandedCostAllocation WHERE C_InvoiceLine_ID=?";
-		PreparedStatement pstmt = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql, trxName);
-			pstmt.setInt (1, C_InvoiceLine_ID);
-			ResultSet rs = pstmt.executeQuery ();
-			while (rs.next ())
-				list.add (new MLandedCostAllocation (ctx, rs, trxName));
-			rs.close ();
-			pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			s_log.log (Level.SEVERE, sql, e);
-		}
-		try
-		{
-			if (pstmt != null)
-				pstmt.close ();
-			pstmt = null;
-		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}
+		List<MLandedCostAllocation> list = new Query(ctx, MLandedCostAllocation.Table_Name,
+				I_C_LandedCostAllocation.COLUMNNAME_C_InvoiceLine_ID + "=?", trxName)
+			.setParameters(C_InvoiceLine_ID)
+			.list();
 		MLandedCostAllocation[] retValue = new MLandedCostAllocation[list.size ()];
 		list.toArray (retValue);
 		return retValue;
@@ -122,10 +95,6 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation implements I
 		.setParameters(parameters)
 		.list();
 	}	//	getOfInvliceLine
-	/**	Logger	*/
-	private static CLogger s_log = CLogger.getCLogger (MLandedCostAllocation.class);
-	
-	
 	/***************************************************************************
 	 * 	Standard Constructor
 	 *	@param ctx context
@@ -213,6 +182,8 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation implements I
 	@Override //ancabradau
 	public BigDecimal getPriceActual()
 	{
+		if (getQty().signum() == 0)
+			return Env.ZERO;
 		MCurrency currency = MCurrency.get(getCtx(), getC_Currency_ID());
 		BigDecimal amount = MConversionRate.convertBase(getCtx() , getAmt() , getC_Currency_ID() , getDateAcct() , getC_ConversionType_ID() , getAD_Client_ID() , getAD_Org_ID());
 		BigDecimal price = amount.divide(getQty(), currency.getCostingPrecision() ,  RoundingMode.HALF_UP);
@@ -263,6 +234,8 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation implements I
 	}
 
 	public BigDecimal getPriceActualCurrency() {
+		if (getQty().signum() == 0)
+			return Env.ZERO;
 		BigDecimal amount = getAmt().divide(getQty() , MathContext.DECIMAL128);
 		return  amount;
 	}
@@ -291,11 +264,17 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation implements I
 	
 	@Override
 	public BigDecimal getAmt() {
+		return getAmt(false);
+	}
+
+	public BigDecimal getAmt(boolean raw) {
 		BigDecimal amount = super.getAmt();
+		if (raw)
+			return amount;
 		MInvoiceLine invoiceLine = (MInvoiceLine) getC_InvoiceLine();
 		if (MDocType.DOCBASETYPE_APCreditMemo.equals(invoiceLine.getParent().getC_DocTypeTarget().getDocBaseType()))
 			amount = amount.negate();
 		return  amount;
 	}
-	
+
 }	//	MLandedCostAllocation
