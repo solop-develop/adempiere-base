@@ -17,6 +17,7 @@
 package org.compiere.model;
 
 import org.adempiere.core.domains.models.*;
+import org.adempiere.engine.ManualAllocation;
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.exceptions.PeriodClosedException;
 import org.compiere.print.ReportEngine;
@@ -716,6 +717,8 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 		//	line.setS_ResourceAssignment_ID(0);
 			line.setRef_InOutLine_ID(0);
 			line.setWM_InOutBoundLine_ID(0);
+			//	Material allocations are not copied
+			ManualAllocation.setManualAllocation(line, false);
 			line.setIsInvoiced(false);
 			//
 			line.setConfirmedQty(Env.ZERO);
@@ -1866,6 +1869,12 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 	 */
 	private void checkMaterialPolicy(MInOutLine line)
 	{
+		//	Manual allocation: validate and keep the allocations entered by the user
+		if (ManualAllocation.isManualAllocation(line)) {
+			ManualAllocation.validate(line, line.getM_Product_ID(), line.getM_AttributeSetInstance_ID(), line.getMovementQty(),
+					MInOutLineMA.get(getCtx(), line.getM_InOutLine_ID(), get_TrxName()));
+			return;
+		}
 		int no = MInOutLineMA.deleteInOutLineMA(line.getM_InOutLine_ID(), get_TrxName());
 		if (no > 0)
 			log.config("Delete old #" + no);
@@ -2208,6 +2217,7 @@ public class MInOut extends X_M_InOut implements DocAction , DocumentReversalEna
 			reversalLine.setQtyEntered(reversalLine.getQtyEntered().negate());
 			reversalLine.setMovementQty(reversalLine.getMovementQty().negate());
 			reversalLine.setM_AttributeSetInstance_ID(inOutLines[i].getM_AttributeSetInstance_ID());
+			ManualAllocation.setManualAllocation(reversalLine, ManualAllocation.isManualAllocation(inOutLines[i]));
 			// Goodwill: store original (voided/reversed) document line
 			reversalLine.setReversalLine_ID(inOutLines[i].getM_InOutLine_ID());
 			reversalLine.saveEx();
