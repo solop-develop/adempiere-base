@@ -69,7 +69,7 @@ public class Doc_ProjectIssue extends Doc
 		setC_Currency_ID(NO_CURRENCY);
 		m_issue = (MProjectIssue)getPO();
 		setDateDoc (m_issue.getMovementDate());
-		setDateAcct(m_issue.getMovementDate());
+		setDateAcct(m_issue.getDateAcct());
 			
 		//	Pseudo Line
 		m_line = new DocLine (m_issue, this); 
@@ -88,6 +88,8 @@ public class Doc_ProjectIssue extends Doc
 	 */
 	public String getDocumentNo ()
 	{
+		if (m_issue.getDocumentNo() != null)
+			return m_issue.getDocumentNo();
 		MProject p = m_issue.getParent();
 		if (p != null)
 			return p.getValue() + " #" + m_issue.getLine();
@@ -130,40 +132,40 @@ public class Doc_ProjectIssue extends Doc
 		FactLine dr = null;
 		FactLine cr = null;
 
-		//  Issue Cost
-		BigDecimal costs = null;
-		BigDecimal total = Env.ZERO;
+		//  Issue Cost: unit cost of the receipt or expense line by the issued quantity, else the product costs
+		BigDecimal issueQty = m_line.getQty().negate();
+		BigDecimal unitCost = null;
 		if (m_issue.getM_InOutLine_ID() != 0)
-			costs = getPOCost(as);
+			unitCost = getPOCost(as);
 		else if (m_issue.getS_TimeExpenseLine_ID() != 0)
-			costs = getLaborCost(as);
-		if (costs == null)	//	standard Product Costs
-		{	
-			for(MCostDetail cost : m_line.getCostDetail(as, false))
-			{	
-				if(!MCostDetail.existsCost(cost))
-					continue;
-				
-				costs = MCostDetail.getTotalCost(cost, as);
-				total = total.add(costs);
-			}	
-		}	
-		
-		if (total == null || total.signum() == 0)
+			unitCost = getLaborCost(as);
+		BigDecimal costs = Env.ZERO;
+		if (unitCost != null)
+			costs = unitCost.multiply(issueQty);
+		else
+		{
+			for (MCostDetail cost : m_line.getCostDetail(as, false))
+			{
+				if (MCostDetail.existsCost(cost))
+					costs = costs.add(MCostDetail.getTotalCost(cost, as));
+			}
+		}
+
+		if (costs.signum() == 0)
 		{
 			p_Error = "Resubmit - No Costs for " + product.getName();
 			log.log(Level.WARNING, p_Error);
 			return null;
 		}
-		
+
 		//  Project         DR
 		int acctType = ACCTTYPE_ProjectWIP;
 		if (MProject.PROJECTCATEGORY_AssetProject.equals(ProjectCategory))
 			acctType = ACCTTYPE_ProjectAsset;
 		dr = fact.createLine(m_line,
 			getAccount(acctType, as), as.getC_Currency_ID(), costs, null);
-		dr.setQty(m_line.getQty().negate());
-		
+		dr.setQty(issueQty);
+
 		//  Inventory               CR
 		acctType = ProductCost.ACCTTYPE_P_Asset;
 		if (product.isService())
@@ -226,50 +228,22 @@ public class Doc_ProjectIssue extends Doc
 	/**
 	 * 	Get Labor Cost from Expense Report
 	 *	@param as Account Schema
-	 *	@return Unit Labor Cost
+	 *	@return Unit Labor Cost or null if not found
 	 */
-
 	private BigDecimal getLaborCost(MAcctSchema as)
 	{
-		// Todor Lulov 30.01.2008		
-		BigDecimal retValue = Env.ZERO;
-		BigDecimal qty = Env.ZERO;
-
-		String sql = "SELECT ConvertedAmt, Qty FROM S_TimeExpenseLine " + 
-			  " WHERE S_TimeExpenseLine.S_TimeExpenseLine_ID = ?";
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try
-		{
-			pstmt = DB.prepareStatement (sql.toString (), getTrxName());
-			pstmt.setInt(1, m_issue.getS_TimeExpenseLine_ID());	
-			rs = pstmt.executeQuery();			
-			if (rs.next())
-			{
-				retValue = rs.getBigDecimal(1);
-				qty = rs.getBigDecimal(2);
-				retValue = retValue.multiply(qty); 
-				log.fine("ExpLineCost = " + retValue);
-			}
-			else
-				log.warning("Not found for S_TimeExpenseLine_ID=" + m_issue.getS_TimeExpenseLine_ID());
-		}
-		catch (Exception e)
-		{
-			log.log(Level.SEVERE, sql.toString(), e);
-		}
-		finally
-		{
-			DB.close(rs, pstmt);
-			pstmt = null; rs = null;
-		}		
+		BigDecimal retValue = DB.getSQLValueBD(getTrxName(),
+			"SELECT ConvertedAmt FROM S_TimeExpenseLine WHERE S_TimeExpenseLine_ID=?",
+			m_issue.getS_TimeExpenseLine_ID());
+		if (retValue == null)
+			log.warning("Not found for S_TimeExpenseLine_ID=" + m_issue.getS_TimeExpenseLine_ID());
+		else
+			log.fine("ExpLineCost = " + retValue);
 		return retValue;
 	}	//	getLaborCost
 
 	public static String getDateAcctColumnName() {
-        
-         return I_C_ProjectIssue.COLUMNNAME_MovementDate;
-         
-    }
+		return I_C_ProjectIssue.COLUMNNAME_DateAcct;
+	}
 
 }	//	DocProjectIssue

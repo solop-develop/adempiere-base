@@ -34,6 +34,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -322,6 +323,12 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocumentLine, Do
 				checkMaterialPolicy(product);
 			createMaterialTransactions();
 		}
+
+		//	Refresh the delivered quantity of the project line; this issue is not processed yet in the database
+		if (getC_ProjectLine_ID() > 0)
+			MProjectLine.recalculateProjectLines(getCtx(),
+				Collections.singletonMap(getC_ProjectLine_ID(), new BigDecimal[] {Env.ZERO, getMovementQty()}),
+				get_TrxName(), Table_Name, false);
 
 		//	User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
