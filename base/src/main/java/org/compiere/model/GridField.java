@@ -467,14 +467,21 @@ public class GridField
 			|| (m_vo.ColumnName.equals("Record_ID") && m_vo.displayType == DisplayType.Button) || (m_vo.IsKey  && m_vo.displayType == DisplayType.ID))	//  Zoom
 			return true;
 
+		//  Tab is R/O, GridTable ignores the changes even of always updateable fields
+		if (m_vo.tabReadOnly)
+		{
+			log.finest(m_vo.ColumnName + " NO - TabRO=" + m_vo.tabReadOnly);
+			return false;
+		}
+
 		//  Fields always updareable
 		if (m_vo.IsAlwaysUpdateable)      //  Zoom
 			return true;
 		
-		//  Tab or field is R/O
-		if (m_vo.tabReadOnly || m_vo.IsReadOnly)
+		//  Field is R/O
+		if (m_vo.IsReadOnly)
 		{
-			log.finest(m_vo.ColumnName + " NO - TabRO=" + m_vo.tabReadOnly + ", FieldRO=" + m_vo.IsReadOnly);
+			log.finest(m_vo.ColumnName + " NO - FieldRO=" + m_vo.IsReadOnly);
 			return false;
 		}
 		
