@@ -460,16 +460,18 @@ public class GridField
 	 */
 	public boolean isEditable (boolean checkContext)
 	{
-		if (isVirtualColumn())
+		if (isVirtualColumn()) {
 			return false;
+		}
 		//  Fields always enabled (are usually not updateable)
 		if (m_vo.ColumnName.equals("Posted")
-			|| (m_vo.ColumnName.equals("Record_ID") && m_vo.displayType == DisplayType.Button) || (m_vo.IsKey  && m_vo.displayType == DisplayType.ID))	//  Zoom
+			|| (m_vo.ColumnName.equals("Record_ID") && m_vo.displayType == DisplayType.Button)
+			|| (m_vo.IsKey && m_vo.displayType == DisplayType.ID))	{ //  Zoom
 			return true;
+		}
 
-		//  Tab is R/O, GridTable ignores the changes even of always updateable fields
-		if (m_vo.tabReadOnly)
-		{
+		//  Tab is Read Only, GridTable ignores the changes even of always updateable fields
+		if (m_vo.tabReadOnly) {
 			log.finest(m_vo.ColumnName + " NO - TabRO=" + m_vo.tabReadOnly);
 			return false;
 		}
@@ -478,9 +480,8 @@ public class GridField
 		if (m_vo.IsAlwaysUpdateable)      //  Zoom
 			return true;
 		
-		//  Field is R/O
-		if (m_vo.IsReadOnly)
-		{
+		//  Field is Read Only
+		if (m_vo.IsReadOnly) {
 			log.finest(m_vo.ColumnName + " NO - FieldRO=" + m_vo.IsReadOnly);
 			return false;
 		}
