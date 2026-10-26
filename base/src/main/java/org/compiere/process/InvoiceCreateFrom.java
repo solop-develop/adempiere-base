@@ -169,9 +169,15 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 					//	A single allocate line per referenced invoice: reuse the one already linked to this invoice, if any
 					PO allocateInvoice = allocateInvoiceByReference.get(referenceInvoiceId);
 					if (allocateInvoice == null) {
-						allocateInvoice = new Query(getCtx(), allocateInvoiceTable.getTableName(), "C_Invoice_ID = ? AND ReferenceDocument_ID = ?", get_TrxName())
-								.setParameters(getRecord_ID(), referenceInvoiceId)
-								.first();
+						allocateInvoice = new Query(
+							getCtx(),
+							allocateInvoiceTable.getTableName(),
+							"C_Invoice_ID = ? AND ReferenceDocument_ID = ?",
+							get_TrxName()
+						)
+							.setParameters(getRecord_ID(), referenceInvoiceId)
+							.first()
+						;
 					}
 					if (allocateInvoice == null) {
 						allocateInvoice = allocateInvoiceTable.getPO(0, invoiceLine.get_TrxName());
@@ -182,7 +188,8 @@ public class InvoiceCreateFrom extends InvoiceCreateFromAbstract {
 					} else if (allocateAmount.signum() != 0) {
 						//	Accumulate the line total (tax included) on the existing allocate line
 						BigDecimal currentAmount = Optional.ofNullable((BigDecimal) allocateInvoice.get_Value("AllocateAmount"))
-								.orElse(Env.ZERO);
+							.orElse(Env.ZERO)
+						;
 						allocateInvoice.set_ValueOfColumn("AllocateAmount", currentAmount.add(allocateAmount));
 						allocateInvoice.saveEx();
 					}
