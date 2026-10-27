@@ -177,6 +177,8 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 	private String		m_processMsg = null;
 	/**	Just Prepared Flag			*/
 	private boolean		m_justPrepared = false;
+	/**	Sign for Invoice amounts: Credit Memos subtract	*/
+	private static final String INVOICE_SIGN_SQL = "(CASE WHEN EXISTS(SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID = h.C_DocType_ID AND dt.DocBaseType IN ('ARC', 'APC')) THEN -1 ELSE 1 END)";
 	
 	/**
 	 * 	Unlock Document.
@@ -705,7 +707,7 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 			} else if (MCommission.DOCBASISTYPE_Invoice.equals(commission.getDocBasisType())
 					|| MCommission.DOCBASISTYPE_ForecastVsInvoice.equals(commission.getDocBasisType())) {	//	Invoice Basis
 				if (commission.isListDetails()) {
-					sql.append("SELECT h.C_Currency_ID, linenetamtrealinvoiceline(l.c_Invoiceline_ID) AS Amt, l.QtyInvoiced AS Qty, "
+					sql.append("SELECT h.C_Currency_ID, (linenetamtrealinvoiceline(l.c_Invoiceline_ID) * " + INVOICE_SIGN_SQL + ") AS Amt, (l.QtyInvoiced * " + INVOICE_SIGN_SQL + ") AS Qty, "
 						+ "NULL AS C_OrderLine_ID, l.C_InvoiceLine_ID, h.DocumentNo AS Reference,"
 						+ " COALESCE(prd.Value,l.Description) AS Info,h.DateInvoiced AS DateDoc "
 						+ "FROM C_Invoice h"
@@ -716,8 +718,8 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 						+ " AND h.AD_Client_ID = ?"
 						+ " AND h.DateInvoiced BETWEEN ? AND ?");
 				} else {
-					sql.append("SELECT h.C_Currency_ID, SUM(linenetamtrealinvoiceline(l.c_Invoiceline_ID)) AS Amt,"
-						+ " SUM(l.QtyInvoiced) AS Qty, "
+					sql.append("SELECT h.C_Currency_ID, SUM(linenetamtrealinvoiceline(l.c_Invoiceline_ID) * " + INVOICE_SIGN_SQL + ") AS Amt,"
+						+ " SUM(l.QtyInvoiced * " + INVOICE_SIGN_SQL + ") AS Qty, "
 						+ "NULL AS C_OrderLine_ID, NULL AS C_InvoiceLine_ID, NULL AS Reference, NULL AS Info, MAX(h.DateInvoiced) AS DateDoc "
 						+ "FROM C_Invoice h"
 						+ " INNER JOIN C_InvoiceLine l ON (h.C_Invoice_ID = l.C_Invoice_ID) "
