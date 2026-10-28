@@ -1118,6 +1118,51 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 							+ "					AND M_Product_Classification_ID =").append(commissionLine.getM_Product_Classification_ID()).append(")");
 				}
 			}
+			//	Industry Sector
+			if (commissionLine.getM_Industry_Sector_ID() != 0) {
+				String columnName = getSQLColumnName("l.M_Product_ID", commissionType);
+				if(!Util.isEmpty(columnName)) {
+					sqlWhere.append(" AND EXISTS(SELECT 1 FROM M_Product "
+							+ "					WHERE M_Product.M_Product_ID = " + columnName + " "
+							+ "					AND M_Industry_Sector_ID=").append(commissionLine.getM_Industry_Sector_ID()).append(")");
+				}
+			}
+			//	Material Group
+			if (commissionLine.getM_Material_Group_ID() != 0) {
+				String columnName = getSQLColumnName("l.M_Product_ID", commissionType);
+				if(!Util.isEmpty(columnName)) {
+					sqlWhere.append(" AND EXISTS(SELECT 1 FROM M_Product "
+							+ "					WHERE M_Product.M_Product_ID = " + columnName + " "
+							+ "					AND M_Material_Group_ID=").append(commissionLine.getM_Material_Group_ID()).append(")");
+				}
+			}
+			//	Material Type
+			if (commissionLine.getM_Material_Type_ID() != 0) {
+				String columnName = getSQLColumnName("l.M_Product_ID", commissionType);
+				if(!Util.isEmpty(columnName)) {
+					sqlWhere.append(" AND EXISTS(SELECT 1 FROM M_Product "
+							+ "					WHERE M_Product.M_Product_ID = " + columnName + " "
+							+ "					AND M_Material_Type_ID=").append(commissionLine.getM_Material_Type_ID()).append(")");
+				}
+			}
+			//	Purchase Group
+			if (commissionLine.getM_Purchase_Group_ID() != 0) {
+				String columnName = getSQLColumnName("l.M_Product_ID", commissionType);
+				if(!Util.isEmpty(columnName)) {
+					sqlWhere.append(" AND EXISTS(SELECT 1 FROM M_Product "
+							+ "					WHERE M_Product.M_Product_ID = " + columnName + " "
+							+ "					AND M_Purchase_Group_ID=").append(commissionLine.getM_Purchase_Group_ID()).append(")");
+				}
+			}
+			//	Sales Group
+			if (commissionLine.getM_Sales_Group_ID() != 0) {
+				String columnName = getSQLColumnName("l.M_Product_ID", commissionType);
+				if(!Util.isEmpty(columnName)) {
+					sqlWhere.append(" AND EXISTS(SELECT 1 FROM M_Product "
+							+ "					WHERE M_Product.M_Product_ID = " + columnName + " "
+							+ "					AND M_Sales_Group_ID=").append(commissionLine.getM_Sales_Group_ID()).append(")");
+				}
+			}
 			//	Project
 			if (commissionLine.getC_Project_ID() != 0) {
 				String columnName = getSQLColumnName("l.C_Project_ID", commissionType);
@@ -1342,6 +1387,11 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 		List<Integer> productGroupId = new ArrayList<Integer>();
 		List<Integer> productClassId = new ArrayList<Integer>();
 		List<Integer> productClassificationId = new ArrayList<Integer>();
+		List<Integer> industrySectorId = new ArrayList<Integer>();
+		List<Integer> materialGroupId = new ArrayList<Integer>();
+		List<Integer> materialTypeId = new ArrayList<Integer>();
+		List<Integer> purchaseGroupId = new ArrayList<Integer>();
+		List<Integer> salesGroupId = new ArrayList<Integer>();
 		List<Integer> projectId = new ArrayList<Integer>();
 		List<Integer> campaignId = new ArrayList<Integer>();
 		List<Integer> channelId = new ArrayList<Integer>();
@@ -1399,6 +1449,31 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 			if (currentLine.getM_Product_Classification_ID() == 0
 					&& line.getM_Product_Classification_ID() != 0) {
 				productClassificationId.add(line.getM_Product_Classification_ID());
+			}
+			//	Industry Sector
+			if (currentLine.getM_Industry_Sector_ID() == 0
+					&& line.getM_Industry_Sector_ID() != 0) {
+				industrySectorId.add(line.getM_Industry_Sector_ID());
+			}
+			//	Material Group
+			if (currentLine.getM_Material_Group_ID() == 0
+					&& line.getM_Material_Group_ID() != 0) {
+				materialGroupId.add(line.getM_Material_Group_ID());
+			}
+			//	Material Type
+			if (currentLine.getM_Material_Type_ID() == 0
+					&& line.getM_Material_Type_ID() != 0) {
+				materialTypeId.add(line.getM_Material_Type_ID());
+			}
+			//	Purchase Group
+			if (currentLine.getM_Purchase_Group_ID() == 0
+					&& line.getM_Purchase_Group_ID() != 0) {
+				purchaseGroupId.add(line.getM_Purchase_Group_ID());
+			}
+			//	Sales Group
+			if (currentLine.getM_Sales_Group_ID() == 0
+					&& line.getM_Sales_Group_ID() != 0) {
+				salesGroupId.add(line.getM_Sales_Group_ID());
 			}
 			//	Payment Rule
 			if (currentLine.getPaymentRule() == null
@@ -1529,6 +1604,66 @@ public class MCommissionRun extends X_C_CommissionRun implements DocAction, DocO
 						+ "(SELECT 1 FROM M_Product p "
 						+ "		WHERE p.M_Product_ID = " + columnName + " "
 						+ "		AND M_Product_Classification_ID NOT IN").append(productClassificationId.toString().replace('[','(').replace(']',')')).append(")");
+			}
+		}
+		//	Industry Sector
+		if (industrySectorId.size() != 0
+				&& currentLine.getM_Product_ID() == 0
+				&& currentLine.getM_Industry_Sector_ID() == 0) {
+			String columnName = getSQLColumnName("l.M_Product_ID", commissionType);
+			if(!Util.isEmpty(columnName)) {
+				sql.append(" AND EXISTS"
+						+ "(SELECT 1 FROM M_Product p "
+						+ "		WHERE p.M_Product_ID = " + columnName + " "
+						+ "		AND M_Industry_Sector_ID NOT IN").append(industrySectorId.toString().replace('[','(').replace(']',')')).append(")");
+			}
+		}
+		//	Material Group
+		if (materialGroupId.size() != 0
+				&& currentLine.getM_Product_ID() == 0
+				&& currentLine.getM_Material_Group_ID() == 0) {
+			String columnName = getSQLColumnName("l.M_Product_ID", commissionType);
+			if(!Util.isEmpty(columnName)) {
+				sql.append(" AND EXISTS"
+						+ "(SELECT 1 FROM M_Product p "
+						+ "		WHERE p.M_Product_ID = " + columnName + " "
+						+ "		AND M_Material_Group_ID NOT IN").append(materialGroupId.toString().replace('[','(').replace(']',')')).append(")");
+			}
+		}
+		//	Material Type
+		if (materialTypeId.size() != 0
+				&& currentLine.getM_Product_ID() == 0
+				&& currentLine.getM_Material_Type_ID() == 0) {
+			String columnName = getSQLColumnName("l.M_Product_ID", commissionType);
+			if(!Util.isEmpty(columnName)) {
+				sql.append(" AND EXISTS"
+						+ "(SELECT 1 FROM M_Product p "
+						+ "		WHERE p.M_Product_ID = " + columnName + " "
+						+ "		AND M_Material_Type_ID NOT IN").append(materialTypeId.toString().replace('[','(').replace(']',')')).append(")");
+			}
+		}
+		//	Purchase Group
+		if (purchaseGroupId.size() != 0
+				&& currentLine.getM_Product_ID() == 0
+				&& currentLine.getM_Purchase_Group_ID() == 0) {
+			String columnName = getSQLColumnName("l.M_Product_ID", commissionType);
+			if(!Util.isEmpty(columnName)) {
+				sql.append(" AND EXISTS"
+						+ "(SELECT 1 FROM M_Product p "
+						+ "		WHERE p.M_Product_ID = " + columnName + " "
+						+ "		AND M_Purchase_Group_ID NOT IN").append(purchaseGroupId.toString().replace('[','(').replace(']',')')).append(")");
+			}
+		}
+		//	Sales Group
+		if (salesGroupId.size() != 0
+				&& currentLine.getM_Product_ID() == 0
+				&& currentLine.getM_Sales_Group_ID() == 0) {
+			String columnName = getSQLColumnName("l.M_Product_ID", commissionType);
+			if(!Util.isEmpty(columnName)) {
+				sql.append(" AND EXISTS"
+						+ "(SELECT 1 FROM M_Product p "
+						+ "		WHERE p.M_Product_ID = " + columnName + " "
+						+ "		AND M_Sales_Group_ID NOT IN").append(salesGroupId.toString().replace('[','(').replace(']',')')).append(")");
 			}
 		}
 		//	Project
