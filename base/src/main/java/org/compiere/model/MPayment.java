@@ -16,6 +16,7 @@
  *****************************************************************************/
 package org.compiere.model;
 
+import org.adempiere.core.domains.models.I_C_BankAccount;
 import org.adempiere.core.domains.models.I_C_BankStatementLine;
 import org.adempiere.core.domains.models.I_C_Payment;
 import org.adempiere.core.domains.models.X_C_BPartner;
@@ -225,6 +226,23 @@ public final class MPayment extends X_C_Payment
 				+ "		AND bs.DocStatus NOT IN('CO', 'CL', 'VO', 'RE'))", get_TrxName())
 				.setParameters(getC_Payment_ID())
 				.first();
+	}
+
+	/**
+	 * Whether the payment's bank account is configured to validate the
+	 * reconciliation reference (an open bank statement line) when reversing.
+	 * Defaults to true when the bank account has no value yet, so existing
+	 * bank accounts keep blocking the reversal as before.
+	 * @return true if the reversal must be blocked while referenced by an open statement
+	 */
+	private boolean mustValidateStatementOnReversal() {
+		if (getC_BankAccount_ID() <= 0)
+			return true;
+		MBankAccount bankAccount = MBankAccount.get(getCtx(), getC_BankAccount_ID());
+		if (bankAccount == null
+				|| bankAccount.get_Value(I_C_BankAccount.COLUMNNAME_IsValidateStatementOnReversal) == null)
+			return true;
+		return bankAccount.isValidateStatementOnReversal();
 	}
 
 	/**
@@ -2285,7 +2303,7 @@ public final class MPayment extends X_C_Payment
 	public MPayment reverseIt(boolean isAccrual)
 	{
 		MBankStatementLine openBankStatementLine = getOpenBankStatementLine();
-		if (openBankStatementLine != null) {
+		if (openBankStatementLine != null && mustValidateStatementOnReversal()) {
 			processMsg = Msg.getMsg(getCtx(), "Payment.ExistBankStatement",
 					new Object[] { openBankStatementLine.getParent().getDocumentNo(), openBankStatementLine.getLine() });
 			return null;
@@ -2301,6 +2319,11 @@ public final class MPayment extends X_C_Payment
 
 		//	Auto Reconcile if not on Bank Statement
 		boolean reconciled = getC_BankStatementLine_ID() > 0; //AZ Goodwill
+		//	When the validation is disabled and the payment is still referenced by an
+		//	open (draft) bank statement line, keep the reversal unreconciled so it can
+		//	be matched to another bank statement instead of being auto-reconciled.
+		if (!reconciled && openBankStatementLine != null)
+			reconciled = true;
 
 		//	Create Reversal
 		MPayment reversal = new MPayment (getCtx(), 0, get_TrxName());
