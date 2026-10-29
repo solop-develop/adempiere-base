@@ -16,7 +16,6 @@
  *****************************************************************************/
 package org.compiere.model;
 
-import org.adempiere.core.domains.models.I_C_BankAccount;
 import org.adempiere.core.domains.models.I_C_BankStatementLine;
 import org.adempiere.core.domains.models.I_C_Payment;
 import org.adempiere.core.domains.models.X_C_BPartner;
@@ -231,18 +230,13 @@ public final class MPayment extends X_C_Payment
 	/**
 	 * Whether the payment's bank account is configured to validate the
 	 * reconciliation reference (an open bank statement line) when reversing.
-	 * Defaults to true when the bank account has no value yet, so existing
-	 * bank accounts keep blocking the reversal as before.
 	 * @return true if the reversal must be blocked while referenced by an open statement
 	 */
 	private boolean mustValidateStatementOnReversal() {
 		if (getC_BankAccount_ID() <= 0)
 			return true;
 		MBankAccount bankAccount = MBankAccount.get(getCtx(), getC_BankAccount_ID());
-		if (bankAccount == null
-				|| bankAccount.get_Value(I_C_BankAccount.COLUMNNAME_IsValidateStatementOnReversal) == null)
-			return true;
-		return bankAccount.isValidateStatementOnReversal();
+		return bankAccount == null || bankAccount.isValidateStatementOnReversal();
 	}
 
 	/**
