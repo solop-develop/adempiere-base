@@ -3928,5 +3928,16 @@ There are two reasons for de-activating and not deleting records:
         <Data AD_Column_ID="92543" Column="RequiresSync" oldValue="true">false</Data>
       </PO>
     </Step>
+    <Step SeqNo="1270" StepType="AD">
+      <PO AD_Table_ID="101" Action="U" Record_ID="50196" Table="AD_Column">
+        <Data AD_Column_ID="124" Column="IsMandatory" oldValue="true">false</Data>
+        <Data AD_Column_ID="118" Column="FieldLength" oldValue="255">5000</Data>
+        <Data AD_Column_ID="226" Column="AD_Reference_ID" oldValue="10">14</Data>
+        <Data AD_Column_ID="92542" Column="NameOldValue" isNewNull="true" oldValue="Value"/>
+      </PO>
+    </Step>
+    <Step DBType="ALL" Parse="N" SeqNo="1280" StepType="SQL">
+      <SQLStatement>ALTER TABLE AD_SysConfig ALTER COLUMN Value TYPE TEXT</SQLStatement>
+    </Step>
   </Migration>
 </Migrations>
