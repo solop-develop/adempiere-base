@@ -164,6 +164,8 @@ public abstract class Doc
 	public static final String 	DOCTYPE_SOrder          = "SOO";
 	/** Project Issue           */
 	public static final String	DOCTYPE_ProjectIssue	= "PJI";
+	/** Landed Cost             */
+	public static final String	DOCTYPE_LandedCost	= "LCA";
 	/** Purchase Requisition    */
 	public static final String	DOCTYPE_PurchaseRequisition	= "POR";
 	/** Planned Manufacturing Order    */
