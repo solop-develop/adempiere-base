@@ -31,7 +31,7 @@ public class Doc_LandedCost extends Doc
 {
 	public Doc_LandedCost (MAcctSchema[] ass, ResultSet rs, String trxName)
 	{
-		super (ass, MLandedCost.class, rs, DOCTYPE_LandedCost, trxName);
+		super (ass, MLandedCost.class, rs, MLandedCost.DOCBASETYPE_LandedCost, trxName);
 	}
 
 	private MLandedCost landedCost = null;
