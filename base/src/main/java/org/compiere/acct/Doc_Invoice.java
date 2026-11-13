@@ -826,7 +826,7 @@ public class Doc_Invoice extends Doc
 		BigDecimal amount = line.getAmtSource();
 		if (amount.signum() == 0)
 			return true;
-		FactLine factLine = fact.createLine (line, line.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as),
+		FactLine factLine = fact.createLine (line, new ProductCost(getCtx(), line.getM_Product_ID(), 0, getTrxName()).getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as),
 			getC_Currency_ID(), isDebit ? amount : null, isDebit ? null : amount);
 		if (factLine != null && line.getDescription() != null)
 			factLine.setDescription(line.getDescription());
