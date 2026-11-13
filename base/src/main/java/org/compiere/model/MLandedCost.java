@@ -521,7 +521,7 @@ public class MLandedCost extends X_C_LandedCost implements DocAction, DocumentRe
 
 	private void releaseDraft()
 	{
-		if (getC_InvoiceLandedCost_ID() <= 0 || isReversal())
+		if (getC_InvoiceLandedCost_ID() <= 0 || reversal)
 			return;
 		MInvoiceLandedCost draft = new MInvoiceLandedCost(getCtx(), getC_InvoiceLandedCost_ID(), get_TrxName());
 		if (draft.isGenerated())
