@@ -37,11 +37,11 @@ SELECT x.C_Order_ID,
     x.IsDelivered,
     x.IsInvoiced,
     CASE
-        WHEN x.DocStatus = 'CO' AND x.IsDelivered = 0 THEN 1
+        WHEN x.DocStatus = 'CO' AND x.HdrIsDelivered = 'N' THEN 1
         ELSE 0
     END,
     CASE
-        WHEN x.DocStatus = 'CO' AND x.IsInvoiced = 0 THEN 1
+        WHEN x.DocStatus = 'CO' AND x.HdrIsInvoiced = 'N' THEN 1
         ELSE 0
     END,
     CASE
