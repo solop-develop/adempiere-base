@@ -56,16 +56,13 @@ FROM (
                 INNER JOIN C_Location loc ON (loc.C_Location_ID = bpl.C_Location_ID)
                 INNER JOIN C_PaymentTerm p ON (p.C_PaymentTerm_ID = i.C_PaymentTerm_ID)
                 INNER JOIN C_Currency cur ON (cur.C_Currency_ID = i.C_Currency_ID)
-                LEFT JOIN (
-                    SELECT line.C_Invoice_ID,
-                        SUM(CASE WHEN h.C_Currency_ID = inv.C_Currency_ID THEN line.Amount + line.DiscountAmt + line.WriteOffAmt
-                            ELSE currencyConvert(line.Amount + line.DiscountAmt + line.WriteOffAmt, h.C_Currency_ID, inv.C_Currency_ID, h.DateTrx, NULL, h.AD_Client_ID, h.AD_Org_ID) END) AS Paid
+                LEFT JOIN LATERAL (
+                    SELECT SUM(CASE WHEN h.C_Currency_ID = i.C_Currency_ID THEN line.Amount + line.DiscountAmt + line.WriteOffAmt
+                            ELSE currencyConvert(line.Amount + line.DiscountAmt + line.WriteOffAmt, h.C_Currency_ID, i.C_Currency_ID, h.DateTrx, NULL, h.AD_Client_ID, h.AD_Org_ID) END) AS Paid
                     FROM C_AllocationLine line
                         INNER JOIN C_AllocationHdr h ON (h.C_AllocationHdr_ID = line.C_AllocationHdr_ID)
-                        INNER JOIN C_Invoice inv ON (inv.C_Invoice_ID = line.C_Invoice_ID)
-                    WHERE h.DocStatus IN ('CO', 'CL')
-                    GROUP BY line.C_Invoice_ID
-                ) al ON (al.C_Invoice_ID = i.C_Invoice_ID)
+                    WHERE line.C_Invoice_ID = i.C_Invoice_ID AND h.DocStatus IN ('CO', 'CL')
+                ) al ON TRUE
             WHERE i.DocStatus IN ('CO', 'CL') AND i.IsPayScheduleValid <> 'Y'
             UNION ALL
             SELECT i.AD_Client_ID, i.AD_Org_ID, i.IsActive, i.C_Invoice_ID, i.DocumentNo, i.POReference, i.Description, i.IsSOTrx, i.DocStatus,
@@ -81,7 +78,7 @@ FROM (
                 COALESCE(al.Paid, 0),
                 1 / POWER(10, cur.StdPrecision), cur.StdPrecision,
                 ips.C_InvoicePaySchedule_ID, ips.DueAmt,
-                COALESCE(SUM(ips.DueAmt) OVER (PARTITION BY ips.C_Invoice_ID ORDER BY ips.DueDate, ips.C_InvoicePaySchedule_ID ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING), 0),
+                COALESCE(cum.DueBefore, 0),
                 CAST(ips.DueDate AS DATE) - CAST(i.DateInvoiced AS DATE),
                 ips.DueDate,
                 CAST(CURRENT_DATE AS DATE) - CAST(ips.DueDate AS DATE),
@@ -96,16 +93,19 @@ FROM (
                 INNER JOIN C_Location loc ON (loc.C_Location_ID = bpl.C_Location_ID)
                 INNER JOIN C_Currency cur ON (cur.C_Currency_ID = i.C_Currency_ID)
                 INNER JOIN C_InvoicePaySchedule ips ON (ips.C_Invoice_ID = i.C_Invoice_ID AND ips.IsValid = 'Y')
-                LEFT JOIN (
-                    SELECT line.C_Invoice_ID,
-                        SUM(CASE WHEN h.C_Currency_ID = inv.C_Currency_ID THEN line.Amount + line.DiscountAmt + line.WriteOffAmt
-                            ELSE currencyConvert(line.Amount + line.DiscountAmt + line.WriteOffAmt, h.C_Currency_ID, inv.C_Currency_ID, h.DateTrx, NULL, h.AD_Client_ID, h.AD_Org_ID) END) AS Paid
+                LEFT JOIN LATERAL (
+                    SELECT SUM(prev.DueAmt) AS DueBefore
+                    FROM C_InvoicePaySchedule prev
+                    WHERE prev.C_Invoice_ID = ips.C_Invoice_ID AND prev.IsValid = 'Y'
+                        AND (prev.DueDate < ips.DueDate OR (prev.DueDate = ips.DueDate AND prev.C_InvoicePaySchedule_ID < ips.C_InvoicePaySchedule_ID))
+                ) cum ON TRUE
+                LEFT JOIN LATERAL (
+                    SELECT SUM(CASE WHEN h.C_Currency_ID = i.C_Currency_ID THEN line.Amount + line.DiscountAmt + line.WriteOffAmt
+                            ELSE currencyConvert(line.Amount + line.DiscountAmt + line.WriteOffAmt, h.C_Currency_ID, i.C_Currency_ID, h.DateTrx, NULL, h.AD_Client_ID, h.AD_Org_ID) END) AS Paid
                     FROM C_AllocationLine line
                         INNER JOIN C_AllocationHdr h ON (h.C_AllocationHdr_ID = line.C_AllocationHdr_ID)
-                        INNER JOIN C_Invoice inv ON (inv.C_Invoice_ID = line.C_Invoice_ID)
-                    WHERE h.DocStatus IN ('CO', 'CL')
-                    GROUP BY line.C_Invoice_ID
-                ) al ON (al.C_Invoice_ID = i.C_Invoice_ID)
+                    WHERE line.C_Invoice_ID = i.C_Invoice_ID AND h.DocStatus IN ('CO', 'CL')
+                ) al ON TRUE
             WHERE i.DocStatus IN ('CO', 'CL') AND i.IsPayScheduleValid = 'Y'
         ) b
     ) y

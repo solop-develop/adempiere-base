@@ -32,13 +32,10 @@ SELECT p.C_Payment_ID, p.AD_Client_ID, p.AD_Org_ID, p.IsActive, p.Created, p.Upd
     END
 FROM C_Payment p
     LEFT JOIN C_BPartner bp ON (bp.C_BPartner_ID = p.C_BPartner_ID)
-    LEFT JOIN (
-        SELECT line.C_Payment_ID,
-            SUM(CASE WHEN h.C_Currency_ID = pay.C_Currency_ID THEN line.Amount
-                ELSE currencyConvert(line.Amount, h.C_Currency_ID, pay.C_Currency_ID, h.DateTrx, NULL, h.AD_Client_ID, h.AD_Org_ID) END) AS Allocated
+    LEFT JOIN LATERAL (
+        SELECT SUM(CASE WHEN h.C_Currency_ID = p.C_Currency_ID THEN line.Amount
+                ELSE currencyConvert(line.Amount, h.C_Currency_ID, p.C_Currency_ID, h.DateTrx, NULL, h.AD_Client_ID, h.AD_Org_ID) END) AS Allocated
         FROM C_AllocationLine line
             INNER JOIN C_AllocationHdr h ON (h.C_AllocationHdr_ID = line.C_AllocationHdr_ID)
-            INNER JOIN C_Payment pay ON (pay.C_Payment_ID = line.C_Payment_ID)
-        WHERE h.DocStatus IN ('CO', 'CL')
-        GROUP BY line.C_Payment_ID
-    ) al ON (al.C_Payment_ID = p.C_Payment_ID);
+        WHERE line.C_Payment_ID = p.C_Payment_ID AND h.DocStatus IN ('CO', 'CL')
+    ) al ON TRUE;
