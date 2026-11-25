@@ -29,6 +29,7 @@ import org.compiere.model.PO;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
+import org.compiere.util.Language;
 import org.compiere.util.Ini;
 
 import javax.naming.Context;
@@ -405,39 +406,86 @@ public class DB_PostgreSQL implements AdempiereDatabase
 	 *  @param  displayType Display Type
 	 *  @param  AD_Language 6 character language setting (from Env.LANG_*)
 	 *
-	 *  @return TRIM(TO_CHAR(columnName,'999G999G999G990D00','NLS_NUMERIC_CHARACTERS='',.'''))
-	 *      or TRIM(TO_CHAR(columnName,'TM9')) depending on DisplayType and Language
+	 *  The separators are explicit in the patterns (and swapped for languages
+	 *  with decimal comma) because the PostgreSQL G/D pattern characters depend
+	 *  on the server lc_numeric, not on the user language.
+	 *
+	 *  @return Date: TO_CHAR(columnName,'DD/MM/YYYY') with the language date pattern,
+	 *      DateTime: date pattern plus HH24:MI:SS, Time: HH24:MI:SS,
+	 *      Amount, CostPrice and Quantity: grouped with 2 to 12 decimals, Number: grouped with 1 to 12 decimals
+	 *      (as DisplayType.getNumberFormat), otherwise CAST(columnName AS Text)
 	 *  @see DisplayType
 	 *  @see org.compiere.util.Env
 	 *
 	 **/
 	public String TO_CHAR (String columnName, int displayType, String AD_Language)
 	{
-		StringBuffer retValue = new StringBuffer("CAST (");
-		retValue.append(columnName);
-		retValue.append(" AS Text)");
-
-		//  Numbers
-		/*
-		if (DisplayType.isNumeric(displayType))
-		{
-			if (displayType == DisplayType.Amount)
-				retValue.append(" AS TEXT");
-			else
-				retValue.append(" AS TEXT");			
-			//if (!Language.isDecimalPoint(AD_Language))      //  reversed
-			//retValue.append(",'NLS_NUMERIC_CHARACTERS='',.'''");
+		final String textValue = "CAST (" + columnName + " AS Text)";
+		if (DisplayType.isDate(displayType)) {
+			return getDateToChar(columnName, displayType, AD_Language);
 		}
-		else if (DisplayType.isDate(displayType))
-		{
-			retValue.append(",'")
-				.append(Language.getLanguage(AD_Language).getDBdatePattern())
-				.append("'");
+		if (!DisplayType.isNumeric(displayType) || displayType == DisplayType.Integer) {
+			return textValue;
 		}
-		retValue.append(")");
-		//*/
-		return retValue.toString();
+		//	Same fraction digits as DisplayType.getNumberFormat: Amount, CostPrice and Quantity
+		//	at least 2, Number at least 1, up to 12 (FM drops the optional trailing zeros)
+		final int minimumFractionDigits = displayType == DisplayType.Number ? 1 : 2;
+		String numberValue = "TO_CHAR(" + columnName + ",'" + getNumberPattern(minimumFractionDigits) + "')";
+		if (!Language.getLanguage(AD_Language).isDecimalPoint()) {
+			//	swap group and decimal separators (e.g. 1.234,50)
+			numberValue = "TRANSLATE(" + numberValue + ",',.','.,')";
+		}
+		return numberValue;
 	}   //  TO_CHAR
+
+	/**	Integer digits of a formatted number, as DisplayType MAX_DIGITS	*/
+	private static final int NUMBER_MAX_INTEGER_DIGITS = 28;
+	/**	Fraction digits of a formatted number, as DisplayType MAX_FRACTION	*/
+	private static final int NUMBER_MAX_FRACTION_DIGITS = 12;
+
+	/**
+	 * Get PostgreSQL TO_CHAR pattern for a grouped number with explicit separators,
+	 * e.g. FM9,999,...,990.009999999999 for 2 minimum fraction digits
+	 * @param minimumFractionDigits fraction digits always shown
+	 * @return pattern
+	 */
+	private String getNumberPattern(int minimumFractionDigits) {
+		StringBuilder integerPattern = new StringBuilder();
+		for (int digit = 1; digit <= NUMBER_MAX_INTEGER_DIGITS; digit++) {
+			if (digit > 1 && (digit - 1) % 3 == 0) {
+				integerPattern.insert(0, ',');
+			}
+			//	last integer digit is always shown (0.50 instead of .50)
+			integerPattern.insert(0, digit == 1 ? '0' : '9');
+		}
+		StringBuilder fractionPattern = new StringBuilder();
+		for (int digit = 1; digit <= NUMBER_MAX_FRACTION_DIGITS; digit++) {
+			fractionPattern.append(digit <= minimumFractionDigits ? '0' : '9');
+		}
+		return "FM" + integerPattern + "." + fractionPattern;
+	}	//	getNumberPattern
+
+	/**
+	 * Get SQL for a formatted date, date time or time column
+	 * @param columnName the column name in the SQL
+	 * @param displayType Date, DateTime or Time display type
+	 * @param AD_Language language used to get the date pattern
+	 * @return TO_CHAR(columnName, 'pattern')
+	 */
+	private String getDateToChar(String columnName, int displayType, String AD_Language) {
+		final String timePattern = "HH24:MI:SS";
+		String pattern;
+		if (displayType == DisplayType.Time) {
+			pattern = timePattern;
+		} else {
+			//	Language date pattern always has leading zeros and 4 digit year (e.g. DD/MM/YYYY)
+			pattern = Language.getLanguage(AD_Language).getDBdatePattern();
+			if (displayType == DisplayType.DateTime) {
+				pattern = pattern + " " + timePattern;
+			}
+		}
+		return "TO_CHAR(" + columnName + ",'" + pattern + "')";
+	}	//	getDateToChar
 
 	/**
 	 * 	Return number as string for INSERT statements with correct precision
