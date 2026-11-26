@@ -48,6 +48,25 @@ public class RoleAccessUpdate extends RoleAccessUpdateAbstract {
 
     private static CLogger logger = CLogger.getCLogger(RoleAccessUpdate.class);
 
+    /** Roles whose access records were updated, evicted from cache after commit */
+    private final List<Integer> updatedRoleIds = new ArrayList<>();
+
+    /**
+     * Read the parameters accepting any {@link Number} for the role, since
+     * callers like {@link ProcessBuilder} (gRPC, migrations) may pass an
+     * Integer instead of the BigDecimal stored in AD_PInstance_Para.
+     */
+    @Override
+    protected void prepare() {
+
+        setClientId(getParameterAsInt(AD_CLIENT_ID));
+        Object roleParameter = getParameter(AD_ROLE_ID);
+        if (roleParameter instanceof Number) {
+            setRoleId(((Number) roleParameter).intValue());
+        }
+
+    }
+
     protected String doIt() throws Exception {
 
         getProcessLog().info("AD_Client_ID=" + getClientId() + ", AD_Role_ID="
@@ -65,16 +84,17 @@ public class RoleAccessUpdate extends RoleAccessUpdateAbstract {
         List<Object> params = new ArrayList<>();
         String whereClause = "";
 
-        if (getClientId() > 0) {
+        if (clientId > 0) {
             whereClause = "AD_Client_ID=?";
-            params.add(getClientId());
+            params.add(clientId);
         }
-        
-        if (getRoleId() >= 0) { 
-            if (!whereClause.isEmpty())
+
+        if (roleId >= 0) {
+            if (!whereClause.isEmpty()) {
                 whereClause += " AND ";
+            }
             whereClause += "AD_Role_ID=?";
-            params.add(getRoleId());
+            params.add(roleId);
         }
 
         return getRoleQuery(whereClause)
@@ -102,6 +122,25 @@ public class RoleAccessUpdate extends RoleAccessUpdateAbstract {
 
         addLog(0, null, null, role.getName() + ": "
                 + role.updateAccessRecords());
+        updatedRoleIds.add(role.getAD_Role_ID());
+
+    }
+
+    /**
+     * Runs after the commit: evict the updated roles from the MRole cache
+     * (with their window, process, form, browse... access maps), so callers
+     * that read it without reload (e.g. gRPC) get the new access records.
+     * Sessions that already hold the role in their context (ZK) still need
+     * to log in again.
+     */
+    @Override
+    protected void postProcess(boolean success) {
+
+        if (!success) {
+            return;
+        }
+        updatedRoleIds.forEach(MRole::removeFromCache);
+        getProcessLog().fine("Role cache evicted: #" + updatedRoleIds.size());
 
     }
 

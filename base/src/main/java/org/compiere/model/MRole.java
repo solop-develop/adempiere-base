@@ -221,6 +221,22 @@ public final class MRole extends X_AD_Role
 		}
 		s_roles.remove(roleId + "_" + userId);
 	}
+
+	/**
+	 * Evict every cached MRole entry of the given role (all users), so the
+	 * next {@link #get(Properties, int, int, boolean)} reloads it from DB with
+	 * its current access records. Call this after the access records of the
+	 * role change (e.g. Role Access Update).
+	 * @param roleId role
+	 */
+	public static void removeFromCache(int roleId)
+	{
+		if (roleId < 0) {
+			return;
+		}
+		String keyPrefix = roleId + "_";
+		s_roles.keySet().removeIf(key -> key.startsWith(keyPrefix));
+	}
 	/** Log						*/ 
 	private static CLogger			s_log = CLogger.getCLogger(MRole.class);
 	
@@ -531,7 +547,7 @@ public final class MRole extends X_AD_Role
 			+ ", AD_Workflow_ID=" + wfDel + "+" + wf
 			+ ", AD_Document_Action_Access=" + docactDel + "+" + docact
 			+ ", PA_DashboardContent_ID=" + dashboardDel + "+" + dashboard
-			+ ", ASP_Level_ID=" + aSPLevel + "+" + aSPLevelDel
+			+ ", ASP_Level_ID=" + aSPLevelDel + "+" + aSPLevel
 			);
 		
 		loadAccess(true);
