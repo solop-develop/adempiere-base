@@ -5,7 +5,7 @@ CREATE OR REPLACE VIEW RV_OPENITEMTODATE
  --PAIDAMT, OPENAMT, 
  C_CURRENCY_ID, C_CONVERSIONTYPE_ID, C_PAYMENTTERM_ID, 
  ISPAYSCHEDULEVALID, C_INVOICEPAYSCHEDULE_ID, INVOICECOLLECTIONTYPE, C_CAMPAIGN_ID, C_PROJECT_ID, 
- C_ACTIVITY_ID, C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, M_PriceList_ID)
+ C_ACTIVITY_ID, C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, M_PriceList_ID, C_SalesRegion_ID)
 AS 
 SELECT i.AD_Org_ID, i.AD_Client_ID,
 	i.DocumentNo, i.C_Invoice_ID, i.C_Order_ID, i.C_BPartner_ID, i.IsSOTrx,
@@ -22,13 +22,14 @@ SELECT i.AD_Org_ID, i.AD_Client_ID,
     i.C_PaymentTerm_ID,
     i.IsPayScheduleValid, cast(null as numeric) AS C_InvoicePaySchedule_ID, i.InvoiceCollectionType,
     i.C_Campaign_ID, i.C_Project_ID, i.C_Activity_ID,
-    i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID, i.M_PriceList_ID
+    i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID, i.M_PriceList_ID, i.C_SalesRegion_ID
 FROM RV_C_Invoice i
     INNER JOIN C_PaymentTerm p ON (i.C_PaymentTerm_ID=p.C_PaymentTerm_ID)
 WHERE --    i.IsPaid='N'
     --invoiceOpen(i.C_Invoice_ID,0) <> 0 AND 
     i.IsPayScheduleValid<>'Y'
     AND i.DocStatus IN ('CO','CL')
+    AND NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y')
 UNION
 SELECT i.AD_Org_ID, i.AD_Client_ID,
     i.DocumentNo, i.C_Invoice_ID, i.C_Order_ID, i.C_BPartner_ID, i.IsSOTrx,
@@ -45,11 +46,12 @@ SELECT i.AD_Org_ID, i.AD_Client_ID,
     i.C_PaymentTerm_ID,
     i.IsPayScheduleValid, ips.C_InvoicePaySchedule_ID, i.InvoiceCollectionType,
     i.C_Campaign_ID, i.C_Project_ID, i.C_Activity_ID,
-    i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID, i.M_PriceList_ID
+    i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID, i.M_PriceList_ID, i.C_SalesRegion_ID
 FROM RV_C_Invoice i
     INNER JOIN C_InvoicePaySchedule ips ON (i.C_Invoice_ID=ips.C_Invoice_ID)
 WHERE  --   i.IsPaid='N'
     --invoiceOpen(i.C_Invoice_ID,ips.C_InvoicePaySchedule_ID) <> 0 AND 
     i.IsPayScheduleValid='Y'
     AND i.DocStatus IN ('CO','CL')
-    AND ips.IsValid='Y';
+    AND ips.IsValid='Y'
+    AND NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y');

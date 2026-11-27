@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Migrations>
+  <Migration EntityType="D" Name="Exclude_DocType_From_Invoice_Reports_Views" ReleaseNo="4.2.1" SeqNo="505055">
+    <Comments>Exclude document types flagged with IsExcludeFromInvoiceReport from invoice and open item report views (RV_C_Invoice, RV_C_InvoiceLine, RV_OpenItem, RV_OpenItemToDate)</Comments>
+    <Step DBType="Postgres" Parse="Y" SeqNo="10" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_C_INVOICE
+(C_INVOICE_ID, AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED,
+ CREATEDBY, UPDATED, UPDATEDBY, ISSOTRX, DOCUMENTNO,
+ DOCSTATUS, DOCACTION, ISPRINTED, ISDISCOUNTPRINTED, PROCESSING,
+ PROCESSED, ISTRANSFERRED, ISPAID, C_DOCTYPE_ID, C_DOCTYPETARGET_ID,
+ C_ORDER_ID, DESCRIPTION, ISAPPROVED, SALESREP_ID, DATEINVOICED,
+ DATEPRINTED, DATEACCT, C_BPARTNER_ID, C_BPARTNER_LOCATION_ID, AD_USER_ID,
+ C_BP_GROUP_ID, POREFERENCE, DATEORDERED, C_CURRENCY_ID, C_CONVERSIONTYPE_ID,
+ PAYMENTRULE, C_PAYMENTTERM_ID, M_PRICELIST_ID, C_CAMPAIGN_ID, C_PROJECT_ID,
+ C_ACTIVITY_ID, ISPAYSCHEDULEVALID, INVOICECOLLECTIONTYPE, C_COUNTRY_ID, C_REGION_ID,
+ POSTAL, CITY, C_CHARGE_ID, CHARGEAMT, TOTALLINES,
+ GRANDTOTAL, MULTIPLIER,
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, C_SalesRegion_ID, DocBaseType)
+AS
+SELECT i.C_Invoice_ID,
+	i.AD_Client_ID,i.AD_Org_ID,i.IsActive,i.Created,i.CreatedBy,i.Updated,i.UpdatedBy,
+	i.IsSOTrx, i.DocumentNo, i.DocStatus, i.DocAction,
+	i.IsPrinted, i.IsDiscountPrinted, i.Processing, i.Processed, i.IsTransferred, i.IsPaid,
+	i.C_DocType_ID, i.C_DocTypeTarget_ID, i.C_Order_ID, i.Description, i.IsApproved,
+	i.SalesRep_ID, i.DateInvoiced, i.DatePrinted, i.DateAcct,
+	i.C_BPartner_ID, i.C_BPartner_Location_ID, i.AD_User_ID, b.C_BP_Group_ID,
+	i.POReference, i.DateOrdered, i.C_Currency_ID, C_ConversionType_ID, i.PaymentRule, i.C_PaymentTerm_ID,
+	i.M_PriceList_ID, i.C_Campaign_ID, i.C_Project_ID, i.C_Activity_ID,
+    i.IsPayScheduleValid, i.InvoiceCollectionType,
+    loc.C_Country_ID, loc.C_Region_ID, loc.Postal, loc.City,
+	--	Amounts
+	i.C_Charge_ID,
+	CASE WHEN charAt(d.DocBaseType,3)='C' THEN i.ChargeAmt*-1 ELSE i.ChargeAmt END AS ChargeAmt,
+	CASE WHEN charAt(d.DocBaseType,3)='C' THEN i.TotalLines*-1 ELSE i.TotalLines END AS TotalLines,
+	CASE WHEN charAt(d.DocBaseType,3)='C' THEN i.GrandTotal*-1 ELSE i.GrandTotal END AS GrandTotal,
+	CASE WHEN charAt(d.DocBaseType,3)='C' THEN -1 ELSE 1 END AS Multiplier,
+	b.C_BP_AccountType_ID, b.C_BP_SalesGroup_ID, b.C_BP_Segment_ID, b.C_BP_IndustryType_ID,
+	i.C_SalesRegion_ID,
+	d.DocBaseType
+FROM  C_Invoice i
+ INNER JOIN C_DocType d ON (i.C_DocType_ID=d.C_DocType_ID)
+ INNER JOIN C_BPartner b ON (i.C_BPartner_ID=b.C_BPartner_ID)
+ INNER JOIN C_BPartner_Location bpl ON (i.C_BPartner_Location_ID=bpl.C_BPartner_Location_ID)
+ INNER JOIN C_Location loc ON (bpl.C_Location_ID=loc.C_Location_ID)
+--	Exclude document types flagged as excluded from invoice report
+WHERE COALESCE(d.IsExcludeFromInvoiceReport,'N') &lt;&gt; 'Y';</SQLStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="20" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_C_INVOICELINE
+(AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, CREATEDBY,
+ UPDATED, UPDATEDBY, C_INVOICELINE_ID, C_INVOICE_ID, SALESREP_ID,
+ C_BPARTNER_ID, C_BP_GROUP_ID, M_PRODUCT_ID, M_PRODUCT_CATEGORY_ID, DATEINVOICED,
+ DATEACCT, ISSOTRX, C_DOCTYPE_ID, DOCSTATUS, ISPAID,
+ C_CAMPAIGN_ID, C_PROJECT_ID, C_ACTIVITY_ID, C_PROJECTPHASE_ID, C_PROJECTTASK_ID,
+ QTYINVOICED, QTYENTERED, M_ATTRIBUTESETINSTANCE_ID, PRODUCTATTRIBUTE, M_ATTRIBUTESET_ID,
+ M_LOT_ID, GUARANTEEDATE, LOT, SERNO, PRICELIST,
+ PRICEACTUAL, PRICELIMIT, PRICEENTERED, DISCOUNT, MARGIN,
+ MARGINAMT, LINENETAMT, LINELISTAMT, LINELIMITAMT, LINEDISCOUNTAMT,
+ LINEOVERLIMITAMT, M_Product_Class_ID, M_Product_Group_ID, M_Product_Classification_ID, Description, LineDescription, C_DocTypeTarget_ID,
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, C_SalesRegion_ID, Weight, Volume, DocBaseType, C_Currency_ID, DefaultVendor_ID)
+AS
+SELECT
+	il.AD_Client_ID, il.AD_Org_ID, il.IsActive, il.Created, il.CreatedBy, il.Updated, il.UpdatedBy,
+	il.C_InvoiceLine_ID, i.C_Invoice_ID, i.SalesRep_ID,
+	i.C_BPartner_ID, i.C_BP_Group_ID,
+	il.M_Product_ID, p.M_Product_Category_ID,
+	i.DateInvoiced, i.DateAcct, i.IsSOTrx, i.C_DocType_ID, i.DocStatus, i.IsPaid,
+    il.C_Campaign_ID, il.C_Project_ID, il.C_Activity_ID, il.C_ProjectPhase_ID, il.C_ProjectTask_ID,
+	--	Qty
+	il.QtyInvoiced*i.Multiplier AS QtyInvoiced,
+	il.QtyEntered*i.Multiplier AS QtyEntered,
+    -- Attributes
+    il.M_AttributeSetInstance_ID, productAttribute(il.M_AttributeSetInstance_ID) AS ProductAttribute,
+    pasi.M_AttributeSet_ID, pasi.M_Lot_ID, pasi.GuaranteeDate, pasi.Lot, pasi.SerNo,
+	--	Item Amounts
+	il.PriceList, il.PriceActual, il.PriceLimit, il.PriceEntered,
+	(CASE WHEN PriceList=0 THEN 0 ELSE
+	  ROUND((PriceList-PriceActual)/PriceList*100,2) END) AS Discount,
+	(CASE WHEN PriceLimit=0 THEN 0 ELSE
+	  ROUND((PriceActual-PriceLimit)/PriceLimit*100,2) END) AS Margin,
+	i.Multiplier * (CASE WHEN PriceLimit=0 THEN 0 ELSE
+	  (PriceActual-PriceLimit)*QtyInvoiced END) AS MarginAmt,
+	--	Line Amounts
+	ROUND(i.Multiplier*LineNetAmt, 2) AS LineNetAmt,
+	ROUND(i.Multiplier*PriceList*QtyInvoiced, 2) AS LineListAmt,
+	CASE WHEN COALESCE(il.PriceLimit, 0)=0 THEN ROUND(i.Multiplier*LineNetAmt,2) ELSE
+		ROUND(i.Multiplier*PriceLimit*QtyInvoiced,2) END AS LineLimitAmt,
+	ROUND(i.Multiplier*PriceList*QtyInvoiced-LineNetAmt,2) AS LineDiscountAmt,
+	CASE WHEN COALESCE(il.PriceLimit,0)=0 THEN 0 ELSE
+		ROUND(i.Multiplier*LineNetAmt-PriceLimit*QtyInvoiced,2) END AS LineOverLimitAmt,
+    p.M_Product_Class_ID, p.M_PRoduct_Group_ID, p.M_Product_Classification_ID, i.Description,
+    il.Description AS LineDescription, i.C_DocTypeTarget_ID,
+    i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID,
+    i.C_SalesRegion_ID,
+    (i.Multiplier * p.Weight * il.QtyInvoiced) AS Weight,
+    (i.Multiplier * p.Volume * il.QtyInvoiced) AS Volume,
+    i.DocBaseType, i.C_Currency_ID, p.DefaultVendor_ID
+FROM  RV_C_Invoice i
+  INNER JOIN C_InvoiceLine il ON (i.C_Invoice_ID=il.C_Invoice_ID)
+  LEFT OUTER JOIN M_Product p ON (il.M_Product_ID=p.M_Product_ID)
+  LEFT OUTER JOIN M_AttributeSetInstance pasi ON (il.M_AttributeSetInstance_ID=pasi.M_AttributeSetInstance_ID)
+--	Exclude document types flagged as excluded from invoice report
+WHERE NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y');</SQLStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="30" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_OPENITEM
+(AD_ORG_ID, AD_CLIENT_ID, DOCUMENTNO, C_INVOICE_ID, C_ORDER_ID,
+ C_BPARTNER_ID, ISSOTRX, DATEINVOICED, DATEACCT, NETDAYS,
+ DUEDATE, DAYSDUE, DISCOUNTDATE, DISCOUNTAMT, GRANDTOTAL,
+ PAIDAMT, OPENAMT,
+ C_CURRENCY_ID, C_CONVERSIONTYPE_ID, C_PAYMENTTERM_ID,
+ ISPAYSCHEDULEVALID, C_INVOICEPAYSCHEDULE_ID, INVOICECOLLECTIONTYPE, C_CAMPAIGN_ID, C_PROJECT_ID,
+ C_ACTIVITY_ID, SalesRep_ID, Description, C_DocType_ID,
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, M_PriceList_ID, C_SalesRegion_ID)
+AS
+SELECT i.AD_Org_ID, i.AD_Client_ID,
+	i.DocumentNo, i.C_Invoice_ID, i.C_Order_ID, i.C_BPartner_ID, i.IsSOTrx,
+	i.DateInvoiced, i.DateAcct,
+    p.NetDays,
+	paymentTermDueDate(i.C_PaymentTerm_ID, i.DateInvoiced) AS DueDate,
+	paymentTermDueDays(i.C_PaymentTerm_ID, i.DateInvoiced, getdate()) AS DaysDue,
+    addDays(i.DateInvoiced,p.DiscountDays) AS DiscountDate,
+    ROUND(i.GrandTotal*p.Discount/100,2) AS DiscountAmt,
+	i.GrandTotal,
+	invoicePaid(i.C_Invoice_ID, i.C_Currency_ID, 1) AS PaidAmt,
+	invoiceOpen(i.C_Invoice_ID,0) AS OpenAmt,
+    i.C_Currency_ID, i.C_ConversionType_ID,
+    i.C_PaymentTerm_ID,
+    i.IsPayScheduleValid, cast(null as numeric) AS C_InvoicePaySchedule_ID, i.InvoiceCollectionType,
+    i.C_Campaign_ID, i.C_Project_ID, i.C_Activity_ID, i.SalesRep_ID, i.Description, i.C_DocType_ID,
+    i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID, i.M_PriceList_ID, i.C_SalesRegion_ID
+FROM RV_C_Invoice i
+    INNER JOIN C_PaymentTerm p ON (i.C_PaymentTerm_ID=p.C_PaymentTerm_ID)
+WHERE
+    invoiceOpen(i.C_Invoice_ID,0) &lt;&gt; 0 AND
+    i.IsPayScheduleValid&lt;&gt;'Y'
+    AND i.DocStatus IN ('CO','CL')
+    AND NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y')
+UNION
+SELECT i.AD_Org_ID, i.AD_Client_ID,
+    i.DocumentNo, i.C_Invoice_ID, i.C_Order_ID, i.C_BPartner_ID, i.IsSOTrx,
+	i.DateInvoiced, i.DateAcct,
+    daysBetween(ips.DueDate,i.DateInvoiced) AS NetDays,
+    ips.DueDate,
+    daysBetween(getdate(),ips.DueDate) AS DaysDue,
+    ips.DiscountDate,
+    ips.DiscountAmt,
+	ips.DueAmt AS GrandTotal,
+	invoicePaid(i.C_Invoice_ID, i.C_Currency_ID, 1) AS PaidAmt,
+	invoiceOpen(i.C_Invoice_ID, ips.C_InvoicePaySchedule_ID) AS OpenAmt,
+    i.C_Currency_ID, i.C_ConversionType_ID,
+    i.C_PaymentTerm_ID,
+    i.IsPayScheduleValid, ips.C_InvoicePaySchedule_ID, i.InvoiceCollectionType,
+    i.C_Campaign_ID, i.C_Project_ID, i.C_Activity_ID, i.SalesRep_ID, i.Description, C_DocType_ID,
+    i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID, i.M_PriceList_ID, i.C_SalesRegion_ID
+FROM RV_C_Invoice i
+    INNER JOIN C_InvoicePaySchedule ips ON (i.C_Invoice_ID=ips.C_Invoice_ID)
+WHERE
+    invoiceOpen(i.C_Invoice_ID,ips.C_InvoicePaySchedule_ID) &lt;&gt; 0 AND
+    i.IsPayScheduleValid='Y'
+    AND i.DocStatus IN ('CO','CL')
+    AND ips.IsValid='Y'
+    AND NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y');</SQLStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="40" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_OPENITEMTODATE
+(AD_ORG_ID, AD_CLIENT_ID, DOCUMENTNO, C_INVOICE_ID, C_ORDER_ID,
+ C_BPARTNER_ID, ISSOTRX, DATEINVOICED, DATEACCT, NETDAYS,
+ DUEDATE, DAYSDUE, DISCOUNTDATE, DISCOUNTAMT, GRANDTOTAL,
+ C_CURRENCY_ID, C_CONVERSIONTYPE_ID, C_PAYMENTTERM_ID,
+ ISPAYSCHEDULEVALID, C_INVOICEPAYSCHEDULE_ID, INVOICECOLLECTIONTYPE, C_CAMPAIGN_ID, C_PROJECT_ID,
+ C_ACTIVITY_ID, C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, M_PriceList_ID, C_SalesRegion_ID)
+AS
+SELECT i.AD_Org_ID, i.AD_Client_ID,
+	i.DocumentNo, i.C_Invoice_ID, i.C_Order_ID, i.C_BPartner_ID, i.IsSOTrx,
+	i.DateInvoiced, i.DateAcct,
+    p.NetDays,
+	paymentTermDueDate(i.C_PaymentTerm_ID, i.DateInvoiced) AS DueDate,
+	paymentTermDueDays(i.C_PaymentTerm_ID, i.DateInvoiced, getdate()) AS DaysDue,
+    addDays(i.DateInvoiced,p.DiscountDays) AS DiscountDate,
+    ROUND(i.GrandTotal*p.Discount/100,2) AS DiscountAmt,
+	i.GrandTotal,
+    i.C_Currency_ID, i.C_ConversionType_ID,
+    i.C_PaymentTerm_ID,
+    i.IsPayScheduleValid, cast(null as numeric) AS C_InvoicePaySchedule_ID, i.InvoiceCollectionType,
+    i.C_Campaign_ID, i.C_Project_ID, i.C_Activity_ID,
+    i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID, i.M_PriceList_ID, i.C_SalesRegion_ID
+FROM RV_C_Invoice i
+    INNER JOIN C_PaymentTerm p ON (i.C_PaymentTerm_ID=p.C_PaymentTerm_ID)
+WHERE
+    i.IsPayScheduleValid&lt;&gt;'Y'
+    AND i.DocStatus IN ('CO','CL')
+    AND NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y')
+UNION
+SELECT i.AD_Org_ID, i.AD_Client_ID,
+    i.DocumentNo, i.C_Invoice_ID, i.C_Order_ID, i.C_BPartner_ID, i.IsSOTrx,
+	i.DateInvoiced, i.DateAcct,
+    daysBetween(ips.DueDate,i.DateInvoiced) AS NetDays,
+    ips.DueDate,
+    daysBetween(getdate(),ips.DueDate) AS DaysDue,
+    ips.DiscountDate,
+    ips.DiscountAmt,
+	ips.DueAmt AS GrandTotal,
+    i.C_Currency_ID, i.C_ConversionType_ID,
+    i.C_PaymentTerm_ID,
+    i.IsPayScheduleValid, ips.C_InvoicePaySchedule_ID, i.InvoiceCollectionType,
+    i.C_Campaign_ID, i.C_Project_ID, i.C_Activity_ID,
+    i.C_BP_AccountType_ID, i.C_BP_SalesGroup_ID, i.C_BP_Segment_ID, i.C_BP_IndustryType_ID, i.M_PriceList_ID, i.C_SalesRegion_ID
+FROM RV_C_Invoice i
+    INNER JOIN C_InvoicePaySchedule ips ON (i.C_Invoice_ID=ips.C_Invoice_ID)
+WHERE
+    i.IsPayScheduleValid='Y'
+    AND i.DocStatus IN ('CO','CL')
+    AND ips.IsValid='Y'
+    AND NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y');</SQLStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="50" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_KPI_Invoice
+(RV_KPI_Invoice_ID, AD_Client_ID, AD_Org_ID, IsActive, Created, Updated,
+ C_Invoice_ID, DocumentNo, POReference, Description, IsSOTrx, DocStatus, IsApproved, IsPaid, IsInDispute,
+ C_DocType_ID, C_DocTypeTarget_ID, DocBaseType, DocSubTypeSO, C_Order_ID, M_RMA_ID,
+ SalesRep_ID, AD_OrgTrx_ID, C_Campaign_ID, C_Project_ID, C_Activity_ID,
+ DateInvoiced, DateAcct, DateOrdered,
+ C_BPartner_ID, C_BPartner_Location_ID, AD_User_ID, C_BP_Group_ID,
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID, C_SalesRegion_ID,
+ C_Country_ID, C_Region_ID, Postal, City,
+ C_Currency_ID, C_ConversionType_ID, PaymentRule, C_PaymentTerm_ID, M_PriceList_ID, IsPayScheduleValid, InvoiceCollectionType,
+ C_Charge_ID, ChargeAmt, TotalLines, GrandTotal, Multiplier)
+AS
+SELECT i.C_Invoice_ID, i.AD_Client_ID, i.AD_Org_ID, i.IsActive, i.Created, i.Updated,
+    i.C_Invoice_ID, i.DocumentNo, i.POReference, i.Description, i.IsSOTrx, i.DocStatus, i.IsApproved, i.IsPaid, i.IsInDispute,
+    i.C_DocType_ID, i.C_DocTypeTarget_ID, d.DocBaseType, d.DocSubTypeSO, i.C_Order_ID, i.M_RMA_ID,
+    i.SalesRep_ID, i.AD_OrgTrx_ID, i.C_Campaign_ID, i.C_Project_ID, i.C_Activity_ID,
+    i.DateInvoiced, i.DateAcct, i.DateOrdered,
+    i.C_BPartner_ID, i.C_BPartner_Location_ID, i.AD_User_ID, b.C_BP_Group_ID,
+    b.C_BP_AccountType_ID, b.C_BP_SalesGroup_ID, b.C_BP_Segment_ID, b.C_BP_IndustryType_ID, i.C_SalesRegion_ID,
+    loc.C_Country_ID, loc.C_Region_ID, loc.Postal, loc.City,
+    i.C_Currency_ID, i.C_ConversionType_ID, i.PaymentRule, i.C_PaymentTerm_ID, i.M_PriceList_ID, i.IsPayScheduleValid, i.InvoiceCollectionType,
+    i.C_Charge_ID,
+    CASE WHEN SUBSTR(d.DocBaseType, 3, 1) = 'C' THEN i.ChargeAmt * -1 ELSE i.ChargeAmt END,
+    CASE WHEN SUBSTR(d.DocBaseType, 3, 1) = 'C' THEN i.TotalLines * -1 ELSE i.TotalLines END,
+    CASE WHEN SUBSTR(d.DocBaseType, 3, 1) = 'C' THEN i.GrandTotal * -1 ELSE i.GrandTotal END,
+    CASE WHEN SUBSTR(d.DocBaseType, 3, 1) = 'C' THEN -1 ELSE 1 END
+FROM C_Invoice i
+    INNER JOIN C_DocType d ON (d.C_DocType_ID = i.C_DocType_ID)
+    INNER JOIN C_BPartner b ON (b.C_BPartner_ID = i.C_BPartner_ID)
+    INNER JOIN C_BPartner_Location bpl ON (bpl.C_BPartner_Location_ID = i.C_BPartner_Location_ID)
+    INNER JOIN C_Location loc ON (loc.C_Location_ID = bpl.C_Location_ID)
+--	Exclude document types flagged as excluded from invoice report
+WHERE COALESCE(d.IsExcludeFromInvoiceReport,'N') &lt;&gt; 'Y';</SQLStatement>
+    </Step>
+    <Step DBType="Postgres" Parse="Y" SeqNo="60" StepType="SQL">
+      <SQLStatement>CREATE OR REPLACE VIEW RV_KPI_OpenItem
+(RV_KPI_OpenItem_ID, AD_Client_ID, AD_Org_ID, IsActive,
+ C_Invoice_ID, C_InvoicePaySchedule_ID, DocumentNo, POReference, Description, IsSOTrx, DocStatus, C_DocType_ID, DocBaseType, C_Order_ID,
+ C_BPartner_ID, C_BPartner_Location_ID, AD_User_ID, C_BP_Group_ID,
+ C_BP_AccountType_ID, C_BP_SalesGroup_ID, C_BP_Segment_ID, C_BP_IndustryType_ID,
+ SalesRep_ID, C_SalesRegion_ID, AD_OrgTrx_ID, C_Campaign_ID, C_Project_ID, C_Activity_ID, M_PriceList_ID,
+ DateInvoiced, DateAcct, DueDate, DiscountDate, NetDays, DaysDue,
+ C_Currency_ID, C_ConversionType_ID, PaymentRule, C_PaymentTerm_ID, IsPayScheduleValid, InvoiceCollectionType, IsInDispute,
+ GrandTotal, DiscountAmt, PaidAmt, OpenAmt)
+AS
+SELECT CASE WHEN x.C_InvoicePaySchedule_ID IS NULL THEN x.C_Invoice_ID ELSE x.C_InvoicePaySchedule_ID + 1000000000 END,
+    x.AD_Client_ID, x.AD_Org_ID, x.IsActive,
+    x.C_Invoice_ID, x.C_InvoicePaySchedule_ID, x.DocumentNo, x.POReference, x.Description, x.IsSOTrx, x.DocStatus, x.C_DocType_ID, x.DocBaseType, x.C_Order_ID,
+    x.C_BPartner_ID, x.C_BPartner_Location_ID, x.AD_User_ID, x.C_BP_Group_ID,
+    x.C_BP_AccountType_ID, x.C_BP_SalesGroup_ID, x.C_BP_Segment_ID, x.C_BP_IndustryType_ID,
+    x.SalesRep_ID, x.C_SalesRegion_ID, x.AD_OrgTrx_ID, x.C_Campaign_ID, x.C_Project_ID, x.C_Activity_ID, x.M_PriceList_ID,
+    x.DateInvoiced, x.DateAcct, x.DueDate, x.DiscountDate, x.NetDays, x.DaysDue,
+    x.C_Currency_ID, x.C_ConversionType_ID, x.PaymentRule, x.C_PaymentTerm_ID, x.IsPayScheduleValid, x.InvoiceCollectionType, x.IsInDispute,
+    x.GrandTotal, x.DiscountAmt, x.PaidAmt, x.OpenAmt
+FROM (
+    SELECT y.*,
+        CASE WHEN y.Raw &gt; -y.Eps AND y.Raw &lt; y.Eps THEN 0 ELSE ROUND(COALESCE(y.Raw, 0), CAST(y.Prec AS INTEGER)) END AS OpenAmt
+    FROM (
+        SELECT b.*,
+            CASE WHEN b.C_InvoicePaySchedule_ID IS NULL THEN b.SignedTotal - b.MultAP * b.PaidRaw
+                 ELSE CASE WHEN b.DueAmt - GREATEST(0, b.MultAP * b.PaidRaw - b.CumDueBefore) &lt; 0 THEN 0
+                           ELSE b.DueAmt * b.MultCM - GREATEST(0, b.MultAP * b.PaidRaw - b.CumDueBefore) END
+            END AS Raw
+        FROM (
+            SELECT i.AD_Client_ID, i.AD_Org_ID, i.IsActive, i.C_Invoice_ID, i.DocumentNo, i.POReference, i.Description, i.IsSOTrx, i.DocStatus,
+                i.C_DocType_ID, d.DocBaseType, i.C_Order_ID,
+                i.C_BPartner_ID, i.C_BPartner_Location_ID, i.AD_User_ID, bp.C_BP_Group_ID,
+                bp.C_BP_AccountType_ID, bp.C_BP_SalesGroup_ID, bp.C_BP_Segment_ID, bp.C_BP_IndustryType_ID,
+                i.SalesRep_ID, i.C_SalesRegion_ID, i.AD_OrgTrx_ID, i.C_Campaign_ID, i.C_Project_ID, i.C_Activity_ID, i.M_PriceList_ID,
+                i.DateInvoiced, i.DateAcct, i.C_Currency_ID, i.C_ConversionType_ID, i.PaymentRule, i.C_PaymentTerm_ID,
+                i.IsPayScheduleValid, i.InvoiceCollectionType, i.IsInDispute,
+                CASE WHEN SUBSTR(d.DocBaseType, 3, 1) = 'C' THEN -1 ELSE 1 END AS MultCM,
+                CASE WHEN SUBSTR(d.DocBaseType, 2, 1) = 'P' THEN -1 ELSE 1 END AS MultAP,
+                CASE WHEN SUBSTR(d.DocBaseType, 3, 1) = 'C' THEN i.GrandTotal * -1 ELSE i.GrandTotal END AS SignedTotal,
+                COALESCE(al.Paid, 0) AS PaidRaw,
+                1 / POWER(10, cur.StdPrecision) AS Eps, cur.StdPrecision AS Prec,
+                CAST(NULL AS NUMERIC) AS C_InvoicePaySchedule_ID, CAST(NULL AS NUMERIC) AS DueAmt, CAST(0 AS NUMERIC) AS CumDueBefore,
+                p.NetDays,
+                CASE WHEN p.IsDueFixed = 'Y' THEN paymenttermduedate(i.C_PaymentTerm_ID, i.DateInvoiced::timestamptz)
+                     ELSE CAST(i.DateInvoiced AS DATE) + CAST(p.NetDays AS INTEGER) END AS DueDate,
+                CASE WHEN p.IsDueFixed = 'Y' THEN paymenttermduedays(i.C_PaymentTerm_ID, i.DateInvoiced::timestamptz, now())
+                     ELSE CAST(now() AS DATE) - (CAST(i.DateInvoiced AS DATE) + CAST(p.NetDays AS INTEGER)) END AS DaysDue,
+                CAST(i.DateInvoiced AS DATE) + CAST(p.DiscountDays AS INTEGER) AS DiscountDate,
+                ROUND(CASE WHEN SUBSTR(d.DocBaseType, 3, 1) = 'C' THEN i.GrandTotal * -1 ELSE i.GrandTotal END * p.Discount / 100, 2) AS DiscountAmt,
+                CASE WHEN SUBSTR(d.DocBaseType, 3, 1) = 'C' THEN i.GrandTotal * -1 ELSE i.GrandTotal END AS GrandTotal,
+                ROUND(COALESCE(al.Paid, 0), 2) AS PaidAmt
+            FROM C_Invoice i
+                INNER JOIN C_DocType d ON (d.C_DocType_ID = i.C_DocType_ID)
+                INNER JOIN C_BPartner bp ON (bp.C_BPartner_ID = i.C_BPartner_ID)
+                INNER JOIN C_BPartner_Location bpl ON (bpl.C_BPartner_Location_ID = i.C_BPartner_Location_ID)
+                INNER JOIN C_Location loc ON (loc.C_Location_ID = bpl.C_Location_ID)
+                INNER JOIN C_PaymentTerm p ON (p.C_PaymentTerm_ID = i.C_PaymentTerm_ID)
+                INNER JOIN C_Currency cur ON (cur.C_Currency_ID = i.C_Currency_ID)
+                LEFT JOIN LATERAL (
+                    SELECT SUM(CASE WHEN h.C_Currency_ID = i.C_Currency_ID THEN line.Amount + line.DiscountAmt + line.WriteOffAmt
+                            ELSE currencyConvert(line.Amount + line.DiscountAmt + line.WriteOffAmt, h.C_Currency_ID, i.C_Currency_ID, h.DateTrx, NULL, h.AD_Client_ID, h.AD_Org_ID) END) AS Paid
+                    FROM C_AllocationLine line
+                        INNER JOIN C_AllocationHdr h ON (h.C_AllocationHdr_ID = line.C_AllocationHdr_ID)
+                    WHERE line.C_Invoice_ID = i.C_Invoice_ID AND h.DocStatus IN ('CO', 'CL')
+                ) al ON TRUE
+            WHERE i.DocStatus IN ('CO', 'CL') AND i.IsPayScheduleValid &lt;&gt; 'Y'
+--	Exclude document types flagged as excluded from invoice report
+                AND COALESCE(d.IsExcludeFromInvoiceReport,'N') &lt;&gt; 'Y'
+            UNION ALL
+            SELECT i.AD_Client_ID, i.AD_Org_ID, i.IsActive, i.C_Invoice_ID, i.DocumentNo, i.POReference, i.Description, i.IsSOTrx, i.DocStatus,
+                i.C_DocType_ID, d.DocBaseType, i.C_Order_ID,
+                i.C_BPartner_ID, i.C_BPartner_Location_ID, i.AD_User_ID, bp.C_BP_Group_ID,
+                bp.C_BP_AccountType_ID, bp.C_BP_SalesGroup_ID, bp.C_BP_Segment_ID, bp.C_BP_IndustryType_ID,
+                i.SalesRep_ID, i.C_SalesRegion_ID, i.AD_OrgTrx_ID, i.C_Campaign_ID, i.C_Project_ID, i.C_Activity_ID, i.M_PriceList_ID,
+                i.DateInvoiced, i.DateAcct, i.C_Currency_ID, i.C_ConversionType_ID, i.PaymentRule, i.C_PaymentTerm_ID,
+                i.IsPayScheduleValid, i.InvoiceCollectionType, i.IsInDispute,
+                CASE WHEN SUBSTR(d.DocBaseType, 3, 1) = 'C' THEN -1 ELSE 1 END,
+                CASE WHEN SUBSTR(d.DocBaseType, 2, 1) = 'P' THEN -1 ELSE 1 END,
+                CAST(NULL AS NUMERIC),
+                COALESCE(al.Paid, 0),
+                1 / POWER(10, cur.StdPrecision), cur.StdPrecision,
+                ips.C_InvoicePaySchedule_ID, ips.DueAmt,
+                COALESCE(cum.DueBefore, 0),
+                CAST(ips.DueDate AS DATE) - CAST(i.DateInvoiced AS DATE),
+                ips.DueDate,
+                CAST(CURRENT_DATE AS DATE) - CAST(ips.DueDate AS DATE),
+                ips.DiscountDate,
+                ips.DiscountAmt,
+                ips.DueAmt,
+                ROUND(COALESCE(al.Paid, 0), 2)
+            FROM C_Invoice i
+                INNER JOIN C_DocType d ON (d.C_DocType_ID = i.C_DocType_ID)
+                INNER JOIN C_BPartner bp ON (bp.C_BPartner_ID = i.C_BPartner_ID)
+                INNER JOIN C_BPartner_Location bpl ON (bpl.C_BPartner_Location_ID = i.C_BPartner_Location_ID)
+                INNER JOIN C_Location loc ON (loc.C_Location_ID = bpl.C_Location_ID)
+                INNER JOIN C_Currency cur ON (cur.C_Currency_ID = i.C_Currency_ID)
+                INNER JOIN C_InvoicePaySchedule ips ON (ips.C_Invoice_ID = i.C_Invoice_ID AND ips.IsValid = 'Y')
+                LEFT JOIN LATERAL (
+                    SELECT SUM(prev.DueAmt) AS DueBefore
+                    FROM C_InvoicePaySchedule prev
+                    WHERE prev.C_Invoice_ID = ips.C_Invoice_ID AND prev.IsValid = 'Y'
+                        AND (prev.DueDate &lt; ips.DueDate OR (prev.DueDate = ips.DueDate AND prev.C_InvoicePaySchedule_ID &lt; ips.C_InvoicePaySchedule_ID))
+                ) cum ON TRUE
+                LEFT JOIN LATERAL (
+                    SELECT SUM(CASE WHEN h.C_Currency_ID = i.C_Currency_ID THEN line.Amount + line.DiscountAmt + line.WriteOffAmt
+                            ELSE currencyConvert(line.Amount + line.DiscountAmt + line.WriteOffAmt, h.C_Currency_ID, i.C_Currency_ID, h.DateTrx, NULL, h.AD_Client_ID, h.AD_Org_ID) END) AS Paid
+                    FROM C_AllocationLine line
+                        INNER JOIN C_AllocationHdr h ON (h.C_AllocationHdr_ID = line.C_AllocationHdr_ID)
+                    WHERE line.C_Invoice_ID = i.C_Invoice_ID AND h.DocStatus IN ('CO', 'CL')
+                ) al ON TRUE
+            WHERE i.DocStatus IN ('CO', 'CL') AND i.IsPayScheduleValid = 'Y'
+--	Exclude document types flagged as excluded from invoice report
+                AND COALESCE(d.IsExcludeFromInvoiceReport,'N') &lt;&gt; 'Y'
+        ) b
+    ) y
+) x
+WHERE x.OpenAmt &lt;&gt; 0;</SQLStatement>
+    </Step>
+  </Migration>
+</Migrations>

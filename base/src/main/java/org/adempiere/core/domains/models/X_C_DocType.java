@@ -811,21 +811,21 @@ public class X_C_DocType extends PO implements I_C_DocType, I_Persistent
 		return false;
 	}
 
-	/** Set Exclude From Aging.
-		@param IsExcludeFromAging
-		Excludes the document from the aging report and dunning calculation.
+	/** Set Exclude From Invoice Report.
+		@param IsExcludeFromInvoiceReport
+		Excludes the document from invoice, open item and aging reports and dunning calculation.
 	  */
-	public void setIsExcludeFromAging (boolean IsExcludeFromAging)
+	public void setIsExcludeFromInvoiceReport (boolean IsExcludeFromInvoiceReport)
 	{
-		set_Value (COLUMNNAME_IsExcludeFromAging, Boolean.valueOf(IsExcludeFromAging));
+		set_Value (COLUMNNAME_IsExcludeFromInvoiceReport, Boolean.valueOf(IsExcludeFromInvoiceReport));
 	}
 
-	/** Get Exclude From Aging.
-		@return Excludes the document from the aging report and dunning calculation.
+	/** Get Exclude From Invoice Report.
+		@return Excludes the document from invoice, open item and aging reports and dunning calculation.
 	  */
-	public boolean isExcludeFromAging ()
+	public boolean isExcludeFromInvoiceReport ()
 	{
-		Object oo = get_Value(COLUMNNAME_IsExcludeFromAging);
+		Object oo = get_Value(COLUMNNAME_IsExcludeFromInvoiceReport);
 		if (oo != null)
 		{
 			 if (oo instanceof Boolean)

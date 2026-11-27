@@ -64,6 +64,8 @@ FROM (
                     WHERE line.C_Invoice_ID = i.C_Invoice_ID AND h.DocStatus IN ('CO', 'CL')
                 ) al ON TRUE
             WHERE i.DocStatus IN ('CO', 'CL') AND i.IsPayScheduleValid <> 'Y'
+--	Exclude document types flagged as excluded from invoice report
+                AND COALESCE(d.IsExcludeFromInvoiceReport,'N') <> 'Y'
             UNION ALL
             SELECT i.AD_Client_ID, i.AD_Org_ID, i.IsActive, i.C_Invoice_ID, i.DocumentNo, i.POReference, i.Description, i.IsSOTrx, i.DocStatus,
                 i.C_DocType_ID, d.DocBaseType, i.C_Order_ID,
@@ -107,6 +109,8 @@ FROM (
                     WHERE line.C_Invoice_ID = i.C_Invoice_ID AND h.DocStatus IN ('CO', 'CL')
                 ) al ON TRUE
             WHERE i.DocStatus IN ('CO', 'CL') AND i.IsPayScheduleValid = 'Y'
+--	Exclude document types flagged as excluded from invoice report
+                AND COALESCE(d.IsExcludeFromInvoiceReport,'N') <> 'Y'
         ) b
     ) y
 ) x

@@ -427,18 +427,18 @@ public interface I_C_DocType
 	  */
 	public boolean isDocNoControlled();
 
-    /** Column name IsExcludeFromAging */
-    public static final String COLUMNNAME_IsExcludeFromAging = "IsExcludeFromAging";
+    /** Column name IsExcludeFromInvoiceReport */
+    public static final String COLUMNNAME_IsExcludeFromInvoiceReport = "IsExcludeFromInvoiceReport";
 
-	/** Set Exclude From Aging.
-	  * Excludes the document from the aging report and dunning calculation.
+	/** Set Exclude From Invoice Report.
+	  * Excludes the document from invoice, open item and aging reports and dunning calculation.
 	  */
-	public void setIsExcludeFromAging (boolean IsExcludeFromAging);
+	public void setIsExcludeFromInvoiceReport (boolean IsExcludeFromInvoiceReport);
 
-	/** Get Exclude From Aging.
-	  * Excludes the document from the aging report and dunning calculation.
+	/** Get Exclude From Invoice Report.
+	  * Excludes the document from invoice, open item and aging reports and dunning calculation.
 	  */
-	public boolean isExcludeFromAging();
+	public boolean isExcludeFromInvoiceReport();
 
     /** Column name IsIndexed */
     public static final String COLUMNNAME_IsIndexed = "IsIndexed";

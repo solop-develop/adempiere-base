@@ -113,6 +113,8 @@ public class Aging extends AgingAbstract {
 		sql.append(" INNER JOIN C_BPartner bp ON (oi.C_BPartner_ID=bp.C_BPartner_ID) "
 				+ "INNER JOIN C_Invoice i ON(i.C_Invoice_ID = oi.C_Invoice_ID) "
 			+ "WHERE oi.ISSoTrx=").append(isSOTrx() ? "'Y'" : "'N'");
+		//	Exclude document types flagged as excluded from invoice report
+		sql.append(" AND NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y') ");
 		if (getBPartnerId() > 0)
 		{
 			sql.append(" AND oi.C_BPartner_ID=").append(getBPartnerId());

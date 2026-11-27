@@ -130,6 +130,10 @@ public class CombinedAgingRevalue extends SvrProcess
 			+ " INNER JOIN C_BPartner bp ON (oi.C_BPartner_ID=bp.C_BPartner_ID) ");
 		s = ( p_IsSOTrx.equals("B") ? "Y','N" : p_IsSOTrx );
 			sql.append("WHERE oi.ISSoTrx IN ('" + s + "') ");
+		//	Exclude invoices whose document type is flagged as excluded from invoice report (payments are kept)
+		sql.append(" AND (oi.C_Invoice_ID IS NULL OR NOT EXISTS (SELECT 1 FROM C_Invoice ci "
+				+ "INNER JOIN C_DocType dt ON (ci.C_DocType_ID=dt.C_DocType_ID) "
+				+ "WHERE ci.C_Invoice_ID=oi.C_Invoice_ID AND dt.IsExcludeFromInvoiceReport='Y')) ");
 		if ( !p_IncludePayments )
 			sql.append(" AND oi.C_Invoice_ID IS NOT NULL ");
 		if ( p_C_Currency_ID != 0 )

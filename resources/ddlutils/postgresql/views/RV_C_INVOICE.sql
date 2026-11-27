@@ -36,4 +36,6 @@ FROM  C_Invoice i
  INNER JOIN C_DocType d ON (i.C_DocType_ID=d.C_DocType_ID)
  INNER JOIN C_BPartner b ON (i.C_BPartner_ID=b.C_BPartner_ID)
  INNER JOIN C_BPartner_Location bpl ON (i.C_BPartner_Location_ID=bpl.C_BPartner_Location_ID)
- INNER JOIN C_Location loc ON (bpl.C_Location_ID=loc.C_Location_ID);
+ INNER JOIN C_Location loc ON (bpl.C_Location_ID=loc.C_Location_ID)
+--	Exclude document types flagged as excluded from invoice report
+WHERE COALESCE(d.IsExcludeFromInvoiceReport,'N') <> 'Y';

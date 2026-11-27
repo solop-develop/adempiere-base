@@ -50,4 +50,6 @@ SELECT
 FROM  RV_C_Invoice i
   INNER JOIN C_InvoiceLine il ON (i.C_Invoice_ID=il.C_Invoice_ID)
   LEFT OUTER JOIN M_Product p ON (il.M_Product_ID=p.M_Product_ID)
-  LEFT OUTER JOIN M_AttributeSetInstance pasi ON (il.M_AttributeSetInstance_ID=pasi.M_AttributeSetInstance_ID);
+  LEFT OUTER JOIN M_AttributeSetInstance pasi ON (il.M_AttributeSetInstance_ID=pasi.M_AttributeSetInstance_ID)
+--	Exclude document types flagged as excluded from invoice report
+WHERE NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y');

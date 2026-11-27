@@ -30,6 +30,7 @@ WHERE --    i.IsPaid='N'
     invoiceOpen(i.C_Invoice_ID,0) <> 0 AND 
     i.IsPayScheduleValid<>'Y'
     AND i.DocStatus IN ('CO','CL')
+    AND NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y')
 UNION
 SELECT i.AD_Org_ID, i.AD_Client_ID,
     i.DocumentNo, i.C_Invoice_ID, i.C_Order_ID, i.C_BPartner_ID, i.IsSOTrx,
@@ -53,4 +54,5 @@ WHERE  --   i.IsPaid='N'
     invoiceOpen(i.C_Invoice_ID,ips.C_InvoicePaySchedule_ID) <> 0 AND 
     i.IsPayScheduleValid='Y'
     AND i.DocStatus IN ('CO','CL')
-    AND ips.IsValid='Y';
+    AND ips.IsValid='Y'
+    AND NOT EXISTS (SELECT 1 FROM C_DocType dt WHERE dt.C_DocType_ID=i.C_DocType_ID AND dt.IsExcludeFromInvoiceReport='Y');

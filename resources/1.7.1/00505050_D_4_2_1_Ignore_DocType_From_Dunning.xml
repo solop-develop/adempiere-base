@@ -5,17 +5,17 @@
     <Step SeqNo="10" StepType="AD">
       <PO AD_Table_ID="276" Action="I" Record_ID="200561" Table="AD_Element">
         <Data AD_Column_ID="84316" Column="UUID">5ce57b0a-a169-42c5-a22f-edbd10b8a841</Data>
-        <Data AD_Column_ID="2603" Column="Name">Exclude From Aging</Data>
-        <Data AD_Column_ID="2604" Column="Description">Excludes the document from the aging report and dunning calculation.</Data>
+        <Data AD_Column_ID="2603" Column="Name">Exclude From Invoice Report</Data>
+        <Data AD_Column_ID="2604" Column="Description">Excludes the document from invoice, open item and aging reports and dunning calculation.</Data>
         <Data AD_Column_ID="2600" Column="Updated">2026-11-25 10:56:59.801</Data>
         <Data AD_Column_ID="2597" Column="IsActive">true</Data>
         <Data AD_Column_ID="2598" Column="Created">2026-11-25 10:56:59.801</Data>
-        <Data AD_Column_ID="2602" Column="ColumnName">IsExcludeFromAging</Data>
-        <Data AD_Column_ID="2605" Column="Help">When selected, documents of this type are not included in accounts receivable aging reports nor considered for overdue/dunning calculations.</Data>
+        <Data AD_Column_ID="2602" Column="ColumnName">IsExcludeFromInvoiceReport</Data>
+        <Data AD_Column_ID="2605" Column="Help">When selected, documents of this type are not included in invoice, open item or accounts receivable aging reports, nor considered for overdue/dunning calculations.</Data>
         <Data AD_Column_ID="6284" Column="PO_Help" isNewNull="true"/>
         <Data AD_Column_ID="6285" Column="PO_Name" isNewNull="true"/>
         <Data AD_Column_ID="6283" Column="PO_Description" isNewNull="true"/>
-        <Data AD_Column_ID="4299" Column="PrintName">Exclude From Aging</Data>
+        <Data AD_Column_ID="4299" Column="PrintName">Exclude From Invoice Report</Data>
         <Data AD_Column_ID="6286" Column="PO_PrintName" isNewNull="true"/>
         <Data AD_Column_ID="58589" Column="FieldLength">1</Data>
         <Data AD_Column_ID="58588" Column="AD_Reference_ID">20</Data>
@@ -36,11 +36,11 @@
         <Data AD_Column_ID="2644" Column="Updated">2026-11-25 10:57:01.247</Data>
         <Data AD_Column_ID="2638" Column="AD_Language">es_MX</Data>
         <Data AD_Column_ID="6450" Column="PO_Name" isNewNull="true"/>
-        <Data AD_Column_ID="2648" Column="Help">When selected, documents of this type are not included in accounts receivable aging reports nor considered for overdue/dunning calculations.</Data>
-        <Data AD_Column_ID="2646" Column="Name">Exclude From Aging</Data>
-        <Data AD_Column_ID="2647" Column="Description">Excludes the document from the aging report and dunning calculation.</Data>
+        <Data AD_Column_ID="2648" Column="Help">When selected, documents of this type are not included in invoice, open item or accounts receivable aging reports, nor considered for overdue/dunning calculations.</Data>
+        <Data AD_Column_ID="2646" Column="Name">Exclude From Invoice Report</Data>
+        <Data AD_Column_ID="2647" Column="Description">Excludes the document from invoice, open item and aging reports and dunning calculation.</Data>
         <Data AD_Column_ID="2649" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="4300" Column="PrintName">Exclude From Aging</Data>
+        <Data AD_Column_ID="4300" Column="PrintName">Exclude From Invoice Report</Data>
         <Data AD_Column_ID="6448" Column="PO_Description" isNewNull="true"/>
         <Data AD_Column_ID="6451" Column="PO_PrintName" isNewNull="true"/>
         <Data AD_Column_ID="2640" Column="AD_Org_ID">0</Data>
@@ -54,11 +54,11 @@
     <Step SeqNo="30" StepType="AD">
       <PO AD_Table_ID="277" Action="U" Record_ID="0" Table="AD_Element_Trl">
         <Data AD_Column_ID="2638" Column="AD_Language" oldValue="es_MX">es_MX</Data>
-        <Data AD_Column_ID="2648" Column="Help" oldValue="When selected, documents of this type are not included in accounts receivable aging reports nor considered for overdue/dunning calculations.">Si está marcado, los documentos de este tipo no se incluyen en los reportes de antigüedad de saldos ni se consideran en el cálculo de morosidad.</Data>
-        <Data AD_Column_ID="2646" Column="Name" oldValue="Exclude From Aging">Excluir de Antigüedad de Saldos</Data>
-        <Data AD_Column_ID="2647" Column="Description" oldValue="Excludes the document from the aging report and dunning calculation.">Excluye el documento del reporte de antigüedad de saldos y del cálculo de morosidad.</Data>
+        <Data AD_Column_ID="2648" Column="Help" oldValue="When selected, documents of this type are not included in invoice, open item or accounts receivable aging reports, nor considered for overdue/dunning calculations.">Si está marcado, los documentos de este tipo no se incluyen en los reportes de facturas, saldos abiertos ni antigüedad de saldos, ni se consideran en el cálculo de morosidad.</Data>
+        <Data AD_Column_ID="2646" Column="Name" oldValue="Exclude From Invoice Report">Excluir de Reportes de Facturas</Data>
+        <Data AD_Column_ID="2647" Column="Description" oldValue="Excludes the document from invoice, open item and aging reports and dunning calculation.">Excluye el documento de los reportes de facturas, saldos abiertos y antigüedad de saldos, y del cálculo de morosidad.</Data>
         <Data AD_Column_ID="2649" Column="IsTranslated" oldValue="false">true</Data>
-        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Exclude From Aging">Excluir de Antigüedad de Saldos</Data>
+        <Data AD_Column_ID="4300" Column="PrintName" oldValue="Exclude From Invoice Report">Excluir de Reportes de Facturas</Data>
         <Data AD_Column_ID="2637" Column="AD_Element_ID" oldValue="200561">200561</Data>
       </PO>
     </Step>
@@ -72,8 +72,8 @@
         <Data AD_Column_ID="3389" Column="ValueMax" isNewNull="true"/>
         <Data AD_Column_ID="109" Column="AD_Column_ID">211770</Data>
         <Data AD_Column_ID="126" Column="IsIdentifier">false</Data>
-        <Data AD_Column_ID="111" Column="Name">Exclude From Aging</Data>
-        <Data AD_Column_ID="112" Column="Description">Excludes the document from the aging report and dunning calculation.</Data>
+        <Data AD_Column_ID="111" Column="Name">Exclude From Invoice Report</Data>
+        <Data AD_Column_ID="112" Column="Description">Excludes the document from invoice, open item and aging reports and dunning calculation.</Data>
         <Data AD_Column_ID="124" Column="IsMandatory">false</Data>
         <Data AD_Column_ID="125" Column="IsTranslated">false</Data>
         <Data AD_Column_ID="117" Column="DefaultValue">N</Data>
@@ -87,8 +87,8 @@
         <Data AD_Column_ID="50218" Column="MandatoryLogic" isNewNull="true"/>
         <Data AD_Column_ID="110" Column="Version">0</Data>
         <Data AD_Column_ID="13448" Column="ColumnSQL" isNewNull="true"/>
-        <Data AD_Column_ID="116" Column="ColumnName">IsExcludeFromAging</Data>
-        <Data AD_Column_ID="113" Column="Help">When selected, documents of this type are not included in accounts receivable aging reports nor considered for overdue/dunning calculations.</Data>
+        <Data AD_Column_ID="116" Column="ColumnName">IsExcludeFromInvoiceReport</Data>
+        <Data AD_Column_ID="113" Column="Help">When selected, documents of this type are not included in invoice, open item or accounts receivable aging reports, nor considered for overdue/dunning calculations.</Data>
         <Data AD_Column_ID="3360" Column="IsUpdateable">true</Data>
         <Data AD_Column_ID="1692" Column="Callout" isNewNull="true"/>
         <Data AD_Column_ID="11617" Column="IsAlwaysUpdateable">false</Data>
@@ -124,7 +124,7 @@
         <Data AD_Column_ID="12952" Column="Updated">2026-11-25 10:57:41.759</Data>
         <Data AD_Column_ID="12955" Column="AD_Column_ID">211770</Data>
         <Data AD_Column_ID="12954" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="12957" Column="Name">Exclude From Aging</Data>
+        <Data AD_Column_ID="12957" Column="Name">Exclude From Invoice Report</Data>
         <Data AD_Column_ID="12961" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="12951" Column="AD_Org_ID">0</Data>
         <Data AD_Column_ID="12958" Column="UpdatedBy">100</Data>
@@ -135,8 +135,8 @@
     </Step>
     <Step SeqNo="60" StepType="AD">
       <PO AD_Table_ID="107" Action="I" Record_ID="202750" Table="AD_Field">
-        <Data AD_Column_ID="170" Column="Help">When selected, documents of this type are not included in accounts receivable aging reports nor considered for overdue/dunning calculations.</Data>
-        <Data AD_Column_ID="168" Column="Name">Exclude From Aging</Data>
+        <Data AD_Column_ID="170" Column="Help">When selected, documents of this type are not included in invoice, open item or accounts receivable aging reports, nor considered for overdue/dunning calculations.</Data>
+        <Data AD_Column_ID="168" Column="Name">Exclude From Invoice Report</Data>
         <Data AD_Column_ID="2007" Column="IsReadOnly">false</Data>
         <Data AD_Column_ID="579" Column="Created">2026-11-25 10:58:01.078</Data>
         <Data AD_Column_ID="78493" Column="IsQuickEntry">false</Data>
@@ -147,7 +147,7 @@
         <Data AD_Column_ID="90940" Column="AD_Image_ID" isNewNull="true"/>
         <Data AD_Column_ID="59703" Column="IsEmbedded">false</Data>
         <Data AD_Column_ID="74868" Column="IsAllowCopy">true</Data>
-        <Data AD_Column_ID="169" Column="Description">Excludes the document from the aging report and dunning calculation.</Data>
+        <Data AD_Column_ID="169" Column="Description">Excludes the document from invoice, open item and aging reports and dunning calculation.</Data>
         <Data AD_Column_ID="176" Column="IsDisplayed">true</Data>
         <Data AD_Column_ID="185" Column="IsFieldOnly">false</Data>
         <Data AD_Column_ID="182" Column="SortNo">0</Data>
@@ -189,10 +189,10 @@
         <Data AD_Column_ID="672" Column="Created">2026-11-25 10:58:01.559</Data>
         <Data AD_Column_ID="674" Column="Updated">2026-11-25 10:58:01.559</Data>
         <Data AD_Column_ID="1205" Column="AD_Org_ID">0</Data>
-        <Data AD_Column_ID="287" Column="Description">Excludes the document from the aging report and dunning calculation.</Data>
+        <Data AD_Column_ID="287" Column="Description">Excludes the document from invoice, open item and aging reports and dunning calculation.</Data>
         <Data AD_Column_ID="289" Column="IsTranslated">false</Data>
-        <Data AD_Column_ID="286" Column="Name">Exclude From Aging</Data>
-        <Data AD_Column_ID="288" Column="Help">When selected, documents of this type are not included in accounts receivable aging reports nor considered for overdue/dunning calculations.</Data>
+        <Data AD_Column_ID="286" Column="Name">Exclude From Invoice Report</Data>
+        <Data AD_Column_ID="288" Column="Help">When selected, documents of this type are not included in invoice, open item or accounts receivable aging reports, nor considered for overdue/dunning calculations.</Data>
         <Data AD_Column_ID="1204" Column="AD_Client_ID">0</Data>
         <Data AD_Column_ID="284" Column="AD_Field_ID">202750</Data>
         <Data AD_Column_ID="673" Column="CreatedBy">100</Data>
