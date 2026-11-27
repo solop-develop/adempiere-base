@@ -324,6 +324,11 @@ public class AverageInvoiceCostingMethod extends AbstractCostingMethod
 
 			currentCostPrice = getNewCurrentCostPrice(lastCostDetail, accountSchema.getCostingPrecision(), RoundingMode.HALF_UP);
 			currentCostPriceLowerLevel = getNewCurrentCostPriceLowerLevel(lastCostDetail, accountSchema.getCostingPrecision(), RoundingMode.HALF_UP);
+			// Quantity or amount is zero: keep valuing the outgoing at the last known cost
+			if (currentCostPrice.signum() == 0)
+				currentCostPrice = lastCostDetail.getCurrentCostPrice();
+			if (currentCostPriceLowerLevel.signum() == 0)
+				currentCostPriceLowerLevel = lastCostDetail.getCurrentCostPriceLL();
 		
 			amount = transaction.getMovementQty().multiply(currentCostPrice);
 			amountLowerLevel = movementQuantity.multiply(currentCostPriceLowerLevel);
@@ -644,8 +649,11 @@ public class AverageInvoiceCostingMethod extends AbstractCostingMethod
             dimension.setCurrentCostPrice(accumulatedAmount.divide(accumulatedQuantity, accountSchema.getCostingPrecision(), RoundingMode.HALF_UP));
             dimension.setCurrentCostPriceLL(accumulatedAmountLowerLevel.divide(accumulatedQuantity, accountSchema.getCostingPrecision(), RoundingMode.HALF_UP));
         }else {
-        	dimension.setCurrentCostPrice(Env.ZERO);
-        	dimension.setCurrentCostPriceLL(Env.ZERO);
+        	// Keep the last known cost when the quantity reaches zero
+        	if (currentCostPrice != null && currentCostPrice.signum() != 0)
+        		dimension.setCurrentCostPrice(currentCostPrice);
+        	if (currentCostPriceLowerLevel != null && currentCostPriceLowerLevel.signum() != 0)
+        		dimension.setCurrentCostPriceLL(currentCostPriceLowerLevel);
         }
         	
         if (model.getReversalLine_ID() != 0)
@@ -726,6 +734,9 @@ public class AverageInvoiceCostingMethod extends AbstractCostingMethod
 
 	private void alignReversalWithStock() {
 		if (costDetail == null || !costDetail.isReversal() || costDetail.getM_Transaction_ID() != transaction.getM_Transaction_ID())
+			return;
+		// A delivery reversal must never be revalued
+		if (transaction.getMovementType().endsWith("-"))
 			return;
 		BigDecimal multiplier = getMultiplierTrx(costDetail);
 		if (multiplier.signum() == 0)
